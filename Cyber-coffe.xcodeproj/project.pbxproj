@@ -9,21 +9,25 @@
 /* Begin PBXBuildFile section */
 		F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */; };
 		F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */; };
-		F39A52F927311FDD00C8F2D3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* ViewController.swift */; };
-		F39A52FC27311FDD00C8F2D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FA27311FDD00C8F2D3 /* Main.storyboard */; };
+		F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */; };
 		F39A52FE27311FDE00C8F2D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */; };
 		F39A530127311FDE00C8F2D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FF27311FDE00C8F2D3 /* LaunchScreen.storyboard */; };
+		F39A53352732525900C8F2D3 /* SalesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A53342732525900C8F2D3 /* SalesViewController.swift */; };
+		F39A5337273252A500C8F2D3 /* PurchasesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */; };
+		F39A5339273252B800C8F2D3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5338273252B800C8F2D3 /* SettingsViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		F39A52F127311FDD00C8F2D3 /* Cyber-coffe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cyber-coffe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		F39A52F827311FDD00C8F2D3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		F39A52FB27311FDD00C8F2D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F39A530027311FDE00C8F2D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F39A530227311FDE00C8F2D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F39A53342732525900C8F2D3 /* SalesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesViewController.swift; sourceTree = "<group>"; };
+		F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesViewController.swift; sourceTree = "<group>"; };
+		F39A5338273252B800C8F2D3 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +60,41 @@
 		F39A52F327311FDD00C8F2D3 /* Cyber-coffe */ = {
 			isa = PBXGroup;
 			children = (
+				F39A5331273250C300C8F2D3 /* Application */,
+				F39A5332273251AE00C8F2D3 /* Controllers */,
+				F39A5333273251BF00C8F2D3 /* Resources */,
+			);
+			path = "Cyber-coffe";
+			sourceTree = "<group>";
+		};
+		F39A5331273250C300C8F2D3 /* Application */ = {
+			isa = PBXGroup;
+			children = (
 				F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */,
 				F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */,
-				F39A52F827311FDD00C8F2D3 /* ViewController.swift */,
-				F39A52FA27311FDD00C8F2D3 /* Main.storyboard */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		F39A5332273251AE00C8F2D3 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
+				F39A53342732525900C8F2D3 /* SalesViewController.swift */,
+				F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */,
+				F39A5338273252B800C8F2D3 /* SettingsViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		F39A5333273251BF00C8F2D3 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */,
 				F39A52FF27311FDE00C8F2D3 /* LaunchScreen.storyboard */,
 				F39A530227311FDE00C8F2D3 /* Info.plist */,
 			);
-			path = "Cyber-coffe";
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -127,7 +157,6 @@
 			files = (
 				F39A530127311FDE00C8F2D3 /* LaunchScreen.storyboard in Resources */,
 				F39A52FE27311FDE00C8F2D3 /* Assets.xcassets in Resources */,
-				F39A52FC27311FDD00C8F2D3 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,23 +167,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F39A52F927311FDD00C8F2D3 /* ViewController.swift in Sources */,
+				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
+				F39A5337273252A500C8F2D3 /* PurchasesViewController.swift in Sources */,
 				F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */,
+				F39A53352732525900C8F2D3 /* SalesViewController.swift in Sources */,
+				F39A5339273252B800C8F2D3 /* SettingsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		F39A52FA27311FDD00C8F2D3 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				F39A52FB27311FDD00C8F2D3 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		F39A52FF27311FDE00C8F2D3 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -291,10 +315,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Cyber-coffe/Info.plist";
+				INFOPLIST_FILE = "Cyber-coffe/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -319,10 +342,9 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Cyber-coffe/Info.plist";
+				INFOPLIST_FILE = "Cyber-coffe/Resources/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
