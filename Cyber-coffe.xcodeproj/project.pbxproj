@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F316A2F3273803CE0083E830 /* GoodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F2273803CE0083E830 /* GoodsViewController.swift */; };
+		F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
+		F316A2FB273808100083E830 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont.swift */; };
+		F316A2FD27380A850083E830 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView.swift */; };
 		F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */; };
 		F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */; };
 		F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */; };
@@ -18,6 +22,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F316A2F2273803CE0083E830 /* GoodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsViewController.swift; sourceTree = "<group>"; };
+		F316A2F8273805150083E830 /* SalesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesTableViewCell.swift; sourceTree = "<group>"; };
+		F316A2FA273808100083E830 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
+		F316A2FC27380A850083E830 /* UIStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		F39A52F127311FDD00C8F2D3 /* Cyber-coffe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cyber-coffe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -41,6 +49,39 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		F316A2F4273804270083E830 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F316A2F52738047F0083E830 /* Cell */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		F316A2F52738047F0083E830 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F316A2F8273805150083E830 /* SalesTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		F316A2F62738048F0083E830 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				F316A2F7273804AB0083E830 /* UIKit */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F316A2F7273804AB0083E830 /* UIKit */ = {
+			isa = PBXGroup;
+			children = (
+				F316A2FC27380A850083E830 /* UIStackView.swift */,
+				F316A2FA273808100083E830 /* UIFont.swift */,
+			);
+			path = UIKit;
+			sourceTree = "<group>";
+		};
 		F39A52E827311FDD00C8F2D3 = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +103,8 @@
 			children = (
 				F39A5331273250C300C8F2D3 /* Application */,
 				F39A5332273251AE00C8F2D3 /* Controllers */,
+				F316A2F4273804270083E830 /* Model */,
+				F316A2F62738048F0083E830 /* Extensions */,
 				F39A5333273251BF00C8F2D3 /* Resources */,
 			);
 			path = "Cyber-coffe";
@@ -83,6 +126,7 @@
 				F39A53342732525900C8F2D3 /* SalesViewController.swift */,
 				F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */,
 				F39A5338273252B800C8F2D3 /* SettingsViewController.swift */,
+				F316A2F2273803CE0083E830 /* GoodsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -169,10 +213,14 @@
 			files = (
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
+				F316A2F3273803CE0083E830 /* GoodsViewController.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* PurchasesViewController.swift in Sources */,
 				F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */,
 				F39A53352732525900C8F2D3 /* SalesViewController.swift in Sources */,
+				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
+				F316A2FD27380A850083E830 /* UIStackView.swift in Sources */,
 				F39A5339273252B800C8F2D3 /* SettingsViewController.swift in Sources */,
+				F316A2FB273808100083E830 /* UIFont.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
