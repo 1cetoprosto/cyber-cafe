@@ -9,24 +9,28 @@ import UIKit
 
 class SalesViewController: UIViewController {
 
-    let tableView: UITableView = {
+    let idSalesCell = "idSalesCell"
+    lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idSalesCell)
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        
         return tableView
     }()
-    
-    let idScheduleCell = "idScheduleCell"
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Main.background
         title = "Продажи"
         
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idScheduleCell)
-
+        //Кнопка справа
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
+        
         setConstraints()
         
     }
@@ -37,34 +41,41 @@ class SalesViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
         
     }
+    
+    //MARK: - Method
+    @objc func performAdd(param: UIBarButtonItem) {
+        let saleVC = SaleViewController()
+        navigationController?.pushViewController(saleVC, animated: true)
+    }
+    
 }
 
-//MARK: -
+//MARK: - UITableViewDelegate, UITableViewDataSource
 extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 25
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idScheduleCell, for: indexPath) as! SalesTableViewCell
-        
-//        switch indexPath.row {
-//        case 0: cell.backgroundColor = .red
-//        case 1: cell.backgroundColor = .blue
-//        default: cell.backgroundColor = .green
-//        }
-        //cell.accessoryType = .checkmark
+        let cell = tableView.dequeueReusableCell(withIdentifier: idSalesCell, for: indexPath) as! SalesTableViewCell
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 70
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //let selectedDay = days[indexPath.row]
+        
+        let saleVC = SaleViewController()
+        self.navigationController?.pushViewController(saleVC, animated: true)
     }
 }
