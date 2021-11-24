@@ -73,7 +73,7 @@ class SaleViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
-        button.titleLabel?.textColor = .red //UIColor.Button.title
+        button.setTitleColor(UIColor.Button.title, for: .normal) 
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
 
@@ -84,8 +84,9 @@ class SaleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Продажа"
+        title = "Продажа за:"
         view.backgroundColor = UIColor.Main.background
+        navigationController?.view.backgroundColor = UIColor.NavBar.background
         
         setConstraints()
         
