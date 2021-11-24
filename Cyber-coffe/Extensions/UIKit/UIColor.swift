@@ -19,7 +19,7 @@ extension UIColor {
     }
     
     struct Button {
-        static var title: UIColor { HEX.h1C3209 }
+        static var title: UIColor { HEX.hC49E62 }
         static var background: UIColor { HEX.h1C3209 }
 //        static var active: UIColor { HEX.hC4C4C4 }
 //        static var passive: UIColor { HEX.hDEDEDE }
@@ -28,13 +28,18 @@ extension UIColor {
     }
     
     struct TabBar {
-//        static var tint: UIColor { HEX.h7C35D7 }
+        static var tint: UIColor { HEX.h1C3209 }
 //        static var unselectedTint: UIColor { HEX.hCCAEF3 }
     }
     
     struct TableView {
         static var cellBackground: UIColor { HEX.hEFD4A0 }
         static var cellLabel: UIColor { HEX.h5E4420 }
+    }
+    
+    struct NavBar {
+        static var background: UIColor { HEX.h1C3209 }
+        static var text: UIColor { HEX.hEFD4A0 }
     }
     
     fileprivate struct HEX {

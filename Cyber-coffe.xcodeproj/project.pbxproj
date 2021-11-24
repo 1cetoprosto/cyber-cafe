@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F310CFA6274B70360052E481 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar.swift */; };
 		F316A2F3273803CE0083E830 /* GoodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F2273803CE0083E830 /* GoodsViewController.swift */; };
 		F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F316A2FB273808100083E830 /* UIFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont.swift */; };
@@ -25,6 +26,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F310CFA5274B70360052E481 /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
 		F316A2F2273803CE0083E830 /* GoodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsViewController.swift; sourceTree = "<group>"; };
 		F316A2F8273805150083E830 /* SalesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesTableViewCell.swift; sourceTree = "<group>"; };
 		F316A2FA273808100083E830 /* UIFont.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIFont.swift; sourceTree = "<group>"; };
@@ -86,6 +88,7 @@
 				F316A2FC27380A850083E830 /* UIStackView.swift */,
 				F316A2FA273808100083E830 /* UIFont.swift */,
 				F3BBB1B12748D6C000744C3B /* UIColor.swift */,
+				F310CFA5274B70360052E481 /* UINavigationBar.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -231,6 +234,7 @@
 				F316A2FF2738FD710083E830 /* SaleViewController.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView.swift in Sources */,
+				F310CFA6274B70360052E481 /* UINavigationBar.swift in Sources */,
 				F39A5339273252B800C8F2D3 /* SettingsViewController.swift in Sources */,
 				F316A2FB273808100083E830 /* UIFont.swift in Sources */,
 			);

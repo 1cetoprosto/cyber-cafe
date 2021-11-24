@@ -14,6 +14,8 @@ class MainTabBarController: UITabBarController {
 
         //view.backgroundColor = .green
         setupTabBar()
+        self.tabBar.tintColor = UIColor.TabBar.tint
+        navigationController?.view.backgroundColor = UIColor.NavBar.background
     }
 
     func setupTabBar() {
@@ -30,6 +32,7 @@ class MainTabBarController: UITabBarController {
         
         let navController = UINavigationController(rootViewController: vc)
         navController.tabBarItem = item
+        navController.view.backgroundColor = UIColor.NavBar.background
         
         return navController
     }
