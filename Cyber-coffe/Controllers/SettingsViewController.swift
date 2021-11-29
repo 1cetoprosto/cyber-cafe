@@ -10,7 +10,6 @@ import UIKit
 struct Section {
     let title: String
     let option: [SettingsOptionType]
-    
 }
 
 enum SettingsOptionType {
@@ -61,16 +60,16 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     func configure() {
         models.append(Section(title: "General", option: [
             .staticCell(model: SettingsOption(title: "Language", icon: UIImage(systemName: "globe"), iconBackgroundColor: .systemPink) {
-                print("Language")
+                self.navigationController?.pushViewController(LanguageViewController(), animated: true)
             }),
             .switchCell(model: SettingsSwitchOption(title: "Dark Theme", icon: UIImage(systemName: "sun.max"), iconBackgroundColor: .systemBlue, handler: {
-                
+                print("Switch")
             }, isOn: true))
         ]))
         
         models.append(Section(title: "Sales", option: [
             .staticCell(model: SettingsOption(title: "Goods", icon: UIImage(systemName: "cup.and.saucer.fill"), iconBackgroundColor: .systemGreen) {
-                
+                self.navigationController?.pushViewController(GoodsViewController(), animated: true)
             })
         ]))
     }

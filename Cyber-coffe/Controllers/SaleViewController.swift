@@ -14,6 +14,7 @@ class SaleViewController: UIViewController {
         //datePiker.backgroundColor = .red
         datePiker.datePickerMode = .date
         datePiker.contentHorizontalAlignment = .center
+        datePiker.preferredDatePickerStyle = .automatic
         
         return datePiker
     }()

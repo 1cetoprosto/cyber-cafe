@@ -28,7 +28,6 @@ class SalesViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         title = "Продажи"
         
-        
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
         
