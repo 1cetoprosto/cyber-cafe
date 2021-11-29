@@ -1,0 +1,123 @@
+//
+//  GoodViewController.swift
+//  Cyber-coffe
+//
+//  Created by Леонід Квіт on 27.11.2021.
+//
+
+import UIKit
+
+class GoodViewController: UIViewController {
+
+    let goodLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.text = "Good name:"
+        label.textColor = UIColor.Main.text
+        label.backgroundColor = .red
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let goodTextfield: UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        textField.placeholder = "Enter good's name"
+        //textField.layer.borderWidth = 1
+        //textField.text = "0"
+        textField.backgroundColor = .orange
+        textField.font = UIFont.systemFont(ofSize: 24)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textField
+    }()
+    
+    let priceLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.text = "Price:"
+        label.textColor = UIColor.Main.text
+        label.backgroundColor = .red
+        label.font = UIFont.systemFont(ofSize: 20)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let priceTextfield: UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        textField.placeholder = "Enter price"
+        //textField.layer.borderWidth = 1
+        //textField.text = "0"
+        textField.backgroundColor = .orange
+        textField.font = UIFont.systemFont(ofSize: 24)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textField
+    }()
+    
+    let saveButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Save", for: .normal)
+        button.setTitleColor(UIColor.Button.title, for: .normal)
+        button.backgroundColor = UIColor.Button.background
+        button.layer.cornerRadius = 10
+
+        button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+        return button
+    }()
+    
+    let cancelButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(UIColor.Button.title, for: .normal)
+        button.backgroundColor = UIColor.Button.background
+        button.layer.cornerRadius = 10
+
+        button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+        return button
+    }()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        view.backgroundColor = UIColor.Main.background
+        title = "Good"
+        
+        navigationController?.view.backgroundColor = UIColor.NavBar.background
+        
+        setConstraints()
+    }
+    
+    func setConstraints() {
+                
+        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton], axis: .horizontal, spacing: 20, distribution: .fillEqually)
+        
+        
+        let goodStackView = UIStackView(arrangedSubviews: [goodLabel, goodTextfield, priceLabel, priceTextfield, buttonStackView], axis: .vertical, spacing: 5, distribution: .fillEqually)
+        view.addSubview(goodStackView)
+
+        NSLayoutConstraint.activate([
+            goodStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            goodStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            goodStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            goodStackView.heightAnchor.constraint(equalToConstant: 200)
+        ])
+        
+    }
+    
+    //MARK: - Method
+    @objc func saveAction(param: UIButton) {
+        print("save")
+    }
+    
+    @objc func cancelAction(param: UIButton) {
+        navigationController?.popViewController(animated: true)
+    }
+    
+}
