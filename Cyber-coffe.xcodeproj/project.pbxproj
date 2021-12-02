@@ -81,8 +81,8 @@
 				F316A2F8273805150083E830 /* SalesTableViewCell.swift */,
 				F316A300273901410083E830 /* SaleTableViewCell.swift */,
 				F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */,
-				F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */,
 				F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */,
+				F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -147,13 +147,9 @@
 			isa = PBXGroup;
 			children = (
 				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
-				F39A53342732525900C8F2D3 /* SalesViewController.swift */,
-				F316A2FE2738FD710083E830 /* SaleViewController.swift */,
-				F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */,
-				F39A5338273252B800C8F2D3 /* SettingsViewController.swift */,
-				F316A2F2273803CE0083E830 /* GoodsViewController.swift */,
-				F3EAACFF275266EA004B9AF6 /* GoodViewController.swift */,
-				F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */,
+				F39C802E2757727E00674CF4 /* Sales */,
+				F39C802F2757729F00674CF4 /* Purchases */,
+				F39C8030275772BD00674CF4 /* Settings */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -166,6 +162,34 @@
 				F39A530227311FDE00C8F2D3 /* Info.plist */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		F39C802E2757727E00674CF4 /* Sales */ = {
+			isa = PBXGroup;
+			children = (
+				F39A53342732525900C8F2D3 /* SalesViewController.swift */,
+				F316A2FE2738FD710083E830 /* SaleViewController.swift */,
+			);
+			path = Sales;
+			sourceTree = "<group>";
+		};
+		F39C802F2757729F00674CF4 /* Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */,
+			);
+			path = Purchases;
+			sourceTree = "<group>";
+		};
+		F39C8030275772BD00674CF4 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F39A5338273252B800C8F2D3 /* SettingsViewController.swift */,
+				F316A2F2273803CE0083E830 /* GoodsViewController.swift */,
+				F3EAACFF275266EA004B9AF6 /* GoodViewController.swift */,
+				F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
