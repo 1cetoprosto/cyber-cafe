@@ -13,8 +13,9 @@ struct Section {
 }
 
 enum SettingsOptionType {
-    case staticCell(model: SettingsOption)
+    case staticCell(model: SettingsStaticOption)
     case switchCell(model: SettingsSwitchOption)
+    case dataCell(model: SettingsDataOption)
 }
 
 struct SettingsSwitchOption {
@@ -25,11 +26,19 @@ struct SettingsSwitchOption {
     let isOn: Bool
 }
 
-struct SettingsOption {
+struct SettingsStaticOption {
     let title: String
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let handler: (() -> Void)
+}
+
+struct SettingsDataOption {
+    let title: String
+    let icon: UIImage?
+    let iconBackgroundColor: UIColor
+    let data: String
+    let handler: ((_ dataLabel: UILabel) -> Void)
 }
 
 class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
@@ -38,6 +47,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingsStaticTableViewCell.self, forCellReuseIdentifier: SettingsStaticTableViewCell.identifier)
         table.register(SettingsSwitchTableViewCell.self, forCellReuseIdentifier: SettingsSwitchTableViewCell.identifier)
+        table.register(SettingsDataTableViewCell.self, forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
         
         return table
     }()
@@ -59,8 +69,11 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
     
     func configure() {
         models.append(Section(title: "General", option: [
-            .staticCell(model: SettingsOption(title: "Language", icon: UIImage(systemName: "globe"), iconBackgroundColor: .systemPink) {
-                self.navigationController?.pushViewController(LanguageViewController(), animated: true)
+            .dataCell(model: SettingsDataOption(title: "Language", icon: UIImage(systemName: "globe"), iconBackgroundColor: .systemPink, data: "English") { dataLabel in
+                //self.navigationController?.pushViewController(LanguageViewController(), animated: true)
+                self.alertLanguage(label: dataLabel) { language in
+                    print(language)
+                }
             }),
             .switchCell(model: SettingsSwitchOption(title: "Dark Theme", icon: UIImage(systemName: "sun.max"), iconBackgroundColor: .systemBlue, handler: {
                 print("Switch")
@@ -68,7 +81,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         ]))
         
         models.append(Section(title: "Sales", option: [
-            .staticCell(model: SettingsOption(title: "Goods", icon: UIImage(systemName: "cup.and.saucer.fill"), iconBackgroundColor: .systemGreen) {
+            .staticCell(model: SettingsStaticOption(title: "Goods", icon: UIImage(systemName: "cup.and.saucer.fill"), iconBackgroundColor: .systemGreen) {
                 self.navigationController?.pushViewController(GoodsViewController(), animated: true)
             })
         ]))
@@ -103,6 +116,12 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             }
             cell.configure(with: model)
             return cell
+        case .dataCell(let model):
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsDataTableViewCell.identifier, for: indexPath) as? SettingsDataTableViewCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: model)
+            return cell
         }
         
     }
@@ -116,6 +135,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             model.handler()
         case .switchCell(let model):
             model.handler()
+        case .dataCell(let model):
+            let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
+            model.handler(cell.dataLabel)
         }
         
         

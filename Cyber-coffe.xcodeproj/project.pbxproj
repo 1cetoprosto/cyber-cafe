@@ -16,6 +16,8 @@
 		F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A300273901410083E830 /* SaleTableViewCell.swift */; };
 		F328BA89274EB4DA00960829 /* SettingsStaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */; };
 		F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */; };
+		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
+		F371AA7B2758B0890059710A /* AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* AlertLanguage.swift */; };
 		F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */; };
 		F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */; };
 		F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */; };
@@ -40,6 +42,8 @@
 		F316A300273901410083E830 /* SaleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStaticTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
+		F371AA7A2758B0890059710A /* AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertLanguage.swift; sourceTree = "<group>"; };
 		F39A52F127311FDD00C8F2D3 /* Cyber-coffe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Cyber-coffe.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F39A52F627311FDD00C8F2D3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -70,6 +74,7 @@
 		F316A2F4273804270083E830 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F371AA792758B0600059710A /* Alert */,
 				F316A2F52738047F0083E830 /* Cell */,
 			);
 			path = Model;
@@ -82,6 +87,7 @@
 				F316A300273901410083E830 /* SaleTableViewCell.swift */,
 				F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */,
 				F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */,
+				F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */,
 				F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */,
 			);
 			path = Cell;
@@ -104,6 +110,14 @@
 				F310CFA5274B70360052E481 /* UINavigationBar.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		F371AA792758B0600059710A /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				F371AA7A2758B0890059710A /* AlertLanguage.swift */,
+			);
+			path = Alert;
 			sourceTree = "<group>";
 		};
 		F39A52E827311FDD00C8F2D3 = {
@@ -263,6 +277,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
+				F371AA7B2758B0890059710A /* AlertLanguage.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
@@ -270,6 +285,7 @@
 				F3EAACFE27526383004B9AF6 /* GoodPriceTableViewCell.swift in Sources */,
 				F316A2F3273803CE0083E830 /* GoodsViewController.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* PurchasesViewController.swift in Sources */,
+				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor.swift in Sources */,
 				F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */,
 				F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */,
