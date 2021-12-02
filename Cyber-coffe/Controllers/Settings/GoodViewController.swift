@@ -9,12 +9,15 @@ import UIKit
 
 class GoodViewController: UIViewController {
 
+    var good: String = ""
+    var price: Double = 0.0
+    
     let goodLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
         label.text = "Good name:"
         label.textColor = UIColor.Main.text
-        label.backgroundColor = .red
+        //label.backgroundColor = .red
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -25,10 +28,12 @@ class GoodViewController: UIViewController {
         let textField = UITextField()
         textField.textAlignment = .left
         textField.placeholder = "Enter good's name"
-        //textField.layer.borderWidth = 1
-        //textField.text = "0"
-        textField.backgroundColor = .orange
-        textField.font = UIFont.systemFont(ofSize: 24)
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.systemGray.cgColor
+        textField.layer.cornerRadius = 5
+        textField.backgroundColor = UIColor.TableView.cellBackground
+        textField.font = UIFont.systemFont(ofSize: 20)
+        textField.textColor = UIColor.TableView.cellLabel
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -39,7 +44,7 @@ class GoodViewController: UIViewController {
         label.textAlignment = .left
         label.text = "Price:"
         label.textColor = UIColor.Main.text
-        label.backgroundColor = .red
+        //label.backgroundColor = .red
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         
@@ -50,10 +55,12 @@ class GoodViewController: UIViewController {
         let textField = UITextField()
         textField.textAlignment = .left
         textField.placeholder = "Enter price"
-        //textField.layer.borderWidth = 1
-        //textField.text = "0"
-        textField.backgroundColor = .orange
-        textField.font = UIFont.systemFont(ofSize: 24)
+        textField.layer.borderWidth = 1
+        textField.layer.borderColor = UIColor.systemGray.cgColor
+        textField.layer.cornerRadius = 5
+        textField.backgroundColor = UIColor.TableView.cellBackground
+        textField.font = UIFont.systemFont(ofSize: 20)
+        textField.textColor = UIColor.TableView.cellLabel
         textField.translatesAutoresizingMaskIntoConstraints = false
         
         return textField
@@ -89,6 +96,11 @@ class GoodViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         title = "Good"
         
+        goodTextfield.text = good
+        if price != 0 {
+            priceTextfield.text = String(price)
+        }
+        
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         
         setConstraints()
@@ -114,9 +126,11 @@ class GoodViewController: UIViewController {
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
         print("save")
+        navigationController?.popViewController(animated: true)
     }
     
     @objc func cancelAction(param: UIButton) {
+        print("cansel")
         navigationController?.popViewController(animated: true)
     }
     

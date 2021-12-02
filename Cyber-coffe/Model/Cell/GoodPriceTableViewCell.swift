@@ -38,7 +38,7 @@ class GoodPriceTableViewCell: UITableViewCell {
     
     
     
-    let cellQuantityArray = ["0", "0", "0", "0", "0", "0", "0", "0"]
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -53,9 +53,9 @@ class GoodPriceTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(indexPath: IndexPath) {
-        //goodLabel.text = cellNameArray[indexPath.row]
-        quantityLabel.text = cellQuantityArray[indexPath.row]
+    func configure(goodPrice: GoodPrice, indexPath: IndexPath) {
+        goodLabel.text = goodPrice.good
+        quantityLabel.text = String(goodPrice.price)
         //contentView.backgroundColor = .gray
         //self.backgroundColor = .systemBrown
         
