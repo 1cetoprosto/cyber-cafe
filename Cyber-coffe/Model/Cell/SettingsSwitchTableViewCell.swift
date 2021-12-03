@@ -35,11 +35,12 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         return label
     }()
     
-    private let settingSwitch: UISwitch = {
+    let settingSwitch: UISwitch = {
         let settingSwitch = UISwitch()
         settingSwitch.onTintColor = UIColor.Button.background
-        settingSwitch.tintColor = .red
+        //settingSwitch.tintColor = .red
         settingSwitch.thumbTintColor = UIColor.NavBar.text
+        settingSwitch.addTarget(self, action: #selector(switchTheme), for: .valueChanged)
         
         return settingSwitch
     }()
@@ -53,7 +54,6 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(settingSwitch)
         contentView.clipsToBounds = true
-        
     }
     
     required init?(coder: NSCoder) {
@@ -93,6 +93,11 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
         settingSwitch.isOn = model.isOn
+        selectionStyle = .none
+    }
+    
+    @objc func switchTheme() {
+        print("settingSwitch - \(settingSwitch.isOn)")
     }
 }
  
