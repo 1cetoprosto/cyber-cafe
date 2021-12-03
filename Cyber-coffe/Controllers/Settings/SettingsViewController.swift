@@ -22,8 +22,8 @@ struct SettingsSwitchOption {
     let title: String
     let icon: UIImage?
     let iconBackgroundColor: UIColor
-    let handler: (() -> Void)
     let isOn: Bool
+    let handler: (() -> Void)
 }
 
 struct SettingsStaticOption {
@@ -64,7 +64,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.dataSource = self
         tableView.frame = view.bounds
         tableView.backgroundColor = UIColor.Main.background
-        
     }
     
     func configure() {
@@ -75,9 +74,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
                     print(language)
                 }
             }),
-            .switchCell(model: SettingsSwitchOption(title: "Dark Theme", icon: UIImage(systemName: "sun.max"), iconBackgroundColor: .systemBlue, handler: {
-                print("Switch")
-            }, isOn: true))
+            .switchCell(model: SettingsSwitchOption(title: "Dark Theme", icon: UIImage(systemName: "sun.max"), iconBackgroundColor: .systemBlue, isOn: true) {
+                self.switchToDarkTheme(isOn: true)
+            })
         ]))
         
         models.append(Section(title: "Sales", option: [
@@ -123,7 +122,6 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             cell.configure(with: model)
             return cell
         }
-        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -139,8 +137,9 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
             model.handler(cell.dataLabel)
         }
-        
-        
     }
-    
+
+    func switchToDarkTheme(isOn: Bool) {
+        print("Tap to switchDarkTheme isOn: \(isOn)")
+    }
 }
