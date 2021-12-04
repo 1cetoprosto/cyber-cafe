@@ -20,9 +20,9 @@ class SalesTableViewCell: UITableViewCell {
     
     lazy var goodsName = createSalesLabel(text: "05.09.21", font: .avenirNext20(), aligment: .left)
     lazy var salesSum = createSalesLabel(text: "640", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var salesLabel = createSalesLabel(text: "Продажа:", font: .avenirNext14(), aligment: .right)
+    lazy var salesLabel = createSalesLabel(text: "Sale:", font: .avenirNext14(), aligment: .right)
     lazy var cashSum = createSalesLabel(text: "230", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var cashLabel = createSalesLabel(text: "Касса:", font: .avenirNext14(), aligment: .right)
+    lazy var cashLabel = createSalesLabel(text: "Cash:", font: .avenirNext14(), aligment: .right)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

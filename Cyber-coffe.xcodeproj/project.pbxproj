@@ -14,6 +14,9 @@
 		F316A2FD27380A850083E830 /* UIStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView.swift */; };
 		F316A2FF2738FD710083E830 /* SaleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FE2738FD710083E830 /* SaleViewController.swift */; };
 		F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A300273901410083E830 /* SaleTableViewCell.swift */; };
+		F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264980275B32A900836077 /* PurchasesTableViewCell.swift */; };
+		F3264983275B334300836077 /* PurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* PurchaseViewController.swift */; };
+		F3264985275B33C000836077 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* PurchaseTableViewCell.swift */; };
 		F328BA89274EB4DA00960829 /* SettingsStaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */; };
 		F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
@@ -40,6 +43,9 @@
 		F316A2FC27380A850083E830 /* UIStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIStackView.swift; sourceTree = "<group>"; };
 		F316A2FE2738FD710083E830 /* SaleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleViewController.swift; sourceTree = "<group>"; };
 		F316A300273901410083E830 /* SaleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleTableViewCell.swift; sourceTree = "<group>"; };
+		F3264980275B32A900836077 /* PurchasesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesTableViewCell.swift; sourceTree = "<group>"; };
+		F3264982275B334300836077 /* PurchaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseViewController.swift; sourceTree = "<group>"; };
+		F3264984275B33C000836077 /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStaticTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
@@ -83,12 +89,9 @@
 		F316A2F52738047F0083E830 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				F316A2F8273805150083E830 /* SalesTableViewCell.swift */,
-				F316A300273901410083E830 /* SaleTableViewCell.swift */,
-				F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */,
-				F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */,
-				F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */,
-				F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */,
+				F3264987275B384900836077 /* Sales */,
+				F3264988275B385400836077 /* Purchases */,
+				F3264989275B386300836077 /* Settings */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -110,6 +113,35 @@
 				F310CFA5274B70360052E481 /* UINavigationBar.swift */,
 			);
 			path = UIKit;
+			sourceTree = "<group>";
+		};
+		F3264987275B384900836077 /* Sales */ = {
+			isa = PBXGroup;
+			children = (
+				F316A2F8273805150083E830 /* SalesTableViewCell.swift */,
+				F316A300273901410083E830 /* SaleTableViewCell.swift */,
+			);
+			path = Sales;
+			sourceTree = "<group>";
+		};
+		F3264988275B385400836077 /* Purchases */ = {
+			isa = PBXGroup;
+			children = (
+				F3264980275B32A900836077 /* PurchasesTableViewCell.swift */,
+				F3264984275B33C000836077 /* PurchaseTableViewCell.swift */,
+			);
+			path = Purchases;
+			sourceTree = "<group>";
+		};
+		F3264989275B386300836077 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */,
+				F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */,
+				F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */,
+				F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */,
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		F371AA792758B0600059710A /* Alert */ = {
@@ -191,6 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				F39A5336273252A500C8F2D3 /* PurchasesViewController.swift */,
+				F3264982275B334300836077 /* PurchaseViewController.swift */,
 			);
 			path = Purchases;
 			sourceTree = "<group>";
@@ -276,9 +309,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F3264983275B334300836077 /* PurchaseViewController.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
 				F371AA7B2758B0890059710A /* AlertLanguage.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
+				F3264985275B33C000836077 /* PurchaseTableViewCell.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
 				F3EAAD00275266EA004B9AF6 /* GoodViewController.swift in Sources */,
@@ -292,6 +327,7 @@
 				F39A53352732525900C8F2D3 /* SalesViewController.swift in Sources */,
 				F328BA89274EB4DA00960829 /* SettingsStaticTableViewCell.swift in Sources */,
 				F316A2FF2738FD710083E830 /* SaleViewController.swift in Sources */,
+				F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar.swift in Sources */,
