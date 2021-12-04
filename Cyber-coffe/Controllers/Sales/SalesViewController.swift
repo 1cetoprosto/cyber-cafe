@@ -23,7 +23,7 @@ class SalesViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
-        title = "Продажи"
+        title = "Sales"
         
         tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idSalesCell)
         tableView.dataSource = self

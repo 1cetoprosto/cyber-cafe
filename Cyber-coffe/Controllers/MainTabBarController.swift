@@ -19,9 +19,9 @@ class MainTabBarController: UITabBarController {
     }
 
     func setupTabBar() {
-        let scheduleViewController = createNavController(vc: SalesViewController(), itemName: "Продажи", itemImage: "cup.and.saucer.fill")
-        let tasksViewController = createNavController(vc: PurchasesViewController(), itemName: "Закупки", itemImage: "takeoutbag.and.cup.and.straw.fill")
-        let contactsViewController = createNavController(vc: SettingsViewController(), itemName: "Настройки", itemImage: "gearshape")
+        let scheduleViewController = createNavController(vc: SalesViewController(), itemName: "Sales", itemImage: "cup.and.saucer.fill")
+        let tasksViewController = createNavController(vc: PurchasesViewController(), itemName: "Purchases", itemImage: "takeoutbag.and.cup.and.straw.fill")
+        let contactsViewController = createNavController(vc: SettingsViewController(), itemName: "Settings", itemImage: "gearshape")
         
         viewControllers = [scheduleViewController, tasksViewController, contactsViewController]
     }

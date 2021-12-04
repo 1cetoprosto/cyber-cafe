@@ -1,13 +1,13 @@
 //
-//  SaleViewController.swift
+//  PurchaseViewController.swift
 //  Cyber-coffe
 //
-//  Created by Леонід Квіт on 08.11.2021.
+//  Created by Леонід Квіт on 04.12.2021.
 //
 
 import UIKit
 
-class SaleViewController: UIViewController {
+class PurchaseViewController: UIViewController {
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -19,11 +19,11 @@ class SaleViewController: UIViewController {
         return datePiker
     }()
     
-    let idSaleCell = "idSaleCell"
+    let idPurchaseCell = "idPurchaseCell"
     lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(SaleTableViewCell.self, forCellReuseIdentifier: idSaleCell)
+        tableView.register(PurchaseTableViewCell.self, forCellReuseIdentifier: idPurchaseCell)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.Main.background
@@ -74,7 +74,7 @@ class SaleViewController: UIViewController {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal) 
+        button.setTitleColor(UIColor.Button.title, for: .normal)
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
 
@@ -85,7 +85,7 @@ class SaleViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Sale for:"
+        title = "Продажа за:"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         
@@ -139,13 +139,13 @@ class SaleViewController: UIViewController {
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource
-extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
+extension PurchaseViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 8
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as! SaleTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: idPurchaseCell, for: indexPath) as! PurchaseTableViewCell
         cell.configure(indexPath: indexPath)
         
         return cell
