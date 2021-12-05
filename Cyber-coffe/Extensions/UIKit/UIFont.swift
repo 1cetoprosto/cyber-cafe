@@ -1,6 +1,6 @@
 //
 //  UIFont.swift
-//  Schedule
+//  Cyber-coffe
 //
 //  Created by Леонід Квіт on 06.11.2021.
 //

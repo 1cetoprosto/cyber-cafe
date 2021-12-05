@@ -9,65 +9,48 @@ import UIKit
 
 class PurchaseViewController: UIViewController {
     
-    let datePiker: UIDatePicker = {
-        let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
+    var purchaseDate: Date = NSDate() as Date
+    var purchaseName: String = ""
+    var purchaseSum: Double = 0.0
+    
+    let purchaseDateLabel: UILabel = {
+        let label = UILabel(text: "Date:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
+        
+        return label
+    }()
+    
+    let purchasedatePiker: UIDatePicker = {
+        let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         //datePiker.backgroundColor = .red
         datePiker.datePickerMode = .date
-        datePiker.contentHorizontalAlignment = .center
+        datePiker.contentHorizontalAlignment = .left
         datePiker.preferredDatePickerStyle = .automatic
         
         return datePiker
     }()
     
-    let idPurchaseCell = "idPurchaseCell"
-    lazy var tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(PurchaseTableViewCell.self, forCellReuseIdentifier: idPurchaseCell)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
-        
-        return tableView
-    }()
-    
-    let moneyLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .left
-        label.text = "Money:"
-        label.textColor = UIColor.Main.text
-        //label.backgroundColor = .red
-        label.font = UIFont.systemFont(ofSize: 20)
-        label.translatesAutoresizingMaskIntoConstraints = false
+    let purchaseNameLabel: UILabel = {
+        let label = UILabel(text: "Purchase:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
         
         return label
     }()
     
-    let moneyTextfield: UITextField = {
-        let textField = UITextField()
-        textField.textAlignment = .left
-        textField.placeholder = "0"
-        //textField.layer.borderWidth = 1
-        //textField.text = "0"
-        //textField.backgroundColor = .orange
-        textField.font = UIFont.systemFont(ofSize: 28)
-        textField.translatesAutoresizingMaskIntoConstraints = false
+    let purchaseNameTextfield: UITextField = {
+        let textField = UITextField(placeholder: "Enter purchase name", font: UIFont.systemFont(ofSize: 28))
         
         return textField
     }()
     
-    let saleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .right
-        label.text = "240"
-        label.textColor = UIColor.Main.text
-        //label.backgroundColor = .green
-        label.font = UIFont.systemFont(ofSize: 28)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        //label.sizeToFit()//If required
+    let purchaseSumLabel: UILabel = {
+        let label = UILabel(text: "Sum:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
         
         return label
+    }()
+    
+    let purchaseSumTextfield: UITextField = {
+        let textField = UITextField(placeholder: "Enter purchase sum", font: UIFont.systemFont(ofSize: 28))
+        
+        return textField
     }()
     
     let saveButton: UIButton = {
@@ -82,77 +65,59 @@ class PurchaseViewController: UIViewController {
         return button
     }()
     
+    let cancelButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Cancel", for: .normal)
+        button.setTitleColor(UIColor.Button.title, for: .normal)
+        button.backgroundColor = UIColor.Button.background
+        button.layer.cornerRadius = 10
+
+        button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Продажа за:"
+        title = "Purchase"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
+        
+        if purchaseName != "" {
+            purchaseNameTextfield.text = String(purchaseName)
+        }
+        if purchaseSum != 0 {
+            purchaseSumTextfield.text = String(purchaseSum)
+        }
         
         setConstraints()
         
     }
     
     func setConstraints() {
+        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton], axis: .horizontal, spacing: 20, distribution: .fillEqually)
         
-        let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield], axis: .horizontal, spacing: 5, distribution: .fillEqually)
-        view.addSubview(cashStackView)
+        let dateStackView = UIStackView(arrangedSubviews: [purchaseDateLabel, purchasedatePiker], axis: .horizontal, spacing: 20, distribution: .fill)
         
-//        NSLayoutConstraint.activate([
-//            cashStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            cashStackView.widthAnchor.constraint(equalToConstant: view.frame.width/2),
-//            cashStackView.heightAnchor.constraint(equalToConstant: 44),
-//        ])
-        
-        let moneyStackView = UIStackView(arrangedSubviews: [cashStackView, saleLabel], axis: .horizontal, spacing: 10, distribution: .fillEqually)
-        view.addSubview(moneyStackView)
-        
-//        NSLayoutConstraint.activate([
-//            moneyStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            moneyStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
-//            moneyStackView.heightAnchor.constraint(equalToConstant: 44),
-//        ])
-        
+        let purchaseStackView = UIStackView(arrangedSubviews: [dateStackView, purchaseNameLabel, purchaseNameTextfield, purchaseSumLabel, purchaseSumTextfield, buttonStackView], axis: .vertical, spacing: 10, distribution: .fillEqually)
+        view.addSubview(purchaseStackView)
+
         NSLayoutConstraint.activate([
-            saveButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        let mainStackView = UIStackView(arrangedSubviews: [datePiker, tableView, moneyStackView, saveButton], axis: .vertical, spacing: 10, distribution: .fill)
-        view.addSubview(mainStackView)
-        
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            purchaseStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            purchaseStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            purchaseStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            purchaseStackView.heightAnchor.constraint(equalToConstant: 270)
         ])
     }
     
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
         print("save")
+        navigationController?.popToRootViewController(animated: true)
     }
     
     @objc func cancelAction(param: UIButton) {
         navigationController?.popToRootViewController(animated: true)
     }
-}
-
-//MARK: - UITableViewDelegate, UITableViewDataSource
-extension PurchaseViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idPurchaseCell, for: indexPath) as! PurchaseTableViewCell
-        cell.configure(indexPath: indexPath)
-        
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
 }

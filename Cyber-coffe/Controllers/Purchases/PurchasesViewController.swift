@@ -51,8 +51,8 @@ class PurchasesViewController: UIViewController {
     
     //MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let saleVC = SaleViewController()
-        navigationController?.pushViewController(saleVC, animated: true)
+        let purchaseVC = PurchaseViewController()
+        navigationController?.pushViewController(purchaseVC, animated: true)
     }
     
 }
@@ -76,8 +76,8 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let selectedDay = days[indexPath.row]
         
-        let saleVC = SaleViewController()
-        self.navigationController?.pushViewController(saleVC, animated: true)
+        let purchaseVC = PurchaseViewController()
+        self.navigationController?.pushViewController(purchaseVC, animated: true)
     }
 }
 
