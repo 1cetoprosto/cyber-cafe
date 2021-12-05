@@ -1,6 +1,6 @@
 //
 //  UIStackView.swift
-//  Schedule
+//  Cyber-coffe
 //
 //  Created by Леонід Квіт on 05.11.2021.
 //

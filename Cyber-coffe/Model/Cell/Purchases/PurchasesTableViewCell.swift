@@ -21,7 +21,7 @@ class PurchasesTableViewCell: UITableViewCell {
     lazy var purchaseDate = createSalesLabel(text: "05.09.21", font: .avenirNext14(), aligment: .left)
     lazy var purchaseName = createSalesLabel(text: "Milk", font: .avenirNextDemiBold20(), aligment: .left)
     lazy var purchaseSum = createSalesLabel(text: "640", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var purchaseLabel = createSalesLabel(text: "Cash:", font: .avenirNext14(), aligment: .right)
+    lazy var purchaseLabel = createSalesLabel(text: "Sum:", font: .avenirNext14(), aligment: .right)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
