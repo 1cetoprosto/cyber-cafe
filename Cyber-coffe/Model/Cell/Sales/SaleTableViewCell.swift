@@ -43,10 +43,6 @@ class SaleTableViewCell: UITableViewCell {
         return stepper
     }()
     
-    let cellNameArray = ["Esspresso", "Amerecano", "Amerecano with milk", "Capuchino", "Ayrish", "Latte", "Cacao", "Hot chocolad"]
-    
-    let cellQuantityArray = ["0", "0", "0", "0", "0", "0", "0", "0"]
-    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -60,9 +56,10 @@ class SaleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(indexPath: IndexPath) {
-        goodLabel.text = cellNameArray[indexPath.row]
-        quantityLabel.text = cellQuantityArray[indexPath.row]
+    func configure(sale: SaleGood) {
+        goodLabel.text = sale.good
+        quantityLabel.text = String(sale.qty)
+        goodStepper.value = Double(sale.qty)
         //contentView.backgroundColor = .gray
         //self.backgroundColor = .systemBrown
         

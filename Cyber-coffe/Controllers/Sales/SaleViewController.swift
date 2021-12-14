@@ -7,7 +7,28 @@
 
 import UIKit
 
+struct SaleGood {
+    let date: Date
+    let good: String
+    let qty: Int
+    let sum: Double
+}
+
+struct SaleDate {
+    let date: Date
+    let cash: Double
+    let sum: Double
+}
+
 class SaleViewController: UIViewController {
+    
+    var forDate = NSDate() as Date
+    
+    var salesGoods = [SaleGood]()
+    //let cashforDate: Cash
+    
+    private var salesGoodsModel = SalesGoodsModel()
+    private var salesDateModel = SalesModel()
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -89,6 +110,8 @@ class SaleViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         
+        configure(date: forDate)
+        
         setConstraints()
         
     }
@@ -128,9 +151,43 @@ class SaleViewController: UIViewController {
         ])
     }
     
+    func configure(date: Date) {
+        
+        datePiker.date = date
+        
+        //получаем из базы данных продажи за день
+        salesGoods.append(SaleGood(date: forDate, good: "Americano", qty: 12, sum: 120))
+        salesGoods.append(SaleGood(date: forDate, good: "Esspresso", qty: 2, sum: 20))
+        salesGoods.append(SaleGood(date: forDate, good: "Americano with milk", qty: 20, sum: 240))
+        
+        //также получаем значение "Кеш"
+        moneyTextfield.text = "120"
+        
+        
+    }
+    
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
-        print("save")
+        print("save model")
+        //в цикле по таблице нужно записать значения из таблицы
+        for sale in salesGoods {
+            //print(sale)
+            salesGoodsModel.saslesGood = sale.good
+            salesGoodsModel.saslesDate = sale.date
+            salesGoodsModel.saslesQty = sale.qty
+            salesGoodsModel.saslesSum = sale.sum
+            
+            RealmManager.shared.saveSalesGoodModel(model: salesGoodsModel)
+            salesGoodsModel = SalesGoodsModel()
+        }
+        
+        salesDateModel.saslesDate = datePiker.date
+        salesDateModel.saslesSum = Double(saleLabel.text ?? "0") ?? 0
+        salesDateModel.saslesCash = Double(moneyTextfield.text ?? "0") ?? 0
+        
+        RealmManager.shared.saveSalesModel(model: salesDateModel)
+        salesDateModel = SalesModel()
+        
     }
     
     @objc func cancelAction(param: UIButton) {
@@ -141,12 +198,12 @@ class SaleViewController: UIViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 8
+        return salesGoods.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as! SaleTableViewCell
-        cell.configure(indexPath: indexPath)
+        cell.configure(sale: salesGoods[indexPath.row])
         
         return cell
     }
