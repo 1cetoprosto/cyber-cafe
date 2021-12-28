@@ -6,9 +6,13 @@
 //
 
 import UIKit
+import RealmSwift
 
 class SalesViewController: UIViewController {
 
+    let localRealm = try! Realm()
+    var sales: Results<SalesModel>!
+    
     let idSalesCell = "idSalesCell"
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -28,6 +32,8 @@ class SalesViewController: UIViewController {
         tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idSalesCell)
         tableView.dataSource = self
         tableView.delegate = self
+        
+        configure()
         
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
@@ -50,6 +56,12 @@ class SalesViewController: UIViewController {
     }
     
     //MARK: - Method
+    func configure() {
+        //sales = localRealm.objects(SalesModel.self).filter(predicateDate).sorted(byKeyPath: "salesDate")
+        sales = localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate")
+        tableView.reloadData()
+    }
+    
     @objc func performAdd(param: UIBarButtonItem) {
         let saleVC = SaleViewController()
         navigationController?.pushViewController(saleVC, animated: true)
@@ -60,12 +72,12 @@ class SalesViewController: UIViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 25
+        return sales.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSalesCell, for: indexPath) as! SalesTableViewCell
-        
+        cell.configure(sale: sales[indexPath.row])
         return cell
     }
     
@@ -77,6 +89,7 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
         //let selectedDay = days[indexPath.row]
         
         let saleVC = SaleViewController()
+        saleVC.forDate = sales[indexPath.row].salesDate
         self.navigationController?.pushViewController(saleVC, animated: true)
     }
 }

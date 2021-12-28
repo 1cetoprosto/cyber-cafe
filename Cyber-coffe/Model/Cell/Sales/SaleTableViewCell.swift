@@ -6,6 +6,7 @@
 //
 
 import UIKit
+//import RealmSwift
 
 class SaleTableViewCell: UITableViewCell {
     
@@ -49,17 +50,18 @@ class SaleTableViewCell: UITableViewCell {
         self.backgroundColor = UIColor.Main.background
         goodStepper.addTarget(self, action: #selector(stepperAction), for: .valueChanged)
         setConstraints()
-        
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(sale: SaleGood) {
-        goodLabel.text = sale.good
-        quantityLabel.text = String(sale.qty)
-        goodStepper.value = Double(sale.qty)
+    func configure(sale: SaleGoodModel) {
+        
+        goodLabel.text = sale.saleGood
+        quantityLabel.text = String(sale.saleQty)
+        goodStepper.value = Double(sale.saleQty)
         //contentView.backgroundColor = .gray
         //self.backgroundColor = .systemBrown
         
@@ -97,7 +99,8 @@ class SaleTableViewCell: UITableViewCell {
     }
     
     @objc func stepperAction(_ sender: UIStepper) {
-        quantityLabel.text = String(Int(sender.value))
+        quantityLabel.text = Int(sender.value).description
+        
     }
 }
 
