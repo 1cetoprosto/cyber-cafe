@@ -35,6 +35,18 @@ class RealmManager {
         }
     }
     
+    func deleteSalesModel(model: SalesModel) {
+        try! localRealm.write {
+            localRealm.delete(model)
+        }
+    }
+    
+    func deleteSaleGoodModel(model: SaleGoodModel) {
+        try! localRealm.write {
+            localRealm.delete(model)
+        }
+    }
+    
     func deleteGoodsPriceModel(model: GoodsPriceModel) {
         try! localRealm.write {
             localRealm.delete(model)

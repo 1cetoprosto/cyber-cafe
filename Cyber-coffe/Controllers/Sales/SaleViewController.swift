@@ -200,12 +200,10 @@ class SaleViewController: UIViewController {
     
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
-        print("save model")
         //в цикле по таблице нужно записать значения продаж по каждому товару
         for sale in salesGoodsArray {
-            //print(sale)
             salesGoodsModel.saleGood = sale.good
-            salesGoodsModel.saleDate = sale.date
+            salesGoodsModel.saleDate = datePiker.date
             salesGoodsModel.saleQty = sale.qty
             salesGoodsModel.saleSum = sale.sum
             
@@ -256,22 +254,20 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
     
     // handle stepper value change action
     @objc func stepperValueChanged(_ stepper: UIStepper) {
-
+        
         let stepperValue = Int(stepper.value)
         let stepperTag = Int(stepper.tag)
-        print(stepperTag) // prints value
-
+        
         let indexPath = IndexPath(row: stepperTag, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
             cell.quantityLabel.text = String(stepperValue)
             salesGoodsArray[stepperTag].qty = stepperValue
             salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty * 10)
-recalcSTotalSum()
+            recalcSTotalSum()
         }
     }
     
     func recalcSTotalSum() {
-        
         var totalSum: Double = 0.0
         
         for good in salesGoodsArray {
