@@ -23,6 +23,12 @@ class SalesViewController: UIViewController {
         return tableView
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
+        tableView.reloadData()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -33,7 +39,7 @@ class SalesViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        configure()
+        //configure()
         
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))

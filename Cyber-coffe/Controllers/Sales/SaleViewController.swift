@@ -11,8 +11,8 @@ import RealmSwift
 struct SaleGood {
     let date: Date
     let good: String
-    let qty: Int
-    let sum: Double
+    var qty: Int
+    var sum: Double
 }
 //
 //struct SaleDate {
@@ -202,12 +202,12 @@ class SaleViewController: UIViewController {
     @objc func saveAction(param: UIButton) {
         print("save model")
         //в цикле по таблице нужно записать значения продаж по каждому товару
-        for sale in saleGood {
+        for sale in salesGoodsArray {
             //print(sale)
-            salesGoodsModel.saleGood = sale.saleGood
-            salesGoodsModel.saleDate = sale.saleDate
-            salesGoodsModel.saleQty = sale.saleQty
-            salesGoodsModel.saleSum = sale.saleSum
+            salesGoodsModel.saleGood = sale.good
+            salesGoodsModel.saleDate = sale.date
+            salesGoodsModel.saleQty = sale.qty
+            salesGoodsModel.saleSum = sale.sum
             
             RealmManager.shared.saveSalesGoodModel(model: salesGoodsModel)
             salesGoodsModel = SaleGoodModel()
@@ -220,6 +220,8 @@ class SaleViewController: UIViewController {
         
         RealmManager.shared.saveSalesModel(model: salesDateModel)
         salesDateModel = SalesModel()
+        
+        navigationController?.popToRootViewController(animated: true)
         
     }
     
@@ -236,7 +238,14 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as! SaleTableViewCell
-        cell.configure(sale: salesGoodsArray[indexPath.row])
+        //cell.configure(sale: salesGoodsArray[indexPath.row])
+        
+        let stepperValue = salesGoodsArray[indexPath.row]
+        cell.goodLabel.text = stepperValue.good
+        cell.quantityLabel.text = String(stepperValue.qty)
+        cell.goodStepper.value = Double(stepperValue.qty)
+        cell.goodStepper.tag = indexPath.row
+        cell.goodStepper.addTarget(self, action: #selector(self.stepperValueChanged(_:)), for: .valueChanged)
         
         return cell
     }
@@ -245,4 +254,30 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
         return 50
     }
     
+    // handle stepper value change action
+    @objc func stepperValueChanged(_ stepper: UIStepper) {
+
+        let stepperValue = Int(stepper.value)
+        let stepperTag = Int(stepper.tag)
+        print(stepperTag) // prints value
+
+        let indexPath = IndexPath(row: stepperTag, section: 0)
+        if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
+            cell.quantityLabel.text = String(stepperValue)
+            salesGoodsArray[stepperTag].qty = stepperValue
+            salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty * 10)
+recalcSTotalSum()
+        }
+    }
+    
+    func recalcSTotalSum() {
+        
+        var totalSum: Double = 0.0
+        
+        for good in salesGoodsArray {
+            totalSum = totalSum + good.sum
+        }
+        
+        saleLabel.text = String(totalSum)
+    }
 }
