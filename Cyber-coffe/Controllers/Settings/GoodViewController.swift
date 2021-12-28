@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GoodViewController: UIViewController {
 
@@ -90,6 +91,10 @@ class GoodViewController: UIViewController {
         return button
     }()
     
+    let localRealm = try! Realm()
+    //var goods: Results<GoodsPriceModel>!
+    private var goodsModel = GoodsPriceModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -125,12 +130,20 @@ class GoodViewController: UIViewController {
     
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
-        print("save")
+        
+        good = goodTextfield.text ?? ""
+        price = Double(priceTextfield.text ?? "0.0") ?? 0.0
+        //запишем наименование и цену
+        goodsModel.good = good
+        goodsModel.price = price
+        
+        RealmManager.shared.saveGoodsPriceModel(model: goodsModel)
+        goodsModel = GoodsPriceModel()
+        
         navigationController?.popViewController(animated: true)
     }
     
     @objc func cancelAction(param: UIButton) {
-        print("cansel")
         navigationController?.popViewController(animated: true)
     }
     
