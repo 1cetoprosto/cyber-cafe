@@ -46,27 +46,26 @@ class SaleTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.backgroundColor = UIColor.Main.background
-        goodStepper.addTarget(self, action: #selector(stepperAction), for: .valueChanged)
-        setConstraints()
 
+        self.backgroundColor = UIColor.Main.background
+        //goodStepper.addTarget(self, action: #selector(stepperAction), for: .valueChanged)
+        setConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(sale: SaleGood) {
-        
-        goodLabel.text = sale.good
-        quantityLabel.text = String(sale.qty)
-        goodStepper.value = Double(sale.qty)
-        //contentView.backgroundColor = .gray
-        //self.backgroundColor = .systemBrown
-        
-        selectionStyle = .none
-    }
+//    func configure(sale: SaleGood) {
+//
+//        goodLabel.text = sale.good
+//        quantityLabel.text = String(sale.qty)
+//        goodStepper.value = Double(sale.qty)
+//        //contentView.backgroundColor = .gray
+//        //self.backgroundColor = .systemBrown
+//
+//        selectionStyle = .none
+//    }
     
     func setConstraints() {
         
@@ -98,10 +97,10 @@ class SaleTableViewCell: UITableViewCell {
         
     }
     
-    @objc func stepperAction(_ sender: UIStepper) {
-        quantityLabel.text = Int(sender.value).description
-        
-    }
+//    @objc func stepperAction(_ sender: UIStepper) {
+//        quantityLabel.text = Int(sender.value).description
+//
+//    }
 }
 
 
