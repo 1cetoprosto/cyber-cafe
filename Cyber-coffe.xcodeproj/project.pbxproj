@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		8BD85B5CA425076F01AE938F /* Pods_Cyber_coffe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC866DDBB353926C1AA74BA /* Pods_Cyber_coffe.framework */; };
 		F310CFA6274B70360052E481 /* UINavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar.swift */; };
-		F3158C482763437200136861 /* SalesGoodsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* SalesGoodsModel.swift */; };
+		F3158C482763437200136861 /* SaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* SaleGoodModel.swift */; };
 		F3158C4B2763443700136861 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* RealmManager.swift */; };
 		F316A2F3273803CE0083E830 /* GoodsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F2273803CE0083E830 /* GoodsViewController.swift */; };
 		F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
@@ -46,7 +46,7 @@
 		A281B8E98C5C8A3B0D27296F /* Pods-Cyber-coffe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.debug.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.debug.xcconfig"; sourceTree = "<group>"; };
 		B4BABE8604895540A6637FD9 /* Pods-Cyber-coffe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.release.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.release.xcconfig"; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UINavigationBar.swift; sourceTree = "<group>"; };
-		F3158C472763437200136861 /* SalesGoodsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesGoodsModel.swift; sourceTree = "<group>"; };
+		F3158C472763437200136861 /* SaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodModel.swift; sourceTree = "<group>"; };
 		F3158C4A2763443700136861 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		F316A2F2273803CE0083E830 /* GoodsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsViewController.swift; sourceTree = "<group>"; };
 		F316A2F8273805150083E830 /* SalesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesTableViewCell.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		F3158C462763435000136861 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				F3158C472763437200136861 /* SalesGoodsModel.swift */,
+				F3158C472763437200136861 /* SaleGoodModel.swift */,
 				F31FCA3B2768789B00124366 /* SalesModel.swift */,
 			);
 			path = Realm;
@@ -431,7 +431,7 @@
 				F316A2FF2738FD710083E830 /* SaleViewController.swift in Sources */,
 				F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */,
 				F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */,
-				F3158C482763437200136861 /* SalesGoodsModel.swift in Sources */,
+				F3158C482763437200136861 /* SaleGoodModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar.swift in Sources */,

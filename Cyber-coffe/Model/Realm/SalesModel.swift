@@ -8,8 +8,8 @@
 import RealmSwift
 
 class SalesModel: Object {
-    @Persisted var saslesDate = Date()
-    @Persisted var saslesSum: Double = 0.0
-    @Persisted var saslesCash: Double = 0.0
+    @Persisted var salesDate = Date()
+    @Persisted var salesSum: Double = 0.0
+    @Persisted var salesCash: Double = 0.0
     
 }

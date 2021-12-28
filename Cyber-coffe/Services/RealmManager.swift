@@ -14,7 +14,7 @@ class RealmManager {
     
     let localRealm = try! Realm()
     
-    func saveSalesGoodModel(model: SalesGoodsModel) {
+    func saveSalesGoodModel(model: SaleGoodModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)

@@ -40,6 +40,31 @@ class SalesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(sale: SalesModel) {
+        
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.yy"
+        goodsName.text = df.string(from: sale.salesDate)
+        
+        salesSum.text = String(Int(sale.salesSum))
+        cashSum.text = String(Int(sale.salesCash))
+        
+        selectionStyle = .none
+    }
+    
+    func createSalesLabel(text: String, font: UIFont?, aligment: NSTextAlignment) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = font
+        label.textColor = UIColor.TableView.cellLabel
+        label.textAlignment = aligment
+        label.adjustsFontSizeToFitWidth = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        //label.backgroundColor = .systemRed
+        
+        return label
+    }
+    
     func setConstraints() {
         
         self.addSubview(backgroundViewCell)
@@ -80,16 +105,5 @@ class SalesTableViewCell: UITableViewCell {
         
     }
     
-    func createSalesLabel(text: String, font: UIFont?, aligment: NSTextAlignment) -> UILabel {
-        let label = UILabel()
-        label.text = text
-        label.font = font
-        label.textColor = UIColor.TableView.cellLabel
-        label.textAlignment = aligment
-        label.adjustsFontSizeToFitWidth = true
-        label.translatesAutoresizingMaskIntoConstraints = false
-        //label.backgroundColor = .systemRed
-        
-        return label
-    }
+    
 }

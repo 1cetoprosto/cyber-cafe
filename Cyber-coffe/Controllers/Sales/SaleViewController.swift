@@ -6,29 +6,34 @@
 //
 
 import UIKit
+import RealmSwift
 
-struct SaleGood {
-    let date: Date
-    let good: String
-    let qty: Int
-    let sum: Double
-}
-
-struct SaleDate {
-    let date: Date
-    let cash: Double
-    let sum: Double
-}
+//struct SaleGood {
+//    let date: Date
+//    let good: String
+//    let qty: Int
+//    let sum: Double
+//}
+//
+//struct SaleDate {
+//    let date: Date
+//    let cash: Double
+//    let sum: Double
+//}
 
 class SaleViewController: UIViewController {
     
     var forDate = NSDate() as Date
     
-    var salesGoods = [SaleGood]()
+    //var salesGoods = [SaleGood]()
     //let cashforDate: Cash
     
-    private var salesGoodsModel = SalesGoodsModel()
+    private var salesGoodsModel = SaleGoodModel()
     private var salesDateModel = SalesModel()
+    
+    let localRealm = try! Realm()
+    var saleGood: Results<SaleGoodModel>!
+    var saleForDate: Results<SalesModel>!
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -156,12 +161,35 @@ class SaleViewController: UIViewController {
         datePiker.date = date
         
         //получаем из базы данных продажи за день
-        salesGoods.append(SaleGood(date: forDate, good: "Americano", qty: 12, sum: 120))
-        salesGoods.append(SaleGood(date: forDate, good: "Esspresso", qty: 2, sum: 20))
-        salesGoods.append(SaleGood(date: forDate, good: "Americano with milk", qty: 20, sum: 240))
+        //        saleGood.append(SaleGood(date: forDate, good: "Americano", qty: 12, sum: 120))
+        //        saleGood.append(SaleGood(date: forDate, good: "Esspresso", qty: 2, sum: 20))
+        //        saleGood.append(SaleGood(date: forDate, good: "Americano with milk", qty: 20, sum: 240))
+        
+        let dateStart = Calendar.current.startOfDay(for: date)
+        let dateEnd: Date = {
+            let components = DateComponents(day: 1, second: -1)
+            return Calendar.current.date(byAdding: components, to: dateStart)!
+        }()
+        
+        var predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
+        
+        saleGood = localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood")
+        
+        //если данных за этот день нет, значит это новый день,
+        //TODO: заполнить товарами по-умолчанию
+        if saleGood.count == 0 {
+            
+        }
+        
+        tableView.reloadData()
+        
+        //
+        predicateDate = NSPredicate(format: "salesDate BETWEEN %@", [dateStart, dateEnd])
+        saleForDate = localRealm.objects(SalesModel.self).filter(predicateDate)
         
         //также получаем значение "Кеш"
-        moneyTextfield.text = "120"
+        moneyTextfield.text = String(Int(saleForDate.first?.salesCash ?? 0.0))
+        saleLabel.text = String(Int(saleForDate.first?.salesSum ?? 0.0))
         
         
     }
@@ -169,21 +197,22 @@ class SaleViewController: UIViewController {
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
         print("save model")
-        //в цикле по таблице нужно записать значения из таблицы
-        for sale in salesGoods {
+        //в цикле по таблице нужно записать значения продаж по каждому товару
+        for sale in saleGood {
             //print(sale)
-            salesGoodsModel.saslesGood = sale.good
-            salesGoodsModel.saslesDate = sale.date
-            salesGoodsModel.saslesQty = sale.qty
-            salesGoodsModel.saslesSum = sale.sum
+            salesGoodsModel.saleGood = sale.saleGood
+            salesGoodsModel.saleDate = sale.saleDate
+            salesGoodsModel.saleQty = sale.saleQty
+            salesGoodsModel.saleSum = sale.saleSum
             
             RealmManager.shared.saveSalesGoodModel(model: salesGoodsModel)
-            salesGoodsModel = SalesGoodsModel()
+            salesGoodsModel = SaleGoodModel()
         }
         
-        salesDateModel.saslesDate = datePiker.date
-        salesDateModel.saslesSum = Double(saleLabel.text ?? "0") ?? 0
-        salesDateModel.saslesCash = Double(moneyTextfield.text ?? "0") ?? 0
+        //запишем продажи и поступление денег за день
+        salesDateModel.salesDate = datePiker.date
+        salesDateModel.salesSum = Double(saleLabel.text ?? "0") ?? 0
+        salesDateModel.salesCash = Double(moneyTextfield.text ?? "0") ?? 0
         
         RealmManager.shared.saveSalesModel(model: salesDateModel)
         salesDateModel = SalesModel()
@@ -198,12 +227,12 @@ class SaleViewController: UIViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return salesGoods.count
+        return saleGood.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as! SaleTableViewCell
-        cell.configure(sale: salesGoods[indexPath.row])
+        cell.configure(sale: saleGood[indexPath.row])
         
         return cell
     }
