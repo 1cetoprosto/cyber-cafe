@@ -13,6 +13,9 @@ class GoodViewController: UIViewController {
     var good: String = ""
     var price: Double = 0.0
     
+    let localRealm = try! Realm()
+    private var goodsModel = GoodsPriceModel()
+    
     let goodLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -90,10 +93,6 @@ class GoodViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
-    
-    let localRealm = try! Realm()
-    //var goods: Results<GoodsPriceModel>!
-    private var goodsModel = GoodsPriceModel()
     
     override func viewDidLoad() {
         super.viewDidLoad()

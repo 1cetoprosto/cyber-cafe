@@ -57,11 +57,11 @@ class SaleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(sale: SaleGoodModel) {
+    func configure(sale: SaleGood) {
         
-        goodLabel.text = sale.saleGood
-        quantityLabel.text = String(sale.saleQty)
-        goodStepper.value = Double(sale.saleQty)
+        goodLabel.text = sale.good
+        quantityLabel.text = String(sale.qty)
+        goodStepper.value = Double(sale.qty)
         //contentView.backgroundColor = .gray
         //self.backgroundColor = .systemBrown
         
