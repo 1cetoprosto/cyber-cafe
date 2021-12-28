@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 struct GoodPrice {
     let good: String
@@ -25,7 +26,15 @@ class GoodsViewController: UIViewController {
         return tableView
     }()
     
+    let localRealm = try! Realm()
+    var goods: Results<GoodsPriceModel>!
     var goodsArray = [GoodPrice]()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,8 +46,7 @@ class GoodsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        configure()
-        
+        //configure()
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
         
@@ -47,14 +55,11 @@ class GoodsViewController: UIViewController {
     }
     
     func configure() {
-        goodsArray.append(GoodPrice(good: "Espresso", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Amerecano", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Amerecano with milk", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Capuchino", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Ayrish", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Latte", price: 20) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Cacao", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        goodsArray.append(GoodPrice(good: "Hot chocolad", price: 10) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
+        goodsArray = [GoodPrice]()
+        goods = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
+        for good in goods {
+            goodsArray.append(GoodPrice(good: good.good, price: good.price) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
+        }
     }
     
     func setConstraints() {
@@ -103,4 +108,16 @@ extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
         navigationController?.pushViewController(goodVC, animated: true)
     }
     
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let editingRow = goods[indexPath.row]
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
+            RealmManager.shared.deleteGoodsPriceModel(model: editingRow)
+            
+            self.configure()
+            
+            tableView.reloadData()
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 }

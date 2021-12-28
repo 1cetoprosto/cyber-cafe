@@ -19,7 +19,6 @@ class RealmManager {
         try! localRealm.write {
             localRealm.add(model)
         }
-        
     }
     
     func saveSalesModel(model: SalesModel) {
@@ -27,6 +26,18 @@ class RealmManager {
         try! localRealm.write {
             localRealm.add(model)
         }
-        
+    }
+    
+    func saveGoodsPriceModel(model: GoodsPriceModel) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            localRealm.add(model)
+        }
+    }
+    
+    func deleteGoodsPriceModel(model: GoodsPriceModel) {
+        try! localRealm.write {
+            localRealm.delete(model)
+        }
     }
 }
