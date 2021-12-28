@@ -12,6 +12,7 @@ class SalesViewController: UIViewController {
 
     let localRealm = try! Realm()
     var sales: Results<SalesModel>!
+    var salesGoods: Results<SaleGoodModel>!
     
     let idSalesCell = "idSalesCell"
     let tableView: UITableView = {
@@ -97,5 +98,33 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
         let saleVC = SaleViewController()
         saleVC.forDate = sales[indexPath.row].salesDate
         self.navigationController?.pushViewController(saleVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let editingRow = sales[indexPath.row]
+        
+        //TODO: найти продажи товара за этот день и также удалить
+        let dateStart = Calendar.current.startOfDay(for: editingRow.salesDate)
+        let dateEnd: Date = {
+            let components = DateComponents(day: 1, second: -1)
+            return Calendar.current.date(byAdding: components, to: dateStart)!
+        }()
+        
+        let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
+        salesGoods = localRealm.objects(SaleGoodModel.self).filter(predicateDate)
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
+            RealmManager.shared.deleteSalesModel(model: editingRow)
+            
+            for saleGood in self.salesGoods {
+                RealmManager.shared.deleteSaleGoodModel(model: saleGood)
+            }
+            
+            self.configure()
+            
+            tableView.reloadData()
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
