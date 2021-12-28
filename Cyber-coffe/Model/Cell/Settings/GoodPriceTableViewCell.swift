@@ -42,7 +42,6 @@ class GoodPriceTableViewCell: UITableViewCell {
         self.backgroundColor = UIColor.Main.background
         
         setConstraints()
-        
     }
     
     required init?(coder: NSCoder) {
@@ -52,8 +51,6 @@ class GoodPriceTableViewCell: UITableViewCell {
     func configure(goodPrice: GoodPrice, indexPath: IndexPath) {
         goodLabel.text = goodPrice.good
         quantityLabel.text = String(goodPrice.price)
-        //contentView.backgroundColor = .gray
-        //self.backgroundColor = .systemBrown
         
         selectionStyle = .none
     }

@@ -8,12 +8,12 @@
 import UIKit
 import RealmSwift
 
-//struct SaleGood {
-//    let date: Date
-//    let good: String
-//    let qty: Int
-//    let sum: Double
-//}
+struct SaleGood {
+    let date: Date
+    let good: String
+    let qty: Int
+    let sum: Double
+}
 //
 //struct SaleDate {
 //    let date: Date
@@ -30,10 +30,12 @@ class SaleViewController: UIViewController {
     
     private var salesGoodsModel = SaleGoodModel()
     private var salesDateModel = SalesModel()
+    private var salesGoodsArray = [SaleGood]()
     
     let localRealm = try! Realm()
     var saleGood: Results<SaleGoodModel>!
     var saleForDate: Results<SalesModel>!
+    
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -86,7 +88,7 @@ class SaleViewController: UIViewController {
     let saleLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
-        label.text = "240"
+        label.text = "0"
         label.textColor = UIColor.Main.text
         //label.backgroundColor = .green
         label.font = UIFont.systemFont(ofSize: 28)
@@ -159,12 +161,9 @@ class SaleViewController: UIViewController {
     func configure(date: Date) {
         
         datePiker.date = date
+        salesGoodsArray = [SaleGood]()
         
-        //получаем из базы данных продажи за день
-        //        saleGood.append(SaleGood(date: forDate, good: "Americano", qty: 12, sum: 120))
-        //        saleGood.append(SaleGood(date: forDate, good: "Esspresso", qty: 2, sum: 20))
-        //        saleGood.append(SaleGood(date: forDate, good: "Americano with milk", qty: 20, sum: 240))
-        
+        //заполнить продажами за этот день
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
             let components = DateComponents(day: 1, second: -1)
@@ -172,26 +171,31 @@ class SaleViewController: UIViewController {
         }()
         
         var predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
-        
         saleGood = localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood")
         
         //если данных за этот день нет, значит это новый день,
-        //TODO: заполнить товарами по-умолчанию
+        //заполнить товарами по-умолчанию
         if saleGood.count == 0 {
+            let goodsPrice = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
+            for goodPrice in goodsPrice {
+                salesGoodsArray.append(SaleGood(date: forDate, good: goodPrice.good, qty: 0, sum: 0.0))
+            }
+        } else {
             
+            for sale in saleGood {
+                salesGoodsArray.append(SaleGood(date: sale.saleDate, good: sale.saleGood, qty: sale.saleQty, sum: sale.saleSum))
+            }
+            
+            //
+            predicateDate = NSPredicate(format: "salesDate BETWEEN %@", [dateStart, dateEnd])
+            saleForDate = localRealm.objects(SalesModel.self).filter(predicateDate)
+            
+            //также получаем значение "Кеш"
+            moneyTextfield.text = String(Int(saleForDate.first?.salesCash ?? 0.0))
+            saleLabel.text = String(Int(saleForDate.first?.salesSum ?? 0.0))
         }
         
         tableView.reloadData()
-        
-        //
-        predicateDate = NSPredicate(format: "salesDate BETWEEN %@", [dateStart, dateEnd])
-        saleForDate = localRealm.objects(SalesModel.self).filter(predicateDate)
-        
-        //также получаем значение "Кеш"
-        moneyTextfield.text = String(Int(saleForDate.first?.salesCash ?? 0.0))
-        saleLabel.text = String(Int(saleForDate.first?.salesSum ?? 0.0))
-        
-        
     }
     
     //MARK: - Method
@@ -227,12 +231,12 @@ class SaleViewController: UIViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return saleGood.count
+        return salesGoodsArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as! SaleTableViewCell
-        cell.configure(sale: saleGood[indexPath.row])
+        cell.configure(sale: salesGoodsArray[indexPath.row])
         
         return cell
     }
