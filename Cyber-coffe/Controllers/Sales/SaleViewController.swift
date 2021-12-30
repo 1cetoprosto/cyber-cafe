@@ -12,21 +12,13 @@ struct SaleGood {
     let date: Date
     let good: String
     var qty: Int
+    let price: Double
     var sum: Double
 }
-//
-//struct SaleDate {
-//    let date: Date
-//    let cash: Double
-//    let sum: Double
-//}
 
-class SaleViewController: UIViewController {
+class SaleViewController: UIViewController, UITextFieldDelegate{
     
     var forDate = NSDate() as Date
-    
-    //var salesGoods = [SaleGood]()
-    //let cashforDate: Cash
     
     private var salesGoodsModel = SaleGoodModel()
     private var salesDateModel = SalesModel()
@@ -35,7 +27,6 @@ class SaleViewController: UIViewController {
     let localRealm = try! Realm()
     var saleGood: Results<SaleGoodModel>!
     var saleForDate: Results<SalesModel>!
-    
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -90,10 +81,8 @@ class SaleViewController: UIViewController {
         label.textAlignment = .right
         label.text = "0"
         label.textColor = UIColor.Main.text
-        //label.backgroundColor = .green
         label.font = UIFont.systemFont(ofSize: 28)
         label.translatesAutoresizingMaskIntoConstraints = false
-        //label.sizeToFit()//If required
         
         return label
     }()
@@ -117,6 +106,8 @@ class SaleViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         
+        self.moneyTextfield.delegate = self
+        
         configure(date: forDate)
         
         setConstraints()
@@ -128,20 +119,8 @@ class SaleViewController: UIViewController {
         let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield], axis: .horizontal, spacing: 5, distribution: .fillEqually)
         view.addSubview(cashStackView)
         
-//        NSLayoutConstraint.activate([
-//            cashStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            cashStackView.widthAnchor.constraint(equalToConstant: view.frame.width/2),
-//            cashStackView.heightAnchor.constraint(equalToConstant: 44),
-//        ])
-        
         let moneyStackView = UIStackView(arrangedSubviews: [cashStackView, saleLabel], axis: .horizontal, spacing: 10, distribution: .fillEqually)
         view.addSubview(moneyStackView)
-        
-//        NSLayoutConstraint.activate([
-//            moneyStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-//            moneyStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 20),
-//            moneyStackView.heightAnchor.constraint(equalToConstant: 44),
-//        ])
         
         NSLayoutConstraint.activate([
             saveButton.heightAnchor.constraint(equalToConstant: 50)
@@ -178,12 +157,12 @@ class SaleViewController: UIViewController {
         if saleGood.count == 0 {
             let goodsPrice = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
             for goodPrice in goodsPrice {
-                salesGoodsArray.append(SaleGood(date: forDate, good: goodPrice.good, qty: 0, sum: 0.0))
+                salesGoodsArray.append(SaleGood(date: forDate, good: goodPrice.good, qty: 0, price: goodPrice.price, sum: 0.0))
             }
         } else {
             
             for sale in saleGood {
-                salesGoodsArray.append(SaleGood(date: sale.saleDate, good: sale.saleGood, qty: sale.saleQty, sum: sale.saleSum))
+                salesGoodsArray.append(SaleGood(date: sale.saleDate, good: sale.saleGood, qty: sale.saleQty, price: sale.saleSum/Double(sale.saleQty), sum: sale.saleSum))
             }
             
             //
@@ -193,6 +172,9 @@ class SaleViewController: UIViewController {
             //также получаем значение "Кеш"
             moneyTextfield.text = String(Int(saleForDate.first?.salesCash ?? 0.0))
             saleLabel.text = String(Int(saleForDate.first?.salesSum ?? 0.0))
+            
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = .placeholderText
         }
         
         tableView.reloadData()
@@ -225,6 +207,11 @@ class SaleViewController: UIViewController {
     
     @objc func cancelAction(param: UIButton) {
         navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true)
+        return false
     }
 }
 
@@ -263,7 +250,7 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
             cell.quantityLabel.text = String(stepperValue)
             salesGoodsArray[stepperTag].qty = stepperValue
             //TODO: реализовать умножение на реальную цену
-            salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty * 10)
+            salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty) * salesGoodsArray[stepperTag].price
             recalcSTotalSum()
         }
     }

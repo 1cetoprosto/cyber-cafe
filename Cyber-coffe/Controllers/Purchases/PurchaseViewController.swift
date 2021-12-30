@@ -90,9 +90,13 @@ class PurchaseViewController: UIViewController {
         
         if purchaseName != "" {
             purchaseNameTextfield.text = String(purchaseName)
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = .placeholderText
         }
         if purchaseSum != 0 {
             purchaseSumTextfield.text = String(purchaseSum)
+            saveButton.isEnabled = false
+            saveButton.backgroundColor = .placeholderText
         }
         
         purchasedatePiker.date = purchaseDate
