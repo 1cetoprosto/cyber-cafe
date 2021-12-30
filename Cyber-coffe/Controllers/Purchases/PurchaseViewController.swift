@@ -6,8 +6,12 @@
 //
 
 import UIKit
+import RealmSwift
 
 class PurchaseViewController: UIViewController {
+    
+    let localRealm = try! Realm()
+    private var purchaseModel = PurchaseModel()
     
     var purchaseDate: Date = NSDate() as Date
     var purchaseName: String = ""
@@ -91,6 +95,8 @@ class PurchaseViewController: UIViewController {
             purchaseSumTextfield.text = String(purchaseSum)
         }
         
+        purchasedatePiker.date = purchaseDate
+        
         setConstraints()
         
     }
@@ -113,7 +119,18 @@ class PurchaseViewController: UIViewController {
     
     //MARK: - Method
     @objc func saveAction(param: UIButton) {
-        print("save")
+        purchaseDate = purchasedatePiker.date
+        purchaseName = purchaseNameTextfield.text ?? ""
+        purchaseSum = Double(purchaseSumTextfield.text ?? "0.0") ?? 0.0
+        
+        //запишем наименование и цену
+        purchaseModel.purchaseDate = purchaseDate
+        purchaseModel.purchaseGood = purchaseName
+        purchaseModel.purchaseSum = purchaseSum
+        
+        RealmManager.shared.savePurchaseModel(model: purchaseModel)
+        purchaseModel = PurchaseModel()
+        
         navigationController?.popToRootViewController(animated: true)
     }
     

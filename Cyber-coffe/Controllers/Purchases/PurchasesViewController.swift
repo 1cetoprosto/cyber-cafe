@@ -6,9 +6,21 @@
 //
 
 import UIKit
+import RealmSwift
+
+struct Purchase {
+    let date: Date
+    let good: String
+    let sum: Double
+    let handler: (() -> Void)
+}
 
 class PurchasesViewController: UIViewController {
 
+    let localRealm = try! Realm()
+    var purchases: Results<PurchaseModel>!
+    var purchasesArray = [Purchase]()
+    
     let idPurchasesCell = "idPurchasesCell"
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -18,6 +30,12 @@ class PurchasesViewController: UIViewController {
         
         return tableView
     }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configure()
+        tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +52,14 @@ class PurchasesViewController: UIViewController {
         
         setConstraints()
         
+    }
+    
+    func configure() {
+        purchasesArray = [Purchase]()
+        purchases = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate")
+        for purchase in purchases {
+            purchasesArray.append(Purchase(date: purchase.purchaseDate, good: purchase.purchaseGood, sum: purchase.purchaseSum) { self.navigationController?.pushViewController(PurchaseViewController(), animated: true) })
+        }
     }
 
     func setConstraints() {
@@ -60,11 +86,12 @@ class PurchasesViewController: UIViewController {
 //MARK: - UITableViewDelegate, UITableViewDataSource
 extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 25
+        return purchasesArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idPurchasesCell, for: indexPath) as! PurchasesTableViewCell
+        cell.configure(purchase: purchasesArray[indexPath.row])
         
         return cell
     }
@@ -74,9 +101,13 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let selectedDay = days[indexPath.row]
-        
         let purchaseVC = PurchaseViewController()
+        
+        let editingRow = purchasesArray[indexPath.row]
+        purchaseVC.purchaseDate = editingRow.date
+        purchaseVC.purchaseName = editingRow.good
+        purchaseVC.purchaseSum = editingRow.sum
+        
         self.navigationController?.pushViewController(purchaseVC, animated: true)
     }
 }

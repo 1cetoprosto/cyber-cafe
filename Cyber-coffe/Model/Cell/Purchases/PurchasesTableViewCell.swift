@@ -39,6 +39,17 @@ class PurchasesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func configure(purchase: Purchase) {
+        
+        let df = DateFormatter()
+        df.dateFormat = "dd.MM.yy"
+        purchaseDate.text = df.string(from: purchase.date)
+        purchaseName.text = String(purchase.good)
+        purchaseSum.text = String(Int(purchase.sum))
+        
+        selectionStyle = .none
+    }
+    
     func setConstraints() {
         
         self.addSubview(backgroundViewCell)
