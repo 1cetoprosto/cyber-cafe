@@ -21,14 +21,13 @@ class RealmManager {
         }
     }
     
-    func saveSalesModel(model: SalesModel) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
+    func deleteSaleGoodModel(model: SaleGoodModel) {
         try! localRealm.write {
-            localRealm.add(model)
+            localRealm.delete(model)
         }
     }
     
-    func saveGoodsPriceModel(model: GoodsPriceModel) {
+    func saveSalesModel(model: SalesModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)
@@ -41,13 +40,27 @@ class RealmManager {
         }
     }
     
-    func deleteSaleGoodModel(model: SaleGoodModel) {
+    func saveGoodsPriceModel(model: GoodsPriceModel) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            localRealm.add(model)
+        }
+    }
+    
+    func deleteGoodsPriceModel(model: GoodsPriceModel) {
         try! localRealm.write {
             localRealm.delete(model)
         }
     }
     
-    func deleteGoodsPriceModel(model: GoodsPriceModel) {
+    func savePurchaseModel(model: PurchaseModel) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            localRealm.add(model)
+        }
+    }
+    
+    func deletePurchaseModel(model: PurchaseModel) {
         try! localRealm.write {
             localRealm.delete(model)
         }

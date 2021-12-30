@@ -262,6 +262,7 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
         if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
             cell.quantityLabel.text = String(stepperValue)
             salesGoodsArray[stepperTag].qty = stepperValue
+            //TODO: реализовать умножение на реальную цену
             salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty * 10)
             recalcSTotalSum()
         }

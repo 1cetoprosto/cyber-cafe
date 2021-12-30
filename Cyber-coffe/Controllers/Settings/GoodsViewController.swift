@@ -16,6 +16,10 @@ struct GoodPrice {
 
 class GoodsViewController: UIViewController {
 
+    let localRealm = try! Realm()
+    var goods: Results<GoodsPriceModel>!
+    var goodsArray = [GoodPrice]()
+    
     let idGoodsCell = "idGoodsCell"
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -25,10 +29,6 @@ class GoodsViewController: UIViewController {
         
         return tableView
     }()
-    
-    let localRealm = try! Realm()
-    var goods: Results<GoodsPriceModel>!
-    var goodsArray = [GoodPrice]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
