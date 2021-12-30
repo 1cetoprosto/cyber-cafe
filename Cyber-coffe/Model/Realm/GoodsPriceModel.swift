@@ -10,5 +10,4 @@ import RealmSwift
 class GoodsPriceModel: Object {
     @Persisted var good: String = ""
     @Persisted var price: Double = 0.0
-    
 }
