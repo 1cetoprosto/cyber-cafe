@@ -60,7 +60,6 @@ class SalesTableViewCell: UITableViewCell {
         label.textAlignment = aligment
         label.adjustsFontSizeToFitWidth = true
         label.translatesAutoresizingMaskIntoConstraints = false
-        //label.backgroundColor = .systemRed
         
         return label
     }
@@ -78,7 +77,7 @@ class SalesTableViewCell: UITableViewCell {
         self.addSubview(goodsName)
         NSLayoutConstraint.activate([
             goodsName.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            goodsName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 5),
+            goodsName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 20),
             goodsName.widthAnchor.constraint(equalToConstant: 200),
             goodsName.heightAnchor.constraint(equalToConstant: 50),
         ])
@@ -102,8 +101,5 @@ class SalesTableViewCell: UITableViewCell {
             cashStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
             cashStackView.heightAnchor.constraint(equalToConstant: 25),
         ])
-        
     }
-    
-    
 }

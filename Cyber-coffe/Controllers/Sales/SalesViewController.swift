@@ -40,31 +40,14 @@ class SalesViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        //configure()
-        
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
         
         setConstraints()
-        
     }
 
-    func setConstraints() {
-        
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
-        
-    }
-    
     //MARK: - Method
     func configure() {
-        //sales = localRealm.objects(SalesModel.self).filter(predicateDate).sorted(byKeyPath: "salesDate")
         sales = localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate")
         tableView.reloadData()
     }
@@ -73,7 +56,6 @@ class SalesViewController: UIViewController {
         let saleVC = SaleViewController()
         navigationController?.pushViewController(saleVC, animated: true)
     }
-    
 }
 
 //MARK: - UITableViewDelegate, UITableViewDataSource
@@ -93,10 +75,15 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let selectedDay = days[indexPath.row]
-        
         let saleVC = SaleViewController()
-        saleVC.forDate = sales[indexPath.row].salesDate
+        
+        let model = sales[indexPath.row]
+        saleVC.salesDateModel = model
+        saleVC.forDate = model.salesDate
+        saleVC.salesCash = model.salesCash
+        saleVC.salesSum = model.salesSum
+        saleVC.newModel = false
+        
         self.navigationController?.pushViewController(saleVC, animated: true)
     }
     
@@ -126,5 +113,20 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
         }
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+}
+
+//MARK: Constraints
+extension SalesViewController {
+    func setConstraints() {
+        
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
     }
 }

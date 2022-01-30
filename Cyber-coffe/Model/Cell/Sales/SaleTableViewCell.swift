@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import RealmSwift
 
 class SaleTableViewCell: UITableViewCell {
     
@@ -56,17 +55,6 @@ class SaleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    func configure(sale: SaleGood) {
-//
-//        goodLabel.text = sale.good
-//        quantityLabel.text = String(sale.qty)
-//        goodStepper.value = Double(sale.qty)
-//        //contentView.backgroundColor = .gray
-//        //self.backgroundColor = .systemBrown
-//
-//        selectionStyle = .none
-//    }
-    
     func setConstraints() {
         
         self.addSubview(backgroundViewCell)
@@ -94,13 +82,7 @@ class SaleTableViewCell: UITableViewCell {
             quantityLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
             quantityLabel.trailingAnchor.constraint(equalTo: goodStepper.leadingAnchor, constant: -20),
         ])
-        
     }
-    
-//    @objc func stepperAction(_ sender: UIStepper) {
-//        quantityLabel.text = Int(sender.value).description
-//
-//    }
 }
 
 
