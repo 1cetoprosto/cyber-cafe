@@ -50,6 +50,14 @@ class RealmManager {
         }
     }
     
+    func updateGoodsPriceModel(model: GoodsPriceModel, good: String, price: Double) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            model.good = good
+            model.price = price
+        }
+    }
+    
     func deleteGoodsPriceModel(model: GoodsPriceModel) {
         try! localRealm.write {
             localRealm.delete(model)

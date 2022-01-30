@@ -8,17 +8,10 @@
 import UIKit
 import RealmSwift
 
-struct GoodPrice {
-    let good: String
-    let price: Double
-    let handler: (() -> Void)
-}
-
 class GoodsViewController: UIViewController {
 
     let localRealm = try! Realm()
-    var goods: Results<GoodsPriceModel>!
-    var goodsArray = [GoodPrice]()
+    var goodsArray: Results<GoodsPriceModel>!
     
     let idGoodsCell = "idGoodsCell"
     let tableView: UITableView = {
@@ -46,7 +39,6 @@ class GoodsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        //configure()
         //Кнопка справа
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
         
@@ -55,11 +47,7 @@ class GoodsViewController: UIViewController {
     }
     
     func configure() {
-        goodsArray = [GoodPrice]()
-        goods = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
-        for good in goods {
-            goodsArray.append(GoodPrice(good: good.good, price: good.price) { self.navigationController?.pushViewController(GoodViewController(), animated: true) })
-        }
+        goodsArray = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
     }
     
     func setConstraints() {
@@ -100,18 +88,20 @@ extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let goodPrice = goodsArray[indexPath.row]
+        let model = goodsArray[indexPath.row]
         
         let goodVC = GoodViewController()
-        goodVC.good = goodPrice.good
-        goodVC.price = goodPrice.price
+        goodVC.goodsModel = model
+        goodVC.newModel = false
+        goodVC.good = model.good
+        goodVC.price = model.price
         navigationController?.pushViewController(goodVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let editingRow = goods[indexPath.row]
+        let model = goodsArray[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
-            RealmManager.shared.deleteGoodsPriceModel(model: editingRow)
+            RealmManager.shared.deleteGoodsPriceModel(model: model)
             
             self.configure()
             
