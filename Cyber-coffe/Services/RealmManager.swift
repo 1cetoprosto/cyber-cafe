@@ -22,6 +22,15 @@ class RealmManager {
         }
     }
     
+    func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, saleSum: Double) {
+        try! localRealm.write {
+            model.saleDate = saleDate
+            model.saleGood = saleGood
+            model.saleQty = saleQty
+            model.saleSum = saleSum
+        }
+    }
+    
     func deleteSaleGoodModel(model: SaleGoodModel) {
         try! localRealm.write {
             localRealm.delete(model)
@@ -33,6 +42,14 @@ class RealmManager {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)
+        }
+    }
+    
+    func updateSalesModel(model: SalesModel, salesDate: Date, salesSum: Double, salesCash: Double) {
+        try! localRealm.write {
+            model.salesDate = salesDate
+            model.salesSum = salesSum
+            model.salesCash = salesCash
         }
     }
     
