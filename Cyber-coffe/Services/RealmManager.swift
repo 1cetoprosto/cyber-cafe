@@ -14,6 +14,7 @@ class RealmManager {
     
     let localRealm = try! Realm()
     
+    //Продажи товаров
     func saveSalesGoodModel(model: SaleGoodModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -27,6 +28,7 @@ class RealmManager {
         }
     }
     
+    //Продажи и касса
     func saveSalesModel(model: SalesModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -40,6 +42,7 @@ class RealmManager {
         }
     }
     
+    //Товары и цены
     func saveGoodsPriceModel(model: GoodsPriceModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -53,10 +56,19 @@ class RealmManager {
         }
     }
     
+    //Закупки
     func savePurchaseModel(model: PurchaseModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)
+        }
+    }
+    
+    func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double) {
+        try! localRealm.write {
+            model.purchaseDate = purchaseDate
+            model.purchaseGood = purchaseName
+            model.purchaseSum = purchaseSum
         }
     }
     

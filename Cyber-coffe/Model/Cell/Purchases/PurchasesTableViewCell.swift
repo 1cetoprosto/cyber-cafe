@@ -39,13 +39,13 @@ class PurchasesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func configure(purchase: Purchase) {
+    func configure(purchase: PurchaseModel) {
         
         let df = DateFormatter()
         df.dateFormat = "dd.MM.yy"
-        purchaseDate.text = df.string(from: purchase.date)
-        purchaseName.text = String(purchase.good)
-        purchaseSum.text = String(Int(purchase.sum))
+        purchaseDate.text = df.string(from: purchase.purchaseDate)
+        purchaseName.text = String(purchase.purchaseGood)
+        purchaseSum.text = String(Int(purchase.purchaseSum))
         
         selectionStyle = .none
     }
