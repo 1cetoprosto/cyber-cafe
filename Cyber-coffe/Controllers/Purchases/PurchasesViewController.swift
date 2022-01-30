@@ -8,18 +8,14 @@
 import UIKit
 import RealmSwift
 
-struct Purchase {
-    let date: Date
-    let good: String
-    let sum: Double
-    let handler: (() -> Void)
-}
+//struct Purchase {
+//    let date: Date
+//    let good: String
+//    let sum: Double
+//    let handler: (() -> Void)
+//}
 
 class PurchasesViewController: UIViewController {
-
-    let localRealm = try! Realm()
-    var purchases: Results<PurchaseModel>!
-    var purchasesArray = [Purchase]()
     
     let idPurchasesCell = "idPurchasesCell"
     let tableView: UITableView = {
@@ -30,6 +26,9 @@ class PurchasesViewController: UIViewController {
         
         return tableView
     }()
+    
+    let localRealm = try! Realm()
+    var purchasesArray: Results<PurchaseModel>!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -55,24 +54,7 @@ class PurchasesViewController: UIViewController {
     }
     
     func configure() {
-        purchasesArray = [Purchase]()
-        purchases = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate")
-        for purchase in purchases {
-            purchasesArray.append(Purchase(date: purchase.purchaseDate, good: purchase.purchaseGood, sum: purchase.purchaseSum) { self.navigationController?.pushViewController(PurchaseViewController(), animated: true) })
-        }
-    }
-
-    func setConstraints() {
-        
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
-        
+        purchasesArray = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate")
     }
     
     //MARK: - Method
@@ -103,12 +85,30 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let purchaseVC = PurchaseViewController()
         
-        let editingRow = purchasesArray[indexPath.row]
-        purchaseVC.purchaseDate = editingRow.date
-        purchaseVC.purchaseName = editingRow.good
-        purchaseVC.purchaseSum = editingRow.sum
+        let model = purchasesArray[indexPath.row]
+        purchaseVC.purchaseModel = model
+        purchaseVC.newModel = false
+        purchaseVC.purchaseDate = model.purchaseDate
+        purchaseVC.purchaseName = model.purchaseGood
+        purchaseVC.purchaseSum = model.purchaseSum
         
         self.navigationController?.pushViewController(purchaseVC, animated: true)
+    }
+}
+
+//MARK: setConstraints
+extension PurchasesViewController {
+    func setConstraints() {
+        
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+        
     }
 }
 

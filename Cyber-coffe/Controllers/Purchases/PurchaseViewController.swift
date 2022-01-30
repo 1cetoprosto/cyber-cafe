@@ -10,13 +10,6 @@ import RealmSwift
 
 class PurchaseViewController: UIViewController {
     
-    let localRealm = try! Realm()
-    private var purchaseModel = PurchaseModel()
-    
-    var purchaseDate: Date = NSDate() as Date
-    var purchaseName: String = ""
-    var purchaseSum: Double = 0.0
-    
     let purchaseDateLabel: UILabel = {
         let label = UILabel(text: "Date:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
         
@@ -64,7 +57,7 @@ class PurchaseViewController: UIViewController {
         button.setTitleColor(UIColor.Button.title, for: .normal)
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
-
+        
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
@@ -76,10 +69,18 @@ class PurchaseViewController: UIViewController {
         button.setTitleColor(UIColor.Button.title, for: .normal)
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
-
+        
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
+    
+    let localRealm = try! Realm()
+    var purchaseModel = PurchaseModel()
+    var newModel = true
+    
+    var purchaseDate: Date = NSDate() as Date
+    var purchaseName: String = ""
+    var purchaseSum: Double = 0.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,13 +91,9 @@ class PurchaseViewController: UIViewController {
         
         if purchaseName != "" {
             purchaseNameTextfield.text = String(purchaseName)
-            saveButton.isEnabled = false
-            saveButton.backgroundColor = .placeholderText
         }
         if purchaseSum != 0 {
             purchaseSumTextfield.text = String(purchaseSum)
-            saveButton.isEnabled = false
-            saveButton.backgroundColor = .placeholderText
         }
         
         purchasedatePiker.date = purchaseDate
@@ -105,6 +102,33 @@ class PurchaseViewController: UIViewController {
         
     }
     
+    //MARK: - Method
+    @objc func saveAction(param: UIButton) {
+        purchaseDate = purchasedatePiker.date
+        purchaseName = purchaseNameTextfield.text ?? ""
+        purchaseSum = Double(purchaseSumTextfield.text ?? "0.0") ?? 0.0
+        
+        if newModel {
+            //запишем наименование и цену
+            purchaseModel.purchaseDate = purchaseDate
+            purchaseModel.purchaseGood = purchaseName
+            purchaseModel.purchaseSum = purchaseSum
+            
+            RealmManager.shared.savePurchaseModel(model: purchaseModel)
+            purchaseModel = PurchaseModel()
+        } else {
+            RealmManager.shared.updatePurchaseModel(model: purchaseModel, purchaseDate: purchaseDate, purchaseName: purchaseName, purchaseSum: purchaseSum)
+        }
+        
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    @objc func cancelAction(param: UIButton) {
+        navigationController?.popToRootViewController(animated: true)
+    }
+}
+
+extension PurchaseViewController {
     func setConstraints() {
         let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton], axis: .horizontal, spacing: 20, distribution: .fillEqually)
         
@@ -112,33 +136,12 @@ class PurchaseViewController: UIViewController {
         
         let purchaseStackView = UIStackView(arrangedSubviews: [dateStackView, purchaseNameLabel, purchaseNameTextfield, purchaseSumLabel, purchaseSumTextfield, buttonStackView], axis: .vertical, spacing: 10, distribution: .fillEqually)
         view.addSubview(purchaseStackView)
-
+        
         NSLayoutConstraint.activate([
             purchaseStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             purchaseStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             purchaseStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             purchaseStackView.heightAnchor.constraint(equalToConstant: 270)
         ])
-    }
-    
-    //MARK: - Method
-    @objc func saveAction(param: UIButton) {
-        purchaseDate = purchasedatePiker.date
-        purchaseName = purchaseNameTextfield.text ?? ""
-        purchaseSum = Double(purchaseSumTextfield.text ?? "0.0") ?? 0.0
-        
-        //запишем наименование и цену
-        purchaseModel.purchaseDate = purchaseDate
-        purchaseModel.purchaseGood = purchaseName
-        purchaseModel.purchaseSum = purchaseSum
-        
-        RealmManager.shared.savePurchaseModel(model: purchaseModel)
-        purchaseModel = PurchaseModel()
-        
-        navigationController?.popToRootViewController(animated: true)
-    }
-    
-    @objc func cancelAction(param: UIButton) {
-        navigationController?.popToRootViewController(animated: true)
     }
 }
