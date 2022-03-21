@@ -20,10 +20,10 @@ class MainTabBarController: UITabBarController {
 
     func setupTabBar() {
         let salesViewController = createNavController(vc: SalesViewController(), itemName: "Sales", itemImage: "cup.and.saucer.fill")
-        let tasksViewController = createNavController(vc: PurchasesViewController(), itemName: "Purchases", itemImage: "takeoutbag.and.cup.and.straw.fill")
-        let contactsViewController = createNavController(vc: SettingsViewController(), itemName: "Settings", itemImage: "gearshape")
+        let purchasesViewController = createNavController(vc: PurchasesViewController(), itemName: "Purchases", itemImage: "takeoutbag.and.cup.and.straw.fill")
+        let settingsViewController = createNavController(vc: SettingsViewController(), itemName: "Settings", itemImage: "gearshape")
         
-        viewControllers = [salesViewController, tasksViewController, contactsViewController]
+        viewControllers = [salesViewController, purchasesViewController, settingsViewController]
     }
     
     func createNavController(vc: UIViewController, itemName: String, itemImage: String) -> UINavigationController{
