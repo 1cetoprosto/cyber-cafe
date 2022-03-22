@@ -1,5 +1,5 @@
 //
-//  PurchaseTableViewCell.swift
+//  PurchaseDetailsTableViewCell.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 04.12.2021.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PurchaseTableViewCell: UITableViewCell {
+class PurchaseDetailsTableViewCell: UITableViewCell {
 
     let backgroundViewCell: UIView = {
         let view = UIView()

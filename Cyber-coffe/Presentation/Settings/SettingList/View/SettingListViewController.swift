@@ -1,5 +1,5 @@
 //
-//  SettingsViewController.swift
+//  SettingListViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 03.11.2021.
@@ -41,7 +41,7 @@ struct SettingsDataOption {
     let handler: ((_ dataLabel: UILabel) -> Void)
 }
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -88,7 +88,7 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
             .staticCell(model: SettingsStaticOption(title: "Goods",
                                                     icon: UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: .systemGreen) {
-                self.navigationController?.pushViewController(GoodsViewController(), animated: true)
+                self.navigationController?.pushViewController(GoodListViewController(), animated: true)
             })
         ]))
     }

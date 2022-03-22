@@ -1,5 +1,5 @@
 //
-//  PurchaseViewController.swift
+//  PurchaseDetailsViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 04.12.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class PurchaseViewController: UIViewController {
+class PurchaseDetailsViewController: UIViewController {
     
     let purchaseDateLabel: UILabel = {
         let label = UILabel(text: "Date:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
@@ -129,7 +129,7 @@ class PurchaseViewController: UIViewController {
     }
 }
 
-extension PurchaseViewController {
+extension PurchaseDetailsViewController {
     func setConstraints() {
         let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton],
                                           axis: .horizontal,

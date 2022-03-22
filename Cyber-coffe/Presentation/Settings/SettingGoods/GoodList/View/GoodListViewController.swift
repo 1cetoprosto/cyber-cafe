@@ -1,5 +1,5 @@
 //
-//  GoodsViewController.swift
+//  GoodListViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 07.11.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class GoodsViewController: UIViewController {
+class GoodListViewController: UIViewController {
 
     let localRealm = try! Realm()
     var goodsArray: Results<GoodsPriceModel>!
@@ -67,13 +67,13 @@ class GoodsViewController: UIViewController {
     
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let goodVC = GoodViewController()
+        let goodVC = GoodDetailsViewController()
         navigationController?.pushViewController(goodVC, animated: true)
     }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
+extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return goodsArray.count
     }
@@ -92,7 +92,7 @@ extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = goodsArray[indexPath.row]
         
-        let goodVC = GoodViewController()
+        let goodVC = GoodDetailsViewController()
         goodVC.goodsModel = model
         goodVC.newModel = false
         goodVC.good = model.good

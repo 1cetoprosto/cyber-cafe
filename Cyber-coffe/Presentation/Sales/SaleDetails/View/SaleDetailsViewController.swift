@@ -1,5 +1,5 @@
 //
-//  SaleViewController.swift
+//  SaleDetailsViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 08.11.2021.
@@ -17,7 +17,7 @@ struct SaleGood {
     let model: SaleGoodModel
 }
 
-class SaleViewController: UIViewController, UITextFieldDelegate {
+class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -209,7 +209,7 @@ class SaleViewController: UIViewController, UITextFieldDelegate {
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
+extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return salesGoodsArray.count
     }
@@ -258,7 +258,7 @@ extension SaleViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: - Constraints
-extension SaleViewController {
+extension SaleDetailsViewController {
     func setConstraints() {
 
         let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield],
