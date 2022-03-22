@@ -19,7 +19,7 @@ class GoodsViewController: UIViewController {
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return tableView
     }()
     
@@ -28,7 +28,7 @@ class GoodsViewController: UIViewController {
         configure()
         tableView.reloadData()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -39,13 +39,15 @@ class GoodsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        //Кнопка справа
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
+        // Кнопка справа
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(performAdd(param:)))
         
         setConstraints()
         
     }
-    
+
     func configure() {
         goodsArray = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
     }
@@ -53,40 +55,40 @@ class GoodsViewController: UIViewController {
     func setConstraints() {
         
         view.addSubview(tableView)
-        
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
-        
+
     }
     
-    //MARK: - Method
+    // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
         let goodVC = GoodViewController()
         navigationController?.pushViewController(goodVC, animated: true)
     }
 }
 
-//MARK: - UITableViewDelegate, UITableViewDataSource
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return goodsArray.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idGoodsCell, for: indexPath) as! GoodPriceTableViewCell
         cell.configure(goodPrice: goodsArray[indexPath.row], indexPath: indexPath)
-        
+
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = goodsArray[indexPath.row]
         
@@ -97,17 +99,18 @@ extension GoodsViewController: UITableViewDelegate, UITableViewDataSource {
         goodVC.price = model.price
         navigationController?.pushViewController(goodVC, animated: true)
     }
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let model = goodsArray[indexPath.row]
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completionHandler in
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             RealmManager.shared.deleteGoodsPriceModel(model: model)
-            
+
             self.configure()
-            
+
             tableView.reloadData()
         }
-        
+
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

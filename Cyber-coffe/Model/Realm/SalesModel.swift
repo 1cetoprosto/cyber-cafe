@@ -11,5 +11,4 @@ class SalesModel: Object {
     @Persisted var salesDate = Date()
     @Persisted var salesSum: Double = 0.0
     @Persisted var salesCash: Double = 0.0
-    
 }

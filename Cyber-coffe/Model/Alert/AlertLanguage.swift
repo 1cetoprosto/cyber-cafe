@@ -23,13 +23,13 @@ extension UIViewController {
             let typeContact = "Русский"
             completionHandle(typeContact)
         }
-        
+
         let ukrainian = UIAlertAction(title: "Українська", style: .default) { _ in
             label.text = "Українська"
             let typeContact = "Українська"
             completionHandle(typeContact)
         }
-        
+
         let cansel = UIAlertAction(title: "Cancel", style: .cancel)
         
         alert.addAction(english)
@@ -38,6 +38,6 @@ extension UIViewController {
         alert.addAction(cansel)
         
         present(alert, animated: true)
-        
+
     }
 }

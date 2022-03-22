@@ -19,16 +19,16 @@ extension UINavigationBar {
         self.isTranslucent = false
 
         // for larget titles
-        //self.prefersLargeTitles = true
+        // self.prefersLargeTitles = true
 
         // color for large title label
-        //self.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.green]
+        // self.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.green]
 
         // color for standard title label
         self.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.NavBar.text]
 
         // remove bottom line/shadow
-//        self.setBackgroundImage(UIImage(), for: .default)
-//        self.shadowImage = UIImage()
+        // self.setBackgroundImage(UIImage(), for: .default)
+        // self.shadowImage = UIImage()
     }
 }

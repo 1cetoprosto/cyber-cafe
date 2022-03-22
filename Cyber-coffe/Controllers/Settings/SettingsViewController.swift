@@ -41,14 +41,14 @@ struct SettingsDataOption {
     let handler: ((_ dataLabel: UILabel) -> Void)
 }
 
-class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource  {
-    
+class SettingsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
         table.register(SettingsStaticTableViewCell.self, forCellReuseIdentifier: SettingsStaticTableViewCell.identifier)
         table.register(SettingsSwitchTableViewCell.self, forCellReuseIdentifier: SettingsSwitchTableViewCell.identifier)
         table.register(SettingsDataTableViewCell.self, forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
-        
+
         return table
     }()
     
@@ -65,69 +65,79 @@ class SettingsViewController: UIViewController, UITableViewDelegate, UITableView
         tableView.frame = view.bounds
         tableView.backgroundColor = UIColor.Main.background
     }
-    
+
     func configure() {
         models.append(Section(title: "General", option: [
-            .dataCell(model: SettingsDataOption(title: "Language", icon: UIImage(systemName: "globe"), iconBackgroundColor: .systemPink, data: "English") { dataLabel in
-                //self.navigationController?.pushViewController(LanguageViewController(), animated: true)
+            .dataCell(model: SettingsDataOption(title: "Language",
+                                                icon: UIImage(systemName: "globe"),
+                                                iconBackgroundColor: .systemPink,
+                                                data: "English") { dataLabel in
                 self.alertLanguage(label: dataLabel) { language in
                     print(language)
                 }
             }),
-            .switchCell(model: SettingsSwitchOption(title: "Dark Theme", icon: UIImage(systemName: "sun.max"), iconBackgroundColor: .systemBlue, isOn: true) {
+            .switchCell(model: SettingsSwitchOption(title: "Dark Theme",
+                                                    icon: UIImage(systemName: "sun.max"),
+                                                    iconBackgroundColor: .systemBlue,
+                                                    isOn: true) {
                 self.switchToDarkTheme(isOn: true)
             })
         ]))
-        
+
         models.append(Section(title: "Sales", option: [
-            .staticCell(model: SettingsStaticOption(title: "Goods", icon: UIImage(systemName: "cup.and.saucer.fill"), iconBackgroundColor: .systemGreen) {
+            .staticCell(model: SettingsStaticOption(title: "Goods",
+                                                    icon: UIImage(systemName: "cup.and.saucer.fill"),
+                                                    iconBackgroundColor: .systemGreen) {
                 self.navigationController?.pushViewController(GoodsViewController(), animated: true)
             })
         ]))
     }
-    
+
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
         return section.title
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models[section].option.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.section].option[indexPath.row]
-        
+
         switch model.self {
         case .staticCell(let model):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsStaticTableViewCell.identifier, for: indexPath) as? SettingsStaticTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsStaticTableViewCell.identifier,
+                                                           for: indexPath) as? SettingsStaticTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: model)
             return cell
         case .switchCell(let model):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsSwitchTableViewCell.identifier, for: indexPath) as? SettingsSwitchTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsSwitchTableViewCell.identifier,
+                                                           for: indexPath) as? SettingsSwitchTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: model)
             return cell
         case .dataCell(let model):
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsDataTableViewCell.identifier, for: indexPath) as? SettingsDataTableViewCell else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: SettingsDataTableViewCell.identifier,
+                                                           for: indexPath) as? SettingsDataTableViewCell else {
                 return UITableViewCell()
             }
             cell.configure(with: model)
             return cell
         }
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let type = models[indexPath.section].option[indexPath.row]
-        
+
         switch type.self {
         case .staticCell(let model):
             model.handler()

@@ -8,15 +8,8 @@
 import UIKit
 import RealmSwift
 
-//struct Purchase {
-//    let date: Date
-//    let good: String
-//    let sum: Double
-//    let handler: (() -> Void)
-//}
-
 class PurchasesViewController: UIViewController {
-    
+
     let idPurchasesCell = "idPurchasesCell"
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -26,7 +19,7 @@ class PurchasesViewController: UIViewController {
         
         return tableView
     }()
-    
+
     let localRealm = try! Realm()
     var purchasesArray: Results<PurchaseModel>!
     
@@ -35,7 +28,7 @@ class PurchasesViewController: UIViewController {
         configure()
         tableView.reloadData()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -46,35 +39,38 @@ class PurchasesViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        //Кнопка справа
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(performAdd(param:)))
+        // Кнопка справа
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
+                                                            target: self,
+                                                            action: #selector(performAdd(param:)))
         
         setConstraints()
         
     }
-    
+
     func configure() {
         purchasesArray = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate")
     }
     
-    //MARK: - Method
+    // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
         let purchaseVC = PurchaseViewController()
         navigationController?.pushViewController(purchaseVC, animated: true)
     }
-    
+
 }
 
-//MARK: - UITableViewDelegate, UITableViewDataSource
+// MARK: - UITableViewDelegate, UITableViewDataSource
 extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return purchasesArray.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idPurchasesCell, for: indexPath) as! PurchasesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: idPurchasesCell,
+                                                 for: indexPath) as! PurchasesTableViewCell
         cell.configure(purchase: purchasesArray[indexPath.row])
-        
+
         return cell
     }
     
@@ -91,24 +87,23 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
         purchaseVC.purchaseDate = model.purchaseDate
         purchaseVC.purchaseName = model.purchaseGood
         purchaseVC.purchaseSum = model.purchaseSum
-        
+
         self.navigationController?.pushViewController(purchaseVC, animated: true)
     }
 }
 
-//MARK: setConstraints
+// MARK: setConstraints
 extension PurchasesViewController {
     func setConstraints() {
-        
+
         view.addSubview(tableView)
-        
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
-        
+
     }
 }
-
