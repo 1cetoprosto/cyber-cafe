@@ -1,5 +1,5 @@
 //
-//  PurchasesViewController.swift
+//  PurchaseListViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 03.11.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class PurchasesViewController: UIViewController {
+class PurchaseListViewController: UIViewController {
 
     let idPurchasesCell = "idPurchasesCell"
     let tableView: UITableView = {
@@ -54,14 +54,14 @@ class PurchasesViewController: UIViewController {
     
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let purchaseVC = PurchaseViewController()
+        let purchaseVC = PurchaseDetailsViewController()
         navigationController?.pushViewController(purchaseVC, animated: true)
     }
 
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
+extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return purchasesArray.count
     }
@@ -79,7 +79,7 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let purchaseVC = PurchaseViewController()
+        let purchaseVC = PurchaseDetailsViewController()
         
         let model = purchasesArray[indexPath.row]
         purchaseVC.purchaseModel = model
@@ -93,7 +93,7 @@ extension PurchasesViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: setConstraints
-extension PurchasesViewController {
+extension PurchaseListViewController {
     func setConstraints() {
 
         view.addSubview(tableView)

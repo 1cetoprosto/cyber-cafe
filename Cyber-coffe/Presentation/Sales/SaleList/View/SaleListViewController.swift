@@ -1,5 +1,5 @@
 //
-//  SalesViewController.swift
+//  SaleListViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 03.11.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class SalesViewController: UIViewController {
+class SaleListViewController: UIViewController {
 
     let localRealm = try! Realm()
     var sales: Results<SalesModel>!
@@ -55,13 +55,13 @@ class SalesViewController: UIViewController {
     }
     
     @objc func performAdd(param: UIBarButtonItem) {
-        let saleVC = SaleViewController()
+        let saleVC = SaleDetailsViewController()
         navigationController?.pushViewController(saleVC, animated: true)
     }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
+extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sales.count
     }
@@ -77,7 +77,7 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let saleVC = SaleViewController()
+        let saleVC = SaleDetailsViewController()
         
         let model = sales[indexPath.row]
         saleVC.salesDateModel = model
@@ -119,7 +119,7 @@ extension SalesViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 // MARK: Constraints
-extension SalesViewController {
+extension SaleListViewController {
     func setConstraints() {
 
         view.addSubview(tableView)

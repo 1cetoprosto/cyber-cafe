@@ -1,5 +1,5 @@
 //
-//  GoodViewController.swift
+//  GoodDetailsViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 27.11.2021.
@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class GoodViewController: UIViewController {
+class GoodDetailsViewController: UIViewController {
     
     let goodLabel: UILabel = {
         let label = UILabel()
