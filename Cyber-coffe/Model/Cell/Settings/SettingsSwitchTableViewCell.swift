@@ -40,7 +40,7 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         settingSwitch.onTintColor = UIColor.Button.background
         //settingSwitch.tintColor = .red
         settingSwitch.thumbTintColor = UIColor.NavBar.text
-        settingSwitch.addTarget(self, action: #selector(switchTheme), for: .valueChanged)
+        settingSwitch.addTarget(SettingsSwitchTableViewCell.self, action: #selector(switchTheme), for: .valueChanged)
         
         return settingSwitch
     }()

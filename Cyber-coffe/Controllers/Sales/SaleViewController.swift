@@ -81,7 +81,7 @@ class SaleViewController: UIViewController, UITextFieldDelegate {
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
 
-        button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+        button.addTarget(SaleViewController.self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
     
