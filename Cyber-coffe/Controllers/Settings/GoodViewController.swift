@@ -72,7 +72,7 @@ class GoodViewController: UIViewController {
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
 
-        button.addTarget(GoodViewController.self, action: #selector(saveAction(param:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
     
