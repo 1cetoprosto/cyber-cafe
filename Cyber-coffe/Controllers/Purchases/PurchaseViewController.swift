@@ -58,7 +58,7 @@ class PurchaseViewController: UIViewController {
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
         
-        button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+        button.addTarget(PurchaseViewController.self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
     
@@ -70,7 +70,7 @@ class PurchaseViewController: UIViewController {
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
         
-        button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+        button.addTarget(PurchaseViewController.self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
     
