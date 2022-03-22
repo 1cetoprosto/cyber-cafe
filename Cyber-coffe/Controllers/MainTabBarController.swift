@@ -12,31 +12,35 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        //view.backgroundColor = .green
         setupTabBar()
         self.tabBar.tintColor = UIColor.TabBar.tint
         navigationController?.view.backgroundColor = UIColor.NavBar.background
     }
 
     func setupTabBar() {
-        let salesViewController = createNavController(vc: SalesViewController(), itemName: "Sales", itemImage: "cup.and.saucer.fill")
-        let purchasesViewController = createNavController(vc: PurchasesViewController(), itemName: "Purchases", itemImage: "takeoutbag.and.cup.and.straw.fill")
-        let settingsViewController = createNavController(vc: SettingsViewController(), itemName: "Settings", itemImage: "gearshape")
-        
+        let salesViewController = createNavController(viewController: SalesViewController(),
+                                                      itemName: "Sales",
+                                                      itemImage: "cup.and.saucer.fill")
+        let purchasesViewController = createNavController(viewController: PurchasesViewController(),
+                                                          itemName: "Purchases",
+                                                          itemImage: "takeoutbag.and.cup.and.straw.fill")
+        let settingsViewController = createNavController(viewController: SettingsViewController(),
+                                                         itemName: "Settings",
+                                                         itemImage: "gearshape")
+
         viewControllers = [salesViewController, purchasesViewController, settingsViewController]
     }
-    
-    func createNavController(vc: UIViewController, itemName: String, itemImage: String) -> UINavigationController{
-        let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0) //?.withAlignmentRectInsets(.init(top: 10, left: 0, bottom: 0, right: 0))
-        //item.titlePositionAdjustment = .init(horizontal: 0, vertical: 10)
+
+    func createNavController(viewController: UIViewController,
+                             itemName: String,
+                             itemImage: String) -> UINavigationController {
+        let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
         
-        let navController = UINavigationController(rootViewController: vc)
+        let navController = UINavigationController(rootViewController: viewController)
         navController.tabBarItem = item
         navController.view.backgroundColor = UIColor.NavBar.background
-        
+
         return navController
     }
 
-
 }
-

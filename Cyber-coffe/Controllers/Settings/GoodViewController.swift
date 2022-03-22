@@ -15,13 +15,12 @@ class GoodViewController: UIViewController {
         label.textAlignment = .left
         label.text = "Good name:"
         label.textColor = UIColor.Main.text
-        //label.backgroundColor = .red
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return label
     }()
-    
+
     let goodTextfield: UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
@@ -33,7 +32,7 @@ class GoodViewController: UIViewController {
         textField.font = UIFont.systemFont(ofSize: 20)
         textField.textColor = UIColor.TableView.cellLabel
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return textField
     }()
     
@@ -42,13 +41,12 @@ class GoodViewController: UIViewController {
         label.textAlignment = .left
         label.text = "Price:"
         label.textColor = UIColor.Main.text
-        //label.backgroundColor = .red
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
         
         return label
     }()
-    
+
     let priceTextfield: UITextField = {
         let textField = UITextField()
         textField.textAlignment = .left
@@ -60,11 +58,11 @@ class GoodViewController: UIViewController {
         textField.font = UIFont.systemFont(ofSize: 20)
         textField.textColor = UIColor.TableView.cellLabel
         textField.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return textField
     }()
-    
-    let saveButton: UIButton = {
+
+    lazy var saveButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
@@ -75,8 +73,8 @@ class GoodViewController: UIViewController {
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
-    
-    let cancelButton: UIButton = {
+
+    lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
@@ -87,14 +85,14 @@ class GoodViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
-    
+
     var good: String = ""
     var price: Double = 0.0
-    
+
     let localRealm = try! Realm()
     var goodsModel = GoodsPriceModel()
     var newModel = true
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -105,18 +103,27 @@ class GoodViewController: UIViewController {
         if price != 0 {
             priceTextfield.text = String(price)
         }
-        
+
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-        
+
         setConstraints()
     }
-    
+
     func setConstraints() {
-                
-        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton], axis: .horizontal, spacing: 20, distribution: .fillEqually)
-        
-        
-        let goodStackView = UIStackView(arrangedSubviews: [goodLabel, goodTextfield, priceLabel, priceTextfield, buttonStackView], axis: .vertical, spacing: 5, distribution: .fillEqually)
+
+        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton],
+                                          axis: .horizontal,
+                                          spacing: 20,
+                                          distribution: .fillEqually)
+
+        let goodStackView = UIStackView(arrangedSubviews: [goodLabel,
+                                                           goodTextfield,
+                                                           priceLabel,
+                                                           priceTextfield,
+                                                           buttonStackView],
+                                        axis: .vertical,
+                                        spacing: 5,
+                                        distribution: .fillEqually)
         view.addSubview(goodStackView)
 
         NSLayoutConstraint.activate([
@@ -125,32 +132,30 @@ class GoodViewController: UIViewController {
             goodStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             goodStackView.heightAnchor.constraint(equalToConstant: 200)
         ])
-        
+
     }
-    
-    //MARK: - Method
+
+    // MARK: - Method
     @objc func saveAction(param: UIButton) {
-        
+
         good = goodTextfield.text ?? ""
         price = Double(priceTextfield.text ?? "0.0") ?? 0.0
-        
+
         if newModel {
-            //запишем наименование и цену
             goodsModel.good = good
             goodsModel.price = price
-            
+
             RealmManager.shared.saveGoodsPriceModel(model: goodsModel)
             goodsModel = GoodsPriceModel()
         } else {
             RealmManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price)
         }
 
-        
         navigationController?.popViewController(animated: true)
     }
-    
+
     @objc func cancelAction(param: UIButton) {
         navigationController?.popViewController(animated: true)
     }
-    
+
 }

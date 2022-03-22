@@ -18,7 +18,6 @@ class PurchaseViewController: UIViewController {
     
     let purchasedatePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-        //datePiker.backgroundColor = .red
         datePiker.datePickerMode = .date
         datePiker.contentHorizontalAlignment = .left
         datePiker.preferredDatePickerStyle = .automatic
@@ -28,7 +27,7 @@ class PurchaseViewController: UIViewController {
     
     let purchaseNameLabel: UILabel = {
         let label = UILabel(text: "Purchase:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
-        
+
         return label
     }()
     
@@ -50,19 +49,19 @@ class PurchaseViewController: UIViewController {
         return textField
     }()
     
-    let saveButton: UIButton = {
+    lazy var saveButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Save", for: .normal)
         button.setTitleColor(UIColor.Button.title, for: .normal)
         button.backgroundColor = UIColor.Button.background
         button.layer.cornerRadius = 10
-        
+
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
     
-    let cancelButton: UIButton = {
+    lazy var cancelButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Cancel", for: .normal)
@@ -77,7 +76,7 @@ class PurchaseViewController: UIViewController {
     let localRealm = try! Realm()
     var purchaseModel = PurchaseModel()
     var newModel = true
-    
+
     var purchaseDate: Date = NSDate() as Date
     var purchaseName: String = ""
     var purchaseSum: Double = 0.0
@@ -88,7 +87,7 @@ class PurchaseViewController: UIViewController {
         title = "Purchase"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-        
+
         if purchaseName != "" {
             purchaseNameTextfield.text = String(purchaseName)
         }
@@ -97,32 +96,34 @@ class PurchaseViewController: UIViewController {
         }
         
         purchasedatePiker.date = purchaseDate
-        
+
         setConstraints()
-        
+
     }
-    
-    //MARK: - Method
+
+    // MARK: - Method
     @objc func saveAction(param: UIButton) {
         purchaseDate = purchasedatePiker.date
         purchaseName = purchaseNameTextfield.text ?? ""
         purchaseSum = Double(purchaseSumTextfield.text ?? "0.0") ?? 0.0
-        
+
         if newModel {
-            //запишем наименование и цену
             purchaseModel.purchaseDate = purchaseDate
             purchaseModel.purchaseGood = purchaseName
             purchaseModel.purchaseSum = purchaseSum
-            
+
             RealmManager.shared.savePurchaseModel(model: purchaseModel)
             purchaseModel = PurchaseModel()
         } else {
-            RealmManager.shared.updatePurchaseModel(model: purchaseModel, purchaseDate: purchaseDate, purchaseName: purchaseName, purchaseSum: purchaseSum)
+            RealmManager.shared.updatePurchaseModel(model: purchaseModel,
+                                                    purchaseDate: purchaseDate,
+                                                    purchaseName: purchaseName,
+                                                    purchaseSum: purchaseSum)
         }
-        
+
         navigationController?.popToRootViewController(animated: true)
     }
-    
+
     @objc func cancelAction(param: UIButton) {
         navigationController?.popToRootViewController(animated: true)
     }
@@ -130,13 +131,27 @@ class PurchaseViewController: UIViewController {
 
 extension PurchaseViewController {
     func setConstraints() {
-        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton], axis: .horizontal, spacing: 20, distribution: .fillEqually)
-        
-        let dateStackView = UIStackView(arrangedSubviews: [purchaseDateLabel, purchasedatePiker], axis: .horizontal, spacing: 20, distribution: .fill)
-        
-        let purchaseStackView = UIStackView(arrangedSubviews: [dateStackView, purchaseNameLabel, purchaseNameTextfield, purchaseSumLabel, purchaseSumTextfield, buttonStackView], axis: .vertical, spacing: 10, distribution: .fillEqually)
+        let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton],
+                                          axis: .horizontal,
+                                          spacing: 20,
+                                          distribution: .fillEqually)
+
+        let dateStackView = UIStackView(arrangedSubviews: [purchaseDateLabel, purchasedatePiker],
+                                        axis: .horizontal,
+                                        spacing: 20,
+                                        distribution: .fill)
+
+        let purchaseStackView = UIStackView(arrangedSubviews: [dateStackView,
+                                                               purchaseNameLabel,
+                                                               purchaseNameTextfield,
+                                                               purchaseSumLabel,
+                                                               purchaseSumTextfield,
+                                                               buttonStackView],
+                                            axis: .vertical,
+                                            spacing: 10,
+                                            distribution: .fillEqually)
         view.addSubview(purchaseStackView)
-        
+
         NSLayoutConstraint.activate([
             purchaseStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             purchaseStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

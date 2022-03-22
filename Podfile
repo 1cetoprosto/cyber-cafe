@@ -7,5 +7,6 @@ target 'Cyber-coffe' do
 
   # Pods for Cyber-coffe
 	pod 'RealmSwift'
+	pod 'SwiftLint'
 
 end

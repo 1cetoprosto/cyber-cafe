@@ -13,8 +13,8 @@ class RealmManager {
     private init() {}
     
     let localRealm = try! Realm()
-    
-    //Продажи товаров
+
+    // Продажи товаров
     func saveSalesGoodModel(model: SaleGoodModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -37,7 +37,7 @@ class RealmManager {
         }
     }
     
-    //Продажи и касса
+    // Продажи и касса
     func saveSalesModel(model: SalesModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -52,21 +52,21 @@ class RealmManager {
             model.salesCash = salesCash
         }
     }
-    
+
     func deleteSalesModel(model: SalesModel) {
         try! localRealm.write {
             localRealm.delete(model)
         }
     }
-    
-    //Товары и цены
+
+    // Товары и цены
     func saveGoodsPriceModel(model: GoodsPriceModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)
         }
     }
-    
+
     func updateGoodsPriceModel(model: GoodsPriceModel, good: String, price: Double) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -74,21 +74,21 @@ class RealmManager {
             model.price = price
         }
     }
-    
+
     func deleteGoodsPriceModel(model: GoodsPriceModel) {
         try! localRealm.write {
             localRealm.delete(model)
         }
     }
     
-    //Закупки
+    // Закупки
     func savePurchaseModel(model: PurchaseModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             localRealm.add(model)
         }
     }
-    
+
     func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double) {
         try! localRealm.write {
             model.purchaseDate = purchaseDate
@@ -96,7 +96,7 @@ class RealmManager {
             model.purchaseSum = purchaseSum
         }
     }
-    
+
     func deletePurchaseModel(model: PurchaseModel) {
         try! localRealm.write {
             localRealm.delete(model)
