@@ -84,7 +84,8 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
-        let detailViewModel = viewModel.viewModelForSelectedRow()
+        var detailViewModel = viewModel.viewModelForSelectedRow()
+        detailViewModel?.newModel = false
         
         let purchaseVC = PurchaseDetailsListViewController()
         purchaseVC.viewModel = detailViewModel
