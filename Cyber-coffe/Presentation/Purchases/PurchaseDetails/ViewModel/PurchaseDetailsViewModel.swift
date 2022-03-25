@@ -10,15 +10,11 @@ import Foundation
 class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
     
     private var purchase: PurchaseModel
-    var newModel = true
+    var newModel: Bool
     
     var purchaseDate: Date { return purchase.purchaseDate }
     var purchaseName: String { return purchase.purchaseGood }
     var purchaseSum: String { return purchase.purchaseSum.description }
-    
-    init(purchase: PurchaseModel) {
-        self.purchase = purchase
-    }
     
     func savePurchaseModel(purchaseDate: Date, purchaseName: String?, purchaseSum: String?) {
 //        purchaseDate = purchasedatePiker.date
@@ -39,4 +35,10 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
                                                        purchaseSum: purchaseSum)
         }
     }
+    
+    init(purchase: PurchaseModel) {
+        self.purchase = purchase
+        self.newModel = true
+    }
+    
 }
