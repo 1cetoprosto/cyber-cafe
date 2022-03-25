@@ -10,7 +10,6 @@ import Foundation
 class PurchaseListViewModel: PurchaseListViewModelType {
     
     private var selectedIndexPath: IndexPath?
-    //private var networkService: NetworkService!
     private var purchases: [PurchaseModel]?
     
     func getPurchases(completion: @escaping () -> ()) {
@@ -39,6 +38,4 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     func selectRow(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
     }
-    
-    
 }
