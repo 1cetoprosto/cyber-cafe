@@ -7,14 +7,15 @@
 
 import RealmSwift
 
-class RealmManager {
-    static let shared = RealmManager()
+class DatabaseManager {
+    static let shared = DatabaseManager()
     
+    // MARK: - Lifecycle
     private init() {}
     
     let localRealm = try! Realm()
 
-    // Продажи товаров
+    // MARK: - Work With Sales Good
     func saveSalesGoodModel(model: SaleGoodModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -37,6 +38,10 @@ class RealmManager {
         }
     }
     
+    func fetchSaleGood() -> [SaleGoodModel] {
+        return Array(localRealm.objects(SaleGoodModel.self))
+    }
+    
     // Продажи и касса
     func saveSalesModel(model: SalesModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
@@ -57,6 +62,10 @@ class RealmManager {
         try! localRealm.write {
             localRealm.delete(model)
         }
+    }
+    
+    func fetchSales() -> [SalesModel] {
+        return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate"))
     }
 
     // Товары и цены
@@ -101,5 +110,9 @@ class RealmManager {
         try! localRealm.write {
             localRealm.delete(model)
         }
+    }
+    
+    func fetchPurchases() -> [PurchaseModel] {
+        return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate"))
     }
 }

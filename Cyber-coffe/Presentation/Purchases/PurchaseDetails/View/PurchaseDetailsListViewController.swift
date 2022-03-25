@@ -1,5 +1,5 @@
 //
-//  PurchaseDetailsViewController.swift
+//  PurchaseDetailsListViewController.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 04.12.2021.
@@ -8,7 +8,9 @@
 import UIKit
 import RealmSwift
 
-class PurchaseDetailsViewController: UIViewController {
+class PurchaseDetailsListViewController: UIViewController {
+    
+    var viewModel: PurchaseDetailsViewModelType?
     
     let purchaseDateLabel: UILabel = {
         let label = UILabel(text: "Date:", font: UIFont.systemFont(ofSize: 20), aligment: .left)
@@ -72,14 +74,20 @@ class PurchaseDetailsViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
-    
-    let localRealm = try! Realm()
-    var purchaseModel = PurchaseModel()
-    var newModel = true
 
-    var purchaseDate: Date = NSDate() as Date
-    var purchaseName: String = ""
-    var purchaseSum: Double = 0.0
+//    let localRealm = try! Realm()
+//    var purchaseModel = PurchaseModel()
+//    var newModel = true
+//
+//    var purchaseDate: Date = NSDate() as Date
+//    var purchaseName: String = ""
+//    var purchaseSum: Double = 0.0
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        setData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,40 +95,32 @@ class PurchaseDetailsViewController: UIViewController {
         title = "Purchase"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-
-        if purchaseName != "" {
-            purchaseNameTextfield.text = String(purchaseName)
-        }
-        if purchaseSum != 0 {
-            purchaseSumTextfield.text = String(purchaseSum)
-        }
         
-        purchasedatePiker.date = purchaseDate
-
+        setData()
+        
         setConstraints()
-
+        
     }
 
     // MARK: - Method
-    @objc func saveAction(param: UIButton) {
-        purchaseDate = purchasedatePiker.date
-        purchaseName = purchaseNameTextfield.text ?? ""
-        purchaseSum = Double(purchaseSumTextfield.text ?? "0.0") ?? 0.0
-
-        if newModel {
-            purchaseModel.purchaseDate = purchaseDate
-            purchaseModel.purchaseGood = purchaseName
-            purchaseModel.purchaseSum = purchaseSum
-
-            RealmManager.shared.savePurchaseModel(model: purchaseModel)
-            purchaseModel = PurchaseModel()
-        } else {
-            RealmManager.shared.updatePurchaseModel(model: purchaseModel,
-                                                    purchaseDate: purchaseDate,
-                                                    purchaseName: purchaseName,
-                                                    purchaseSum: purchaseSum)
+    fileprivate func setData() {
+        if viewModel == nil {
+            viewModel = PurchaseDetailsViewModel(purchase: PurchaseModel())
         }
-
+        
+        guard let viewModel = viewModel else { return }
+        if viewModel.purchaseName != "" {
+            purchaseNameTextfield.text = viewModel.purchaseName
+        }
+        if viewModel.purchaseSum != "" {
+            purchaseSumTextfield.text = viewModel.purchaseSum
+        }
+        
+        purchasedatePiker.date = viewModel.purchaseDate
+    }
+    
+    @objc func saveAction(param: UIButton) {
+        viewModel?.savePurchaseModel(purchaseDate: purchasedatePiker.date, purchaseName: purchaseNameTextfield.text, purchaseSum: purchaseSumTextfield.text)
         navigationController?.popToRootViewController(animated: true)
     }
 
@@ -129,7 +129,8 @@ class PurchaseDetailsViewController: UIViewController {
     }
 }
 
-extension PurchaseDetailsViewController {
+// MARK: - Constraints
+extension PurchaseDetailsListViewController {
     func setConstraints() {
         let buttonStackView = UIStackView(arrangedSubviews: [saveButton, cancelButton],
                                           axis: .horizontal,

@@ -104,7 +104,7 @@ extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let model = goodsArray[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            RealmManager.shared.deleteGoodsPriceModel(model: model)
+            DatabaseManager.shared.deleteGoodsPriceModel(model: model)
 
             self.configure()
 

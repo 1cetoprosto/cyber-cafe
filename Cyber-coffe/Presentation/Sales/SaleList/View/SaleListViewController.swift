@@ -10,8 +10,11 @@ import RealmSwift
 
 class SaleListViewController: UIViewController {
 
+    private var viewModel: SaleListViewModelType?
+
     let localRealm = try! Realm()
     var sales: Results<SalesModel>!
+    
     var salesGoods: Results<SaleGoodModel>!
 
     let idSalesCell = "idSalesCell"
@@ -46,6 +49,11 @@ class SaleListViewController: UIViewController {
                                                             action: #selector(performAdd(param:)))
         
         setConstraints()
+        
+        viewModel = SaleListViewModel()
+        viewModel?.getSales { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 
     // MARK: - Method
@@ -103,10 +111,10 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
         salesGoods = localRealm.objects(SaleGoodModel.self).filter(predicateDate)
 
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            RealmManager.shared.deleteSalesModel(model: editingRow)
+            DatabaseManager.shared.deleteSalesModel(model: editingRow)
 
             for saleGood in self.salesGoods {
-                RealmManager.shared.deleteSaleGoodModel(model: saleGood)
+                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
             }
 
             self.configure()

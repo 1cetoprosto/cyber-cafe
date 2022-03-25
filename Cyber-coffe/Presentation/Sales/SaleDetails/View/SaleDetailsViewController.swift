@@ -19,6 +19,8 @@ struct SaleGood {
 
 class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
+    var viewModel: SaleDetailsViewModelType?
+    
     let datePiker: UIDatePicker = {
         let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
         datePiker.datePickerMode = .date
@@ -170,7 +172,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
                 salesGoodsModel.saleQty = sale.qty
                 salesGoodsModel.saleSum = sale.sum
 
-                RealmManager.shared.saveSalesGoodModel(model: salesGoodsModel)
+                DatabaseManager.shared.saveSalesGoodModel(model: salesGoodsModel)
                 salesGoodsModel = SaleGoodModel()
             }
 
@@ -179,18 +181,18 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
             salesDateModel.salesSum = salesSum
             salesDateModel.salesCash = salesCash
 
-            RealmManager.shared.saveSalesModel(model: salesDateModel)
+            DatabaseManager.shared.saveSalesModel(model: salesDateModel)
             salesDateModel = SalesModel()
         } else {
             for sale in salesGoodsArray {
-                RealmManager.shared.updateSaleGoodModel(model: sale.model,
+                DatabaseManager.shared.updateSaleGoodModel(model: sale.model,
                                                         saleDate: datePiker.date,
                                                         saleGood: sale.good,
                                                         saleQty: sale.qty,
                                                         saleSum: sale.sum)
             }
 
-            RealmManager.shared.updateSalesModel(model: salesDateModel,
+            DatabaseManager.shared.updateSalesModel(model: salesDateModel,
                                                  salesDate: datePiker.date,
                                                  salesSum: salesSum,
                                                  salesCash: salesCash)
