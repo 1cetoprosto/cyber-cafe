@@ -145,10 +145,10 @@ class GoodDetailsViewController: UIViewController {
             goodsModel.good = good
             goodsModel.price = price
 
-            RealmManager.shared.saveGoodsPriceModel(model: goodsModel)
+            DatabaseManager.shared.saveGoodsPriceModel(model: goodsModel)
             goodsModel = GoodsPriceModel()
         } else {
-            RealmManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price)
+            DatabaseManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price)
         }
 
         navigationController?.popViewController(animated: true)

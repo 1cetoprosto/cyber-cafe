@@ -39,17 +39,26 @@ class PurchasesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(purchase: PurchaseModel) {
+//    func configure(purchase: PurchaseModel) {
+//
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "dd.MM.yy"
+//        purchaseDate.text = dateFormatter.string(from: purchase.purchaseDate)
+//        purchaseName.text = String(purchase.purchaseGood)
+//        purchaseSum.text = String(Int(purchase.purchaseSum))
+//
+//        selectionStyle = .none
+//    }
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
-        purchaseDate.text = dateFormatter.string(from: purchase.purchaseDate)
-        purchaseName.text = String(purchase.purchaseGood)
-        purchaseSum.text = String(Int(purchase.purchaseSum))
-
-        selectionStyle = .none
+    weak var viewModel: PurchaseListItemViewModelType? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            purchaseDate.text = viewModel.purchaseDate
+            purchaseName.text = viewModel.purchaseName
+            purchaseSum.text = viewModel.purchaseSum
+        }
     }
-
+    
     func setConstraints() {
 
         self.addSubview(backgroundViewCell)
