@@ -6,16 +6,15 @@
 //
 
 import Foundation
-import RealmSwift
 
 class SaleListViewModel: SaleListViewModelType {
-
+    
     private var selectedIndexPath: IndexPath?
     private var sales: [SalesModel]? // Results<SalesModel>!
     
     func getSales(completion: @escaping () -> ()) {
-        //let databaseManager = DatabaseManager()
         sales = DatabaseManager.shared.fetchSales()
+        completion()
     }
     
     func numberOfSections() -> Int {
@@ -40,13 +39,11 @@ class SaleListViewModel: SaleListViewModelType {
     func viewModelForSelectedRow() -> SaleDetailsViewModelType? {
         guard let selectedIndexPath = selectedIndexPath,
               let sales = self.sales else { return nil }
-        //let sale = sales[selectedIndexPath.row]
-        return nil//SaleDetailsViewModel
+        let sale = sales[selectedIndexPath.row]
+        return SaleDetailsViewModel(sale: sale)
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
     }
-    
-    
 }
