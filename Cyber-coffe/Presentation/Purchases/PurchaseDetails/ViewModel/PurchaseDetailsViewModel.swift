@@ -17,7 +17,7 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
     var purchaseSum: String { return purchase.purchaseSum.description }
     
     func savePurchaseModel(purchaseDate: Date, purchaseName: String?, purchaseSum: String?) {
-//        purchaseDate = purchasedatePiker.date
+
         let purchaseName = purchaseName ?? ""
         let purchaseSum = Double(purchaseSum ?? "0.0") ?? 0.0
         

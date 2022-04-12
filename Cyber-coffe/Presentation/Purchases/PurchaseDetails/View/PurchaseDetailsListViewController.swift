@@ -74,20 +74,12 @@ class PurchaseDetailsListViewController: UIViewController {
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
         return button
     }()
-
-//    let localRealm = try! Realm()
-//    var purchaseModel = PurchaseModel()
-//    var newModel = true
-//
-//    var purchaseDate: Date = NSDate() as Date
-//    var purchaseName: String = ""
-//    var purchaseSum: Double = 0.0
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setData()
-    }
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(animated)
+//        
+//        setData()
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

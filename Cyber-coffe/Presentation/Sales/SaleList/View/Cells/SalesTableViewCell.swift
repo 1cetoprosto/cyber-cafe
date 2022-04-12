@@ -40,17 +40,26 @@ class SalesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(sale: SalesModel) {
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
-        goodsName.text = dateFormatter.string(from: sale.salesDate)
-
-        salesSum.text = String(Int(sale.salesSum))
-        cashSum.text = String(Int(sale.salesCash))
-
-        selectionStyle = .none
+    weak var viewModel: SaleListItemViewModelType? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            goodsName.text = viewModel.goodsName
+            salesSum.text = viewModel.salesSum
+            cashSum.text = viewModel.cashSum
+        }
     }
+    
+//    func configure(sale: SalesModel) {
+//
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "dd.MM.yy"
+//        goodsName.text = dateFormatter.string(from: sale.salesDate)
+//
+//        salesSum.text = String(Int(sale.salesSum))
+//        cashSum.text = String(Int(sale.salesCash))
+//
+//        selectionStyle = .none
+//    }
 
     func createSalesLabel(text: String, font: UIFont?, aligment: NSTextAlignment) -> UILabel {
         let label = UILabel()

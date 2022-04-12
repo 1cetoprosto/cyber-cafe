@@ -38,8 +38,20 @@ class DatabaseManager {
         }
     }
     
-    func fetchSaleGood() -> [SaleGoodModel] {
-        return Array(localRealm.objects(SaleGoodModel.self))
+    func fetchSaleGood(date: Date) -> [SaleGoodModel] {
+        let dateStart = Calendar.current.startOfDay(for: date)
+        let dateEnd: Date = {
+            let components = DateComponents(day: 1, second: -1)
+            return Calendar.current.date(byAdding: components, to: dateStart)!
+        }()
+        
+        let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
+        
+        return Array(localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood"))
+    }
+    
+    func fetchGoodsPrice() -> [GoodsPriceModel] {
+        return Array(localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good"))
     }
     
     // Продажи и касса
