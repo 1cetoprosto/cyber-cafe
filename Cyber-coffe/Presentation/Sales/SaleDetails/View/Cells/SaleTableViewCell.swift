@@ -54,6 +54,16 @@ class SaleTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    weak var viewModel: SaleGoodListItemViewModelType? {
+        willSet(viewModel) {
+            guard let viewModel = viewModel else { return }
+            goodLabel.text = viewModel.goodLabel
+            quantityLabel.text = viewModel.quantityLabel
+            goodStepper.value = viewModel.goodStepperValue //stepperValue
+            goodStepper.tag = viewModel.goodStepperTag //indexPath.row
+        }
+    }
+    
     func setConstraints() {
 
         self.addSubview(backgroundViewCell)

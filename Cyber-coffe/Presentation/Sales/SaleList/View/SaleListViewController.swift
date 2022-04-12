@@ -12,11 +12,6 @@ class SaleListViewController: UIViewController {
 
     private var viewModel: SaleListViewModelType?
 
-    let localRealm = try! Realm()
-    var sales: Results<SalesModel>!
-    
-    var salesGoods: Results<SaleGoodModel>!
-
     let idSalesCell = "idSalesCell"
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -29,8 +24,10 @@ class SaleListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        configure()
-        tableView.reloadData()
+        viewModel = SaleListViewModel()
+        viewModel?.getSales { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
     
     override func viewDidLoad() {
@@ -50,18 +47,13 @@ class SaleListViewController: UIViewController {
         
         setConstraints()
         
-        viewModel = SaleListViewModel()
-        viewModel?.getSales { [weak self] in
-            self?.tableView.reloadData()
-        }
+//        viewModel = SaleListViewModel()
+//        viewModel?.getSales { [weak self] in
+//            self?.tableView.reloadData()
+//        }
     }
 
     // MARK: - Method
-    func configure() {
-        sales = localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate")
-        tableView.reloadData()
-    }
-    
     @objc func performAdd(param: UIBarButtonItem) {
         let saleVC = SaleDetailsViewController()
         navigationController?.pushViewController(saleVC, animated: true)
@@ -71,13 +63,19 @@ class SaleListViewController: UIViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sales.count
+        return viewModel?.numberOfRowInSection(for: section) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idSalesCell, for: indexPath) as! SalesTableViewCell
-        cell.configure(sale: sales[indexPath.row])
-        return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: idSalesCell, for: indexPath) as? SalesTableViewCell
+        guard let tableViewCell = cell,
+        let viewModel = viewModel else { return UITableViewCell() }
+        
+        let cellViewModel = viewModel.cellViewModel(for: indexPath)
+
+        tableViewCell.viewModel = cellViewModel
+        
+        return tableViewCell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -85,45 +83,44 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let saleVC = SaleDetailsViewController()
+        guard let viewModel = viewModel else { return }
+        viewModel.selectRow(atIndexPath: indexPath)
+        var detailViewModel = viewModel.viewModelForSelectedRow()
+        detailViewModel?.newModel = false
         
-        let model = sales[indexPath.row]
-        saleVC.salesDateModel = model
-        saleVC.forDate = model.salesDate
-        saleVC.salesCash = model.salesCash
-        saleVC.salesSum = model.salesSum
-        saleVC.newModel = false
+        let saleVC = SaleDetailsViewController()
+        saleVC.viewModel = detailViewModel
         
         self.navigationController?.pushViewController(saleVC, animated: true)
     }
 
-    func tableView(_ tableView: UITableView,
-                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let editingRow = sales[indexPath.row]
-
-        let dateStart = Calendar.current.startOfDay(for: editingRow.salesDate)
-        let dateEnd: Date = {
-            let components = DateComponents(day: 1, second: -1)
-            return Calendar.current.date(byAdding: components, to: dateStart)!
-        }()
-        
-        let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
-        salesGoods = localRealm.objects(SaleGoodModel.self).filter(predicateDate)
-
-        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            DatabaseManager.shared.deleteSalesModel(model: editingRow)
-
-            for saleGood in self.salesGoods {
-                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
-            }
-
-            self.configure()
-            
-            tableView.reloadData()
-        }
-
-        return UISwipeActionsConfiguration(actions: [deleteAction])
-    }
+//    func tableView(_ tableView: UITableView,
+//                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+//        let editingRow = sales[indexPath.row]
+//
+//        let dateStart = Calendar.current.startOfDay(for: editingRow.salesDate)
+//        let dateEnd: Date = {
+//            let components = DateComponents(day: 1, second: -1)
+//            return Calendar.current.date(byAdding: components, to: dateStart)!
+//        }()
+//        
+//        let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
+//        salesGoods = localRealm.objects(SaleGoodModel.self).filter(predicateDate)
+//
+//        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+//            DatabaseManager.shared.deleteSalesModel(model: editingRow)
+//
+//            for saleGood in self.salesGoods {
+//                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+//            }
+//
+//            self.configure()
+//            
+//            tableView.reloadData()
+//        }
+//
+//        return UISwipeActionsConfiguration(actions: [deleteAction])
+//    }
 }
 
 // MARK: Constraints
