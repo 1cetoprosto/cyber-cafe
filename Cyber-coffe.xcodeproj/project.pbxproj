@@ -36,8 +36,6 @@
 		F3988ADC27EB111600215976 /* PurchaseListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADB27EB111600215976 /* PurchaseListViewModelType.swift */; };
 		F3988ADE27EB11EB00215976 /* PurchaseListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADD27EB11EB00215976 /* PurchaseListItemViewModelType.swift */; };
 		F3988AE027EB12E100215976 /* PurchaseDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADF27EB12E100215976 /* PurchaseDetailsViewModelType.swift */; };
-		F3988AE627EB145500215976 /* PurchaseGoodListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AE527EB145500215976 /* PurchaseGoodListViewModelType.swift */; };
-		F3988AE827EB147200215976 /* PurchaseGoodListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AE727EB147200215976 /* PurchaseGoodListItemViewModelType.swift */; };
 		F3988AED27EB19C300215976 /* PurchaseDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEC27EB19C300215976 /* PurchaseDetailsViewModel.swift */; };
 		F3988AEF27EB2EC500215976 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEE27EB2EC500215976 /* PurchaseListViewModel.swift */; };
 		F3988AF127EB310900215976 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AF027EB310900215976 /* PurchaseListItemViewModel.swift */; };
@@ -55,6 +53,10 @@
 		F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */; };
 		F3EAACFE27526383004B9AF6 /* GoodPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */; };
 		F3EAAD00275266EA004B9AF6 /* GoodDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFF275266EA004B9AF6 /* GoodDetailsViewController.swift */; };
+		F3EB27D927F30EBE00BB2D93 /* SaleGoodListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27D827F30EBE00BB2D93 /* SaleGoodListViewModelType.swift */; };
+		F3EB27DB27F30ED800BB2D93 /* SaleGoodListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* SaleGoodListViewModel.swift */; };
+		F3EB27DD27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DC27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift */; };
+		F3EB27DF27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DE27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -89,8 +91,6 @@
 		F3988ADB27EB111600215976 /* PurchaseListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADD27EB11EB00215976 /* PurchaseListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADF27EB12E100215976 /* PurchaseDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailsViewModelType.swift; sourceTree = "<group>"; };
-		F3988AE527EB145500215976 /* PurchaseGoodListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseGoodListViewModelType.swift; sourceTree = "<group>"; };
-		F3988AE727EB147200215976 /* PurchaseGoodListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseGoodListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3988AEC27EB19C300215976 /* PurchaseDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailsViewModel.swift; sourceTree = "<group>"; };
 		F3988AEE27EB2EC500215976 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
 		F3988AF027EB310900215976 /* PurchaseListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModel.swift; sourceTree = "<group>"; };
@@ -110,6 +110,10 @@
 		F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
 		F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodPriceTableViewCell.swift; sourceTree = "<group>"; };
 		F3EAACFF275266EA004B9AF6 /* GoodDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodDetailsViewController.swift; sourceTree = "<group>"; };
+		F3EB27D827F30EBE00BB2D93 /* SaleGoodListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodListViewModelType.swift; sourceTree = "<group>"; };
+		F3EB27DA27F30ED800BB2D93 /* SaleGoodListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodListViewModel.swift; sourceTree = "<group>"; };
+		F3EB27DC27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodListItemViewModelType.swift; sourceTree = "<group>"; };
+		F3EB27DE27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodListItemViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -229,9 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				F3821C5E27E9FC13006D40FC /* SaleListViewModel.swift */,
+				F3821C7927EAEA8B006D40FC /* SaleListViewModelType.swift */,
 				F3821C7F27EAEB80006D40FC /* SaleListItemViewModel.swift */,
 				F3821C8127EAEB97006D40FC /* SaleListItemViewModelType.swift */,
-				F3821C7927EAEA8B006D40FC /* SaleListViewModelType.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -250,6 +254,7 @@
 			children = (
 				F3821C7B27EAEB04006D40FC /* SaleDetailsViewModelType.swift */,
 				F3821C7D27EAEB0F006D40FC /* SaleDetailsViewModel.swift */,
+				F3EB27E027F30FAD00BB2D93 /* SaleGood */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -451,47 +456,6 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		F3988AE127EB13E700215976 /* PurchaseGood */ = {
-			isa = PBXGroup;
-			children = (
-				F3988AE227EB140300215976 /* PurchaseGoodList */,
-			);
-			path = PurchaseGood;
-			sourceTree = "<group>";
-		};
-		F3988AE227EB140300215976 /* PurchaseGoodList */ = {
-			isa = PBXGroup;
-			children = (
-				F3988AE327EB141300215976 /* View */,
-				F3988AE427EB142200215976 /* ViewModel */,
-			);
-			path = PurchaseGoodList;
-			sourceTree = "<group>";
-		};
-		F3988AE327EB141300215976 /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3988AE927EB148000215976 /* Cells */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F3988AE427EB142200215976 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				F3988AE527EB145500215976 /* PurchaseGoodListViewModelType.swift */,
-				F3988AE727EB147200215976 /* PurchaseGoodListItemViewModelType.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		F3988AE927EB148000215976 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
 		F39A52E827311FDD00C8F2D3 = {
 			isa = PBXGroup;
 			children = (
@@ -567,7 +531,6 @@
 			children = (
 				F3821C6327E9FD16006D40FC /* PurchaseList */,
 				F3821C6427E9FD26006D40FC /* PurchaseDetails */,
-				F3988AE127EB13E700215976 /* PurchaseGood */,
 			);
 			path = Purchases;
 			sourceTree = "<group>";
@@ -580,6 +543,17 @@
 				F3821C6E27E9FF13006D40FC /* SettingLanguage */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		F3EB27E027F30FAD00BB2D93 /* SaleGood */ = {
+			isa = PBXGroup;
+			children = (
+				F3EB27D827F30EBE00BB2D93 /* SaleGoodListViewModelType.swift */,
+				F3EB27DA27F30ED800BB2D93 /* SaleGoodListViewModel.swift */,
+				F3EB27DC27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift */,
+				F3EB27DE27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift */,
+			);
+			path = SaleGood;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -729,13 +703,15 @@
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
+				F3EB27DF27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
+				F3EB27DB27F30ED800BB2D93 /* SaleGoodListViewModel.swift in Sources */,
 				F3988ADC27EB111600215976 /* PurchaseListViewModelType.swift in Sources */,
 				F3EAAD00275266EA004B9AF6 /* GoodDetailsViewController.swift in Sources */,
+				F3EB27D927F30EBE00BB2D93 /* SaleGoodListViewModelType.swift in Sources */,
 				F3EAACFE27526383004B9AF6 /* GoodPriceTableViewCell.swift in Sources */,
 				F316A2F3273803CE0083E830 /* GoodListViewController.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* PurchaseListViewController.swift in Sources */,
-				F3988AE627EB145500215976 /* PurchaseGoodListViewModelType.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */,
 				F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */,
@@ -748,9 +724,9 @@
 				F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */,
 				F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */,
 				F3988AF127EB310900215976 /* PurchaseListItemViewModel.swift in Sources */,
+				F3EB27DD27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift in Sources */,
 				F3158C482763437200136861 /* SaleGoodModel.swift in Sources */,
 				F3988AED27EB19C300215976 /* PurchaseDetailsViewModel.swift in Sources */,
-				F3988AE827EB147200215976 /* PurchaseGoodListItemViewModelType.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */,

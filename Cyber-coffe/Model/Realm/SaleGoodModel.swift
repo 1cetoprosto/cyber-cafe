@@ -11,5 +11,6 @@ class SaleGoodModel: Object {
     @Persisted var saleDate = Date()
     @Persisted var saleGood: String = ""
     @Persisted var saleQty: Int = 0
+    @Persisted var salePrice: Double = 0.0
     @Persisted var saleSum: Double = 0.0
 }
