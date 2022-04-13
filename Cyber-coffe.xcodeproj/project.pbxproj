@@ -47,6 +47,10 @@
 		F39A53352732525900C8F2D3 /* SaleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A53342732525900C8F2D3 /* SaleListViewController.swift */; };
 		F39A5337273252A500C8F2D3 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5336273252A500C8F2D3 /* PurchaseListViewController.swift */; };
 		F39A5339273252B800C8F2D3 /* SettingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5338273252B800C8F2D3 /* SettingListViewController.swift */; };
+		F3B7C2452806B0B700DF5C2B /* SettingListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2442806B0B700DF5C2B /* SettingListViewModelType.swift */; };
+		F3B7C2472806B0CB00DF5C2B /* SettingListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2462806B0CB00DF5C2B /* SettingListViewModel.swift */; };
+		F3B7C2492806B0E200DF5C2B /* SettingListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2482806B0E200DF5C2B /* SettingListItemViewModelType.swift */; };
+		F3B7C24B2806B0F500DF5C2B /* SettingListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24A2806B0F500DF5C2B /* SettingListItemViewModel.swift */; };
 		F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */; };
 		F3D862D7277C33C100DD43DB /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* PurchaseModel.swift */; };
 		F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */; };
@@ -104,6 +108,10 @@
 		F39A53342732525900C8F2D3 /* SaleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleListViewController.swift; sourceTree = "<group>"; };
 		F39A5336273252A500C8F2D3 /* PurchaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewController.swift; sourceTree = "<group>"; };
 		F39A5338273252B800C8F2D3 /* SettingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewController.swift; sourceTree = "<group>"; };
+		F3B7C2442806B0B700DF5C2B /* SettingListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewModelType.swift; sourceTree = "<group>"; };
+		F3B7C2462806B0CB00DF5C2B /* SettingListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewModel.swift; sourceTree = "<group>"; };
+		F3B7C2482806B0E200DF5C2B /* SettingListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListItemViewModelType.swift; sourceTree = "<group>"; };
+		F3B7C24A2806B0F500DF5C2B /* SettingListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListItemViewModel.swift; sourceTree = "<group>"; };
 		F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F3D862D6277C33C100DD43DB /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsPriceModel.swift; sourceTree = "<group>"; };
@@ -360,6 +368,10 @@
 		F3821C6D27E9FEB7006D40FC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				F3B7C2442806B0B700DF5C2B /* SettingListViewModelType.swift */,
+				F3B7C2462806B0CB00DF5C2B /* SettingListViewModel.swift */,
+				F3B7C2482806B0E200DF5C2B /* SettingListItemViewModelType.swift */,
+				F3B7C24A2806B0F500DF5C2B /* SettingListItemViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -689,6 +701,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3264983275B334300836077 /* PurchaseDetailsListViewController.swift in Sources */,
+				F3B7C2452806B0B700DF5C2B /* SettingListViewModelType.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
 				F3821C7C27EAEB04006D40FC /* SaleDetailsViewModelType.swift in Sources */,
 				F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */,
@@ -703,7 +716,9 @@
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
+				F3B7C24B2806B0F500DF5C2B /* SettingListItemViewModel.swift in Sources */,
 				F3EB27DF27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift in Sources */,
+				F3B7C2472806B0CB00DF5C2B /* SettingListViewModel.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* SaleGoodListViewModel.swift in Sources */,
 				F3988ADC27EB111600215976 /* PurchaseListViewModelType.swift in Sources */,
@@ -730,6 +745,7 @@
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */,
+				F3B7C2492806B0E200DF5C2B /* SettingListItemViewModelType.swift in Sources */,
 				F39A5339273252B800C8F2D3 /* SettingListViewController.swift in Sources */,
 				F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */,
 				F3821C8227EAEB97006D40FC /* SaleListItemViewModelType.swift in Sources */,
