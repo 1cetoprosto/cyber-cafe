@@ -15,7 +15,7 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     var newModel: Bool
     
     var date: Date { return sale.salesDate}
-    var moneyLabel: String { return "Money:" }
+    var moneyLabel: String { return "Donation:" }
     var moneyTextfield: String { return "Money2:" }
     var saleLabel: String { return "Money1:" }
     var salesCash: Double { return sale.salesCash }

@@ -11,10 +11,12 @@ import UIKit
 class PurchaseListViewController: UIViewController {
     var viewModel: PurchaseListViewModelType?
     
-    let idPurchasesCell = "idPurchasesCell"
+    //let idPurchasesCell = "idPurchasesCell"
     
     let tableView: UITableView = {
         let tableView = UITableView()
+        
+        tableView.register(PurchasesTableViewCell.self, forCellReuseIdentifier: PurchasesTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -37,7 +39,7 @@ class PurchaseListViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         title = "Purchases"
         
-        tableView.register(PurchasesTableViewCell.self, forCellReuseIdentifier: idPurchasesCell)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -64,7 +66,7 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idPurchasesCell,
+        let cell = tableView.dequeueReusableCell(withIdentifier: PurchasesTableViewCell.identifier,
                                                  for: indexPath) as? PurchasesTableViewCell
 
         guard let tableViewCell = cell,

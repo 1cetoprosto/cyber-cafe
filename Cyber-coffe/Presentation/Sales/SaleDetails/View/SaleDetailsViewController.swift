@@ -47,7 +47,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     let moneyLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Money:"
+        //label.text = "Donation:"
         label.textColor = UIColor.Main.text
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -167,25 +167,31 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         
         guard let viewModel = viewModel else { return }
         
-        if tableViewModel == nil {
-            tableViewModel = SaleGoodListViewModel()
-            tableViewModel?.getSaleGoods(date: datePiker.date) {
-                self.tableView.reloadData()
-            }
-        }
-        
         if viewModel.salesCash != 0 {
             moneyTextfield.text = viewModel.salesCash.description
         }
         if viewModel.salesSum != 0 {
             saleLabel.text = viewModel.salesSum.description
         }
+        moneyLabel.text = viewModel.moneyLabel
         
         datePiker.date = viewModel.date
+        
+        if tableViewModel == nil {
+            tableViewModel = SaleGoodListViewModel()
+            tableViewModel?.getSaleGoods(date: viewModel.date) {
+                self.tableView.reloadData()
+            }
+        }
     }
 
     // MARK: - Method
-    @objc func saveAction(param: UIButton) {
+    @objc func saveAction(param: UIButton?) {
+        saveModels()
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    func saveModels() {
         guard let viewModel = self.viewModel else { return }
 
         if viewModel.newModel {
@@ -228,7 +234,6 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
 //                                                 salesSum: salesSum,
 //                                                 salesCash: salesCash)
         }
-        navigationController?.popToRootViewController(animated: true)
     }
 
     @objc func cancelAction(param: UIButton) {
@@ -292,6 +297,7 @@ extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             //recalcsTotalSum()
         }
         saleLabel.text = tableViewModel?.totalSum()
+        saveModels()
     }
 
 //    func recalcsTotalSum() {
@@ -312,7 +318,7 @@ extension SaleDetailsViewController {
         let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield],
                                         axis: .horizontal,
                                         spacing: 5,
-                                        distribution: .fillEqually)
+                                        distribution: .equalSpacing)
         view.addSubview(cashStackView)
 
         let moneyStackView = UIStackView(arrangedSubviews: [cashStackView, saleLabel],
