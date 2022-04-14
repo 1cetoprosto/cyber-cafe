@@ -38,4 +38,11 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     func selectRow(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
     }
+    
+    func getPurchase() -> PurchaseModel? {
+        guard let selectedIndexPath = selectedIndexPath,
+              let purchases = self.purchases else { return nil }
+        return purchases[selectedIndexPath.row]
+    }
+    
 }
