@@ -10,8 +10,8 @@ import Foundation
 class SaleDetailsViewModel: SaleDetailsViewModelType {
 
     private var sale: SalesModel
-    
-    //private var sales: [SaleGoodModel]?
+    private var types: [TypeOfDonationModel]?
+    private var selectedRow: Int?
     var newModel: Bool
     
     var date: Date { return sale.salesDate}
@@ -20,13 +20,21 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     var saleLabel: String { return "Money1:" }
     var salesCash: Double { return sale.salesCash }
     var salesSum: Double { return sale.salesSum }
+    var typeOfDonation: String { return sale.salesTypeOfDonation }
     
     init(sale: SalesModel, newModel: Bool = false) {
         self.sale = sale
         self.newModel = newModel
+        self.types = getTypes()
     }
     
-    func saveSales(date: Date, salesCash: String?, salesSum: String?) {
+    func getTypes() -> [TypeOfDonationModel]? {
+        types = DatabaseManager.shared.fetchTypeOfDonation()
+        guard let typesArray = types else { return nil}
+        return typesArray
+    }
+    
+    func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
         
 //        let salesSum = Double(salesSum ?? "0") ?? 0
 //        let salesCash = Double(salesCash ?? "0") ?? 0
@@ -39,14 +47,30 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         sale.salesDate = date
         sale.salesSum = Double(salesSum ?? "0") ?? 0
         sale.salesCash = Double(salesCash ?? "0") ?? 0
+        sale.salesTypeOfDonation = typeOfDonation ?? ""
         
         DatabaseManager.shared.saveSalesModel(model: sale)
     }
     
-    func updateSales(date: Date, salesCash: String?, salesSum: String?) {
+    func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
         let salesSum = Double(salesSum ?? "0") ?? 0
         let salesCash = Double(salesCash ?? "0") ?? 0
-        DatabaseManager.shared.updateSalesModel(model: sale, salesDate: date, salesSum: salesSum, salesCash: salesCash)
+        let typeOfDonation = typeOfDonation ?? ""
+        DatabaseManager.shared.updateSalesModel(model: sale, salesDate: date, salesTypeOfDonation: typeOfDonation, salesSum: salesSum, salesCash: salesCash)
+    }
+    
+    func numberOfRowsInComponent(component: Int) -> Int {
+        guard let types = self.types else { return 0 }
+        return types.count
+    }
+    
+    func titleForRow(row: Int, component: Int) -> String? {
+        guard let types = self.types else { return nil }
+        return types[row].type
+    }
+    
+    func selectRow(atRow row: Int) {
+        self.selectedRow = row
     }
     
 }
