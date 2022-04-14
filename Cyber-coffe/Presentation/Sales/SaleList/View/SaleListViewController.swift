@@ -63,7 +63,8 @@ class SaleListViewController: UIViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.numberOfRowInSection(for: section) ?? 0
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.numberOfRowInSection(for: section)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

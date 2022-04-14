@@ -14,10 +14,15 @@ protocol SaleDetailsViewModelType {
     var saleLabel: String { get }
     var salesCash: Double { get }
     var salesSum: Double { get }
+    var typeOfDonation: String { get }
     var newModel: Bool { get set }
     
-    func saveSales(date: Date, salesCash: String?, salesSum: String?)
-    func updateSales(date: Date, salesCash: String?, salesSum: String?)
+    func numberOfRowsInComponent(component: Int) -> Int
+    func titleForRow(row: Int, component: Int) -> String?
+    func selectRow(atRow: Int)
+    
+    func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?)
+    func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?)
     
     //func saveSalesGood(date: Date, good: String?, qty: Int?, price: Double?, sum: Double?)
     
