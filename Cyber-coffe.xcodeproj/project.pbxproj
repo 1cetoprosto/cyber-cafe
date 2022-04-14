@@ -47,6 +47,10 @@
 		F39A53352732525900C8F2D3 /* SaleListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A53342732525900C8F2D3 /* SaleListViewController.swift */; };
 		F39A5337273252A500C8F2D3 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5336273252A500C8F2D3 /* PurchaseListViewController.swift */; };
 		F39A5339273252B800C8F2D3 /* SettingListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A5338273252B800C8F2D3 /* SettingListViewController.swift */; };
+		F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */; };
+		F3B7C2522806D8DA00DF5C2B /* TypeOfDonationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */; };
+		F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
+		F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */; };
 		F3D862D7277C33C100DD43DB /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* PurchaseModel.swift */; };
 		F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */; };
@@ -104,6 +108,10 @@
 		F39A53342732525900C8F2D3 /* SaleListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleListViewController.swift; sourceTree = "<group>"; };
 		F39A5336273252A500C8F2D3 /* PurchaseListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewController.swift; sourceTree = "<group>"; };
 		F39A5338273252B800C8F2D3 /* SettingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewController.swift; sourceTree = "<group>"; };
+		F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesListViewController.swift; sourceTree = "<group>"; };
+		F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfDonationModel.swift; sourceTree = "<group>"; };
+		F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTableViewCell.swift; sourceTree = "<group>"; };
+		F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetailsViewController.swift; sourceTree = "<group>"; };
 		F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F3D862D6277C33C100DD43DB /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsPriceModel.swift; sourceTree = "<group>"; };
@@ -151,6 +159,7 @@
 				F3158C472763437200136861 /* SaleGoodModel.swift */,
 				F31FCA3B2768789B00124366 /* SalesModel.swift */,
 				F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */,
+				F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */,
 				F3D862D6277C33C100DD43DB /* PurchaseModel.swift */,
 			);
 			path = Realm;
@@ -541,8 +550,59 @@
 				F3821C6B27E9FE95006D40FC /* SettingList */,
 				F3821C6F27E9FF29006D40FC /* SettingGoods */,
 				F3821C6E27E9FF13006D40FC /* SettingLanguage */,
+				F3B7C2502806D85800DF5C2B /* SettingsTypes */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		F3B7C24E2806D83000DF5C2B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C2552806D9FB00DF5C2B /* Cell */,
+				F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3B7C24F2806D84400DF5C2B /* TypesList */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C24E2806D83000DF5C2B /* View */,
+			);
+			path = TypesList;
+			sourceTree = "<group>";
+		};
+		F3B7C2502806D85800DF5C2B /* SettingsTypes */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C24F2806D84400DF5C2B /* TypesList */,
+				F3B7C2582806DCC300DF5C2B /* TypeDetail */,
+			);
+			path = SettingsTypes;
+			sourceTree = "<group>";
+		};
+		F3B7C2552806D9FB00DF5C2B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		F3B7C2582806DCC300DF5C2B /* TypeDetail */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C2592806DCD200DF5C2B /* View */,
+			);
+			path = TypeDetail;
+			sourceTree = "<group>";
+		};
+		F3B7C2592806DCD200DF5C2B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		F3EB27E027F30FAD00BB2D93 /* SaleGood */ = {
@@ -689,6 +749,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3264983275B334300836077 /* PurchaseDetailsListViewController.swift in Sources */,
+				F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */,
+				F3B7C2522806D8DA00DF5C2B /* TypeOfDonationModel.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
 				F3821C7C27EAEB04006D40FC /* SaleDetailsViewModelType.swift in Sources */,
 				F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */,
@@ -697,6 +759,7 @@
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
 				F3821C8027EAEB80006D40FC /* SaleListItemViewModel.swift in Sources */,
 				F3821C7E27EAEB0F006D40FC /* SaleDetailsViewModel.swift in Sources */,
+				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3821C7A27EAEA8B006D40FC /* SaleListViewModelType.swift in Sources */,
 				F3158C4B2763443700136861 /* DatabaseManager.swift in Sources */,
@@ -712,6 +775,7 @@
 				F3EAACFE27526383004B9AF6 /* GoodPriceTableViewCell.swift in Sources */,
 				F316A2F3273803CE0083E830 /* GoodListViewController.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* PurchaseListViewController.swift in Sources */,
+				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */,
 				F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */,

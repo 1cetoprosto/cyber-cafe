@@ -50,10 +50,6 @@ class DatabaseManager {
         return Array(localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood"))
     }
     
-    func fetchGoodsPrice() -> [GoodsPriceModel] {
-        return Array(localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good"))
-    }
-    
     // Продажи и касса
     func saveSalesModel(model: SalesModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
@@ -62,9 +58,10 @@ class DatabaseManager {
         }
     }
     
-    func updateSalesModel(model: SalesModel, salesDate: Date, salesSum: Double, salesCash: Double) {
+    func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double) {
         try! localRealm.write {
             model.salesDate = salesDate
+            model.salesTypeOfDonation = salesTypeOfDonation
             model.salesSum = salesSum
             model.salesCash = salesCash
         }
@@ -80,7 +77,7 @@ class DatabaseManager {
         return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate"))
     }
 
-    // Товары и цены
+    // Товари та ціни
     func saveGoodsPriceModel(model: GoodsPriceModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -100,6 +97,10 @@ class DatabaseManager {
         try! localRealm.write {
             localRealm.delete(model)
         }
+    }
+    
+    func fetchGoodsPrice() -> [GoodsPriceModel] {
+        return Array(localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good"))
     }
     
     // Закупки
@@ -126,5 +127,30 @@ class DatabaseManager {
     
     func fetchPurchases() -> [PurchaseModel] {
         return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate"))
+    }
+    
+    // Типи пожертвувань
+    func saveTypeOfDonationModel(model: TypeOfDonationModel) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            localRealm.add(model)
+        }
+    }
+
+    func updateTypeOfDonationModel(model: TypeOfDonationModel, type: String) {
+        print("Realm is located at:", localRealm.configuration.fileURL!)
+        try! localRealm.write {
+            model.type = type
+        }
+    }
+
+    func deleteTypeOfDonationModel(model: TypeOfDonationModel) {
+        try! localRealm.write {
+            localRealm.delete(model)
+        }
+    }
+    
+    func fetchTypeOfDonation() -> [TypeOfDonationModel] {
+        return Array(localRealm.objects(TypeOfDonationModel.self).sorted(byKeyPath: "type"))
     }
 }
