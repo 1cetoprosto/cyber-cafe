@@ -6,16 +6,6 @@
 //
 
 import UIKit
-//import RealmSwift
-//
-//struct SaleGood {
-//    let date: Date
-//    let good: String
-//    var qty: Int
-//    let price: Double
-//    var sum: Double
-//    let model: SaleGoodModel
-//}
 
 class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
@@ -47,7 +37,6 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     let moneyLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        //label.text = "Donation:"
         label.textColor = UIColor.Main.text
         label.font = UIFont.systemFont(ofSize: 20)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +64,18 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         
         return label
     }()
-
+    
+    let typeTextfield: UITextField = {
+        let textField = UITextField()
+        textField.textAlignment = .left
+        textField.placeholder = "Choose type of donation"
+        textField.font = UIFont.systemFont(ofSize: 20)
+        textField.textColor = UIColor.Main.text
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        
+        return textField
+    }()
+    
     lazy var saveButton: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -88,77 +88,26 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-//    var forDate = NSDate() as Date
-//
-//    var salesGoodsModel = SaleGoodModel()
-//    var salesDateModel = SalesModel()
-//    var newModel: Bool = true
-//    private var salesGoodsArray = [SaleGood]()
-//
-//    let localRealm = try! Realm()
-//    var saleGood: Results<SaleGoodModel>!
-//    var salesCash: Double = 0.0
-//    var salesSum: Double = 0.0
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Sale for:"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-
+        
         self.moneyTextfield.delegate = self
         
-        //configure(date: forDate)
-        setData()
+        let pickerView = UIPickerView()
+        //pickerView.dataSource = self
+        pickerView.delegate = self
+        pickerView.center = view.center
+        self.view.addSubview(pickerView)
         
+        typeTextfield.inputView = pickerView
+        
+        setData()
         setConstraints()
-
     }
-
-//    func configure(date: Date) {
-//
-//        datePiker.date = date
-//        salesGoodsArray = [SaleGood]()
-//
-//        // если данных за этот день нет, значит это новый день,
-//        // заполнить товарами по-умолчанию
-//        if newModel {
-//            let goodsPrice = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
-//            for goodPrice in goodsPrice {
-//                salesGoodsArray.append(SaleGood(date: forDate,
-//                                                good: goodPrice.good,
-//                                                qty: 0,
-//                                                price: goodPrice.price,
-//                                                sum: 0.0,
-//                                                model: SaleGoodModel()))
-//            }
-//        } else {
-//            // заполнить продажами за этот день
-//            let dateStart = Calendar.current.startOfDay(for: date)
-//            let dateEnd: Date = {
-//                let components = DateComponents(day: 1, second: -1)
-//                return Calendar.current.date(byAdding: components, to: dateStart)!
-//            }()
-//
-//            let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
-//            saleGood = localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood")
-//
-//            for sale in saleGood {
-//                salesGoodsArray.append(SaleGood(date: sale.saleDate,
-//                                                good: sale.saleGood,
-//                                                qty: sale.saleQty,
-//                                                price: sale.saleSum/Double(sale.saleQty),
-//                                                sum: sale.saleSum,
-//                                                model: sale))
-//            }
-//
-//            // также получаем значение "Кеш"
-//            moneyTextfield.text = String(salesCash)
-//            saleLabel.text = String(salesSum)
-//        }
-//        tableView.reloadData()
-//    }
     
     fileprivate func setData() {
         if viewModel == nil {
@@ -174,8 +123,8 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
             saleLabel.text = viewModel.salesSum.description
         }
         moneyLabel.text = viewModel.moneyLabel
-        
         datePiker.date = viewModel.date
+        typeTextfield.text = viewModel.typeOfDonation
         
         if tableViewModel == nil {
             tableViewModel = SaleGoodListViewModel()
@@ -195,44 +144,14 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         guard let viewModel = self.viewModel else { return }
 
         if viewModel.newModel {
-//            // в цикле по таблице нужно записать значения продаж по каждому товару
-//            for sale in salesGoodsArray {
-//                salesGoodsModel.saleGood = sale.good
-//                salesGoodsModel.saleDate = datePiker.date
-//                salesGoodsModel.saleQty = sale.qty
-//                salesGoodsModel.saleSum = sale.sum
-//
-//                DatabaseManager.shared.saveSalesGoodModel(model: salesGoodsModel)
-//                salesGoodsModel = SaleGoodModel()
-//            }
             guard let tableViewModel = self.tableViewModel else { return }
-            //for sale in tableViewModel.saleGoods {
             tableViewModel.saveSalesGood()
-            //}
-
-            // запишем продажи и поступление денег за день
-            viewModel.saveSales(date: datePiker.date, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
-//            salesDateModel.salesDate = datePiker.date
-//            salesDateModel.salesSum = salesSum
-//            salesDateModel.salesCash = salesCash
-
-            //DatabaseManager.shared.saveSalesModel(model: salesDateModel)
-            //salesDateModel = SalesModel()
+            viewModel.saveSales(date: datePiker.date, typeOfDonation: typeTextfield.text, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
         } else {
-//            for sale in salesGoodsArray {
-//                DatabaseManager.shared.updateSaleGoodModel(model: sale.model,
-//                                                        saleDate: datePiker.date,
-//                                                        saleGood: sale.good,
-//                                                        saleQty: sale.qty,
-//                                                        saleSum: sale.sum)
-//            }
             viewModel.updateSales(date: datePiker.date,
+                                  typeOfDonation: typeTextfield.text,
                                    salesCash: moneyTextfield.text,
                                    salesSum: saleLabel.text)
-//            DatabaseManager.shared.updateSalesModel(model: salesDateModel,
-//                                                 salesDate: date,
-//                                                 salesSum: salesSum,
-//                                                 salesCash: salesCash)
         }
     }
 
@@ -255,24 +174,12 @@ extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource 
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idSaleCell, for: indexPath) as? SaleTableViewCell
-
-//
-//        cell.goodLabel.text = stepperValue.good
-//        cell.quantityLabel.text = String(stepperValue.qty)
-        
-//
-//        return cell
         
         guard let tableViewCell = cell,
         let tableViewModel = tableViewModel else { return UITableViewCell() }
         
         let cellViewModel = tableViewModel.cellViewModel(for: indexPath)
-
         tableViewCell.viewModel = cellViewModel
-        
-        //let stepperValue = tableViewModel.getQuantity()
-//        tableViewCell.goodStepper.value = cellViewModel?.goodStepperValue ?? 0.0 //stepperValue
-//        tableViewCell.goodStepper.tag = cellViewModel?.goodStepperTag ?? 0 //indexPath.row
         tableViewCell.goodStepper.addTarget(self, action: #selector(self.stepperValueChanged(_:)), for: .valueChanged)
         
         return tableViewCell
@@ -291,24 +198,38 @@ extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource 
         let indexPath = IndexPath(row: stepperTag, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
             cell.quantityLabel.text = String(stepperValue)
-//            salesGoodsArray[stepperTag].qty = stepperValue
-//            salesGoodsArray[stepperTag].sum = Double(salesGoodsArray[stepperTag].qty)*salesGoodsArray[stepperTag].price
             tableViewModel?.setQuantity(tag: stepperTag, quantity: stepperValue)
-            //recalcsTotalSum()
         }
         saleLabel.text = tableViewModel?.totalSum()
         saveModels()
     }
+}
 
-//    func recalcsTotalSum() {
-//        var totalSum: Double = 0.0
-//
-//        for good in tableViewModel. {
-//            totalSum += good.sum
-//        }
-//
-//        saleLabel.text = String(totalSum)
-//    }
+// MARK: - UITableViewDelegate, UITableViewDataSource
+extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    // Sets the number of rows in the picker view
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        guard let viewModel = viewModel else { return 0 }
+        return viewModel.numberOfRowsInComponent(component: component)
+    }
+    
+    // This function sets the text of the picker view to the content of the "salutations" array
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let viewModel = viewModel else { return nil }
+        return viewModel.titleForRow(row: row, component: component)
+    }
+
+    // When user selects an option, this function will set the text of the text field to reflect
+    // the selected option.
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let viewModel = viewModel else { return }
+        typeTextfield.text = viewModel.titleForRow(row: row, component: component)
+        view.endEditing(true)
+    }
 }
 
 // MARK: - Constraints
@@ -331,7 +252,7 @@ extension SaleDetailsViewController {
             saveButton.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-        let mainStackView = UIStackView(arrangedSubviews: [datePiker, tableView, moneyStackView, saveButton],
+        let mainStackView = UIStackView(arrangedSubviews: [datePiker, tableView, typeTextfield, moneyStackView, saveButton],
                                         axis: .vertical,
                                         spacing: 10,
                                         distribution: .fill)
@@ -345,3 +266,4 @@ extension SaleDetailsViewController {
         ])
     }
 }
+
