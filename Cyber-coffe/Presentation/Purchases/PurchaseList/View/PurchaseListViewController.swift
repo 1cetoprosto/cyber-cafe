@@ -11,8 +11,6 @@ import UIKit
 class PurchaseListViewController: UIViewController {
     var viewModel: PurchaseListViewModelType?
     
-    //let idPurchasesCell = "idPurchasesCell"
-    
     let tableView: UITableView = {
         let tableView = UITableView()
         
@@ -38,7 +36,6 @@ class PurchaseListViewController: UIViewController {
 
         view.backgroundColor = UIColor.Main.background
         title = "Purchases"
-        
         
         tableView.dataSource = self
         tableView.delegate = self
@@ -93,6 +90,22 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
         purchaseVC.viewModel = detailViewModel
 
         self.navigationController?.pushViewController(purchaseVC, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let viewModel = viewModel else { return nil }
+        viewModel.selectRow(atIndexPath: indexPath)
+        guard let model = viewModel.getPurchase() else { return nil }// goodsArray[indexPath.row]
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            DatabaseManager.shared.deletePurchaseModel(model: model)
+
+            viewModel.getPurchases { [weak self] in
+                self?.tableView.reloadData()
+            }
+        }
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 
