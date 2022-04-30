@@ -17,4 +17,6 @@ protocol SaleListViewModelType {
     
     func viewModelForSelectedRow() -> SaleDetailsViewModelType?
     func selectRow(atIndexPath indexPath: IndexPath)
+    
+    func deleteSaleModel(atIndexPath indexPath: IndexPath)
 }

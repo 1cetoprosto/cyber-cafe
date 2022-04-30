@@ -91,4 +91,11 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
             DatabaseManager.shared.saveSalesGoodModel(model: saleGood)
         }
     }
+    
+    static func deleteSalesGood(date: Date) {
+        let salesGoods = DatabaseManager.shared.fetchSaleGood(date: date)
+        for saleGood in salesGoods {
+            DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+        }
+    }
 }

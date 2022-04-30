@@ -95,10 +95,8 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         guard let viewModel = viewModel else { return nil }
-        viewModel.selectRow(atIndexPath: indexPath)
-        guard let model = viewModel.getPurchase() else { return nil }// goodsArray[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            DatabaseManager.shared.deletePurchaseModel(model: model)
+            viewModel.deletePurchaseModel(atIndexPath: indexPath)
 
             viewModel.getPurchases { [weak self] in
                 self?.tableView.reloadData()
