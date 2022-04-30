@@ -39,10 +39,14 @@ class PurchaseListViewModel: PurchaseListViewModelType {
         self.selectedIndexPath = indexPath
     }
     
-    func getPurchase() -> PurchaseModel? {
-        guard let selectedIndexPath = selectedIndexPath,
-              let purchases = self.purchases else { return nil }
-        return purchases[selectedIndexPath.row]
+    private func getPurchaseModel(atIndexPath indexPath: IndexPath) -> PurchaseModel? {
+        guard let purchases = self.purchases else { return nil }
+        return purchases[indexPath.row]
+    }
+    
+    func deletePurchaseModel(atIndexPath indexPath: IndexPath) {
+        guard let model = getPurchaseModel(atIndexPath: indexPath) else { return }
+        DatabaseManager.shared.deletePurchaseModel(model: model)
     }
     
 }

@@ -10,7 +10,13 @@ import Foundation
 class SaleDetailsViewModel: SaleDetailsViewModelType {
 
     private var sale: SalesModel
-    private var types: [TypeOfDonationModel]?
+    private var types: [TypeOfDonationModel]? {
+        let typesArray = DatabaseManager.shared.fetchTypeOfDonation()
+        if typesArray.isEmpty {
+            return nil
+        }
+        return typesArray
+    }
     private var selectedRow: Int?
     var newModel: Bool
     
@@ -25,14 +31,14 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     init(sale: SalesModel, newModel: Bool = false) {
         self.sale = sale
         self.newModel = newModel
-        self.types = getTypes()
+        //self.types = getTypes()
     }
     
-    func getTypes() -> [TypeOfDonationModel]? {
-        types = DatabaseManager.shared.fetchTypeOfDonation()
-        guard let typesArray = types else { return nil}
-        return typesArray
-    }
+//    func getTypes() -> [TypeOfDonationModel]? {
+//        types = DatabaseManager.shared.fetchTypeOfDonation()
+//        guard let typesArray = types else { return nil}
+//        return typesArray
+//    }
     
     func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
         
