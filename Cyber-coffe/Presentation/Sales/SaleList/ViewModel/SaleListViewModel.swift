@@ -46,4 +46,15 @@ class SaleListViewModel: SaleListViewModelType {
     func selectRow(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
     }
+    
+    func getSale(atIndexPath indexPath: IndexPath) -> SalesModel? {
+        guard let sales = self.sales else { return nil }
+        return sales[indexPath.row]
+    }
+    
+    func deleteSaleModel(atIndexPath indexPath: IndexPath) {
+        guard let model = getSale(atIndexPath: indexPath) else { return }
+        SaleGoodListViewModel.deleteSalesGood(date: model.salesDate)
+        DatabaseManager.shared.deleteSalesModel(model: model)
+    }
 }

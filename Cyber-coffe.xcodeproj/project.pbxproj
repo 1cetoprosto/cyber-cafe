@@ -92,6 +92,7 @@
 		F3821C7D27EAEB0F006D40FC /* SaleDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleDetailsViewModel.swift; sourceTree = "<group>"; };
 		F3821C7F27EAEB80006D40FC /* SaleListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleListItemViewModel.swift; sourceTree = "<group>"; };
 		F3821C8127EAEB97006D40FC /* SaleListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleListItemViewModelType.swift; sourceTree = "<group>"; };
+		F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "API Donate-cafe.md"; sourceTree = "<group>"; };
 		F3988ADB27EB111600215976 /* PurchaseListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADD27EB11EB00215976 /* PurchaseListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADF27EB12E100215976 /* PurchaseDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailsViewModelType.swift; sourceTree = "<group>"; };
@@ -492,6 +493,7 @@
 				F3158C492763442300136861 /* Services */,
 				F316A2F62738048F0083E830 /* Extensions */,
 				F39A5333273251BF00C8F2D3 /* Resources */,
+				F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */,
 			);
 			path = "Cyber-coffe";
 			sourceTree = "<group>";

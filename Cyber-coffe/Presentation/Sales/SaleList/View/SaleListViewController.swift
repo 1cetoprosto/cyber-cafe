@@ -122,6 +122,20 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
 //
 //        return UISwipeActionsConfiguration(actions: [deleteAction])
 //    }
+    
+    func tableView(_ tableView: UITableView,
+                   trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        guard let viewModel = viewModel else { return nil }
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
+            viewModel.deleteSaleModel(atIndexPath: indexPath)
+            
+            viewModel.getSales { [weak self] in
+                self?.tableView.reloadData()
+            }
+        }
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 }
 
 // MARK: Constraints
