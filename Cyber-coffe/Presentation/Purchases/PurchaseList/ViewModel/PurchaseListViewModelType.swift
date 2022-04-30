@@ -18,5 +18,5 @@ protocol PurchaseListViewModelType: AnyObject {
     func viewModelForSelectedRow() -> PurchaseDetailsViewModelType?
     func selectRow(atIndexPath indexPath: IndexPath)
     
-    func getPurchase() -> PurchaseModel?
+    func deletePurchaseModel(atIndexPath indexPath: IndexPath)
 }
