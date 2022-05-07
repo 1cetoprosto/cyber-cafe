@@ -130,7 +130,7 @@
         "purchaseSum": 34
     }
   ## 4. Sale
-    ### 4.1 SalesModel
+   ### 4.1 SalesModel
       {
           "salesDate": "2022-04-15T13:17:05.273Z",
           "salesTypeOfDonation": "Молоко",
@@ -138,7 +138,7 @@
           "salesCash": 120.00,
           "SaleGood": []
       }
-    ### 4.1 SalesModel + SaleGoodModel
+   ### 4.1 SalesModel + SaleGoodModel
       {
         "salesDate": "2022-04-15T13:17:05.273Z",
         "salesTypeOfDonation": "Sunday",
