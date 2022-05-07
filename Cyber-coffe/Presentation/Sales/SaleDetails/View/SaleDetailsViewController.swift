@@ -88,6 +88,18 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        if self.isMovingFromParent {
+            guard let viewModel = viewModel else { return }
+            if viewModel.salesSum != 0.0 {
+                SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+                //            if typeOfDonation != "Sunday" {
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -126,10 +138,12 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         datePiker.date = viewModel.date
         typeTextfield.text = viewModel.typeOfDonation
         
-        if tableViewModel == nil {
-            tableViewModel = SaleGoodListViewModel()
-            tableViewModel?.getSaleGoods(date: viewModel.date) {
-                self.tableView.reloadData()
+        if viewModel.typeOfDonation == "Sunday" {
+            if tableViewModel == nil {
+                tableViewModel = SaleGoodListViewModel()
+                tableViewModel?.getSaleGoods(date: viewModel.date) {
+                    self.tableView.reloadData()
+                }
             }
         }
     }
@@ -227,8 +241,16 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
     // the selected option.
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         guard let viewModel = viewModel else { return }
-        typeTextfield.text = viewModel.titleForRow(row: row, component: component)
+        //viewModel.setTypeOfDonation(row: row, component: component)
+        guard let typeOfDonation = viewModel.titleForRow(row: row, component: component) else { return }
+        typeTextfield.text = typeOfDonation
         view.endEditing(true)
+        
+        if typeOfDonation != "Sunday" {
+            SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+            tableViewModel = SaleGoodListViewModel()
+                self.tableView.reloadData()
+        }
     }
 }
 
