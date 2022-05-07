@@ -18,6 +18,7 @@ protocol SaleDetailsViewModelType {
     var newModel: Bool { get set }
     
     func numberOfRowsInComponent(component: Int) -> Int
+    //func setTypeOfDonation(row: Int, component: Int)
     func titleForRow(row: Int, component: Int) -> String?
     func selectRow(atRow: Int)
     
