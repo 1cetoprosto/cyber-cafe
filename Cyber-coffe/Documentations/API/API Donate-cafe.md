@@ -2,11 +2,11 @@
 
   ## Data model
 
-    ### Налаштування
+   ### Налаштування
       GoodsPriceModel - Товари і планові ціни
       TypeOfDonationModel - типи пожертвувань
 
-    ### Данні
+   ### Данні
       PurchaseModel - Закупки товарів
       SalesModel - Пожертвування в розрізі типів та днів
       SaleGoodModel - Видача товарів по дням
