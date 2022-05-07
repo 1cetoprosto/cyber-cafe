@@ -11,6 +11,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
 
     private var selectedIndexPath: IndexPath?
     private var saleGoods: [SaleGoodModel]?
+    //private var saleGoodsArray: [SaleGoodArray]?
     
     func getSaleGoods(date: Date, completion: @escaping () -> ()) {
         saleGoods = DatabaseManager.shared.fetchSaleGood(date: date)

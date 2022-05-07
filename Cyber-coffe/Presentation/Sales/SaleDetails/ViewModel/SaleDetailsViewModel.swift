@@ -70,8 +70,16 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         return types.count
     }
     
+//    func setTypeOfDonation(row: Int, component: Int) {
+//        guard let types = self.types else { return nil }
+//        try !
+//        sale.salesTypeOfDonation = types[row].type
+//        return types[row].type
+//    }
+    
     func titleForRow(row: Int, component: Int) -> String? {
         guard let types = self.types else { return nil }
+        //sale.salesTypeOfDonation = types[row].type
         return types[row].type
     }
     
