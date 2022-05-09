@@ -7,41 +7,55 @@
 
 import Foundation
 
+struct SaleGood {
+    var saleDate = Date()
+    var saleGood: String = ""
+    var saleQty: Int = 0
+    var salePrice: Double = 0.0
+    var saleSum: Double = 0.0
+}
+
 class SaleGoodListViewModel: SaleGoodListViewModelType {
 
     private var selectedIndexPath: IndexPath?
-    private var saleGoods: [SaleGoodModel]?
-    //private var saleGoodsArray: [SaleGoodArray]?
+    private var saleGoods = [SaleGood]()
     
     func getSaleGoods(date: Date, completion: @escaping () -> ()) {
-        saleGoods = DatabaseManager.shared.fetchSaleGood(date: date)
-        guard var saleGoodsArray = saleGoods else { return }
-
+        let saleGoodsArray = DatabaseManager.shared.fetchSaleGood(date: date)
+        
         if saleGoodsArray.isEmpty {
             let goodsPrice = DatabaseManager.shared.fetchGoodsPrice()
             
             for goodPrice in goodsPrice {
-                let saleGoodModel = SaleGoodModel()
-                saleGoodModel.saleDate = date
-                saleGoodModel.saleGood = goodPrice.good
-                saleGoodModel.saleQty = 0
-                saleGoodModel.salePrice = goodPrice.price
-                saleGoodModel.saleSum = 0.0
-                DatabaseManager.shared.saveSalesGoodModel(model: saleGoodModel)
-                saleGoodsArray.append(saleGoodModel)
+                var saleGood = SaleGood()
+                saleGood.saleDate = date
+                saleGood.saleGood = goodPrice.good
+                saleGood.saleQty = 0
+                saleGood.salePrice = goodPrice.price
+                saleGood.saleSum = 0.0
+                saleGoods.append(saleGood)
             }
-            self.saleGoods = saleGoodsArray
+        } else {
+            for saleGoodsElement in saleGoodsArray {
+                var saleGood = SaleGood()
+                saleGood.saleDate = saleGoodsElement.saleDate
+                saleGood.saleGood = saleGoodsElement.saleGood
+                saleGood.saleQty = saleGoodsElement.saleQty
+                saleGood.salePrice = saleGoodsElement.salePrice
+                saleGood.saleSum = saleGoodsElement.saleSum
+                saleGoods.append(saleGood)
+            }
         }
+        
         completion()
     }
     
     func numberOfRowInSection(for section: Int) -> Int {
-        return saleGoods?.count ?? 0
+        return saleGoods.count
     }
     
     func cellViewModel(for indexPath: IndexPath) -> SaleGoodListItemViewModelType? {
-        guard let saleGoodsArray = self.saleGoods else { return nil }
-        let saleGood = saleGoodsArray[indexPath.row]
+        let saleGood = saleGoods[indexPath.row]
         return SaleGoodListItemViewModel(saleGood: saleGood, for: indexPath.row)
     }
     
@@ -50,39 +64,29 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     }
     
     func setQuantity(tag: Int, quantity: Int) {
-        guard let saleGoodsArray = self.saleGoods else { return }
-        let saleGoodModel = saleGoodsArray[tag]
-        let saleSum = Double(quantity) * saleGoodModel.salePrice
-        DatabaseManager.shared.updateSaleGoodModel(model: saleGoodModel,
-                                                   saleDate: saleGoodModel.saleDate,
-                                                   saleGood: saleGoodModel.saleGood,
-                                                   saleQty: quantity,
-                                                   saleSum: saleSum)
+        saleGoods[tag].saleQty = quantity
+        saleGoods[tag].saleSum = Double(quantity) * saleGoods[tag].salePrice
     }
     
     func getQuantity() -> Double {
-        guard let saleGoodsArray = self.saleGoods else { return 0.0 }
         guard let atIndex = selectedIndexPath?.row else { return 0.0 }
-        let saleQty = Double(saleGoodsArray[atIndex].saleQty)
+        let saleQty = Double(saleGoods[atIndex].saleQty)
         
         return saleQty
     }
     
     func totalSum() -> String {
         var totalSum: Double = 0.0
-        
-        guard let saleGoodsArray = self.saleGoods else { return "" }
-        
-        for good in saleGoodsArray {
+
+        for good in saleGoods {
             totalSum += good.saleSum
         }
-        
+
         return String(totalSum)
     }
     
     func saveSalesGood() {
-        guard let saleGoodsArray = self.saleGoods else { return }
-        for sale in saleGoodsArray {
+        for sale in saleGoods {
             let saleGood = SaleGoodModel()
             saleGood.saleGood = sale.saleGood
             saleGood.saleDate = sale.saleDate
@@ -91,6 +95,22 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
             saleGood.saleSum = sale.saleSum
             DatabaseManager.shared.saveSalesGoodModel(model: saleGood)
         }
+    }
+    
+    func updateSalesGood() {
+        
+        for saleGood in saleGoods {
+            let saleGoodModel = DatabaseManager.shared.fetchSaleGood(date: saleGood.saleDate,
+                                                                     good: saleGood.saleGood)
+            
+            DatabaseManager.shared.updateSaleGoodModel(model: saleGoodModel,
+                                                       saleDate: saleGood.saleDate,
+                                                       saleGood: saleGood.saleGood,
+                                                       saleQty: saleGood.saleQty,
+                                                       salePrice: saleGood.salePrice,
+                                                       saleSum: saleGood.saleSum)
+        }
+        
     }
     
     static func deleteSalesGood(date: Date) {

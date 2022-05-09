@@ -9,7 +9,7 @@ import Foundation
 
 class SaleGoodListItemViewModel: SaleGoodListItemViewModelType {
     
-    private var saleGood: SaleGoodModel
+    private var saleGood: SaleGood
     private var atIndex: Int
     
     var goodLabel: String { return saleGood.saleGood}
@@ -20,7 +20,7 @@ class SaleGoodListItemViewModel: SaleGoodListItemViewModelType {
     
     var goodStepperTag: Int { return atIndex}
     
-    init(saleGood: SaleGoodModel, for atIndex: Int) {
+    init(saleGood: SaleGood, for atIndex: Int) {
         self.saleGood = saleGood
         self.atIndex = atIndex
     }
