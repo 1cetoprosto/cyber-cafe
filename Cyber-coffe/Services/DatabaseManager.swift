@@ -23,11 +23,12 @@ class DatabaseManager {
         }
     }
     
-    func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, saleSum: Double) {
+    func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, salePrice: Double, saleSum: Double) {
         try! localRealm.write {
             model.saleDate = saleDate
             model.saleGood = saleGood
             model.saleQty = saleQty
+            model.salePrice = salePrice
             model.saleSum = saleSum
         }
     }
@@ -48,6 +49,17 @@ class DatabaseManager {
         let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
         
         return Array(localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood"))
+    }
+    
+    func fetchSaleGood(date: Date, good: String) -> SaleGoodModel {
+        let dateStart = Calendar.current.startOfDay(for: date)
+        let dateEnd: Date = {
+            let components = DateComponents(day: 1, second: -1)
+            return Calendar.current.date(byAdding: components, to: dateStart)!
+        }()
+        let predicate = NSPredicate(format: "saleDate BETWEEN %@ AND saleGood == %@", [dateStart, dateEnd], good)
+        
+        return localRealm.objects(SaleGoodModel.self).filter(predicate)[0]
     }
     
     // Продажи и касса

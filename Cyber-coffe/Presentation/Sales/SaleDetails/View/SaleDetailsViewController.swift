@@ -93,7 +93,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         
         if self.isMovingFromParent {
             guard let viewModel = viewModel else { return }
-            if viewModel.salesSum != 0.0 {
+            if viewModel.salesSum == 0.0 {
                 SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
                 //            if typeOfDonation != "Sunday" {
             }
@@ -156,12 +156,13 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     func saveModels() {
         guard let viewModel = self.viewModel else { return }
-
+        guard let tableViewModel = self.tableViewModel else { return }
+        
         if viewModel.newModel {
-            guard let tableViewModel = self.tableViewModel else { return }
             tableViewModel.saveSalesGood()
             viewModel.saveSales(date: datePiker.date, typeOfDonation: typeTextfield.text, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
         } else {
+            tableViewModel.updateSalesGood()
             viewModel.updateSales(date: datePiker.date,
                                   typeOfDonation: typeTextfield.text,
                                    salesCash: moneyTextfield.text,
@@ -177,6 +178,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         return false
     }
+    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -215,7 +217,7 @@ extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource 
             tableViewModel?.setQuantity(tag: stepperTag, quantity: stepperValue)
         }
         saleLabel.text = tableViewModel?.totalSum()
-        saveModels()
+//        saveModels()
     }
 }
 
