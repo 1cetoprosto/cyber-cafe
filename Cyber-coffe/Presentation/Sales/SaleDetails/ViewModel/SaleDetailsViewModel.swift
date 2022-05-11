@@ -31,24 +31,14 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     init(sale: SalesModel, newModel: Bool = false) {
         self.sale = sale
         self.newModel = newModel
-        //self.types = getTypes()
     }
     
-//    func getTypes() -> [TypeOfDonationModel]? {
-//        types = DatabaseManager.shared.fetchTypeOfDonation()
-//        guard let typesArray = types else { return nil}
-//        return typesArray
-//    }
+    func isExist(date: Date, type: String) -> Bool {
+        let salesModel = DatabaseManager.shared.fetchSales(date: date, type: type)
+        return !salesModel.isEmpty
+    }
     
     func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
-        
-//        let salesSum = Double(salesSum ?? "0") ?? 0
-//        let salesCash = Double(salesCash ?? "0") ?? 0
-//
-//        let salesModel = SalesModel()
-//        salesModel.salesDate = date
-//        salesModel.salesSum = salesSum
-//        salesModel.salesCash = salesCash
         sale = SalesModel()
         sale.salesDate = date
         sale.salesSum = Double(salesSum ?? "0") ?? 0
@@ -70,16 +60,8 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         return types.count
     }
     
-//    func setTypeOfDonation(row: Int, component: Int) {
-//        guard let types = self.types else { return nil }
-//        try !
-//        sale.salesTypeOfDonation = types[row].type
-//        return types[row].type
-//    }
-    
     func titleForRow(row: Int, component: Int) -> String? {
         guard let types = self.types else { return nil }
-        //sale.salesTypeOfDonation = types[row].type
         return types[row].type
     }
     
