@@ -22,6 +22,7 @@ protocol SaleDetailsViewModelType {
     func titleForRow(row: Int, component: Int) -> String?
     func selectRow(atRow: Int)
     
+    func isExist(date: Date, type: String) -> Bool
     func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?)
     func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?)
     
