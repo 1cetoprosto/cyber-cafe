@@ -12,13 +12,14 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     var viewModel: SaleDetailsViewModelType?
     var tableViewModel: SaleGoodListViewModelType?
     
-    let datePiker: UIDatePicker = {
-        let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
-        datePiker.datePickerMode = .date
-        datePiker.contentHorizontalAlignment = .center
-        datePiker.preferredDatePickerStyle = .automatic
-
-        return datePiker
+    let datePicker: UIDatePicker = {
+        let picker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
+        picker.datePickerMode = .date
+        picker.locale = .current
+        picker.contentHorizontalAlignment = .center
+        picker.preferredDatePickerStyle = .automatic
+        
+        return picker
     }()
 
     let idSaleCell = "idSaleCell"
@@ -95,7 +96,6 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
             guard let viewModel = viewModel else { return }
             if viewModel.salesSum == 0.0 {
                 SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
-                //            if typeOfDonation != "Sunday" {
             }
         }
     }
@@ -135,7 +135,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
             saleLabel.text = viewModel.salesSum.description
         }
         moneyLabel.text = viewModel.moneyLabel
-        datePiker.date = viewModel.date
+        datePicker.date = viewModel.date
         typeTextfield.text = viewModel.typeOfDonation
         
         if viewModel.typeOfDonation == "Sunday" {
@@ -150,23 +150,17 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
 
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
-        saveModels()
-        navigationController?.popToRootViewController(animated: true)
-    }
-    
-    func saveModels() {
-        guard let viewModel = self.viewModel else { return }
-        guard let tableViewModel = self.tableViewModel else { return }
-        
-        if viewModel.newModel {
-            tableViewModel.saveSalesGood()
-            viewModel.saveSales(date: datePiker.date, typeOfDonation: typeTextfield.text, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
+        guard let viewModel = viewModel else { return }
+        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday") {
+            let alert = UIAlertController(title: "Warning!",
+                                          message: "Data for the selected date already exists. Open and edit them ",
+                                          preferredStyle: .alert)
+            let ok = UIAlertAction(title: "OK", style: .default)
+            alert.addAction(ok)
+            present(alert, animated: true)
         } else {
-            tableViewModel.updateSalesGood()
-            viewModel.updateSales(date: datePiker.date,
-                                  typeOfDonation: typeTextfield.text,
-                                   salesCash: moneyTextfield.text,
-                                   salesSum: saleLabel.text)
+            saveModels()
+            navigationController?.popToRootViewController(animated: true)
         }
     }
 
@@ -174,11 +168,40 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         navigationController?.popToRootViewController(animated: true)
     }
 
+    // handle stepper value change action
+    @objc func stepperValueChanged(_ stepper: UIStepper) {
+
+        let stepperValue = Int(stepper.value)
+        let stepperTag = Int(stepper.tag)
+
+        let indexPath = IndexPath(row: stepperTag, section: 0)
+        if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
+            cell.quantityLabel.text = String(stepperValue)
+            tableViewModel?.setQuantity(tag: stepperTag, quantity: stepperValue)
+        }
+        saleLabel.text = tableViewModel?.totalSum()
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
     }
     
+    func saveModels() {
+        guard let viewModel = self.viewModel else { return }
+        guard let tableViewModel = self.tableViewModel else { return }
+        
+        if viewModel.newModel {
+            tableViewModel.saveSalesGood(date: datePicker.date)
+            viewModel.saveSales(date: datePicker.date, typeOfDonation: typeTextfield.text, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
+        } else {
+            tableViewModel.updateSalesGood(date: datePicker.date)
+            viewModel.updateSales(date: datePicker.date,
+                                  typeOfDonation: typeTextfield.text,
+                                   salesCash: moneyTextfield.text,
+                                   salesSum: saleLabel.text)
+        }
+    }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
@@ -204,24 +227,9 @@ extension SaleDetailsViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-
-    // handle stepper value change action
-    @objc func stepperValueChanged(_ stepper: UIStepper) {
-
-        let stepperValue = Int(stepper.value)
-        let stepperTag = Int(stepper.tag)
-
-        let indexPath = IndexPath(row: stepperTag, section: 0)
-        if let cell = tableView.cellForRow(at: indexPath) as? SaleTableViewCell {
-            cell.quantityLabel.text = String(stepperValue)
-            tableViewModel?.setQuantity(tag: stepperTag, quantity: stepperValue)
-        }
-        saleLabel.text = tableViewModel?.totalSum()
-//        saveModels()
-    }
 }
 
-// MARK: - UITableViewDelegate, UITableViewDataSource
+// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
 extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -276,7 +284,7 @@ extension SaleDetailsViewController {
             saveButton.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-        let mainStackView = UIStackView(arrangedSubviews: [datePiker, tableView, typeTextfield, moneyStackView, saveButton],
+        let mainStackView = UIStackView(arrangedSubviews: [datePicker, tableView, typeTextfield, moneyStackView, saveButton],
                                         axis: .vertical,
                                         spacing: 10,
                                         distribution: .fill)

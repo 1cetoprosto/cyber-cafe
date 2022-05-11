@@ -18,6 +18,6 @@ protocol SaleGoodListViewModelType {
     func getQuantity() -> Double
     func totalSum() -> String
     
-    func saveSalesGood()
-    func updateSalesGood()
+    func saveSalesGood(date: Date)
+    func updateSalesGood(date: Date)
 }

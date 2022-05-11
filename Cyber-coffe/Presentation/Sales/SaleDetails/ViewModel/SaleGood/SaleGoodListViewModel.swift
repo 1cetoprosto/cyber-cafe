@@ -85,11 +85,11 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         return String(totalSum)
     }
     
-    func saveSalesGood() {
+    func saveSalesGood(date: Date) {
         for sale in saleGoods {
             let saleGood = SaleGoodModel()
             saleGood.saleGood = sale.saleGood
-            saleGood.saleDate = sale.saleDate
+            saleGood.saleDate = date
             saleGood.saleQty = sale.saleQty
             saleGood.salePrice = sale.salePrice
             saleGood.saleSum = sale.saleSum
@@ -97,14 +97,14 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         }
     }
     
-    func updateSalesGood() {
+    func updateSalesGood(date: Date) {
         
         for saleGood in saleGoods {
             let saleGoodModel = DatabaseManager.shared.fetchSaleGood(date: saleGood.saleDate,
                                                                      good: saleGood.saleGood)
             
             DatabaseManager.shared.updateSaleGoodModel(model: saleGoodModel,
-                                                       saleDate: saleGood.saleDate,
+                                                       saleDate: date,
                                                        saleGood: saleGood.saleGood,
                                                        saleQty: saleGood.saleQty,
                                                        salePrice: saleGood.salePrice,
