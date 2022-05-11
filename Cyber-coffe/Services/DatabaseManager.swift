@@ -88,6 +88,17 @@ class DatabaseManager {
     func fetchSales() -> [SalesModel] {
         return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate"))
     }
+    
+    func fetchSales(date: Date, type: String?) -> [SalesModel] {
+        let dateStart = Calendar.current.startOfDay(for: date)
+        let dateEnd: Date = {
+            let components = DateComponents(day: 1, second: -1)
+            return Calendar.current.date(byAdding: components, to: dateStart)!
+        }()
+        
+        let predicate = NSPredicate(format: "salesDate BETWEEN %@ AND salesTypeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
+        return Array(localRealm.objects(SalesModel.self).filter(predicate))
+    }
 
     // Товари та ціни
     func saveGoodsPriceModel(model: GoodsPriceModel) {
