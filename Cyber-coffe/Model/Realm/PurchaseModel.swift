@@ -8,7 +8,7 @@
 import RealmSwift
 
 class PurchaseModel: Object {
-    @Persisted var purchaseDate = Date()
+    @Persisted var purchaseDate: Date = Date()
     @Persisted var purchaseGood: String = ""
     @Persisted var purchaseSum: Double = 0.0
 }
