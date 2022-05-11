@@ -21,8 +21,8 @@ class PurchasesTableViewCell: UITableViewCell {
     }()
 
     lazy var purchaseDate = createSalesLabel(text: "05.09.21", font: .avenirNext14(), aligment: .left)
-    lazy var purchaseName = createSalesLabel(text: "Milk", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var purchaseSum = createSalesLabel(text: "640", font: .avenirNextDemiBold20(), aligment: .left)
+    lazy var purchaseName = createSalesLabel(text: "Milk", font: .avenirNext20(), aligment: .left) //avenirNextDemiBold20
+    lazy var purchaseSum = createSalesLabel(text: "640", font: .avenirNext20(), aligment: .right) //avenirNextDemiBold20
     lazy var purchaseLabel = createSalesLabel(text: "Sum:", font: .avenirNext14(), aligment: .right)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -70,34 +70,24 @@ class PurchasesTableViewCell: UITableViewCell {
             backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
             backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1)
         ])
-
-        let purchaseDateNameStackView = UIStackView(arrangedSubviews: [purchaseDate, purchaseName],
-                                                    axis: .vertical,
-                                                    spacing: 5,
-                                                    distribution: .fillEqually)
-
-        self.addSubview(purchaseDateNameStackView)
+        
+        self.addSubview(purchaseName)
         NSLayoutConstraint.activate([
-            purchaseDateNameStackView.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            purchaseDateNameStackView.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 5),
-            purchaseDateNameStackView.widthAnchor.constraint(equalToConstant: 200),
-            purchaseDateNameStackView.heightAnchor.constraint(equalToConstant: 50)
+            purchaseName.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
+            purchaseName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 16),
+            //purchaseName.widthAnchor.constraint(equalToConstant: 200),
+            purchaseName.heightAnchor.constraint(equalToConstant: 50)
         ])
-
-        let purchaseSumStackView = UIStackView(arrangedSubviews: [purchaseLabel, purchaseSum],
-                                               axis: .horizontal,
-                                               spacing: 5,
-                                               distribution: .fillEqually)
-
-        self.addSubview(purchaseSumStackView)
+        
+        self.addSubview(purchaseSum)
         NSLayoutConstraint.activate([
-            purchaseSumStackView.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            purchaseSumStackView.leadingAnchor.constraint(equalTo: purchaseDateNameStackView.trailingAnchor,
-                                                          constant: 5),
-            purchaseSumStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
-            purchaseSumStackView.heightAnchor.constraint(equalToConstant: 25)
+            purchaseSum.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
+//            purchaseSum.leadingAnchor.constraint(equalTo: purchaseName.trailingAnchor,
+//                                                 constant: 5),
+            //purchaseSum.widthAnchor.constraint(equalToConstant: 50),
+            purchaseSum.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -30),
+            purchaseSum.heightAnchor.constraint(equalToConstant: 25)
         ])
-
     }
 
     func createSalesLabel(text: String, font: UIFont?, aligment: NSTextAlignment) -> UILabel {
