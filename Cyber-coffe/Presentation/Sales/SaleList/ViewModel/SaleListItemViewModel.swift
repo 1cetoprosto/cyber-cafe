@@ -12,9 +12,10 @@ class SaleListItemViewModel: SaleListItemViewModelType {
     private var sale: SalesModel
     
     var goodsName: String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yy"
-        return dateFormatter.string(from: sale.salesDate)
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "dd.MM.yy"
+//        return dateFormatter.string(from: sale.salesDate)
+        return sale.salesTypeOfDonation
     }
     
     var salesSum: String {

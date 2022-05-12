@@ -65,6 +65,7 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return viewModel?.titleForHeaderInSection(for: section)
     }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.numberOfRowInSection(for: section) ?? 0
     }
