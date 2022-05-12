@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import RealmSwift
 
 class PurchaseListViewController: UIViewController {
     var viewModel: PurchaseListViewModelType?
@@ -40,7 +39,7 @@ class PurchaseListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        // Кнопка справа
+        // Button right
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(performAdd(param:)))

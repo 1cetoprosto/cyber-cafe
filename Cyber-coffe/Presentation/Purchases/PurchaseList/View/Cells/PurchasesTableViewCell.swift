@@ -42,7 +42,6 @@ class PurchasesTableViewCell: UITableViewCell {
     weak var viewModel: PurchaseListItemViewModelType? {
         willSet(viewModel) {
             guard let viewModel = viewModel else { return }
-            purchaseDate.text = viewModel.purchaseDate
             purchaseName.text = viewModel.purchaseName
             purchaseSum.text = viewModel.purchaseSum
         }

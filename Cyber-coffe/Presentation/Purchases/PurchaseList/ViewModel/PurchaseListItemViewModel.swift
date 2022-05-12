@@ -25,10 +25,6 @@ class PurchaseListItemViewModel: PurchaseListItemViewModelType {
         return purchase.purchaseSum.description
     }
     
-    var purchaseLabel: String {
-        return "Sum:"
-    }
-    
     init(purchase: PurchaseModel) {
         self.purchase = purchase
     }
