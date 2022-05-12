@@ -6,7 +6,6 @@
 //
 
 import UIKit
-//import RealmSwift
 
 class PurchaseListViewController: UIViewController {
     var viewModel: PurchaseListViewModelType?
@@ -40,7 +39,7 @@ class PurchaseListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        // Кнопка справа
+        // Button right
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(performAdd(param:)))
@@ -58,6 +57,14 @@ class PurchaseListViewController: UIViewController {
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.numberOfSections() ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel?.titleForHeaderInSection(for: section)
+    }
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.numberOfRowInSection(for: section) ?? 0
     }
@@ -77,7 +84,7 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

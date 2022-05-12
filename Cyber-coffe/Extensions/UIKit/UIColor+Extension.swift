@@ -25,7 +25,7 @@ extension UIColor {
 
     struct TableView {
         static var cellBackground: UIColor { HEX.hEFD4A0 }
-        static var cellLabel: UIColor { HEX.h5E4420 }
+        static var cellLabel: UIColor { HEX.h1C3209 }//{ HEX.h5E4420 }
     }
 
     struct NavBar {
