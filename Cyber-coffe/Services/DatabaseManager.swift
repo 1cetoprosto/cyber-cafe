@@ -89,6 +89,34 @@ class DatabaseManager {
         return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate"))
     }
     
+    func fetchSectionsSales() -> [(date: Date, items: [SalesModel])] {
+        let results = localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate",  ascending: false)
+        
+        let sections = results
+            .map { item in
+                // get start of a day
+                return Calendar.current.startOfDay(for: item.salesDate)
+            }
+            .reduce([]) { dates, date in
+                // unique sorted array of dates
+                return dates.last == date ? dates : dates + [date]
+            }
+            .compactMap { startDate -> (date: Date, items: [SalesModel])? in
+                // create the end of current day
+                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+                // filter sorted results by a predicate matching current day
+                let items = results.filter("(salesDate >= %@) AND (salesDate < %@)", startDate, endDate)
+                var sales = [SalesModel]()
+                for item in items {
+                    sales.append(item)
+                }
+                
+                // return a section only if current day is non-empty
+                return items.isEmpty ? nil : (date: startDate, items: sales)
+            }
+        return sections
+    }
+    
     func fetchSales(date: Date, type: String?) -> [SalesModel] {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
@@ -152,9 +180,9 @@ class DatabaseManager {
         return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate"))
     }
     
-    func fetchResultPurchases() -> Results<PurchaseModel> {
-        return localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
-    }
+//    func fetchResultPurchases() -> Results<PurchaseModel> {
+//        return localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
+//    }
     
     func fetchSectionsPurchases() -> [(date: Date, items: [PurchaseModel])] {
         let results = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
