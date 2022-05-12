@@ -20,10 +20,8 @@ class PurchasesTableViewCell: UITableViewCell {
         return view
     }()
 
-    lazy var purchaseDate = createSalesLabel(text: "05.09.21", font: .avenirNext14(), aligment: .left)
-    lazy var purchaseName = createSalesLabel(text: "Milk", font: .avenirNext20(), aligment: .left) //avenirNextDemiBold20
-    lazy var purchaseSum = createSalesLabel(text: "640", font: .avenirNext20(), aligment: .right) //avenirNextDemiBold20
-    lazy var purchaseLabel = createSalesLabel(text: "Sum:", font: .avenirNext14(), aligment: .right)
+    lazy var purchaseName = createSalesLabel(text: "Milk", font: .avenirNext20(), aligment: .left)
+    lazy var purchaseSum = createSalesLabel(text: "640", font: .avenirNext20(), aligment: .right) 
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -40,17 +38,6 @@ class PurchasesTableViewCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-//    func configure(purchase: PurchaseModel) {
-//
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "dd.MM.yy"
-//        purchaseDate.text = dateFormatter.string(from: purchase.purchaseDate)
-//        purchaseName.text = String(purchase.purchaseGood)
-//        purchaseSum.text = String(Int(purchase.purchaseSum))
-//
-//        selectionStyle = .none
-//    }
 
     weak var viewModel: PurchaseListItemViewModelType? {
         willSet(viewModel) {
@@ -75,16 +62,12 @@ class PurchasesTableViewCell: UITableViewCell {
         NSLayoutConstraint.activate([
             purchaseName.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
             purchaseName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 16),
-            //purchaseName.widthAnchor.constraint(equalToConstant: 200),
             purchaseName.heightAnchor.constraint(equalToConstant: 50)
         ])
         
         self.addSubview(purchaseSum)
         NSLayoutConstraint.activate([
             purchaseSum.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-//            purchaseSum.leadingAnchor.constraint(equalTo: purchaseName.trailingAnchor,
-//                                                 constant: 5),
-            //purchaseSum.widthAnchor.constraint(equalToConstant: 50),
             purchaseSum.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -30),
             purchaseSum.heightAnchor.constraint(equalToConstant: 25)
         ])
