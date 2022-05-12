@@ -59,8 +59,8 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     
     private func getPurchaseModel(atIndexPath indexPath: IndexPath) -> PurchaseModel? {
         guard let sectionsPurchases = self.sectionsPurchases else { return nil }
-        return sectionsPurchases[indexPath.section].items[indexPath.row]
         
+        return sectionsPurchases[indexPath.section].items[indexPath.row]
     }
     
     func deletePurchaseModel(atIndexPath indexPath: IndexPath) {
