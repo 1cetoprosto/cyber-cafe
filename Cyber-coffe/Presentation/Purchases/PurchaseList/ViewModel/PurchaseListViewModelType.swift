@@ -10,9 +10,9 @@ import Foundation
 protocol PurchaseListViewModelType: AnyObject {
     func getPurchases(completion: @escaping() -> ())
     
-    //func numberOfSections() -> Int
+    func numberOfSections() -> Int
     func numberOfRowInSection(for section: Int) -> Int
-    //func titleForHeaderInSection(for section: Int) -> String
+    func titleForHeaderInSection(for section: Int) -> String
     func cellViewModel(for indexPath: IndexPath) -> PurchaseListItemViewModelType?
     
     func viewModelForSelectedRow() -> PurchaseDetailsViewModelType?

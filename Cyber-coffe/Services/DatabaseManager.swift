@@ -152,6 +152,38 @@ class DatabaseManager {
         return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate"))
     }
     
+    func fetchResultPurchases() -> Results<PurchaseModel> {
+        return localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
+    }
+    
+    func fetchSectionsPurchases() -> [(date: Date, items: [PurchaseModel])] {
+        let results = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
+        
+        let sections = results
+            .map { item in
+                // get start of a day
+                return Calendar.current.startOfDay(for: item.purchaseDate)
+            }
+            .reduce([]) { dates, date in
+                // unique sorted array of dates
+                return dates.last == date ? dates : dates + [date]
+            }
+            .compactMap { startDate -> (date: Date, items: [PurchaseModel])? in
+                // create the end of current day
+                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+                // filter sorted results by a predicate matching current day
+                let items = results.filter("(purchaseDate >= %@) AND (purchaseDate < %@)", startDate, endDate)
+                var purchases = [PurchaseModel]()
+                for item in items {
+                    purchases.append(item)
+                }
+                
+                // return a section only if current day is non-empty
+                return items.isEmpty ? nil : (date: startDate, items: purchases)
+            }
+        return sections
+    }
+    
     // Типи пожертвувань
     func saveTypeOfDonationModel(model: TypeOfDonationModel) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
