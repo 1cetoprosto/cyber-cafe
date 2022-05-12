@@ -103,7 +103,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Sale for:"
+        title = "Donat for:"
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         

@@ -19,10 +19,10 @@ class SalesTableViewCell: UITableViewCell {
     }()
 
     lazy var goodsName = createSalesLabel(text: "05.09.21", font: .avenirNext20(), aligment: .left)
-    lazy var salesSum = createSalesLabel(text: "640", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var salesLabel = createSalesLabel(text: "Sale:", font: .avenirNext14(), aligment: .right)
-    lazy var cashSum = createSalesLabel(text: "230", font: .avenirNextDemiBold20(), aligment: .left)
-    lazy var cashLabel = createSalesLabel(text: "Cash:", font: .avenirNext14(), aligment: .right)
+    lazy var salesSum = createSalesLabel(text: "640", font: .avenirNext14(), aligment: .right)
+    lazy var salesLabel = createSalesLabel(text: "Plan:", font: .avenirNext14(), aligment: .left)
+    lazy var cashSum = createSalesLabel(text: "230", font: .avenirNext20(), aligment: .right)
+    //lazy var cashLabel = createSalesLabel(text: "Donat:", font: .avenirNext14(), aligment: .right)
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -74,11 +74,27 @@ class SalesTableViewCell: UITableViewCell {
         self.addSubview(goodsName)
         NSLayoutConstraint.activate([
             goodsName.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            goodsName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 20),
-            goodsName.widthAnchor.constraint(equalToConstant: 200),
+            goodsName.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 16),
+            //goodsName.widthAnchor.constraint(equalToConstant: 200),
             goodsName.heightAnchor.constraint(equalToConstant: 50)
         ])
 
+//        let cashStackView = UIStackView(arrangedSubviews: [cashLabel, cashSum],
+//                                        axis: .horizontal,
+//                                        spacing: 5,
+//                                        distribution: .fillEqually)
+
+        self.addSubview(cashSum) // cashStackView
+        NSLayoutConstraint.activate([
+//            cashSum.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+//            cashSum.leadingAnchor.constraint(equalTo: goodsName.trailingAnchor, constant: 5),
+//            cashSum.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+//            cashSum.heightAnchor.constraint(equalToConstant: 25)
+            cashSum.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
+            cashSum.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -30),
+            cashSum.heightAnchor.constraint(equalToConstant: 25)
+        ])
+        
         let salesStackView = UIStackView(arrangedSubviews: [salesLabel, salesSum],
                                          axis: .horizontal,
                                          spacing: 5,
@@ -86,23 +102,10 @@ class SalesTableViewCell: UITableViewCell {
 
         self.addSubview(salesStackView)
         NSLayoutConstraint.activate([
-            salesStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            salesStackView.leadingAnchor.constraint(equalTo: goodsName.trailingAnchor, constant: 5),
-            salesStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
+            salesStackView.bottomAnchor.constraint(equalTo: backgroundViewCell.bottomAnchor, constant: 0),
+//            salesStackView.leadingAnchor.constraint(equalTo: goodsName.trailingAnchor, constant: 5),
+            salesStackView.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -30),
             salesStackView.heightAnchor.constraint(equalToConstant: 25)
-        ])
-
-        let cashStackView = UIStackView(arrangedSubviews: [cashLabel, cashSum],
-                                        axis: .horizontal,
-                                        spacing: 5,
-                                        distribution: .fillEqually)
-
-        self.addSubview(cashStackView)
-        NSLayoutConstraint.activate([
-            cashStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            cashStackView.leadingAnchor.constraint(equalTo: goodsName.trailingAnchor, constant: 5),
-            cashStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
-            cashStackView.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
 }

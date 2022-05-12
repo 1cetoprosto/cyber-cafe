@@ -34,7 +34,7 @@ class SaleListViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
-        title = "Sales"
+        title = "Donations"
         
         tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idSalesCell)
         tableView.dataSource = self
@@ -62,6 +62,15 @@ class SaleListViewController: UIViewController {
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.numberOfSections() ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel?.titleForHeaderInSection(for: section)
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let viewModel = viewModel else { return 0 }
         return viewModel.numberOfRowInSection(for: section)
@@ -80,7 +89,7 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+        return 60
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
