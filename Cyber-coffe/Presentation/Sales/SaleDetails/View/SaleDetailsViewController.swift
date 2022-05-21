@@ -11,6 +11,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     var viewModel: SaleDetailsViewModelType?
     var tableViewModel: SaleGoodListViewModelType?
+    private var dateChanged: Bool = false
     
     let datePicker: UIDatePicker = {
         let picker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
@@ -18,6 +19,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         picker.locale = .current
         picker.contentHorizontalAlignment = .center
         picker.preferredDatePickerStyle = .automatic
+        picker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
         
         return picker
     }()
@@ -151,7 +153,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
-        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday") {
+        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday") && dateChanged {
             let alert = UIAlertController(title: "Warning!",
                                           message: "Data for the selected date already exists. Open and edit them ",
                                           preferredStyle: .alert)
@@ -182,6 +184,10 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         saleLabel.text = tableViewModel?.totalSum()
     }
     
+    @objc func datePickerChanged (_ sender: UIDatePicker ) {
+        dateChanged = true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
@@ -189,17 +195,26 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     func saveModels() {
         guard let viewModel = self.viewModel else { return }
-        guard let tableViewModel = self.tableViewModel else { return }
         
         if viewModel.newModel {
-            tableViewModel.saveSalesGood(date: datePicker.date)
-            viewModel.saveSales(date: datePicker.date, typeOfDonation: typeTextfield.text, salesCash: moneyTextfield.text, salesSum: saleLabel.text)
+            viewModel.saveSales(date: datePicker.date,
+                                typeOfDonation: typeTextfield.text,
+                                salesCash: moneyTextfield.text,
+                                salesSum: saleLabel.text)
         } else {
-            tableViewModel.updateSalesGood(date: datePicker.date)
             viewModel.updateSales(date: datePicker.date,
                                   typeOfDonation: typeTextfield.text,
-                                   salesCash: moneyTextfield.text,
-                                   salesSum: saleLabel.text)
+                                  salesCash: moneyTextfield.text,
+                                  salesSum: saleLabel.text)
+        }
+        
+        if viewModel.typeOfDonation == "Sunday" {
+            guard let tableViewModel = self.tableViewModel else { return }
+            if viewModel.newModel {
+                tableViewModel.saveSalesGood(date: datePicker.date)
+            } else {
+                tableViewModel.updateSalesGood(date: datePicker.date)
+            }
         }
     }
 }

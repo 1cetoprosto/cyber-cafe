@@ -35,11 +35,11 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         return label
     }()
 
-    let settingSwitch: UISwitch = {
+    lazy var settingSwitch: UISwitch = {
         let settingSwitch = UISwitch()
         settingSwitch.onTintColor = UIColor.Button.background
         settingSwitch.thumbTintColor = UIColor.NavBar.text
-        settingSwitch.addTarget(SettingsSwitchTableViewCell.self, action: #selector(switchTheme), for: .valueChanged)
+        settingSwitch.addTarget(self, action: #selector(switchTheme), for: .valueChanged)
 
         return settingSwitch
     }()

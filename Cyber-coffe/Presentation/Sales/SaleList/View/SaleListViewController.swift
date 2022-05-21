@@ -40,17 +40,12 @@ class SaleListViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         
-        // Кнопка зправа
+        // Button right
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add,
                                                             target: self,
                                                             action: #selector(performAdd(param:)))
         
         setConstraints()
-        
-//        viewModel = SaleListViewModel()
-//        viewModel?.getSales { [weak self] in
-//            self?.tableView.reloadData()
-//        }
     }
 
     // MARK: - Method
