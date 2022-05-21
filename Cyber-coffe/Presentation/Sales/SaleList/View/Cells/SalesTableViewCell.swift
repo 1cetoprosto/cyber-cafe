@@ -86,11 +86,11 @@ class SalesTableViewCell: UITableViewCell {
 
         self.addSubview(cashSum) // cashStackView
         NSLayoutConstraint.activate([
-//            cashSum.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            cashSum.topAnchor.constraint(equalTo: backgroundViewCell.topAnchor, constant: 15),
 //            cashSum.leadingAnchor.constraint(equalTo: goodsName.trailingAnchor, constant: 5),
 //            cashSum.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5),
 //            cashSum.heightAnchor.constraint(equalToConstant: 25)
-            cashSum.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
+//            cashSum.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
             cashSum.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -30),
             cashSum.heightAnchor.constraint(equalToConstant: 25)
         ])
