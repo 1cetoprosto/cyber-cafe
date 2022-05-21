@@ -97,7 +97,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         if self.isMovingFromParent {
             guard let viewModel = viewModel else { return }
             if viewModel.salesSum == 0.0 {
-                SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+                //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
             }
         }
     }
@@ -186,6 +186,8 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     @objc func datePickerChanged (_ sender: UIDatePicker ) {
         dateChanged = true
+        //TODO: need calculate totalSum
+        saleLabel.text = tableViewModel?.totalSum()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -272,7 +274,7 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
         view.endEditing(true)
         
         if typeOfDonation != "Sunday" {
-            SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
             tableViewModel = SaleGoodListViewModel()
                 self.tableView.reloadData()
         }
