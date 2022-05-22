@@ -19,7 +19,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         picker.locale = .current
         picker.contentHorizontalAlignment = .center
         picker.preferredDatePickerStyle = .automatic
-        picker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
+        picker.addTarget(SaleDetailsViewController.self, action: #selector(datePickerChanged), for: .valueChanged)
         
         return picker
     }()
