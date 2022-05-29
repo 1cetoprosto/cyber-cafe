@@ -198,7 +198,7 @@ class DatabaseManager {
             }
             .compactMap { startDate -> (date: Date, items: [PurchaseModel])? in
                 // create the end of current day
-                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
+                let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
                 let items = results.filter("(purchaseDate >= %@) AND (purchaseDate < %@)", startDate, endDate)
                 var purchases = [PurchaseModel]()
