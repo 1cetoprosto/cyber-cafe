@@ -8,6 +8,8 @@
 import RealmSwift
 
 class GoodsPriceModel: Object {
+    @Persisted var id: String = ""
+    @Persisted var synchronized: Bool = false
     @Persisted var good: String = ""
     @Persisted var price: Double = 0.0
 }
