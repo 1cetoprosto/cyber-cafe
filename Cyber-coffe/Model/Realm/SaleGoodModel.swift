@@ -8,7 +8,9 @@
 import RealmSwift
 
 class SaleGoodModel: Object {
-    @Persisted var saleDate = Date()
+    @Persisted var id: String = ""
+    @Persisted var synchronized: Bool = false
+    @Persisted var date = Date()
     @Persisted var saleGood: String = ""
     @Persisted var saleQty: Int = 0
     @Persisted var salePrice: Double = 0.0

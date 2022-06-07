@@ -23,13 +23,14 @@ class DatabaseManager {
         }
     }
     
-    func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, salePrice: Double, saleSum: Double) {
+    func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, salePrice: Double, saleSum: Double, saleSynchronized: Bool) {
         try! localRealm.write {
-            model.saleDate = saleDate
+            model.date = saleDate
             model.saleGood = saleGood
             model.saleQty = saleQty
             model.salePrice = salePrice
             model.saleSum = saleSum
+            model.synchronized = saleSynchronized
         }
     }
     
@@ -70,12 +71,13 @@ class DatabaseManager {
         }
     }
     
-    func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double) {
+    func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double, salesSynchronized: Bool) {
         try! localRealm.write {
             model.salesDate = salesDate
             model.salesTypeOfDonation = salesTypeOfDonation
             model.salesSum = salesSum
             model.salesCash = salesCash
+            model.salesSynchronized = salesSynchronized
         }
     }
 
@@ -136,11 +138,12 @@ class DatabaseManager {
         }
     }
 
-    func updateGoodsPriceModel(model: GoodsPriceModel, good: String, price: Double) {
+    func updateGoodsPriceModel(model: GoodsPriceModel, good: String, price: Double, synchronized: Bool) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             model.good = good
             model.price = price
+            model.synchronized = synchronized
         }
     }
 
@@ -162,11 +165,12 @@ class DatabaseManager {
         }
     }
 
-    func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double) {
+    func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double, purchaseSynchronized:Bool) {
         try! localRealm.write {
             model.purchaseDate = purchaseDate
             model.purchaseGood = purchaseName
             model.purchaseSum = purchaseSum
+            model.purchaseSynchronized = purchaseSynchronized
         }
     }
 
@@ -220,10 +224,11 @@ class DatabaseManager {
         }
     }
 
-    func updateTypeOfDonationModel(model: TypeOfDonationModel, type: String) {
+    func updateTypeOfDonationModel(model: TypeOfDonationModel, type: String, typeOfDonationSynchronized: Bool) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             model.type = type
+            model.typeOfDonationSynchronized = typeOfDonationSynchronized
         }
     }
 

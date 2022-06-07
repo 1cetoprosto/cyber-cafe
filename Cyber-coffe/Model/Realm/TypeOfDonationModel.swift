@@ -8,5 +8,7 @@
 import RealmSwift
 
 class TypeOfDonationModel: Object {
+    @Persisted var typeOfDonationId: String = ""
+    @Persisted var typeOfDonationSynchronized: Bool = false
     @Persisted var type: String = ""
 }

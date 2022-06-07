@@ -8,6 +8,8 @@
 import RealmSwift
 
 class SalesModel: Object {
+    @Persisted var salesId: String = ""
+    @Persisted var salesSynchronized: Bool = false
     @Persisted var salesDate = Date()
     @Persisted var salesTypeOfDonation: String = "Sunday"
     @Persisted var salesSum: Double = 0.0

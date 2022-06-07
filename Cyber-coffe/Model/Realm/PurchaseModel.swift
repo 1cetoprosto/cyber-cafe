@@ -8,6 +8,8 @@
 import RealmSwift
 
 class PurchaseModel: Object {
+    @Persisted var purchaseId: String = ""
+    @Persisted var purchaseSynchronized: Bool = false
     @Persisted var purchaseDate: Date = Date()
     @Persisted var purchaseGood: String = ""
     @Persisted var purchaseSum: Double = 0.0

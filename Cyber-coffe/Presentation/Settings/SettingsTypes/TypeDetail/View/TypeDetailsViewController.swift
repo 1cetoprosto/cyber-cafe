@@ -105,18 +105,38 @@ class TypeDetailsViewController: UIViewController {
 
     // MARK: - Method
     @objc func saveAction(param: UIButton) {
-
+        
         type = typeTextfield.text ?? ""
-
+        
         if newModel {
             typesModel.type = type
-
+            
+            if let id = FirestoreDatabase
+                .shared
+                .create(firModel: FIRTypeOfDonationModel(typeOfDonationModel: typesModel),
+                        collection: "typesOfDonation") {
+                typesModel.typeOfDonationId = id
+                typesModel.typeOfDonationSynchronized = true
+            }
+            
             DatabaseManager.shared.saveTypeOfDonationModel(model: typesModel)
             typesModel = TypeOfDonationModel()
         } else {
-            DatabaseManager.shared.updateTypeOfDonationModel(model: typesModel, type: type)
+            
+            let typeOfDonationSynchronized = FirestoreDatabase
+                .shared
+                .update(firModel: FIRTypeOfDonationModel(id: typesModel.typeOfDonationId,
+                                                         type: type),
+                        collection: "typesOfDonation",
+                        documentId: typesModel.typeOfDonationId)
+            
+            DatabaseManager
+                .shared
+                .updateTypeOfDonationModel(model: typesModel,
+                                           type: type,
+                                           typeOfDonationSynchronized: typeOfDonationSynchronized)
         }
-
+        
         navigationController?.popViewController(animated: true)
     }
 

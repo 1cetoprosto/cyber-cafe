@@ -26,13 +26,29 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
             purchase.purchaseGood = purchaseName
             purchase.purchaseSum = purchaseSum
             
+            if let id = FirestoreDatabase
+                .shared
+                .create(firModel: FIRPurchaseModel(purchaseModel: purchase), collection: "purchase") {
+                purchase.purchaseId = id
+                purchase.purchaseSynchronized = true
+            }
+            
             DatabaseManager.shared.savePurchaseModel(model: purchase)
             purchase = PurchaseModel()
         } else {
+            let purchaseSynchronized = FirestoreDatabase
+                .shared
+                .update(firModel: FIRPurchaseModel(purchaseId: purchase.purchaseId,
+                                                   purchaseDate: purchaseDate,
+                                                   purchaseGood: purchaseName,
+                                                   purchaseSum: purchaseSum),
+                        collection: "purchase", documentId: purchase.purchaseId)
+            
             DatabaseManager.shared.updatePurchaseModel(model: purchase,
                                                        purchaseDate: purchaseDate,
                                                        purchaseName: purchaseName,
-                                                       purchaseSum: purchaseSum)
+                                                       purchaseSum: purchaseSum,
+                                                       purchaseSynchronized: purchaseSynchronized)
         }
     }
     

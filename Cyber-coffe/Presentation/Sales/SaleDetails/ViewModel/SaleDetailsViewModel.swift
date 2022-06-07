@@ -45,6 +45,11 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         sale.salesCash = Double(salesCash ?? "0") ?? 0
         sale.salesTypeOfDonation = typeOfDonation ?? ""
         
+        if let id = FirestoreDatabase.shared.create(firModel: FIRSalesModel(salesModel: sale), collection: "sales") {
+            sale.salesId = id
+            sale.salesSynchronized = true
+        }
+        
         DatabaseManager.shared.saveSalesModel(model: sale)
     }
     
@@ -52,7 +57,21 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         let salesSum = Double(salesSum ?? "0") ?? 0
         let salesCash = Double(salesCash ?? "0") ?? 0
         let typeOfDonation = typeOfDonation ?? ""
-        DatabaseManager.shared.updateSalesModel(model: sale, salesDate: date, salesTypeOfDonation: typeOfDonation, salesSum: salesSum, salesCash: salesCash)
+        
+        let salesSynchronized = FirestoreDatabase.shared.update(firModel: FIRSalesModel(salesId: sale.salesId,
+                                                                salesDate: date,
+                                                                salesTypeOfDonation: typeOfDonation,
+                                                                salesSum: salesSum,
+                                                                salesCash: salesCash),
+                                        collection: "sales",
+                                        documentId: sale.salesId)
+        
+        DatabaseManager.shared.updateSalesModel(model: sale,
+                                                salesDate: date,
+                                                salesTypeOfDonation: typeOfDonation,
+                                                salesSum: salesSum,
+                                                salesCash: salesCash,
+                                                salesSynchronized: salesSynchronized)
     }
     
     func numberOfRowsInComponent(component: Int) -> Int {
