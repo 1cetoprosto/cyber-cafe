@@ -8,6 +8,7 @@
 import Foundation
 
 struct SaleGood {
+    var saleId: String = ""
     var saleDate = Date()
     var saleGood: String = ""
     var saleQty: Int = 0
@@ -16,7 +17,7 @@ struct SaleGood {
 }
 
 class SaleGoodListViewModel: SaleGoodListViewModelType {
-
+    
     private var selectedIndexPath: IndexPath?
     private var saleGoods = [SaleGood]()
     
@@ -28,17 +29,19 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
             
             for goodPrice in goodsPrice {
                 var saleGood = SaleGood()
+                //saleGood.saleId = ""
                 saleGood.saleDate = date
                 saleGood.saleGood = goodPrice.good
-                saleGood.saleQty = 0
+                //saleGood.saleQty = 0
                 saleGood.salePrice = goodPrice.price
-                saleGood.saleSum = 0.0
+                //saleGood.saleSum = 0.0
                 saleGoods.append(saleGood)
             }
         } else {
             for saleGoodsElement in saleGoodsArray {
                 var saleGood = SaleGood()
-                saleGood.saleDate = saleGoodsElement.saleDate
+                saleGood.saleId = saleGoodsElement.id
+                saleGood.saleDate = saleGoodsElement.date
                 saleGood.saleGood = saleGoodsElement.saleGood
                 saleGood.saleQty = saleGoodsElement.saleQty
                 saleGood.salePrice = saleGoodsElement.salePrice
@@ -77,38 +80,70 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     
     func totalSum() -> String {
         var totalSum: Double = 0.0
-
+        
         for good in saleGoods {
             totalSum += good.saleSum
         }
-
+        
         return String(totalSum)
     }
     
     func saveSalesGood(date: Date) {
         for sale in saleGoods {
-            let saleGood = SaleGoodModel()
-            saleGood.saleGood = sale.saleGood
-            saleGood.saleDate = date
-            saleGood.saleQty = sale.saleQty
-            saleGood.salePrice = sale.salePrice
-            saleGood.saleSum = sale.saleSum
-            DatabaseManager.shared.saveSalesGoodModel(model: saleGood)
+            let saleGoodModel = SaleGoodModel()
+            saleGoodModel.saleGood = sale.saleGood
+            saleGoodModel.date = date
+            saleGoodModel.saleQty = sale.saleQty
+            saleGoodModel.salePrice = sale.salePrice
+            saleGoodModel.saleSum = sale.saleSum
+            
+            if let id = FirestoreDatabase
+                .shared
+                //.createSaleGood(firSaleGood: FIRSaleGood(saleGoodModel: saleGoodModel)) {
+                .create(firModel: FIRSaleGoodModel(saleGoodModel: saleGoodModel), collection: "saleGood") {
+                saleGoodModel.id = id
+                saleGoodModel.synchronized = true
+            }
+            
+            DatabaseManager.shared.saveSalesGoodModel(model: saleGoodModel)
         }
     }
     
     func updateSalesGood(date: Date) {
         
         for saleGood in saleGoods {
-            let saleGoodModel = DatabaseManager.shared.fetchSaleGood(date: saleGood.saleDate,
-                                                                     good: saleGood.saleGood)
             
-            DatabaseManager.shared.updateSaleGoodModel(model: saleGoodModel,
-                                                       saleDate: date,
-                                                       saleGood: saleGood.saleGood,
-                                                       saleQty: saleGood.saleQty,
-                                                       salePrice: saleGood.salePrice,
-                                                       saleSum: saleGood.saleSum)
+            let saleGoodModel = DatabaseManager
+                .shared
+                .fetchSaleGood(date: saleGood.saleDate,
+                               good: saleGood.saleGood)
+            
+            let saleSynchronized = FirestoreDatabase
+                .shared
+                .update(firModel: FIRSaleGoodModel(saleId: saleGood.saleId,
+                                              saleDate: date,
+                                              saleGood: saleGood.saleGood,
+                                              saleQty: saleGood.saleQty,
+                                              salePrice: saleGood.salePrice,
+                                              saleSum: saleGood.saleSum),
+                        collection: "saleGood",
+                        documentId: saleGood.saleId)
+//                .updateSaleGood(firSaleGood: FIRSaleGood(saleId: saleGood.saleId,
+//                                                         saleDate: date,
+//                                                         saleGood: saleGood.saleGood,
+//                                                         saleQty: saleGood.saleQty,
+//                                                         salePrice: saleGood.salePrice,
+//                                                         saleSum: saleGood.saleSum))
+            
+            DatabaseManager
+                .shared
+                .updateSaleGoodModel(model: saleGoodModel,
+                                     saleDate: date,
+                                     saleGood: saleGood.saleGood,
+                                     saleQty: saleGood.saleQty,
+                                     salePrice: saleGood.salePrice,
+                                     saleSum: saleGood.saleSum,
+                                     saleSynchronized: saleSynchronized)
         }
         
     }
@@ -116,7 +151,13 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     static func deleteSalesGood(date: Date) {
         let salesGoods = DatabaseManager.shared.fetchSaleGood(date: date)
         for saleGood in salesGoods {
-            DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+            let saleDeleted = FirestoreDatabase.shared.delete(collection: "saleGood", documentId: saleGood.id) //deleteSaleGood(documentId: saleGood.saleId)
+            if saleDeleted {
+                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+            } else {
+                //TODO: add in table for delete later, when wiil be sinhronize
+                
+            }
         }
     }
 }

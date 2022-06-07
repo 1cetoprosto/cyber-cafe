@@ -144,11 +144,24 @@ class GoodDetailsViewController: UIViewController {
         if newModel {
             goodsModel.good = good
             goodsModel.price = price
+            
+            if let id = FirestoreDatabase
+                .shared
+                .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
+                goodsModel.id = id
+                goodsModel.synchronized = true
+            }
 
             DatabaseManager.shared.saveGoodsPriceModel(model: goodsModel)
             goodsModel = GoodsPriceModel()
         } else {
-            DatabaseManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price)
+            
+            let synchronized = FirestoreDatabase
+                .shared
+                .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
+                        collection: "goodsPrice", documentId: goodsModel.id)
+            
+            DatabaseManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price, synchronized: synchronized)
         }
 
         navigationController?.popViewController(animated: true)
