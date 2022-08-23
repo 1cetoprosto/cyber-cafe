@@ -14,15 +14,15 @@ class PurchaseListItemViewModel: PurchaseListItemViewModelType {
     var purchaseDate: String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yy"
-        return dateFormatter.string(from: purchase.purchaseDate)
+        return dateFormatter.string(from: purchase.date)
     }
     
     var purchaseName: String {
-        return purchase.purchaseGood
+        return purchase.good
     }
     
     var purchaseSum: String {
-        return purchase.purchaseSum.description
+        return purchase.sum.description
     }
     
     init(purchase: PurchaseModel) {

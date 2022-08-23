@@ -15,4 +15,15 @@ class SaleGoodModel: Object {
     @Persisted var saleQty: Int = 0
     @Persisted var salePrice: Double = 0.0
     @Persisted var saleSum: Double = 0.0
+    
+    convenience init(documentId firId: String, firModel: FIRSaleGoodModel) {
+        self.init()
+        self.id = firId
+        self.synchronized = true
+        self.date = firModel.saleDate
+        self.saleGood = firModel.saleGood
+        self.saleQty = firModel.saleQty
+        self.salePrice = firModel.salePrice
+        self.saleSum = firModel.saleSum
+    }
 }

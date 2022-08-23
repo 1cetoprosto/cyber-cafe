@@ -145,7 +145,7 @@ class GoodDetailsViewController: UIViewController {
             goodsModel.good = good
             goodsModel.price = price
             
-            if let id = FirestoreDatabase
+            if let id = FIRFirestoreService
                 .shared
                 .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
                 goodsModel.id = id
@@ -156,7 +156,7 @@ class GoodDetailsViewController: UIViewController {
             goodsModel = GoodsPriceModel()
         } else {
             
-            let synchronized = FirestoreDatabase
+            let synchronized = FIRFirestoreService
                 .shared
                 .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
                         collection: "goodsPrice", documentId: goodsModel.id)

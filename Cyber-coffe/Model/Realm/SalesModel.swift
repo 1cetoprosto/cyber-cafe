@@ -8,10 +8,20 @@
 import RealmSwift
 
 class SalesModel: Object {
-    @Persisted var salesId: String = ""
-    @Persisted var salesSynchronized: Bool = false
-    @Persisted var salesDate = Date()
-    @Persisted var salesTypeOfDonation: String = "Sunday"
-    @Persisted var salesSum: Double = 0.0
-    @Persisted var salesCash: Double = 0.0
+    @Persisted var id: String// = ""
+    @Persisted var synchronized: Bool// = false
+    @Persisted var date: Date
+    @Persisted var typeOfDonation: String// = "Sunday"
+    @Persisted var sum: Double// = 0.0
+    @Persisted var cash: Double// = 0.0
+    
+    convenience init(documentId firId: String, firModel: FIRSalesModel) {
+        self.init()
+        self.id = firId
+        self.synchronized = true
+        self.date = firModel.salesDate
+        self.typeOfDonation = firModel.salesTypeOfDonation
+        self.sum = firModel.salesSum
+        self.cash = firModel.salesCash
+    }
 }
