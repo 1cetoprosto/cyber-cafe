@@ -8,7 +8,14 @@
 import RealmSwift
 
 class TypeOfDonationModel: Object {
-    @Persisted var typeOfDonationId: String = ""
-    @Persisted var typeOfDonationSynchronized: Bool = false
+    @Persisted var id: String = ""
+    @Persisted var synchronized: Bool = false
     @Persisted var type: String = ""
+    
+    convenience init(documentId firId: String, firModel: FIRTypeOfDonationModel) {
+        self.init()
+        self.id = firId
+        self.synchronized = true
+        self.type = firModel.type
+    }
 }

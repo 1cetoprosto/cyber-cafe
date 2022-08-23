@@ -111,24 +111,24 @@ class TypeDetailsViewController: UIViewController {
         if newModel {
             typesModel.type = type
             
-            if let id = FirestoreDatabase
+            if let id = FIRFirestoreService
                 .shared
                 .create(firModel: FIRTypeOfDonationModel(typeOfDonationModel: typesModel),
                         collection: "typesOfDonation") {
-                typesModel.typeOfDonationId = id
-                typesModel.typeOfDonationSynchronized = true
+                typesModel.id = id
+                typesModel.synchronized = true
             }
             
             DatabaseManager.shared.saveTypeOfDonationModel(model: typesModel)
             typesModel = TypeOfDonationModel()
         } else {
             
-            let typeOfDonationSynchronized = FirestoreDatabase
+            let typeOfDonationSynchronized = FIRFirestoreService
                 .shared
-                .update(firModel: FIRTypeOfDonationModel(id: typesModel.typeOfDonationId,
+                .update(firModel: FIRTypeOfDonationModel(id: typesModel.id,
                                                          type: type),
                         collection: "typesOfDonation",
-                        documentId: typesModel.typeOfDonationId)
+                        documentId: typesModel.id)
             
             DatabaseManager
                 .shared

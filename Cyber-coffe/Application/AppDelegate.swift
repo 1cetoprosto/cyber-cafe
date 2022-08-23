@@ -16,6 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UINavigationBar.appearance().customNavigationBar()
         FirebaseApp.configure()
+        //loadAllData()
         return true
     }
     
@@ -35,5 +36,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+//    func loadAllData() {
+//        // erase Realm
+//        DatabaseManager.shared.deleteAllData()
+//        
+//        let firSales: [(documentId: String, FIRSalesModel)] = FIRFirestoreService.shared.read(collection: "sales")
+//        for (documentId, firSalesModel) in firSales {
+//            DatabaseManager.shared.saveSalesModel(model: SalesModel(documentId: documentId, firModel: firSalesModel))
+//        }
+//        
+//        let firSaleGoods: [(documentId: String, FIRSaleGoodModel)] = FIRFirestoreService.shared.read(collection: "saleGood")
+//        for (documentId, firSaleGoodModel) in firSaleGoods {
+//            DatabaseManager.shared.saveSalesGoodModel(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+//        }
+//        
+//        let firPurchases: [(documentId: String, FIRPurchaseModel)] = FIRFirestoreService.shared.read(collection: "purchase")
+//        for (documentId, firPurchaseModel) in firPurchases {
+//            DatabaseManager.shared.savePurchaseModel(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+//        }
+//        
+//        let firGoodsPrice: [(documentId: String, FIRGoodsPriceModel)] = FIRFirestoreService.shared.read(collection: "goodsPrice")
+//        for (documentId, firGoodsPriceModel) in firGoodsPrice {
+//            DatabaseManager.shared.saveGoodsPriceModel(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+//        }
+//        
+//        let firTypeOfDonations: [(documentId: String, FIRTypeOfDonationModel)] = FIRFirestoreService.shared.read(collection: "typesOfdonation")
+//        for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
+//            DatabaseManager.shared.saveTypeOfDonationModel(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
+//        }
+//    }
     
 }
