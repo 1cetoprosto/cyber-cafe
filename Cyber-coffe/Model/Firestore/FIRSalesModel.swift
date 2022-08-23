@@ -25,11 +25,11 @@ struct FIRSalesModel: Codable {
     //    }
     //
     init(salesModel: SalesModel) {
-        self.id = salesModel.salesId
-        self.salesDate = salesModel.salesDate
-        self.salesTypeOfDonation = salesModel.salesTypeOfDonation
-        self.salesSum = salesModel.salesSum
-        self.salesCash = salesModel.salesCash
+        self.id = salesModel.id
+        self.salesDate = salesModel.date
+        self.salesTypeOfDonation = salesModel.typeOfDonation
+        self.salesSum = salesModel.sum
+        self.salesCash = salesModel.cash
     }
     
     init(salesId: String,

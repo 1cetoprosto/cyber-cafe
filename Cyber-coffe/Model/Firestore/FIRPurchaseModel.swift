@@ -24,10 +24,10 @@ struct FIRPurchaseModel: Codable {
     //    }
     //
     init(purchaseModel: PurchaseModel) {
-        self.id = purchaseModel.purchaseId
-        self.purchaseDate = purchaseModel.purchaseDate
-        self.purchaseGood = purchaseModel.purchaseGood
-        self.purchaseSum = purchaseModel.purchaseSum
+        self.id = purchaseModel.id
+        self.purchaseDate = purchaseModel.date
+        self.purchaseGood = purchaseModel.good
+        self.purchaseSum = purchaseModel.sum
     }
     
     init(purchaseId: String,

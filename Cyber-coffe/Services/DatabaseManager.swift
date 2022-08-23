@@ -73,11 +73,11 @@ class DatabaseManager {
     
     func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double, salesSynchronized: Bool) {
         try! localRealm.write {
-            model.salesDate = salesDate
-            model.salesTypeOfDonation = salesTypeOfDonation
-            model.salesSum = salesSum
-            model.salesCash = salesCash
-            model.salesSynchronized = salesSynchronized
+            model.date = salesDate
+            model.typeOfDonation = salesTypeOfDonation
+            model.sum = salesSum
+            model.cash = salesCash
+            model.synchronized = salesSynchronized
         }
     }
 
@@ -88,16 +88,16 @@ class DatabaseManager {
     }
     
     func fetchSales() -> [SalesModel] {
-        return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate"))
+        return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "date"))
     }
     
     func fetchSectionsSales() -> [(date: Date, items: [SalesModel])] {
-        let results = localRealm.objects(SalesModel.self).sorted(byKeyPath: "salesDate",  ascending: false)
+        let results = localRealm.objects(SalesModel.self).sorted(byKeyPath: "date",  ascending: false)
         
         let sections = results
             .map { item in
                 // get start of a day
-                return Calendar.current.startOfDay(for: item.salesDate)
+                return Calendar.current.startOfDay(for: item.date)
             }
             .reduce([]) { dates, date in
                 // unique sorted array of dates
@@ -107,7 +107,7 @@ class DatabaseManager {
                 // create the end of current day
                 let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
-                let items = results.filter("(salesDate >= %@) AND (salesDate < %@)", startDate, endDate)
+                let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
                 var sales = [SalesModel]()
                 for item in items {
                     sales.append(item)
@@ -126,7 +126,7 @@ class DatabaseManager {
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicate = NSPredicate(format: "salesDate BETWEEN %@ AND salesTypeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND salesTypeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
         return Array(localRealm.objects(SalesModel.self).filter(predicate))
     }
 
@@ -167,10 +167,10 @@ class DatabaseManager {
 
     func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double, purchaseSynchronized:Bool) {
         try! localRealm.write {
-            model.purchaseDate = purchaseDate
-            model.purchaseGood = purchaseName
-            model.purchaseSum = purchaseSum
-            model.purchaseSynchronized = purchaseSynchronized
+            model.date = purchaseDate
+            model.good = purchaseName
+            model.sum = purchaseSum
+            model.synchronized = purchaseSynchronized
         }
     }
 
@@ -181,20 +181,16 @@ class DatabaseManager {
     }
     
     func fetchPurchases() -> [PurchaseModel] {
-        return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate"))
+        return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "date"))
     }
     
-//    func fetchResultPurchases() -> Results<PurchaseModel> {
-//        return localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
-//    }
-    
     func fetchSectionsPurchases() -> [(date: Date, items: [PurchaseModel])] {
-        let results = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "purchaseDate",  ascending: false)
+        let results = localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "date",  ascending: false)
         
         let sections = results
             .map { item in
                 // get start of a day
-                return Calendar.current.startOfDay(for: item.purchaseDate)
+                return Calendar.current.startOfDay(for: item.date)
             }
             .reduce([]) { dates, date in
                 // unique sorted array of dates
@@ -204,7 +200,7 @@ class DatabaseManager {
                 // create the end of current day
                 let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
-                let items = results.filter("(purchaseDate >= %@) AND (purchaseDate < %@)", startDate, endDate)
+                let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
                 var purchases = [PurchaseModel]()
                 for item in items {
                     purchases.append(item)
@@ -228,7 +224,7 @@ class DatabaseManager {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             model.type = type
-            model.typeOfDonationSynchronized = typeOfDonationSynchronized
+            model.synchronized = typeOfDonationSynchronized
         }
     }
 
@@ -241,4 +237,38 @@ class DatabaseManager {
     func fetchTypeOfDonation() -> [TypeOfDonationModel] {
         return Array(localRealm.objects(TypeOfDonationModel.self).sorted(byKeyPath: "type"))
     }
+    
+    func deleteAllData() {
+        
+        let allSaleGoodObjects = localRealm.objects(SaleGoodModel.self)
+        
+        try! localRealm.write {
+            localRealm.delete(allSaleGoodObjects)
+        }
+        
+        let allSalesObjects = localRealm.objects(SalesModel.self)
+        
+        try! localRealm.write {
+            localRealm.delete(allSalesObjects)
+        }
+        
+        let allGoodsPriceObjects = localRealm.objects(GoodsPriceModel.self)
+        
+        try! localRealm.write {
+            localRealm.delete(allGoodsPriceObjects)
+        }
+        
+        let allTypeOfDonationObjects = localRealm.objects(TypeOfDonationModel.self)
+        
+        try! localRealm.write {
+            localRealm.delete(allTypeOfDonationObjects)
+        }
+        
+        let allPurchaseObjects = localRealm.objects(PurchaseModel.self)
+        
+        try! localRealm.write {
+            localRealm.delete(allPurchaseObjects)
+        }
+    }
+    
 }

@@ -22,7 +22,7 @@ var type: String = ""
     //    }
     //
     init(typeOfDonationModel: TypeOfDonationModel) {
-        self.id = typeOfDonationModel.typeOfDonationId
+        self.id = typeOfDonationModel.id
         self.type = typeOfDonationModel.type
     }
     
