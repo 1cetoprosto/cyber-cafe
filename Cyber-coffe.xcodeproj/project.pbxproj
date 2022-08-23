@@ -61,7 +61,7 @@
 		F39B5D242846112F000F7D43 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D232846112F000F7D43 /* FirebaseFirestoreSwift */; };
 		F39B5D262846112F000F7D43 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D252846112F000F7D43 /* FirebaseStorage */; };
 		F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */; };
-		F39B5D3128473465000F7D43 /* FirestoreDatabase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FirestoreDatabase.swift */; };
+		F39B5D3128473465000F7D43 /* FIRFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */; };
 		F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */; };
 		F3B7C2522806D8DA00DF5C2B /* TypeOfDonationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */; };
 		F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
@@ -136,7 +136,7 @@
 		F39A5338273252B800C8F2D3 /* SettingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewController.swift; sourceTree = "<group>"; };
 		F39B5D1628460A06000F7D43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
-		F39B5D3028473465000F7D43 /* FirestoreDatabase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabase.swift; sourceTree = "<group>"; };
+		F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRFirestoreService.swift; sourceTree = "<group>"; };
 		F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesListViewController.swift; sourceTree = "<group>"; };
 		F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfDonationModel.swift; sourceTree = "<group>"; };
 		F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTableViewCell.swift; sourceTree = "<group>"; };
@@ -197,11 +197,11 @@
 		F3158C462763435000136861 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				F3158C472763437200136861 /* SaleGoodModel.swift */,
 				F31FCA3B2768789B00124366 /* SalesModel.swift */,
+				F3158C472763437200136861 /* SaleGoodModel.swift */,
+				F3D862D6277C33C100DD43DB /* PurchaseModel.swift */,
 				F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */,
 				F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */,
-				F3D862D6277C33C100DD43DB /* PurchaseModel.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -587,7 +587,7 @@
 			isa = PBXGroup;
 			children = (
 				F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */,
-				F39B5D3028473465000F7D43 /* FirestoreDatabase.swift */,
+				F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */,
 			);
 			path = FIR;
 			sourceTree = "<group>";
@@ -895,7 +895,7 @@
 				F316A2FF2738FD710083E830 /* SaleDetailsViewController.swift in Sources */,
 				F3988AE027EB12E100215976 /* PurchaseDetailsViewModelType.swift in Sources */,
 				F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */,
-				F39B5D3128473465000F7D43 /* FirestoreDatabase.swift in Sources */,
+				F39B5D3128473465000F7D43 /* FIRFirestoreService.swift in Sources */,
 				F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */,
 				F3988AF127EB310900215976 /* PurchaseListItemViewModel.swift in Sources */,
 				F3EB27DD27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift in Sources */,

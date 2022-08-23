@@ -15,11 +15,11 @@ class SaleListItemViewModel: SaleListItemViewModelType {
 //        let dateFormatter = DateFormatter()
 //        dateFormatter.dateFormat = "dd.MM.yy"
 //        return dateFormatter.string(from: sale.salesDate)
-        return sale.salesTypeOfDonation
+        return sale.typeOfDonation
     }
     
     var salesSum: String {
-        return String(Int(sale.salesSum))
+        return String(Int(sale.sum))
     }
     
     var salesLabel: String {
@@ -27,7 +27,7 @@ class SaleListItemViewModel: SaleListItemViewModelType {
     }
     
     var cashSum: String {
-        return String(Int(sale.salesCash))
+        return String(Int(sale.cash))
     }
     
     var cashLabel: String {

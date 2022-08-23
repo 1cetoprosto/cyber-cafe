@@ -20,13 +20,13 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     private var selectedRow: Int?
     var newModel: Bool
     
-    var date: Date { return sale.salesDate}
+    var date: Date { return sale.date}
     var moneyLabel: String { return "Donation:" }
     var moneyTextfield: String { return "Money2:" }
     var saleLabel: String { return "Money1:" }
-    var salesCash: Double { return sale.salesCash }
-    var salesSum: Double { return sale.salesSum }
-    var typeOfDonation: String { return sale.salesTypeOfDonation }
+    var salesCash: Double { return sale.cash }
+    var salesSum: Double { return sale.sum }
+    var typeOfDonation: String { return sale.typeOfDonation }
     
     init(sale: SalesModel, newModel: Bool = false) {
         self.sale = sale
@@ -40,14 +40,14 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     
     func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
         sale = SalesModel()
-        sale.salesDate = date
-        sale.salesSum = Double(salesSum ?? "0") ?? 0
-        sale.salesCash = Double(salesCash ?? "0") ?? 0
-        sale.salesTypeOfDonation = typeOfDonation ?? ""
+        sale.date = date
+        sale.sum = Double(salesSum ?? "0") ?? 0
+        sale.cash = Double(salesCash ?? "0") ?? 0
+        sale.typeOfDonation = typeOfDonation ?? ""
         
-        if let id = FirestoreDatabase.shared.create(firModel: FIRSalesModel(salesModel: sale), collection: "sales") {
-            sale.salesId = id
-            sale.salesSynchronized = true
+        if let id = FIRFirestoreService.shared.create(firModel: FIRSalesModel(salesModel: sale), collection: "sales") {
+            sale.id = id
+            sale.synchronized = true
         }
         
         DatabaseManager.shared.saveSalesModel(model: sale)
@@ -58,13 +58,13 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         let salesCash = Double(salesCash ?? "0") ?? 0
         let typeOfDonation = typeOfDonation ?? ""
         
-        let salesSynchronized = FirestoreDatabase.shared.update(firModel: FIRSalesModel(salesId: sale.salesId,
+        let salesSynchronized = FIRFirestoreService.shared.update(firModel: FIRSalesModel(salesId: sale.id,
                                                                 salesDate: date,
                                                                 salesTypeOfDonation: typeOfDonation,
                                                                 salesSum: salesSum,
                                                                 salesCash: salesCash),
                                         collection: "sales",
-                                        documentId: sale.salesId)
+                                        documentId: sale.id)
         
         DatabaseManager.shared.updateSalesModel(model: sale,
                                                 salesDate: date,
