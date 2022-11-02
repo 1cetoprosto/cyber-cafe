@@ -47,7 +47,7 @@ class DatabaseManager {
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicateDate = NSPredicate(format: "saleDate BETWEEN %@", [dateStart, dateEnd])
+        let predicateDate = NSPredicate(format: "date BETWEEN %@", [dateStart, dateEnd])
         
         return Array(localRealm.objects(SaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood"))
     }
@@ -58,7 +58,7 @@ class DatabaseManager {
             let components = DateComponents(day: 1, second: -1)
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
-        let predicate = NSPredicate(format: "saleDate BETWEEN %@ AND saleGood == %@", [dateStart, dateEnd], good)
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND saleGood == %@", [dateStart, dateEnd], good)
         
         return localRealm.objects(SaleGoodModel.self).filter(predicate)[0]
     }
@@ -126,7 +126,7 @@ class DatabaseManager {
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND salesTypeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND typeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
         return Array(localRealm.objects(SalesModel.self).filter(predicate))
     }
 
@@ -198,7 +198,7 @@ class DatabaseManager {
             }
             .compactMap { startDate -> (date: Date, items: [PurchaseModel])? in
                 // create the end of current day
-                let endDate = Calendar.current.date(byAdding: .month, value: 1, to: startDate)!
+                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
                 let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
                 var purchases = [PurchaseModel]()

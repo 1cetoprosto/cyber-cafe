@@ -112,9 +112,10 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         self.moneyTextfield.delegate = self
         
         let pickerView = UIPickerView()
-        //pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.center = view.center
+        //pickerView.isHidden = true
+
         self.view.addSubview(pickerView)
         
         typeTextfield.inputView = pickerView
@@ -273,11 +274,20 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
         typeTextfield.text = typeOfDonation
         view.endEditing(true)
         
-        if typeOfDonation != "Sunday" {
-            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
-            tableViewModel = SaleGoodListViewModel()
-                self.tableView.reloadData()
+//        if typeOfDonation != "Sunday" {
+//            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+//            tableViewModel = SaleGoodListViewModel()
+//                self.tableView.reloadData()
+//        }
+        if typeOfDonation == "Sunday" {
+            if tableViewModel == nil {
+                tableViewModel = SaleGoodListViewModel()
+                tableViewModel?.getSaleGoods(date: viewModel.date) {
+                    self.tableView.reloadData()
+                }
+            }
         }
+        self.tableView.reloadData()
     }
 }
 
