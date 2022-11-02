@@ -22,6 +22,7 @@
 		F31BD82D284E013300B8FD3B /* FIRTypeOfDonationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeOfDonationModel.swift */; };
 		F31BD82F284E022400B8FD3B /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */; };
 		F31D5882291224190047EB44 /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
+		F31D5886291230AE0047EB44 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
 		F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FCA3B2768789B00124366 /* SalesModel.swift */; };
 		F31FD0DD281D218500353BF7 /* FIRSaleGood.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRSaleGood.swift */; };
 		F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264980275B32A900836077 /* PurchasesTableViewCell.swift */; };
@@ -102,6 +103,7 @@
 		F31BD82C284E013300B8FD3B /* FIRTypeOfDonationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRTypeOfDonationModel.swift; sourceTree = "<group>"; };
 		F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRPurchaseModel.swift; sourceTree = "<group>"; };
 		F31D5881291224190047EB44 /* Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot1.png; sourceTree = "<group>"; };
+		F31D5885291230AE0047EB44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F31FCA3B2768789B00124366 /* SalesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesModel.swift; sourceTree = "<group>"; };
 		F31FD0DC281D218500353BF7 /* FIRSaleGood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRSaleGood.swift; sourceTree = "<group>"; };
 		F3264980275B32A900836077 /* PurchasesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesTableViewCell.swift; sourceTree = "<group>"; };
@@ -533,6 +535,7 @@
 		F39A52E827311FDD00C8F2D3 = {
 			isa = PBXGroup;
 			children = (
+				F31D5885291230AE0047EB44 /* README.md */,
 				F39A52F327311FDD00C8F2D3 /* Cyber-coffe */,
 				F39A52F227311FDD00C8F2D3 /* Products */,
 				45CFF4E4688CA7F160236776 /* Pods */,
@@ -789,6 +792,7 @@
 			files = (
 				F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */,
 				F39B5D1728460A06000F7D43 /* GoogleService-Info.plist in Resources */,
+				F31D5886291230AE0047EB44 /* README.md in Resources */,
 				F39A530127311FDE00C8F2D3 /* LaunchScreen.storyboard in Resources */,
 				F3BF4C6F28265F400036B433 /* SaleGoodModel.png in Resources */,
 				F3BF4C6D28265F400036B433 /* SalesModel.png in Resources */,
