@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		8BD85B5CA425076F01AE938F /* Pods_Cyber_coffe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3EC866DDBB353926C1AA74BA /* Pods_Cyber_coffe.framework */; };
+		A05075B06CC5EA2D19F33589 /* Pods_Cyber_coffe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 018B2286AACAA7ECCF2DB1F8 /* Pods_Cyber_coffe.framework */; };
 		F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
 		F3158C482763437200136861 /* SaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* SaleGoodModel.swift */; };
 		F3158C4B2763443700136861 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* DatabaseManager.swift */; };
@@ -86,9 +86,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3EC866DDBB353926C1AA74BA /* Pods_Cyber_coffe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cyber_coffe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A281B8E98C5C8A3B0D27296F /* Pods-Cyber-coffe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.debug.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.debug.xcconfig"; sourceTree = "<group>"; };
-		B4BABE8604895540A6637FD9 /* Pods-Cyber-coffe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.release.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.release.xcconfig"; sourceTree = "<group>"; };
+		018B2286AACAA7ECCF2DB1F8 /* Pods_Cyber_coffe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Cyber_coffe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		329D4B4334B6A2BAB3076B1A /* Pods-Cyber-coffe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.debug.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.debug.xcconfig"; sourceTree = "<group>"; };
+		AD8853E6A88C3E78053B2FBB /* Pods-Cyber-coffe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.release.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.release.xcconfig"; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
 		F3158C472763437200136861 /* SaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodModel.swift; sourceTree = "<group>"; };
 		F3158C4A2763443700136861 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
@@ -173,8 +173,8 @@
 				F39B5D242846112F000F7D43 /* FirebaseFirestoreSwift in Frameworks */,
 				F39B5D1E2846112F000F7D43 /* FirebaseDatabase in Frameworks */,
 				F39B5D262846112F000F7D43 /* FirebaseStorage in Frameworks */,
-				8BD85B5CA425076F01AE938F /* Pods_Cyber_coffe.framework in Frameworks */,
 				F39B5D222846112F000F7D43 /* FirebaseFirestore in Frameworks */,
+				A05075B06CC5EA2D19F33589 /* Pods_Cyber_coffe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -184,16 +184,16 @@
 		45CFF4E4688CA7F160236776 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A281B8E98C5C8A3B0D27296F /* Pods-Cyber-coffe.debug.xcconfig */,
-				B4BABE8604895540A6637FD9 /* Pods-Cyber-coffe.release.xcconfig */,
+				329D4B4334B6A2BAB3076B1A /* Pods-Cyber-coffe.debug.xcconfig */,
+				AD8853E6A88C3E78053B2FBB /* Pods-Cyber-coffe.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		D560DBCFF535D2E872166525 /* Frameworks */ = {
+		613C77214230DAD56407AA5A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				3EC866DDBB353926C1AA74BA /* Pods_Cyber_coffe.framework */,
+				018B2286AACAA7ECCF2DB1F8 /* Pods_Cyber_coffe.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -539,7 +539,7 @@
 				F39A52F327311FDD00C8F2D3 /* Cyber-coffe */,
 				F39A52F227311FDD00C8F2D3 /* Products */,
 				45CFF4E4688CA7F160236776 /* Pods */,
-				D560DBCFF535D2E872166525 /* Frameworks */,
+				613C77214230DAD56407AA5A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -724,12 +724,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = F39A530527311FDE00C8F2D3 /* Build configuration list for PBXNativeTarget "Cyber-coffe" */;
 			buildPhases = (
+				4AD65F140D62766735112574 /* [CP] Check Pods Manifest.lock */,
 				F3821C5827E9E3CD006D40FC /* ShellScript */,
-				58E27973D85692D59BCB320A /* [CP] Check Pods Manifest.lock */,
 				F39A52ED27311FDD00C8F2D3 /* Sources */,
 				F39A52EE27311FDD00C8F2D3 /* Frameworks */,
 				F39A52EF27311FDD00C8F2D3 /* Resources */,
-				408548C270AA9A1CBEC0CAE0 /* [CP] Embed Pods Frameworks */,
+				D17A13ED2DB7419BAE95C88A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -806,24 +806,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		408548C270AA9A1CBEC0CAE0 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		58E27973D85692D59BCB320A /* [CP] Check Pods Manifest.lock */ = {
+		4AD65F140D62766735112574 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -843,6 +826,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D17A13ED2DB7419BAE95C88A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F3821C5827E9E3CD006D40FC /* ShellScript */ = {
@@ -1062,7 +1062,7 @@
 		};
 		F39A530627311FDE00C8F2D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A281B8E98C5C8A3B0D27296F /* Pods-Cyber-coffe.debug.xcconfig */;
+			baseConfigurationReference = 329D4B4334B6A2BAB3076B1A /* Pods-Cyber-coffe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1090,7 +1090,7 @@
 		};
 		F39A530727311FDE00C8F2D3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4BABE8604895540A6637FD9 /* Pods-Cyber-coffe.release.xcconfig */;
+			baseConfigurationReference = AD8853E6A88C3E78053B2FBB /* Pods-Cyber-coffe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
