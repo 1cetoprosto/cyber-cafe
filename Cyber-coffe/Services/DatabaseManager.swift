@@ -126,7 +126,7 @@ class DatabaseManager {
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND typeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday")
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND typeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday service")
         return Array(localRealm.objects(SalesModel.self).filter(predicate))
     }
 

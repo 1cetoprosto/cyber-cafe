@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 struct FIRSalesModel: Codable {
     @DocumentID var id: String?
     var salesDate = Date()
-    var salesTypeOfDonation: String = "Sunday"
+    var salesTypeOfDonation: String = "Sunday service"
     var salesSum: Double = 0.0
     var salesCash: Double = 0.0
     
