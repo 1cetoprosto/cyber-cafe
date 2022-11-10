@@ -141,20 +141,18 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         datePicker.date = viewModel.date
         typeTextfield.text = viewModel.typeOfDonation
         
-        if viewModel.typeOfDonation == "Sunday" {
             if tableViewModel == nil {
                 tableViewModel = SaleGoodListViewModel()
                 tableViewModel?.getSaleGoods(date: viewModel.date) {
                     self.tableView.reloadData()
                 }
             }
-        }
     }
 
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
-        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday") && dateChanged {
+        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday service") && dateChanged {
             let alert = UIAlertController(title: "Warning!",
                                           message: "Data for the selected date already exists. Open and edit them ",
                                           preferredStyle: .alert)
@@ -211,14 +209,14 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
                                   salesSum: saleLabel.text)
         }
         
-        if viewModel.typeOfDonation == "Sunday" {
+        //if viewModel.typeOfDonation == "Sunday service" {
             guard let tableViewModel = self.tableViewModel else { return }
             if viewModel.newModel {
                 tableViewModel.saveSalesGood(date: datePicker.date)
             } else {
                 tableViewModel.updateSalesGood(date: datePicker.date)
             }
-        }
+        //}
     }
 }
 
@@ -274,19 +272,19 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
         typeTextfield.text = typeOfDonation
         view.endEditing(true)
         
-//        if typeOfDonation != "Sunday" {
+//        if typeOfDonation != "Sunday service" {
 //            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
 //            tableViewModel = SaleGoodListViewModel()
 //                self.tableView.reloadData()
 //        }
-        if typeOfDonation == "Sunday" {
+//        if typeOfDonation == "Sunday service" {
             if tableViewModel == nil {
                 tableViewModel = SaleGoodListViewModel()
                 tableViewModel?.getSaleGoods(date: viewModel.date) {
                     self.tableView.reloadData()
                 }
             }
-        }
+//        }
         self.tableView.reloadData()
     }
 }
