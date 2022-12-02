@@ -37,26 +37,18 @@ class TypeDetailsViewController: UIViewController {
     }()
 
     lazy var saveButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
     lazy var cancelButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
