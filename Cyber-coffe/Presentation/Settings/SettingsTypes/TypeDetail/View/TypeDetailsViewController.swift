@@ -37,26 +37,18 @@ class TypeDetailsViewController: UIViewController {
     }()
 
     lazy var saveButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
     lazy var cancelButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
@@ -111,24 +103,24 @@ class TypeDetailsViewController: UIViewController {
         if newModel {
             typesModel.type = type
             
-            if let id = FirestoreDatabase
+            if let id = FIRFirestoreService
                 .shared
                 .create(firModel: FIRTypeOfDonationModel(typeOfDonationModel: typesModel),
                         collection: "typesOfDonation") {
-                typesModel.typeOfDonationId = id
-                typesModel.typeOfDonationSynchronized = true
+                typesModel.id = id
+                typesModel.synchronized = true
             }
             
-            DatabaseManager.shared.saveTypeOfDonationModel(model: typesModel)
+            DatabaseManager.shared.save(model: typesModel)
             typesModel = TypeOfDonationModel()
         } else {
             
-            let typeOfDonationSynchronized = FirestoreDatabase
+            let typeOfDonationSynchronized = FIRFirestoreService
                 .shared
-                .update(firModel: FIRTypeOfDonationModel(id: typesModel.typeOfDonationId,
+                .update(firModel: FIRTypeOfDonationModel(id: typesModel.id,
                                                          type: type),
                         collection: "typesOfDonation",
-                        documentId: typesModel.typeOfDonationId)
+                        documentId: typesModel.id)
             
             DatabaseManager
                 .shared

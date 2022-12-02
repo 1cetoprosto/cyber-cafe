@@ -80,13 +80,8 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     }()
     
     lazy var saveButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal) 
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
         return button
     }()
@@ -112,9 +107,10 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         self.moneyTextfield.delegate = self
         
         let pickerView = UIPickerView()
-        //pickerView.dataSource = self
         pickerView.delegate = self
         pickerView.center = view.center
+        //pickerView.isHidden = true
+
         self.view.addSubview(pickerView)
         
         typeTextfield.inputView = pickerView
@@ -140,20 +136,18 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         datePicker.date = viewModel.date
         typeTextfield.text = viewModel.typeOfDonation
         
-        if viewModel.typeOfDonation == "Sunday" {
             if tableViewModel == nil {
                 tableViewModel = SaleGoodListViewModel()
                 tableViewModel?.getSaleGoods(date: viewModel.date) {
                     self.tableView.reloadData()
                 }
             }
-        }
     }
 
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
-        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday") && dateChanged {
+        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday service") && dateChanged {
             let alert = UIAlertController(title: "Warning!",
                                           message: "Data for the selected date already exists. Open and edit them ",
                                           preferredStyle: .alert)
@@ -210,14 +204,14 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
                                   salesSum: saleLabel.text)
         }
         
-        if viewModel.typeOfDonation == "Sunday" {
+        //if viewModel.typeOfDonation == "Sunday service" {
             guard let tableViewModel = self.tableViewModel else { return }
             if viewModel.newModel {
                 tableViewModel.saveSalesGood(date: datePicker.date)
             } else {
                 tableViewModel.updateSalesGood(date: datePicker.date)
             }
-        }
+        //}
     }
 }
 
@@ -273,11 +267,20 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
         typeTextfield.text = typeOfDonation
         view.endEditing(true)
         
-        if typeOfDonation != "Sunday" {
-            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
-            tableViewModel = SaleGoodListViewModel()
-                self.tableView.reloadData()
-        }
+//        if typeOfDonation != "Sunday service" {
+//            //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
+//            tableViewModel = SaleGoodListViewModel()
+//                self.tableView.reloadData()
+//        }
+//        if typeOfDonation == "Sunday service" {
+            if tableViewModel == nil {
+                tableViewModel = SaleGoodListViewModel()
+                tableViewModel?.getSaleGoods(date: viewModel.date) {
+                    self.tableView.reloadData()
+                }
+            }
+//        }
+        self.tableView.reloadData()
     }
 }
 

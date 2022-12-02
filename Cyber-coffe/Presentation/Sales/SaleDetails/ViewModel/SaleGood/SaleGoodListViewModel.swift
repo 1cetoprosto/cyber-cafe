@@ -97,7 +97,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
             saleGoodModel.salePrice = sale.salePrice
             saleGoodModel.saleSum = sale.saleSum
             
-            if let id = FirestoreDatabase
+            if let id = FIRFirestoreService
                 .shared
                 //.createSaleGood(firSaleGood: FIRSaleGood(saleGoodModel: saleGoodModel)) {
                 .create(firModel: FIRSaleGoodModel(saleGoodModel: saleGoodModel), collection: "saleGood") {
@@ -105,7 +105,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
                 saleGoodModel.synchronized = true
             }
             
-            DatabaseManager.shared.saveSalesGoodModel(model: saleGoodModel)
+            DatabaseManager.shared.save(model: saleGoodModel)
         }
     }
     
@@ -118,7 +118,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
                 .fetchSaleGood(date: saleGood.saleDate,
                                good: saleGood.saleGood)
             
-            let saleSynchronized = FirestoreDatabase
+            let saleSynchronized = FIRFirestoreService
                 .shared
                 .update(firModel: FIRSaleGoodModel(saleId: saleGood.saleId,
                                               saleDate: date,
@@ -151,9 +151,9 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     static func deleteSalesGood(date: Date) {
         let salesGoods = DatabaseManager.shared.fetchSaleGood(date: date)
         for saleGood in salesGoods {
-            let saleDeleted = FirestoreDatabase.shared.delete(collection: "saleGood", documentId: saleGood.id) //deleteSaleGood(documentId: saleGood.saleId)
+            let saleDeleted = FIRFirestoreService.shared.delete(collection: "saleGood", documentId: saleGood.id) //deleteSaleGood(documentId: saleGood.saleId)
             if saleDeleted {
-                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+                DatabaseManager.shared.delete(model: saleGood)
             } else {
                 //TODO: add in table for delete later, when wiil be sinhronize
                 

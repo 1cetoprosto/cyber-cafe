@@ -26,8 +26,8 @@ class PurchasesTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        layer.cornerRadius = 10
-        selectionStyle = .none
+        //layer.cornerRadius = 50
+        //selectionStyle = .none
         accessoryType = .disclosureIndicator
         backgroundColor = UIColor.Main.background
 
