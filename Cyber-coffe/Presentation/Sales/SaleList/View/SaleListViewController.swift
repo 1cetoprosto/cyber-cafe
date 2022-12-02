@@ -6,15 +6,14 @@
 //
 
 import UIKit
-import RealmSwift
 
 class SaleListViewController: UIViewController {
-
     private var viewModel: SaleListViewModelType?
 
-    let idSalesCell = "idSalesCell"
     let tableView: UITableView = {
         let tableView = UITableView()
+        
+        tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: SalesTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -36,7 +35,7 @@ class SaleListViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         title = "Donations"
         
-        tableView.register(SalesTableViewCell.self, forCellReuseIdentifier: idSalesCell)
+        
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -72,7 +71,7 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: idSalesCell, for: indexPath) as? SalesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: SalesTableViewCell.identifier, for: indexPath) as? SalesTableViewCell
         guard let tableViewCell = cell,
         let viewModel = viewModel else { return UITableViewCell() }
         
