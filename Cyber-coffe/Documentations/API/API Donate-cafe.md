@@ -34,7 +34,7 @@
     {
       "TypeOfDonation": [
         {
-          "type": "Sunday"
+          "type": "Sunday service"
         },
         {
           "type": "Morning pray"
@@ -81,7 +81,7 @@
         },
         {
           "salesDate": "2022-04-15T13:17:05.273Z",
-          "salesTypeOfDonation": "Sunday",
+          "salesTypeOfDonation": "Sunday service",
           "salesSum": 0,
           "salesCash": 567
         }
@@ -90,7 +90,7 @@
   ## 5. Отримання донату за день (SaleGoodModel + SalesModel)
     {
       "salesDate": "2022-04-15T13:17:05.273Z",
-      "salesTypeOfDonation": "Sunday",
+      "salesTypeOfDonation": "Sunday service",
       "salesSum": 140,
       "salesCash": 567,
       "SaleGood": [
@@ -121,7 +121,7 @@
     }
   ## 2. TypeOfDonationModel
     {
-        "type": "Sunday"
+        "type": "Sunday service"
     }
   ## 3. PurchaseModel
     {
@@ -141,7 +141,7 @@
    ### 4.1 SalesModel + SaleGoodModel
       {
         "salesDate": "2022-04-15T13:17:05.273Z",
-        "salesTypeOfDonation": "Sunday",
+        "salesTypeOfDonation": "Sunday service",
         "salesSum": 0,
         "salesCash": 120,
         "SaleGood": [

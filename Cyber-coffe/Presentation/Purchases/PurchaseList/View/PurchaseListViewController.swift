@@ -8,7 +8,7 @@
 import UIKit
 
 class PurchaseListViewController: UIViewController {
-    var viewModel: PurchaseListViewModelType?
+    private var viewModel: PurchaseListViewModelType?
     
     let tableView: UITableView = {
         let tableView = UITableView()

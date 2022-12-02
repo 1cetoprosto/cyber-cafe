@@ -52,6 +52,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         return table
     }()
     
+    private lazy var updateData: UIButton = {
+        let button = DefaultButton()
+        button.setTitle("Update Data", for: .normal)
+        button.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
+
+        return button
+    }()
+    
     var models = [Section]()
     
     override func viewDidLoad() {
@@ -64,6 +72,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.dataSource = self
         tableView.frame = view.bounds
         tableView.backgroundColor = UIColor.Main.background
+        
+        view.addSubview(updateData)
     }
 
     func configure() {
@@ -94,6 +104,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         models.append(Section(title: "Donation", option: [
             .staticCell(model: SettingsStaticOption(title: "Types",
+                                                    icon: UIImage(systemName: "banknote.fill"),
+                                                    iconBackgroundColor: .systemGreen) {
+                self.navigationController?.pushViewController(TypesListViewController(), animated: true)
+            })
+        ]))
+        
+        models.append(Section(title: "Synhronize", option: [
+            .staticCell(model: SettingsStaticOption(title: "Synhronize",
                                                     icon: UIImage(systemName: "banknote.fill"),
                                                     iconBackgroundColor: .systemGreen) {
                 self.navigationController?.pushViewController(TypesListViewController(), animated: true)
@@ -159,5 +177,35 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     func switchToDarkTheme(isOn: Bool) {
         print("Tap to switchDarkTheme isOn: \(isOn)")
+    }
+    
+    @objc func updateDataAction(sender: UIButton!) {
+        // erase Realm
+        DatabaseManager.shared.deleteAllData()
+        
+        let firSales: [(documentId: String, FIRSalesModel)] = FIRFirestoreService.shared.read(collection: "sales")
+        for (documentId, firSalesModel) in firSales {
+            DatabaseManager.shared.save(model: SalesModel(documentId: documentId, firModel: firSalesModel))
+        }
+        
+        let firSaleGoods: [(documentId: String, FIRSaleGoodModel)] = FIRFirestoreService.shared.read(collection: "saleGood")
+        for (documentId, firSaleGoodModel) in firSaleGoods {
+            DatabaseManager.shared.save(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+        }
+        
+        let firPurchases: [(documentId: String, FIRPurchaseModel)] = FIRFirestoreService.shared.read(collection: "purchase")
+        for (documentId, firPurchaseModel) in firPurchases {
+            DatabaseManager.shared.save(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+        }
+        
+        let firGoodsPrice: [(documentId: String, FIRGoodsPriceModel)] = FIRFirestoreService.shared.read(collection: "goodsPrice")
+        for (documentId, firGoodsPriceModel) in firGoodsPrice {
+            DatabaseManager.shared.save(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+        }
+        
+        let firTypeOfDonations: [(documentId: String, FIRTypeOfDonationModel)] = FIRFirestoreService.shared.read(collection: "typesOfdonation")
+        for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
+            DatabaseManager.shared.save(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
+        }
     }
 }

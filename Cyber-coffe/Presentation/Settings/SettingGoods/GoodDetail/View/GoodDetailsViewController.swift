@@ -63,26 +63,18 @@ class GoodDetailsViewController: UIViewController {
     }()
 
     lazy var saveButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Save", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
     lazy var cancelButton: UIButton = {
-        let button = UIButton()
-        button.translatesAutoresizingMaskIntoConstraints = false
+        let button = DefaultButton()
         button.setTitle("Cancel", for: .normal)
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 10
-
         button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+
         return button
     }()
 
@@ -145,18 +137,18 @@ class GoodDetailsViewController: UIViewController {
             goodsModel.good = good
             goodsModel.price = price
             
-            if let id = FirestoreDatabase
+            if let id = FIRFirestoreService
                 .shared
                 .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
                 goodsModel.id = id
                 goodsModel.synchronized = true
             }
 
-            DatabaseManager.shared.saveGoodsPriceModel(model: goodsModel)
+            DatabaseManager.shared.save(model: goodsModel)
             goodsModel = GoodsPriceModel()
         } else {
             
-            let synchronized = FirestoreDatabase
+            let synchronized = FIRFirestoreService
                 .shared
                 .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
                         collection: "goodsPrice", documentId: goodsModel.id)

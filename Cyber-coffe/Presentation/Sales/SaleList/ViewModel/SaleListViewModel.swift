@@ -66,11 +66,11 @@ class SaleListViewModel: SaleListViewModelType {
     
     func deleteSaleModel(atIndexPath indexPath: IndexPath) {
         guard let model = getSale(atIndexPath: indexPath) else { return }
-        SaleGoodListViewModel.deleteSalesGood(date: model.salesDate)
+        SaleGoodListViewModel.deleteSalesGood(date: model.date)
         
-        let salesDeleted = FirestoreDatabase.shared.delete(collection: "sales", documentId: model.salesId) //deleteSaleGood(documentId: saleGood.saleId)
+        let salesDeleted = FIRFirestoreService.shared.delete(collection: "sales", documentId: model.id) //deleteSaleGood(documentId: saleGood.saleId)
         if salesDeleted {
-            DatabaseManager.shared.deleteSalesModel(model: model)
+            DatabaseManager.shared.delete(model: model)
         } else {
             //TODO: add in table for delete later, when wiil be sinhronize
             
