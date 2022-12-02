@@ -111,7 +111,7 @@ class TypeDetailsViewController: UIViewController {
                 typesModel.synchronized = true
             }
             
-            DatabaseManager.shared.saveTypeOfDonationModel(model: typesModel)
+            DatabaseManager.shared.save(model: typesModel)
             typesModel = TypeOfDonationModel()
         } else {
             

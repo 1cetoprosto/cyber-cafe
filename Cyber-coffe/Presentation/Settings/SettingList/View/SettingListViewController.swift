@@ -185,27 +185,27 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         let firSales: [(documentId: String, FIRSalesModel)] = FIRFirestoreService.shared.read(collection: "sales")
         for (documentId, firSalesModel) in firSales {
-            DatabaseManager.shared.saveSalesModel(model: SalesModel(documentId: documentId, firModel: firSalesModel))
+            DatabaseManager.shared.save(model: SalesModel(documentId: documentId, firModel: firSalesModel))
         }
         
         let firSaleGoods: [(documentId: String, FIRSaleGoodModel)] = FIRFirestoreService.shared.read(collection: "saleGood")
         for (documentId, firSaleGoodModel) in firSaleGoods {
-            DatabaseManager.shared.saveSalesGoodModel(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+            DatabaseManager.shared.save(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
         }
         
         let firPurchases: [(documentId: String, FIRPurchaseModel)] = FIRFirestoreService.shared.read(collection: "purchase")
         for (documentId, firPurchaseModel) in firPurchases {
-            DatabaseManager.shared.savePurchaseModel(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+            DatabaseManager.shared.save(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
         }
         
         let firGoodsPrice: [(documentId: String, FIRGoodsPriceModel)] = FIRFirestoreService.shared.read(collection: "goodsPrice")
         for (documentId, firGoodsPriceModel) in firGoodsPrice {
-            DatabaseManager.shared.saveGoodsPriceModel(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+            DatabaseManager.shared.save(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
         }
         
         let firTypeOfDonations: [(documentId: String, FIRTypeOfDonationModel)] = FIRFirestoreService.shared.read(collection: "typesOfdonation")
         for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
-            DatabaseManager.shared.saveTypeOfDonationModel(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
+            DatabaseManager.shared.save(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
         }
     }
 }

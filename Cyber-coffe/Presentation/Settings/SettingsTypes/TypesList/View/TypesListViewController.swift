@@ -104,7 +104,7 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let model = typesArray[indexPath.row]
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            DatabaseManager.shared.deleteTypeOfDonationModel(model: model)
+            DatabaseManager.shared.delete(model: model)
 
             self.configure()
 

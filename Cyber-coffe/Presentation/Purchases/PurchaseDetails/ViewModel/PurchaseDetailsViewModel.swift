@@ -33,7 +33,7 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
                 purchase.synchronized = true
             }
             
-            DatabaseManager.shared.savePurchaseModel(model: purchase)
+            DatabaseManager.shared.save(model: purchase)
             purchase = PurchaseModel()
         } else {
             let purchaseSynchronized = FIRFirestoreService
