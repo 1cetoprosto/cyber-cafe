@@ -50,7 +50,7 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
             sale.synchronized = true
         }
         
-        DatabaseManager.shared.saveSalesModel(model: sale)
+        DatabaseManager.shared.save(model: sale)
     }
     
     func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesSum: String?) {
