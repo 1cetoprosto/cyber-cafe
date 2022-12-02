@@ -74,6 +74,7 @@
 		F3BF4C6F28265F400036B433 /* SaleGoodModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6A28265F400036B433 /* SaleGoodModel.png */; };
 		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
+		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
 		F3D862D7277C33C100DD43DB /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* PurchaseModel.swift */; };
 		F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */; };
 		F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */; };
@@ -151,6 +152,7 @@
 		F3BF4C6A28265F400036B433 /* SaleGoodModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SaleGoodModel.png; sourceTree = "<group>"; };
 		F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodsPriceModel.png; sourceTree = "<group>"; };
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
+		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		F3D862D6277C33C100DD43DB /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsPriceModel.swift; sourceTree = "<group>"; };
 		F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
@@ -562,6 +564,7 @@
 				F316A2F62738048F0083E830 /* Extensions */,
 				F39A5333273251BF00C8F2D3 /* Resources */,
 				F3BF4C72282671810036B433 /* Documentations */,
+				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
 			);
 			path = "Cyber-coffe";
 			sourceTree = "<group>";
@@ -887,6 +890,7 @@
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3821C7A27EAEA8B006D40FC /* SaleListViewModelType.swift in Sources */,
 				F3158C4B2763443700136861 /* DatabaseManager.swift in Sources */,
+				F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */,
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
