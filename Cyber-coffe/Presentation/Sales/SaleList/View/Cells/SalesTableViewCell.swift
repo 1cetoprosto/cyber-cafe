@@ -9,6 +9,8 @@ import UIKit
 
 class SalesTableViewCell: UITableViewCell {
 
+    static let identifier = "idSalesCell"
+    
     let backgroundViewCell: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground

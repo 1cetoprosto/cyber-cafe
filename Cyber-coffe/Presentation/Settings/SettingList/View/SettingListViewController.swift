@@ -53,13 +53,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }()
     
     private lazy var updateData: UIButton = {
-        let btn = UIButton(type: .system)
-        btn.backgroundColor = .green
-        btn.layer.cornerRadius = CGFloat(5)
-        btn.setTitle("Update Data", for: .normal)
-        btn.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
+        let button = DefaultButton()
+        button.setTitle("Update Data", for: .normal)
+        button.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
 
-        return btn
+        return button
     }()
     
     var models = [Section]()
