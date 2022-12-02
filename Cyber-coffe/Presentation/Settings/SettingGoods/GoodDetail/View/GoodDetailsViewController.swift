@@ -144,7 +144,7 @@ class GoodDetailsViewController: UIViewController {
                 goodsModel.synchronized = true
             }
 
-            DatabaseManager.shared.saveGoodsPriceModel(model: goodsModel)
+            DatabaseManager.shared.save(model: goodsModel)
             goodsModel = GoodsPriceModel()
         } else {
             

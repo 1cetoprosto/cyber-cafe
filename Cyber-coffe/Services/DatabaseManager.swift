@@ -14,15 +14,29 @@ class DatabaseManager {
     private init() {}
     
     let localRealm = try! Realm()
-
-    // MARK: - Work With Sales Good
-    func saveSalesGoodModel(model: SaleGoodModel) {
+    
+    func save<T: Object>(model object: T) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
-            localRealm.add(model)
+        do {
+            try localRealm.write {
+                localRealm.add(object)
+            }
+        } catch {
+            print(error)
         }
     }
     
+    func delete<T: Object>(model object: T) {
+        do {
+            try localRealm.write {
+                localRealm.delete(object)
+            }
+        } catch {
+            print(error)
+        }
+    }
+
+    // MARK: - Work With Sales Good
     func updateSaleGoodModel(model: SaleGoodModel, saleDate: Date, saleGood: String, saleQty: Int, salePrice: Double, saleSum: Double, saleSynchronized: Bool) {
         try! localRealm.write {
             model.date = saleDate
@@ -31,12 +45,6 @@ class DatabaseManager {
             model.salePrice = salePrice
             model.saleSum = saleSum
             model.synchronized = saleSynchronized
-        }
-    }
-    
-    func deleteSaleGoodModel(model: SaleGoodModel) {
-        try! localRealm.write {
-            localRealm.delete(model)
         }
     }
     
@@ -64,13 +72,6 @@ class DatabaseManager {
     }
     
     // Продажи и касса
-    func saveSalesModel(model: SalesModel) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
-            localRealm.add(model)
-        }
-    }
-    
     func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double, salesSynchronized: Bool) {
         try! localRealm.write {
             model.date = salesDate
@@ -81,12 +82,6 @@ class DatabaseManager {
         }
     }
 
-    func deleteSalesModel(model: SalesModel) {
-        try! localRealm.write {
-            localRealm.delete(model)
-        }
-    }
-    
     func fetchSales() -> [SalesModel] {
         return Array(localRealm.objects(SalesModel.self).sorted(byKeyPath: "date"))
     }
@@ -131,13 +126,6 @@ class DatabaseManager {
     }
 
     // Товари та ціни
-    func saveGoodsPriceModel(model: GoodsPriceModel) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
-            localRealm.add(model)
-        }
-    }
-
     func updateGoodsPriceModel(model: GoodsPriceModel, good: String, price: Double, synchronized: Bool) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -147,24 +135,11 @@ class DatabaseManager {
         }
     }
 
-    func deleteGoodsPriceModel(model: GoodsPriceModel) {
-        try! localRealm.write {
-            localRealm.delete(model)
-        }
-    }
-    
     func fetchGoodsPrice() -> [GoodsPriceModel] {
         return Array(localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good"))
     }
     
     // Закупки
-    func savePurchaseModel(model: PurchaseModel) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
-            localRealm.add(model)
-        }
-    }
-
     func updatePurchaseModel(model: PurchaseModel, purchaseDate: Date, purchaseName: String, purchaseSum: Double, purchaseSynchronized:Bool) {
         try! localRealm.write {
             model.date = purchaseDate
@@ -174,12 +149,6 @@ class DatabaseManager {
         }
     }
 
-    func deletePurchaseModel(model: PurchaseModel) {
-        try! localRealm.write {
-            localRealm.delete(model)
-        }
-    }
-    
     func fetchPurchases() -> [PurchaseModel] {
         return Array(localRealm.objects(PurchaseModel.self).sorted(byKeyPath: "date"))
     }
@@ -213,13 +182,6 @@ class DatabaseManager {
     }
     
     // Типи пожертвувань
-    func saveTypeOfDonationModel(model: TypeOfDonationModel) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
-            localRealm.add(model)
-        }
-    }
-
     func updateTypeOfDonationModel(model: TypeOfDonationModel, type: String, typeOfDonationSynchronized: Bool) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -228,12 +190,7 @@ class DatabaseManager {
         }
     }
 
-    func deleteTypeOfDonationModel(model: TypeOfDonationModel) {
-        try! localRealm.write {
-            localRealm.delete(model)
-        }
-    }
-    
+
     func fetchTypeOfDonation() -> [TypeOfDonationModel] {
         return Array(localRealm.objects(TypeOfDonationModel.self).sorted(byKeyPath: "type"))
     }
@@ -241,31 +198,26 @@ class DatabaseManager {
     func deleteAllData() {
         
         let allSaleGoodObjects = localRealm.objects(SaleGoodModel.self)
-        
         try! localRealm.write {
             localRealm.delete(allSaleGoodObjects)
         }
         
         let allSalesObjects = localRealm.objects(SalesModel.self)
-        
         try! localRealm.write {
             localRealm.delete(allSalesObjects)
         }
         
         let allGoodsPriceObjects = localRealm.objects(GoodsPriceModel.self)
-        
         try! localRealm.write {
             localRealm.delete(allGoodsPriceObjects)
         }
         
         let allTypeOfDonationObjects = localRealm.objects(TypeOfDonationModel.self)
-        
         try! localRealm.write {
             localRealm.delete(allTypeOfDonationObjects)
         }
         
         let allPurchaseObjects = localRealm.objects(PurchaseModel.self)
-        
         try! localRealm.write {
             localRealm.delete(allPurchaseObjects)
         }
