@@ -65,7 +65,7 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     
     func deletePurchaseModel(atIndexPath indexPath: IndexPath) {
         guard let model = getPurchaseModel(atIndexPath: indexPath) else { return }
-        DatabaseManager.shared.deletePurchaseModel(model: model)
+        DatabaseManager.shared.delete(model: model)
     }
     
 }

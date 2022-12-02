@@ -105,7 +105,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
                 saleGoodModel.synchronized = true
             }
             
-            DatabaseManager.shared.saveSalesGoodModel(model: saleGoodModel)
+            DatabaseManager.shared.save(model: saleGoodModel)
         }
     }
     
@@ -153,7 +153,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         for saleGood in salesGoods {
             let saleDeleted = FIRFirestoreService.shared.delete(collection: "saleGood", documentId: saleGood.id) //deleteSaleGood(documentId: saleGood.saleId)
             if saleDeleted {
-                DatabaseManager.shared.deleteSaleGoodModel(model: saleGood)
+                DatabaseManager.shared.delete(model: saleGood)
             } else {
                 //TODO: add in table for delete later, when wiil be sinhronize
                 
