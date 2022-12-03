@@ -20,7 +20,7 @@ class FIRFirestoreService: ObservableObject {
 }
 
 extension FIRFirestoreService: FirestoreDB {
-
+    
     func create<T: Encodable>(firModel: T, collection: String) -> String? {
         do {
             let ref = try db.collection(collection).addDocument(from: firModel)
