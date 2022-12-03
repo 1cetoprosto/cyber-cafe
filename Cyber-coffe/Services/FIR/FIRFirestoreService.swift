@@ -56,7 +56,7 @@ extension FIRFirestoreService: FirestoreDB {
         return result
     }
     
-    func read<T: Codable>(collection: String) -> [(documentId: String, T)] {
+    func read<T: Codable>(collection: String, firModel: T.Type, completion: @escaping ([(documentId: String, T)]) -> Void) {
         var FIRModelArray: [(documentId: String, T)] = []
 
         FIRFirestoreService.shared.db.collection(collection).getDocuments { querySnapshot, error in
@@ -76,9 +76,8 @@ extension FIRFirestoreService: FirestoreDB {
                     }
                 }
             }
+            completion(FIRModelArray)
         }
-        
-        return FIRModelArray
     }
     
     func update<T: Encodable>(firModel: T, collection: String, documentId: String) -> Bool {
