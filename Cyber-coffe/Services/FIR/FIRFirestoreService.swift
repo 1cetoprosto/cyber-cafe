@@ -80,32 +80,6 @@ extension FIRFirestoreService: FirestoreDB {
         }
     }
     
-    func readSales(completion: @escaping (_ data: [[String: Any]?]) -> Void) {
-        var FIRModelArray: [[String:Any]] = []
-
-        FIRFirestoreService.shared.db.collection("sales").getDocuments { querySnapshot, error in
-            if let error = error {
-                self.errorMessage = error.localizedDescription
-                print("Error getting documents: \(error.localizedDescription)")
-            } else {
-                for document in querySnapshot!.documents {
-                    do {
-                        
-                        let firData = try document.data()
-                        FIRModelArray.append(firData)
-                        //print(firData)
-                    }
-                    catch let error {
-                        self.errorMessage = error.localizedDescription
-                        print(error.localizedDescription)
-                    }
-                }
-            }
-            completion(FIRModelArray)
-        }
-        
-    }
-    
     func update<T: Encodable>(firModel: T, collection: String, documentId: String) -> Bool {
         var result: Bool = false
         
