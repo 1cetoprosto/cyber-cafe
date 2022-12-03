@@ -56,7 +56,7 @@ extension FIRFirestoreService: FirestoreDB {
         return result
     }
     
-    func read<T: Codable>(collection: String) -> [(documentId: String, T)] {
+    func read<T: Codable>(collection: String, firModel: T.Type, completion: @escaping ([(documentId: String, T)]) -> Void) {
         var FIRModelArray: [(documentId: String, T)] = []
 
         FIRFirestoreService.shared.db.collection(collection).getDocuments { querySnapshot, error in
@@ -76,9 +76,34 @@ extension FIRFirestoreService: FirestoreDB {
                     }
                 }
             }
+            completion(FIRModelArray)
+        }
+    }
+    
+    func readSales(completion: @escaping (_ data: [[String: Any]?]) -> Void) {
+        var FIRModelArray: [[String:Any]] = []
+
+        FIRFirestoreService.shared.db.collection("sales").getDocuments { querySnapshot, error in
+            if let error = error {
+                self.errorMessage = error.localizedDescription
+                print("Error getting documents: \(error.localizedDescription)")
+            } else {
+                for document in querySnapshot!.documents {
+                    do {
+                        
+                        let firData = try document.data()
+                        FIRModelArray.append(firData)
+                        //print(firData)
+                    }
+                    catch let error {
+                        self.errorMessage = error.localizedDescription
+                        print(error.localizedDescription)
+                    }
+                }
+            }
+            completion(FIRModelArray)
         }
         
-        return FIRModelArray
     }
     
     func update<T: Encodable>(firModel: T, collection: String, documentId: String) -> Bool {
