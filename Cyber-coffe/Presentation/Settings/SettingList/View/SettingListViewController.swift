@@ -54,7 +54,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     
     private lazy var updateData: UIButton = {
         let button = DefaultButton()
-        button.setTitle("Update Data", for: .normal)
+        button.setTitle("Erase & download data from server", for: .normal)
         button.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
 
         return button
@@ -67,6 +67,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         configure()
         view.backgroundColor = UIColor.Main.background
         title = "Settings"
+        
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -74,6 +75,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.backgroundColor = UIColor.Main.background
         
         view.addSubview(updateData)
+        setConstraints()
     }
 
     func configure() {
@@ -180,32 +182,75 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     @objc func updateDataAction(sender: UIButton!) {
+        
+        //видати питання, чи ви впевнені що хочете це зробити
+        
         // erase Realm
         DatabaseManager.shared.deleteAllData()
         
-        let firSales: [(documentId: String, FIRSalesModel)] = FIRFirestoreService.shared.read(collection: "sales")
-        for (documentId, firSalesModel) in firSales {
-            DatabaseManager.shared.save(model: SalesModel(documentId: documentId, firModel: firSalesModel))
+        FIRFirestoreService.shared.read(collection: "sales", firModel: FIRSalesModel.self) { firSales in
+            for (documentId, firSalesModel) in firSales {
+                DatabaseManager.shared.save(model: SalesModel(documentId: documentId, firModel: firSalesModel))
+            }
         }
         
-        let firSaleGoods: [(documentId: String, FIRSaleGoodModel)] = FIRFirestoreService.shared.read(collection: "saleGood")
-        for (documentId, firSaleGoodModel) in firSaleGoods {
-            DatabaseManager.shared.save(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+        FIRFirestoreService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
+            for (documentId, firSaleGoodModel) in firSaleGoods {
+                DatabaseManager.shared.save(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+            }
         }
         
-        let firPurchases: [(documentId: String, FIRPurchaseModel)] = FIRFirestoreService.shared.read(collection: "purchase")
-        for (documentId, firPurchaseModel) in firPurchases {
-            DatabaseManager.shared.save(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+        FIRFirestoreService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
+            for (documentId, firPurchaseModel) in firPurchases {
+                DatabaseManager.shared.save(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+            }
         }
         
-        let firGoodsPrice: [(documentId: String, FIRGoodsPriceModel)] = FIRFirestoreService.shared.read(collection: "goodsPrice")
-        for (documentId, firGoodsPriceModel) in firGoodsPrice {
-            DatabaseManager.shared.save(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+        FIRFirestoreService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
+            for (documentId, firGoodsPriceModel) in firGoodsPrice {
+                DatabaseManager.shared.save(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+            }
         }
         
-        let firTypeOfDonations: [(documentId: String, FIRTypeOfDonationModel)] = FIRFirestoreService.shared.read(collection: "typesOfdonation")
-        for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
-            DatabaseManager.shared.save(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
+        FIRFirestoreService.shared.read(collection: "typesOfDonation", firModel: FIRTypeOfDonationModel.self) { firTypeOfDonations in
+            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
+                DatabaseManager.shared.save(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
+            }
         }
+    }
+}
+
+// MARK: - Constraints
+extension SettingListViewController {
+    func setConstraints() {
+
+//        let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield],
+//                                        axis: .horizontal,
+//                                        spacing: 5,
+//                                        distribution: .equalSpacing)
+//        view.addSubview(cashStackView)
+//
+//        let moneyStackView = UIStackView(arrangedSubviews: [cashStackView, saleLabel],
+//                                         axis: .horizontal,
+//                                         spacing: 10,
+//                                         distribution: .fillEqually)
+//        view.addSubview(moneyStackView)
+
+        NSLayoutConstraint.activate([
+            updateData.heightAnchor.constraint(equalToConstant: 50)
+        ])
+
+        let mainStackView = UIStackView(arrangedSubviews: [tableView, updateData],
+                                        axis: .vertical,
+                                        spacing: 10,
+                                        distribution: .fill)
+        view.addSubview(mainStackView)
+
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
+            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
+            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+        ])
     }
 }
