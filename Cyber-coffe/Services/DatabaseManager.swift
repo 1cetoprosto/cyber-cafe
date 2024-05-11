@@ -5,6 +5,7 @@
 //  Created by Леонід Квіт on 10.12.2021.
 //
 
+import Foundation
 import RealmSwift
 
 class DatabaseManager {
@@ -72,12 +73,13 @@ class DatabaseManager {
     }
     
     // Продажи и касса
-    func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double, salesSynchronized: Bool) {
+    func updateSalesModel(model: SalesModel, salesDate: Date, salesTypeOfDonation: String, salesSum: Double, salesCash: Double, salesCard: Double, salesSynchronized: Bool) {
         try! localRealm.write {
             model.date = salesDate
             model.typeOfDonation = salesTypeOfDonation
             model.sum = salesSum
             model.cash = salesCash
+            model.card = salesCard
             model.synchronized = salesSynchronized
         }
     }

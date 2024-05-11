@@ -7,15 +7,32 @@
 
 import UIKit
 import FirebaseCore
+import FirebaseAuth
+import SVProgressHUD
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
+    
+    static var shared: AppDelegate {
+        return UIApplication.shared.delegate! as! AppDelegate
+    }
+    
+    var window: UIWindow?
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         UINavigationBar.appearance().customNavigationBar()
+        
+        FirebaseConfiguration.shared.setLoggerLevel(.min)
         FirebaseApp.configure()
+        
+        setupAppearance()
+        
+        SVProgressHUD.setBackgroundColor(UIColor(white: 0, alpha: 0.4))
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.setMinimumDismissTimeInterval(1)
+        
         //loadAllData()
         return true
     }
@@ -35,6 +52,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running,
         // this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
+    }
+    
+    func setupAppearance() {
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            navBarAppearance.backgroundColor = UIColor.NavBar.background
+            let appearance = UINavigationBar.appearance(whenContainedInInstancesOf: [MainNavigationController.self])
+            appearance.standardAppearance = navBarAppearance
+            appearance.compactAppearance = navBarAppearance
+            appearance.scrollEdgeAppearance = navBarAppearance
+            appearance.prefersLargeTitles = false
+            appearance.isTranslucent = false
+            appearance.tintColor = UIColor.NavBar.text
+        } else {
+            UINavigationBar.appearance().barTintColor = UIColor.NavBar.text
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            UINavigationBar.appearance().isTranslucent = false
+        }
+        if #available(iOS 13.4, *) {
+            UIDatePicker.appearance().preferredDatePickerStyle = .wheels
+        }
     }
     
 //    func loadAllData() {
