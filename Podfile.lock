@@ -1,22 +1,20 @@
 PODS:
-  - Realm (10.20.0):
-    - Realm/Headers (= 10.20.0)
-  - Realm/Headers (10.20.0)
-  - RealmSwift (10.20.0):
-    - Realm (= 10.20.0)
+  - AnimatedTextInput (0.5.5)
+  - R.swift (7.3.2)
 
 DEPENDENCIES:
-  - RealmSwift
+  - AnimatedTextInput
+  - R.swift
 
 SPEC REPOS:
   trunk:
-    - Realm
-    - RealmSwift
+    - AnimatedTextInput
+    - R.swift
 
 SPEC CHECKSUMS:
-  Realm: ae32bdc1da7d19c7617e0400201a77acd4a211b9
-  RealmSwift: c95eec6a712924870b2e36c4c081d63ec07e5414
+  AnimatedTextInput: aadbdfa5a538a03cc9fbea700b43d2bb21a5d132
+  R.swift: 0af0d882f49f03711415cb4e5215daa977d8a480
 
-PODFILE CHECKSUM: c00f10a3a29a1edd4708f152c735c5be724e6a1f
+PODFILE CHECKSUM: 824551d5b406fd5f526b3feed5e4588fe3670db2
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.15.2
