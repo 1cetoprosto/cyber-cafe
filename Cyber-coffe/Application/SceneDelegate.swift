@@ -6,9 +6,17 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
+    static var shared: SceneDelegate {
+        guard let scene = UIApplication.shared.connectedScenes.first, let delegate = scene.delegate as? SceneDelegate else {
+            fatalError("No active SceneDelegate instance found")
+        }
+        return delegate
+    }
+    
     var window: UIWindow?
 
     func scene(_ scene: UIScene,
@@ -17,8 +25,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = MainTabBarController()
+        //window?.rootViewController = MainTabBarController()
+        // В SceneDelegate не потрібно налаштовувати Firebase, це робиться в AppDelegate
+//        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+//        window?.rootViewController = appDelegate.window?.rootViewController
+        
+        // Перевірка наявності дійсної сесії користувача та відповідний перехід на потрібний екран
+        let isValidSession = UserSession.current.restore()
+        if !isValidSession || Auth.auth().currentUser == nil {
+            // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
+            let signInController = SignInController()
+            let navigationController = UINavigationController(rootViewController: signInController)
+            navigationController.setNavigationBarHidden(true, animated: false)
+            window?.rootViewController = navigationController
+        } else {
+            // Якщо сесія дійсна, переходимо на головний екран додатку
+            let mainTabBarController = MainTabBarController()
+            window?.rootViewController = mainTabBarController
+        }
+        
         window?.makeKeyAndVisible()
+    }
+    
+    func set(root controller: UIViewController) {
+        let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
+        controller.view.addSubview(overlayView)
+        window?.rootViewController = controller
+        
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            overlayView.alpha = 0
+        }, completion: { finished in
+            overlayView.removeFromSuperview()
+        })
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
