@@ -6,9 +6,10 @@
 //
 
 import RealmSwift
+import Foundation
 
 class RealmIncomeTypeModel: Object {
-    @Persisted var id: String = ""
+    @Persisted var id: String = UUID().uuidString
     @Persisted var name: String = ""
     
     convenience init(dataModel: IncomeTypeModel) {

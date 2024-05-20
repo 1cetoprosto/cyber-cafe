@@ -220,11 +220,21 @@ class RealmDatabaseService: RealmDB {
     }
 
     func fetchIncomeTypes() -> [RealmIncomeTypeModel] {
-        return Array(localRealm.objects(RealmIncomeTypeModel.self).sorted(byKeyPath: "type"))
+        return Array(localRealm.objects(RealmIncomeTypeModel.self).sorted(byKeyPath: "name"))
     }
 
     func fetchIncomeTypes(forIncomeTypeModel incomeTypeModel: IncomeTypeModel) -> RealmIncomeTypeModel? {
         return localRealm.object(ofType: RealmIncomeTypeModel.self, forPrimaryKey: incomeTypeModel.id)
+    }
+    
+    func saveIncomeTypes(incomeTypes: RealmIncomeTypeModel) {
+        do {
+            try localRealm.write {
+                localRealm.add(incomeTypes)
+            }
+        } catch {
+            print("Failed to save incomeTypes to Realm: \(error.localizedDescription)")
+        }
     }
     
     func deleteAllData() {

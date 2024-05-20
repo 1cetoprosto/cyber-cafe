@@ -144,8 +144,9 @@ class FirestoreDatabaseService: FirestoreDB {
     
     // MARK: - CRUD Operations for Income Types
     
-    func createIncomeType(incomeType: FIRIncomeTypeModel) -> String? {
-        return create(firModel: incomeType, collection: "incomeTypes")
+    func createIncomeType(incomeType: FIRIncomeTypeModel, completion: @escaping (Bool) -> Void) {
+        let documentId = create(firModel: incomeType, collection: "incomeTypes")
+        completion(documentId != nil)
     }
     
     func readIncomeTypes(completion: @escaping ([(documentId: String, FIRIncomeTypeModel)]) -> Void) {

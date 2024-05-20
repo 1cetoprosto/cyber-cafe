@@ -184,11 +184,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]))
 
         models.append(Section(title: "Database", option: [
-            .staticCell(model: SettingsStaticOption(title: "Online",
-                                                    icon: UIImage(systemName: "icloud.fill"),
-                                                    iconBackgroundColor: .systemGreen) {
-                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
-                                                    }),
+//            .staticCell(model: SettingsStaticOption(title: "Online",
+//                                                    icon: UIImage(systemName: "icloud.fill"),
+//                                                    iconBackgroundColor: .systemGreen) {
+//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
+//                                                    }),
             .switchCell(model: SettingsSwitchOption(title: "Online",
                                                     icon: UIImage(systemName: "icloud.fill"),
                                                     iconBackgroundColor: .systemGreen,
@@ -248,7 +248,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         switch type.self {
         case .staticCell(let model):
             model.handler()
-        case .switchCell(let model):
+        case .switchCell(_):
             break
         case .dataCell(let model):
             let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
@@ -316,18 +316,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 // MARK: - Constraints
 extension SettingListViewController {
     func setConstraints() {
-        
-        //        let cashStackView = UIStackView(arrangedSubviews: [moneyLabel, moneyTextfield],
-        //                                        axis: .horizontal,
-        //                                        spacing: 5,
-        //                                        distribution: .equalSpacing)
-        //        view.addSubview(cashStackView)
-        //
-        //        let moneyStackView = UIStackView(arrangedSubviews: [cashStackView, saleLabel],
-        //                                         axis: .horizontal,
-        //                                         spacing: 10,
-        //                                         distribution: .fillEqually)
-        //        view.addSubview(moneyStackView)
         
         NSLayoutConstraint.activate([
             updateDataButton.heightAnchor.constraint(equalToConstant: 50)

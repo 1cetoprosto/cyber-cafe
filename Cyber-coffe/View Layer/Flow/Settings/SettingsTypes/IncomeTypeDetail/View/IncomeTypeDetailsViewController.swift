@@ -52,19 +52,24 @@ class IncomeTypeDetailsViewController: UIViewController {
         return button
     }()
 
-    var type: String = ""
+    var incomeType: IncomeTypeModel
+    
+    init(incomeType: IncomeTypeModel) {
+        self.incomeType = incomeType
+        super.init(nibName: nil, bundle: nil)
+    }
 
-//    let localRealm = try! Realm()
-//    var typesModel = TypeOfDonationModel()
-//    var newModel = true
-
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
         title = "Type"
         
-        typeTextfield.text = type
+        typeTextfield.text = incomeType.name
 
         navigationController?.view.backgroundColor = UIColor.NavBar.background
 
@@ -98,20 +103,28 @@ class IncomeTypeDetailsViewController: UIViewController {
     // MARK: - Method
     @objc func saveAction(param: UIButton) {
         
-        guard let type = typeTextfield.text, !type.isEmpty else {
+        guard let name = typeTextfield.text else { //, !type.isEmpty
             // Handle case when type is empty
             return
         }
         
-        let incomeType = FIRIncomeTypeModel(dataModel: IncomeTypeModel(id: "", name: type))
-        
-        if let documentId = FirestoreDatabaseService.shared.createIncomeType(incomeType: incomeType) {
-                print("Income type created with document ID: \(documentId)")
-                navigationController?.popViewController(animated: true)
+        DomainDatabaseService.shared.saveIncomeType(incomeType: IncomeTypeModel(id: "", name: name)) { success in
+            if success {
+                print("IncomeType saved successfully")
             } else {
-                print("Failed to create income type")
-                // Handle error if necessary
+                print("Failed to save IncomeType")
             }
+        }
+        
+//        let incomeType = FIRIncomeTypeModel(dataModel: IncomeTypeModel(id: "", name: type))
+//        
+//        if let documentId = FirestoreDatabaseService.shared.createIncomeType(incomeType: incomeType) {
+//                print("Income type created with document ID: \(documentId)")
+//                navigationController?.popViewController(animated: true)
+//            } else {
+//                print("Failed to create income type")
+//                // Handle error if necessary
+//            }
         
         navigationController?.popViewController(animated: true)
     }
