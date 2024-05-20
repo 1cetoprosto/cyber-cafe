@@ -78,7 +78,7 @@ class DomainDatabaseService: DomainDB {
             }
         } else {
             RealmDatabaseService.shared.saveSaleGood(saleGood: RealmSaleGoodModel(dataModel: sale))
-            print("Sale saved to Realm successfully")
+            print("Sale good saved to Realm successfully")
             completion(true)
         }
     }
@@ -170,7 +170,7 @@ class DomainDatabaseService: DomainDB {
             }
         } else {
             RealmDatabaseService.shared.saveDailySale(dailySale: RealmDailySalesModel(dataModel: sale))
-            print("Sale saved to Realm successfully")
+            print("Sales saved to Realm successfully")
             completion(true)
         }
     }
@@ -310,6 +310,25 @@ class DomainDatabaseService: DomainDB {
         }
     }
  
+    func saveIncomeType(incomeType: IncomeTypeModel, completion: @escaping (Bool) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.createIncomeType(incomeType: FIRIncomeTypeModel(dataModel: incomeType)) { success in
+                if success {
+                    print("Sale saved to Firestore successfully")
+                } else {
+                    print("Failed to save sale to Firestore")
+                }
+                completion(success)
+            }
+        } else {
+            RealmDatabaseService.shared.saveIncomeTypes(incomeTypes: RealmIncomeTypeModel(dataModel: incomeType))
+            print("Income type saved to Realm successfully")
+            completion(true)
+        }
+    }
+    
     func deleteIncomeType(model: IncomeTypeModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         

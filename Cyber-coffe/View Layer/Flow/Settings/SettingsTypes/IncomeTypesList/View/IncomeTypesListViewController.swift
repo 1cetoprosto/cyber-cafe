@@ -73,7 +73,7 @@ class IncomeTypesListViewController: UIViewController {
     
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let typeVC = IncomeTypeDetailsViewController()
+        let typeVC = IncomeTypeDetailsViewController(incomeType: IncomeTypeModel(id: "", name: ""))
         navigationController?.pushViewController(typeVC, animated: true)
     }
 }
@@ -98,10 +98,10 @@ extension IncomeTypesListViewController: UITableViewDelegate, UITableViewDataSou
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let model = incomeTypes[indexPath.row]
         
-        let typeVC = IncomeTypeDetailsViewController()
+        let typeVC = IncomeTypeDetailsViewController(incomeType: model)
 //        typeVC.typesModel = model
 //        typeVC.newModel = false
-        typeVC.type = model.name
+        typeVC.incomeType = model
         navigationController?.pushViewController(typeVC, animated: true)
     }
     
