@@ -48,8 +48,15 @@ class TypeTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(typeOfDonation: TypeOfDonationModel, indexPath: IndexPath) {
-        typeLabel.text = typeOfDonation.type
+//    func configure(typeOfDonation: TypeOfDonationModel, indexPath: IndexPath) {
+//        typeLabel.text = typeOfDonation.type
+//        //quantityLabel.text = String(goodPrice.price)
+//
+//        selectionStyle = .none
+//    }
+    
+    func configure(incomeType: IncomeTypeModel, indexPath: IndexPath) {
+        typeLabel.text = incomeType.name
         //quantityLabel.text = String(goodPrice.price)
 
         selectionStyle = .none

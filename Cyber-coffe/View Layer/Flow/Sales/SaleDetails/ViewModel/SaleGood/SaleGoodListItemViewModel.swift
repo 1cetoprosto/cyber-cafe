@@ -9,18 +9,18 @@ import Foundation
 
 class SaleGoodListItemViewModel: SaleGoodListItemViewModelType {
     
-    private var saleGood: SaleGood
+    private var saleGood: SaleGoodModel
     private var atIndex: Int
     
-    var goodLabel: String { return saleGood.saleGood}
+    var goodLabel: String { return saleGood.name}
     
-    var quantityLabel: String { return saleGood.saleQty.description}
+    var quantityLabel: String { return saleGood.quantity.description}
     
-    var goodStepperValue: Double { return Double(saleGood.saleQty)}
+    var goodStepperValue: Double { return saleGood.quantity.double}
     
     var goodStepperTag: Int { return atIndex}
     
-    init(saleGood: SaleGood, for atIndex: Int) {
+    init(saleGood: SaleGoodModel, for atIndex: Int) {
         self.saleGood = saleGood
         self.atIndex = atIndex
     }

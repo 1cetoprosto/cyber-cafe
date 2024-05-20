@@ -111,7 +111,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         
         if self.isMovingFromParent {
             guard let viewModel = viewModel else { return }
-            if viewModel.salesSum == 0.0 {
+            if viewModel.sum == 0.0 {
                 //SaleGoodListViewModel.deleteSalesGood(date: viewModel.date)
             }
         }
@@ -142,24 +142,30 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate func setData() {
         if viewModel == nil {
-            viewModel = SaleDetailsViewModel(sale: SalesModel(), newModel: true)
+            viewModel = SaleDetailsViewModel(model: DailySalesModel(id: "",
+                                                                    date: Date(),
+                                                                    incomeType: "",
+                                                                    sum: 0.0,
+                                                                    cash: 0.0,
+                                                                    card: 0.0),
+                                             isNewModel: true)
         }
         
         guard let viewModel = viewModel else { return }
         
-        if viewModel.salesCash != 0 {
-            cashTextfield.text = viewModel.salesCash.description
+        if viewModel.cash != 0 {
+            cashTextfield.text = viewModel.cash.description
         }
-        if viewModel.salesCard != 0 {
-            cardTextfield.text = viewModel.salesCard.description
+        if viewModel.card != 0 {
+            cardTextfield.text = viewModel.card.description
         }
-        if viewModel.salesSum != 0 {
-            saleLabel.text = viewModel.salesSum.description
+        if viewModel.sum != 0 {
+            saleLabel.text = viewModel.sum.description
         }
         cashLabel.text = viewModel.cashLabel
         cardLabel.text = viewModel.cardLabel
         datePicker.date = viewModel.date
-        typeTextfield.text = viewModel.typeOfDonation
+        typeTextfield.text = viewModel.incomeType
         
             if tableViewModel == nil {
                 tableViewModel = SaleGoodListViewModel()
@@ -172,18 +178,34 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
-        if viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Sunday service") && dateChanged {
+        
+        viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Income type") { [weak self] exists in
+            guard let self = self else { return }
+            
+            if exists {
+                self.handleExistingData()
+            } else {
+                self.saveAndNavigate()
+            }
+        }
+    }
+
+    private func handleExistingData() {
+        if dateChanged {
             let alert = UIAlertController(title: "Warning!",
-                                          message: "Data for the selected date already exists. Open and edit them ",
+                                          message: "Data for the selected date already exists. Open and edit them.",
                                           preferredStyle: .alert)
             let ok = UIAlertAction(title: "OK", style: .default)
             alert.addAction(ok)
             present(alert, animated: true)
-        } else {
-            saveModels()
-            navigationController?.popToRootViewController(animated: true)
         }
     }
+
+    private func saveAndNavigate() {
+        saveModels()
+        navigationController?.popToRootViewController(animated: true)
+    }
+
 
     @objc func cancelAction(param: UIButton) {
         navigationController?.popToRootViewController(animated: true)
@@ -217,23 +239,23 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     func saveModels() {
         guard let viewModel = self.viewModel else { return }
         
-        if viewModel.newModel {
+        if viewModel.isNewModel {
             viewModel.saveSales(date: datePicker.date,
-                                typeOfDonation: typeTextfield.text,
-                                salesCash: cashTextfield.text,
-                                salesCard: cardTextfield.text,
-                                salesSum: saleLabel.text)
+                                incomeType: typeTextfield.text,
+                                cash: cashTextfield.text,
+                                card: cardTextfield.text,
+                                sum: saleLabel.text)
         } else {
             viewModel.updateSales(date: datePicker.date,
-                                  typeOfDonation: typeTextfield.text,
-                                  salesCash: cashTextfield.text,
-                                  salesCard: cardTextfield.text,
-                                  salesSum: saleLabel.text)
+                                  incomeType: typeTextfield.text,
+                                  cash: cashTextfield.text,
+                                  card: cardTextfield.text,
+                                  sum: saleLabel.text)
         }
         
         //if viewModel.typeOfDonation == "Sunday service" {
             guard let tableViewModel = self.tableViewModel else { return }
-            if viewModel.newModel {
+            if viewModel.isNewModel {
                 tableViewModel.saveSalesGood(date: datePicker.date)
             } else {
                 tableViewModel.updateSalesGood(date: datePicker.date)

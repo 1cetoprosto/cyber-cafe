@@ -86,7 +86,7 @@ class PurchaseDetailsListViewController: UIViewController {
     // MARK: - Method
     fileprivate func setData() {
         if viewModel == nil {
-            viewModel = PurchaseDetailsViewModel(purchase: PurchaseModel())
+            viewModel = PurchaseDetailsViewModel(purchase: PurchaseModel(id: "", date: Date(), name: "", sum: 0))
         }
         
         guard let viewModel = viewModel else { return }

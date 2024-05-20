@@ -82,7 +82,7 @@ class GoodDetailsViewController: UIViewController {
     var price: Double = 0.0
 
     let localRealm = try! Realm()
-    var goodsModel = GoodsPriceModel()
+    var goodsModel = RealmGoodsPriceModel()
     var newModel = true
 
     override func viewDidLoad() {
@@ -132,29 +132,29 @@ class GoodDetailsViewController: UIViewController {
 
         good = goodTextfield.text ?? ""
         price = Double(priceTextfield.text ?? "0.0") ?? 0.0
-
-        if newModel {
-            goodsModel.good = good
-            goodsModel.price = price
-            
-            if let id = FIRFirestoreService
-                .shared
-                .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
-                goodsModel.id = id
-                goodsModel.synchronized = true
-            }
-
-            DatabaseManager.shared.save(model: goodsModel)
-            goodsModel = GoodsPriceModel()
-        } else {
-            
-            let synchronized = FIRFirestoreService
-                .shared
-                .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
-                        collection: "goodsPrice", documentId: goodsModel.id)
-            
-            DatabaseManager.shared.updateGoodsPriceModel(model: goodsModel, good: good, price: price, synchronized: synchronized)
-        }
+// TODO: реалізувати збереження
+//        if newModel {
+//            goodsModel.name = good
+//            goodsModel.price = price
+//            
+//            if let id = FirestoreDatabaseService
+//                .shared
+//                .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
+//                goodsModel.id = id
+//                goodsModel.synchronized = true
+//            }
+//
+//            RealmDatabaseService.shared.save(model: goodsModel)
+//            goodsModel = RealmGoodsPriceModel()
+//        } else {
+//            
+//            let synchronized = FirestoreDatabaseService
+//                .shared
+//                .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
+//                        collection: "goodsPrice", documentId: goodsModel.id)
+//            
+//            RealmDatabaseService.shared.updateGoodsPrice(model: goodsModel, name: good, price: price)
+//        }
 
         navigationController?.popViewController(animated: true)
     }

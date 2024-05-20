@@ -10,38 +10,18 @@ import FirebaseFirestoreSwift
 
 struct FIRPurchaseModel: Codable {
     @DocumentID var id: String?
-    var purchaseDate: Date = Date()
-    var purchaseGood: String = ""
-    var purchaseSum: Double = 0.0
+    var date: Date = Date()
+    var name: String = ""
+    var sum: Double = 0.0
     
-    //    enum CodingCase: String, CodingKey {
-    //        case id
-    //        case saleDate
-    //        case saleGood
-    //        case saleQty
-    //        case salePrice
-    //        case saleSum
-    //    }
-    //
-    init(purchaseModel: PurchaseModel) {
-        self.id = purchaseModel.id
-        self.purchaseDate = purchaseModel.date
-        self.purchaseGood = purchaseModel.good
-        self.purchaseSum = purchaseModel.sum
+    init(dataModel: PurchaseModel) {
+        self.id = dataModel.id
+        self.date = dataModel.date
+        self.name = dataModel.name
+        self.sum = dataModel.sum
     }
-    
-    init(purchaseId: String,
-         purchaseDate: Date,
-         purchaseGood: String,
-         purchaseSum: Double) {
-        self.id = purchaseId
-        self.purchaseDate = purchaseDate
-        self.purchaseGood = purchaseGood
-        self.purchaseSum = purchaseSum
-    }
-    
 }
 
-extension FIRPurchaseModel {
-    static var empty = FIRPurchaseModel(purchaseModel: PurchaseModel())
-}
+//extension FIRPurchaseModel {
+//    static var empty = FIRPurchaseModel(purchaseModel: RealmPurchaseModel())
+//}

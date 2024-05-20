@@ -10,30 +10,14 @@ import FirebaseFirestoreSwift
 
 struct FIRIncomeTypeModel: Codable {
     @DocumentID var id: String?
-var type: String = ""
+    var name: String = ""
     
-    //    enum CodingCase: String, CodingKey {
-    //        case id
-    //        case saleDate
-    //        case saleGood
-    //        case saleQty
-    //        case salePrice
-    //        case saleSum
-    //    }
-    //
-    init(typeOfDonationModel: TypeOfDonationModel) {
-        self.id = typeOfDonationModel.id
-        self.type = typeOfDonationModel.type
+    init(dataModel: IncomeTypeModel) {
+        self.id = dataModel.id
+        self.name = dataModel.name
     }
-    
-    init(id: String?,
-         type: String) {
-        self.id = id
-        self.type = type
-    }
-    
 }
 
-extension FIRIncomeTypeModel {
-    static var empty = FIRIncomeTypeModel(typeOfDonationModel: TypeOfDonationModel())
-}
+//extension FIRIncomeTypeModel {
+//    static var empty = FIRIncomeTypeModel(incomeTypeModel: RealmIncomeTypeModel())
+//}

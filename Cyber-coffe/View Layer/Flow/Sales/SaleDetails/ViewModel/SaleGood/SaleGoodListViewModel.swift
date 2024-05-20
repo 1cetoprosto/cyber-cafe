@@ -7,50 +7,36 @@
 
 import Foundation
 
-struct SaleGood {
-    var saleId: String = ""
-    var saleDate = Date()
-    var saleGood: String = ""
-    var saleQty: Int = 0
-    var salePrice: Double = 0.0
-    var saleSum: Double = 0.0
-}
-
 class SaleGoodListViewModel: SaleGoodListViewModelType {
     
     private var selectedIndexPath: IndexPath?
-    private var saleGoods = [SaleGood]()
+    private var saleGoods = [SaleGoodModel]() 
     
-    func getSaleGoods(date: Date, completion: @escaping () -> ()) {
-        let saleGoodsArray = DatabaseManager.shared.fetchSaleGood(date: date)
+    func getSaleGoods(date: Date, completion: @escaping () -> Void) {
         
-        if saleGoodsArray.isEmpty {
-            let goodsPrice = DatabaseManager.shared.fetchGoodsPrice()
+        saleGoods.removeAll()
+        
+        DomainDatabaseService.shared.fetchSaleGood(forDate: date) { [weak self] saleGoodsArray in
+            guard let self = self else { return }
             
-            for goodPrice in goodsPrice {
-                var saleGood = SaleGood()
-                //saleGood.saleId = ""
-                saleGood.saleDate = date
-                saleGood.saleGood = goodPrice.good
-                //saleGood.saleQty = 0
-                saleGood.salePrice = goodPrice.price
-                //saleGood.saleSum = 0.0
-                saleGoods.append(saleGood)
+            if saleGoodsArray.isEmpty {
+                DomainDatabaseService.shared.fetchGoodsPrice { goodsPrice in
+                    for goodPrice in goodsPrice {
+                        let saleGood = SaleGoodModel(id: "",
+                                                     date: date,
+                                                     name: goodPrice.name,
+                                                     quantity: 0,
+                                                     price: goodPrice.price,
+                                                     sum: 0)
+                        self.saleGoods.append(saleGood)
+                    }
+                }
+            } else {
+                self.saleGoods = saleGoodsArray
             }
-        } else {
-            for saleGoodsElement in saleGoodsArray {
-                var saleGood = SaleGood()
-                saleGood.saleId = saleGoodsElement.id
-                saleGood.saleDate = saleGoodsElement.date
-                saleGood.saleGood = saleGoodsElement.saleGood
-                saleGood.saleQty = saleGoodsElement.saleQty
-                saleGood.salePrice = saleGoodsElement.salePrice
-                saleGood.saleSum = saleGoodsElement.saleSum
-                saleGoods.append(saleGood)
-            }
+            
+            completion()
         }
-        
-        completion()
     }
     
     func numberOfRowInSection(for section: Int) -> Int {
@@ -67,13 +53,13 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     }
     
     func setQuantity(tag: Int, quantity: Int) {
-        saleGoods[tag].saleQty = quantity
-        saleGoods[tag].saleSum = Double(quantity) * saleGoods[tag].salePrice
+        saleGoods[tag].quantity = quantity
+        saleGoods[tag].sum = Double(quantity) * saleGoods[tag].price
     }
     
     func getQuantity() -> Double {
         guard let atIndex = selectedIndexPath?.row else { return 0.0 }
-        let saleQty = Double(saleGoods[atIndex].saleQty)
+        let saleQty = Double(saleGoods[atIndex].quantity)
         
         return saleQty
     }
@@ -82,7 +68,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         var totalSum: Double = 0.0
         
         for good in saleGoods {
-            totalSum += good.saleSum
+            totalSum += good.sum
         }
         
         return String(totalSum)
@@ -90,73 +76,37 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     
     func saveSalesGood(date: Date) {
         for sale in saleGoods {
-            let saleGoodModel = SaleGoodModel()
-            saleGoodModel.saleGood = sale.saleGood
-            saleGoodModel.date = date
-            saleGoodModel.saleQty = sale.saleQty
-            saleGoodModel.salePrice = sale.salePrice
-            saleGoodModel.saleSum = sale.saleSum
-            
-            if let id = FIRFirestoreService
-                .shared
-                //.createSaleGood(firSaleGood: FIRSaleGood(saleGoodModel: saleGoodModel)) {
-                .create(firModel: FIRSaleGoodModel(saleGoodModel: saleGoodModel), collection: "saleGood") {
-                saleGoodModel.id = id
-                saleGoodModel.synchronized = true
+            DomainDatabaseService.shared.saveSaleGood(sale: sale) { success in
+                if success {
+                    print("Sale saved successfully")
+                } else {
+                    print("Failed to save sale")
+                }
             }
-            
-            DatabaseManager.shared.save(model: saleGoodModel)
         }
     }
     
     func updateSalesGood(date: Date) {
-        
         for saleGood in saleGoods {
-            
-            let saleGoodModel = DatabaseManager
-                .shared
-                .fetchSaleGood(date: saleGood.saleDate,
-                               good: saleGood.saleGood)
-            
-            let saleSynchronized = FIRFirestoreService
-                .shared
-                .update(firModel: FIRSaleGoodModel(saleId: saleGood.saleId,
-                                              saleDate: date,
-                                              saleGood: saleGood.saleGood,
-                                              saleQty: saleGood.saleQty,
-                                              salePrice: saleGood.salePrice,
-                                              saleSum: saleGood.saleSum),
-                        collection: "saleGood",
-                        documentId: saleGood.saleId)
-//                .updateSaleGood(firSaleGood: FIRSaleGood(saleId: saleGood.saleId,
-//                                                         saleDate: date,
-//                                                         saleGood: saleGood.saleGood,
-//                                                         saleQty: saleGood.saleQty,
-//                                                         salePrice: saleGood.salePrice,
-//                                                         saleSum: saleGood.saleSum))
-            
-            DatabaseManager
-                .shared
-                .updateSaleGoodModel(model: saleGoodModel,
-                                     saleDate: date,
-                                     saleGood: saleGood.saleGood,
-                                     saleQty: saleGood.saleQty,
-                                     salePrice: saleGood.salePrice,
-                                     saleSum: saleGood.saleSum,
-                                     saleSynchronized: saleSynchronized)
+            DomainDatabaseService.shared.updateSaleGood(model: saleGood,
+                              date: date,
+                              name: saleGood.name,
+                              quantity: saleGood.quantity,
+                              price: saleGood.price,
+                              sum: saleGood.sum)
         }
-        
     }
     
     static func deleteSalesGood(date: Date) {
-        let salesGoods = DatabaseManager.shared.fetchSaleGood(date: date)
-        for saleGood in salesGoods {
-            let itemDeleted = FIRFirestoreService.shared.delete(collection: "saleGood", documentId: saleGood.id) //deleteSaleGood(documentId: saleGood.saleId)
-            if itemDeleted {
-                DatabaseManager.shared.delete(model: saleGood)
-            } else {
-                //TODO: add in table for delete later, when wiil be sinhronize
-                
+        DomainDatabaseService.shared.fetchSaleGood(forDate: date) { salesGoods in
+            for saleGood in salesGoods {
+                DomainDatabaseService.shared.deleteSaleGood(sale: saleGood) { success in
+                    if success {
+                        print("Delete sale successfully")
+                    } else {
+                        print("Failed to delete sale")
+                    }
+                }
             }
         }
     }

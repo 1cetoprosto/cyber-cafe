@@ -13,7 +13,7 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
     var newModel: Bool
     
     var purchaseDate: Date { return purchase.date }
-    var purchaseName: String { return purchase.good }
+    var purchaseName: String { return purchase.name }
     var purchaseSum: String { return purchase.sum.description }
     
     func savePurchaseModel(purchaseDate: Date, purchaseName: String?, purchaseSum: String?) {
@@ -23,32 +23,30 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
         
         if newModel {
             purchase.date = purchaseDate
-            purchase.good = purchaseName
+            purchase.name = purchaseName
             purchase.sum = purchaseSum
             
-            if let id = FIRFirestoreService
-                .shared
-                .create(firModel: FIRPurchaseModel(purchaseModel: purchase), collection: "purchase") {
-                purchase.id = id
-                purchase.synchronized = true
-            }
+//            if let id = FirestoreDatabaseService
+//                .shared
+//                .create(firModel: FIRPurchaseModel(purchaseModel: purchase), collection: "purchase") {
+//                purchase.id = id
+//            }
             
-            DatabaseManager.shared.save(model: purchase)
-            purchase = PurchaseModel()
+            RealmDatabaseService.shared.save(model: RealmPurchaseModel(dataModel: purchase))
+            purchase = PurchaseModel(id: "", date: Date(), name: "", sum: 0)
         } else {
-            let purchaseSynchronized = FIRFirestoreService
-                .shared
-                .update(firModel: FIRPurchaseModel(purchaseId: purchase.id,
-                                                   purchaseDate: purchaseDate,
-                                                   purchaseGood: purchaseName,
-                                                   purchaseSum: purchaseSum),
-                        collection: "purchase", documentId: purchase.id)
+//            let purchaseSynchronized = FirestoreDatabaseService
+//                .shared
+//                .update(firModel: FIRPurchaseModel(purchaseId: purchase.id,
+//                                                   purchaseDate: purchaseDate,
+//                                                   purchaseGood: purchaseName,
+//                                                   purchaseSum: purchaseSum),
+//                        collection: "purchase", documentId: purchase.id)
             
-            DatabaseManager.shared.updatePurchaseModel(model: purchase,
-                                                       purchaseDate: purchaseDate,
-                                                       purchaseName: purchaseName,
-                                                       purchaseSum: purchaseSum,
-                                                       purchaseSynchronized: purchaseSynchronized)
+            RealmDatabaseService.shared.updatePurchase(model: RealmPurchaseModel(dataModel: purchase),
+                                                       date: purchaseDate,
+                                                       name: purchaseName,
+                                                       sum: purchaseSum)
         }
     }
     

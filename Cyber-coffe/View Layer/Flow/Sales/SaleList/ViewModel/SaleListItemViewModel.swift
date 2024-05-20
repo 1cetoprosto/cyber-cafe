@@ -9,17 +9,14 @@ import Foundation
 
 class SaleListItemViewModel: SaleListItemViewModelType {
     
-    private var sale: SalesModel
+    private var model: DailySalesModel
     
     var goodsName: String {
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = "dd.MM.yy"
-//        return dateFormatter.string(from: sale.salesDate)
-        return sale.typeOfDonation
+        return model.incomeType
     }
     
     var salesSum: String {
-        return String(Int(sale.sum))
+        return String(Int(model.sum))
     }
     
     var salesLabel: String {
@@ -27,14 +24,14 @@ class SaleListItemViewModel: SaleListItemViewModelType {
     }
     
     var cashSum: String {
-        return String(Int(sale.cash))
+        return String(Int(model.cash))
     }
     
     var cashLabel: String {
         return "Cash"
     }
     
-    init(sale: SalesModel) {
-        self.sale = sale
+    init(model: DailySalesModel) {
+        self.model = model
     }
 }

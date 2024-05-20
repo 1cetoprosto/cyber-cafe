@@ -14,22 +14,17 @@ protocol SaleDetailsViewModelType {
     var cashTextfield: String { get }
     var cardTextfield: String { get }
     var saleLabel: String { get }
-    var salesCash: Double { get }
-    var salesCard: Double { get }
-    var salesSum: Double { get }
-    var typeOfDonation: String { get }
-    var newModel: Bool { get set }
+    var cash: Double { get }
+    var card: Double { get }
+    var sum: Double { get }
+    var incomeType: String { get }
+    var isNewModel: Bool { get set }
     
     func numberOfRowsInComponent(component: Int) -> Int
-    //func setTypeOfDonation(row: Int, component: Int)
     func titleForRow(row: Int, component: Int) -> String?
     func selectRow(atRow: Int)
     
-    func isExist(date: Date, type: String) -> Bool
-    func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesCard: String?, salesSum: String?)
-    func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesCard: String?, salesSum: String?)
-    
-    //func saveSalesGood(date: Date, good: String?, qty: Int?, price: Double?, sum: Double?)
-    
-    /// var age: Box<String?> { get }
+    func isExist(date: Date, type: String, completion: @escaping (Bool) -> Void)
+    func saveSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
+    func updateSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
 }

@@ -18,7 +18,7 @@ class PurchaseListItemViewModel: PurchaseListItemViewModelType {
     }
     
     var purchaseName: String {
-        return purchase.good
+        return purchase.name
     }
     
     var purchaseSum: String {

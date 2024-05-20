@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class TypeDetailsViewController: UIViewController {
+class IncomeTypeDetailsViewController: UIViewController {
     
     let typeLabel: UILabel = {
         let label = UILabel()
@@ -54,9 +54,9 @@ class TypeDetailsViewController: UIViewController {
 
     var type: String = ""
 
-    let localRealm = try! Realm()
-    var typesModel = TypeOfDonationModel()
-    var newModel = true
+//    let localRealm = try! Realm()
+//    var typesModel = TypeOfDonationModel()
+//    var newModel = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,36 +98,20 @@ class TypeDetailsViewController: UIViewController {
     // MARK: - Method
     @objc func saveAction(param: UIButton) {
         
-        type = typeTextfield.text ?? ""
-        
-        if newModel {
-            typesModel.type = type
-            
-            if let id = FIRFirestoreService
-                .shared
-                .create(firModel: FIRIncomeTypeModel(typeOfDonationModel: typesModel),
-                        collection: "typesOfDonation") {
-                typesModel.id = id
-                typesModel.synchronized = true
-            }
-            
-            DatabaseManager.shared.save(model: typesModel)
-            typesModel = TypeOfDonationModel()
-        } else {
-            
-            let typeOfDonationSynchronized = FIRFirestoreService
-                .shared
-                .update(firModel: FIRIncomeTypeModel(id: typesModel.id,
-                                                         type: type),
-                        collection: "typesOfDonation",
-                        documentId: typesModel.id)
-            
-            DatabaseManager
-                .shared
-                .updateTypeOfDonationModel(model: typesModel,
-                                           type: type,
-                                           typeOfDonationSynchronized: typeOfDonationSynchronized)
+        guard let type = typeTextfield.text, !type.isEmpty else {
+            // Handle case when type is empty
+            return
         }
+        
+        let incomeType = FIRIncomeTypeModel(dataModel: IncomeTypeModel(id: "", name: type))
+        
+        if let documentId = FirestoreDatabaseService.shared.createIncomeType(incomeType: incomeType) {
+                print("Income type created with document ID: \(documentId)")
+                navigationController?.popViewController(animated: true)
+            } else {
+                print("Failed to create income type")
+                // Handle error if necessary
+            }
         
         navigationController?.popViewController(animated: true)
     }

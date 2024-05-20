@@ -10,14 +10,13 @@ import Foundation
 class SaleListViewModel: SaleListViewModelType {
     
     private var selectedIndexPath: IndexPath?
-    //private var sales: [SalesModel]? // Results<SalesModel>!
-    private var sectionsSales: [(date: Date, items: [SalesModel])]?
+    private var sectionsSales: [(date: Date, items: [DailySalesModel])]?
     
-    func getSales(completion: @escaping () -> ()) {
-        //sales = DatabaseManager.shared.fetchSales()
-        sectionsSales = DatabaseManager.shared.fetchSectionsSales()
-        
-        completion()
+    func getSales(completion: @escaping () -> Void) {
+        DomainDatabaseService.shared.fetchSectionsOfSales { [weak self] sectionsSales in
+            self?.sectionsSales = sectionsSales
+            completion()
+        }
     }
     
     func numberOfSections() -> Int {
@@ -43,7 +42,7 @@ class SaleListViewModel: SaleListViewModelType {
     func cellViewModel(for indexPath: IndexPath) -> SaleListItemViewModelType? {
         guard let sectionsSales = self.sectionsSales else { return nil }
         let sale = sectionsSales[indexPath.section].items[indexPath.row]
-        return SaleListItemViewModel(sale: sale)
+        return SaleListItemViewModel(model: sale)
     }
     
     func viewModelForSelectedRow() -> SaleDetailsViewModelType? {
@@ -51,14 +50,14 @@ class SaleListViewModel: SaleListViewModelType {
               let sectionsSales = self.sectionsSales else { return nil }
         let sale = sectionsSales[selectedIndexPath.section].items[selectedIndexPath.row]
         
-        return SaleDetailsViewModel(sale: sale)
+        return SaleDetailsViewModel(model: sale)
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {
         self.selectedIndexPath = indexPath
     }
     
-    func getSale(atIndexPath indexPath: IndexPath) -> SalesModel? {
+    func getSale(atIndexPath indexPath: IndexPath) -> DailySalesModel? {
         guard let sectionsSales = self.sectionsSales else { return nil }
         
         return sectionsSales[indexPath.section].items[indexPath.row]
@@ -68,12 +67,14 @@ class SaleListViewModel: SaleListViewModelType {
         guard let model = getSale(atIndexPath: indexPath) else { return }
         SaleGoodListViewModel.deleteSalesGood(date: model.date)
         
-        let itemDeleted = FIRFirestoreService.shared.delete(collection: "sales", documentId: model.id) //deleteSaleGood(documentId: saleGood.saleId)
-        if itemDeleted {
-            DatabaseManager.shared.delete(model: model)
-        } else {
-            //TODO: add in table for delete later, when wiil be sinhronize
-            
+        DomainDatabaseService.shared.deleteDailySale(sale: model) { success in
+            if success {
+                print("Sales deleted successfully")
+            } else {
+                print("Failed to delete sales")
+            }
         }
+        
+        
     }
 }
