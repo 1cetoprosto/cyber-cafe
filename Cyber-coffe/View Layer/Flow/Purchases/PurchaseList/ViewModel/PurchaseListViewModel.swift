@@ -12,7 +12,9 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     private var sectionsPurchases: [(date: Date, items: [PurchaseModel])]?
     
     func getPurchases(completion: @escaping () -> ()) {
-        sectionsPurchases = DatabaseManager.shared.fetchSectionsPurchases()
+        DomainDatabaseService.shared.fetchSectionsOfPurchases { sectionsPurchases in
+            self.sectionsPurchases = sectionsPurchases
+        }
         
         completion()
     }
@@ -65,15 +67,13 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     
     func deletePurchaseModel(atIndexPath indexPath: IndexPath) {
         guard let model = getPurchaseModel(atIndexPath: indexPath) else { return }
-        DatabaseManager.shared.delete(model: model)
         
-        let itemsDeleted = FIRFirestoreService.shared.delete(collection: "purchase", documentId: model.id)
-        if itemsDeleted {
-            DatabaseManager.shared.delete(model: model)
-            
-        } else {
-            //TODO: add in table for delete later, when wiil be sinhronize
-            
+        DomainDatabaseService.shared.deletePurchase(purchase: model) { success in
+            if success {
+                print("Purchases deleted successfully")
+            } else {
+                print("Failed to delete purchases")
+            }
         }
     }
     

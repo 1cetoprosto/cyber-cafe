@@ -8,14 +8,13 @@
 import UIKit
 
 class SettingsSwitchTableViewCell: UITableViewCell {
-    static let identifier = "SettingsSwitchStaticTableViewCell"
+    static let identifier = "SettingsSwitchTableViewCell"
 
     private let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
         view.layer.cornerRadius = 6
         view.layer.masksToBounds = true
-
         return view
     }()
 
@@ -23,7 +22,6 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         let imageView = UIImageView()
         imageView.tintColor = .white
         imageView.contentMode = .scaleAspectFit
-
         return imageView
     }()
 
@@ -31,7 +29,6 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = UIColor.TableView.cellLabel
-
         return label
     }()
 
@@ -40,13 +37,13 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         settingSwitch.onTintColor = UIColor.Button.background
         settingSwitch.thumbTintColor = UIColor.NavBar.text
         settingSwitch.addTarget(self, action: #selector(switchTheme), for: .valueChanged)
-
         return settingSwitch
     }()
 
+    private var model: SettingsSwitchOption?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
         backgroundColor = UIColor.TableView.cellBackground
         contentView.addSubview(iconContainer)
         iconContainer.addSubview(iconImageView)
@@ -63,22 +60,19 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         super.layoutSubviews()
         let size: CGFloat = contentView.frame.size.height - 12
         iconContainer.frame = CGRect(x: 10, y: 6, width: size, height: size)
-
-        let imageSize: CGFloat = size/1.5
-        iconImageView.frame = CGRect(x: (size - imageSize)/2,
-                                     y: (size - imageSize)/2,
+        let imageSize: CGFloat = size / 1.5
+        iconImageView.frame = CGRect(x: (size - imageSize) / 2,
+                                     y: (size - imageSize) / 2,
                                      width: imageSize,
                                      height: imageSize)
-
         settingSwitch.sizeToFit()
         settingSwitch.frame = CGRect(x: contentView.frame.size.width - settingSwitch.frame.size.width - 20,
                                      y: (contentView.frame.size.height - settingSwitch.frame.size.height) / 2,
                                      width: settingSwitch.frame.size.width,
                                      height: settingSwitch.frame.size.height)
-
         label.frame = CGRect(x: 16 + iconContainer.frame.size.width,
                              y: 0,
-                             width: contentView.frame.size.width - 16 - iconContainer.frame.size.width - 10,
+                             width: contentView.frame.size.width - 16 - iconContainer.frame.size.width - 10 - settingSwitch.frame.size.width,
                              height: contentView.frame.size.height)
     }
 
@@ -91,6 +85,7 @@ class SettingsSwitchTableViewCell: UITableViewCell {
     }
 
     public func configure(with model: SettingsSwitchOption) {
+        self.model = model
         label.text = model.title
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
@@ -99,6 +94,7 @@ class SettingsSwitchTableViewCell: UITableViewCell {
     }
 
     @objc func switchTheme() {
-        print("settingSwitch - \(settingSwitch.isOn)")
+        guard let model = model else { return }
+        model.handler(settingSwitch.isOn)
     }
 }

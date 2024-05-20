@@ -1,5 +1,5 @@
 //
-//  SaleGoodDB.swift
+//  FirestoreDB.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 01.06.2022.

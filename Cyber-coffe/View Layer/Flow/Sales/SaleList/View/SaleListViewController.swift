@@ -90,7 +90,7 @@ extension SaleListViewController: UITableViewDelegate, UITableViewDataSource {
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         var detailViewModel = viewModel.viewModelForSelectedRow()
-        detailViewModel?.newModel = false
+        detailViewModel?.isNewModel = false
         
         let saleVC = SaleDetailsViewController()
         saleVC.viewModel = detailViewModel

@@ -11,7 +11,7 @@ import RealmSwift
 class GoodListViewController: UIViewController {
 
     let localRealm = try! Realm()
-    var goodsArray: Results<GoodsPriceModel>!
+    var goodsArray: Results<RealmGoodsPriceModel>!
     
     let idGoodsCell = "idGoodsCell"
     let tableView: UITableView = {
@@ -49,7 +49,7 @@ class GoodListViewController: UIViewController {
     }
 
     func configure() {
-        goodsArray = localRealm.objects(GoodsPriceModel.self).sorted(byKeyPath: "good")
+        goodsArray = localRealm.objects(RealmGoodsPriceModel.self).sorted(byKeyPath: "good")
     }
     
     func setConstraints() {
@@ -95,7 +95,7 @@ extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
         let goodVC = GoodDetailsViewController()
         goodVC.goodsModel = model
         goodVC.newModel = false
-        goodVC.good = model.good
+        goodVC.good = model.name
         goodVC.price = model.price
         navigationController?.pushViewController(goodVC, animated: true)
     }
@@ -105,9 +105,9 @@ extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
         let model = goodsArray[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            let itemDeleted = FIRFirestoreService.shared.delete(collection: "goodsPrice", documentId: model.id)
+            let itemDeleted = FirestoreDatabaseService.shared.delete(collection: "goodsPrice", documentId: model.id)
             if itemDeleted {
-                DatabaseManager.shared.delete(model: model)
+                RealmDatabaseService.shared.delete(model: model)
                 
                 self.configure()
                 

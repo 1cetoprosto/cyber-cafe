@@ -23,7 +23,7 @@ struct SettingsSwitchOption {
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let isOn: Bool
-    let handler: (() -> Void)
+    let handler: ((Bool) -> Void)
 }
 
 struct SettingsStaticOption {
@@ -52,7 +52,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         return table
     }()
     
-    private lazy var updateData: UIButton = {
+    private lazy var updateDataButton: UIButton = {
         let button = DefaultButton()
         button.setTitle("Erase & download data from server", for: .normal)
         button.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
@@ -74,28 +74,89 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.frame = view.bounds
         tableView.backgroundColor = UIColor.Main.background
         
-        view.addSubview(updateData)
+        view.addSubview(updateDataButton)
         setConstraints()
     }
+    
+//    func configure() {
+//        models.append(Section(title: "General", option: [
+//            .dataCell(model: SettingsDataOption(title: "Language",
+//                                                icon: UIImage(systemName: "globe"),
+//                                                iconBackgroundColor: .systemPink,
+//                                                data: "English") { dataLabel in
+//                                                    self.alertLanguage(label: dataLabel) { language in
+//                                                        print(language)
+//                                                    }
+//                                                }),
+//            .dataCell(model: SettingsDataOption(title: "Theme",
+//                                                icon: UIImage(systemName: "sun.max"),
+//                                                iconBackgroundColor: .systemBlue,
+//                                                data: Theme.currentThemeStyle.themeName) {  dataLabel in
+//                                                    self.alertTheme(label: dataLabel) { style in
+//                                                        print("Befor - \(Theme.currentThemeStyle)")
+//                                                        Theme.currentThemeStyle = style
+//                                                        print("After - \(Theme.currentThemeStyle)")
+//                                                        self.updateInterfaceForNewTheme()
+//                                                    }
+//                                                }),
+//            .staticCell(model: SettingsStaticOption(title: "Exit",
+//                                                    icon: UIImage(named: "exit"),
+//                                                    iconBackgroundColor: .systemGreen) {
+//                                                        UserSession.logOut()
+//                                                    })
+//        ]))
+//        
+//        models.append(Section(title: "Sales", option: [
+//            .staticCell(model: SettingsStaticOption(title: "Goods",
+//                                                    icon: UIImage(systemName: "cup.and.saucer.fill"),
+//                                                    iconBackgroundColor: .systemBrown) {
+//                                                        self.navigationController?.pushViewController(GoodListViewController(), animated: true)
+//                                                    })
+//        ]))
+//        
+//        models.append(Section(title: "Donation", option: [
+//            .staticCell(model: SettingsStaticOption(title: "Types",
+//                                                    icon: UIImage(systemName: "banknote.fill"),
+//                                                    iconBackgroundColor: .systemGreen) {
+//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
+//                                                    })
+//        ]))
+//        
+//        models.append(Section(title: "Database", option: [
+//            .staticCell(model: SettingsStaticOption(title: "Online",
+//                                                    icon: UIImage(systemName: "icloud.fill"),
+//                                                    iconBackgroundColor: .systemGreen) {
+//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
+//                                                    }),
+//            .switchCell(model: SettingsSwitchOption(title: "Online",
+//                                                    icon: UIImage(systemName: "icloud.fill"),
+//                                                    iconBackgroundColor: .systemGreen,
+//                                                    isOn: false, handler: {
+//                                                        print(<#T##items: Any...##Any#>)
+//                                                    }))
+//        ]))
+//        
+//    }
     
     func configure() {
         models.append(Section(title: "General", option: [
             .dataCell(model: SettingsDataOption(title: "Language",
                                                 icon: UIImage(systemName: "globe"),
                                                 iconBackgroundColor: .systemPink,
-                                                data: "English") { dataLabel in
+                                                data: SettingsManager.shared.loadLanguage()) { dataLabel in
                                                     self.alertLanguage(label: dataLabel) { language in
-                                                        print(language)
+                                                        SettingsManager.shared.saveLanguage(language)
+                                                        dataLabel.text = language
                                                     }
                                                 }),
             .dataCell(model: SettingsDataOption(title: "Theme",
                                                 icon: UIImage(systemName: "sun.max"),
                                                 iconBackgroundColor: .systemBlue,
-                                                data: Theme.currentThemeStyle.themeName) {  dataLabel in
+                                                data: SettingsManager.shared.loadTheme()) { dataLabel in
                                                     self.alertTheme(label: dataLabel) { style in
-                                                        print("Befor - \(Theme.currentThemeStyle)")
                                                         Theme.currentThemeStyle = style
-                                                        print("After - \(Theme.currentThemeStyle)")
+                                                        SettingsManager.shared.saveTheme(style.themeName)
+                                                        dataLabel.text = style.themeName
                                                         self.updateInterfaceForNewTheme()
                                                     }
                                                 }),
@@ -105,7 +166,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                         UserSession.logOut()
                                                     })
         ]))
-        
+
         models.append(Section(title: "Sales", option: [
             .staticCell(model: SettingsStaticOption(title: "Goods",
                                                     icon: UIImage(systemName: "cup.and.saucer.fill"),
@@ -113,24 +174,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                         self.navigationController?.pushViewController(GoodListViewController(), animated: true)
                                                     })
         ]))
-        
+
         models.append(Section(title: "Donation", option: [
             .staticCell(model: SettingsStaticOption(title: "Types",
                                                     icon: UIImage(systemName: "banknote.fill"),
                                                     iconBackgroundColor: .systemGreen) {
-                                                        self.navigationController?.pushViewController(TypesListViewController(), animated: true)
+                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
                                                     })
         ]))
-        
+
         models.append(Section(title: "Database", option: [
-            .staticCell(model: SettingsStaticOption(title: "Cloud",
+            .staticCell(model: SettingsStaticOption(title: "Online",
                                                     icon: UIImage(systemName: "icloud.fill"),
                                                     iconBackgroundColor: .systemGreen) {
-                                                        self.navigationController?.pushViewController(TypesListViewController(), animated: true)
+                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
+                                                    }),
+            .switchCell(model: SettingsSwitchOption(title: "Online",
+                                                    icon: UIImage(systemName: "icloud.fill"),
+                                                    iconBackgroundColor: .systemGreen,
+                                                    isOn: SettingsManager.shared.loadOnline()) { isOn in
+                                                        SettingsManager.shared.saveOnline(isOn)
+                                                        print("Online mode is \(isOn ? "On" : "Off")")
                                                     })
         ]))
-        
     }
+
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
@@ -181,7 +249,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         case .staticCell(let model):
             model.handler()
         case .switchCell(let model):
-            model.handler()
+            break
         case .dataCell(let model):
             let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
             model.handler(cell.dataLabel)
@@ -210,38 +278,38 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         //TODO: видати питання, чи ви впевнені що хочете це зробити
         
-        // erase Realm
-        DatabaseManager.shared.deleteAllData()
-        
-        FIRFirestoreService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
-            for (documentId, firSalesModel) in firSales {
-                DatabaseManager.shared.save(model: SalesModel(documentId: documentId, firModel: firSalesModel))
-            }
-        }
-        
-        FIRFirestoreService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
-            for (documentId, firSaleGoodModel) in firSaleGoods {
-                DatabaseManager.shared.save(model: SaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
-            }
-        }
-        
-        FIRFirestoreService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
-            for (documentId, firPurchaseModel) in firPurchases {
-                DatabaseManager.shared.save(model: PurchaseModel(documentId: documentId, firModel: firPurchaseModel))
-            }
-        }
-        
-        FIRFirestoreService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
-            for (documentId, firGoodsPriceModel) in firGoodsPrice {
-                DatabaseManager.shared.save(model: GoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
-            }
-        }
-        
-        FIRFirestoreService.shared.read(collection: "typesOfDonation", firModel: FIRIncomeTypeModel.self) { firTypeOfDonations in
-            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
-                DatabaseManager.shared.save(model: TypeOfDonationModel(documentId: documentId, firModel: firTypeOfDonationModel))
-            }
-        }
+//        // erase Realm
+//        RealmDatabaseService.shared.deleteAllData()
+//        
+//        FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
+//            for (documentId, firSalesModel) in firSales {
+//                RealmDatabaseService.shared.save(model: RealmDailySalesModel(documentId: documentId, firModel: firSalesModel))
+//            }
+//        }
+//        
+//        FirestoreDatabaseService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
+//            for (documentId, firSaleGoodModel) in firSaleGoods {
+//                RealmDatabaseService.shared.save(model: RealmSaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+//            }
+//        }
+//        
+//        FirestoreDatabaseService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
+//            for (documentId, firPurchaseModel) in firPurchases {
+//                RealmDatabaseService.shared.save(model: RealmPurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+//            }
+//        }
+//        
+//        FirestoreDatabaseService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
+//            for (documentId, firGoodsPriceModel) in firGoodsPrice {
+//                RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+//            }
+//        }
+//        
+//        FirestoreDatabaseService.shared.read(collection: "typesOfDonation", firModel: FIRIncomeTypeModel.self) { firTypeOfDonations in
+//            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
+//                RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(documentId: documentId, firModel: firTypeOfDonationModel))
+//            }
+//        }
     }
 }
 
@@ -262,10 +330,10 @@ extension SettingListViewController {
         //        view.addSubview(moneyStackView)
         
         NSLayoutConstraint.activate([
-            updateData.heightAnchor.constraint(equalToConstant: 50)
+            updateDataButton.heightAnchor.constraint(equalToConstant: 50)
         ])
         
-        let mainStackView = UIStackView(arrangedSubviews: [tableView, updateData],
+        let mainStackView = UIStackView(arrangedSubviews: [tableView, updateDataButton],
                                         axis: .vertical,
                                         spacing: 10,
                                         distribution: .fill)

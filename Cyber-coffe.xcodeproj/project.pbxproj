@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		312BDE765B2CDEE0CEC69913 /* Pods_Cyber_coffe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DBBF4D94DE3C3244A6DB9F7 /* Pods_Cyber_coffe.framework */; };
 		F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
-		F3158C482763437200136861 /* SaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* SaleGoodModel.swift */; };
-		F3158C4B2763443700136861 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* DatabaseManager.swift */; };
+		F3158C482763437200136861 /* TempSaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* TempSaleGoodModel.swift */; };
+		F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* RealmDatabaseService.swift */; };
 		F316A2F3273803CE0083E830 /* GoodListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F2273803CE0083E830 /* GoodListViewController.swift */; };
 		F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F316A2FB273808100083E830 /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont+Extension.swift */; };
@@ -23,8 +23,8 @@
 		F31BD82F284E022400B8FD3B /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */; };
 		F31D5882291224190047EB44 /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
 		F31D5886291230AE0047EB44 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
-		F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FCA3B2768789B00124366 /* SalesModel.swift */; };
-		F31FD0DD281D218500353BF7 /* FIRSaleGood.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRSaleGood.swift */; };
+		F31FCA3C2768789B00124366 /* RealmDailySalesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FCA3B2768789B00124366 /* RealmDailySalesModel.swift */; };
+		F31FD0DD281D218500353BF7 /* FIRSaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRSaleGoodModel.swift */; };
 		F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264980275B32A900836077 /* PurchasesTableViewCell.swift */; };
 		F3264983275B334300836077 /* PurchaseDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* PurchaseDetailsListViewController.swift */; };
 		F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
@@ -101,12 +101,12 @@
 		F39B5D242846112F000F7D43 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D232846112F000F7D43 /* FirebaseFirestoreSwift */; };
 		F39B5D262846112F000F7D43 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D252846112F000F7D43 /* FirebaseStorage */; };
 		F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */; };
-		F39B5D3128473465000F7D43 /* FIRFirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */; };
+		F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */; };
 		F3B036E12B777898009C085D /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
-		F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */; };
-		F3B7C2522806D8DA00DF5C2B /* TypeOfDonationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */; };
+		F3B7C24D2806D81300DF5C2B /* IncomeTypesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24C2806D81300DF5C2B /* IncomeTypesListViewController.swift */; };
+		F3B7C2522806D8DA00DF5C2B /* RealmIncomeTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2512806D8DA00DF5C2B /* RealmIncomeTypeModel.swift */; };
 		F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
-		F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
+		F3B7C2572806DCB000DF5C2B /* IncomeTypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* IncomeTypeDetailsViewController.swift */; };
 		F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */; };
 		F3BF4C6D28265F400036B433 /* SalesModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6828265F400036B433 /* SalesModel.png */; };
 		F3BF4C6E28265F400036B433 /* TypeOfDonationModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */; };
@@ -114,8 +114,17 @@
 		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
-		F3D862D7277C33C100DD43DB /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* PurchaseModel.swift */; };
-		F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */; };
+		F3D862D7277C33C100DD43DB /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* RealmPurchaseModel.swift */; };
+		F3DD2197277AEF76001570D3 /* RealmGoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* RealmGoodsPriceModel.swift */; };
+		F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E16E912BF89FC20008BD6A /* SettingsManager.swift */; };
+		F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */; };
+		F3E357EE2BEFD754005050CB /* RealmDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357ED2BEFD754005050CB /* RealmDB.swift */; };
+		F3E357F52BEFF26E005050CB /* SaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* SaleGoodModel.swift */; };
+		F3E357F72BEFF2AB005050CB /* DailySalesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* DailySalesModel.swift */; };
+		F3E357F92BEFF7F4005050CB /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F82BEFF7F4005050CB /* PurchaseModel.swift */; };
+		F3E357FB2BEFF8C7005050CB /* GoodsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FA2BEFF8C7005050CB /* GoodsPriceModel.swift */; };
+		F3E357FD2BEFF978005050CB /* IncomeTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FC2BEFF978005050CB /* IncomeTypeModel.swift */; };
+		F3E358032BF22B76005050CB /* DomainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E358022BF22B76005050CB /* DomainDB.swift */; };
 		F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */; };
 		F3EAACFE27526383004B9AF6 /* GoodPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */; };
 		F3EAAD00275266EA004B9AF6 /* GoodDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFF275266EA004B9AF6 /* GoodDetailsViewController.swift */; };
@@ -130,8 +139,8 @@
 		65A93F4B4C8F5B886CB1A665 /* Pods-Cyber-coffe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.release.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.release.xcconfig"; sourceTree = "<group>"; };
 		7257F8EB2A3A55705477228D /* Pods-Cyber-coffe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Cyber-coffe.debug.xcconfig"; path = "Target Support Files/Pods-Cyber-coffe/Pods-Cyber-coffe.debug.xcconfig"; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
-		F3158C472763437200136861 /* SaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodModel.swift; sourceTree = "<group>"; };
-		F3158C4A2763443700136861 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		F3158C472763437200136861 /* TempSaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TempSaleGoodModel.swift; sourceTree = "<group>"; };
+		F3158C4A2763443700136861 /* RealmDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabaseService.swift; sourceTree = "<group>"; };
 		F316A2F2273803CE0083E830 /* GoodListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodListViewController.swift; sourceTree = "<group>"; };
 		F316A2F8273805150083E830 /* SalesTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SalesTableViewCell.swift; sourceTree = "<group>"; };
 		F316A2FA273808100083E830 /* UIFont+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIFont+Extension.swift"; sourceTree = "<group>"; };
@@ -144,8 +153,8 @@
 		F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRPurchaseModel.swift; sourceTree = "<group>"; };
 		F31D5881291224190047EB44 /* Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot1.png; sourceTree = "<group>"; };
 		F31D5885291230AE0047EB44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		F31FCA3B2768789B00124366 /* SalesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SalesModel.swift; sourceTree = "<group>"; };
-		F31FD0DC281D218500353BF7 /* FIRSaleGood.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRSaleGood.swift; sourceTree = "<group>"; };
+		F31FCA3B2768789B00124366 /* RealmDailySalesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDailySalesModel.swift; sourceTree = "<group>"; };
+		F31FD0DC281D218500353BF7 /* FIRSaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRSaleGoodModel.swift; sourceTree = "<group>"; };
 		F3264980275B32A900836077 /* PurchasesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasesTableViewCell.swift; sourceTree = "<group>"; };
 		F3264982275B334300836077 /* PurchaseDetailsListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseDetailsListViewController.swift; sourceTree = "<group>"; };
 		F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePurchaseDetailsTableViewCell.swift; sourceTree = "<group>"; };
@@ -214,12 +223,12 @@
 		F39A5338273252B800C8F2D3 /* SettingListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingListViewController.swift; sourceTree = "<group>"; };
 		F39B5D1628460A06000F7D43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
-		F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRFirestoreService.swift; sourceTree = "<group>"; };
+		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
 		F3B036E02B777898009C085D /* Additional materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Additional materials"; sourceTree = "<group>"; };
-		F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypesListViewController.swift; sourceTree = "<group>"; };
-		F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeOfDonationModel.swift; sourceTree = "<group>"; };
+		F3B7C24C2806D81300DF5C2B /* IncomeTypesListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeTypesListViewController.swift; sourceTree = "<group>"; };
+		F3B7C2512806D8DA00DF5C2B /* RealmIncomeTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmIncomeTypeModel.swift; sourceTree = "<group>"; };
 		F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTableViewCell.swift; sourceTree = "<group>"; };
-		F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetailsViewController.swift; sourceTree = "<group>"; };
+		F3B7C2562806DCB000DF5C2B /* IncomeTypeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeTypeDetailsViewController.swift; sourceTree = "<group>"; };
 		F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		F3BF4C6828265F400036B433 /* SalesModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SalesModel.png; sourceTree = "<group>"; };
 		F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TypeOfDonationModel.png; sourceTree = "<group>"; };
@@ -227,8 +236,17 @@
 		F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodsPriceModel.png; sourceTree = "<group>"; };
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
-		F3D862D6277C33C100DD43DB /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
-		F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsPriceModel.swift; sourceTree = "<group>"; };
+		F3D862D6277C33C100DD43DB /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
+		F3DD2196277AEF76001570D3 /* RealmGoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmGoodsPriceModel.swift; sourceTree = "<group>"; };
+		F3E16E912BF89FC20008BD6A /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDatabaseService.swift; sourceTree = "<group>"; };
+		F3E357ED2BEFD754005050CB /* RealmDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDB.swift; sourceTree = "<group>"; };
+		F3E357F42BEFF26E005050CB /* SaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaleGoodModel.swift; sourceTree = "<group>"; };
+		F3E357F62BEFF2AB005050CB /* DailySalesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailySalesModel.swift; sourceTree = "<group>"; };
+		F3E357F82BEFF7F4005050CB /* PurchaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
+		F3E357FA2BEFF8C7005050CB /* GoodsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodsPriceModel.swift; sourceTree = "<group>"; };
+		F3E357FC2BEFF978005050CB /* IncomeTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IncomeTypeModel.swift; sourceTree = "<group>"; };
+		F3E358022BF22B76005050CB /* DomainDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDB.swift; sourceTree = "<group>"; };
 		F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageViewController.swift; sourceTree = "<group>"; };
 		F3EAACFD27526383004B9AF6 /* GoodPriceTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodPriceTableViewCell.swift; sourceTree = "<group>"; };
 		F3EAACFF275266EA004B9AF6 /* GoodDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoodDetailsViewController.swift; sourceTree = "<group>"; };
@@ -284,11 +302,11 @@
 		F3158C462763435000136861 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
-				F31FCA3B2768789B00124366 /* SalesModel.swift */,
-				F3158C472763437200136861 /* SaleGoodModel.swift */,
-				F3D862D6277C33C100DD43DB /* PurchaseModel.swift */,
-				F3DD2196277AEF76001570D3 /* GoodsPriceModel.swift */,
-				F3B7C2512806D8DA00DF5C2B /* TypeOfDonationModel.swift */,
+				F3158C472763437200136861 /* TempSaleGoodModel.swift */,
+				F31FCA3B2768789B00124366 /* RealmDailySalesModel.swift */,
+				F3D862D6277C33C100DD43DB /* RealmPurchaseModel.swift */,
+				F3DD2196277AEF76001570D3 /* RealmGoodsPriceModel.swift */,
+				F3B7C2512806D8DA00DF5C2B /* RealmIncomeTypeModel.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -296,8 +314,10 @@
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F3E357EC2BEFD745005050CB /* Realm */,
+				F3E357E72BEFA203005050CB /* Domain */,
 				F39B5D2D28472E7A000F7D43 /* FIR */,
-				F3158C4A2763443700136861 /* DatabaseManager.swift */,
+				F3E16E912BF89FC20008BD6A /* SettingsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -305,6 +325,7 @@
 		F316A2F4273804270083E830 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F3E357F32BEFF209005050CB /* Domain */,
 				F3158C462763435000136861 /* Realm */,
 				F31BD827284DF3FE00B8FD3B /* Firestore */,
 				F3410EAD2BDD3F930007157B /* Role.swift */,
@@ -349,11 +370,11 @@
 		F31BD827284DF3FE00B8FD3B /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
-				F31FD0DC281D218500353BF7 /* FIRSaleGood.swift */,
+				F31FD0DC281D218500353BF7 /* FIRSaleGoodModel.swift */,
 				F31BD828284DF42800B8FD3B /* FIRDailySalesModel.swift */,
+				F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */,
 				F31BD82A284DF90200B8FD3B /* FIRGoodsPriceModel.swift */,
 				F31BD82C284E013300B8FD3B /* FIRIncomeTypeModel.swift */,
-				F31BD82E284E022400B8FD3B /* FIRPurchaseModel.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -845,7 +866,7 @@
 			isa = PBXGroup;
 			children = (
 				F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */,
-				F39B5D3028473465000F7D43 /* FIRFirestoreService.swift */,
+				F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */,
 			);
 			path = FIR;
 			sourceTree = "<group>";
@@ -883,24 +904,24 @@
 			isa = PBXGroup;
 			children = (
 				F3B7C2552806D9FB00DF5C2B /* Cell */,
-				F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */,
+				F3B7C24C2806D81300DF5C2B /* IncomeTypesListViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		F3B7C24F2806D84400DF5C2B /* TypesList */ = {
+		F3B7C24F2806D84400DF5C2B /* IncomeTypesList */ = {
 			isa = PBXGroup;
 			children = (
 				F3B7C24E2806D83000DF5C2B /* View */,
 			);
-			path = TypesList;
+			path = IncomeTypesList;
 			sourceTree = "<group>";
 		};
 		F3B7C2502806D85800DF5C2B /* SettingsTypes */ = {
 			isa = PBXGroup;
 			children = (
-				F3B7C24F2806D84400DF5C2B /* TypesList */,
-				F3B7C2582806DCC300DF5C2B /* TypeDetail */,
+				F3B7C24F2806D84400DF5C2B /* IncomeTypesList */,
+				F3B7C2582806DCC300DF5C2B /* IncomeTypeDetail */,
 			);
 			path = SettingsTypes;
 			sourceTree = "<group>";
@@ -913,18 +934,18 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
-		F3B7C2582806DCC300DF5C2B /* TypeDetail */ = {
+		F3B7C2582806DCC300DF5C2B /* IncomeTypeDetail */ = {
 			isa = PBXGroup;
 			children = (
 				F3B7C2592806DCD200DF5C2B /* View */,
 			);
-			path = TypeDetail;
+			path = IncomeTypeDetail;
 			sourceTree = "<group>";
 		};
 		F3B7C2592806DCD200DF5C2B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */,
+				F3B7C2562806DCB000DF5C2B /* IncomeTypeDetailsViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -949,6 +970,36 @@
 				F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		F3E357E72BEFA203005050CB /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				F3E358022BF22B76005050CB /* DomainDB.swift */,
+				F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		F3E357EC2BEFD745005050CB /* Realm */ = {
+			isa = PBXGroup;
+			children = (
+				F3E357ED2BEFD754005050CB /* RealmDB.swift */,
+				F3158C4A2763443700136861 /* RealmDatabaseService.swift */,
+			);
+			path = Realm;
+			sourceTree = "<group>";
+		};
+		F3E357F32BEFF209005050CB /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				F3E357F42BEFF26E005050CB /* SaleGoodModel.swift */,
+				F3E357F62BEFF2AB005050CB /* DailySalesModel.swift */,
+				F3E357F82BEFF7F4005050CB /* PurchaseModel.swift */,
+				F3E357FA2BEFF8C7005050CB /* GoodsPriceModel.swift */,
+				F3E357FC2BEFF978005050CB /* IncomeTypeModel.swift */,
+			);
+			path = Domain;
 			sourceTree = "<group>";
 		};
 		F3EB27E027F30FAD00BB2D93 /* SaleGood */ = {
@@ -1154,16 +1205,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3264983275B334300836077 /* PurchaseDetailsListViewController.swift in Sources */,
+				F3E357F52BEFF26E005050CB /* SaleGoodModel.swift in Sources */,
 				F3410EA22BDD3AFC0007157B /* String+Extension.swift in Sources */,
 				F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */,
-				F3B7C2522806D8DA00DF5C2B /* TypeOfDonationModel.swift in Sources */,
+				F3B7C2522806D8DA00DF5C2B /* RealmIncomeTypeModel.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
+				F3E357EE2BEFD754005050CB /* RealmDB.swift in Sources */,
 				F3821C7C27EAEB04006D40FC /* SaleDetailsViewModelType.swift in Sources */,
 				F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */,
 				F3410EBC2BDD66590007157B /* RequestManager.swift in Sources */,
 				F31BD829284DF42800B8FD3B /* FIRDailySalesModel.swift in Sources */,
 				F3410EBA2BDD45AA0007157B /* UIDevice+Extension.swift in Sources */,
-				F3D862D7277C33C100DD43DB /* PurchaseModel.swift in Sources */,
+				F3D862D7277C33C100DD43DB /* RealmPurchaseModel.swift in Sources */,
 				F3410EA02BDD3A950007157B /* UIViewController+Extension.swift in Sources */,
 				F3988AEF27EB2EC500215976 /* PurchaseListViewModel.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
@@ -1171,15 +1224,16 @@
 				F3410E612BDD00C20007157B /* AuthManager.swift in Sources */,
 				F3821C7E27EAEB0F006D40FC /* SaleDetailsViewModel.swift in Sources */,
 				F31BD82F284E022400B8FD3B /* FIRPurchaseModel.swift in Sources */,
-				F31FD0DD281D218500353BF7 /* FIRSaleGood.swift in Sources */,
-				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
+				F31FD0DD281D218500353BF7 /* FIRSaleGoodModel.swift in Sources */,
+				F3B7C2572806DCB000DF5C2B /* IncomeTypeDetailsViewController.swift in Sources */,
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3821C7A27EAEA8B006D40FC /* SaleListViewModelType.swift in Sources */,
 				F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */,
-				F3158C4B2763443700136861 /* DatabaseManager.swift in Sources */,
+				F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */,
 				F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */,
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
+				F3E357FD2BEFF978005050CB /* IncomeTypeModel.swift in Sources */,
 				F316A301273901410083E830 /* SaleTableViewCell.swift in Sources */,
 				F3EB27DF27F30F0700BB2D93 /* SaleGoodListItemViewModel.swift in Sources */,
 				F3410EAC2BDD3E8E0007157B /* UIImage+Extension.swift in Sources */,
@@ -1189,6 +1243,7 @@
 				F3410E5E2BDD00C20007157B /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* SaleGoodListViewModel.swift in Sources */,
 				F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */,
+				F3E357F72BEFF2AB005050CB /* DailySalesModel.swift in Sources */,
 				F3410E6D2BDD24710007157B /* UIColor.swift in Sources */,
 				F3410E6B2BDD23E60007157B /* Constants.swift in Sources */,
 				F3988ADC27EB111600215976 /* PurchaseListViewModelType.swift in Sources */,
@@ -1201,10 +1256,12 @@
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
+				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
+				F3E358032BF22B76005050CB /* DomainDB.swift in Sources */,
 				F316A2F3273803CE0083E830 /* GoodListViewController.swift in Sources */,
 				F3410EB22BDD408B0007157B /* Settings.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* PurchaseListViewController.swift in Sources */,
-				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
+				F3B7C24D2806D81300DF5C2B /* IncomeTypesListViewController.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */,
 				F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */,
@@ -1217,25 +1274,28 @@
 				F3410E5F2BDD00C20007157B /* RememberMeButton.swift in Sources */,
 				F316A2FF2738FD710083E830 /* SaleDetailsViewController.swift in Sources */,
 				F3988AE027EB12E100215976 /* PurchaseDetailsViewModelType.swift in Sources */,
-				F31FCA3C2768789B00124366 /* SalesModel.swift in Sources */,
-				F39B5D3128473465000F7D43 /* FIRFirestoreService.swift in Sources */,
+				F31FCA3C2768789B00124366 /* RealmDailySalesModel.swift in Sources */,
+				F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */,
 				F3264981275B32AA00836077 /* PurchasesTableViewCell.swift in Sources */,
 				F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */,
 				F3988AF127EB310900215976 /* PurchaseListItemViewModel.swift in Sources */,
+				F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */,
 				F3EB27DD27F30EF000BB2D93 /* SaleGoodListItemViewModelType.swift in Sources */,
-				F3158C482763437200136861 /* SaleGoodModel.swift in Sources */,
+				F3158C482763437200136861 /* TempSaleGoodModel.swift in Sources */,
 				F3410EA42BDD3C8E0007157B /* UserSession.swift in Sources */,
 				F3410E602BDD00C20007157B /* SignUpController.swift in Sources */,
 				F3988AED27EB19C300215976 /* PurchaseDetailsViewModel.swift in Sources */,
 				F31BD82D284E013300B8FD3B /* FIRIncomeTypeModel.swift in Sources */,
 				F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */,
+				F3E357F92BEFF7F4005050CB /* PurchaseModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */,
 				F3410E912BDD2EAE0007157B /* NumberFormatter+Extension.swift in Sources */,
 				F3410EB72BDD44370007157B /* PopupFactory.swift in Sources */,
+				F3E357FB2BEFF8C7005050CB /* GoodsPriceModel.swift in Sources */,
 				F39A5339273252B800C8F2D3 /* SettingListViewController.swift in Sources */,
-				F3DD2197277AEF76001570D3 /* GoodsPriceModel.swift in Sources */,
+				F3DD2197277AEF76001570D3 /* RealmGoodsPriceModel.swift in Sources */,
 				F31BD82B284DF90200B8FD3B /* FIRGoodsPriceModel.swift in Sources */,
 				F3821C8227EAEB97006D40FC /* SaleListItemViewModelType.swift in Sources */,
 				F316A2FB273808100083E830 /* UIFont+Extension.swift in Sources */,

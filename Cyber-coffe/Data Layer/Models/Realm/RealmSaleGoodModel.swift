@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class SaleGoodModel: Object {
+class RealmSaleGoodModel: Object {
     @Persisted var id: String = ""
     @Persisted var synchronized: Bool = false
     @Persisted var date = Date()

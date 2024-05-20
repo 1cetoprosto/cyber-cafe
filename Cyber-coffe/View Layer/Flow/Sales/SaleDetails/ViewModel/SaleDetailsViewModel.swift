@@ -9,16 +9,10 @@ import Foundation
 
 class SaleDetailsViewModel: SaleDetailsViewModelType {
     
-    private var sale: SalesModel
-    private var types: [TypeOfDonationModel]? {
-        let typesArray = DatabaseManager.shared.fetchTypeOfDonation()
-        if typesArray.isEmpty {
-            return nil
-        }
-        return typesArray
-    }
+    private var sale: DailySalesModel
+    private var types: [IncomeTypeModel]  = []
     private var selectedRow: Int?
-    var newModel: Bool
+    var isNewModel: Bool
     
     var date: Date { return sale.date}
     var cashLabel: String { return "Cash:" }
@@ -26,69 +20,81 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     var cashTextfield: String { return "Money2:" }
     var cardTextfield: String { return "Money3:" }
     var saleLabel: String { return "Money1:" }
-    var salesCash: Double { return sale.cash }
-    var salesCard: Double { return sale.card }
-    var salesSum: Double { return sale.sum }
-    var typeOfDonation: String { return sale.typeOfDonation }
+    var cash: Double { return sale.cash }
+    var card: Double { return sale.card }
+    var sum: Double { return sale.sum }
+    var incomeType: String { return sale.incomeType }
     
-    init(sale: SalesModel, newModel: Bool = false) {
-        self.sale = sale
-        self.newModel = newModel
+    init(model: DailySalesModel, isNewModel: Bool = false) {
+        self.sale = model
+        self.isNewModel = isNewModel
     }
     
-    func isExist(date: Date, type: String) -> Bool {
-        let salesModel = DatabaseManager.shared.fetchSales(date: date, type: type)
-        return !salesModel.isEmpty
+    func isExist(date: Date, type: String, completion: @escaping (Bool) -> Void) {
+        DomainDatabaseService.shared.fetchSales(forDate: date, ofType: type) { dailySales in
+            completion(dailySales.isEmpty)
+        }
     }
     
-    func saveSales(date: Date, typeOfDonation: String?, salesCash: String?, salesCard: String?, salesSum: String?) {
-        sale = SalesModel()
-        sale.date = date
-        sale.sum = Double(salesSum ?? "0") ?? 0
-        sale.cash = Double(salesCash ?? "0") ?? 0
-        sale.card = Double(salesCard ?? "0") ?? 0
-        sale.typeOfDonation = typeOfDonation ?? ""
+    func saveSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+        let dailySale = DailySalesModel(
+                id: "",
+                date: date,
+                incomeType: incomeType ?? "",
+                sum: sum?.double ?? 0.0,
+                cash: cash?.double ?? 0.0,
+                card: card?.double ?? 0.0
+            )
         
-        if let id = FIRFirestoreService.shared.create(firModel: FIRDailySalesModel(salesModel: sale), collection: "sales") {
-            sale.id = id
-            sale.synchronized = true
+        DomainDatabaseService.shared.saveDailySale(sale: dailySale) { success in
+                if success {
+                    print("Sale saved successfully")
+                } else {
+                    print("Failed to save sale")
+                }
+            }
+    }
+    
+    func updateSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+        
+        DomainDatabaseService.shared.fetchSales(forDate: date, ofType: incomeType) { dailySales in
+            for dailySale in dailySales {
+                DomainDatabaseService.shared.updateSales(model: dailySale,
+                                                         date: date,
+                                                         incomeType: incomeType ?? "",
+                                                         total: sum?.double ?? 0.0,
+                                                         cashAmount: cash?.double ?? 0.0,
+                                                         cardAmount: card?.double ?? 0.0)
+            }
         }
         
-        DatabaseManager.shared.save(model: sale)
-    }
-    
-    func updateSales(date: Date, typeOfDonation: String?, salesCash: String?, salesCard: String?, salesSum: String?) {
-        let salesSum = Double(salesSum ?? "0") ?? 0
-        let salesCash = Double(salesCash ?? "0") ?? 0
-        let salesCard = Double(salesCard ?? "0") ?? 0
-        let typeOfDonation = typeOfDonation ?? ""
         
-        let salesSynchronized = FIRFirestoreService.shared.update(firModel: FIRDailySalesModel(salesId: sale.id,
-                                                                salesDate: date,
-                                                                salesTypeOfDonation: typeOfDonation,
-                                                                salesSum: salesSum,
-                                                                salesCash: salesCash,
-                                                                salesCard: salesCard),
-                                        collection: "sales",
-                                        documentId: sale.id)
         
-        DatabaseManager.shared.updateSalesModel(model: sale,
-                                                salesDate: date,
-                                                salesTypeOfDonation: typeOfDonation,
-                                                salesSum: salesSum,
-                                                salesCash: salesCash,
-                                                salesCard: salesCard,
-                                                salesSynchronized: salesSynchronized)
+//        let salesSynchronized = FirestoreDatabaseService.shared.update(firModel: FIRDailySalesModel(salesId: sale.id,
+//                                                                salesDate: date,
+//                                                                salesTypeOfDonation: typeOfDonation,
+//                                                                salesSum: salesSum,
+//                                                                salesCash: salesCash,
+//                                                                salesCard: salesCard),
+//                                        collection: "sales",
+//                                        documentId: sale.id)
+//        
+//        RealmDatabaseService.shared.updateSales(model: sale,
+//                                                date: date,
+//                                                incomeType: typeOfDonation,
+//                                                total: salesSum,
+//                                                cashAmount: salesCash,
+//                                                cardAmount: salesCard)
     }
     
     func numberOfRowsInComponent(component: Int) -> Int {
-        guard let types = self.types else { return 0 }
+        //guard let types = self.types else { return 0 }
         return types.count
     }
     
     func titleForRow(row: Int, component: Int) -> String? {
-        guard let types = self.types else { return nil }
-        return types[row].type
+        //guard let types = self.types else { return nil }
+        return types[row].name
     }
     
     func selectRow(atRow row: Int) {

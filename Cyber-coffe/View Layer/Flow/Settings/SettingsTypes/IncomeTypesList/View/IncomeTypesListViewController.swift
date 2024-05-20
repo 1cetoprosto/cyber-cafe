@@ -9,10 +9,12 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class TypesListViewController: UIViewController {
+class IncomeTypesListViewController: UIViewController {
 
-    let localRealm = try! Realm()
-    var typesArray: Results<TypeOfDonationModel>!
+//    let localRealm = try! Realm()
+//    var typesArray: Results<TypeOfDonationModel>!
+    
+    var incomeTypes = [IncomeTypeModel]()
     
     let idTypesOfDonationCell = "idTypesOfDonationCell"
     let tableView: UITableView = {
@@ -50,7 +52,10 @@ class TypesListViewController: UIViewController {
     }
 
     func configure() {
-        typesArray = localRealm.objects(TypeOfDonationModel.self).sorted(byKeyPath: "type")
+        DomainDatabaseService.shared.fetchIncomeTypes { incomeTypes in
+            self.incomeTypes = incomeTypes
+            self.tableView.reloadData()
+        }
     }
     
     func setConstraints() {
@@ -68,20 +73,20 @@ class TypesListViewController: UIViewController {
     
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let typeVC = TypeDetailsViewController()
+        let typeVC = IncomeTypeDetailsViewController()
         navigationController?.pushViewController(typeVC, animated: true)
     }
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
-extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
+extension IncomeTypesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return typesArray.count
+        return incomeTypes.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idTypesOfDonationCell, for: indexPath) as! TypeTableViewCell
-        cell.configure(typeOfDonation: typesArray[indexPath.row], indexPath: indexPath)
+        cell.configure(incomeType: incomeTypes[indexPath.row], indexPath: indexPath)
 
         return cell
     }
@@ -91,30 +96,30 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let model = typesArray[indexPath.row]
+        let model = incomeTypes[indexPath.row]
         
-        let typeVC = TypeDetailsViewController()
-        typeVC.typesModel = model
-        typeVC.newModel = false
-        typeVC.type = model.type
+        let typeVC = IncomeTypeDetailsViewController()
+//        typeVC.typesModel = model
+//        typeVC.newModel = false
+        typeVC.type = model.name
         navigationController?.pushViewController(typeVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let model = typesArray[indexPath.row]
+        let model = incomeTypes[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            let itemDeleted = FIRFirestoreService.shared.delete(collection: "typesOfDonation", documentId: model.id)
-            if itemDeleted {
-                DatabaseManager.shared.delete(model: model)
-                
-                self.configure()
-                
-                tableView.reloadData()
-            } else {
-                //TODO: add in table for delete later, when wiil be sinhronize
-                
+            
+            DomainDatabaseService.shared.deleteIncomeType(model: model) { success in
+                if success {
+                    print("Income type deleted successfully")
+                    self.configure()
+                    
+                    tableView.reloadData()
+                } else {
+                    print("Failed to delete income type")
+                }
             }
         }
         
