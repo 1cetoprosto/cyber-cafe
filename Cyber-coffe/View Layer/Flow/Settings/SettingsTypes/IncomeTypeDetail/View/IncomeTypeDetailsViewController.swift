@@ -95,36 +95,31 @@ class IncomeTypeDetailsViewController: UIViewController {
             goodStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             goodStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             goodStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            goodStackView.heightAnchor.constraint(equalToConstant: 200)
+            goodStackView.heightAnchor.constraint(equalToConstant: 120)
         ])
 
     }
 
     // MARK: - Method
     @objc func saveAction(param: UIButton) {
-        
-        guard let name = typeTextfield.text else { //, !type.isEmpty
-            // Handle case when type is empty
+        guard let name = typeTextfield.text, !name.isEmpty else {
+            PopupFactory.showPopup(title: "Помилка", description: "Будь ласка, введіть назву надходження") { }
             return
         }
         
-        DomainDatabaseService.shared.saveIncomeType(incomeType: IncomeTypeModel(id: "", name: name)) { success in
-            if success {
-                print("IncomeType saved successfully")
-            } else {
-                print("Failed to save IncomeType")
+        incomeType.name = name
+        if incomeType.id.isEmpty {
+            incomeType.id = UUID().uuidString
+            DomainDatabaseService.shared.saveIncomeType(incomeType: incomeType) { success in
+                if success {
+                    print("IncomeType saved successfully")
+                } else {
+                    print("Failed to save IncomeType")
+                }
             }
+        } else {
+            DomainDatabaseService.shared.updateIncomeType(model: incomeType, type: name)
         }
-        
-//        let incomeType = FIRIncomeTypeModel(dataModel: IncomeTypeModel(id: "", name: type))
-//        
-//        if let documentId = FirestoreDatabaseService.shared.createIncomeType(incomeType: incomeType) {
-//                print("Income type created with document ID: \(documentId)")
-//                navigationController?.popViewController(animated: true)
-//            } else {
-//                print("Failed to create income type")
-//                // Handle error if necessary
-//            }
         
         navigationController?.popViewController(animated: true)
     }

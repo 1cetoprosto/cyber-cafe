@@ -26,6 +26,8 @@ class SignInController: UIViewController {
     
     private lazy var emailField: AnimatedTextInput = {
         let field = AnimatedTextInput()
+        field.backgroundColor = UIColor.TableView.cellBackground
+        //field.layer.cornerRadius = 10
         field.style = AnimatedTextInputStyleLogin()
         field.type = .email
         field.placeHolderText = R.string.global.email()
@@ -38,6 +40,8 @@ class SignInController: UIViewController {
     
     private lazy var passwordField: AnimatedTextInput = {
         let field = AnimatedTextInput()
+        field.backgroundColor = UIColor.TableView.cellBackground
+        //field.layer.cornerRadius = 10
         field.style = AnimatedTextInputStyleLogin()
         field.type = .password(toggleable: true)
         field.placeHolderText = R.string.global.password()

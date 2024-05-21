@@ -50,6 +50,7 @@ class SettingsSwitchTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.addSubview(settingSwitch)
         contentView.clipsToBounds = true
+        layer.cornerRadius = 10
     }
 
     required init?(coder: NSCoder) {

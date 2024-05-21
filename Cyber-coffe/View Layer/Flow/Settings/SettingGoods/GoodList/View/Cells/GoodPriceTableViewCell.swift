@@ -48,7 +48,7 @@ class GoodPriceTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(goodPrice: RealmGoodsPriceModel, indexPath: IndexPath) {
+    func configure(goodPrice: GoodsPriceModel, indexPath: IndexPath) {
         goodLabel.text = goodPrice.name
         quantityLabel.text = String(goodPrice.price)
 

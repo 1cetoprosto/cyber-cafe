@@ -132,8 +132,9 @@ class FirestoreDatabaseService: FirestoreDB {
     
     // MARK: - CRUD Operations for Products
     
-    func createProduct(product: FIRGoodsPriceModel) -> String? {
-        return create(firModel: product, collection: "goodsPrice")
+    func createProduct(product: FIRGoodsPriceModel, completion: @escaping (Bool) -> Void) {
+        let documentId =  create(firModel: product, collection: "goodsPrice")
+        completion(documentId != nil)
     }
     
     func readProducts(completion: @escaping ([(documentId: String, FIRGoodsPriceModel)]) -> Void) {

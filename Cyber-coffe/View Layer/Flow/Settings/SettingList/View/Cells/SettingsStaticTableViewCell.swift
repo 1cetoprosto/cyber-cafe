@@ -44,6 +44,7 @@ class SettingsStaticTableViewCell: UITableViewCell {
         contentView.addSubview(label)
         contentView.clipsToBounds = true
         accessoryType = .disclosureIndicator
+        layer.cornerRadius = 10
 
     }
 
