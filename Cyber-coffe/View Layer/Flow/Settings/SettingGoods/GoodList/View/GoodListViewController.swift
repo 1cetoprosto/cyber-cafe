@@ -10,8 +10,9 @@ import RealmSwift
 
 class GoodListViewController: UIViewController {
 
-    let localRealm = try! Realm()
-    var goodsArray: Results<RealmGoodsPriceModel>!
+    //let localRealm = try! Realm()
+    //var goodsArray: Results<RealmGoodsPriceModel>!
+    var goodsPrice = [GoodsPriceModel]()
     
     let idGoodsCell = "idGoodsCell"
     let tableView: UITableView = {
@@ -26,7 +27,6 @@ class GoodListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configure()
-        tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -49,7 +49,10 @@ class GoodListViewController: UIViewController {
     }
 
     func configure() {
-        goodsArray = localRealm.objects(RealmGoodsPriceModel.self).sorted(byKeyPath: "good")
+        DomainDatabaseService.shared.fetchGoodsPrice { goodsPrice in
+            self.goodsPrice = goodsPrice
+            self.tableView.reloadData()
+        }
     }
     
     func setConstraints() {
@@ -67,7 +70,7 @@ class GoodListViewController: UIViewController {
     
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        let goodVC = GoodDetailsViewController()
+        let goodVC = GoodDetailsViewController(goodPrice: GoodsPriceModel(id: "", name: "", price: 0.0))
         navigationController?.pushViewController(goodVC, animated: true)
     }
 }
@@ -75,12 +78,12 @@ class GoodListViewController: UIViewController {
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return goodsArray.count
+        return goodsPrice.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: idGoodsCell, for: indexPath) as! GoodPriceTableViewCell
-        cell.configure(goodPrice: goodsArray[indexPath.row], indexPath: indexPath)
+        cell.configure(goodPrice: goodsPrice[indexPath.row], indexPath: indexPath)
 
         return cell
     }
@@ -90,31 +93,27 @@ extension GoodListViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let model = goodsArray[indexPath.row]
+        let model = goodsPrice[indexPath.row]
         
-        let goodVC = GoodDetailsViewController()
-        goodVC.goodsModel = model
-        goodVC.newModel = false
-        goodVC.good = model.name
-        goodVC.price = model.price
+        let goodVC = GoodDetailsViewController(goodPrice: model)
+        goodVC.goodPrice = model
         navigationController?.pushViewController(goodVC, animated: true)
     }
 
     func tableView(_ tableView: UITableView,
                    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let model = goodsArray[indexPath.row]
+        let model = goodsPrice[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            let itemDeleted = FirestoreDatabaseService.shared.delete(collection: "goodsPrice", documentId: model.id)
-            if itemDeleted {
-                RealmDatabaseService.shared.delete(model: model)
-                
-                self.configure()
-                
-                tableView.reloadData()
-            } else {
-                //TODO: add in table for delete later, when wiil be sinhronize
-                
+            DomainDatabaseService.shared.deleteGoodsPrice(model: model) { success in
+                if success {
+                    print("goodsPrice type deleted successfully")
+                    self.configure()
+                    
+                    tableView.reloadData()
+                } else {
+                    print("Failed to delete goodsPrice")
+                }
             }
         }
 

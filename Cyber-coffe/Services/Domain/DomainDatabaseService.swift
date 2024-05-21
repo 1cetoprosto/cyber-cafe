@@ -77,7 +77,7 @@ class DomainDatabaseService: DomainDB {
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.saveSaleGood(saleGood: RealmSaleGoodModel(dataModel: sale))
+            RealmDatabaseService.shared.save(model: RealmSaleGoodModel(dataModel: sale))
             print("Sale good saved to Realm successfully")
             completion(true)
         }
@@ -169,7 +169,7 @@ class DomainDatabaseService: DomainDB {
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.saveDailySale(dailySale: RealmDailySalesModel(dataModel: sale))
+            RealmDatabaseService.shared.save(model: RealmDailySalesModel(dataModel: sale))
             print("Sales saved to Realm successfully")
             completion(true)
         }
@@ -216,6 +216,38 @@ class DomainDatabaseService: DomainDB {
         } else {
             let goodsPrices = RealmDatabaseService.shared.fetchGoodsPrice().map { GoodsPriceModel(realmModel: $0) }
             completion(goodsPrices)
+        }
+    }
+    
+    func saveGoodsPrice(goodPrice: GoodsPriceModel, completion: @escaping (Bool) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.createProduct(product: FIRGoodsPriceModel(dataModel: goodPrice)) { success in
+                if success {
+                    print("goodPrice saved to Firestore successfully")
+                } else {
+                    print("Failed to save goodPrice to Firestore")
+                }
+                completion(success)
+            }
+        } else {
+            RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(dataModel: goodPrice))
+            print("goodPrice saved to Realm successfully")
+            completion(true)
+        }
+    }
+    
+    func deleteGoodsPrice(model: GoodsPriceModel, completion: @escaping (Bool) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            let success = FirestoreDatabaseService.shared.delete(collection: "goodsPrice", documentId: model.id)
+            completion(success)
+        } else {
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmGoodsPriceModel.self, id: model.id) else { return }
+            RealmDatabaseService.shared.delete(model: deletedModel)
+            completion(true)
         }
     }
     
@@ -291,7 +323,7 @@ class DomainDatabaseService: DomainDB {
                 print("Failed to update IncomeType in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchIncomeTypes(forIncomeTypeModel: model) else { return }
+            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmIncomeTypeModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.updateIncomeType(model: updatedModel, type: type)
         }
     }
@@ -323,7 +355,7 @@ class DomainDatabaseService: DomainDB {
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.saveIncomeTypes(incomeTypes: RealmIncomeTypeModel(dataModel: incomeType))
+            RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(dataModel: incomeType))
             print("Income type saved to Realm successfully")
             completion(true)
         }
@@ -336,7 +368,8 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "incomeTypes", documentId: model.id)
             completion(success)
         } else {
-            RealmDatabaseService.shared.delete(model: RealmIncomeTypeModel(dataModel: model))
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmIncomeTypeModel.self, id: model.id) else { return }
+            RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }

@@ -54,6 +54,7 @@ class SettingsDataTableViewCell: UITableViewCell {
         contentView.addSubview(dataLabel)
         contentView.clipsToBounds = true
         accessoryType = .disclosureIndicator
+        layer.cornerRadius = 10
     }
 
     required init?(coder: NSCoder) {

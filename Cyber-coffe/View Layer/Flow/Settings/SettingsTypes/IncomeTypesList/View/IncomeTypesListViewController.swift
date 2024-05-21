@@ -36,7 +36,7 @@ class IncomeTypesListViewController: UIViewController {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
-        title = "Types of donation"
+        title = "Income types"
         
         tableView.register(TypeTableViewCell.self, forCellReuseIdentifier: idTypesOfDonationCell)
         tableView.dataSource = self
@@ -48,7 +48,7 @@ class IncomeTypesListViewController: UIViewController {
                                                             action: #selector(performAdd(param:)))
         
         setConstraints()
-        
+        RealmDatabaseService.shared.printRealmData(modelType: RealmIncomeTypeModel.self)
     }
 
     func configure() {
@@ -101,7 +101,7 @@ extension IncomeTypesListViewController: UITableViewDelegate, UITableViewDataSou
         let typeVC = IncomeTypeDetailsViewController(incomeType: model)
 //        typeVC.typesModel = model
 //        typeVC.newModel = false
-        typeVC.incomeType = model
+        //typeVC.incomeType = model
         navigationController?.pushViewController(typeVC, animated: true)
     }
     

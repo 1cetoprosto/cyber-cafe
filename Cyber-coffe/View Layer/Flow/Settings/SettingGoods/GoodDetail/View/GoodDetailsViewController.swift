@@ -78,22 +78,32 @@ class GoodDetailsViewController: UIViewController {
         return button
     }()
 
-    var good: String = ""
-    var price: Double = 0.0
+//    var good: String = ""
+//    var price: Double = 0.0
+    var goodPrice: GoodsPriceModel
 
-    let localRealm = try! Realm()
-    var goodsModel = RealmGoodsPriceModel()
-    var newModel = true
+//    let localRealm = try! Realm()
+//    var goodsModel = RealmGoodsPriceModel()
+//    var newModel = true
 
+    init(goodPrice: GoodsPriceModel) {
+        self.goodPrice = goodPrice
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
         title = "Good"
         
-        goodTextfield.text = good
-        if price != 0 {
-            priceTextfield.text = String(price)
+        goodTextfield.text = goodPrice.name
+        if goodPrice.price != 0 {
+            priceTextfield.text = goodPrice.price.string
         }
 
         navigationController?.view.backgroundColor = UIColor.NavBar.background
@@ -129,33 +139,23 @@ class GoodDetailsViewController: UIViewController {
 
     // MARK: - Method
     @objc func saveAction(param: UIButton) {
-
-        good = goodTextfield.text ?? ""
-        price = Double(priceTextfield.text ?? "0.0") ?? 0.0
-// TODO: реалізувати збереження
-//        if newModel {
-//            goodsModel.name = good
-//            goodsModel.price = price
-//            
-//            if let id = FirestoreDatabaseService
-//                .shared
-//                .create(firModel: FIRGoodsPriceModel(goodsPriceModel: goodsModel), collection: "goodsPrice") {
-//                goodsModel.id = id
-//                goodsModel.synchronized = true
-//            }
-//
-//            RealmDatabaseService.shared.save(model: goodsModel)
-//            goodsModel = RealmGoodsPriceModel()
-//        } else {
-//            
-//            let synchronized = FirestoreDatabaseService
-//                .shared
-//                .update(firModel: FIRGoodsPriceModel(id: goodsModel.id, good: good, price: price),
-//                        collection: "goodsPrice", documentId: goodsModel.id)
-//            
-//            RealmDatabaseService.shared.updateGoodsPrice(model: goodsModel, name: good, price: price)
-//        }
-
+        guard let name = goodTextfield.text, !name.isEmpty else {
+            PopupFactory.showPopup(title: "Помилка", description: "Будь ласка, введіть назву товару") { }
+            return
+        }
+        
+        let price = priceTextfield.text?.double ?? 0.0
+        
+        goodPrice.name = name
+        goodPrice.price = price
+        
+        if goodPrice.id.isEmpty {
+            goodPrice.id = UUID().uuidString
+            DomainDatabaseService.shared.saveGoodsPrice(goodPrice: goodPrice) { _ in }
+        } else {
+            DomainDatabaseService.shared.updateGoodsPrice(model: goodPrice, name: name, price: price)
+        }
+        
         navigationController?.popViewController(animated: true)
     }
 

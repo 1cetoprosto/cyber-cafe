@@ -12,6 +12,7 @@ class RealmDatabaseService: RealmDB {
     static let shared = RealmDatabaseService()
     
     // MARK: - Lifecycle
+    
     private init() {}
     
     let localRealm = try! Realm()
@@ -36,8 +37,39 @@ class RealmDatabaseService: RealmDB {
             print(error)
         }
     }
+    
+    func printRealmData<T: Object>(modelType: T.Type) {
+        let results = localRealm.objects(modelType)
+        for result in results {
+            for property in result.objectSchema.properties {
+                if let value = result.value(forKey: property.name) {
+                    print("\(property.name): \(value)")
+                }
+            }
+        }
+    }
+    
+    func fetchObjectById<T: Object>(modelType: T.Type, id: String) -> T? {
+        return localRealm.objects(modelType).filter("id == %@", id).first
+    }
 
+    func deleteAllData() {
+        let objectTypes: [Object.Type] = [RealmSaleGoodModel.self,
+                                          RealmDailySalesModel.self,
+                                          RealmGoodsPriceModel.self,
+                                          RealmIncomeTypeModel.self,
+                                          RealmPurchaseModel.self]
+        
+        try! localRealm.write {
+            for objectType in objectTypes {
+                let objects = localRealm.objects(objectType)
+                localRealm.delete(objects)
+            }
+        }
+    }
+    
     // MARK: - Work With Sales Good
+    
     func updateSaleGood(model: RealmSaleGoodModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
         try! localRealm.write {
             model.date = date
@@ -71,17 +103,8 @@ class RealmDatabaseService: RealmDB {
         return localRealm.objects(RealmSaleGoodModel.self).filter(predicate)[0]
     }
     
-    func saveSaleGood(saleGood: RealmSaleGoodModel) {
-        do {
-            try localRealm.write {
-                localRealm.add(saleGood)
-            }
-        } catch {
-            print("Failed to save sale to Realm: \(error.localizedDescription)")
-        }
-    }
+    // MARK: - Work With Daily Sales
     
-    // MARK: - Work With Daily Sales Good
     func updateSales(model: RealmDailySalesModel, date: Date, incomeType: String, total: Double, cashAmount: Double, cardAmount: Double) {
         try! localRealm.write {
             model.date = date
@@ -124,16 +147,6 @@ class RealmDatabaseService: RealmDB {
         return sections
     }
     
-    func saveDailySale(dailySale: RealmDailySalesModel) {
-        do {
-            try localRealm.write {
-                localRealm.add(dailySale)
-            }
-        } catch {
-            print("Failed to save sale to Realm: \(error.localizedDescription)")
-        }
-    }
-    
     func fetchDailySales(forDailySalesModel dailySalesModel: DailySalesModel) -> RealmDailySalesModel? {
         return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: dailySalesModel.id)
     }
@@ -149,7 +162,8 @@ class RealmDatabaseService: RealmDB {
         return Array(localRealm.objects(RealmDailySalesModel.self).filter(predicate))
     }
 
-    // Товари та ціни
+    // MARK: - Work With Good Price
+    
     func updateGoodsPrice(model: RealmGoodsPriceModel, name: String, price: Double) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -159,14 +173,15 @@ class RealmDatabaseService: RealmDB {
     }
 
     func fetchGoodsPrice() -> [RealmGoodsPriceModel] {
-        return Array(localRealm.objects(RealmGoodsPriceModel.self).sorted(byKeyPath: "good"))
+        return Array(localRealm.objects(RealmGoodsPriceModel.self).sorted(byKeyPath: "name"))
     }
     
     func fetchGoodsPrice(forGoodPriceModel goodPriceModel: GoodsPriceModel) -> RealmGoodsPriceModel? {
-        return localRealm.object(ofType: RealmGoodsPriceModel.self, forPrimaryKey: goodPriceModel.id)
+        return localRealm.objects(RealmGoodsPriceModel.self).filter("id == %@", goodPriceModel.id).first
     }
     
-    // Закупки
+    // MARK: - Work With Purchase
+    
     func updatePurchase(model: RealmPurchaseModel, date: Date, name: String, sum: Double) {
         try! localRealm.write {
             model.date = date
@@ -211,7 +226,8 @@ class RealmDatabaseService: RealmDB {
         return sections
     }
     
-    // Типи пожертвувань
+    // MARK: - Work With IncomeType
+    
     func updateIncomeType(model: RealmIncomeTypeModel, type: String) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
@@ -224,31 +240,6 @@ class RealmDatabaseService: RealmDB {
     }
 
     func fetchIncomeTypes(forIncomeTypeModel incomeTypeModel: IncomeTypeModel) -> RealmIncomeTypeModel? {
-        return localRealm.object(ofType: RealmIncomeTypeModel.self, forPrimaryKey: incomeTypeModel.id)
-    }
-    
-    func saveIncomeTypes(incomeTypes: RealmIncomeTypeModel) {
-        do {
-            try localRealm.write {
-                localRealm.add(incomeTypes)
-            }
-        } catch {
-            print("Failed to save incomeTypes to Realm: \(error.localizedDescription)")
-        }
-    }
-    
-    func deleteAllData() {
-        let objectTypes: [Object.Type] = [RealmSaleGoodModel.self,
-                                          RealmDailySalesModel.self,
-                                          RealmGoodsPriceModel.self,
-                                          RealmIncomeTypeModel.self,
-                                          RealmPurchaseModel.self]
-        
-        try! localRealm.write {
-            for objectType in objectTypes {
-                let objects = localRealm.objects(objectType)
-                localRealm.delete(objects)
-            }
-        }
+        return localRealm.objects(RealmIncomeTypeModel.self).filter("id == %@", incomeTypeModel.id).first
     }
 }
