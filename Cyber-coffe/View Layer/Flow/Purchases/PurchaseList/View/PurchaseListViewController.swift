@@ -92,7 +92,7 @@ extension PurchaseListViewController: UITableViewDelegate, UITableViewDataSource
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         var detailViewModel = viewModel.viewModelForSelectedRow()
-        detailViewModel?.newModel = false
+        //detailViewModel?.newModel = false
         
         let purchaseVC = PurchaseDetailsListViewController()
         purchaseVC.viewModel = detailViewModel

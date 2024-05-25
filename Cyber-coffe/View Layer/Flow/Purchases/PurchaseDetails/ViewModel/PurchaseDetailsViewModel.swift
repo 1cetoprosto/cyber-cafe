@@ -10,7 +10,7 @@ import Foundation
 class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
     
     private var purchase: PurchaseModel
-    var newModel: Bool
+    //var newModel: Bool
     
     var purchaseDate: Date { return purchase.date }
     var purchaseName: String { return purchase.name }
@@ -19,40 +19,30 @@ class PurchaseDetailsViewModel: PurchaseDetailsViewModelType {
     func savePurchaseModel(purchaseDate: Date, purchaseName: String?, purchaseSum: String?) {
 
         let purchaseName = purchaseName ?? ""
-        let purchaseSum = Double(purchaseSum ?? "0.0") ?? 0.0
+        let purchaseSum = purchaseSum?.doubleOrZero
         
-        if newModel {
+        //if newModel {
             purchase.date = purchaseDate
             purchase.name = purchaseName
-            purchase.sum = purchaseSum
+            purchase.sum = purchaseSum ?? 0.0
             
-//            if let id = FirestoreDatabaseService
-//                .shared
-//                .create(firModel: FIRPurchaseModel(purchaseModel: purchase), collection: "purchase") {
-//                purchase.id = id
-//            }
-            
-            RealmDatabaseService.shared.save(model: RealmPurchaseModel(dataModel: purchase))
-            purchase = PurchaseModel(id: "", date: Date(), name: "", sum: 0)
+        if purchase.id.isEmpty {
+            purchase.id = UUID().uuidString
+            DomainDatabaseService.shared.savePurchase(purchase: purchase) { success in
+                if success {
+                    print("Purchase saved successfully")
+                } else {
+                    print("Failed to save Purchase")
+                }
+            }
         } else {
-//            let purchaseSynchronized = FirestoreDatabaseService
-//                .shared
-//                .update(firModel: FIRPurchaseModel(purchaseId: purchase.id,
-//                                                   purchaseDate: purchaseDate,
-//                                                   purchaseGood: purchaseName,
-//                                                   purchaseSum: purchaseSum),
-//                        collection: "purchase", documentId: purchase.id)
-            
-            RealmDatabaseService.shared.updatePurchase(model: RealmPurchaseModel(dataModel: purchase),
-                                                       date: purchaseDate,
-                                                       name: purchaseName,
-                                                       sum: purchaseSum)
+            DomainDatabaseService.shared.updatePurchase(model: purchase, date: purchaseDate, name: purchaseName, sum: purchaseSum ?? 0.0)
         }
     }
     
     init(purchase: PurchaseModel) {
         self.purchase = purchase
-        self.newModel = true
+        //self.newModel = true
     }
     
 }

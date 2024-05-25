@@ -9,14 +9,16 @@ import Foundation
 
 struct SaleGoodModel {
     var id: String
+    var dailySalesId: String
     var date: Date
     var name: String
     var quantity: Int
     var price: Double
     var sum: Double
     
-    init(id: String, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
+    init(id: String, dailySalesId: String, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
         self.id = id
+        self.dailySalesId = dailySalesId
         self.date = date
         self.name = name
         self.quantity = quantity
@@ -26,6 +28,7 @@ struct SaleGoodModel {
     
     init(realmModel: RealmSaleGoodModel) {
         self.id = realmModel.id
+        self.dailySalesId = realmModel.dailySalesId
         self.date = realmModel.date
         self.name = realmModel.name
         self.quantity = realmModel.quantity
@@ -35,6 +38,7 @@ struct SaleGoodModel {
     
     init(firebaseModel: FIRSaleGoodModel) {
         self.id = firebaseModel.id ?? ""
+        self.dailySalesId = firebaseModel.dailySalesId ?? ""
         self.date = firebaseModel.date
         self.name = firebaseModel.name
         self.quantity = firebaseModel.quantity
