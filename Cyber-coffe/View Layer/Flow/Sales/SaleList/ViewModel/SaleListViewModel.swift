@@ -65,7 +65,7 @@ class SaleListViewModel: SaleListViewModelType {
     
     func deleteSaleModel(atIndexPath indexPath: IndexPath) {
         guard let model = getSale(atIndexPath: indexPath) else { return }
-        SaleGoodListViewModel.deleteSalesGood(date: model.date)
+        SaleGoodListViewModel.deleteSalesGood(withDailySaleId: model.id, date: model.date)
         
         DomainDatabaseService.shared.deleteDailySale(sale: model) { success in
             if success {

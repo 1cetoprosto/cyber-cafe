@@ -49,8 +49,8 @@ class RealmDatabaseService: RealmDB {
         }
     }
     
-    func fetchObjectById<T: Object>(modelType: T.Type, id: String) -> T? {
-        return localRealm.objects(modelType).filter("id == %@", id).first
+    func fetchObjectById<T: Object>(ofType: T.Type, id: String) -> T? {
+        return localRealm.objects(ofType).filter("id == %@", id).first
     }
 
     func deleteAllData() {
@@ -80,6 +80,10 @@ class RealmDatabaseService: RealmDB {
         }
     }
     
+    func fetchSaleGood() -> [RealmSaleGoodModel] {
+        return Array(localRealm.objects(RealmSaleGoodModel.self).sorted(byKeyPath: "date"))
+    }
+    
     func fetchSaleGood(forDate date: Date) -> [RealmSaleGoodModel] {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
@@ -89,7 +93,7 @@ class RealmDatabaseService: RealmDB {
         
         let predicateDate = NSPredicate(format: "date BETWEEN %@", [dateStart, dateEnd])
         
-        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "saleGood"))
+        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "name"))
     }
     
     func fetchSaleGood(forDate date: Date, withName name: String) -> RealmSaleGoodModel {
@@ -98,9 +102,15 @@ class RealmDatabaseService: RealmDB {
             let components = DateComponents(day: 1, second: -1)
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND saleGood == %@", [dateStart, dateEnd], name)
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND name == %@", [dateStart, dateEnd], name)
         
-        return localRealm.objects(RealmSaleGoodModel.self).filter(predicate)[0]
+        return localRealm.objects(RealmSaleGoodModel.self).filter(predicate).first ?? RealmSaleGoodModel()
+    }
+    
+    func fetchSaleGood(withIdDailySale id: String) -> [RealmSaleGoodModel] {
+        let predicate = NSPredicate(format: "dailySalesId == %@", id)
+        
+        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicate).sorted(byKeyPath: "name"))
     }
     
     // MARK: - Work With Daily Sales
@@ -148,9 +158,18 @@ class RealmDatabaseService: RealmDB {
     }
     
     func fetchDailySales(forDailySalesModel dailySalesModel: DailySalesModel) -> RealmDailySalesModel? {
-        return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: dailySalesModel.id)
+//        let predicate = NSPredicate(format: "id == %@", id)
+//        
+//        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicate).sorted(byKeyPath: "name"))
+//        return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: dailySalesModel.id)
+        return fetchObjectById(ofType: RealmDailySalesModel.self, id: dailySalesModel.id)
     }
 
+    func fetchDailySales(forId id: String) -> RealmDailySalesModel? {
+        //return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: id)
+        return fetchObjectById(ofType: RealmDailySalesModel.self, id: id)
+    }
+    
     func fetchSales(forDate date: Date, ofType type: String?) -> [RealmDailySalesModel] {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
@@ -158,7 +177,7 @@ class RealmDatabaseService: RealmDB {
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND typeOfDonation == %@", [dateStart, dateEnd], type ?? "Sunday service")
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND incomeType == %@", [dateStart, dateEnd], type ?? "Sunday service")
         return Array(localRealm.objects(RealmDailySalesModel.self).filter(predicate))
     }
 
@@ -177,7 +196,9 @@ class RealmDatabaseService: RealmDB {
     }
     
     func fetchGoodsPrice(forGoodPriceModel goodPriceModel: GoodsPriceModel) -> RealmGoodsPriceModel? {
-        return localRealm.objects(RealmGoodsPriceModel.self).filter("id == %@", goodPriceModel.id).first
+        //return localRealm.objects(RealmGoodsPriceModel.self).filter("id == %@", goodPriceModel.id).first
+        //guard let model = fetchObjectById(modelType: RealmGoodsPriceModel.self, id: goodPriceModel.id) else { return nil}
+        return fetchObjectById(ofType: RealmGoodsPriceModel.self, id: goodPriceModel.id)
     }
     
     // MARK: - Work With Purchase
@@ -195,7 +216,8 @@ class RealmDatabaseService: RealmDB {
     }
     
     func fetchPurchases(forPurchaseModel purchaseModel: PurchaseModel) -> RealmPurchaseModel? {
-        return localRealm.object(ofType: RealmPurchaseModel.self, forPrimaryKey: purchaseModel.id)
+        //return localRealm.objects(RealmPurchaseModel.self).filter("id == %@", purchaseModel.id).first
+        return fetchObjectById(ofType: RealmPurchaseModel.self, id: purchaseModel.id)
     }
     
     func fetchSectionsOfPurchases() -> [(date: Date, items: [RealmPurchaseModel])] {
@@ -238,8 +260,10 @@ class RealmDatabaseService: RealmDB {
     func fetchIncomeTypes() -> [RealmIncomeTypeModel] {
         return Array(localRealm.objects(RealmIncomeTypeModel.self).sorted(byKeyPath: "name"))
     }
-
+    
     func fetchIncomeTypes(forIncomeTypeModel incomeTypeModel: IncomeTypeModel) -> RealmIncomeTypeModel? {
-        return localRealm.objects(RealmIncomeTypeModel.self).filter("id == %@", incomeTypeModel.id).first
+        //return localRealm.objects(RealmIncomeTypeModel.self).filter("id == %@", incomeTypeModel.id).first
+        return fetchObjectById(ofType: RealmIncomeTypeModel.self, id: incomeTypeModel.id)
     }
+    
 }

@@ -8,6 +8,7 @@
 import Foundation
 
 protocol SaleDetailsViewModelType {
+    var id: String { get }
     var date: Date { get }
     var cashLabel: String { get }
     var cardLabel: String { get }
@@ -24,7 +25,9 @@ protocol SaleDetailsViewModelType {
     func titleForRow(row: Int, component: Int) -> String?
     func selectRow(atRow: Int)
     
-    func isExist(date: Date, type: String, completion: @escaping (Bool) -> Void)
-    func saveSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
-    func updateSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
+    func isExist(id: String, completion: @escaping (Bool) -> Void)
+    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
+    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
+    
+    func verifyRequiredData(completion: @escaping (Bool) -> Void)
 }

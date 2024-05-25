@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SaleGoodListViewModelType {
-    func getSaleGoods(date: Date, completion: @escaping() -> ())
+    func getSaleGoods(withIdDailySale id: String, completion: @escaping() -> ())
     
     func numberOfRowInSection(for section: Int) -> Int
     func cellViewModel(for indexPath: IndexPath) -> SaleGoodListItemViewModelType?
@@ -18,6 +18,6 @@ protocol SaleGoodListViewModelType {
     func getQuantity() -> Double
     func totalSum() -> String
     
-    func saveSalesGood(date: Date)
+    func saveSalesGood(withDailySaleId dailySaleId: String, date: Date)
     func updateSalesGood(date: Date)
 }

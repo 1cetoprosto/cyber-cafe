@@ -12,9 +12,9 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     private var sale: DailySalesModel
     private var types: [IncomeTypeModel]  = []
     private var selectedRow: Int?
-    var isNewModel: Bool
     
-    var date: Date { return sale.date}
+    var id: String { return sale.id }
+    var date: Date { return sale.date }
     var cashLabel: String { return "Cash:" }
     var cardLabel: String { return "Card:" }
     var cashTextfield: String { return "Money2:" }
@@ -24,21 +24,23 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
     var card: Double { return sale.card }
     var sum: Double { return sale.sum }
     var incomeType: String { return sale.incomeType }
+    var isNewModel: Bool
     
     init(model: DailySalesModel, isNewModel: Bool = false) {
         self.sale = model
         self.isNewModel = isNewModel
+        fetchIncomeTypes()
     }
     
-    func isExist(date: Date, type: String, completion: @escaping (Bool) -> Void) {
-        DomainDatabaseService.shared.fetchSales(forDate: date, ofType: type) { dailySales in
-            completion(dailySales.isEmpty)
+    func isExist(id: String, completion: @escaping (Bool) -> Void) {
+        DomainDatabaseService.shared.fetchSales(forId: id) { dailySale in
+            completion(dailySale != nil)
         }
     }
     
-    func saveSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
         let dailySale = DailySalesModel(
-                id: "",
+            id: id,
                 date: date,
                 incomeType: incomeType ?? "",
                 sum: sum?.double ?? 0.0,
@@ -55,17 +57,17 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
             }
     }
     
-    func updateSales(date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
         
-        DomainDatabaseService.shared.fetchSales(forDate: date, ofType: incomeType) { dailySales in
-            for dailySale in dailySales {
+        DomainDatabaseService.shared.fetchSales(forId: id) { dailySale in
+            guard let dailySale = dailySale else { return }
                 DomainDatabaseService.shared.updateSales(model: dailySale,
                                                          date: date,
                                                          incomeType: incomeType ?? "",
                                                          total: sum?.double ?? 0.0,
                                                          cashAmount: cash?.double ?? 0.0,
                                                          cardAmount: card?.double ?? 0.0)
-            }
+            //}
         }
         
         
@@ -101,4 +103,20 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         self.selectedRow = row
     }
     
+    func fetchIncomeTypes() {
+        DomainDatabaseService.shared.fetchIncomeTypes { [weak self] incomeTypes in
+            self?.types = incomeTypes
+        }
+    }
+    
+    // New method to check if required data exists
+    func verifyRequiredData(completion: @escaping (Bool) -> Void) {
+        DomainDatabaseService.shared.fetchIncomeTypes { [weak self] incomeTypes in
+            guard let self = self else { return }
+            self.types = incomeTypes
+            DomainDatabaseService.shared.fetchGoodsPrice { goodPrices in
+                completion(!incomeTypes.isEmpty && !goodPrices.isEmpty)
+            }
+        }
+    }
 }
