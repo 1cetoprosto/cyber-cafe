@@ -10,6 +10,7 @@ import FirebaseFirestoreSwift
 
 struct FIRSaleGoodModel: Codable {
     @DocumentID var id: String?
+    var dailySalesId: String?
     var date = Date()
     var name: String = ""
     var quantity: Int = 0
@@ -18,6 +19,7 @@ struct FIRSaleGoodModel: Codable {
     
     init(dataModel: SaleGoodModel) {
         self.id = dataModel.id
+        self.dailySalesId = dataModel.dailySalesId
         self.date = dataModel.date
         self.name = dataModel.name
         self.quantity = dataModel.quantity

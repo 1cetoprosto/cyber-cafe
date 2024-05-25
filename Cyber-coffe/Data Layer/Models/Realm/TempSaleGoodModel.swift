@@ -10,6 +10,7 @@ import RealmSwift
 
 class RealmSaleGoodModel: Object {
     @Persisted var id: String = ""
+    @Persisted var dailySalesId: String = ""
     @Persisted var date = Date()
     @Persisted var name: String = ""
     @Persisted var quantity: Int = 0
@@ -19,6 +20,7 @@ class RealmSaleGoodModel: Object {
     convenience init(dataModel: SaleGoodModel) {
         self.init()
         self.id = dataModel.id
+        self.dailySalesId = dataModel.dailySalesId
         self.date = dataModel.date
         self.name = dataModel.name
         self.quantity = dataModel.quantity

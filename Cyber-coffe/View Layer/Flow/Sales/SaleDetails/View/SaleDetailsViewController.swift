@@ -19,7 +19,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         picker.locale = .current
         picker.contentHorizontalAlignment = .center
         picker.preferredDatePickerStyle = .automatic
-        picker.addTarget(SaleDetailsViewController.self, action: #selector(datePickerChanged), for: .valueChanged)
+        picker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
         
         return picker
     }()
@@ -106,6 +106,15 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
+    private let toolbar: UIToolbar = {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePicker))
+        toolbar.setItems([doneButton], animated: false)
+        toolbar.isUserInteractionEnabled = true
+        return toolbar
+    }()
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
@@ -129,19 +138,23 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         
         let pickerView = UIPickerView()
         pickerView.delegate = self
+        pickerView.dataSource = self
         pickerView.center = view.center
-        //pickerView.isHidden = true
-
-        self.view.addSubview(pickerView)
         
         typeTextfield.inputView = pickerView
+        typeTextfield.inputAccessoryView = toolbar
         
         setData()
         setConstraints()
+        
+        verifyRequiredData {
+            
+        }
     }
     
     fileprivate func setData() {
         if viewModel == nil {
+            // Пошукати модель за сьогоднішній день, якщо немає створити пусту
             viewModel = SaleDetailsViewModel(model: DailySalesModel(id: "",
                                                                     date: Date(),
                                                                     incomeType: "",
@@ -149,9 +162,21 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
                                                                     cash: 0.0,
                                                                     card: 0.0),
                                              isNewModel: true)
+//            viewModel?.isExist(id: viewModel?.id) { [weak self] exists in
+//                guard let self = self else { return }
+//                
+//                if exists {
+//                    self.handleExistingData()
+//                } else {
+//                    //self.saveAndNavigate()
+//                }
+//            }
         }
         
-        guard let viewModel = viewModel else { return }
+        
+        guard let viewModel = viewModel else {
+            return
+        }
         
         if viewModel.cash != 0 {
             cashTextfield.text = viewModel.cash.description
@@ -167,27 +192,39 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         datePicker.date = viewModel.date
         typeTextfield.text = viewModel.incomeType
         
-            if tableViewModel == nil {
-                tableViewModel = SaleGoodListViewModel()
-                tableViewModel?.getSaleGoods(date: viewModel.date) {
-                    self.tableView.reloadData()
-                }
+        if tableViewModel == nil {
+            tableViewModel = SaleGoodListViewModel()
+            tableViewModel?.getSaleGoods(withIdDailySale: viewModel.id) {
+                self.tableView.reloadData()
             }
+        }
     }
 
+    private func verifyRequiredData(completion: @escaping () -> Void) {
+        viewModel?.verifyRequiredData { isDataAvailable in
+            if isDataAvailable {
+                completion()
+            } else {
+                let alert = UIAlertController(title: "Error", message: "Required data is missing in user settings.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
+        }
+    }
+    
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
         
-        viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Income type") { [weak self] exists in
-            guard let self = self else { return }
-            
-            if exists {
-                self.handleExistingData()
-            } else {
-                self.saveAndNavigate()
-            }
-        }
+//        viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Income type") { [weak self] exists in
+//            guard let self = self else { return }
+//            
+//            if exists {
+//                self.handleExistingData()
+//            } else {
+                saveAndNavigate()
+//            }
+//        }
     }
 
     private func handleExistingData() {
@@ -235,18 +272,25 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
         return false
     }
+
+    @objc private func donePicker() {
+        view.endEditing(true)
+    }
     
     func saveModels() {
         guard let viewModel = self.viewModel else { return }
         
+        let dailySaleId: String = UUID().uuidString
         if viewModel.isNewModel {
-            viewModel.saveSales(date: datePicker.date,
+            viewModel.saveSales(id: dailySaleId,
+                                date: datePicker.date,
                                 incomeType: typeTextfield.text,
                                 cash: cashTextfield.text,
                                 card: cardTextfield.text,
                                 sum: saleLabel.text)
         } else {
-            viewModel.updateSales(date: datePicker.date,
+            viewModel.updateSales(id: viewModel.id,
+                                  date: datePicker.date,
                                   incomeType: typeTextfield.text,
                                   cash: cashTextfield.text,
                                   card: cardTextfield.text,
@@ -256,7 +300,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         //if viewModel.typeOfDonation == "Sunday service" {
             guard let tableViewModel = self.tableViewModel else { return }
             if viewModel.isNewModel {
-                tableViewModel.saveSalesGood(date: datePicker.date)
+                tableViewModel.saveSalesGood(withDailySaleId: dailySaleId, date: datePicker.date)
             } else {
                 tableViewModel.updateSalesGood(date: datePicker.date)
             }
@@ -324,7 +368,7 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
 //        if typeOfDonation == "Sunday service" {
             if tableViewModel == nil {
                 tableViewModel = SaleGoodListViewModel()
-                tableViewModel?.getSaleGoods(date: viewModel.date) {
+                tableViewModel?.getSaleGoods(withIdDailySale: viewModel.id) {
                     self.tableView.reloadData()
                 }
             }
