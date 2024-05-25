@@ -12,7 +12,7 @@ protocol PurchaseDetailsViewModelType {
     var purchaseName: String { get }
     var purchaseSum: String { get }
     
-    var newModel: Bool { get set }
+    //var newModel: Bool { get set }
     
     func savePurchaseModel(purchaseDate: Date, purchaseName: String?, purchaseSum: String?)
     // TODO: Boxing

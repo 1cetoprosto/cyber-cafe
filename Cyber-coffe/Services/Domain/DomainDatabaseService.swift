@@ -64,6 +64,22 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
+    func fetchSaleGood(withDailySaleId id: String, completion: @escaping ([SaleGoodModel]) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+//            FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRSaleGoodModel.self) { firSalesGood in
+//                let salesGood = firSalesGood.map { SaleGoodModel(firebaseModel: $1) }
+//                let filteredSaleGood = salesGood.first { $0.date == date && $0.name == name }
+//                completion(filteredSaleGood)
+//            }
+        } else {
+            let salesGood = RealmDatabaseService.shared.fetchSaleGood(withIdDailySale: id)
+                .map { SaleGoodModel(realmModel: $0) }
+            completion(salesGood)
+        }
+    }
+    
     func saveSaleGood(sale: SaleGoodModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
@@ -90,7 +106,8 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "saleGood", documentId: sale.id)
             completion(success)
         } else {
-            RealmDatabaseService.shared.delete(model: RealmSaleGoodModel(dataModel: sale))
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmSaleGoodModel.self, id: sale.id) else { return }
+            RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
@@ -156,6 +173,20 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
+    func fetchSales(forId id: String, completion: @escaping (DailySalesModel?) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+//            FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
+//                let sales = firSales.map { DailySalesModel(firebaseModel: $1) }
+//                completion(sales.filter { $0.date == date && (type == nil || $0.incomeType == type) })
+//            }
+        } else {
+            guard let sale = RealmDatabaseService.shared.fetchDailySales(forId: id) else { return }
+            completion(DailySalesModel(realmModel: sale))
+        }
+    }
+    
     func saveDailySale(sale: DailySalesModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
@@ -182,7 +213,8 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "sales", documentId: sale.id)
             completion(success)
         } else {
-            RealmDatabaseService.shared.delete(model: RealmDailySalesModel(dataModel: sale))
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmDailySalesModel.self, id: sale.id) else { return }
+            RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
@@ -245,7 +277,7 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "goodsPrice", documentId: model.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmGoodsPriceModel.self, id: model.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmGoodsPriceModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
@@ -298,6 +330,25 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
+    func savePurchase(purchase: PurchaseModel, completion: @escaping (Bool) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.createPurchase(purchase: FIRPurchaseModel(dataModel: purchase)) { success in
+                if success {
+                    print("Purchase saved to Firestore successfully")
+                } else {
+                    print("Failed to save Purchase to Firestore")
+                }
+                completion(success)
+            }
+        } else {
+            RealmDatabaseService.shared.save(model: RealmPurchaseModel(dataModel: purchase))
+            print("Purchase saved to Realm successfully")
+            completion(true)
+        }
+    }
+    
     func deletePurchase(purchase: PurchaseModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
@@ -305,7 +356,8 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "purchases", documentId: purchase.id)
             completion(success)
         } else {
-            RealmDatabaseService.shared.delete(model: RealmPurchaseModel(dataModel: purchase))
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmPurchaseModel.self, id: purchase.id) else { return }
+            RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
@@ -323,7 +375,7 @@ class DomainDatabaseService: DomainDB {
                 print("Failed to update IncomeType in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmIncomeTypeModel.self, id: model.id) else { return }
+            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmIncomeTypeModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.updateIncomeType(model: updatedModel, type: type)
         }
     }
@@ -368,7 +420,7 @@ class DomainDatabaseService: DomainDB {
             let success = FirestoreDatabaseService.shared.delete(collection: "incomeTypes", documentId: model.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(modelType: RealmIncomeTypeModel.self, id: model.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmIncomeTypeModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }

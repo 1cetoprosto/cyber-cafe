@@ -12,18 +12,19 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     private var selectedIndexPath: IndexPath?
     private var saleGoods = [SaleGoodModel]() 
     
-    func getSaleGoods(date: Date, completion: @escaping () -> Void) {
+    func getSaleGoods(withIdDailySale id: String, completion: @escaping () -> Void) {
         
         saleGoods.removeAll()
         
-        DomainDatabaseService.shared.fetchSaleGood(forDate: date) { [weak self] saleGoodsArray in
+        DomainDatabaseService.shared.fetchSaleGood(withDailySaleId: id) { [weak self] saleGoods in
             guard let self = self else { return }
             
-            if saleGoodsArray.isEmpty {
+            if saleGoods.isEmpty {
                 DomainDatabaseService.shared.fetchGoodsPrice { goodsPrice in
                     for goodPrice in goodsPrice {
                         let saleGood = SaleGoodModel(id: "",
-                                                     date: date,
+                                                     dailySalesId: id,
+                                                     date: Date(),
                                                      name: goodPrice.name,
                                                      quantity: 0,
                                                      price: goodPrice.price,
@@ -32,7 +33,7 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
                     }
                 }
             } else {
-                self.saleGoods = saleGoodsArray
+                self.saleGoods = saleGoods
             }
             
             completion()
@@ -74,8 +75,10 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         return String(totalSum)
     }
     
-    func saveSalesGood(date: Date) {
-        for sale in saleGoods {
+    func saveSalesGood(withDailySaleId id: String, date: Date) {
+        for var sale in saleGoods {
+            sale.dailySalesId = id
+            sale.date = date
             DomainDatabaseService.shared.saveSaleGood(sale: sale) { success in
                 if success {
                     print("Sale saved successfully")
@@ -97,8 +100,8 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
         }
     }
     
-    static func deleteSalesGood(date: Date) {
-        DomainDatabaseService.shared.fetchSaleGood(forDate: date) { salesGoods in
+    static func deleteSalesGood(withDailySaleId id: String, date: Date) {
+        DomainDatabaseService.shared.fetchSaleGood(withDailySaleId: id) { salesGoods in
             for saleGood in salesGoods {
                 DomainDatabaseService.shared.deleteSaleGood(sale: saleGood) { success in
                     if success {
