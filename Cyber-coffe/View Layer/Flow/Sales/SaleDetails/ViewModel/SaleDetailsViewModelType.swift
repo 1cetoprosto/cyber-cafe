@@ -26,8 +26,8 @@ protocol SaleDetailsViewModelType {
     func selectRow(atRow: Int)
     
     func isExist(id: String, completion: @escaping (Bool) -> Void)
-    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
-    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?)
+    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void)
+    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void)
     
     func verifyRequiredData(completion: @escaping (Bool) -> Void)
 }

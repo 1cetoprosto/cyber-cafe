@@ -111,10 +111,8 @@ class IncomeTypeDetailsViewController: UIViewController {
         if incomeType.id.isEmpty {
             incomeType.id = UUID().uuidString
             DomainDatabaseService.shared.saveIncomeType(incomeType: incomeType) { success in
-                if success {
-                    print("IncomeType saved successfully")
-                } else {
-                    print("Failed to save IncomeType")
+                if !success {
+                    PopupFactory.showPopup(title: "Помилка", description: "Failed to save IncomeType") { }
                 }
             }
         } else {

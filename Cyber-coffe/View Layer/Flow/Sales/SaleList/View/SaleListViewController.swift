@@ -23,10 +23,8 @@ class SaleListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel = SaleListViewModel()
-        viewModel?.getSales { [weak self] in
-            self?.tableView.reloadData()
-        }
+        
+        fetchSalesData()
     }
     
     override func viewDidLoad() {
@@ -46,11 +44,18 @@ class SaleListViewController: UIViewController {
         
         setConstraints()
     }
-
+    
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
         let saleVC = SaleDetailsViewController()
         navigationController?.pushViewController(saleVC, animated: true)
+    }
+    
+    private func fetchSalesData() {
+        viewModel = SaleListViewModel()
+        viewModel?.getSales { [weak self] in
+            self?.tableView.reloadData()
+        }
     }
 }
 

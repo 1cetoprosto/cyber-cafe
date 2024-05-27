@@ -11,6 +11,7 @@ import FirebaseFirestoreSwift
 import FirebaseAuth
 
 class FirestoreDatabaseService: FirestoreDB {
+    
     @Published var errorMessage: String?
     
     private let db = Firestore.firestore()
@@ -45,29 +46,31 @@ class FirestoreDatabaseService: FirestoreDB {
         }
     }
     
-    func readDocument<T: Codable>(collection: String, documentId: String) -> T? {
+    func fetchObjectById<T: Codable>(ofType: T.Type, collection: String, id: String, completion: @escaping (T?) -> Void) {
         guard let userCollection = getUserCollection(collection: collection) else {
-            return nil
+            completion(nil)
+            return
         }
-        var result: T? = nil
-        
-        let docRef = userCollection.document(documentId)
-        
+
+        let docRef = userCollection.document(id)
         docRef.getDocument { document, error in
             if let error = error as NSError? {
                 self.errorMessage = "Error getting document: \(error.localizedDescription)"
+                completion(nil)
             } else {
                 if let document = document {
                     do {
-                        result = try document.data(as: T.self)
+                        let result = try document.data(as: T.self)
+                        completion(result)
                     } catch let error {
                         self.errorMessage = error.localizedDescription
+                        completion(nil)
                     }
+                } else {
+                    completion(nil)
                 }
             }
         }
-        
-        return result
     }
     
     func read<T: Codable>(collection: String, firModel: T.Type, completion: @escaping ([(documentId: String, T)]) -> Void) {
@@ -87,7 +90,7 @@ class FirestoreDatabaseService: FirestoreDB {
                         FIRModelArray.append((document.documentID, data))
                     } catch let error {
                         self.errorMessage = error.localizedDescription
-                        print(error.localizedDescription)
+                        print("Помилка читання колекції \(collection): \(error.localizedDescription)")
                     }
                 }
             }
@@ -171,22 +174,32 @@ class FirestoreDatabaseService: FirestoreDB {
     
     // MARK: - CRUD Operations for Sales
     
-    func createSale(sale: FIRSaleGoodModel, completion: @escaping (Bool) -> Void) {
+    func createSalesOfGoods(sale: FIRSaleGoodModel, completion: @escaping (Bool) -> Void) {
         let documentId = create(firModel: sale, collection: "sales")
         completion(documentId != nil)
     }
     
-    func readSales(completion: @escaping ([(documentId: String, FIRSaleGoodModel)]) -> Void) {
+    func readSalesOfGoods(completion: @escaping ([(documentId: String, FIRSaleGoodModel)]) -> Void) {
         read(collection: "sales", firModel: FIRSaleGoodModel.self) { result in
             completion(result)
         }
     }
     
+//    func readSalesOfGoods(withId id: String, completion: @escaping ([(documentId: String, FIRSaleGoodModel)]) -> Void) {
+//        readDocumentById(collection: "sales", documentId: id) { (product: FIRSaleGoodModel?) in
+//            if let product = product {
+//                print("Product: \(product)")
+//            } else {
+//                print("Failed to retrieve product.")
+//            }
+//        }
+//    }
+    
     // MARK: - CRUD Operations for Daily Sales
     
-    func createDailySale(dailySale: FIRDailySalesModel, completion: @escaping (Bool) -> Void) {
+    func createDailySale(dailySale: FIRDailySalesModel, completion: @escaping (String?) -> Void) {
         let documentId = create(firModel: dailySale, collection: "dailySales")
-        completion(documentId != nil)
+        completion(documentId)
     }
     
     func readDailySales(completion: @escaping ([(documentId: String, FIRDailySalesModel)]) -> Void) {

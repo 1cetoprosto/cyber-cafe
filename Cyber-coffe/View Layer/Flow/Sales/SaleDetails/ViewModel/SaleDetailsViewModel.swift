@@ -38,26 +38,28 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         }
     }
     
-    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+    func saveSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void) {
         let dailySale = DailySalesModel(
             id: id,
-                date: date,
-                incomeType: incomeType ?? "",
-                sum: sum?.double ?? 0.0,
-                cash: cash?.double ?? 0.0,
-                card: card?.double ?? 0.0
-            )
+            date: date,
+            incomeType: incomeType ?? "",
+            sum: sum?.double ?? 0.0,
+            cash: cash?.double ?? 0.0,
+            card: card?.double ?? 0.0
+        )
         
-        DomainDatabaseService.shared.saveDailySale(sale: dailySale) { success in
-                if success {
-                    print("Sale saved successfully")
-                } else {
-                    print("Failed to save sale")
-                }
+        DomainDatabaseService.shared.saveDailySale(sale: dailySale) { documentId in
+            guard let documentId = documentId else {
+                print("Failed to save sale")
+                return
             }
+            self.sale.id = documentId
+            completion()
+            print("Sale saved successfully")
+        }
     }
     
-    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?) {
+    func updateSales(id: String, date: Date, incomeType: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void) {
         
         DomainDatabaseService.shared.fetchSales(forId: id) { dailySale in
             guard let dailySale = dailySale else { return }
@@ -67,26 +69,8 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
                                                          total: sum?.double ?? 0.0,
                                                          cashAmount: cash?.double ?? 0.0,
                                                          cardAmount: card?.double ?? 0.0)
-            //}
+        completion()
         }
-        
-        
-        
-//        let salesSynchronized = FirestoreDatabaseService.shared.update(firModel: FIRDailySalesModel(salesId: sale.id,
-//                                                                salesDate: date,
-//                                                                salesTypeOfDonation: typeOfDonation,
-//                                                                salesSum: salesSum,
-//                                                                salesCash: salesCash,
-//                                                                salesCard: salesCard),
-//                                        collection: "sales",
-//                                        documentId: sale.id)
-//        
-//        RealmDatabaseService.shared.updateSales(model: sale,
-//                                                date: date,
-//                                                incomeType: typeOfDonation,
-//                                                total: salesSum,
-//                                                cashAmount: salesCash,
-//                                                cardAmount: salesCard)
     }
     
     func numberOfRowsInComponent(component: Int) -> Int {
@@ -109,7 +93,7 @@ class SaleDetailsViewModel: SaleDetailsViewModelType {
         }
     }
     
-    // New method to check if required data exists
+    // Check if required data exists
     func verifyRequiredData(completion: @escaping (Bool) -> Void) {
         DomainDatabaseService.shared.fetchIncomeTypes { [weak self] incomeTypes in
             guard let self = self else { return }

@@ -11,6 +11,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     
     var viewModel: SaleDetailsViewModelType?
     var tableViewModel: SaleGoodListViewModelType?
+    var onSave: (() -> Void)?
     private var dateChanged: Bool = false
     
     let datePicker: UIDatePicker = {
@@ -162,21 +163,9 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
                                                                     cash: 0.0,
                                                                     card: 0.0),
                                              isNewModel: true)
-//            viewModel?.isExist(id: viewModel?.id) { [weak self] exists in
-//                guard let self = self else { return }
-//                
-//                if exists {
-//                    self.handleExistingData()
-//                } else {
-//                    //self.saveAndNavigate()
-//                }
-//            }
         }
         
-        
-        guard let viewModel = viewModel else {
-            return
-        }
+        guard let viewModel = viewModel else { return }
         
         if viewModel.cash != 0 {
             cashTextfield.text = viewModel.cash.description
@@ -215,16 +204,7 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
         guard let viewModel = viewModel else { return }
-        
-//        viewModel.isExist(date: datePicker.date, type: typeTextfield.text ?? "Income type") { [weak self] exists in
-//            guard let self = self else { return }
-//            
-//            if exists {
-//                self.handleExistingData()
-//            } else {
-                saveAndNavigate()
-//            }
-//        }
+        saveAndNavigate()
     }
 
     private func handleExistingData() {
@@ -239,8 +219,10 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func saveAndNavigate() {
-        saveModels()
-        navigationController?.popToRootViewController(animated: true)
+        saveModels { [weak self] in
+            self?.onSave?()
+            self?.navigationController?.popToRootViewController(animated: true)
+        }
     }
 
 
@@ -277,34 +259,36 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    func saveModels() {
+    func saveModels(completion: @escaping () -> Void) {
         guard let viewModel = self.viewModel else { return }
         
-        let dailySaleId: String = UUID().uuidString
         if viewModel.isNewModel {
-            viewModel.saveSales(id: dailySaleId,
+            viewModel.saveSales(id: "",
                                 date: datePicker.date,
                                 incomeType: typeTextfield.text,
                                 cash: cashTextfield.text,
                                 card: cardTextfield.text,
-                                sum: saleLabel.text)
+                                sum: saleLabel.text) {
+                completion()
+            }
+            
         } else {
             viewModel.updateSales(id: viewModel.id,
                                   date: datePicker.date,
                                   incomeType: typeTextfield.text,
                                   cash: cashTextfield.text,
                                   card: cardTextfield.text,
-                                  sum: saleLabel.text)
+                                  sum: saleLabel.text) {
+                completion()
+            }
         }
         
-        //if viewModel.typeOfDonation == "Sunday service" {
-            guard let tableViewModel = self.tableViewModel else { return }
-            if viewModel.isNewModel {
-                tableViewModel.saveSalesGood(withDailySaleId: dailySaleId, date: datePicker.date)
-            } else {
-                tableViewModel.updateSalesGood(date: datePicker.date)
-            }
-        //}
+        guard let tableViewModel = self.tableViewModel else { return }
+        if viewModel.isNewModel {
+            tableViewModel.saveSalesGood(withDailySaleId: viewModel.id, date: datePicker.date)
+        } else {
+            tableViewModel.updateSalesGood(date: datePicker.date)
+        }
     }
 }
 
@@ -366,14 +350,14 @@ extension SaleDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegat
 //                self.tableView.reloadData()
 //        }
 //        if typeOfDonation == "Sunday service" {
-            if tableViewModel == nil {
-                tableViewModel = SaleGoodListViewModel()
-                tableViewModel?.getSaleGoods(withIdDailySale: viewModel.id) {
-                    self.tableView.reloadData()
-                }
-            }
+//            if tableViewModel == nil {
+//                tableViewModel = SaleGoodListViewModel()
+//                tableViewModel?.getSaleGoods(withIdDailySale: viewModel.id) {
+//                    self.tableView.reloadData()
+//                }
+//            }
 //        }
-        self.tableView.reloadData()
+//        self.tableView.reloadData()
     }
 }
 
