@@ -14,9 +14,8 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     func getPurchases(completion: @escaping () -> ()) {
         DomainDatabaseService.shared.fetchSectionsOfPurchases { sectionsPurchases in
             self.sectionsPurchases = sectionsPurchases
+            completion()
         }
-        
-        completion()
     }
     
     func numberOfSections() -> Int {

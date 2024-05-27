@@ -76,8 +76,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         view.addSubview(updateDataButton)
         setConstraints()
-        
-        RealmDatabaseService.shared.printRealmData(modelType: RealmIncomeTypeModel.self)
     }
     
 //    func configure() {

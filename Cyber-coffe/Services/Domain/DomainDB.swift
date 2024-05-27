@@ -21,7 +21,6 @@ protocol DomainDB {
     func updateSales(model: DailySalesModel, date: Date, incomeType: String, total: Double, cashAmount: Double, cardAmount: Double)
     func fetchSales(completion: @escaping ([DailySalesModel]) -> Void)
     func fetchSectionsOfSales(completion: @escaping ([(date: Date, items: [DailySalesModel])]) -> Void)
-    func fetchSales(forDate date: Date, ofType type: String?, completion: @escaping ([DailySalesModel]) -> Void)
     
     // Асинхронні методи для оновлення та отримання даних про товари
     func updateGoodsPrice(model: GoodsPriceModel, name: String, price: Double)

@@ -151,7 +151,11 @@ class GoodDetailsViewController: UIViewController {
         
         if goodPrice.id.isEmpty {
             goodPrice.id = UUID().uuidString
-            DomainDatabaseService.shared.saveGoodsPrice(goodPrice: goodPrice) { _ in }
+            DomainDatabaseService.shared.saveGoodsPrice(goodPrice: goodPrice) { success in
+                if !success {
+                    PopupFactory.showPopup(title: "Помилка", description: "Не вдалось записати goodPrice") { }
+                }
+            }
         } else {
             DomainDatabaseService.shared.updateGoodsPrice(model: goodPrice, name: name, price: price)
         }

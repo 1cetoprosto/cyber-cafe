@@ -11,9 +11,6 @@ import RealmSwift
 
 class IncomeTypesListViewController: UIViewController {
 
-//    let localRealm = try! Realm()
-//    var typesArray: Results<TypeOfDonationModel>!
-    
     var incomeTypes = [IncomeTypeModel]()
     
     let idTypesOfDonationCell = "idTypesOfDonationCell"
@@ -29,7 +26,7 @@ class IncomeTypesListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configure()
-        tableView.reloadData()
+        //tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -48,7 +45,6 @@ class IncomeTypesListViewController: UIViewController {
                                                             action: #selector(performAdd(param:)))
         
         setConstraints()
-        RealmDatabaseService.shared.printRealmData(modelType: RealmIncomeTypeModel.self)
     }
 
     func configure() {

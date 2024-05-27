@@ -10,13 +10,13 @@ import Foundation
 class SaleGoodListViewModel: SaleGoodListViewModelType {
     
     private var selectedIndexPath: IndexPath?
-    private var saleGoods = [SaleGoodModel]() 
+    private var saleGoods = [SaleGoodModel]()
     
     func getSaleGoods(withIdDailySale id: String, completion: @escaping () -> Void) {
         
         saleGoods.removeAll()
         
-        DomainDatabaseService.shared.fetchSaleGood(withDailySaleId: id) { [weak self] saleGoods in
+        DomainDatabaseService.shared.fetchSaleGood(withDailySalesId: id) { [weak self] saleGoods in
             guard let self = self else { return }
             
             if saleGoods.isEmpty {
@@ -31,12 +31,12 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
                                                      sum: 0)
                         self.saleGoods.append(saleGood)
                     }
+                    completion()
                 }
             } else {
                 self.saleGoods = saleGoods
+                completion()
             }
-            
-            completion()
         }
     }
     
@@ -92,16 +92,16 @@ class SaleGoodListViewModel: SaleGoodListViewModelType {
     func updateSalesGood(date: Date) {
         for saleGood in saleGoods {
             DomainDatabaseService.shared.updateSaleGood(model: saleGood,
-                              date: date,
-                              name: saleGood.name,
-                              quantity: saleGood.quantity,
-                              price: saleGood.price,
-                              sum: saleGood.sum)
+                                                        date: date,
+                                                        name: saleGood.name,
+                                                        quantity: saleGood.quantity,
+                                                        price: saleGood.price,
+                                                        sum: saleGood.sum)
         }
     }
     
     static func deleteSalesGood(withDailySaleId id: String, date: Date) {
-        DomainDatabaseService.shared.fetchSaleGood(withDailySaleId: id) { salesGoods in
+        DomainDatabaseService.shared.fetchSaleGood(withDailySalesId: id) { salesGoods in
             for saleGood in salesGoods {
                 DomainDatabaseService.shared.deleteSaleGood(sale: saleGood) { success in
                     if success {

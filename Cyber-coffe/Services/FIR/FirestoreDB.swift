@@ -9,7 +9,6 @@ import Foundation
 
 protocol FirestoreDB {
     func create<T: Encodable>(firModel: T, collection: String) -> String?
-    func readDocument<T: Codable>(collection: String, documentId: String) -> T?
     func read<T: Codable>(collection: String, firModel: T.Type, completion: @escaping ([(documentId: String, T)]) -> Void)
     func update<T: Encodable>(firModel: T, collection: String, documentId: String) -> Bool
     func delete(collection: String, documentId: String) -> Bool
