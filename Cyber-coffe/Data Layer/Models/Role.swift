@@ -35,14 +35,16 @@ class RoleConfig: CustomStringConvertible {
     var dataRef: String
     var userRef: String
     var role: Role
+    let hasOnlineVersion: Bool
     
-    init(ref: String, email: String, dataRef: String, userRef: String, role: Role) {
+    init(ref: String, email: String, dataRef: String, userRef: String, role: Role, onlineVersion: Bool) {
         self.timestamp = Date()
         self.email = email
         self.dataRef = dataRef
         self.userRef = userRef
         self.role = role
         self.firebaseRef = ref
+        self.hasOnlineVersion = onlineVersion
     }
     
     init?(_ data: [String: Any]) {
@@ -53,7 +55,8 @@ class RoleConfig: CustomStringConvertible {
             let userRef = data["userRef"] as? String,
             let roleValue = data["role"] as? Int,
             let role = Role(rawValue: roleValue),
-            let firebaseRef = data["firebaseRef"] as? String
+            let firebaseRef = data["firebaseRef"] as? String,
+            let hasOnlineVersion = data["hasOnlineVersion"] as? Bool
             else { return nil }
         self.timestamp = time.date
         self.email = email
@@ -61,6 +64,7 @@ class RoleConfig: CustomStringConvertible {
         self.userRef = userRef
         self.role = role
         self.firebaseRef = firebaseRef
+        self.hasOnlineVersion = hasOnlineVersion
     }
     
     func forDatabase() -> [String: Any] {

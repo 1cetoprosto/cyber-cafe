@@ -120,7 +120,7 @@ class AuthModel {
     private func createUserOrLogin(_ id: String, _ email: String, _ rememberUser: Bool = true, _ setPassword: Bool = false) {
         self.send(.loading(false))
         //self.login(id, email, roles.first!, rememberUser)
-        let roleConfig = RoleConfig(ref: "", email: email, dataRef: "", userRef: "", role: .administrator)
+        let roleConfig = RoleConfig(ref: "", email: email, dataRef: "", userRef: "", role: .administrator, onlineVersion: false)
         self.login(id, email, roleConfig, rememberUser)
         self.send(.success(setPassword))
         //        DatabaseService.getRoles(email) {[weak self] (roles) in // TODO: розкоментувати
@@ -235,7 +235,7 @@ class AuthModel {
         }
         
         guard let roleKey = reference.child(Refs.roles.rawValue).childByAutoId().key else { return }
-        let role = RoleConfig(ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator)
+        let role = RoleConfig(ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator, onlineVersion: false)
         
         let updateNodes = [
             "\(Refs.users.rawValue)/\(userKey)": userData,

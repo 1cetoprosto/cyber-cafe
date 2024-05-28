@@ -34,10 +34,10 @@ class SettingsManager {
     }
 
     func saveOnline(_ isOn: Bool) {
-        UserDefaults.standard.set(isOn, forKey: onlineKey)
+        UserSession.current.saveOnline(isOn)
     }
 
     func loadOnline() -> Bool {
-        return UserDefaults.standard.bool(forKey: onlineKey)
+        return UserSession.current.hasOnlineVersion
     }
 }
