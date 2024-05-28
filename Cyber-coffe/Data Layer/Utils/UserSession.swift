@@ -45,6 +45,8 @@ class UserSession {
     
     public private(set) var masterUserRef: String!
     
+    public private(set) var hasOnlineVersion: Bool = false
+    
     var techRef: String {
         switch role! {
             case .administrator:
@@ -63,6 +65,7 @@ class UserSession {
         UserSession.current.dataRef = roleConfig.dataRef
         UserSession.current.rememberUser = rememberUser
         UserSession.current.masterUserRef = roleConfig.dataRef
+        UserSession.current.hasOnlineVersion = roleConfig.hasOnlineVersion
         UserSession.current.save()
         
         //IAPManager.shared.completeTransactions() //TODO: розкоментувати тут щось повязане із покупками
@@ -77,6 +80,9 @@ class UserSession {
             
             useBioAuthUser = try chain.getString("KeychainSessionUserUseBioUser")
             useBioAuth = try chain.getString("KeychainSessionUserUseBio") == "true"
+
+            hasOnlineVersion = try chain.getString("KeychainSessionUserHasOnlineVersion") == "true"
+            
             return userId != nil && userEmail != nil
         } catch {
             remove()
@@ -97,6 +103,7 @@ class UserSession {
             if let value = useBioAuth {
                 try chain.set(value ? "true" : "false", key: "KeychainSessionUserUseBio")
             }
+            try chain.set(hasOnlineVersion ? "true" : "false", key: "KeychainSessionUserHasOnlineVersion")
         }
         catch {
             remove()
@@ -112,6 +119,7 @@ class UserSession {
             try chain.remove("KeychainSessionUserRemember")
             try chain.remove("KeychainSessionUserUseBioUser")
             try chain.remove("KeychainSessionUserUseBio")
+            try chain.remove("KeychainSessionUserHasOnlineVersion")
         } catch { print(error)}
         
         userId = nil
@@ -121,6 +129,7 @@ class UserSession {
         dataRef = nil
         rememberUser = false
         masterUserRef = nil
+        hasOnlineVersion = false
         
         //NotificationManager.removeAllScheduledComments() //TODO: розібратися навіщо це потрібно
     }
@@ -128,6 +137,11 @@ class UserSession {
     func enableBioAuth(_ enable: Bool) {
         useBioAuthUser = userEmail
         useBioAuth = enable
+        UserSession.current.save()
+    }
+
+    public func saveOnline(_ isOn: Bool) {
+        hasOnlineVersion = isOn
         UserSession.current.save()
     }
     
