@@ -64,7 +64,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        configure()
+        
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.menuSettings()
         
@@ -78,95 +78,51 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         setConstraints()
     }
     
-//    func configure() {
-//        models.append(Section(title: "General", option: [
-//            .dataCell(model: SettingsDataOption(title: "Language",
-//                                                icon: UIImage(systemName: "globe"),
-//                                                iconBackgroundColor: .systemPink,
-//                                                data: "English") { dataLabel in
-//                                                    self.alertLanguage(label: dataLabel) { language in
-//                                                        print(language)
-//                                                    }
-//                                                }),
-//            .dataCell(model: SettingsDataOption(title: "Theme",
-//                                                icon: UIImage(systemName: "sun.max"),
-//                                                iconBackgroundColor: .systemBlue,
-//                                                data: Theme.currentThemeStyle.themeName) {  dataLabel in
-//                                                    self.alertTheme(label: dataLabel) { style in
-//                                                        print("Befor - \(Theme.currentThemeStyle)")
-//                                                        Theme.currentThemeStyle = style
-//                                                        print("After - \(Theme.currentThemeStyle)")
-//                                                        self.updateInterfaceForNewTheme()
-//                                                    }
-//                                                }),
-//            .staticCell(model: SettingsStaticOption(title: "Exit",
-//                                                    icon: UIImage(named: "exit"),
-//                                                    iconBackgroundColor: .systemGreen) {
-//                                                        UserSession.logOut()
-//                                                    })
-//        ]))
-//        
-//        models.append(Section(title: "Sales", option: [
-//            .staticCell(model: SettingsStaticOption(title: "Goods",
-//                                                    icon: UIImage(systemName: "cup.and.saucer.fill"),
-//                                                    iconBackgroundColor: .systemBrown) {
-//                                                        self.navigationController?.pushViewController(GoodListViewController(), animated: true)
-//                                                    })
-//        ]))
-//        
-//        models.append(Section(title: "Donation", option: [
-//            .staticCell(model: SettingsStaticOption(title: "Types",
-//                                                    icon: UIImage(systemName: "banknote.fill"),
-//                                                    iconBackgroundColor: .systemGreen) {
-//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
-//                                                    })
-//        ]))
-//        
-//        models.append(Section(title: "Database", option: [
-//            .staticCell(model: SettingsStaticOption(title: "Online",
-//                                                    icon: UIImage(systemName: "icloud.fill"),
-//                                                    iconBackgroundColor: .systemGreen) {
-//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
-//                                                    }),
-//            .switchCell(model: SettingsSwitchOption(title: "Online",
-//                                                    icon: UIImage(systemName: "icloud.fill"),
-//                                                    iconBackgroundColor: .systemGreen,
-//                                                    isOn: false, handler: {
-//                                                        print(<#T##items: Any...##Any#>)
-//                                                    }))
-//        ]))
-//        
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        configure()
+        tableView.reloadData()
+    }
     
     func configure() {
-        models.append(Section(title: "General", option: [
-            .dataCell(model: SettingsDataOption(title: "Language",
-                                                icon: UIImage(systemName: "globe"),
-                                                iconBackgroundColor: .systemPink,
-                                                data: SettingsManager.shared.loadLanguage()) { dataLabel in
-                                                    self.alertLanguage(label: dataLabel) { language in
-                                                        SettingsManager.shared.saveLanguage(language)
-                                                        dataLabel.text = language
-                                                    }
-                                                }),
-            .dataCell(model: SettingsDataOption(title: "Theme",
-                                                icon: UIImage(systemName: "sun.max"),
-                                                iconBackgroundColor: .systemBlue,
-                                                data: SettingsManager.shared.loadTheme()) { dataLabel in
-                                                    self.alertTheme(label: dataLabel) { style in
-                                                        Theme.currentThemeStyle = style
-                                                        SettingsManager.shared.saveTheme(style.themeName)
-                                                        dataLabel.text = style.themeName
-                                                        self.updateInterfaceForNewTheme()
-                                                    }
-                                                }),
-            .staticCell(model: SettingsStaticOption(title: "Exit",
-                                                    icon: UIImage(named: "exit"),
-                                                    iconBackgroundColor: .systemGreen) {
-                                                        UserSession.logOut()
-                                                    })
-        ]))
-
+        
+        models.removeAll()
+        
+        var options = [SettingsOptionType]()
+        
+        options.append(.dataCell(model: SettingsDataOption(title: "Language",
+                                                           icon: UIImage(systemName: "globe"),
+                                                           iconBackgroundColor: .systemPink,
+                                                           data: SettingsManager.shared.loadLanguage()) { dataLabel in
+            self.alertLanguage(label: dataLabel) { language in
+                SettingsManager.shared.saveLanguage(language)
+                dataLabel.text = language
+            }
+        }))
+        
+        options.append(.dataCell(model: SettingsDataOption(title: "Theme",
+                                                           icon: UIImage(systemName: "sun.max"),
+                                                           iconBackgroundColor: .systemBlue,
+                                                           data: SettingsManager.shared.loadTheme()) { dataLabel in
+            self.alertTheme(label: dataLabel) { style in
+                Theme.currentThemeStyle = style
+                SettingsManager.shared.saveTheme(style.themeName)
+                dataLabel.text = style.themeName
+                self.updateInterfaceForNewTheme()
+            }
+        }))
+        
+        if UserSession.current.hasOnlineVersion {
+            options.append(.staticCell(model: SettingsStaticOption(title: "Exit",
+                                                                   icon: UIImage(named: "exit"),
+                                                                   iconBackgroundColor: .systemGreen) {
+                UserSession.logOut()
+            }))
+        }
+        
+        models.append(Section(title: "General", option: options))
+        
         models.append(Section(title: "Sales", option: [
             .staticCell(model: SettingsStaticOption(title: "Goods",
                                                     icon: UIImage(systemName: "cup.and.saucer.fill"),
@@ -174,7 +130,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                         self.navigationController?.pushViewController(GoodListViewController(), animated: true)
                                                     })
         ]))
-
+        
         models.append(Section(title: "Donation", option: [
             .staticCell(model: SettingsStaticOption(title: "Types",
                                                     icon: UIImage(systemName: "banknote.fill"),
@@ -182,13 +138,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                         self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
                                                     })
         ]))
-
+        
         models.append(Section(title: "Database", option: [
-//            .staticCell(model: SettingsStaticOption(title: "Online",
-//                                                    icon: UIImage(systemName: "icloud.fill"),
-//                                                    iconBackgroundColor: .systemGreen) {
-//                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
-//                                                    }),
             .switchCell(model: SettingsSwitchOption(title: "Online",
                                                     icon: UIImage(systemName: "icloud.fill"),
                                                     iconBackgroundColor: .systemGreen,
@@ -198,7 +149,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                     })
         ]))
     }
-
+    
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
@@ -269,8 +220,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         // Show an alert to inform the user to restart the app for the changes to take effect
         let alert = UIAlertController(title: R.string.global.restartRequired(), message: R.string.global.restartRequiredMsg(), preferredStyle: .alert)
         let okAction = UIAlertAction(title: R.string.global.actionOk(), style: .default)
-            alert.addAction(okAction)
-            self.present(alert, animated: true, completion: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
         
     }
     
@@ -278,38 +229,38 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         //TODO: видати питання, чи ви впевнені що хочете це зробити
         
-//        // erase Realm
-//        RealmDatabaseService.shared.deleteAllData()
-//        
-//        FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
-//            for (documentId, firSalesModel) in firSales {
-//                RealmDatabaseService.shared.save(model: RealmDailySalesModel(documentId: documentId, firModel: firSalesModel))
-//            }
-//        }
-//        
-//        FirestoreDatabaseService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
-//            for (documentId, firSaleGoodModel) in firSaleGoods {
-//                RealmDatabaseService.shared.save(model: RealmSaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
-//            }
-//        }
-//        
-//        FirestoreDatabaseService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
-//            for (documentId, firPurchaseModel) in firPurchases {
-//                RealmDatabaseService.shared.save(model: RealmPurchaseModel(documentId: documentId, firModel: firPurchaseModel))
-//            }
-//        }
-//        
-//        FirestoreDatabaseService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
-//            for (documentId, firGoodsPriceModel) in firGoodsPrice {
-//                RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
-//            }
-//        }
-//        
-//        FirestoreDatabaseService.shared.read(collection: "typesOfDonation", firModel: FIRIncomeTypeModel.self) { firTypeOfDonations in
-//            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
-//                RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(documentId: documentId, firModel: firTypeOfDonationModel))
-//            }
-//        }
+        //        // erase Realm
+        //        RealmDatabaseService.shared.deleteAllData()
+        //
+        //        FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
+        //            for (documentId, firSalesModel) in firSales {
+        //                RealmDatabaseService.shared.save(model: RealmDailySalesModel(documentId: documentId, firModel: firSalesModel))
+        //            }
+        //        }
+        //
+        //        FirestoreDatabaseService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
+        //            for (documentId, firSaleGoodModel) in firSaleGoods {
+        //                RealmDatabaseService.shared.save(model: RealmSaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
+        //            }
+        //        }
+        //
+        //        FirestoreDatabaseService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
+        //            for (documentId, firPurchaseModel) in firPurchases {
+        //                RealmDatabaseService.shared.save(model: RealmPurchaseModel(documentId: documentId, firModel: firPurchaseModel))
+        //            }
+        //        }
+        //
+        //        FirestoreDatabaseService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
+        //            for (documentId, firGoodsPriceModel) in firGoodsPrice {
+        //                RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
+        //            }
+        //        }
+        //
+        //        FirestoreDatabaseService.shared.read(collection: "typesOfDonation", firModel: FIRIncomeTypeModel.self) { firTypeOfDonations in
+        //            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
+        //                RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(documentId: documentId, firModel: firTypeOfDonationModel))
+        //            }
+        //        }
     }
 }
 

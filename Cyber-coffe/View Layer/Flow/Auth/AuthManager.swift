@@ -120,7 +120,7 @@ class AuthModel {
     private func createUserOrLogin(_ id: String, _ email: String, _ rememberUser: Bool = true, _ setPassword: Bool = false) {
         self.send(.loading(false))
         //self.login(id, email, roles.first!, rememberUser)
-        let roleConfig = RoleConfig(ref: "", email: email, dataRef: "", userRef: "", role: .administrator, onlineVersion: false)
+        let roleConfig = RoleConfig(ref: "", email: email, dataRef: "", userRef: "", role: .administrator, onlineVersion: true)
         self.login(id, email, roleConfig, rememberUser)
         self.send(.success(setPassword))
         //        DatabaseService.getRoles(email) {[weak self] (roles) in // TODO: розкоментувати
