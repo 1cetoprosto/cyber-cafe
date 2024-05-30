@@ -331,6 +331,71 @@ class PopupFactory {
         SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
     }
     
+    static func showPopup(title: String, description: String, buttonTitle: String, buttonAction: @escaping () -> Void, cancelAction: (() -> Void)? = nil) {
+        let kHighlightColor = EKColor(rgb: 0x424242)
+        
+        let title = EKProperty.LabelContent(
+            text: title,
+            style: .init(
+                font: .systemFont(ofSize: 17, weight: .medium),
+                color: .black,
+                alignment: .center
+            )
+        )
+        
+        let text = description
+        let description = EKProperty.LabelContent(
+            text: text,
+            style: .init(
+                font: .systemFont(ofSize: 14),
+                color: .black,
+                alignment: .center
+            )
+        )
+        
+        let simpleMessage = EKSimpleMessage(title: title, description: description)
+        
+        let buttonFont = UIFont.systemFont(ofSize: 16, weight: .medium)
+        
+        let optionButtonLabelStyle = EKProperty.LabelStyle(
+            font: buttonFont,
+            color: EKColor(.systemBlue)
+        )
+        let closeButtonLabelStyle = EKProperty.LabelStyle(
+            font: buttonFont,
+            color: EKColor(.systemRed)
+        )
+        
+        let actionButton = EKProperty.ButtonContent(
+            label: EKProperty.LabelContent(text: buttonTitle, style: optionButtonLabelStyle),
+            backgroundColor: .clear,
+            highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)) {
+            buttonAction()
+            SwiftEntryKit.dismiss()
+        }
+        
+        let cancelButton = EKProperty.ButtonContent(
+            label: EKProperty.LabelContent(text: R.string.global.cancel(), style: closeButtonLabelStyle),
+            backgroundColor: .clear,
+            highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)) {
+            cancelAction?()
+            SwiftEntryKit.dismiss()
+        }
+        
+        let buttonsBarContent = EKProperty.ButtonBarContent(
+            with: [cancelButton, actionButton],
+            separatorColor: EKColor(red: 230, green: 230, blue: 230),
+            horizontalDistributionThreshold: 2,
+            expandAnimatedly: false
+        )
+        let alertMessage = EKAlertMessage(
+            simpleMessage: simpleMessage,
+            buttonBarContent: buttonsBarContent
+        )
+        let contentView = EKAlertMessageView(with: alertMessage)
+        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
+    }
+
 //    static func showChoosePatientAlert(_ patients: [OrderPatient], save: @escaping (OrderPatient?) -> Void) {
 //        let kHighlightColor = EKColor(rgb: 0x424242)
 //        
