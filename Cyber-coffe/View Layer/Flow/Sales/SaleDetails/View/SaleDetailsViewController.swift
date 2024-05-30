@@ -225,7 +225,6 @@ class SaleDetailsViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-
     @objc func cancelAction(param: UIButton) {
         navigationController?.popToRootViewController(animated: true)
     }

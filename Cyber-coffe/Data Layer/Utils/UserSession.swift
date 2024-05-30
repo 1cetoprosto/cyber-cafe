@@ -149,11 +149,18 @@ class UserSession {
         do {
             try Auth.auth().signOut()
             deleteSession()
+//            UserSession.current.remove()
+//            print("Deleted Session (Logout) hasOnlineVersion - \(UserSession.current.hasOnlineVersion)")
+//            if UserSession.current.hasOnlineVersion {
+//                let isValidSession = UserSession.current.restore()
+//                if isValidSession {
+//                    UserSession.current.remove()
+//                }
+            }
+            catch {
+                print(error)
+            }
         }
-        catch {
-            print(error)
-        }
-    }
     
     static func deleteSession() {
         //RequestManager.shared.resetData() // TODO: розкоментувати

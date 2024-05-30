@@ -15,6 +15,8 @@ import SVProgressHUD
 
 class SignInController: UIViewController {
     
+    var completionHandler: ((Bool) -> Void)?
+    
     private lazy var logoView: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFit
@@ -221,6 +223,7 @@ class SignInController: UIViewController {
                 //AppDelegate.shared.set(root: controller)
                 SceneDelegate.shared.set(root: controller)
             }
+            completionHandler?(true)
         case .confirmEmail(let completion):
             showConfirmEmail(completion)
         }

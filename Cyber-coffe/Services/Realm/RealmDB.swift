@@ -33,5 +33,5 @@ protocol RealmDB {
     func updateIncomeType(model: RealmIncomeTypeModel, type: String)
     func fetchIncomeTypes() -> [RealmIncomeTypeModel]
     
-    func deleteAllData()
+    func deleteAllData(completion: @escaping () -> Void)
 }
