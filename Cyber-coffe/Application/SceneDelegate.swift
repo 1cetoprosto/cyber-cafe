@@ -70,9 +70,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
         
+        let isValidSession = UserSession.current.restore()
         if UserSession.current.hasOnlineVersion {
             // Перевірка наявності дійсної сесії користувача та відповідний перехід на потрібний екран
-            let isValidSession = UserSession.current.restore()
             if !isValidSession || Auth.auth().currentUser == nil {
                 // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
                 let signInController = SignInController()
