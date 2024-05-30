@@ -314,8 +314,8 @@
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				F3E357EC2BEFD745005050CB /* Realm */,
 				F3E357E72BEFA203005050CB /* Domain */,
+				F3E357EC2BEFD745005050CB /* Realm */,
 				F39B5D2D28472E7A000F7D43 /* FIR */,
 				F3E16E912BF89FC20008BD6A /* SettingsManager.swift */,
 			);

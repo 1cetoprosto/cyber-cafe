@@ -9,6 +9,7 @@ import Foundation
 import RealmSwift
 
 class RealmDatabaseService: RealmDB {
+    
     static let shared = RealmDatabaseService()
     
     // MARK: - Lifecycle
@@ -53,7 +54,7 @@ class RealmDatabaseService: RealmDB {
         return localRealm.objects(ofType).filter("id == %@", id).first
     }
 
-    func deleteAllData() {
+    func deleteAllData(completion: @escaping () -> Void) {
         let objectTypes: [Object.Type] = [RealmSaleGoodModel.self,
                                           RealmDailySalesModel.self,
                                           RealmGoodsPriceModel.self,
@@ -66,6 +67,8 @@ class RealmDatabaseService: RealmDB {
                 localRealm.delete(objects)
             }
         }
+        print("Deleted all Realm documents")
+        completion()
     }
     
     // MARK: - Work With Sales Good

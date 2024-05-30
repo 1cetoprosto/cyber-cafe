@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import RealmSwift
+import SVProgressHUD
+import FirebaseAuth
 
 struct Section {
     let title: String
@@ -52,14 +55,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         return table
     }()
     
-    private lazy var updateDataButton: UIButton = {
-        let button = DefaultButton()
-        button.setTitle("Erase & download data from server", for: .normal)
-        button.addTarget(self, action: #selector(updateDataAction), for: .touchUpInside)
-        
-        return button
-    }()
-    
     var models = [Section]()
     
     override func viewDidLoad() {
@@ -74,7 +69,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.frame = view.bounds
         tableView.backgroundColor = UIColor.Main.background
         
-        view.addSubview(updateDataButton)
         setConstraints()
     }
     
@@ -146,6 +140,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                     isOn: SettingsManager.shared.loadOnline()) { isOn in
                                                         SettingsManager.shared.saveOnline(isOn)
                                                         print("Online mode is \(isOn ? "On" : "Off")")
+                                                        self.toggleOfflineOnlineMode()
+                                                        self.tableView.reloadData()
                                                     })
         ]))
     }
@@ -225,42 +221,64 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
     }
     
-    @objc func updateDataAction(sender: UIButton!) {
-        
-        //TODO: видати питання, чи ви впевнені що хочете це зробити
-        
-        //        // erase Realm
-        //        RealmDatabaseService.shared.deleteAllData()
-        //
-        //        FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRDailySalesModel.self) { firSales in
-        //            for (documentId, firSalesModel) in firSales {
-        //                RealmDatabaseService.shared.save(model: RealmDailySalesModel(documentId: documentId, firModel: firSalesModel))
-        //            }
-        //        }
-        //
-        //        FirestoreDatabaseService.shared.read(collection: "saleGood", firModel: FIRSaleGoodModel.self) { firSaleGoods in
-        //            for (documentId, firSaleGoodModel) in firSaleGoods {
-        //                RealmDatabaseService.shared.save(model: RealmSaleGoodModel(documentId: documentId, firModel: firSaleGoodModel))
-        //            }
-        //        }
-        //
-        //        FirestoreDatabaseService.shared.read(collection: "purchase", firModel: FIRPurchaseModel.self) { firPurchases in
-        //            for (documentId, firPurchaseModel) in firPurchases {
-        //                RealmDatabaseService.shared.save(model: RealmPurchaseModel(documentId: documentId, firModel: firPurchaseModel))
-        //            }
-        //        }
-        //
-        //        FirestoreDatabaseService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrice in
-        //            for (documentId, firGoodsPriceModel) in firGoodsPrice {
-        //                RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(documentId: documentId, firModel: firGoodsPriceModel))
-        //            }
-        //        }
-        //
-        //        FirestoreDatabaseService.shared.read(collection: "typesOfDonation", firModel: FIRIncomeTypeModel.self) { firTypeOfDonations in
-        //            for (documentId, firTypeOfDonationModel) in firTypeOfDonations {
-        //                RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(documentId: documentId, firModel: firTypeOfDonationModel))
-        //            }
-        //        }
+    func toggleOfflineOnlineMode() {
+        PopupFactory.showPopup(
+            title: "Перенесення даних",
+            description: "Перенести накопиченні данні, чи розпочати все спочатку?",
+            buttonTitle: R.string.global.confirm(),
+            buttonAction: { [weak self] in
+                SVProgressHUD.show(withStatus: "Триває перенесення даних...")
+                
+                self?.authenticateUser { [weak self] success in
+                    guard success else {
+                        SVProgressHUD.dismiss()
+                        return
+                    }
+                    
+                    if UserSession.current.hasOnlineVersion {
+                        DomainDatabaseService.shared.transferDataFromRealmToFIR {
+                            SVProgressHUD.dismiss()
+                        }
+                    } else {
+                        DomainDatabaseService.shared.transferDataFromFIRToRealm {
+                            //UserSession.logOut()
+                            SVProgressHUD.dismiss()
+                        }
+                    }
+                }
+            },
+            cancelAction: { [weak self] in
+                self?.authenticateUser { success in
+                    if success {
+                        print("Якщо авторизація успішна, робіть тут що завгодно")
+                        if !UserSession.current.hasOnlineVersion {
+                            UserSession.logOut()
+                        }
+                    } else {
+                        print("Обробте випадок, коли авторизація не вдалася")
+                    }
+                }
+            }
+        )
+    }
+
+    
+    func authenticateUser(completion: @escaping (Bool) -> Void) {
+        if Auth.auth().currentUser == nil {
+            // User is not authenticated, present the sign-in screen
+            let signInController = SignInController()
+            signInController.completionHandler = { success in
+                DispatchQueue.main.async {
+                    completion(success)
+                }
+            }
+            let navigationController = UINavigationController(rootViewController: signInController)
+            navigationController.setNavigationBarHidden(true, animated: false)
+            self.present(navigationController, animated: true, completion: nil)
+        } else {
+            // User is already authenticated
+            completion(true)
+        }
     }
 }
 
@@ -268,11 +286,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 extension SettingListViewController {
     func setConstraints() {
         
-        NSLayoutConstraint.activate([
-            updateDataButton.heightAnchor.constraint(equalToConstant: 50)
-        ])
-        
-        let mainStackView = UIStackView(arrangedSubviews: [tableView, updateDataButton],
+        let mainStackView = UIStackView(arrangedSubviews: [tableView],
                                         axis: .vertical,
                                         spacing: 10,
                                         distribution: .fill)
