@@ -1,112 +1,116 @@
-#  API Donate-cafe
+#  API Cyber-cafe
 
   ## Data model
 
    ### Налаштування
-      GoodsPriceModel - Товари і планові ціни
-      TypeOfDonationModel - типи пожертвувань
+      ProductsPriceModel - Товари і планові ціни
+      TypeModel - типи замовлень
 
    ### Данні
-      PurchaseModel - Закупки товарів
-      SalesModel - Пожертвування в розрізі типів та днів
-      SaleGoodModel - Видача товарів по дням
+      CostModel - Витрати
+      OrdersModel - Замовлення
+      ProductModel - Товари/послуги
 
   ## Get-requests
 
-  ## 1. Отримання налаштувань списку товарів (GoodsPriceModel)
+  ## 1. Отримання налаштувань списку товарів (ProductsPriceModel)
     {
-      "GoodsPrice": [
+      "ProductsPrice": [
         {
-          "good": "Esspresso",
+          "product": "Esspresso",
           "price": 10
         },
         {
-          "good": "Americano",
+          "product": "Americano",
           "price": 10
         },
         {
-          "good": "Americano with milk",
+          "product": "Americano with milk",
           "price": 10
         }
       ]
     }
-  ## 2. Отримання налаштувань списку типів донатів (TypeOfDonationModel)
+  ## 2. Отримання налаштувань списку типів донатів (TypeModel)
     {
-      "TypeOfDonation": [
+      "Type": [
         {
-          "type": "Sunday service"
+          "name": "Sunday service"
         },
         {
-          "type": "Morning pray"
+          "name": "Morning pray"
         },
         {
-          "type": "Milk"
+          "name": "Milk"
         }
       ]
     }
-  ## 3. Отримання списку закупівель за період (PurchaseModel)
+  ## 3. Отримання списку закупівель за період (CostModel)
     {
-      "Purchase": [
+      "Cost": [
         {
-          "purchaseDate": "2022-04-15T13:17:05.273Z",
-          "purchaseGood": "Молоко",
-          "purchaseSum": 332.8
+          "Date": "2022-04-15T13:17:05.273Z",
+          "Product": "Молоко",
+          "Sum": 332.8
         },
         {
-          "purchaseDate": "2022-04-15T13:17:05.273Z",
-          "purchaseGood": "Coffe",
-          "purchaseSum": 280
+          "Date": "2022-04-15T13:17:05.273Z",
+          "Product": "Coffe",
+          "Sum": 280
         },
         {
-          "purchaseDate": "2022-04-15T13:17:05.273Z",
-          "purchaseGood": "Sugar",
-          "purchaseSum": 33
+          "Date": "2022-04-15T13:17:05.273Z",
+          "Product": "Sugar",
+          "Sum": 33
         }
       ]
     }
-  ## 4. Отримання списку донатів за період (SalesModel)
+  ## 4. Отримання списку замовлень за період (OrdersModel)
     {
-      "Sales": [
+      "Orders": [
         {
-          "salesDate": "2022-04-15T13:17:05.273Z",
-          "salesTypeOfDonation": "Morning pray",
-          "salesSum": 0,
-          "salesCash": 144
+          "date": "2022-04-15T13:17:05.273Z",
+          "type": "Morning pray",
+          "sum": 0,
+          "cash": 144,
+          "card": 100
         },
         {
-          "salesDate": "2022-04-15T13:17:05.273Z",
-          "salesTypeOfDonation": "Молоко",
-          "salesSum": 0,
-          "salesCash": 120
+          "date": "2022-04-15T13:17:05.273Z",
+          "type": "Молоко",
+          "sum": 0,
+          "cash": 120,
+          "card": 100
         },
         {
-          "salesDate": "2022-04-15T13:17:05.273Z",
-          "salesTypeOfDonation": "Sunday service",
-          "salesSum": 0,
-          "salesCash": 567
+          "date": "2022-04-15T13:17:05.273Z",
+          "type": "Sunday service",
+          "sum": 0,
+          "cash": 567,
+          "card": 100
         }
       ]
     }
-  ## 5. Отримання донату за день (SaleGoodModel + SalesModel)
+  ## 5. Продажі за день (ProductModel + OrdersModel)
     {
-      "salesDate": "2022-04-15T13:17:05.273Z",
-      "salesTypeOfDonation": "Sunday service",
-      "salesSum": 140,
-      "salesCash": 567,
-      "SaleGood": [
+      "date": "2022-04-15T13:17:05.273Z",
+      "type": "Sunday service",
+      "sum": 140,
+      "cash": 567,
+      "caкв": 250,
+      "Products": [
         {
-          "saleDate": "2022-04-15T13:17:05.273Z",
-          "saleGood": "Americano",
-          "saleQty": 2,
-          "salePrice": 10,
-          "saleSum": 20
+          "date": "2022-04-15T13:17:05.273Z",
+          "name": "Americano",
+          "qty": 2,
+          "price": 10,
+          "sum": 20
         },
         {
-          "saleDate": "2022-04-30T09:30:20.123Z",
-          "saleGood": "Americano with milk",
-          "saleQty": 12,
-          "salePrice": 10,
-          "saleSum": 120
+          "date": "2022-04-30T09:30:20.123Z",
+          "name": "Americano with milk",
+          "qty": 12,
+          "price": 10,
+          "sum": 120
         }
       ]
     }
@@ -114,50 +118,52 @@
 
   ## POST-requests
 
-  ## 1. GoodsPriceModel
+  ## 1. ProductsPriceModel
     {
-        "good": "Milk",
+        "name": "Milk",
         "price": 34.80
     }
-  ## 2. TypeOfDonationModel
+  ## 2. TypeModel
     {
-        "type": "Sunday service"
+        "name": "Sunday service"
     }
-  ## 3. PurchaseModel
+  ## 3. CostModel
     {
-        "purchaseDate": "2022-04-15T13:17:05.273Z",
-        "purchaseGood": "Молоко",
-        "purchaseSum": 34
+        "date": "2022-04-15T13:17:05.273Z",
+        "product": "Молоко",
+        "sum": 34
     }
-  ## 4. Sale
-   ### 4.1 SalesModel
+  ## 4. Order
+   ### 4.1 OrdersModel
       {
-          "salesDate": "2022-04-15T13:17:05.273Z",
-          "salesTypeOfDonation": "Молоко",
-          "salesSum": 0.00,
-          "salesCash": 120.00,
-          "SaleGood": []
+          "date": "2022-04-15T13:17:05.273Z",
+          "type": "Молоко",
+          "sum": 0.00,
+          "cash": 120.00,
+          "card": 80.00,
+          "Products": []
       }
-   ### 4.1 SalesModel + SaleGoodModel
+   ### 4.1 OrdersModel + ProductModel
       {
-        "salesDate": "2022-04-15T13:17:05.273Z",
-        "salesTypeOfDonation": "Sunday service",
-        "salesSum": 0,
-        "salesCash": 120,
-        "SaleGood": [
+        "date": "2022-04-15T13:17:05.273Z",
+        "type": "Sunday service",
+        "sum": 0,
+        "cash": 120,
+        "card": 80.00,
+        "Products": [
           {
-            "saleDate": "2022-04-30T09:30:20.123Z",
-            "saleGood": "Americano",
-            "saleQty": 2,
-            "salePrice": 10,
-            "saleSum": 20
+            "date": "2022-04-30T09:30:20.123Z",
+            "product": "Americano",
+            "qty": 2,
+            "price": 10,
+            "sum": 20
           },
           {
-            "saleDate": "2022-04-30T09:30:20.123Z",
-            "saleGood": "Americano with milk",
-            "saleQty": 12,
-            "salePrice": 10,
-            "saleSum": 120
+            "odate": "2022-04-30T09:30:20.123Z",
+            "product": "Americano with milk",
+            "qty": 12,
+            "price": 10,
+            "sum": 120
           }
         ]
       }

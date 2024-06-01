@@ -24,10 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         UINavigationBar.appearance().customNavigationBar()
         
-        //if UserSession.current.hasOnlineVersion {
-            configureFirebase()
-        //}
-        
+        configureFirebase()
         configureSVProgressHUD()
         setupAppearance()
         

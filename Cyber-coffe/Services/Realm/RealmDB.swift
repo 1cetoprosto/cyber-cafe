@@ -14,24 +14,24 @@ protocol RealmDB {
     func save<T: Object>(model object: T)
     func delete<T: Object>(model object: T)
     
-    func updateSaleGood(model: RealmSaleGoodModel, date: Date, name: String, quantity: Int, price: Double, sum: Double)
-    func fetchSaleGood(forDate date: Date) -> [RealmSaleGoodModel]
-    func fetchSaleGood(forDate date: Date, withName name: String) -> RealmSaleGoodModel
+    func updateProduct(model: RealmProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double)
+    func fetchProduct(forDate date: Date) -> [RealmProductModel]
+    func fetchProduct(forDate date: Date, withName name: String) -> RealmProductModel
     
-    func updateSales(model: RealmDailySalesModel, date: Date, incomeType: String, total: Double, cashAmount: Double, cardAmount: Double)
-    func fetchSales() -> [RealmDailySalesModel]
-    func fetchSectionsOfSales() -> [(date: Date, items: [RealmDailySalesModel])]
-    func fetchSales(forDate date: Date, ofType type: String?) -> [RealmDailySalesModel]
+    func updateOrders(model: RealmOrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double)
+    func fetchOrders() -> [RealmOrderModel]
+    func fetchSectionsOfOrders() -> [(date: Date, items: [RealmOrderModel])]
+    func fetchOrders(forDate date: Date, ofType type: String?) -> [RealmOrderModel]
     
-    func updateGoodsPrice(model: RealmGoodsPriceModel, name: String, price: Double)
-    func fetchGoodsPrice() -> [RealmGoodsPriceModel]
+    func updateProductsPrice(model: RealmProductsPriceModel, name: String, price: Double)
+    func fetchProductsPrice() -> [RealmProductsPriceModel]
     
-    func updatePurchase(model: RealmPurchaseModel, date: Date, name: String, sum: Double)
-    func fetchPurchases() -> [RealmPurchaseModel]
-    func fetchSectionsOfPurchases() -> [(date: Date, items: [RealmPurchaseModel])]
+    func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double)
+    func fetchCosts() -> [RealmCostModel]
+    func fetchSectionsOfCosts() -> [(date: Date, items: [RealmCostModel])]
     
-    func updateIncomeType(model: RealmIncomeTypeModel, type: String)
-    func fetchIncomeTypes() -> [RealmIncomeTypeModel]
+    func updateType(model: RealmTypeModel, type: String)
+    func fetchTypes() -> [RealmTypeModel]
     
     func deleteAllData(completion: @escaping () -> Void)
 }

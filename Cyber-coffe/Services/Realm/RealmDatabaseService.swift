@@ -55,11 +55,11 @@ class RealmDatabaseService: RealmDB {
     }
 
     func deleteAllData(completion: @escaping () -> Void) {
-        let objectTypes: [Object.Type] = [RealmSaleGoodModel.self,
-                                          RealmDailySalesModel.self,
-                                          RealmGoodsPriceModel.self,
-                                          RealmIncomeTypeModel.self,
-                                          RealmPurchaseModel.self]
+        let objectTypes: [Object.Type] = [RealmProductModel.self,
+                                          RealmOrderModel.self,
+                                          RealmProductsPriceModel.self,
+                                          RealmTypeModel.self,
+                                          RealmCostModel.self]
         
         try! localRealm.write {
             for objectType in objectTypes {
@@ -71,9 +71,9 @@ class RealmDatabaseService: RealmDB {
         completion()
     }
     
-    // MARK: - Work With Sales Good
+    // MARK: - Work With Orders Product
     
-    func updateSaleGood(model: RealmSaleGoodModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
+    func updateProduct(model: RealmProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
         try! localRealm.write {
             model.date = date
             model.name = name
@@ -83,11 +83,11 @@ class RealmDatabaseService: RealmDB {
         }
     }
     
-    func fetchSaleGood() -> [RealmSaleGoodModel] {
-        return Array(localRealm.objects(RealmSaleGoodModel.self).sorted(byKeyPath: "date"))
+    func fetchProduct() -> [RealmProductModel] {
+        return Array(localRealm.objects(RealmProductModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchSaleGood(forDate date: Date) -> [RealmSaleGoodModel] {
+    func fetchProduct(forDate date: Date) -> [RealmProductModel] {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
             let components = DateComponents(day: 1, second: -1)
@@ -96,10 +96,10 @@ class RealmDatabaseService: RealmDB {
         
         let predicateDate = NSPredicate(format: "date BETWEEN %@", [dateStart, dateEnd])
         
-        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicateDate).sorted(byKeyPath: "name"))
+        return Array(localRealm.objects(RealmProductModel.self).filter(predicateDate).sorted(byKeyPath: "name"))
     }
     
-    func fetchSaleGood(forDate date: Date, withName name: String) -> RealmSaleGoodModel {
+    func fetchProduct(forDate date: Date, withName name: String) -> RealmProductModel {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
             let components = DateComponents(day: 1, second: -1)
@@ -107,33 +107,33 @@ class RealmDatabaseService: RealmDB {
         }()
         let predicate = NSPredicate(format: "date BETWEEN %@ AND name == %@", [dateStart, dateEnd], name)
         
-        return localRealm.objects(RealmSaleGoodModel.self).filter(predicate).first ?? RealmSaleGoodModel()
+        return localRealm.objects(RealmProductModel.self).filter(predicate).first ?? RealmProductModel()
     }
     
-    func fetchSaleGood(withIdDailySale id: String) -> [RealmSaleGoodModel] {
-        let predicate = NSPredicate(format: "dailySalesId == %@", id)
+    func fetchProduct(withIdOrder id: String) -> [RealmProductModel] {
+        let predicate = NSPredicate(format: "orderId == %@", id)
         
-        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicate).sorted(byKeyPath: "name"))
+        return Array(localRealm.objects(RealmProductModel.self).filter(predicate).sorted(byKeyPath: "name"))
     }
     
-    // MARK: - Work With Daily Sales
+    // MARK: - Work With Orders
     
-    func updateSales(model: RealmDailySalesModel, date: Date, incomeType: String, total: Double, cashAmount: Double, cardAmount: Double) {
+    func updateOrders(model: RealmOrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double) {
         try! localRealm.write {
             model.date = date
-            model.incomeType = incomeType
+            model.type = type
             model.sum = total
             model.cash = cashAmount
             model.card = cardAmount
         }
     }
 
-    func fetchSales() -> [RealmDailySalesModel] {
-        return Array(localRealm.objects(RealmDailySalesModel.self).sorted(byKeyPath: "date"))
+    func fetchOrders() -> [RealmOrderModel] {
+        return Array(localRealm.objects(RealmOrderModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchSectionsOfSales() -> [(date: Date, items: [RealmDailySalesModel])] {
-        let results = localRealm.objects(RealmDailySalesModel.self).sorted(byKeyPath: "date",  ascending: false)
+    func fetchSectionsOfOrders() -> [(date: Date, items: [RealmOrderModel])] {
+        let results = localRealm.objects(RealmOrderModel.self).sorted(byKeyPath: "date",  ascending: false)
         
         let sections = results
             .map { item in
@@ -144,49 +144,49 @@ class RealmDatabaseService: RealmDB {
                 // unique sorted array of dates
                 return dates.last == date ? dates : dates + [date]
             }
-            .compactMap { startDate -> (date: Date, items: [RealmDailySalesModel])? in
+            .compactMap { startDate -> (date: Date, items: [RealmOrderModel])? in
                 // create the end of current day
                 let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
                 let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
-                var sales = [RealmDailySalesModel]()
+                var orders = [RealmOrderModel]()
                 for item in items {
-                    sales.append(item)
+                    orders.append(item)
                 }
                 
                 // return a section only if current day is non-empty
-                return items.isEmpty ? nil : (date: startDate, items: sales)
+                return items.isEmpty ? nil : (date: startDate, items: orders)
             }
         return sections
     }
     
-    func fetchDailySales(forDailySalesModel dailySalesModel: DailySalesModel) -> RealmDailySalesModel? {
+    func fetchOrder(forOrderModel ordersModel: OrderModel) -> RealmOrderModel? {
 //        let predicate = NSPredicate(format: "id == %@", id)
 //        
-//        return Array(localRealm.objects(RealmSaleGoodModel.self).filter(predicate).sorted(byKeyPath: "name"))
-//        return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: dailySalesModel.id)
-        return fetchObjectById(ofType: RealmDailySalesModel.self, id: dailySalesModel.id)
+//        return Array(localRealm.objects(RealmProductModel.self).filter(predicate).sorted(byKeyPath: "name"))
+//        return localRealm.object(ofType: RealmOrderModel.self, forPrimaryKey: ordersModel.id)
+        return fetchObjectById(ofType: RealmOrderModel.self, id: ordersModel.id)
     }
 
-    func fetchDailySales(forId id: String) -> RealmDailySalesModel? {
-        //return localRealm.object(ofType: RealmDailySalesModel.self, forPrimaryKey: id)
-        return fetchObjectById(ofType: RealmDailySalesModel.self, id: id)
+    func fetchOrder(forId id: String) -> RealmOrderModel? {
+        //return localRealm.object(ofType: RealmOrderModel.self, forPrimaryKey: id)
+        return fetchObjectById(ofType: RealmOrderModel.self, id: id)
     }
     
-    func fetchSales(forDate date: Date, ofType type: String?) -> [RealmDailySalesModel] {
+    func fetchOrders(forDate date: Date, ofType type: String?) -> [RealmOrderModel] {
         let dateStart = Calendar.current.startOfDay(for: date)
         let dateEnd: Date = {
             let components = DateComponents(day: 1, second: -1)
             return Calendar.current.date(byAdding: components, to: dateStart)!
         }()
         
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND incomeType == %@", [dateStart, dateEnd], type ?? "Sunday service")
-        return Array(localRealm.objects(RealmDailySalesModel.self).filter(predicate))
+        let predicate = NSPredicate(format: "date BETWEEN %@ AND type == %@", [dateStart, dateEnd], type ?? "Sunday service")
+        return Array(localRealm.objects(RealmOrderModel.self).filter(predicate))
     }
 
-    // MARK: - Work With Good Price
+    // MARK: - Work With Product Price
     
-    func updateGoodsPrice(model: RealmGoodsPriceModel, name: String, price: Double) {
+    func updateProductsPrice(model: RealmProductsPriceModel, name: String, price: Double) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             model.name = name
@@ -194,19 +194,19 @@ class RealmDatabaseService: RealmDB {
         }
     }
 
-    func fetchGoodsPrice() -> [RealmGoodsPriceModel] {
-        return Array(localRealm.objects(RealmGoodsPriceModel.self).sorted(byKeyPath: "name"))
+    func fetchProductsPrice() -> [RealmProductsPriceModel] {
+        return Array(localRealm.objects(RealmProductsPriceModel.self).sorted(byKeyPath: "name"))
     }
     
-    func fetchGoodsPrice(forGoodPriceModel goodPriceModel: GoodsPriceModel) -> RealmGoodsPriceModel? {
-        //return localRealm.objects(RealmGoodsPriceModel.self).filter("id == %@", goodPriceModel.id).first
-        //guard let model = fetchObjectById(modelType: RealmGoodsPriceModel.self, id: goodPriceModel.id) else { return nil}
-        return fetchObjectById(ofType: RealmGoodsPriceModel.self, id: goodPriceModel.id)
+    func fetchProductsPrice(forProductPriceModel productPriceModel: ProductsPriceModel) -> RealmProductsPriceModel? {
+        //return localRealm.objects(RealmProductsPriceModel.self).filter("id == %@", productPriceModel.id).first
+        //guard let model = fetchObjectById(modelType: RealmProductsPriceModel.self, id: productPriceModel.id) else { return nil}
+        return fetchObjectById(ofType: RealmProductsPriceModel.self, id: productPriceModel.id)
     }
     
-    // MARK: - Work With Purchase
+    // MARK: - Work With Cost
     
-    func updatePurchase(model: RealmPurchaseModel, date: Date, name: String, sum: Double) {
+    func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double) {
         try! localRealm.write {
             model.date = date
             model.name = name
@@ -214,19 +214,19 @@ class RealmDatabaseService: RealmDB {
         }
     }
 
-    func fetchPurchases() -> [RealmPurchaseModel] {
-        return Array(localRealm.objects(RealmPurchaseModel.self).sorted(byKeyPath: "date"))
+    func fetchCosts() -> [RealmCostModel] {
+        return Array(localRealm.objects(RealmCostModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchPurchases(forPurchaseModel purchaseModel: PurchaseModel) -> RealmPurchaseModel? {
-        //return localRealm.objects(RealmPurchaseModel.self).filter("id == %@", purchaseModel.id).first
-        return fetchObjectById(ofType: RealmPurchaseModel.self, id: purchaseModel.id)
+    func fetchCosts(forCostModel costModel: CostModel) -> RealmCostModel? {
+        //return localRealm.objects(RealmCostModel.self).filter("id == %@", costModel.id).first
+        return fetchObjectById(ofType: RealmCostModel.self, id: costModel.id)
     }
     
-    func fetchSectionsOfPurchases() -> [(date: Date, items: [RealmPurchaseModel])] {
-        let results = localRealm.objects(RealmPurchaseModel.self).sorted(byKeyPath: "date",  ascending: false)
+    func fetchSectionsOfCosts() -> [(date: Date, items: [RealmCostModel])] {
+        let results = localRealm.objects(RealmCostModel.self).sorted(byKeyPath: "date",  ascending: false)
         
-        let sections: [(date: Date, items: [RealmPurchaseModel])] = results
+        let sections: [(date: Date, items: [RealmCostModel])] = results
             .map { item in
                 // get start of a day
                 return Calendar.current.startOfDay(for: item.date)
@@ -235,38 +235,38 @@ class RealmDatabaseService: RealmDB {
                 // unique sorted array of dates
                 return dates.last == date ? dates : dates + [date]
             }
-            .compactMap { startDate -> (date: Date, items: [RealmPurchaseModel])? in
+            .compactMap { startDate -> (date: Date, items: [RealmCostModel])? in
                 // create the end of current day
                 let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
                 // filter sorted results by a predicate matching current day
                 let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
-                var purchases = [RealmPurchaseModel]()
+                var costs = [RealmCostModel]()
                 for item in items {
-                    purchases.append(item)
+                    costs.append(item)
                 }
                 
                 // return a section only if current day is non-empty
-                return items.isEmpty ? nil : (date: startDate, items: purchases)
+                return items.isEmpty ? nil : (date: startDate, items: costs)
             }
         return sections
     }
     
-    // MARK: - Work With IncomeType
+    // MARK: - Work With Type
     
-    func updateIncomeType(model: RealmIncomeTypeModel, type: String) {
+    func updateType(model: RealmTypeModel, type: String) {
         print("Realm is located at:", localRealm.configuration.fileURL!)
         try! localRealm.write {
             model.name = type
         }
     }
 
-    func fetchIncomeTypes() -> [RealmIncomeTypeModel] {
-        return Array(localRealm.objects(RealmIncomeTypeModel.self).sorted(byKeyPath: "name"))
+    func fetchTypes() -> [RealmTypeModel] {
+        return Array(localRealm.objects(RealmTypeModel.self).sorted(byKeyPath: "name"))
     }
     
-    func fetchIncomeTypes(forIncomeTypeModel incomeTypeModel: IncomeTypeModel) -> RealmIncomeTypeModel? {
-        //return localRealm.objects(RealmIncomeTypeModel.self).filter("id == %@", incomeTypeModel.id).first
-        return fetchObjectById(ofType: RealmIncomeTypeModel.self, id: incomeTypeModel.id)
+    func fetchTypes(forTypeModel typeModel: TypeModel) -> RealmTypeModel? {
+        //return localRealm.objects(RealmTypeModel.self).filter("id == %@", typeModel.id).first
+        return fetchObjectById(ofType: RealmTypeModel.self, id: typeModel.id)
     }
     
 }

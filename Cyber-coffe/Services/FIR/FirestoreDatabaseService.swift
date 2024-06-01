@@ -135,84 +135,72 @@ class FirestoreDatabaseService: FirestoreDB {
     
     // MARK: - CRUD Operations for Products
     
-    func createProduct(product: FIRGoodsPriceModel, completion: @escaping (Bool) -> Void) {
-        let documentId =  create(firModel: product, collection: "goodsPrice")
+    func createProduct(product: FIRProductsPriceModel, completion: @escaping (Bool) -> Void) {
+        let documentId =  create(firModel: product, collection: "productsPrice")
         completion(documentId != nil)
     }
     
-    func readProducts(completion: @escaping ([(documentId: String, FIRGoodsPriceModel)]) -> Void) {
-        read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { result in
+    func readProducts(completion: @escaping ([(documentId: String, FIRProductsPriceModel)]) -> Void) {
+        read(collection: "productsPrice", firModel: FIRProductsPriceModel.self) { result in
             completion(result)
         }
     }
     
-    // MARK: - CRUD Operations for Income Types
+    // MARK: - CRUD Operations for Types
     
-    func createIncomeType(incomeType: FIRIncomeTypeModel, completion: @escaping (Bool) -> Void) {
-        let documentId = create(firModel: incomeType, collection: "incomeTypes")
+    func createType(type: FIRTypeModel, completion: @escaping (Bool) -> Void) {
+        let documentId = create(firModel: type, collection: "types")
         completion(documentId != nil)
     }
     
-    func readIncomeTypes(completion: @escaping ([(documentId: String, FIRIncomeTypeModel)]) -> Void) {
-        read(collection: "incomeTypes", firModel: FIRIncomeTypeModel.self) { result in
+    func readTypes(completion: @escaping ([(documentId: String, FIRTypeModel)]) -> Void) {
+        read(collection: "types", firModel: FIRTypeModel.self) { result in
             completion(result)
         }
     }
     
-    // MARK: - CRUD Operations for Purchases
+    // MARK: - CRUD Operations for Costs
     
-    func createPurchase(purchase: FIRPurchaseModel, completion: @escaping (Bool) -> Void) {
-        let documentId =  create(firModel: purchase, collection: "purchases")
+    func createCost(cost: FIRCostModel, completion: @escaping (Bool) -> Void) {
+        let documentId =  create(firModel: cost, collection: "costs")
         completion(documentId != nil)
     }
     
-    func readPurchases(completion: @escaping ([(documentId: String, FIRPurchaseModel)]) -> Void) {
-        read(collection: "purchases", firModel: FIRPurchaseModel.self) { result in
+    func readCosts(completion: @escaping ([(documentId: String, FIRCostModel)]) -> Void) {
+        read(collection: "costs", firModel: FIRCostModel.self) { result in
             completion(result)
         }
     }
     
-    // MARK: - CRUD Operations for Sales
+    // MARK: - CRUD Operations for Orders
     
-    func createSalesOfGoods(sale: FIRSaleGoodModel, completion: @escaping (Bool) -> Void) {
-        let documentId = create(firModel: sale, collection: "sales")
+    func createOrdersOfProducts(order: FIRProductModel, completion: @escaping (Bool) -> Void) {
+        let documentId = create(firModel: order, collection: "orders")
         completion(documentId != nil)
     }
     
-    func readSalesOfGoods(completion: @escaping ([(documentId: String, FIRSaleGoodModel)]) -> Void) {
-        read(collection: "sales", firModel: FIRSaleGoodModel.self) { result in
+    func readOrdersOfProducts(completion: @escaping ([(documentId: String, FIRProductModel)]) -> Void) {
+        read(collection: "orders", firModel: FIRProductModel.self) { result in
             completion(result)
         }
     }
     
-//    func readSalesOfGoods(withId id: String, completion: @escaping ([(documentId: String, FIRSaleGoodModel)]) -> Void) {
-//        readDocumentById(collection: "sales", documentId: id) { (product: FIRSaleGoodModel?) in
-//            if let product = product {
-//                print("Product: \(product)")
-//            } else {
-//                print("Failed to retrieve product.")
-//            }
-//        }
-//    }
+    // MARK: - CRUD Operations for Orders
     
-    // MARK: - CRUD Operations for Daily Sales
-    
-    func createDailySale(dailySale: FIRDailySalesModel, completion: @escaping (String?) -> Void) {
-        let documentId = create(firModel: dailySale, collection: "dailySales")
+    func createOrder(order: FIROrderModel, completion: @escaping (String?) -> Void) {
+        let documentId = create(firModel: order, collection: "orders")
         completion(documentId)
     }
     
-    func readDailySales(completion: @escaping ([(documentId: String, FIRDailySalesModel)]) -> Void) {
-        read(collection: "dailySales", firModel: FIRDailySalesModel.self) { result in
+    func readOrder(completion: @escaping ([(documentId: String, FIROrderModel)]) -> Void) {
+        read(collection: "orders", firModel: FIROrderModel.self) { result in
             completion(result)
         }
     }
     
-    
-    
     func deleteAllData(completion: @escaping () -> Void) {
         // Масив назв колекцій, з яких потрібно видалити дані
-        let collections = ["goodsPrice", "incomeTypes", "purchases", "sales", "dailySales"]
+        let collections = ["productsPrice", "types", "costs", "orders", "products"]
         
         // Створюємо диспетчерну групу для відслідковування завершення всіх видалень
         let dispatchGroup = DispatchGroup()

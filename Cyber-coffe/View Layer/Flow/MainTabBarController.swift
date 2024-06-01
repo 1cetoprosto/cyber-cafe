@@ -18,17 +18,17 @@ class MainTabBarController: UITabBarController {
     }
 
     func setupTabBar() {
-        let salesViewController = createNavController(viewController: SaleListViewController(),
-                                                      itemName: "Donations",
+        let ordersViewController = createNavController(viewController: OrderListViewController(),
+                                                      itemName: "Orders",
                                                       itemImage: "cup.and.saucer.fill")
-        let purchasesViewController = createNavController(viewController: PurchaseListViewController(),
-                                                          itemName: "Purchases",
+        let costsViewController = createNavController(viewController: CostListViewController(),
+                                                          itemName: "Costs",
                                                           itemImage: "takeoutbag.and.cup.and.straw.fill")
         let settingsViewController = createNavController(viewController: SettingListViewController(),
                                                          itemName: "Settings",
                                                          itemImage: "gearshape")
 
-        viewControllers = [salesViewController, purchasesViewController, settingsViewController]
+        viewControllers = [ordersViewController, costsViewController, settingsViewController]
     }
 
     func createNavController(viewController: UIViewController,

@@ -11,7 +11,7 @@
 //import FirebaseDatabase
 //import FirebaseStorage
 //
-//enum SubscriptionPurchaseLinkStatus {
+//enum SubscriptionCostLinkStatus {
 //    case notLinked
 //    case linkedCurrent
 //    case linkedAnother
@@ -408,7 +408,7 @@
 //        }
 //    }
 //    
-//    func isSubscriptionPurchaseLinkedToAccount(_ originTransactionId: String, completion: @escaping (SubscriptionPurchaseLinkStatus?) -> Void) {
+//    func isSubscriptionCostLinkedToAccount(_ originTransactionId: String, completion: @escaping (SubscriptionCostLinkStatus?) -> Void) {
 //        Database.database().reference(withPath: ".info/connected").observe(.value, with: { snapshot in
 //            if snapshot.value as? Bool ?? false {
 //                Database.database().reference().child("Subscriptions").queryOrdered(byChild: "iosOriginTransactionId").queryEqual(toValue: originTransactionId).observeSingleEvent(of: .value) { (snapshot) in
