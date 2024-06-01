@@ -31,17 +31,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             if oldSchemaVersion < currentSchemaVersion {
                 // Приклад: Додавання нової властивості з початковим значенням
                 if oldSchemaVersion < 2 {
-                    migration.enumerateObjects(ofType: RealmSaleGoodModel.className()) { oldObject, newObject in
-                        newObject!["dailySalesId"] = "" // Початкове значення для нової властивості
+                    migration.enumerateObjects(ofType: RealmProductModel.className()) { oldObject, newObject in
+                        newObject!["orderId"] = "" // Початкове значення для нової властивості
                     }
                     
-                    // Заповнення поля dailySalesId відповідними значеннями з RealmDailySalesModel
-                    migration.enumerateObjects(ofType: RealmDailySalesModel.className()) { oldObject, newObject in
-                        if let dailySalesId = oldObject!["id"] as? String,
+                    // Заповнення поля orderId відповідними значеннями з RealmOrderModel
+                    migration.enumerateObjects(ofType: RealmOrderModel.className()) { oldObject, newObject in
+                        if let orderId = oldObject!["id"] as? String,
                            let date = oldObject!["date"] as? Date {
-                            migration.enumerateObjects(ofType: RealmSaleGoodModel.className()) { saleGoodOldObject, saleGoodNewObject in
-                                if saleGoodOldObject!["date"] as? Date == date {
-                                    saleGoodNewObject!["dailySalesId"] = dailySalesId
+                            migration.enumerateObjects(ofType: RealmProductModel.className()) { productOldObject, productNewObject in
+                                if productOldObject!["date"] as? Date == date {
+                                    productNewObject!["orderId"] = orderId
                                 }
                             }
                         }

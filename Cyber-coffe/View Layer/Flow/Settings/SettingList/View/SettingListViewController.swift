@@ -117,20 +117,18 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         
         models.append(Section(title: "General", option: options))
         
-        models.append(Section(title: "Sales", option: [
-            .staticCell(model: SettingsStaticOption(title: "Goods",
+        models.append(Section(title: "Orders", option: [
+            .staticCell(model: SettingsStaticOption(title: "Products",
                                                     icon: UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: .systemBrown) {
-                                                        self.navigationController?.pushViewController(GoodListViewController(), animated: true)
-                                                    })
-        ]))
-        
-        models.append(Section(title: "Donation", option: [
+                                                        self.navigationController?.pushViewController(ProductListViewController(), animated: true)
+                                                    }),
             .staticCell(model: SettingsStaticOption(title: "Types",
                                                     icon: UIImage(systemName: "banknote.fill"),
                                                     iconBackgroundColor: .systemGreen) {
-                                                        self.navigationController?.pushViewController(IncomeTypesListViewController(), animated: true)
+                                                        self.navigationController?.pushViewController(TypesListViewController(), animated: true)
                                                     })
+            
         ]))
         
         models.append(Section(title: "Database", option: [

@@ -17,427 +17,427 @@ class DomainDatabaseService: DomainDB {
         return SettingsManager.shared.loadOnline()
     }
     
-    // MARK: - SaleGood Operations
+    // MARK: - Product Operations
     
-    func updateSaleGood(model: SaleGoodModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
+    func updateProduct(model: ProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            var updatedModel = FIRSaleGoodModel(dataModel: model)
+            var updatedModel = FIRProductModel(dataModel: model)
             updatedModel.date = date
             updatedModel.name = name
             updatedModel.quantity = quantity
             updatedModel.price = price
             updatedModel.amount = sum
             
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "sales", documentId: model.id) {
-                print("Sale good updated successfully in Firestore database")
+            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "orders", documentId: model.id) {
+                print("Order product updated successfully in Firestore database")
             } else {
-                print("Failed to update sale good in Firestore database")
+                print("Failed to update order product in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmSaleGoodModel.self, id: model.id) else { return }
-            RealmDatabaseService.shared.updateSaleGood(model: updatedModel, date: date, name: name, quantity: quantity, price: price, sum: sum)
+            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductModel.self, id: model.id) else { return }
+            RealmDatabaseService.shared.updateProduct(model: updatedModel, date: date, name: name, quantity: quantity, price: price, sum: sum)
         }
     }
     
     // Асинхронний метод для отримання списку продаж
-    func fetchSaleGood(forDate date: Date, completion: @escaping ([SaleGoodModel]) -> Void) {
+    func fetchProduct(forDate date: Date, completion: @escaping ([ProductModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.readSalesOfGoods { firSaleGoods in
-                let salesGood = firSaleGoods.map { SaleGoodModel(firebaseModel: $0.1) }
-                completion(salesGood)
+            FirestoreDatabaseService.shared.readOrdersOfProducts { firProducts in
+                let ordersProduct = firProducts.map { ProductModel(firebaseModel: $0.1) }
+                completion(ordersProduct)
             }
         } else {
-            let salesGood = RealmDatabaseService.shared.fetchSaleGood(forDate: date)
-                .map { SaleGoodModel(realmModel: $0) }
-            completion(salesGood)
+            let ordersProduct = RealmDatabaseService.shared.fetchProduct(forDate: date)
+                .map { ProductModel(realmModel: $0) }
+            completion(ordersProduct)
         }
     }
     
-    func fetchSaleGood(forDate date: Date, withName name: String, completion: @escaping (SaleGoodModel?) -> Void) {
+    func fetchProduct(forDate date: Date, withName name: String, completion: @escaping (ProductModel?) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRSaleGoodModel.self) { firSalesGood in
-                let salesGood = firSalesGood.map { SaleGoodModel(firebaseModel: $1) }
-                let filteredSaleGood = salesGood.first { $0.date == date && $0.name == name }
-                completion(filteredSaleGood)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIRProductModel.self) { firOrder in
+                let ordersProduct = firOrder.map { ProductModel(firebaseModel: $1) }
+                let filteredProduct = ordersProduct.first { $0.date == date && $0.name == name }
+                completion(filteredProduct)
             }
         } else {
-            let saleGood = RealmDatabaseService.shared.fetchSaleGood(forDate: date, withName: name)
-            completion(SaleGoodModel(realmModel: saleGood))
+            let product = RealmDatabaseService.shared.fetchProduct(forDate: date, withName: name)
+            completion(ProductModel(realmModel: product))
         }
     }
     
-    func fetchSaleGood(withDailySalesId id: String, completion: @escaping ([SaleGoodModel]) -> Void) {
+    func fetchProduct(withOrderId id: String, completion: @escaping ([ProductModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "sales", firModel: FIRSaleGoodModel.self) { firSalesGood in
-                let salesGood = firSalesGood.map { SaleGoodModel(firebaseModel: $1) }
-                let filteredSaleGood = salesGood.filter { $0.dailySalesId == id }
-                completion(filteredSaleGood)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIRProductModel.self) { firOrder in
+                let ordersProduct = firOrder.map { ProductModel(firebaseModel: $1) }
+                let filteredProduct = ordersProduct.filter { $0.orderId == id }
+                completion(filteredProduct)
             }
         } else {
-            let salesGood = RealmDatabaseService.shared.fetchSaleGood(withIdDailySale: id)
-                .map { SaleGoodModel(realmModel: $0) }
-            completion(salesGood)
+            let ordersProduct = RealmDatabaseService.shared.fetchProduct(withIdOrder: id)
+                .map { ProductModel(realmModel: $0) }
+            completion(ordersProduct)
         }
     }
     
-    func saveSaleGood(sale: SaleGoodModel, completion: @escaping (Bool) -> Void) {
+    func saveProduct(order: ProductModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createSalesOfGoods(sale: FIRSaleGoodModel(dataModel: sale)) { success in
+            FirestoreDatabaseService.shared.createOrdersOfProducts(order: FIRProductModel(dataModel: order)) { success in
                 if success {
-                    print("Sale good saved to Firestore successfully")
+                    print("Order product saved to Firestore successfully")
                 } else {
-                    print("Failed to save sale good to Firestore")
+                    print("Failed to save order product to Firestore")
                 }
                 completion(success)
             }
         } else {
-            let model = RealmSaleGoodModel(dataModel: sale)
+            let model = RealmProductModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Sale good saved to Realm successfully")
+            print("Order product saved to Realm successfully")
             completion(true)
         }
     }
     
-    func deleteSaleGood(sale: SaleGoodModel, completion: @escaping (Bool) -> Void) {
+    func deleteProduct(order: ProductModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "sales", documentId: sale.id)
+            let success = FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmSaleGoodModel.self, id: sale.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductModel.self, id: order.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
     
-    // MARK: - Sales Operations
+    // MARK: - Orders Operations
     
-    func updateSales(model: DailySalesModel, date: Date, incomeType: String, total: Double, cashAmount: Double, cardAmount: Double) {
+    func updateOrders(model: OrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            var updatedModel = FIRDailySalesModel(dataModel: model)
+            var updatedModel = FIROrderModel(dataModel: model)
             updatedModel.date = date
-            updatedModel.incomeType = incomeType
+            updatedModel.type = type
             updatedModel.sum = total
             updatedModel.cash = cashAmount
             updatedModel.card = cardAmount
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "dailySales", documentId: model.id) {
-                print("Sale good updated successfully in Firestore database")
+            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "orders", documentId: model.id) {
+                print("Order product updated successfully in Firestore database")
             } else {
-                print("Failed to update sale good in Firestore database")
+                print("Failed to update order product in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchDailySales(forDailySalesModel: model) else { return }
-            RealmDatabaseService.shared.updateSales(model: updatedModel, date: date, incomeType: incomeType, total: total, cashAmount: cashAmount, cardAmount: cardAmount)
+            guard let updatedModel = RealmDatabaseService.shared.fetchOrder(forOrderModel: model) else { return }
+            RealmDatabaseService.shared.updateOrders(model: updatedModel, date: date, type: type, total: total, cashAmount: cashAmount, cardAmount: cardAmount)
         }
     }
     
-    func fetchSales(completion: @escaping ([DailySalesModel]) -> Void) {
+    func fetchOrders(completion: @escaping ([OrderModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "dailySales", firModel: FIRDailySalesModel.self) { firSales in
-                let sales = firSales.map { DailySalesModel(firebaseModel: $1) }
-                completion(sales)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
+                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
+                completion(orders)
             }
         } else {
-            let sales = RealmDatabaseService.shared.fetchSales().map { DailySalesModel(realmModel: $0) }
-            completion(sales)
+            let orders = RealmDatabaseService.shared.fetchOrders().map { OrderModel(realmModel: $0) }
+            completion(orders)
         }
     }
     
-    func fetchSectionsOfSales(completion: @escaping ([(date: Date, items: [DailySalesModel])]) -> Void) {
+    func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "dailySales", firModel: FIRDailySalesModel.self) { firSales in
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
                 let calendar = Calendar.current
-                let groupedSales = Dictionary(grouping: firSales.map { DailySalesModel(firebaseModel: $1) }, by: { sale -> Date in
-                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: sale.date)
+                let groupedOrders = Dictionary(grouping: firOrders.map { OrderModel(firebaseModel: $1) }, by: { order -> Date in
+                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: order.date)
                     return calendar.date(from: dateComponents)!
                 })
-                let sections = groupedSales.map { (date: $0.key, items: $0.value) }
+                let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
                     .sorted { $0.date < $1.date }
                 completion(sections)
             }
         } else {
-            let sections = RealmDatabaseService.shared.fetchSectionsOfSales().map { (date: $0.date, items: $0.items.map { DailySalesModel(realmModel: $0) }) }
+            let sections = RealmDatabaseService.shared.fetchSectionsOfOrders().map { (date: $0.date, items: $0.items.map { OrderModel(realmModel: $0) }) }
             completion(sections)
         }
     }
     
-    //    func fetchSales(forDate date: Date, ofType type: String?, completion: @escaping ([DailySalesModel]) -> Void) {
+    //    func fetchOrders(forDate date: Date, ofType type: String?, completion: @escaping ([OrderModel]) -> Void) {
     //        let isOnline = isOnlineModeEnabled()
     //
     //        if isOnline {
-    //            FirestoreDatabaseService.shared.read(collection: "dailySales", firModel: FIRDailySalesModel.self) { firSales in
-    //                let sales = firSales.map { DailySalesModel(firebaseModel: $1) }
-    //                completion(sales.filter { $0.date == date && (type == nil || $0.incomeType == type) })
+    //            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
+    //                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
+    //                completion(orders.filter { $0.date == date && (type == nil || $0.type == type) })
     //            }
     //        } else {
-    //            let sales = RealmDatabaseService.shared.fetchSales(forDate: date, ofType: type).map { DailySalesModel(realmModel: $0) }
-    //            completion(sales)
+    //            let orders = RealmDatabaseService.shared.fetchOrders(forDate: date, ofType: type).map { OrderModel(realmModel: $0) }
+    //            completion(orders)
     //        }
     //    }
     
-    func fetchSales(forId id: String, completion: @escaping (DailySalesModel?) -> Void) {
+    func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "dailySales", firModel: FIRDailySalesModel.self) { firdailySales in
-                let dailySales = firdailySales.map { DailySalesModel(firebaseModel: $1) }
-                completion(dailySales.filter { $0.id == id }
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firorders in
+                let orders = firorders.map { OrderModel(firebaseModel: $1) }
+                completion(orders.filter { $0.id == id }
                     .first)
             }
         } else {
-            guard let sale = RealmDatabaseService.shared.fetchDailySales(forId: id) else { return }
-            completion(DailySalesModel(realmModel: sale))
+            guard let order = RealmDatabaseService.shared.fetchOrder(forId: id) else { return }
+            completion(OrderModel(realmModel: order))
         }
     }
     
-    func saveDailySale(sale: DailySalesModel, completion: @escaping (String?) -> Void) {
+    func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createDailySale(dailySale: FIRDailySalesModel(dataModel: sale)) { documentId in
+            FirestoreDatabaseService.shared.createOrder(order: FIROrderModel(dataModel: order)) { documentId in
                 if documentId != nil {
-                    print("Dayily Sale saved to Firestore successfully")
+                    print("Dayily Order saved to Firestore successfully")
                 } else {
-                    print("Failed to save dayily sale to Firestore")
+                    print("Failed to save dayily order to Firestore")
                 }
                 completion(documentId)
             }
         } else {
-            let model = RealmDailySalesModel(dataModel: sale)
+            let model = RealmOrderModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Sales saved to Realm successfully")
+            print("Orders saved to Realm successfully")
             completion(model.id)
         }
     }
     
-    func deleteDailySale(sale: DailySalesModel, completion: @escaping (Bool) -> Void) {
+    func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "dailySales", documentId: sale.id)
+            let success = FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmDailySalesModel.self, id: sale.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmOrderModel.self, id: order.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
     
-    // MARK: - GoodsPrice Operations
+    // MARK: - ProductsPrice Operations
     
-    func updateGoodsPrice(model: GoodsPriceModel, name: String, price: Double) {
+    func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRGoodsPriceModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "goodsPrice", documentId: model.id) {
-                print("Good price updated successfully in Firestore database")
+            let updatedModel = FIRProductsPriceModel(dataModel: model)
+            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "productsPrice", documentId: model.id) {
+                print("Product price updated successfully in Firestore database")
             } else {
-                print("Failed to update Good price in Firestore database")
+                print("Failed to update Product price in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchGoodsPrice(forGoodPriceModel: model) else { return }
-            RealmDatabaseService.shared.updateGoodsPrice(model: updatedModel, name: name, price: price)
+            guard let updatedModel = RealmDatabaseService.shared.fetchProductsPrice(forProductPriceModel: model) else { return }
+            RealmDatabaseService.shared.updateProductsPrice(model: updatedModel, name: name, price: price)
         }
     }
     
-    func fetchGoodsPrice(completion: @escaping ([GoodsPriceModel]) -> Void) {
+    func fetchProductsPrice(completion: @escaping ([ProductsPriceModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "goodsPrice", firModel: FIRGoodsPriceModel.self) { firGoodsPrices in
-                let goodsPrices = firGoodsPrices.map { GoodsPriceModel(firebaseModel: $1) }
-                completion(goodsPrices)
+            FirestoreDatabaseService.shared.read(collection: "productsPrice", firModel: FIRProductsPriceModel.self) { firProductsPrices in
+                let productsPrices = firProductsPrices.map { ProductsPriceModel(firebaseModel: $1) }
+                completion(productsPrices)
             }
         } else {
-            let goodsPrices = RealmDatabaseService.shared.fetchGoodsPrice().map { GoodsPriceModel(realmModel: $0) }
-            completion(goodsPrices)
+            let productsPrices = RealmDatabaseService.shared.fetchProductsPrice().map { ProductsPriceModel(realmModel: $0) }
+            completion(productsPrices)
         }
     }
     
-    func saveGoodsPrice(goodPrice: GoodsPriceModel, completion: @escaping (Bool) -> Void) {
+    func saveProductsPrice(productPrice: ProductsPriceModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createProduct(product: FIRGoodsPriceModel(dataModel: goodPrice)) { success in
+            FirestoreDatabaseService.shared.createProduct(product: FIRProductsPriceModel(dataModel: productPrice)) { success in
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.save(model: RealmGoodsPriceModel(dataModel: goodPrice))
+            RealmDatabaseService.shared.save(model: RealmProductsPriceModel(dataModel: productPrice))
             completion(true)
         }
     }
     
-    func deleteGoodsPrice(model: GoodsPriceModel, completion: @escaping (Bool) -> Void) {
+    func deleteProductsPrice(model: ProductsPriceModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "goodsPrice", documentId: model.id)
+            let success = FirestoreDatabaseService.shared.delete(collection: "productsPrice", documentId: model.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmGoodsPriceModel.self, id: model.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductsPriceModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
     
-    // MARK: - Purchase Operations
+    // MARK: - Cost Operations
     
-    func updatePurchase(model: PurchaseModel, date: Date, name: String, sum: Double) {
+    func updateCost(model: CostModel, date: Date, name: String, sum: Double) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRPurchaseModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "purchases", documentId: model.id) {
-                print("Purchase updated successfully in Firestore database")
+            let updatedModel = FIRCostModel(dataModel: model)
+            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "costs", documentId: model.id) {
+                print("Cost updated successfully in Firestore database")
             } else {
-                print("Failed to update Purchase in Firestore database")
+                print("Failed to update Cost in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchPurchases(forPurchaseModel: model) else { return }
-            RealmDatabaseService.shared.updatePurchase(model: updatedModel, date: date, name: name, sum: sum)
+            guard let updatedModel = RealmDatabaseService.shared.fetchCosts(forCostModel: model) else { return }
+            RealmDatabaseService.shared.updateCost(model: updatedModel, date: date, name: name, sum: sum)
         }
     }
     
-    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void) {
+    func fetchCosts(completion: @escaping ([CostModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "purchases", firModel: FIRPurchaseModel.self) { firPurchases in
-                let purchases = firPurchases.map { PurchaseModel(firebaseModel: $1) }
-                completion(purchases)
+            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { firCosts in
+                let costs = firCosts.map { CostModel(firebaseModel: $1) }
+                completion(costs)
             }
         } else {
-            let purchases = RealmDatabaseService.shared.fetchPurchases().map { PurchaseModel(realmModel: $0) }
-            completion(purchases)
+            let costs = RealmDatabaseService.shared.fetchCosts().map { CostModel(realmModel: $0) }
+            completion(costs)
         }
     }
     
-    func fetchSectionsOfPurchases(completion: @escaping ([(date: Date, items: [PurchaseModel])]) -> Void) {
+    func fetchSectionsOfCosts(completion: @escaping ([(date: Date, items: [CostModel])]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "purchases", firModel: FIRPurchaseModel.self) { firPurchases in
+            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { firCosts in
                 let calendar = Calendar.current
-                let groupedPurchases = Dictionary(grouping: firPurchases.map { PurchaseModel(firebaseModel: $1) },
-                                                  by: { purchase -> Date in
-                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: purchase.date)
+                let groupedCosts = Dictionary(grouping: firCosts.map { CostModel(firebaseModel: $1) },
+                                                  by: { cost -> Date in
+                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: cost.date)
                     return calendar.date(from: dateComponents)!
                 })
-                let sections = groupedPurchases.map { (date: $0.key, items: $0.value) }
+                let sections = groupedCosts.map { (date: $0.key, items: $0.value) }
                     .sorted { $0.date < $1.date }
                 completion(sections)
             }
         } else {
-            let sections = RealmDatabaseService.shared.fetchSectionsOfPurchases().map { (date: $0.date, items: $0.items.map { PurchaseModel(realmModel: $0) }) }
+            let sections = RealmDatabaseService.shared.fetchSectionsOfCosts().map { (date: $0.date, items: $0.items.map { CostModel(realmModel: $0) }) }
             completion(sections)
         }
     }
     
-    func savePurchase(purchase: PurchaseModel, completion: @escaping (Bool) -> Void) {
+    func saveCost(cost: CostModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createPurchase(purchase: FIRPurchaseModel(dataModel: purchase)) { success in
+            FirestoreDatabaseService.shared.createCost(cost: FIRCostModel(dataModel: cost)) { success in
                 if success {
-                    print("Purchase saved to Firestore successfully")
+                    print("Cost saved to Firestore successfully")
                 } else {
-                    print("Failed to save Purchase to Firestore")
+                    print("Failed to save Cost to Firestore")
                 }
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.save(model: RealmPurchaseModel(dataModel: purchase))
-            print("Purchase saved to Realm successfully")
+            RealmDatabaseService.shared.save(model: RealmCostModel(dataModel: cost))
+            print("Cost saved to Realm successfully")
             completion(true)
         }
     }
     
-    func deletePurchase(purchase: PurchaseModel, completion: @escaping (Bool) -> Void) {
+    func deleteCost(cost: CostModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "purchases", documentId: purchase.id)
+            let success = FirestoreDatabaseService.shared.delete(collection: "costs", documentId: cost.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmPurchaseModel.self, id: purchase.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmCostModel.self, id: cost.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
     }
     
-    // MARK: - IncomeType Operations
+    // MARK: - Type Operations
     
-    func updateIncomeType(model: IncomeTypeModel, type: String) {
+    func updateType(model: TypeModel, type: String) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRIncomeTypeModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "incomeTypes", documentId: model.id) {
-                print("IncomeType updated successfully in Firestore database")
+            let updatedModel = FIRTypeModel(dataModel: model)
+            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "types", documentId: model.id) {
+                print("Type updated successfully in Firestore database")
             } else {
-                print("Failed to update IncomeType in Firestore database")
+                print("Failed to update Type in Firestore database")
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmIncomeTypeModel.self, id: model.id) else { return }
-            RealmDatabaseService.shared.updateIncomeType(model: updatedModel, type: type)
+            guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmTypeModel.self, id: model.id) else { return }
+            RealmDatabaseService.shared.updateType(model: updatedModel, type: type)
         }
     }
     
-    func fetchIncomeTypes(completion: @escaping ([IncomeTypeModel]) -> Void) {
+    func fetchTypes(completion: @escaping ([TypeModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "incomeTypes", firModel: FIRIncomeTypeModel.self) { firIncomeTypes in
-                let incomeTypes = firIncomeTypes.map { IncomeTypeModel(firebaseModel: $1) }
-                completion(incomeTypes)
+            FirestoreDatabaseService.shared.read(collection: "types", firModel: FIRTypeModel.self) { firTypes in
+                let types = firTypes.map { TypeModel(firebaseModel: $1) }
+                completion(types)
             }
         } else {
-            let incomeTypes = RealmDatabaseService.shared.fetchIncomeTypes().map { IncomeTypeModel(realmModel: $0) }
-            completion(incomeTypes)
+            let types = RealmDatabaseService.shared.fetchTypes().map { TypeModel(realmModel: $0) }
+            completion(types)
         }
     }
     
-    func saveIncomeType(incomeType: IncomeTypeModel, completion: @escaping (Bool) -> Void) {
+    func saveType(type: TypeModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createIncomeType(incomeType: FIRIncomeTypeModel(dataModel: incomeType)) { success in
+            FirestoreDatabaseService.shared.createType(type: FIRTypeModel(dataModel: type)) { success in
                 completion(success)
             }
         } else {
-            RealmDatabaseService.shared.save(model: RealmIncomeTypeModel(dataModel: incomeType))
+            RealmDatabaseService.shared.save(model: RealmTypeModel(dataModel: type))
             completion(true)
         }
     }
     
-    func deleteIncomeType(model: IncomeTypeModel, completion: @escaping (Bool) -> Void) {
+    func deleteType(model: TypeModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "incomeTypes", documentId: model.id)
+            let success = FirestoreDatabaseService.shared.delete(collection: "types", documentId: model.id)
             completion(success)
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmIncomeTypeModel.self, id: model.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmTypeModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
@@ -473,42 +473,42 @@ class DomainDatabaseService: DomainDB {
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "dailySales",
-                                  firModelType: FIRDailySalesModel.self,
-                                  domainModelInit: DailySalesModel.init(firebaseModel:),
-                                  realmModelInit: RealmDailySalesModel.init(dataModel:)) {
+        transferCollectionToRealm(collection: "orders",
+                                  firModelType: FIROrderModel.self,
+                                  domainModelInit: OrderModel.init(firebaseModel:),
+                                  realmModelInit: RealmOrderModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "sales",
-                                  firModelType: FIRSaleGoodModel.self,
-                                  domainModelInit: SaleGoodModel.init(firebaseModel:),
-                                  realmModelInit: RealmSaleGoodModel.init(dataModel:)) {
+        transferCollectionToRealm(collection: "orders",
+                                  firModelType: FIRProductModel.self,
+                                  domainModelInit: ProductModel.init(firebaseModel:),
+                                  realmModelInit: RealmProductModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "purchases",
-                                  firModelType: FIRPurchaseModel.self,
-                                  domainModelInit: PurchaseModel.init(firebaseModel:),
-                                  realmModelInit: RealmPurchaseModel.init(dataModel:)) {
+        transferCollectionToRealm(collection: "costs",
+                                  firModelType: FIRCostModel.self,
+                                  domainModelInit: CostModel.init(firebaseModel:),
+                                  realmModelInit: RealmCostModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "goodsPrice",
-                                  firModelType: FIRGoodsPriceModel.self,
-                                  domainModelInit: GoodsPriceModel.init(firebaseModel:),
-                                  realmModelInit: RealmGoodsPriceModel.init(dataModel:)) {
+        transferCollectionToRealm(collection: "productsPrice",
+                                  firModelType: FIRProductsPriceModel.self,
+                                  domainModelInit: ProductsPriceModel.init(firebaseModel:),
+                                  realmModelInit: RealmProductsPriceModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "incomeTypes",
-                                  firModelType: FIRIncomeTypeModel.self,
-                                  domainModelInit: IncomeTypeModel.init(firebaseModel:),
-                                  realmModelInit: RealmIncomeTypeModel.init(dataModel:)) {
+        transferCollectionToRealm(collection: "types",
+                                  firModelType: FIRTypeModel.self,
+                                  domainModelInit: TypeModel.init(firebaseModel:),
+                                  realmModelInit: RealmTypeModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
@@ -534,7 +534,7 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
-    var dailySalesIdMap: [String: String] = [:]
+    var orderIdMap: [String: String] = [:]
     func transferDataFromRealmToFIR(completion: @escaping () -> Void) {
         
         let dispatchGroup = DispatchGroup()
@@ -546,50 +546,50 @@ class DomainDatabaseService: DomainDB {
         
         dispatchGroup.enter()
         
-        self.transferCollectionToFIR(collection: "dailySales",
-                                     realmModelType: RealmDailySalesModel.self,
-                                     domainModelInit: DailySalesModel.init(realmModel:),
-                                     firModelInit: FIRDailySalesModel.init(dataModel:)) {
+        self.transferCollectionToFIR(collection: "orders",
+                                     realmModelType: RealmOrderModel.self,
+                                     domainModelInit: OrderModel.init(realmModel:),
+                                     firModelInit: FIROrderModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "sales",
-                                     realmModelType: RealmSaleGoodModel.self,
+        self.transferCollectionToFIR(collection: "orders",
+                                     realmModelType: RealmProductModel.self,
                                      domainModelInit: { realmModel in
-            var domainModel = SaleGoodModel(realmModel: realmModel)
+            var domainModel = ProductModel(realmModel: realmModel)
             
-            // Перевіряємо, чи існує відповідний ідентифікатор dailySales в словнику
-            if let newDailySalesId = self.dailySalesIdMap[realmModel.dailySalesId] {
-                domainModel.dailySalesId = newDailySalesId // Встановлюємо правильний ідентифікатор
+            // Перевіряємо, чи існує відповідний ідентифікатор orders в словнику
+            if let newOrderId = self.orderIdMap[realmModel.orderId] {
+                domainModel.orderId = newOrderId // Встановлюємо правильний ідентифікатор
             }
             return domainModel
         },
-                                     firModelInit: FIRSaleGoodModel.init(dataModel:)) {
+                                     firModelInit: FIRProductModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "purchases",
-                                     realmModelType: RealmPurchaseModel.self,
-                                     domainModelInit: PurchaseModel.init(realmModel:),
-                                     firModelInit: FIRPurchaseModel.init(dataModel:)) {
+        self.transferCollectionToFIR(collection: "costs",
+                                     realmModelType: RealmCostModel.self,
+                                     domainModelInit: CostModel.init(realmModel:),
+                                     firModelInit: FIRCostModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "goodsPrice",
-                                     realmModelType: RealmGoodsPriceModel.self,
-                                     domainModelInit: GoodsPriceModel.init(realmModel:),
-                                     firModelInit: FIRGoodsPriceModel.init(dataModel:)) {
+        self.transferCollectionToFIR(collection: "productsPrice",
+                                     realmModelType: RealmProductsPriceModel.self,
+                                     domainModelInit: ProductsPriceModel.init(realmModel:),
+                                     firModelInit: FIRProductsPriceModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "incomeTypes",
-                                     realmModelType: RealmIncomeTypeModel.self,
-                                     domainModelInit: IncomeTypeModel.init(realmModel:),
-                                     firModelInit: FIRIncomeTypeModel.init(dataModel:)) {
+        self.transferCollectionToFIR(collection: "types",
+                                     realmModelType: RealmTypeModel.self,
+                                     domainModelInit: TypeModel.init(realmModel:),
+                                     firModelInit: FIRTypeModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
@@ -611,9 +611,9 @@ class DomainDatabaseService: DomainDB {
                 let domainModel = domainModelInit(realmObject)
                 let firModel = firModelInit(domainModel)
                 let documentId = FirestoreDatabaseService.shared.create(firModel: firModel, collection: collection)
-                if collection == "dailySales" {
-                    let model = domainModel as! DailySalesModel
-                    self.dailySalesIdMap[model.id] = documentId
+                if collection == "orders" {
+                    let model = domainModel as! OrderModel
+                    self.orderIdMap[model.id] = documentId
                 }
                 print("Created docement \(collection) with id - \(String(describing: documentId))")
             }
