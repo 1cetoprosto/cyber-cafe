@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1530"
+   LastUpgradeVersion = "1540"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,8 +16,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "F39A52F027311FDD00C8F2D3"
-               BuildableName = "Cyber-coffe.app"
-               BlueprintName = "Cyber-coffe"
+               BuildableName = "TrackMyCafe Prod.app"
+               BlueprintName = "TrackMyCafe Prod"
                ReferencedContainer = "container:TrackMyCafe.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,8 +45,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F39A52F027311FDD00C8F2D3"
-            BuildableName = "Cyber-coffe.app"
-            BlueprintName = "Cyber-coffe"
+            BuildableName = "TrackMyCafe Prod.app"
+            BlueprintName = "TrackMyCafe Prod"
             ReferencedContainer = "container:TrackMyCafe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -79,8 +79,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "F39A52F027311FDD00C8F2D3"
-            BuildableName = "Cyber-coffe.app"
-            BlueprintName = "Cyber-coffe"
+            BuildableName = "TrackMyCafe Prod.app"
+            BlueprintName = "TrackMyCafe Prod"
             ReferencedContainer = "container:TrackMyCafe.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
