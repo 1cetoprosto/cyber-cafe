@@ -365,19 +365,19 @@ struct _R {
       /// Locales: en, uk
       var allowTechPrintOrders: RswiftResources.StringResource { .init(key: "allowTechPrintOrders", tableName: "Global", source: source, developmentValue: "Allow subordinate technicians to print orders for clients", comment: nil) }
 
-      /// en translation: The current AppleID has no purchases for this lab
+      /// en translation: The current AppleID has no costs for this lab
       ///
       /// Key: appleHasntPurhcase
       ///
       /// Locales: en, uk
-      var appleHasntPurhcase: RswiftResources.StringResource { .init(key: "appleHasntPurhcase", tableName: "Global", source: source, developmentValue: "The current AppleID has no purchases for this lab", comment: nil) }
+      var appleHasntPurhcase: RswiftResources.StringResource { .init(key: "appleHasntPurhcase", tableName: "Global", source: source, developmentValue: "The current AppleID has no costs for this lab", comment: nil) }
 
-      /// en translation: You cannot purchase a subscription for this lab from the current AppleID because this AppleID has already been used for another lab
+      /// en translation: You cannot cost a subscription for this lab from the current AppleID because this AppleID has already been used for another lab
       ///
       /// Key: appleIDReserved
       ///
       /// Locales: en, uk
-      var appleIDReserved: RswiftResources.StringResource { .init(key: "appleIDReserved", tableName: "Global", source: source, developmentValue: "You cannot purchase a subscription for this lab from the current AppleID because this AppleID has already been used for another lab", comment: nil) }
+      var appleIDReserved: RswiftResources.StringResource { .init(key: "appleIDReserved", tableName: "Global", source: source, developmentValue: "You cannot cost a subscription for this lab from the current AppleID because this AppleID has already been used for another lab", comment: nil) }
 
       /// en translation: Archive
       ///
@@ -595,6 +595,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var contactInfo: RswiftResources.StringResource { .init(key: "contactInfo", tableName: "Global", source: source, developmentValue: "Contact Information", comment: nil) }
+
+      /// en translation: Costs resumed successfully
+      ///
+      /// Key: costRestored
+      ///
+      /// Locales: en, uk
+      var costRestored: RswiftResources.StringResource { .init(key: "costRestored", tableName: "Global", source: source, developmentValue: "Costs resumed successfully", comment: nil) }
 
       /// en translation: un.
       ///
@@ -1331,12 +1338,12 @@ struct _R {
       /// Locales: en, uk
       var isDefaultCaster: RswiftResources.StringResource { .init(key: "isDefaultCaster", tableName: "Global", source: source, developmentValue: "Default caster\n(displayed in order by default)", comment: nil) }
 
-      /// en translation: You cannot purchase a subscription for this lab from the current AppleID because this lab is already tied to another AppleID
+      /// en translation: You cannot cost a subscription for this lab from the current AppleID because this lab is already tied to another AppleID
       ///
       /// Key: labReserved
       ///
       /// Locales: en, uk
-      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "You cannot purchase a subscription for this lab from the current AppleID because this lab is already tied to another AppleID", comment: nil) }
+      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "You cannot cost a subscription for this lab from the current AppleID because this lab is already tied to another AppleID", comment: nil) }
 
       /// en translation: Last name
       ///
@@ -1492,12 +1499,12 @@ struct _R {
       /// Locales: en, uk
       var menuStaff: RswiftResources.StringResource { .init(key: "menuStaff", tableName: "Global", source: source, developmentValue: "Staff", comment: nil) }
 
-      /// en translation: The subscription is not active and was purchased on the Android platform. To renew the subscription, the laboratory administrator must log in to the application on the appropriate platform
+      /// en translation: The subscription is not active and was costd on the Android platform. To renew the subscription, the laboratory administrator must log in to the application on the appropriate platform
       ///
       /// Key: menuSubAndroid
       ///
       /// Locales: en, uk
-      var menuSubAndroid: RswiftResources.StringResource { .init(key: "menuSubAndroid", tableName: "Global", source: source, developmentValue: "The subscription is not active and was purchased on the Android platform. To renew the subscription, the laboratory administrator must log in to the application on the appropriate platform", comment: nil) }
+      var menuSubAndroid: RswiftResources.StringResource { .init(key: "menuSubAndroid", tableName: "Global", source: source, developmentValue: "The subscription is not active and was costd on the Android platform. To renew the subscription, the laboratory administrator must log in to the application on the appropriate platform", comment: nil) }
 
       /// en translation: Your subscription has expired. To continue using the application you need to buy a subscription
       ///
@@ -2213,13 +2220,6 @@ struct _R {
       /// Locales: en, uk
       var protesisElements: RswiftResources.StringResource { .init(key: "protesisElements", tableName: "Global", source: source, developmentValue: "Elements of prosthetics", comment: nil) }
 
-      /// en translation: Purchases resumed successfully
-      ///
-      /// Key: purchaseRestored
-      ///
-      /// Locales: en, uk
-      var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchases resumed successfully", comment: nil) }
-
       /// en translation: Please try again
       ///
       /// Key: repeatAgain
@@ -2262,12 +2262,12 @@ struct _R {
       /// Locales: en, uk
       var restartRequiredMsg: RswiftResources.StringResource { .init(key: "restartRequiredMsg", tableName: "Global", source: source, developmentValue: "Please restart the app for the changes to take effect", comment: nil) }
 
-      /// en translation: Restore purchases
+      /// en translation: Restore costs
       ///
-      /// Key: restorePurchases
+      /// Key: restoreCosts
       ///
       /// Locales: en, uk
-      var restorePurchases: RswiftResources.StringResource { .init(key: "restorePurchases", tableName: "Global", source: source, developmentValue: "Restore purchases", comment: nil) }
+      var restoreCosts: RswiftResources.StringResource { .init(key: "restoreCosts", tableName: "Global", source: source, developmentValue: "Restore costs", comment: nil) }
 
       /// en translation: Retry
       ///
@@ -2710,19 +2710,19 @@ struct _R {
       /// Locales: en, uk
       var subscriptionDefaultHeader: RswiftResources.StringResource { .init(key: "subscriptionDefaultHeader", tableName: "Global", source: source, developmentValue: "You can change your subscription to one that is best for your lab at any time", comment: nil) }
 
-      /// en translation: Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a purchased subscription, click "Restore purchases"
+      /// en translation: Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click "Restore costs"
       ///
       /// Key: subscriptionExpiredHeader
       ///
       /// Locales: en, uk
-      var subscriptionExpiredHeader: RswiftResources.StringResource { .init(key: "subscriptionExpiredHeader", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a purchased subscription, click \"Restore purchases\"", comment: nil) }
+      var subscriptionExpiredHeader: RswiftResources.StringResource { .init(key: "subscriptionExpiredHeader", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"", comment: nil) }
 
-      /// en translation: Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once.   After the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.  Payment will be charged to your Apple ID account at the confirmation of purchase. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.
+      /// en translation: Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once.   After the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.  Payment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.
       ///
       /// Key: subscriptionFooter1
       ///
       /// Locales: en, uk
-      var subscriptionFooter1: RswiftResources.StringResource { .init(key: "subscriptionFooter1", tableName: "Global", source: source, developmentValue: "Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once. \n\nAfter the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.\n\nPayment will be charged to your Apple ID account at the confirmation of purchase. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after purchase.", comment: nil) }
+      var subscriptionFooter1: RswiftResources.StringResource { .init(key: "subscriptionFooter1", tableName: "Global", source: source, developmentValue: "Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once. \n\nAfter the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.\n\nPayment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.", comment: nil) }
 
       /// en translation: Removing the app doesn't automatically cancel the subscription.
       ///
@@ -2731,12 +2731,12 @@ struct _R {
       /// Locales: en, uk
       var subscriptionFooter2: RswiftResources.StringResource { .init(key: "subscriptionFooter2", tableName: "Global", source: source, developmentValue: "Removing the app doesn't automatically cancel the subscription.", comment: nil) }
 
-      /// en translation: To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the "Restore Purchases"
+      /// en translation: To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the "Restore Costs"
       ///
       /// Key: subscriptionNeedSubHeader
       ///
       /// Locales: en, uk
-      var subscriptionNeedSubHeader: RswiftResources.StringResource { .init(key: "subscriptionNeedSubHeader", tableName: "Global", source: source, developmentValue: "To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the \"Restore Purchases\"", comment: nil) }
+      var subscriptionNeedSubHeader: RswiftResources.StringResource { .init(key: "subscriptionNeedSubHeader", tableName: "Global", source: source, developmentValue: "To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the \"Restore Costs\"", comment: nil) }
 
       /// en translation: Subscription options
       ///
@@ -2766,12 +2766,12 @@ struct _R {
       /// Locales: en, uk
       var success: RswiftResources.StringResource { .init(key: "success", tableName: "Global", source: source, developmentValue: "Success", comment: nil) }
 
-      /// en translation: Congratulations, you have successfully purchased a subscription
+      /// en translation: Congratulations, you have successfully costd a subscription
       ///
-      /// Key: successPurchase
+      /// Key: successCost
       ///
       /// Locales: en, uk
-      var successPurchase: RswiftResources.StringResource { .init(key: "successPurchase", tableName: "Global", source: source, developmentValue: "Congratulations, you have successfully purchased a subscription", comment: nil) }
+      var successCost: RswiftResources.StringResource { .init(key: "successCost", tableName: "Global", source: source, developmentValue: "Congratulations, you have successfully costd a subscription", comment: nil) }
 
       /// en translation: Sign-in link has been sent to technician's email: %@
       ///
