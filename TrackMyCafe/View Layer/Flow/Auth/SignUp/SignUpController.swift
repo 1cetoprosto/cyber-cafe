@@ -24,6 +24,7 @@ class SignUpController: UIViewController {
     private lazy var emailField: AnimatedTextInput = {
         let field = AnimatedTextInput()
         field.style = AnimatedTextInputStyleLogin()
+        field.backgroundColor = UIColor.TableView.cellBackground
         field.type = .email
         field.placeHolderText = R.string.global.email()
         field.returnKeyType = .next
@@ -36,6 +37,7 @@ class SignUpController: UIViewController {
     private lazy var passwordField: AnimatedTextInput = {
         let field = AnimatedTextInput()
         field.style = AnimatedTextInputStyleLogin()
+        field.backgroundColor = UIColor.TableView.cellBackground
         field.type = .password(toggleable: true)
         field.placeHolderText = R.string.global.password()
         field.returnKeyType = .next
@@ -47,6 +49,7 @@ class SignUpController: UIViewController {
     private lazy var passwordRepeatField: AnimatedTextInput = {
         let field = AnimatedTextInput()
         field.style = AnimatedTextInputStyleLogin()
+        field.backgroundColor = UIColor.TableView.cellBackground
         field.type = .password(toggleable: true)
         field.placeHolderText = R.string.auth.repeatPassword()
         field.returnKeyType = .done
@@ -56,12 +59,8 @@ class SignUpController: UIViewController {
     }()
     
     private lazy var signUpButton: UIButton = {
-        let button = UIButton()
+        let button = DefaultButton()
         button.setTitle(R.string.auth.signUp(), for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.setTitleColor(UIColor.white.withAlphaComponent(0.5), for: .highlighted)
-        button.backgroundColor = UIColor.Button.background
-        button.layer.cornerRadius = 4
         button.height(44)
         button.addTarget(self, action: #selector(signUpAction(_:)), for: .touchUpInside)
         return button

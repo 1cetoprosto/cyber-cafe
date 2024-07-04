@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RealmProductModel: Object {
+class RealmProductModel: Object, DateContainable {
     @Persisted var id: String = ""
     @Persisted var orderId: String = ""
     @Persisted var date = Date()
@@ -17,7 +17,7 @@ class RealmProductModel: Object {
     @Persisted var price: Double = 0.0
     @Persisted var sum: Double = 0.0
     
-    convenience init(dataModel: ProductModel) {
+    convenience init(dataModel: ProductOfOrderModel) {
         self.init()
         self.id = dataModel.id
         self.orderId = dataModel.orderId

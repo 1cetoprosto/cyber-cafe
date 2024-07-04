@@ -9,13 +9,13 @@ import Foundation
 
 protocol DomainDB {
     // Асинхронний метод для оновлення даних про продажі
-    func updateProduct(model: ProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double)
+    func updateProduct(model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double, sum: Double)
     
     // Асинхронний метод для отримання списку продаж за певну дату
-    func fetchProduct(forDate date: Date, completion: @escaping ([ProductModel]) -> Void)
+    func fetchProduct(forDate date: Date, completion: @escaping ([ProductOfOrderModel]) -> Void)
     
     // Асинхронний метод для отримання продажів за певну дату та назву
-    func fetchProduct(forDate date: Date, withName name: String, completion: @escaping (ProductModel?) -> Void)
+    func fetchProduct(forDate date: Date, withName name: String, completion: @escaping (ProductOfOrderModel?) -> Void)
     
     // Асинхронні методи для оновлення та отримання даних про продажі
     func updateOrders(model: OrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double)

@@ -110,7 +110,7 @@ class TypeDetailsViewController: UIViewController {
         type.name = name
         if type.id.isEmpty {
             type.id = UUID().uuidString
-            DomainDatabaseService.shared.saveType(type: type) { success in
+            DomainDatabaseService.shared.saveType(model: type) { success in
                 if !success {
                     PopupFactory.showPopup(title: "Помилка", description: "Failed to save Type") { }
                 }

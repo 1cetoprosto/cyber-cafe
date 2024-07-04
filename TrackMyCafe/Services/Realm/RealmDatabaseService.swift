@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import os.log
 
 class RealmDatabaseService: RealmDB {
     
@@ -16,257 +17,252 @@ class RealmDatabaseService: RealmDB {
     
     private init() {}
     
-    let localRealm = try! Realm()
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "RealmDatabaseService")
+    
+    private let localRealm: Realm = {
+        do {
+            return try Realm()
+        } catch {
+            fatalError("Failed to initialize Realm: \(error)")
+        }
+    }()
+    
+    // MARK: - CRUD Operations
     
     func save<T: Object>(model object: T) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        do {
-            try localRealm.write {
-                localRealm.add(object)
-            }
-        } catch {
-            print(error)
+        executeWrite {
+            localRealm.add(object)
+            logger.log("Saved object of type \(T.self)")
         }
     }
     
     func delete<T: Object>(model object: T) {
-        do {
-            try localRealm.write {
-                localRealm.delete(object)
-            }
-        } catch {
-            print(error)
+        executeWrite {
+            localRealm.delete(object)
+            logger.log("Deleted object of type \(T.self)")
         }
     }
     
-    func printRealmData<T: Object>(modelType: T.Type) {
-        let results = localRealm.objects(modelType)
-        for result in results {
-            for property in result.objectSchema.properties {
-                if let value = result.value(forKey: property.name) {
-                    print("\(property.name): \(value)")
-                }
-            }
-        }
+    func fetchAll<T: Object>(modelType: T.Type) -> [T] {
+        logger.log("Fetched all objects of type \(T.self)")
+        return Array(localRealm.objects(modelType))
     }
     
     func fetchObjectById<T: Object>(ofType: T.Type, id: String) -> T? {
+        logger.log("Fetched object of type \(T.self) with id: \(id, privacy: .public)")
         return localRealm.objects(ofType).filter("id == %@", id).first
     }
-
+    
     func deleteAllData(completion: @escaping () -> Void) {
-        let objectTypes: [Object.Type] = [RealmProductModel.self,
-                                          RealmOrderModel.self,
-                                          RealmProductsPriceModel.self,
-                                          RealmTypeModel.self,
-                                          RealmCostModel.self]
-        
-        try! localRealm.write {
+        executeWrite {
+            let objectTypes: [Object.Type] = [RealmProductModel.self,
+                                              RealmOrderModel.self,
+                                              RealmProductsPriceModel.self,
+                                              RealmTypeModel.self,
+                                              RealmCostModel.self]
+            
             for objectType in objectTypes {
                 let objects = localRealm.objects(objectType)
                 localRealm.delete(objects)
+                logger.log("Deleted all objects of type \(objectType)")
             }
         }
-        print("Deleted all Realm documents")
+        logger.log("Deleted all Realm documents")
         completion()
     }
     
-    // MARK: - Work With Orders Product
+    // MARK: - Utility Methods
+    
+    private func executeWrite(_ block: () -> Void) {
+        do {
+            try localRealm.write {
+                block()
+            }
+        } catch {
+            logger.error("Realm write error: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+    
+    private func createDateRange(for date: Date) -> (start: Date, end: Date) {
+        let start = Calendar.current.startOfDay(for: date)
+        let end = Calendar.current.date(byAdding: DateComponents(day: 1, second: -1), to: start)!
+        return (start, end)
+    }
+    
+    // MARK: - Work with Order Products
     
     func updateProduct(model: RealmProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
-        try! localRealm.write {
+        executeWrite {
             model.date = date
             model.name = name
             model.quantity = quantity
             model.price = price
             model.sum = sum
+            logger.log("Updated product with id: \(model.id, privacy: .public)")
         }
     }
     
-    func fetchProduct() -> [RealmProductModel] {
+    func fetchProducts() -> [RealmProductModel] {
+        logger.log("Fetched all products")
         return Array(localRealm.objects(RealmProductModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchProduct(forDate date: Date) -> [RealmProductModel] {
-        let dateStart = Calendar.current.startOfDay(for: date)
-        let dateEnd: Date = {
-            let components = DateComponents(day: 1, second: -1)
-            return Calendar.current.date(byAdding: components, to: dateStart)!
-        }()
-        
-        let predicateDate = NSPredicate(format: "date BETWEEN %@", [dateStart, dateEnd])
-        
-        return Array(localRealm.objects(RealmProductModel.self).filter(predicateDate).sorted(byKeyPath: "name"))
+    func fetchProducts(forDate date: Date) -> [RealmProductModel] {
+        let (start, end) = createDateRange(for: date)
+        logger.log("Fetched products for date \(date, privacy: .public)")
+        return Array(localRealm.objects(RealmProductModel.self)
+            .filter("date BETWEEN %@", [start, end])
+            .sorted(byKeyPath: "name"))
     }
     
-    func fetchProduct(forDate date: Date, withName name: String) -> RealmProductModel {
-        let dateStart = Calendar.current.startOfDay(for: date)
-        let dateEnd: Date = {
-            let components = DateComponents(day: 1, second: -1)
-            return Calendar.current.date(byAdding: components, to: dateStart)!
-        }()
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND name == %@", [dateStart, dateEnd], name)
-        
-        return localRealm.objects(RealmProductModel.self).filter(predicate).first ?? RealmProductModel()
+    func fetchProduct(forDate date: Date, withName name: String) -> RealmProductModel? {
+        let (start, end) = createDateRange(for: date)
+        logger.log("Fetched product with name \(name, privacy: .public) for date \(date, privacy: .public)")
+        return localRealm.objects(RealmProductModel.self)
+            .filter("date BETWEEN %@ AND name == %@", [start, end], name)
+            .first
     }
     
-    func fetchProduct(withIdOrder id: String) -> [RealmProductModel] {
-        let predicate = NSPredicate(format: "orderId == %@", id)
-        
-        return Array(localRealm.objects(RealmProductModel.self).filter(predicate).sorted(byKeyPath: "name"))
+    func fetchProducts(withOrderId id: String) -> [RealmProductModel] {
+        logger.log("Fetched products for order with id: \(id, privacy: .public)")
+        return Array(localRealm.objects(RealmProductModel.self)
+            .filter("orderId == %@", id)
+            .sorted(byKeyPath: "name"))
     }
     
-    // MARK: - Work With Orders
+    // MARK: - Work with Orders
     
-    func updateOrders(model: RealmOrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double) {
-        try! localRealm.write {
+    func updateOrder(model: RealmOrderModel, date: Date, type: String, total: Double, cashAmount: Double, cardAmount: Double) {
+        executeWrite {
             model.date = date
             model.type = type
             model.sum = total
             model.cash = cashAmount
             model.card = cardAmount
+            logger.log("Updated order with id: \(model.id, privacy: .public)")
         }
     }
-
+    
     func fetchOrders() -> [RealmOrderModel] {
+        logger.log("Fetched all orders")
         return Array(localRealm.objects(RealmOrderModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchSectionsOfOrders() -> [(date: Date, items: [RealmOrderModel])] {
-        let results = localRealm.objects(RealmOrderModel.self).sorted(byKeyPath: "date",  ascending: false)
-        
-        let sections = results
-            .map { item in
-                // get start of a day
-                return Calendar.current.startOfDay(for: item.date)
-            }
-            .reduce([]) { dates, date in
-                // unique sorted array of dates
-                return dates.last == date ? dates : dates + [date]
-            }
-            .compactMap { startDate -> (date: Date, items: [RealmOrderModel])? in
-                // create the end of current day
-                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
-                // filter sorted results by a predicate matching current day
-                let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
-                var orders = [RealmOrderModel]()
-                for item in items {
-                    orders.append(item)
-                }
-                
-                // return a section only if current day is non-empty
-                return items.isEmpty ? nil : (date: startDate, items: orders)
-            }
-        return sections
+    func fetchOrderSections() -> [(date: Date, items: [RealmOrderModel])] {
+        logger.log("Fetched order sections")
+        return fetchSections(ofType: RealmOrderModel.self, sortedByKeyPath: "date")
     }
     
-    func fetchOrder(forOrderModel ordersModel: OrderModel) -> RealmOrderModel? {
-//        let predicate = NSPredicate(format: "id == %@", id)
-//        
-//        return Array(localRealm.objects(RealmProductModel.self).filter(predicate).sorted(byKeyPath: "name"))
-//        return localRealm.object(ofType: RealmOrderModel.self, forPrimaryKey: ordersModel.id)
-        return fetchObjectById(ofType: RealmOrderModel.self, id: ordersModel.id)
-    }
-
-    func fetchOrder(forId id: String) -> RealmOrderModel? {
-        //return localRealm.object(ofType: RealmOrderModel.self, forPrimaryKey: id)
+    func fetchOrder(byId id: String) -> RealmOrderModel? {
+        logger.log("Fetched order with id: \(id, privacy: .public)")
         return fetchObjectById(ofType: RealmOrderModel.self, id: id)
     }
     
-    func fetchOrders(forDate date: Date, ofType type: String?) -> [RealmOrderModel] {
-        let dateStart = Calendar.current.startOfDay(for: date)
-        let dateEnd: Date = {
-            let components = DateComponents(day: 1, second: -1)
-            return Calendar.current.date(byAdding: components, to: dateStart)!
-        }()
-        
-        let predicate = NSPredicate(format: "date BETWEEN %@ AND type == %@", [dateStart, dateEnd], type ?? "Sunday service")
+    func fetchOrders(forDate date: Date, ofType type: String? = nil) -> [RealmOrderModel] {
+        let (start, end) = createDateRange(for: date)
+        let predicate: NSPredicate
+        if let type = type {
+            predicate = NSPredicate(format: "date BETWEEN %@ AND type == %@", [start, end], type)
+            logger.log("Fetched orders for date \(date, privacy: .public) and type \(type, privacy: .public)")
+        } else {
+            predicate = NSPredicate(format: "date BETWEEN %@", [start, end])
+            logger.log("Fetched orders for date \(date, privacy: .public)")
+        }
         return Array(localRealm.objects(RealmOrderModel.self).filter(predicate))
     }
-
-    // MARK: - Work With Product Price
     
-    func updateProductsPrice(model: RealmProductsPriceModel, name: String, price: Double) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
+    // MARK: - Work with Product Prices
+    
+    func updateProductPrice(model: RealmProductsPriceModel, name: String, price: Double) {
+        executeWrite {
             model.name = name
             model.price = price
+            logger.log("Updated product price with id: \(model.id, privacy: .public)")
         }
     }
-
-    func fetchProductsPrice() -> [RealmProductsPriceModel] {
+    
+    func fetchProductPrices() -> [RealmProductsPriceModel] {
+        logger.log("Fetched all product prices")
         return Array(localRealm.objects(RealmProductsPriceModel.self).sorted(byKeyPath: "name"))
     }
     
-    func fetchProductsPrice(forProductPriceModel productPriceModel: ProductsPriceModel) -> RealmProductsPriceModel? {
-        //return localRealm.objects(RealmProductsPriceModel.self).filter("id == %@", productPriceModel.id).first
-        //guard let model = fetchObjectById(modelType: RealmProductsPriceModel.self, id: productPriceModel.id) else { return nil}
-        return fetchObjectById(ofType: RealmProductsPriceModel.self, id: productPriceModel.id)
+    func fetchProductPrice(byId id: String) -> RealmProductsPriceModel? {
+        logger.log("Fetched product price with id: \(id, privacy: .public)")
+        return fetchObjectById(ofType: RealmProductsPriceModel.self, id: id)
     }
     
-    // MARK: - Work With Cost
+    // MARK: - Work with Costs
     
     func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double) {
-        try! localRealm.write {
+        executeWrite {
             model.date = date
             model.name = name
             model.sum = sum
+            logger.log("Updated cost with id: \(model.id, privacy: .public)")
         }
     }
-
+    
     func fetchCosts() -> [RealmCostModel] {
+        logger.log("Fetched all costs")
         return Array(localRealm.objects(RealmCostModel.self).sorted(byKeyPath: "date"))
     }
     
-    func fetchCosts(forCostModel costModel: CostModel) -> RealmCostModel? {
-        //return localRealm.objects(RealmCostModel.self).filter("id == %@", costModel.id).first
-        return fetchObjectById(ofType: RealmCostModel.self, id: costModel.id)
+    func fetchCost(byId id: String) -> RealmCostModel? {
+        logger.log("Fetched cost with id: \(id, privacy: .public)")
+        return fetchObjectById(ofType: RealmCostModel.self, id: id)
     }
     
-    func fetchSectionsOfCosts() -> [(date: Date, items: [RealmCostModel])] {
-        let results = localRealm.objects(RealmCostModel.self).sorted(byKeyPath: "date",  ascending: false)
-        
-        let sections: [(date: Date, items: [RealmCostModel])] = results
-            .map { item in
-                // get start of a day
-                return Calendar.current.startOfDay(for: item.date)
-            }
-            .reduce([]) { dates, date in
-                // unique sorted array of dates
-                return dates.last == date ? dates : dates + [date]
-            }
-            .compactMap { startDate -> (date: Date, items: [RealmCostModel])? in
-                // create the end of current day
-                let endDate = Calendar.current.date(byAdding: .day, value: 1, to: startDate)!
-                // filter sorted results by a predicate matching current day
-                let items = results.filter("(date >= %@) AND (date < %@)", startDate, endDate)
-                var costs = [RealmCostModel]()
-                for item in items {
-                    costs.append(item)
-                }
-                
-                // return a section only if current day is non-empty
-                return items.isEmpty ? nil : (date: startDate, items: costs)
-            }
-        return sections
+    func fetchCostSections() -> [(date: Date, items: [RealmCostModel])] {
+        logger.log("Fetched cost sections")
+        return fetchSections(ofType: RealmCostModel.self, sortedByKeyPath: "date")
     }
     
-    // MARK: - Work With Type
+    // MARK: - Work with Types
     
     func updateType(model: RealmTypeModel, type: String) {
-        print("Realm is located at:", localRealm.configuration.fileURL!)
-        try! localRealm.write {
+        executeWrite {
             model.name = type
+            logger.log("Updated type with id: \(model.id, privacy: .public)")
         }
     }
-
+    
     func fetchTypes() -> [RealmTypeModel] {
+        logger.log("Fetched all types")
         return Array(localRealm.objects(RealmTypeModel.self).sorted(byKeyPath: "name"))
     }
     
-    func fetchTypes(forTypeModel typeModel: TypeModel) -> RealmTypeModel? {
-        //return localRealm.objects(RealmTypeModel.self).filter("id == %@", typeModel.id).first
-        return fetchObjectById(ofType: RealmTypeModel.self, id: typeModel.id)
+    func fetchType(byId id: String) -> RealmTypeModel? {
+        logger.log("Fetched type with id: \(id, privacy: .public)")
+        return fetchObjectById(ofType: RealmTypeModel.self, id: id)
     }
     
+    // MARK: - Generic Methods
+    
+    private func fetchSections<T: Object & DateContainable>(ofType type: T.Type, sortedByKeyPath keyPathString: String) -> [(date: Date, items: [T])] {
+        let results = localRealm.objects(type).sorted(byKeyPath: keyPathString, ascending: false)
+
+        // Створюємо масив дат
+        let dates = results.map { item -> Date in
+            let dateValue = item.value(forKey: keyPathString) as? Date
+            return dateValue.map { Calendar.current.startOfDay(for: $0) } ?? Date()
+        }
+
+        // Видаляємо повторювані дати
+        let uniqueDates = Array(Set(dates)).sorted(by: >)
+
+        // Створюємо масив секцій
+        var sections: [(date: Date, items: [T])] = []
+        for date in uniqueDates {
+            let endDate = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+            let predicate = NSPredicate(format: "(%K >= %@) AND (%K < %@)", keyPathString, date as CVarArg, keyPathString, endDate as CVarArg)
+            let items = results.filter(predicate)
+            if !items.isEmpty {
+                sections.append((date: date, items: Array(items)))
+            }
+        }
+
+        logger.log("Fetched sections for type \(type)")
+        return sections
+    }
+
 }

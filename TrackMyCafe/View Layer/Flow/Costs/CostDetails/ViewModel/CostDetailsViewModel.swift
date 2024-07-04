@@ -28,7 +28,7 @@ class CostDetailsViewModel: CostDetailsViewModelType {
             
         if cost.id.isEmpty {
             cost.id = UUID().uuidString
-            DomainDatabaseService.shared.saveCost(cost: cost) { success in
+            DomainDatabaseService.shared.saveCost(model: cost) { success in
                 if success {
                     print("Cost saved successfully")
                 } else {

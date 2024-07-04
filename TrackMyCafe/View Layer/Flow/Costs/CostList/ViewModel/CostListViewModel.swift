@@ -67,7 +67,7 @@ class CostListViewModel: CostListViewModelType {
     func deleteCostModel(atIndexPath indexPath: IndexPath) {
         guard let model = getCostModel(atIndexPath: indexPath) else { return }
         
-        DomainDatabaseService.shared.deleteCost(cost: model) { success in
+        DomainDatabaseService.shared.deleteCost(model: model) { success in
             if success {
                 print("Costs deleted successfully")
             } else {

@@ -118,7 +118,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         models.append(Section(title: "General", option: options))
         
         models.append(Section(title: "Orders", option: [
-            .staticCell(model: SettingsStaticOption(title: "Products",
+            .staticCell(model: SettingsStaticOption(title: "Price",
                                                     icon: UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: .systemBrown) {
                                                         self.navigationController?.pushViewController(ProductListViewController(), animated: true)
@@ -127,7 +127,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                     icon: UIImage(systemName: "banknote.fill"),
                                                     iconBackgroundColor: .systemGreen) {
                                                         self.navigationController?.pushViewController(TypesListViewController(), animated: true)
-                                                    })
+                                                    })//,
+//            .staticCell(model: SettingsStaticOption(title: "Personal",
+//                                                    icon: UIImage(systemName: "banknote.fill"),
+//                                                    iconBackgroundColor: .systemGreen) {
+//                                                        self.navigationController?.pushViewController(PersonsListViewController(), animated: true)
+//                                                    })
             
         ]))
         
@@ -223,7 +228,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         PopupFactory.showPopup(
             title: "Перенесення даних",
             description: "Перенести накопиченні данні, чи розпочати все спочатку?",
-            buttonTitle: R.string.global.confirm(),
+            buttonTitle: R.string.global.transfer(),
             buttonAction: { [weak self] in
                 SVProgressHUD.show(withStatus: "Триває перенесення даних...")
                 
