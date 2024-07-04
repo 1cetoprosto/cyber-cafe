@@ -9,7 +9,7 @@ import Foundation
 
 class ProductListItemViewModel: ProductListItemViewModelType {
     
-    private var product: ProductModel
+    private var product: ProductOfOrderModel
     private var atIndex: Int
     
     var productLabel: String { return product.name}
@@ -20,7 +20,7 @@ class ProductListItemViewModel: ProductListItemViewModelType {
     
     var productStepperTag: Int { return atIndex}
     
-    init(product: ProductModel, for atIndex: Int) {
+    init(product: ProductOfOrderModel, for atIndex: Int) {
         self.product = product
         self.atIndex = atIndex
     }

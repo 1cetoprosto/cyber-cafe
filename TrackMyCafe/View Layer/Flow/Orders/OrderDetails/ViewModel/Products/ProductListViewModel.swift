@@ -10,7 +10,7 @@ import Foundation
 class ProductListViewModel: ProductListViewModelType {
     
     private var selectedIndexPath: IndexPath?
-    private var products = [ProductModel]()
+    private var products = [ProductOfOrderModel]()
     
     func getProducts(withIdOrder id: String, completion: @escaping () -> Void) {
         
@@ -22,7 +22,7 @@ class ProductListViewModel: ProductListViewModelType {
             if products.isEmpty {
                 DomainDatabaseService.shared.fetchProductsPrice { productsPrice in
                     for productPrice in productsPrice {
-                        let product = ProductModel(id: "",
+                        let product = ProductOfOrderModel(id: "",
                                                      orderId: id,
                                                      date: Date(),
                                                      name: productPrice.name,
