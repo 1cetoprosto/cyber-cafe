@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Використовуйте %@ для швидкої авторизації", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 395 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 396 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -2465,19 +2465,19 @@ struct _R {
       /// Locales: en, uk
       var staff_sectionCaster: RswiftResources.StringResource { .init(key: "staff_sectionCaster", tableName: "Global", source: source, developmentValue: "Casters", comment: nil) }
 
-      /// en translation: Moderators
+      /// en translation: Senior waiters
       ///
-      /// Key: staff_sectionMod
+      /// Key: staff_sectionSeniorWaiter
       ///
       /// Locales: en, uk
-      var staff_sectionMod: RswiftResources.StringResource { .init(key: "staff_sectionMod", tableName: "Global", source: source, developmentValue: "Moderators", comment: nil) }
+      var staff_sectionSeniorWaiter: RswiftResources.StringResource { .init(key: "staff_sectionSeniorWaiter", tableName: "Global", source: source, developmentValue: "Senior waiters", comment: nil) }
 
-      /// en translation: Technicians
+      /// en translation: Waiters
       ///
-      /// Key: staff_sectionTech
+      /// Key: staff_sectionWaiter
       ///
       /// Locales: en, uk
-      var staff_sectionTech: RswiftResources.StringResource { .init(key: "staff_sectionTech", tableName: "Global", source: source, developmentValue: "Technicians", comment: nil) }
+      var staff_sectionWaiter: RswiftResources.StringResource { .init(key: "staff_sectionWaiter", tableName: "Global", source: source, developmentValue: "Waiters", comment: nil) }
 
       /// en translation: Start date
       ///
@@ -2485,6 +2485,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var startDate: RswiftResources.StringResource { .init(key: "startDate", tableName: "Global", source: source, developmentValue: "Start date", comment: nil) }
+
+      /// en translation: Start over
+      ///
+      /// Key: startOver
+      ///
+      /// Locales: en, uk
+      var startOver: RswiftResources.StringResource { .init(key: "startOver", tableName: "Global", source: source, developmentValue: "Start over", comment: nil) }
 
       /// en translation: Start:
       ///

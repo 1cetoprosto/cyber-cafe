@@ -132,7 +132,7 @@ class DomainDatabaseService: DomainDB {
             let model = RealmProductModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Order product saved to Realm successfully")
+            logger.log("Order product saved to Realm successfully")
             completion(true)
         }
     }
@@ -269,7 +269,7 @@ class DomainDatabaseService: DomainDB {
             let model = RealmOrderModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Orders saved to Realm successfully")
+            logger.log("Orders saved to Realm successfully")
             completion(model.id)
         }
     }
@@ -467,7 +467,7 @@ class DomainDatabaseService: DomainDB {
             }
         } else {
             RealmDatabaseService.shared.save(model: RealmCostModel(dataModel: model))
-            print("Cost saved to Realm successfully")
+            logger.log("Cost saved to Realm successfully")
             completion(true)
         }
     }
@@ -577,18 +577,28 @@ class DomainDatabaseService: DomainDB {
     
     // MARK: - delete Operations
     
-    func deleteAllData(completion: @escaping () -> Void) {
+    func deleteActiveDatabaseData(completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.deleteAllData {
-                print("All data deleted successfully from Firestore database")
-                completion()
+            FirestoreDatabaseService.shared.deleteAllData { success in
+                if success {
+                    self.logger.log("All data deleted successfully from Firestore database")
+                    completion(true)
+                } else {
+                    self.logger.log("Failed to delete data from Firestore database")
+                    completion(false)
+                }
             }
         } else {
-            RealmDatabaseService.shared.deleteAllData {
-                print("All data deleted successfully from Realm database")
-                completion()
+            RealmDatabaseService.shared.deleteAllData { success in
+                if success {
+                    self.logger.log("All data deleted successfully from Realm database")
+                    completion(true)
+                } else {
+                    self.logger.log("Failed to delete data from Realm database")
+                    completion(false)
+                }
             }
         }
     }
@@ -601,7 +611,7 @@ class DomainDatabaseService: DomainDB {
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        RealmDatabaseService.shared.deleteAllData {
+        RealmDatabaseService.shared.deleteAllData { success in
             dispatchGroup.leave()
         }
         
@@ -707,7 +717,7 @@ class DomainDatabaseService: DomainDB {
         
         // Спочатку видаляємо всі дані з Firestore
         deleteDispatchGroup.enter()
-        FirestoreDatabaseService.shared.deleteAllData {
+        FirestoreDatabaseService.shared.deleteAllData {_ in
             deleteDispatchGroup.leave()
         }
         
@@ -755,7 +765,7 @@ class DomainDatabaseService: DomainDB {
             }
             
             transferDispatchGroup.notify(queue: .main) {
-                RealmDatabaseService.shared.deleteAllData {
+                RealmDatabaseService.shared.deleteAllData {_ in
                     completion()
                 }
             }

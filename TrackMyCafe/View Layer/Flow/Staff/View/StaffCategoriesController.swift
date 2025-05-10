@@ -10,13 +10,13 @@ import UIKit
 class StaffCategoriesController: UITableViewController {
     
     enum Category: CaseIterable {
-        case tech
-        case moder
+        case waiter
+        case seniorWaiter
         
         var name: String {
             switch self {
-                case .tech: return R.string.global.staff_sectionTech()
-                case .moder: return R.string.global.staff_sectionMod()
+                case .waiter: return R.string.global.staff_sectionWaiter()
+                case .seniorWaiter: return R.string.global.staff_sectionSeniorWaiter()
             }
         }
     }
@@ -25,12 +25,11 @@ class StaffCategoriesController: UITableViewController {
         super.viewDidLoad()
         title = R.string.global.menuStaff()
         
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        
         tableView.register(baseCell: PersonTableViewCell.self)
         tableView.tableFooterView = UIView()
-    }
-    
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        60
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -38,15 +37,13 @@ class StaffCategoriesController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueBaseCell(PersonTableViewCell.self, for: indexPath)
         if indexPath.item == 0 {
-            let cell = tableView.dequeueBaseCell(PersonTableViewCell.self, for: indexPath)
             cell.setup(RequestManager.shared.admin)
             return cell
         }
-        
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
         cell.textLabel?.text = Category.allCases[indexPath.row - 1].name
-        cell.textLabel?.font = .systemFont(ofSize: 19, weight: .medium)
+        cell.textLabel?.textColor = UIColor.Main.text
         return cell
     }
     
@@ -57,10 +54,10 @@ class StaffCategoriesController: UITableViewController {
             return
         }
         switch Category.allCases[indexPath.row - 1] {
-            case .tech:
+            case .waiter:
                 let controller = TechniciansListController()
                 navigationController?.pushViewController(controller, animated: true)
-            case .moder:
+            case .seniorWaiter:
                 let controller = ModeratorListController()
                 navigationController?.pushViewController(controller, animated: true)
         }

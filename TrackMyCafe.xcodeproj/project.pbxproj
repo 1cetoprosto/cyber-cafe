@@ -71,6 +71,9 @@
 		F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
+		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
+		F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
+		F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
 		F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */; };
 		F3821C7A27EAEA8B006D40FC /* OrderListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */; };
 		F3821C7C27EAEB04006D40FC /* OrderDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7B27EAEB04006D40FC /* OrderDetailsViewModelType.swift */; };
@@ -106,6 +109,9 @@
 		F385B4292C1DA60A00973CAA /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4282C1DA60A00973CAA /* Subscription.swift */; };
 		F38707D92BE5FBB900B6F313 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */; };
 		F38707DC2BE600EB00B6F313 /* Stevia in Frameworks */ = {isa = PBXBuildFile; productRef = F38707DB2BE600EB00B6F313 /* Stevia */; };
+		F38EE5162C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
+		F38EE5172C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
+		F38EE5182C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
 		F3988ADC27EB111600215976 /* CostListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADB27EB111600215976 /* CostListViewModelType.swift */; };
 		F3988ADE27EB11EB00215976 /* CostListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADD27EB11EB00215976 /* CostListItemViewModelType.swift */; };
 		F3988AE027EB12E100215976 /* CostDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADF27EB12E100215976 /* CostDetailsViewModelType.swift */; };
@@ -555,6 +561,7 @@
 		F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
+		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
 		F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModelType.swift; sourceTree = "<group>"; };
 		F3821C7B27EAEB04006D40FC /* OrderDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsViewModelType.swift; sourceTree = "<group>"; };
@@ -582,6 +589,7 @@
 		F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		F38707DE2BE620E600B6F313 /* Cyber-coffe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cyber-coffe.entitlements"; sourceTree = "<group>"; };
 		F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "API Donate-cafe.md"; sourceTree = "<group>"; };
+		F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffCategoriesTableViewCell.swift; sourceTree = "<group>"; };
 		F3988ADB27EB111600215976 /* CostListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostListViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADD27EB11EB00215976 /* CostListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADF27EB12E100215976 /* CostDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostDetailsViewModelType.swift; sourceTree = "<group>"; };
@@ -768,6 +776,7 @@
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */,
 				F3E357E72BEFA203005050CB /* Domain */,
 				F3E357EC2BEFD745005050CB /* Realm */,
 				F39B5D2D28472E7A000F7D43 /* FIR */,
@@ -1311,8 +1320,7 @@
 		F385B4162C1D8FA700973CAA /* Staff */ = {
 			isa = PBXGroup;
 			children = (
-				F385B4172C1D8FCC00973CAA /* StaffCategoriesController.swift */,
-				F385B4192C1D8FEB00973CAA /* Technician */,
+				F38EE5132C39395600933E67 /* View */,
 			);
 			path = Staff;
 			sourceTree = "<group>";
@@ -1334,6 +1342,24 @@
 				F38707DE2BE620E600B6F313 /* Cyber-coffe.entitlements */,
 			);
 			path = Entitlements;
+			sourceTree = "<group>";
+		};
+		F38EE5132C39395600933E67 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F38EE5142C39396900933E67 /* Cells */,
+				F385B4172C1D8FCC00973CAA /* StaffCategoriesController.swift */,
+				F385B4192C1D8FEB00973CAA /* Technician */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F38EE5142C39396900933E67 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F39A52E827311FDD00C8F2D3 = {
@@ -2185,6 +2211,7 @@
 				F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F316A2F3273803CE0083E830 /* ProductListViewController.swift in Sources */,
 				F3410EB22BDD408B0007157B /* Settings.swift in Sources */,
+				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
 				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
@@ -2230,6 +2257,7 @@
 				F3821C8227EAEB97006D40FC /* OrderListItemViewModelType.swift in Sources */,
 				F385B40C2C1D7DDD00973CAA /* UIKitFactory.swift in Sources */,
 				F3A640BC2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
+				F38EE5162C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F316A2FB273808100083E830 /* UIFont+Extension.swift in Sources */,
 				F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */,
 			);
@@ -2320,6 +2348,7 @@
 				F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B339E62C0B22FE0073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60E2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
 				F3B339E82C0B22FE0073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B339E92C0B22FE0073F19A /* Role.swift in Sources */,
@@ -2365,6 +2394,7 @@
 				F3B33A092C0B22FE0073F19A /* OrderListItemViewModelType.swift in Sources */,
 				F3B33A0A2C0B22FE0073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BD2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
+				F38EE5172C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F3F6A6272C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
 				F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */,
 			);
@@ -2455,6 +2485,7 @@
 				F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B33A852C0B23450073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60F2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,
 				F3B33A872C0B23450073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B33A882C0B23450073F19A /* Role.swift in Sources */,
@@ -2500,6 +2531,7 @@
 				F3B33AA82C0B23450073F19A /* OrderListItemViewModelType.swift in Sources */,
 				F3B33AA92C0B23450073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BE2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
+				F38EE5182C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F3F6A6282C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
 				F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */,
 			);

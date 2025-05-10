@@ -8,7 +8,7 @@
 import UIKit
 import RealmSwift
 
-class ProductListViewController: UIViewController {
+class ProductListViewController: UIViewController, Loggable {
 
     //let localRealm = try! Realm()
     //var productsArray: Results<RealmProductsPriceModel>!
@@ -105,14 +105,14 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
         let model = productsPrice[indexPath.row]
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
-            DomainDatabaseService.shared.deleteProductsPrice(model: model) { success in
+            DomainDatabaseService.shared.deleteProductsPrice(model: model) { [self] success in
                 if success {
-                    print("productsPrice type deleted successfully")
+                    logger.notice("productsPrice type \(model.id) deleted successfully")
                     self.configure()
                     
                     tableView.reloadData()
                 } else {
-                    print("Failed to delete productsPrice")
+                    logger.error("Failed to delete productsPrice \(model.id)")
                 }
             }
         }

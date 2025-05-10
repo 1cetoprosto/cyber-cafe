@@ -18,6 +18,7 @@
 "change" = "Змінити";
 "confirm" = "Підтвердити";
 "transfer" = "Перенести";
+"startOver" = "Все спочатку";
 
 "resetAll" = "Скинути всі";
 
@@ -87,8 +88,8 @@
 "menuContextExit" = "Вихід";
 
 // MARK: - Staff Section
-"staff_sectionTech" = "Зубні техніки";
-"staff_sectionMod" = "Модератори";
+"staff_sectionWaiter" = "Офіціанти";
+"staff_sectionSeniorWaiter" = "Старші офіціанти";
 "staff_sectionCaster" = "Ливарники";
 "staff_sectionCadCam" = "CAD CAM-и";
 

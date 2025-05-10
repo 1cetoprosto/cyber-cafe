@@ -11,20 +11,36 @@ import SVProgressHUD
 
 class AdminDetailsController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate {
     
-    private var tableView: UITableView!
-    private var admin: Admin {
-        return RequestManager.shared.admin
-    }
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        
+        //tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        return tableView
+    }()
+    
+//    private var admin: Admin {
+//        return RequestManager.shared.admin
+//    }
+    private var admin: Admin?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.Main.background
         setupNavigationBar()
-        setupTableView()
+        tableView.dataSource = self
+        tableView.delegate = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateForm), name: .adminInfoReload, object: nil)
         
-        updateForm()
+        loadAdminData {
+            self.updateForm()
+        }
+        
+        setConstraints()
     }
     
     private func setupNavigationBar() {
@@ -33,11 +49,11 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         ]
     }
     
-    private func setupTableView() {
-        tableView = UITableView(frame: view.bounds, style: .grouped)
-        tableView.dataSource = self
-        tableView.delegate = self
-        view.addSubview(tableView)
+    private func loadAdminData(completion: @escaping () -> Void) {
+        RequestManager.shared.listenToAdmin { [weak self] in
+            self?.admin = RequestManager.shared.admin
+            completion()
+        }
     }
     
     @objc private func updateForm() {
@@ -84,16 +100,26 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let admin = admin else {
+            return UITableViewCell()
+        }
+        
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             cell.textLabel?.text = admin.fullName
+            cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = R.string.global.adminPrivilege()
             // Load image from admin.avatarThumbnailUrl if needed
             return cell
         case (1, 0):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             cell.textLabel?.text = R.string.global.phone()
+            cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.phone ?? R.string.global.noSpecified()
             if let phone = admin.phone, !phone.isEmpty {
                 cell.accessoryView = UIImageView(image: R.image.call())
@@ -104,7 +130,10 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
             return cell
         case (1, 1):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             cell.textLabel?.text = R.string.global.email()
+            cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.email
             if admin.email.isValid(regex: .email) && MFMailComposeViewController.canSendMail() {
                 cell.accessoryView = UIImageView(image: R.image.mail())
@@ -115,13 +144,19 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
             return cell
         case (1, 2):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             cell.textLabel?.text = R.string.global.address()
+            cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.address?.nilIfEmpty ?? R.string.global.noSpecified()
             cell.selectionStyle = .none
             return cell
         case (2, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             cell.textLabel?.text = admin.comment?.nilIfEmpty ?? R.string.global.noSpecified()
+            cell.textLabel?.textColor = UIColor.Main.text
             cell.selectionStyle = .none
             return cell
         default:
@@ -148,6 +183,10 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
     }
     
     func sendMail() {
+        guard let admin = admin else {
+            return
+        }
+        
         let mail = MFMailComposeViewController()
         mail.mailComposeDelegate = self
         mail.setToRecipients([admin.email])
@@ -161,5 +200,20 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
     
     func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         controller.dismiss(animated: true)
+    }
+}
+
+// MARK: Constraints
+extension AdminDetailsController {
+    func setConstraints() {
+
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
     }
 }

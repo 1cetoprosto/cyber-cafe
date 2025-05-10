@@ -34,7 +34,7 @@ extension Date {
     }
 }
 
-class IAPManager: NSObject {
+class IAPManager: NSObject, Loggable {
     
     static let shared = IAPManager()
     
@@ -114,7 +114,7 @@ class IAPManager: NSObject {
                         if purchase.needsFinishTransaction {
                             SwiftyStoreKit.finishTransaction(purchase.transaction)
                         }
-                        print("\(purchase.transaction.transactionState.debugDescription): \(purchase.productId)")
+                    self.logger.notice("\(purchase.transaction.transactionState.debugDescription): \(purchase.productId)")
                     case .failed, .purchasing, .deferred:
                         break // do nothing
                     @unknown default:
@@ -135,7 +135,7 @@ class IAPManager: NSObject {
 //                        let receiptAdapter = IAPReceiptAdapterLocalValidation(receipt)
 //                        completion?(receiptAdapter)
 //                    } else {
-//                        print("ERROR")
+//                        logger.log("ERROR")
 //                        completion?(nil)
 //                    }
 //                case .error(let error):

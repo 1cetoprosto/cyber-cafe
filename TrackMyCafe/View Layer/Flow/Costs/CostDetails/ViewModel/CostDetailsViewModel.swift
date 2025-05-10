@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CostDetailsViewModel: CostDetailsViewModelType {
+class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
     
     private var cost: CostModel
     //var newModel: Bool
@@ -28,11 +28,11 @@ class CostDetailsViewModel: CostDetailsViewModelType {
             
         if cost.id.isEmpty {
             cost.id = UUID().uuidString
-            DomainDatabaseService.shared.saveCost(model: cost) { success in
+            DomainDatabaseService.shared.saveCost(model: cost) { [self] success in
                 if success {
-                    print("Cost saved successfully")
+                    logger.notice("Cost \(cost.id) saved successfully")
                 } else {
-                    print("Failed to save Cost")
+                    logger.error("Failed to save Cost \(cost.id)")
                 }
             }
         } else {
