@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OrderDetailsViewModel: OrderDetailsViewModelType {
+class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
     private var order: OrderModel
     private var types: [TypeModel]  = []
@@ -48,14 +48,14 @@ class OrderDetailsViewModel: OrderDetailsViewModelType {
             card: card?.double ?? 0.0
         )
         
-        DomainDatabaseService.shared.saveOrder(order: order) { documentId in
+        DomainDatabaseService.shared.saveOrder(order: order) { [self] documentId in
             guard let documentId = documentId else {
-                print("Failed to save order")
+                logger.error("Failed to save order")
                 return
             }
             self.order.id = documentId
             completion()
-            print("Order saved successfully")
+            logger.notice("Order \(documentId) saved successfully")
         }
     }
     

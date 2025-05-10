@@ -7,10 +7,10 @@
 
 import Foundation
 
-class ProductListViewModel: ProductListViewModelType {
+class ProductListViewModel: ProductListViewModelType, Loggable {
     
     private var selectedIndexPath: IndexPath?
-    private var products = [ProductModel]()
+    private var products = [ProductOfOrderModel]()
     
     func getProducts(withIdOrder id: String, completion: @escaping () -> Void) {
         
@@ -22,7 +22,7 @@ class ProductListViewModel: ProductListViewModelType {
             if products.isEmpty {
                 DomainDatabaseService.shared.fetchProductsPrice { productsPrice in
                     for productPrice in productsPrice {
-                        let product = ProductModel(id: "",
+                        let product = ProductOfOrderModel(id: "",
                                                      orderId: id,
                                                      date: Date(),
                                                      name: productPrice.name,
@@ -79,11 +79,11 @@ class ProductListViewModel: ProductListViewModelType {
         for var order in products {
             order.orderId = id
             order.date = date
-            DomainDatabaseService.shared.saveProduct(order: order) { success in
+            DomainDatabaseService.shared.saveProduct(order: order) { [self] success in
                 if success {
-                    print("Order saved successfully")
+                    logger.notice("Order \(order.id) saved successfully")
                 } else {
-                    print("Failed to save order")
+                    logger.error("Failed to save order \(order.id)")
                 }
             }
         }
@@ -105,9 +105,9 @@ class ProductListViewModel: ProductListViewModelType {
             for product in ordersProducts {
                 DomainDatabaseService.shared.deleteProduct(order: product) { success in
                     if success {
-                        print("Delete order successfully")
+                        logger.notice("Delete order \(product.id) successfully")
                     } else {
-                        print("Failed to delete order")
+                        logger.error("Failed to delete order \(product.id)")
                     }
                 }
             }

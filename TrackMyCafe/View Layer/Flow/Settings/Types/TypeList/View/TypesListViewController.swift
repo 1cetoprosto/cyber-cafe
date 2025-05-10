@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import RealmSwift
 
-class TypesListViewController: UIViewController {
+class TypesListViewController: UIViewController, Loggable {
 
     var types = [TypeModel]()
     
@@ -107,14 +107,14 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
         
         let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, _ in
             
-            DomainDatabaseService.shared.deleteType(model: model) { success in
+            DomainDatabaseService.shared.deleteType(model: model) { [self] success in
                 if success {
-                    print("Type deleted successfully")
+                    logger.notice("Type \(model.id) deleted successfully")
                     self.configure()
                     
                     tableView.reloadData()
                 } else {
-                    print("Failed to delete type")
+                    logger.error("Failed to delete type \(model.id)")
                 }
             }
         }

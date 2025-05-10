@@ -7,7 +7,7 @@
 
 import Foundation
 
-class CostListViewModel: CostListViewModelType {
+class CostListViewModel: CostListViewModelType, Loggable {
     private var selectedIndexPath: IndexPath?
     private var sectionsCosts: [(date: Date, items: [CostModel])]?
     
@@ -67,11 +67,11 @@ class CostListViewModel: CostListViewModelType {
     func deleteCostModel(atIndexPath indexPath: IndexPath) {
         guard let model = getCostModel(atIndexPath: indexPath) else { return }
         
-        DomainDatabaseService.shared.deleteCost(cost: model) { success in
+        DomainDatabaseService.shared.deleteCost(model: model) { success in
             if success {
-                print("Costs deleted successfully")
+                self.logger.notice("Costs \(model.id) deleted successfully")
             } else {
-                print("Failed to delete costs")
+                self.logger.error("Failed to delete costs \(model.id)")
             }
         }
     }

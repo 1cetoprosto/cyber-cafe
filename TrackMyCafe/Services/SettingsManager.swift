@@ -40,4 +40,8 @@ class SettingsManager {
     func loadOnline() -> Bool {
         return UserSession.current.hasOnlineVersion
     }
+    
+    func loadUserEmail() -> String {
+        return UserSession.current.userEmail ?? "Not Autorized"
+    }
 }

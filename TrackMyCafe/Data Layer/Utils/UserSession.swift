@@ -52,7 +52,7 @@ class UserSession {
             case .administrator:
                 return masterUserRef
             case .technician, .techMod, .moderator:
-                return "" //RequestManager.shared.technicians.first { $0.email == userEmail }!.firebaseRef // TODO: розкоментувати
+                return RequestManager.shared.technicians.first { $0.email == userEmail }!.firebaseRef
         }
     }
     
@@ -63,9 +63,9 @@ class UserSession {
         UserSession.current.role = roleConfig.role
         UserSession.current.userRef = roleConfig.userRef
         UserSession.current.dataRef = roleConfig.dataRef
-        UserSession.current.rememberUser = rememberUser
+        UserSession.current.rememberUser = true //rememberUser
         UserSession.current.masterUserRef = roleConfig.dataRef
-        UserSession.current.hasOnlineVersion = roleConfig.hasOnlineVersion
+        UserSession.current.hasOnlineVersion = true//roleConfig.hasOnlineVersion
         UserSession.current.save()
         
         //IAPManager.shared.completeTransactions() //TODO: розкоментувати тут щось повязане із покупками
@@ -92,7 +92,7 @@ class UserSession {
     
     func save() {
         guard rememberUser else { return }
-         let chain = Keychain()
+        let chain = Keychain()
         do {
             try chain.set(userId, key: "KeychainSessionUserId")
             try chain.set(userEmail, key: "KeychainSessionUserEmail")
@@ -141,34 +141,46 @@ class UserSession {
     }
 
     public func saveOnline(_ isOn: Bool) {
-        hasOnlineVersion = isOn
-        UserSession.current.save()
+        let chain = Keychain()
+        do {
+            hasOnlineVersion = isOn
+            try chain.set(hasOnlineVersion ? "true" : "false", key: "KeychainSessionUserHasOnlineVersion")
+        }
+        catch {
+            //remove()
+            print(error)
+        }
     }
     
     static func logOut() {
         do {
             try Auth.auth().signOut()
             deleteSession()
-//            UserSession.current.remove()
-//            print("Deleted Session (Logout) hasOnlineVersion - \(UserSession.current.hasOnlineVersion)")
-//            if UserSession.current.hasOnlineVersion {
-//                let isValidSession = UserSession.current.restore()
-//                if isValidSession {
-//                    UserSession.current.remove()
-//                }
-            }
-            catch {
-                print(error)
+            if UserSession.current.hasOnlineVersion {
+                UserSession.current.saveOnline(false)
+//                let navigation = UINavigationController(rootViewController: SignInController())
+//                navigation.setNavigationBarHidden(true, animated: false)
+//                SceneDelegate.shared.set(root: navigation)
+//                //logger.log("Deleted Session (Logout) hasOnlineVersion - \(UserSession.current.hasOnlineVersion)")
+//                //            if UserSession.current.hasOnlineVersion {
+                                let isValidSession = UserSession.current.restore()
+                                if isValidSession {
+                                    UserSession.current.remove()
+                                }
             }
         }
+        catch {
+            print(error)
+        }
+    }
     
     static func deleteSession() {
-        //RequestManager.shared.resetData() // TODO: розкоментувати
+        RequestManager.shared.resetData()
         UserSession.current.remove()
-        let navigation = UINavigationController(rootViewController: SignInController())
-        navigation.setNavigationBarHidden(true, animated: false)
-        //AppDelegate.shared.set(root: navigation)
-        SceneDelegate.shared.set(root: navigation)
+//        let navigation = UINavigationController(rootViewController: MainTabBarController())
+//        navigation.setNavigationBarHidden(true, animated: false)
+//        //AppDelegate.shared.set(root: navigation)
+//        SceneDelegate.shared.set(root: navigation)
     }
 }
 

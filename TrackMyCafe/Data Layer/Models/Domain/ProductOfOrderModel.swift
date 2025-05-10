@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductModel {
+struct ProductOfOrderModel {
     var id: String
     var orderId: String
     var date: Date

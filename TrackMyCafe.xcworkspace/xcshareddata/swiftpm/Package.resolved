@@ -1,5 +1,5 @@
 {
-  "originHash" : "0396f3ac653d16b9dd30f610b24a9f3852d266546330cc5afa273e1b2747281d",
+  "originHash" : "cab74dba8b8a3c1842b2d20764a436e5c4d096e9c468ab7a2d01f5f7da096aeb",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -17,6 +17,15 @@
       "state" : {
         "revision" : "076b241a625e25eac22f8849be256dfb960fcdfe",
         "version" : "10.19.1"
+      }
+    },
+    {
+      "identity" : "asn1swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tikhop/ASN1Swift",
+      "state" : {
+        "revision" : "403cd95194e6a962e16db7c0d373d89fce83e0f7",
+        "version" : "1.2.7"
       }
     },
     {
@@ -89,6 +98,15 @@
       "state" : {
         "branch" : "master",
         "revision" : "e0c7eebc5a4465a3c4680764f26b7a61f567cdaf"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "2ef543ee21d63734e1c004ad6c870255e8716c50",
+        "version" : "7.12.0"
       }
     },
     {
@@ -173,12 +191,30 @@
       }
     },
     {
+      "identity" : "swiftystorekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/bizz84/SwiftyStoreKit.git",
+      "state" : {
+        "revision" : "9ce911639680113dac9b554d6243e406a9758ebe",
+        "version" : "0.16.4"
+      }
+    },
+    {
       "identity" : "tinyconstraints",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/roberthein/TinyConstraints.git",
       "state" : {
         "revision" : "3262e5c591d4ab6272255df2087a01bbebd138dc",
         "version" : "4.0.2"
+      }
+    },
+    {
+      "identity" : "tpinappreceipt",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tikhop/TPInAppReceipt.git",
+      "state" : {
+        "revision" : "e135055eaeba5a52874b7f9b290f42890cbe981f",
+        "version" : "3.4.1"
       }
     }
   ],

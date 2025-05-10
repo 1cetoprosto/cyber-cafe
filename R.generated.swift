@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Використовуйте %@ для швидкої авторизації", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 394 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 396 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -595,13 +595,6 @@ struct _R {
       ///
       /// Locales: en, uk
       var contactInfo: RswiftResources.StringResource { .init(key: "contactInfo", tableName: "Global", source: source, developmentValue: "Contact Information", comment: nil) }
-
-      /// en translation: Costs resumed successfully
-      ///
-      /// Key: costRestored
-      ///
-      /// Locales: en, uk
-      var costRestored: RswiftResources.StringResource { .init(key: "costRestored", tableName: "Global", source: source, developmentValue: "Costs resumed successfully", comment: nil) }
 
       /// en translation: un.
       ///
@@ -2220,6 +2213,13 @@ struct _R {
       /// Locales: en, uk
       var protesisElements: RswiftResources.StringResource { .init(key: "protesisElements", tableName: "Global", source: source, developmentValue: "Elements of prosthetics", comment: nil) }
 
+      /// en translation: Purchases resumed successfully
+      ///
+      /// Key: purchaseRestored
+      ///
+      /// Locales: en, uk
+      var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchases resumed successfully", comment: nil) }
+
       /// en translation: Please try again
       ///
       /// Key: repeatAgain
@@ -2262,12 +2262,12 @@ struct _R {
       /// Locales: en, uk
       var restartRequiredMsg: RswiftResources.StringResource { .init(key: "restartRequiredMsg", tableName: "Global", source: source, developmentValue: "Please restart the app for the changes to take effect", comment: nil) }
 
-      /// en translation: Restore costs
+      /// en translation: Restore purchases
       ///
-      /// Key: restoreCosts
+      /// Key: restorePurchases
       ///
       /// Locales: en, uk
-      var restoreCosts: RswiftResources.StringResource { .init(key: "restoreCosts", tableName: "Global", source: source, developmentValue: "Restore costs", comment: nil) }
+      var restorePurchases: RswiftResources.StringResource { .init(key: "restorePurchases", tableName: "Global", source: source, developmentValue: "Restore purchases", comment: nil) }
 
       /// en translation: Retry
       ///
@@ -2465,19 +2465,19 @@ struct _R {
       /// Locales: en, uk
       var staff_sectionCaster: RswiftResources.StringResource { .init(key: "staff_sectionCaster", tableName: "Global", source: source, developmentValue: "Casters", comment: nil) }
 
-      /// en translation: Moderators
+      /// en translation: Senior waiters
       ///
-      /// Key: staff_sectionMod
+      /// Key: staff_sectionSeniorWaiter
       ///
       /// Locales: en, uk
-      var staff_sectionMod: RswiftResources.StringResource { .init(key: "staff_sectionMod", tableName: "Global", source: source, developmentValue: "Moderators", comment: nil) }
+      var staff_sectionSeniorWaiter: RswiftResources.StringResource { .init(key: "staff_sectionSeniorWaiter", tableName: "Global", source: source, developmentValue: "Senior waiters", comment: nil) }
 
-      /// en translation: Technicians
+      /// en translation: Waiters
       ///
-      /// Key: staff_sectionTech
+      /// Key: staff_sectionWaiter
       ///
       /// Locales: en, uk
-      var staff_sectionTech: RswiftResources.StringResource { .init(key: "staff_sectionTech", tableName: "Global", source: source, developmentValue: "Technicians", comment: nil) }
+      var staff_sectionWaiter: RswiftResources.StringResource { .init(key: "staff_sectionWaiter", tableName: "Global", source: source, developmentValue: "Waiters", comment: nil) }
 
       /// en translation: Start date
       ///
@@ -2485,6 +2485,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var startDate: RswiftResources.StringResource { .init(key: "startDate", tableName: "Global", source: source, developmentValue: "Start date", comment: nil) }
+
+      /// en translation: Start over
+      ///
+      /// Key: startOver
+      ///
+      /// Locales: en, uk
+      var startOver: RswiftResources.StringResource { .init(key: "startOver", tableName: "Global", source: source, developmentValue: "Start over", comment: nil) }
 
       /// en translation: Start:
       ///
@@ -2768,10 +2775,10 @@ struct _R {
 
       /// en translation: Congratulations, you have successfully costd a subscription
       ///
-      /// Key: successCost
+      /// Key: successPurchase
       ///
       /// Locales: en, uk
-      var successCost: RswiftResources.StringResource { .init(key: "successCost", tableName: "Global", source: source, developmentValue: "Congratulations, you have successfully costd a subscription", comment: nil) }
+      var successPurchase: RswiftResources.StringResource { .init(key: "successPurchase", tableName: "Global", source: source, developmentValue: "Congratulations, you have successfully costd a subscription", comment: nil) }
 
       /// en translation: Sign-in link has been sent to technician's email: %@
       ///
@@ -2892,6 +2899,13 @@ struct _R {
       /// Locales: en, uk
       var titleRequired: RswiftResources.StringResource { .init(key: "titleRequired", tableName: "Global", source: source, developmentValue: "Title is required", comment: nil) }
 
+      /// en translation: Transfer
+      ///
+      /// Key: transfer
+      ///
+      /// Locales: en, uk
+      var transfer: RswiftResources.StringResource { .init(key: "transfer", tableName: "Global", source: source, developmentValue: "Transfer", comment: nil) }
+
       /// en translation: Types of prosthetics
       ///
       /// Key: typesElements
@@ -2986,7 +3000,7 @@ struct _R {
     var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 14 images.
+  /// This `_R.image` struct is generated, and contains static references to 19 images.
   struct image {
     let bundle: Foundation.Bundle
 
@@ -3017,14 +3031,29 @@ struct _R {
     /// Image `back`.
     var back: RswiftResources.ImageResource { .init(name: "back", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
+    /// Image `call`.
+    var call: RswiftResources.ImageResource { .init(name: "call", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
     /// Image `checkmark`.
     var checkmark: RswiftResources.ImageResource { .init(name: "checkmark", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `delete`.
+    var delete: RswiftResources.ImageResource { .init(name: "delete", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `edit`.
+    var edit: RswiftResources.ImageResource { .init(name: "edit", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `exit`.
     var exit: RswiftResources.ImageResource { .init(name: "exit", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `face-id`.
     var faceId: RswiftResources.ImageResource { .init(name: "face-id", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `mail`.
+    var mail: RswiftResources.ImageResource { .init(name: "mail", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `profile-placeholder`.
+    var profilePlaceholder: RswiftResources.ImageResource { .init(name: "profile-placeholder", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `set-password`.
     var setPassword: RswiftResources.ImageResource { .init(name: "set-password", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
