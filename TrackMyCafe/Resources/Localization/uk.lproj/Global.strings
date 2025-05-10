@@ -17,6 +17,8 @@
 "search" = "Пошук";
 "change" = "Змінити";
 "confirm" = "Підтвердити";
+"transfer" = "Перенести";
+"startOver" = "Все спочатку";
 
 "resetAll" = "Скинути всі";
 
@@ -86,8 +88,8 @@
 "menuContextExit" = "Вихід";
 
 // MARK: - Staff Section
-"staff_sectionTech" = "Зубні техніки";
-"staff_sectionMod" = "Модератори";
+"staff_sectionWaiter" = "Офіціанти";
+"staff_sectionSeniorWaiter" = "Старші офіціанти";
 "staff_sectionCaster" = "Ливарники";
 "staff_sectionCadCam" = "CAD CAM-и";
 
@@ -441,18 +443,18 @@
 "subscriptionFooter2" = "Видалення програми автоматично не скасовує підписку.";
 
 "manageSubscriptions" = "Керувати підписками";
-"restoreCosts" = "Відновити покупки";
+"restorePurchases" = "Відновити покупки";
 
 "currentSubscription" = "Ваша поточна підписка";
 "subscriptionOptions" = "Варіанти підписки";
 
-"costRestored" = "Покупки успішно відновлено";
+"purchaseRestored" = "Покупки успішно відновлено";
 "appleHasntPurhcase" = "Поточний AppleID не має покупок для даної лабораторії";
 
 "appleIDReserved" = "Ви не можете купити підписку для цієї лабораторії з поточного AppleID, тому що цей AppleID вже використано для іншої лабораторії";
 "labReserved" = "Ви не можете купити підписку для цієї лабораторії з поточного AppleID, тому що ця лабораторія вже привязана до іншого AppleID";
 
-"successCost" = "Вітаємо, ви успішно купили підписку";
+"successPurchase" = "Вітаємо, ви успішно купили підписку";
 
 "hasPremiumPlan" = "У вас Преміум підписка, вам не потрібно купувати або змінювати підписку";
 

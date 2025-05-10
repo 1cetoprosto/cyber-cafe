@@ -17,7 +17,7 @@ struct FIRProductModel: Codable {
     var price: Double = 0.0
     var amount: Double = 0.0
     
-    init(dataModel: ProductModel) {
+    init(dataModel: ProductOfOrderModel) {
         self.id = dataModel.id
         self.orderId = dataModel.orderId
         self.date = dataModel.date

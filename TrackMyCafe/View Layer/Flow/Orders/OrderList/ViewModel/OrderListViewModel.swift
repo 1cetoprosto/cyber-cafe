@@ -7,7 +7,7 @@
 
 import Foundation
 
-class OrderListViewModel: OrderListViewModelType {
+class OrderListViewModel: OrderListViewModelType, Loggable {
     
     private var selectedIndexPath: IndexPath?
     private var sectionsOrders: [(date: Date, items: [OrderModel])]?
@@ -69,12 +69,10 @@ class OrderListViewModel: OrderListViewModelType {
         
         DomainDatabaseService.shared.deleteOrder(order: model) { success in
             if success {
-                print("Orders deleted successfully")
+                self.logger.notice("Order \(model.id) deleted successfully")
             } else {
-                print("Failed to delete orders")
+                self.logger.error("Failed to delete order \(model.id)")
             }
         }
-        
-        
     }
 }

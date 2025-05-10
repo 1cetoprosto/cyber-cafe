@@ -8,9 +8,9 @@
 import Foundation
 import RealmSwift
 
-class RealmOrderModel: Object {
+class RealmOrderModel: Object, DateContainable {
     @Persisted var id: String// = ""
-    @Persisted var date: Date
+    @Persisted var date: Date = Date()
     @Persisted var type: String// = "Sunday"
     @Persisted var sum: Double// = 0.0
     @Persisted var cash: Double// = 0.0

@@ -17,6 +17,8 @@
 "search" = "Search";
 "change" = "Change";
 "confirm" = "Confirm";
+"transfer" = "Transfer";
+"startOver" = "Start over";
 
 "resetAll" = "Reset All";
 
@@ -86,8 +88,8 @@
 "menuContextExit" = "Exit";
 
 // MARK: - Staff Section
-"staff_sectionTech" = "Technicians";
-"staff_sectionMod" = "Moderators";
+"staff_sectionWaiter" = "Waiters";
+"staff_sectionSeniorWaiter" = "Senior waiters";
 "staff_sectionCaster" = "Casters";
 "staff_sectionCadCam" = "CAD CAM's";
 
@@ -441,18 +443,18 @@
 "subscriptionFooter2" = "Removing the app doesn't automatically cancel the subscription.";
 
 "manageSubscriptions" = "Manage subscriptions";
-"restoreCosts" = "Restore costs";
+"restorePurchases" = "Restore purchases";
 
 "currentSubscription" = "Your current subscription";
 "subscriptionOptions" = "Subscription options";
 
-"costRestored" = "Costs resumed successfully";
+"purchaseRestored" = "Purchases resumed successfully";
 "appleHasntPurhcase" = "The current AppleID has no costs for this lab";
 
 "appleIDReserved" = "You cannot cost a subscription for this lab from the current AppleID because this AppleID has already been used for another lab";
 "labReserved" = "You cannot cost a subscription for this lab from the current AppleID because this lab is already tied to another AppleID";
 
-"successCost" = "Congratulations, you have successfully costd a subscription";
+"successPurchase" = "Congratulations, you have successfully costd a subscription";
 
 "hasPremiumPlan" = "You have a Premium subscription, you do not need to buy or change the subscription";
 

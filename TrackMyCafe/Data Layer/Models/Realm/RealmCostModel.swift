@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class RealmCostModel: Object, Decodable {
+class RealmCostModel: Object, Decodable, DateContainable {
     @Persisted var id: String = ""
     @Persisted var date: Date = Date()
     @Persisted var name: String = ""

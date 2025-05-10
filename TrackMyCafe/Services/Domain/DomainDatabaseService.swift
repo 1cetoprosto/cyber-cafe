@@ -7,10 +7,12 @@
 
 import Foundation
 import RealmSwift
+import os.log
 
 class DomainDatabaseService: DomainDB {
     
     static let shared = DomainDatabaseService()
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "DomainDatabaseService")
     
     // Метод для перевірки, чи включений режим онлайн
     private func isOnlineModeEnabled() -> Bool {
@@ -19,7 +21,7 @@ class DomainDatabaseService: DomainDB {
     
     // MARK: - Product Operations
     
-    func updateProduct(model: ProductModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
+    func updateProduct(model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double, sum: Double) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
@@ -30,10 +32,13 @@ class DomainDatabaseService: DomainDB {
             updatedModel.price = price
             updatedModel.amount = sum
             
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "orders", documentId: model.id) {
-                print("Order product updated successfully in Firestore database")
-            } else {
-                print("Failed to update order product in Firestore database")
+            FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "productOfOrders", documentId: model.id) { result in
+                switch result {
+                case .success():
+                    self.logger.info("Order product updated successfully in Firestore database")
+                case .failure(let error):
+                    self.logger.error("Failed to update order product in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
             guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductModel.self, id: model.id) else { return }
@@ -41,80 +46,111 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
-    // Асинхронний метод для отримання списку продаж
-    func fetchProduct(forDate date: Date, completion: @escaping ([ProductModel]) -> Void) {
+    func fetchProduct(forDate date: Date, completion: @escaping ([ProductOfOrderModel]) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.readOrdersOfProducts { firProducts in
-                let ordersProduct = firProducts.map { ProductModel(firebaseModel: $0.1) }
-                completion(ordersProduct)
-            }
-        } else {
-            let ordersProduct = RealmDatabaseService.shared.fetchProduct(forDate: date)
-                .map { ProductModel(realmModel: $0) }
-            completion(ordersProduct)
-        }
-    }
-    
-    func fetchProduct(forDate date: Date, withName name: String, completion: @escaping (ProductModel?) -> Void) {
-        let isOnline = isOnlineModeEnabled()
-        
-        if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIRProductModel.self) { firOrder in
-                let ordersProduct = firOrder.map { ProductModel(firebaseModel: $1) }
-                let filteredProduct = ordersProduct.first { $0.date == date && $0.name == name }
-                completion(filteredProduct)
-            }
-        } else {
-            let product = RealmDatabaseService.shared.fetchProduct(forDate: date, withName: name)
-            completion(ProductModel(realmModel: product))
-        }
-    }
-    
-    func fetchProduct(withOrderId id: String, completion: @escaping ([ProductModel]) -> Void) {
-        let isOnline = isOnlineModeEnabled()
-        
-        if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIRProductModel.self) { firOrder in
-                let ordersProduct = firOrder.map { ProductModel(firebaseModel: $1) }
-                let filteredProduct = ordersProduct.filter { $0.orderId == id }
-                completion(filteredProduct)
-            }
-        } else {
-            let ordersProduct = RealmDatabaseService.shared.fetchProduct(withIdOrder: id)
-                .map { ProductModel(realmModel: $0) }
-            completion(ordersProduct)
-        }
-    }
-    
-    func saveProduct(order: ProductModel, completion: @escaping (Bool) -> Void) {
-        let isOnline = isOnlineModeEnabled()
-        
-        if isOnline {
-            FirestoreDatabaseService.shared.createOrdersOfProducts(order: FIRProductModel(dataModel: order)) { success in
-                if success {
-                    print("Order product saved to Firestore successfully")
-                } else {
-                    print("Failed to save order product to Firestore")
+            FirestoreDatabaseService.shared.read(collection: "productOfOrders", firModel: FIRProductModel.self) { result in
+                switch result {
+                case .success(let firProducts):
+                    let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+                    completion(ordersProduct)
+                case .failure(let error):
+                    self.logger.error("Error fetching products from Firestore: \(error.localizedDescription)")
+                    completion([])
                 }
-                completion(success)
+            }
+        } else {
+            let ordersProduct = RealmDatabaseService.shared.fetchProducts()
+                .map { ProductOfOrderModel(realmModel: $0) }
+            completion(ordersProduct)
+        }
+    }
+    
+    
+    func fetchProduct(forDate date: Date, withName name: String, completion: @escaping (ProductOfOrderModel?) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.read(collection: "productOfOrders", firModel: FIRProductModel.self) { result in
+                switch result {
+                case .success(let firProducts):
+                    let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+                    let filteredProduct = ordersProduct.first { $0.date == date && $0.name == name }
+                    completion(filteredProduct)
+                case .failure(let error):
+                    self.logger.error("Error fetching products from Firestore: \(error.localizedDescription)")
+                    completion(nil)
+                }
+            }
+        } else {
+            if let product = RealmDatabaseService.shared.fetchProduct(forDate: date, withName: name) {
+                completion(ProductOfOrderModel(realmModel: product))
+            } else {
+                completion(nil)
+            }
+        }
+    }
+    
+    func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.read(collection: "productOfOrders", firModel: FIRProductModel.self) { result in
+                switch result {
+                case .success(let firProducts):
+                    let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+                    let filteredProduct = ordersProduct.filter { $0.orderId == id }
+                    completion(filteredProduct)
+                case .failure(let error):
+                    self.logger.error("Error fetching products from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
+            }
+        } else {
+            let ordersProduct = RealmDatabaseService.shared.fetchProducts(withOrderId: id)
+                .map { ProductOfOrderModel(realmModel: $0) }
+            completion(ordersProduct)
+        }
+    }
+    
+    func saveProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void) {
+        let isOnline = isOnlineModeEnabled()
+        
+        if isOnline {
+            FirestoreDatabaseService.shared.create(firModel: FIRProductModel(dataModel: order), collection: "productOfOrders") { result in
+                switch result {
+                case .success:
+                    self.logger.info("Order product saved to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to save order product to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
             }
         } else {
             let model = RealmProductModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Order product saved to Realm successfully")
+            logger.log("Order product saved to Realm successfully")
             completion(true)
         }
     }
     
-    func deleteProduct(order: ProductModel, completion: @escaping (Bool) -> Void) {
+    func deleteProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id)
-            completion(success)
+            FirestoreDatabaseService.shared.delete(collection: "productOfOrders", documentId: order.id) { result in
+                switch result {
+                case .success:
+                    self.logger.info("Order product deleted to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to delete order product to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
+            }
         } else {
             guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductModel.self, id: order.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
@@ -134,14 +170,17 @@ class DomainDatabaseService: DomainDB {
             updatedModel.sum = total
             updatedModel.cash = cashAmount
             updatedModel.card = cardAmount
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "orders", documentId: model.id) {
-                print("Order product updated successfully in Firestore database")
-            } else {
-                print("Failed to update order product in Firestore database")
+            FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "orders", documentId: model.id) { result in
+                switch result {
+                case .success():
+                    self.logger.info("Order updated successfully in Firestore database")
+                case .failure(let error):
+                    self.logger.error("Failed to update order in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchOrder(forOrderModel: model) else { return }
-            RealmDatabaseService.shared.updateOrders(model: updatedModel, date: date, type: type, total: total, cashAmount: cashAmount, cardAmount: cardAmount)
+            guard let updatedModel = RealmDatabaseService.shared.fetchOrder(byId: model.id) else { return }
+            RealmDatabaseService.shared.updateOrder(model: updatedModel, date: date, type: type, total: total, cashAmount: cashAmount, cardAmount: cardAmount)
         }
     }
     
@@ -149,9 +188,15 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
-                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
-                completion(orders)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { result in
+                switch result {
+                case .success(let firOrders):
+                    let orders = firOrders.map { OrderModel(firebaseModel: $1) }
+                    completion(orders)
+                case .failure(let error):
+                    self.logger.error("Error fetching products from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
             }
         } else {
             let orders = RealmDatabaseService.shared.fetchOrders().map { OrderModel(realmModel: $0) }
@@ -163,47 +208,45 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
-                let calendar = Calendar.current
-                let groupedOrders = Dictionary(grouping: firOrders.map { OrderModel(firebaseModel: $1) }, by: { order -> Date in
-                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: order.date)
-                    return calendar.date(from: dateComponents)!
-                })
-                let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
-                    .sorted { $0.date < $1.date }
-                completion(sections)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { result in
+                switch result {
+                case .success(let firOrders):
+                    let calendar = Calendar.current
+                    let groupedOrders = Dictionary(grouping: firOrders.map { OrderModel(firebaseModel: $1) }, by: { order -> Date in
+                        let dateComponents = calendar.dateComponents([.year, .month, .day], from: order.date)
+                        return calendar.date(from: dateComponents)!
+                    })
+                    let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
+                        .sorted { $0.date < $1.date }
+                    completion(sections)
+                case .failure(let error):
+                    self.logger.error("Error fetching orders from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
             }
         } else {
-            let sections = RealmDatabaseService.shared.fetchSectionsOfOrders().map { (date: $0.date, items: $0.items.map { OrderModel(realmModel: $0) }) }
+            let sections = RealmDatabaseService.shared.fetchOrderSections().map { (date: $0.date, items: $0.items.map { OrderModel(realmModel: $0) }) }
             completion(sections)
         }
     }
-    
-    //    func fetchOrders(forDate date: Date, ofType type: String?, completion: @escaping ([OrderModel]) -> Void) {
-    //        let isOnline = isOnlineModeEnabled()
-    //
-    //        if isOnline {
-    //            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firOrders in
-    //                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
-    //                completion(orders.filter { $0.date == date && (type == nil || $0.type == type) })
-    //            }
-    //        } else {
-    //            let orders = RealmDatabaseService.shared.fetchOrders(forDate: date, ofType: type).map { OrderModel(realmModel: $0) }
-    //            completion(orders)
-    //        }
-    //    }
     
     func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { firorders in
-                let orders = firorders.map { OrderModel(firebaseModel: $1) }
-                completion(orders.filter { $0.id == id }
-                    .first)
+            FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) { result in
+                switch result {
+                case .success(let firOrders):
+                    let orders = firOrders.map { OrderModel(firebaseModel: $1) }
+                    completion(orders.filter { $0.id == id }
+                        .first)
+                case .failure(let error):
+                    self.logger.error("Error fetching orders from Firestore: \(error.localizedDescription)")
+                    completion(nil)
+                }
             }
         } else {
-            guard let order = RealmDatabaseService.shared.fetchOrder(forId: id) else { return }
+            guard let order = RealmDatabaseService.shared.fetchOrder(byId: id) else { return }
             completion(OrderModel(realmModel: order))
         }
     }
@@ -212,19 +255,21 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createOrder(order: FIROrderModel(dataModel: order)) { documentId in
-                if documentId != nil {
-                    print("Dayily Order saved to Firestore successfully")
-                } else {
-                    print("Failed to save dayily order to Firestore")
+            FirestoreDatabaseService.shared.create(firModel: FIROrderModel(dataModel: order), collection: "orders") { result in
+                switch result {
+                case .success(let documentId):
+                    self.logger.info("Order saved to Firestore successfully")
+                    completion(documentId)
+                case .failure(let error):
+                    self.logger.error("Failed to save order to Firestore with error: \(error.localizedDescription)")
+                    completion(nil)
                 }
-                completion(documentId)
             }
         } else {
             let model = RealmOrderModel(dataModel: order)
             model.id = UUID().uuidString
             RealmDatabaseService.shared.save(model: model)
-            print("Orders saved to Realm successfully")
+            logger.log("Orders saved to Realm successfully")
             completion(model.id)
         }
     }
@@ -233,8 +278,16 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id)
-            completion(success)
+            FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id) { result in
+                switch result {
+                case .success:
+                    self.logger.info("Order deleted to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to delete order to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
+            }
         } else {
             guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmOrderModel.self, id: order.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
@@ -248,15 +301,20 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRProductsPriceModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "productsPrice", documentId: model.id) {
-                print("Product price updated successfully in Firestore database")
-            } else {
-                print("Failed to update Product price in Firestore database")
+            var updatedModel = FIRProductsPriceModel(dataModel: model)
+            updatedModel.name = name
+            updatedModel.price = price
+            FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "productsPrice", documentId: model.id) { result in
+                switch result {
+                case .success():
+                    self.logger.info("Product price updated successfully in Firestore database")
+                case .failure(let error):
+                    self.logger.error("Failed to update Product price in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchProductsPrice(forProductPriceModel: model) else { return }
-            RealmDatabaseService.shared.updateProductsPrice(model: updatedModel, name: name, price: price)
+            guard let updatedModel = RealmDatabaseService.shared.fetchProductPrice(byId: model.id) else { return }
+            RealmDatabaseService.shared.updateProductPrice(model: updatedModel, name: name, price: price)
         }
     }
     
@@ -264,12 +322,18 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "productsPrice", firModel: FIRProductsPriceModel.self) { firProductsPrices in
-                let productsPrices = firProductsPrices.map { ProductsPriceModel(firebaseModel: $1) }
-                completion(productsPrices)
+            FirestoreDatabaseService.shared.read(collection: "productsPrice", firModel: FIRProductsPriceModel.self) { result in
+                switch result {
+                case .success(let firProductsPrices):
+                    let productsPrices = firProductsPrices.map { ProductsPriceModel(firebaseModel: $1) }
+                    completion(productsPrices)
+                case .failure(let error):
+                    self.logger.error("Error fetching productsPrice from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
             }
         } else {
-            let productsPrices = RealmDatabaseService.shared.fetchProductsPrice().map { ProductsPriceModel(realmModel: $0) }
+            let productsPrices = RealmDatabaseService.shared.fetchProductPrices().map { ProductsPriceModel(realmModel: $0) }
             completion(productsPrices)
         }
     }
@@ -278,8 +342,15 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createProduct(product: FIRProductsPriceModel(dataModel: productPrice)) { success in
-                completion(success)
+            FirestoreDatabaseService.shared.create(firModel: FIRProductsPriceModel(dataModel: productPrice), collection: "productsPrice") { result in
+                switch result {
+                case .success(_):
+                    self.logger.info("productsPrice saved to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to save productsPrice to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
             }
         } else {
             RealmDatabaseService.shared.save(model: RealmProductsPriceModel(dataModel: productPrice))
@@ -291,8 +362,16 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "productsPrice", documentId: model.id)
-            completion(success)
+            FirestoreDatabaseService.shared.delete(collection: "productsPrice", documentId: model.id) { result in
+                switch result {
+                case .success:
+                    self.logger.info("productsPrice deleted to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to productsPrice order to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
+            }
         } else {
             guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmProductsPriceModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
@@ -306,14 +385,20 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRCostModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "costs", documentId: model.id) {
-                print("Cost updated successfully in Firestore database")
-            } else {
-                print("Failed to update Cost in Firestore database")
+            var updatedModel = FIRCostModel(dataModel: model)
+            updatedModel.date = date
+            updatedModel.name = name
+            updatedModel.sum = sum
+            FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "costs", documentId: model.id) { result in
+                switch result {
+                case .success():
+                    self.logger.info("Cost updated successfully in Firestore database")
+                case .failure(let error):
+                    self.logger.error("Failed to update Cost in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
-            guard let updatedModel = RealmDatabaseService.shared.fetchCosts(forCostModel: model) else { return }
+            guard let updatedModel = RealmDatabaseService.shared.fetchCost(byId: model.id) else { return }
             RealmDatabaseService.shared.updateCost(model: updatedModel, date: date, name: name, sum: sum)
         }
     }
@@ -322,10 +407,17 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { firCosts in
-                let costs = firCosts.map { CostModel(firebaseModel: $1) }
-                completion(costs)
+            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { result in
+                switch result {
+                case .success(let firCosts):
+                    let costs = firCosts.map { CostModel(firebaseModel: $1) }
+                    completion(costs)
+                case .failure(let error):
+                    self.logger.error("Error fetching costs from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
             }
+            
         } else {
             let costs = RealmDatabaseService.shared.fetchCosts().map { CostModel(realmModel: $0) }
             completion(costs)
@@ -336,50 +428,66 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { firCosts in
-                let calendar = Calendar.current
-                let groupedCosts = Dictionary(grouping: firCosts.map { CostModel(firebaseModel: $1) },
+            FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) { result in
+                switch result {
+                case .success(let firCosts):
+                    let calendar = Calendar.current
+                    let groupedCosts = Dictionary(grouping: firCosts.map { CostModel(firebaseModel: $1) },
                                                   by: { cost -> Date in
-                    let dateComponents = calendar.dateComponents([.year, .month, .day], from: cost.date)
-                    return calendar.date(from: dateComponents)!
-                })
-                let sections = groupedCosts.map { (date: $0.key, items: $0.value) }
-                    .sorted { $0.date < $1.date }
-                completion(sections)
+                        let dateComponents = calendar.dateComponents([.year, .month, .day], from: cost.date)
+                        return calendar.date(from: dateComponents)!
+                    })
+                    let sections = groupedCosts.map { (date: $0.key, items: $0.value) }
+                        .sorted { $0.date < $1.date }
+                    completion(sections)
+                case .failure(let error):
+                    self.logger.error("Error fetching costs Sections from Firestore: \(error.localizedDescription)")
+                    completion([])
+                }
             }
         } else {
-            let sections = RealmDatabaseService.shared.fetchSectionsOfCosts().map { (date: $0.date, items: $0.items.map { CostModel(realmModel: $0) }) }
+            let sections = RealmDatabaseService.shared.fetchCostSections().map { (date: $0.date, items: $0.items.map { CostModel(realmModel: $0) }) }
             completion(sections)
         }
     }
     
-    func saveCost(cost: CostModel, completion: @escaping (Bool) -> Void) {
+    func saveCost(model: CostModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createCost(cost: FIRCostModel(dataModel: cost)) { success in
-                if success {
-                    print("Cost saved to Firestore successfully")
-                } else {
-                    print("Failed to save Cost to Firestore")
+            FirestoreDatabaseService.shared.create(firModel: FIRCostModel(dataModel: model), collection: "costs") { result in
+                switch result {
+                case .success(_):
+                    self.logger.info("Cost saved to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to save Cost to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
                 }
-                completion(success)
             }
         } else {
-            RealmDatabaseService.shared.save(model: RealmCostModel(dataModel: cost))
-            print("Cost saved to Realm successfully")
+            RealmDatabaseService.shared.save(model: RealmCostModel(dataModel: model))
+            logger.log("Cost saved to Realm successfully")
             completion(true)
         }
     }
     
-    func deleteCost(cost: CostModel, completion: @escaping (Bool) -> Void) {
+    func deleteCost(model: CostModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "costs", documentId: cost.id)
-            completion(success)
+            FirestoreDatabaseService.shared.delete(collection: "costs", documentId: model.id) { result in
+                switch result {
+                case .success:
+                    self.logger.info("costs deleted to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to delete costs order to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
+            }
         } else {
-            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmCostModel.self, id: cost.id) else { return }
+            guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmCostModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
             completion(true)
         }
@@ -391,11 +499,15 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let updatedModel = FIRTypeModel(dataModel: model)
-            if FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "types", documentId: model.id) {
-                print("Type updated successfully in Firestore database")
-            } else {
-                print("Failed to update Type in Firestore database")
+            var updatedModel = FIRTypeModel(dataModel: model)
+            updatedModel.name = type
+            FirestoreDatabaseService.shared.update(firModel: updatedModel, collection: "types", documentId: model.id) { result in
+                switch result {
+                case .success():
+                    self.logger.info("Type updated successfully in Firestore database")
+                case .failure(let error):
+                    self.logger.error("Failed to update Type in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
             guard let updatedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmTypeModel.self, id: model.id) else { return }
@@ -407,9 +519,14 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.read(collection: "types", firModel: FIRTypeModel.self) { firTypes in
-                let types = firTypes.map { TypeModel(firebaseModel: $1) }
-                completion(types)
+            FirestoreDatabaseService.shared.read(collection: "types", firModel: FIRTypeModel.self) { result in
+                switch result {
+                case .success(let firTypes):
+                    let types = firTypes.map { TypeModel(firebaseModel: $1) }
+                    completion(types)
+                case .failure(let error):
+                    self.logger.error("Failed to fetch Types in Firestore database: \(error.localizedDescription)")
+                }
             }
         } else {
             let types = RealmDatabaseService.shared.fetchTypes().map { TypeModel(realmModel: $0) }
@@ -417,15 +534,22 @@ class DomainDatabaseService: DomainDB {
         }
     }
     
-    func saveType(type: TypeModel, completion: @escaping (Bool) -> Void) {
+    func saveType(model: TypeModel, completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.createType(type: FIRTypeModel(dataModel: type)) { success in
-                completion(success)
+            FirestoreDatabaseService.shared.create(firModel: FIRTypeModel(dataModel: model), collection: "types") { result in
+                switch result {
+                case .success(_):
+                    self.logger.info("Types saved to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to save Types to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
             }
         } else {
-            RealmDatabaseService.shared.save(model: RealmTypeModel(dataModel: type))
+            RealmDatabaseService.shared.save(model: RealmTypeModel(dataModel: model))
             completion(true)
         }
     }
@@ -434,8 +558,16 @@ class DomainDatabaseService: DomainDB {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            let success = FirestoreDatabaseService.shared.delete(collection: "types", documentId: model.id)
-            completion(success)
+            FirestoreDatabaseService.shared.delete(collection: "types", documentId: model.id) { result in
+                switch result {
+                case .success:
+                    self.logger.info("Types deleted to Firestore successfully")
+                    completion(true)
+                case .failure(let error):
+                    self.logger.error("Failed to delete types order to Firestore with error: \(error.localizedDescription)")
+                    completion(false)
+                }
+            }
         } else {
             guard let deletedModel = RealmDatabaseService.shared.fetchObjectById(ofType: RealmTypeModel.self, id: model.id) else { return }
             RealmDatabaseService.shared.delete(model: deletedModel)
@@ -445,119 +577,206 @@ class DomainDatabaseService: DomainDB {
     
     // MARK: - delete Operations
     
-    func deleteAllData(completion: @escaping () -> Void) {
+    func deleteActiveDatabaseData(completion: @escaping (Bool) -> Void) {
         let isOnline = isOnlineModeEnabled()
         
         if isOnline {
-            FirestoreDatabaseService.shared.deleteAllData {
-                print("All data deleted successfully from Firestore database")
-                completion()
+            FirestoreDatabaseService.shared.deleteAllData { success in
+                if success {
+                    self.logger.log("All data deleted successfully from Firestore database")
+                    completion(true)
+                } else {
+                    self.logger.log("Failed to delete data from Firestore database")
+                    completion(false)
+                }
             }
         } else {
-            RealmDatabaseService.shared.deleteAllData {
-                print("All data deleted successfully from Realm database")
-                completion()
+            RealmDatabaseService.shared.deleteAllData { success in
+                if success {
+                    self.logger.log("All data deleted successfully from Realm database")
+                    completion(true)
+                } else {
+                    self.logger.log("Failed to delete data from Realm database")
+                    completion(false)
+                }
             }
         }
     }
     
     // MARK: - general Operations
     
+    var orderIdMap: [String: String] = [:]
+
     func transferDataFromFIRToRealm(completion: @escaping () -> Void) {
-        
         let dispatchGroup = DispatchGroup()
         
         dispatchGroup.enter()
-        RealmDatabaseService.shared.deleteAllData {
+        RealmDatabaseService.shared.deleteAllData { success in
             dispatchGroup.leave()
         }
         
         dispatchGroup.enter()
-        transferCollectionToRealm(collection: "orders",
-                                  firModelType: FIROrderModel.self,
-                                  domainModelInit: OrderModel.init(firebaseModel:),
-                                  realmModelInit: RealmOrderModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        transferCollectionToRealm(collection: "orders",
-                                  firModelType: FIRProductModel.self,
-                                  domainModelInit: ProductModel.init(firebaseModel:),
-                                  realmModelInit: RealmProductModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        transferCollectionToRealm(collection: "costs",
-                                  firModelType: FIRCostModel.self,
-                                  domainModelInit: CostModel.init(firebaseModel:),
-                                  realmModelInit: RealmCostModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        transferCollectionToRealm(collection: "productsPrice",
-                                  firModelType: FIRProductsPriceModel.self,
-                                  domainModelInit: ProductsPriceModel.init(firebaseModel:),
-                                  realmModelInit: RealmProductsPriceModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        transferCollectionToRealm(collection: "types",
-                                  firModelType: FIRTypeModel.self,
-                                  domainModelInit: TypeModel.init(firebaseModel:),
-                                  realmModelInit: RealmTypeModel.init(dataModel:)) {
+        self.transferCollectionToRealm(collection: "orders",
+                                       firModelType: FIROrderModel.self,
+                                       domainModelInit: OrderModel.init(firebaseModel:),
+                                       realmModelInit: RealmOrderModel.init(dataModel:)) {
             dispatchGroup.leave()
         }
         
         dispatchGroup.notify(queue: .main) {
-            FirestoreDatabaseService.shared.deleteAllData {
+            dispatchGroup.enter()
+            self.transferProductOfOrdersToRealm {
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.enter()
+            self.transferCollectionToRealm(collection: "costs",
+                                           firModelType: FIRCostModel.self,
+                                           domainModelInit: CostModel.init(firebaseModel:),
+                                           realmModelInit: RealmCostModel.init(dataModel:)) {
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.enter()
+            self.transferCollectionToRealm(collection: "productsPrice",
+                                           firModelType: FIRProductsPriceModel.self,
+                                           domainModelInit: ProductsPriceModel.init(firebaseModel:),
+                                           realmModelInit: RealmProductsPriceModel.init(dataModel:)) {
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.enter()
+            self.transferCollectionToRealm(collection: "types",
+                                           firModelType: FIRTypeModel.self,
+                                           domainModelInit: TypeModel.init(firebaseModel:),
+                                           realmModelInit: RealmTypeModel.init(dataModel:)) {
+                dispatchGroup.leave()
+            }
+            
+            dispatchGroup.notify(queue: .main) {
                 completion()
             }
         }
     }
-    
+
     func transferCollectionToRealm<FIRModel, DomainModel, RealmModel>(collection: String, firModelType: FIRModel.Type, domainModelInit: @escaping (FIRModel) -> DomainModel, realmModelInit: @escaping (DomainModel) -> RealmModel, completion: @escaping () -> Void) where FIRModel: Codable, RealmModel: Object {
-        
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-            FirestoreDatabaseService.shared.read(collection: collection, firModel: firModelType) { firModels in
-                for (_, firModel) in firModels {
-                    let domainModel = domainModelInit(firModel)
-                    let realmModel = realmModelInit(domainModel)
-                    RealmDatabaseService.shared.save(model: realmModel)
+        DispatchQueue.global().async {
+            FirestoreDatabaseService.shared.read(collection: collection, firModel: firModelType) { result in
+                switch result {
+                case .success(let firModels):
+                    let internalGroup = DispatchGroup()
+                    
+                    for (documentId, firModel) in firModels {
+                        internalGroup.enter()
+                        let domainModel = domainModelInit(firModel)
+                        let realmModel = realmModelInit(domainModel)
+                        
+                        RealmDatabaseService.shared.save(model: realmModel)
+                        if collection == "orders" {
+                            let model = domainModel as! OrderModel
+                            self.orderIdMap[documentId] = model.id // Використання id з OrderModel як Realm ID
+                        }
+                        internalGroup.leave()
+                    }
+                    
+                    internalGroup.notify(queue: .global()) {
+                        completion()
+                    }
+                case .failure(let error):
+                    self.logger.error("Failed to transfer collection \(collection) to Realm with error: \(error.localizedDescription)")
+                    completion()
                 }
             }
-            print("Saved document \(collection) with firModelType - \(firModelType)")
+        }
+    }
+
+    func transferProductOfOrdersToRealm(completion: @escaping () -> Void) {
+        self.transferCollectionToRealm(collection: "productOfOrders",
+                                       firModelType: FIRProductModel.self,
+                                       domainModelInit: { firModel in
+            var domainModel = ProductOfOrderModel(firebaseModel: firModel)
+            
+            // Перевіряємо, чи існує відповідний ідентифікатор orders в словнику
+            guard let orderId = firModel.orderId, let newOrderId = self.orderIdMap[orderId] else {
+                self.logger.error("Missing order ID mapping for \(String(describing: firModel.orderId))")
+                return domainModel
+            }
+            
+            domainModel.orderId = newOrderId // Встановлюємо правильний ідентифікатор
+            return domainModel
+        },
+                                       realmModelInit: RealmProductModel.init(dataModel:)) {
             completion()
         }
     }
-    
-    var orderIdMap: [String: String] = [:]
+
+
     func transferDataFromRealmToFIR(completion: @escaping () -> Void) {
+        let deleteDispatchGroup = DispatchGroup()
+        let transferDispatchGroup = DispatchGroup()
         
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
-        FirestoreDatabaseService.shared.deleteAllData {
-            dispatchGroup.leave()
+        // Спочатку видаляємо всі дані з Firestore
+        deleteDispatchGroup.enter()
+        FirestoreDatabaseService.shared.deleteAllData {_ in
+            deleteDispatchGroup.leave()
         }
         
-        dispatchGroup.enter()
-        
-        self.transferCollectionToFIR(collection: "orders",
-                                     realmModelType: RealmOrderModel.self,
-                                     domainModelInit: OrderModel.init(realmModel:),
-                                     firModelInit: FIROrderModel.init(dataModel:)) {
-            dispatchGroup.leave()
+        deleteDispatchGroup.notify(queue: .main) {
+            // Після того, як всі дані видалені, починаємо перенесення даних з Realm у Firestore
+            transferDispatchGroup.enter()
+            self.transferCollectionToFIR(collection: "costs",
+                                         realmModelType: RealmCostModel.self,
+                                         domainModelInit: CostModel.init(realmModel:),
+                                         firModelInit: FIRCostModel.init(dataModel:)) {
+                transferDispatchGroup.leave()
+            }
+            
+            transferDispatchGroup.enter()
+            self.transferCollectionToFIR(collection: "productsPrice",
+                                         realmModelType: RealmProductsPriceModel.self,
+                                         domainModelInit: ProductsPriceModel.init(realmModel:),
+                                         firModelInit: FIRProductsPriceModel.init(dataModel:)) {
+                transferDispatchGroup.leave()
+            }
+            
+            transferDispatchGroup.enter()
+            self.transferCollectionToFIR(collection: "types",
+                                         realmModelType: RealmTypeModel.self,
+                                         domainModelInit: TypeModel.init(realmModel:),
+                                         firModelInit: FIRTypeModel.init(dataModel:)) {
+                transferDispatchGroup.leave()
+            }
+            
+            transferDispatchGroup.enter()
+            self.transferCollectionToFIR(collection: "orders",
+                                         realmModelType: RealmOrderModel.self,
+                                         domainModelInit: OrderModel.init(realmModel:),
+                                         firModelInit: FIROrderModel.init(dataModel:)) {
+                transferDispatchGroup.leave()
+            }
+            
+            // Додаємо проміжну операцію для оновлення orderIdMap перед перенесенням productOfOrders
+            transferDispatchGroup.notify(queue: .main) {
+                // Всі order вже перенесені, тепер можемо переносити productOfOrders
+                transferDispatchGroup.enter()
+                self.transferProductOfOrdersToFIR {
+                    transferDispatchGroup.leave()
+                }
+            }
+            
+            transferDispatchGroup.notify(queue: .main) {
+                RealmDatabaseService.shared.deleteAllData {_ in
+                    completion()
+                }
+            }
         }
-        
-        dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "orders",
+    }
+
+    func transferProductOfOrdersToFIR(completion: @escaping () -> Void) {
+        self.transferCollectionToFIR(collection: "productOfOrders",
                                      realmModelType: RealmProductModel.self,
                                      domainModelInit: { realmModel in
-            var domainModel = ProductModel(realmModel: realmModel)
+            var domainModel = ProductOfOrderModel(realmModel: realmModel)
             
             // Перевіряємо, чи існує відповідний ідентифікатор orders в словнику
             if let newOrderId = self.orderIdMap[realmModel.orderId] {
@@ -566,59 +785,43 @@ class DomainDatabaseService: DomainDB {
             return domainModel
         },
                                      firModelInit: FIRProductModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "costs",
-                                     realmModelType: RealmCostModel.self,
-                                     domainModelInit: CostModel.init(realmModel:),
-                                     firModelInit: FIRCostModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "productsPrice",
-                                     realmModelType: RealmProductsPriceModel.self,
-                                     domainModelInit: ProductsPriceModel.init(realmModel:),
-                                     firModelInit: FIRProductsPriceModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.enter()
-        self.transferCollectionToFIR(collection: "types",
-                                     realmModelType: RealmTypeModel.self,
-                                     domainModelInit: TypeModel.init(realmModel:),
-                                     firModelInit: FIRTypeModel.init(dataModel:)) {
-            dispatchGroup.leave()
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            RealmDatabaseService.shared.deleteAllData {
-                completion()
-            }
-        }
-        
-    }
-    
-    func transferCollectionToFIR<RealmModel, DomainModel, FIRModel>(collection: String, realmModelType: RealmModel.Type, domainModelInit: @escaping (RealmModel) -> DomainModel, firModelInit: @escaping (DomainModel) -> FIRModel, completion: @escaping () -> Void) where RealmModel: Object, FIRModel: Encodable {
-        
-        DispatchQueue.global().asyncAfter(deadline: .now() + 1) {
-            let realm = try! Realm()
-            let realmObjects = realm.objects(realmModelType)
-            
-            for realmObject in realmObjects {
-                let domainModel = domainModelInit(realmObject)
-                let firModel = firModelInit(domainModel)
-                let documentId = FirestoreDatabaseService.shared.create(firModel: firModel, collection: collection)
-                if collection == "orders" {
-                    let model = domainModel as! OrderModel
-                    self.orderIdMap[model.id] = documentId
-                }
-                print("Created docement \(collection) with id - \(String(describing: documentId))")
-            }
             completion()
         }
     }
+
+    func transferCollectionToFIR<RealmModel, DomainModel, FIRModel>(collection: String, realmModelType: RealmModel.Type, domainModelInit: @escaping (RealmModel) -> DomainModel, firModelInit: @escaping (DomainModel) -> FIRModel, completion: @escaping () -> Void) where RealmModel: Object, FIRModel: Encodable {
+        
+        DispatchQueue.global().async {
+            let realm = try! Realm()
+            let realmObjects = realm.objects(realmModelType)
+            let internalGroup = DispatchGroup()
+            
+            for realmObject in realmObjects {
+                internalGroup.enter()
+                let domainModel = domainModelInit(realmObject)
+                let firModel = firModelInit(domainModel)
+                
+                FirestoreDatabaseService.shared.create(firModel: firModel, collection: collection) { result in
+                    switch result {
+                    case .success(let documentId):
+                        self.logger.info("Created document \(collection) with id - \(String(describing: documentId))")
+                        if collection == "orders" {
+                            let model = domainModel as! OrderModel
+                            self.orderIdMap[model.id] = documentId
+                        }
+                    case .failure(let error):
+                        self.logger.error("Failed to save document \(collection) to Firestore with error: \(error.localizedDescription)")
+                    }
+                    internalGroup.leave()
+                }
+            }
+            
+            internalGroup.notify(queue: .global()) {
+                completion()
+            }
+        }
+    }
+
+
     
 }
