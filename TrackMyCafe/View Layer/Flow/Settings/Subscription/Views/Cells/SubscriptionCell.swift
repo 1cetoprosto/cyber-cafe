@@ -9,20 +9,14 @@ import UIKit
 import StoreKit
 
 class SubscriptionCell: UITableViewCell {
+    static let identifier = "SubscriptionCell"
     
     private lazy var containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 4
-        view.clipsToBounds = false
-        view.layer.masksToBounds = false
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.2
-        view.layer.shadowRadius = 4
-        view.layer.shadowOffset = .init(width: 0, height: 2)
-        
-        view.layer.shouldRasterize = true
-        view.layer.rasterizationScale = UIScreen.main.scale
+        view.backgroundColor = UIColor.TableView.cellBackground
+        view.layer.cornerRadius = 10
+        view.clipsToBounds = true
+        view.layer.masksToBounds = true
         
         return view
     }()
@@ -63,8 +57,8 @@ class SubscriptionCell: UITableViewCell {
     }
     
     private func setupLayout() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        backgroundColor = UIColor.Main.background 
+        contentView.backgroundColor = UIColor.Main.background
         contentView.addSubview(containerView)
         containerView.horizontalToSuperview(insets: .horizontal(15))
         containerView.verticalToSuperview(insets: .vertical(8))
@@ -75,6 +69,13 @@ class SubscriptionCell: UITableViewCell {
         
         containerView.addSubview(stack3)
         stack3.edgesToSuperview(insets: .init(top: 8, left: 8, bottom: 8, right: 15))
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        let margins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        contentView.frame = bounds.inset(by: margins)
     }
     
     func setup(_ product: SKProduct) {
