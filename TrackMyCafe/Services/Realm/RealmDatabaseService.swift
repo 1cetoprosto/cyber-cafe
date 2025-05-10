@@ -12,20 +12,69 @@ import os.log
 class RealmDatabaseService: RealmDB {
     
     static let shared = RealmDatabaseService()
+    private(set) var localRealm: Realm!
     
     // MARK: - Lifecycle
     
-    private init() {}
+    private init() {var config = Realm.Configuration()
+        config.schemaVersion = 2 // Поточна версія схеми
+        config.migrationBlock = { migration, oldSchemaVersion in
+            if (oldSchemaVersion < 1) {
+                // Міграція з версії 0 до 1 (якщо є)
+                // Наприклад:
+                // migration.enumerateObjects(ofType: YourObjectClass.className()) { oldObject, newObject in
+                //     newObject!["newProperty"] = "defaultValue"
+                // }
+            }
+            if (oldSchemaVersion < 2) {
+                // Міграція з версії 1 до 2 (навіть якщо порожня)
+                // Наприклад:
+                // migration.enumerateObjects(ofType: AnotherObjectClass.className()) { oldObject, newObject in
+                //     newObject!["anotherNewProperty"] = 0
+                // }
+            }
+        }
+
+        do {
+            localRealm = try Realm(configuration: config)
+        } catch let error as NSError {
+            if error.code == 10 { // Код помилки "Invalid database"
+                let realmURL = Realm.Configuration.defaultConfiguration.fileURL!
+                let realmURLs = [
+                    realmURL,
+                    realmURL.appendingPathExtension("lock"),
+                    realmURL.appendingPathExtension("note"),
+                    realmURL.appendingPathExtension("management")
+                ]
+                for URL in realmURLs {
+                    do {
+                        try FileManager.default.removeItem(at: URL)
+                        logger.log("Видалили стару базу даних Realm за адресою: \(URL)") // Додано вивід у консоль
+                    } catch {
+                        logger.log("Помилка при видаленні файлу Realm: \(error)") // Додано обробку помилок
+                    }
+                }
+                do {
+                    localRealm = try Realm(configuration: config)
+                    logger.log("Створено нову базу даних Realm") // Додано вивід у консоль
+                } catch {
+                    fatalError("Failed to initialize Realm after deleting old database: \(error)")
+                }
+            } else {
+                fatalError("Failed to initialize Realm: \(error)")
+            }
+        }
+    }
     
     private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "RealmDatabaseService")
     
-    private let localRealm: Realm = {
-        do {
-            return try Realm()
-        } catch {
-            fatalError("Failed to initialize Realm: \(error)")
-        }
-    }()
+//    private let localRealm: Realm = {
+//        do {
+//            return try Realm()
+//        } catch {
+//            fatalError("Failed to initialize Realm: \(error)")
+//        }
+//    }()
     
     // MARK: - CRUD Operations
     
@@ -53,7 +102,7 @@ class RealmDatabaseService: RealmDB {
         return localRealm.objects(ofType).filter("id == %@", id).first
     }
     
-    func deleteAllData(completion: @escaping () -> Void) {
+    func deleteAllData(completion: @escaping (Bool) -> Void) {
         executeWrite {
             let objectTypes: [Object.Type] = [RealmProductModel.self,
                                               RealmOrderModel.self,
@@ -68,7 +117,7 @@ class RealmDatabaseService: RealmDB {
             }
         }
         logger.log("Deleted all Realm documents")
-        completion()
+        completion(true)
     }
     
     // MARK: - Utility Methods

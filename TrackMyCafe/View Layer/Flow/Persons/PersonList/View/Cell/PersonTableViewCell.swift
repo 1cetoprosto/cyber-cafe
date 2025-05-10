@@ -10,19 +10,31 @@ import Stevia
 
 class PersonTableViewCell: UITableViewCell {
     
+    let backgroundViewCell: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.TableView.cellBackground
+        view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
+
+        return view
+    }()
+
     private lazy var profileImage: UIImageView = {
         let view = UIImageView()
         view.contentMode = .scaleAspectFill
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
         view.size(40)
+        
         return view
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
+        label.textColor = UIColor.TableView.cellLabel
         label.font = .systemFont(ofSize: 17)
         label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -48,6 +60,9 @@ class PersonTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = UIColor.Main.background
+        selectionStyle = .none
+        callButton.isHidden = true
         setupLayout()
     }
     
@@ -56,6 +71,15 @@ class PersonTableViewCell: UITableViewCell {
     }
     
     private func setupLayout() {
+        
+        contentView.addSubview(backgroundViewCell)
+        NSLayoutConstraint.activate([
+            backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
+            backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
+            backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
+            backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1)
+        ])
+        
         let vStack = UIStackView(arrangedSubviews: [nameLabel, phoneLabel])
         vStack.axis = .vertical
         vStack.spacing = 5

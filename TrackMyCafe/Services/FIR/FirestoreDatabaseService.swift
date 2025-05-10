@@ -11,7 +11,7 @@ import FirebaseFirestoreSwift
 import FirebaseAuth
 import os.log
 
-class FirestoreDatabaseService: FirestoreDB {
+class FirestoreDatabaseService: FirestoreDB, Loggable {
     
     @Published var errorMessage: String?
     
@@ -210,7 +210,7 @@ class FirestoreDatabaseService: FirestoreDB {
     
     // MARK: - Delete All Data
     
-    func deleteAllData(completion: @escaping () -> Void) {
+    func deleteAllData(completion: @escaping (Bool) -> Void) {
         let collections = ["productsPrice", "types", "costs", "orders", "productOfOrders"]
         let dispatchGroup = DispatchGroup()
         
@@ -239,7 +239,7 @@ class FirestoreDatabaseService: FirestoreDB {
         
         dispatchGroup.notify(queue: .main) {
             self.logger.info("All data deleted successfully from Firestore")
-            completion()
+            completion(true)
         }
     }
     
@@ -249,7 +249,7 @@ class FirestoreDatabaseService: FirestoreDB {
                 .whereField("email", isEqualTo: email.trimmed.lowercased())
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
-                        print("Error getting documents: \(error)")
+                        self.logger.error("Error getting documents: \(error)")
                         completion(nil)
                         return
                     }
@@ -268,7 +268,7 @@ class FirestoreDatabaseService: FirestoreDB {
                 .whereField("email", isEqualTo: email.trimmed.lowercased())
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
-                        print("Error getting documents: \(error)")
+                        self.logger.error("Error getting documents: \(error)")
                         completion(nil)
                         return
                     }
@@ -290,7 +290,7 @@ class FirestoreDatabaseService: FirestoreDB {
         // Створюємо посилання на документ в Firestore
         FirestoreDatabaseService.shared.db.collection("users").document(key).getDocument { (document, error) in
             if let error = error {
-                print("Error getting document: \(error)")
+                self.logger.error("Error getting document: \(error)")
                 completion(false)
                 return
             }
@@ -301,7 +301,12 @@ class FirestoreDatabaseService: FirestoreDB {
     
     func createNewCafe(_ id: String, _ email: String, _ completion: @escaping (RoleConfig?, Bool) -> Void) {
         // Створення унікального ідентифікатора для користувача
-        let userKey = db.collection("users").document().documentID
+        //let userKey = db.collection("users").document().documentID
+        guard let userKey = Auth.auth().currentUser?.uid else {
+            logger.error("No authenticated user found")
+            completion(nil, false)
+            return
+        }
         
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {

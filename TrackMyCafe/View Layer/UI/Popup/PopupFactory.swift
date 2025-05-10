@@ -331,7 +331,7 @@ class PopupFactory {
         SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
     }
     
-    static func showPopup(title: String, description: String, buttonTitle: String, buttonAction: @escaping () -> Void, cancelAction: (() -> Void)? = nil) {
+    static func showPopup(title: String, description: String, buttonTitle: String, buttonAction: @escaping () -> Void, startOverAction: @escaping () -> Void, cancelAction: (() -> Void)? = nil) {
         let kHighlightColor = EKColor(rgb: 0x424242)
         
         let title = EKProperty.LabelContent(
@@ -374,6 +374,14 @@ class PopupFactory {
             SwiftEntryKit.dismiss()
         }
         
+        let noButton = EKProperty.ButtonContent(
+            label: EKProperty.LabelContent(text: R.string.global.startOver(), style: optionButtonLabelStyle),
+            backgroundColor: .clear,
+            highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)) {
+                startOverAction()
+                SwiftEntryKit.dismiss()
+            }
+        
         let cancelButton = EKProperty.ButtonContent(
             label: EKProperty.LabelContent(text: R.string.global.cancel(), style: closeButtonLabelStyle),
             backgroundColor: .clear,
@@ -383,7 +391,7 @@ class PopupFactory {
         }
         
         let buttonsBarContent = EKProperty.ButtonBarContent(
-            with: [cancelButton, actionButton],
+            with: [cancelButton, noButton, actionButton],
             separatorColor: EKColor(red: 230, green: 230, blue: 230),
             horizontalDistributionThreshold: 2,
             expandAnimatedly: false

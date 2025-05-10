@@ -27,7 +27,7 @@ class TechnicianDetailsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.Main.background
         setupNavigationBar()
         setupNotifications()
         buildForm()
@@ -86,7 +86,7 @@ class TechnicianDetailsController: UIViewController {
         }
         
         let headerView = UIView()
-        headerView.backgroundColor = .white
+        headerView.backgroundColor = UIColor.Main.background
         headerView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(headerView)
         
@@ -110,7 +110,7 @@ class TechnicianDetailsController: UIViewController {
     
     private func buildContactInfoSection(canSendEmail: Bool) {
         let sectionView = UIView()
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = UIColor.Main.background
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sectionView)
         
@@ -144,7 +144,7 @@ class TechnicianDetailsController: UIViewController {
         }
         
         let sectionView = UIView()
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = UIColor.Main.background
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sectionView)
         
@@ -174,7 +174,7 @@ class TechnicianDetailsController: UIViewController {
     
     private func buildNoteSection() {
         let sectionView = UIView()
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = UIColor.Main.background
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sectionView)
         
@@ -206,7 +206,7 @@ class TechnicianDetailsController: UIViewController {
     
     private func buildActionButtonsSection() {
         let sectionView = UIView()
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = UIColor.Main.background
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sectionView)
         
@@ -256,7 +256,7 @@ class TechnicianDetailsController: UIViewController {
     
     private func buildResendInviteSection() {
         let sectionView = UIView()
-        sectionView.backgroundColor = .white
+        sectionView.backgroundColor = UIColor.Main.background
         sectionView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(sectionView)
         

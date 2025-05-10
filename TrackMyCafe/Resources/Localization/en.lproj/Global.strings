@@ -18,6 +18,7 @@
 "change" = "Change";
 "confirm" = "Confirm";
 "transfer" = "Transfer";
+"startOver" = "Start over";
 
 "resetAll" = "Reset All";
 
@@ -87,8 +88,8 @@
 "menuContextExit" = "Exit";
 
 // MARK: - Staff Section
-"staff_sectionTech" = "Technicians";
-"staff_sectionMod" = "Moderators";
+"staff_sectionWaiter" = "Waiters";
+"staff_sectionSeniorWaiter" = "Senior waiters";
 "staff_sectionCaster" = "Casters";
 "staff_sectionCadCam" = "CAD CAM's";
 

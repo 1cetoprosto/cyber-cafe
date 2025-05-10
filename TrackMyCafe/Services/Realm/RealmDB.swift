@@ -39,6 +39,6 @@ protocol RealmDB {
     func fetchTypes() -> [RealmTypeModel]
     func fetchType(byId id: String) -> RealmTypeModel?
     
-    func deleteAllData(completion: @escaping () -> Void)
+    func deleteAllData(completion: @escaping (Bool) -> Void)
 }
 

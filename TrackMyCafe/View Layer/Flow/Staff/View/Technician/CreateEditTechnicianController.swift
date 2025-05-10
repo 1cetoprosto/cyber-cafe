@@ -11,7 +11,7 @@ import SVProgressHUD
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 
-class CreateEditTechnicianController: UIViewController {
+class CreateEditTechnicianController: UIViewController, Loggable {
     
     private var profileImageView: UIImageView!
     private var newImage: UIImage?
@@ -45,7 +45,7 @@ class CreateEditTechnicianController: UIViewController {
         
         imagePicker.delegate = self
         
-        if technician.firebaseRef.nilIfEmpty != nil {
+        if technician.firebaseRef != "" {
             title = R.string.global.edit()
         } else {
             title = moderType ? R.string.global.newModerator() : R.string.global.newTechnician()
@@ -58,7 +58,7 @@ class CreateEditTechnicianController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor.Main.background
         
         // Profile Image
         profileImageView = UIImageView()
@@ -85,7 +85,7 @@ class CreateEditTechnicianController: UIViewController {
             makeField(label: R.string.global.firstName(), placeholder: R.string.global.required(), value: technician.firstName) { self.technician.firstName = $0 },
             makeField(label: R.string.global.middleName(), placeholder: R.string.global.noRequired(), value: technician.middleName ?? "") { self.technician.middleName = $0 },
             makeField(label: R.string.global.phone(), placeholder: R.string.global.noRequired(), value: technician.phone ?? "", keyboardType: .phonePad) { self.technician.phone = $0 },
-            makeField(label: R.string.global.email(), placeholder: R.string.global.required(), value: technician.email, keyboardType: .emailAddress, isEditing: technician.firebaseRef.nilIfEmpty == nil) { self.technician.email = $0 },
+            makeField(label: R.string.global.email(), placeholder: R.string.global.required(), value: technician.email, keyboardType: .emailAddress, isEditing: technician.firebaseRef == "") { self.technician.email = $0 },
             makeTextViewField(label: R.string.global.address(), placeholder: R.string.global.noRequired(), value: technician.address ?? "", height: 70) { self.technician.address = $0 }
         ]
         
@@ -126,12 +126,15 @@ class CreateEditTechnicianController: UIViewController {
     
     private func makeField(label: String, placeholder: String, value: String, keyboardType: UIKeyboardType = .default, isEditing: Bool = true, onChange: @escaping (String) -> Void) -> UIView {
         let container = UIView()
+        //container.backgroundColor = UIColor.TableView.cellBackground
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = UILabel()
         titleLabel.text = label
+        titleLabel.textColor = UIColor.Main.text
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let textField = UITextField()
+        textField.backgroundColor = UIColor.TableView.cellBackground
         textField.placeholder = placeholder
         textField.text = value
         textField.keyboardType = keyboardType
@@ -163,9 +166,11 @@ class CreateEditTechnicianController: UIViewController {
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = UILabel()
         titleLabel.text = label
+        titleLabel.textColor = UIColor.Main.text
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let textView = UITextView()
+        textView.backgroundColor = UIColor.TableView.cellBackground
         textView.text = value
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.borderWidth = 1
@@ -197,6 +202,7 @@ class CreateEditTechnicianController: UIViewController {
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = UILabel()
         titleLabel.text = label
+        titleLabel.textColor = UIColor.Main.text
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
         let switchControl = UISwitch()
@@ -204,6 +210,8 @@ class CreateEditTechnicianController: UIViewController {
         switchControl.translatesAutoresizingMaskIntoConstraints = false
         switchControl.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
         switchControl.onChange = onChange
+        switchControl.onTintColor = UIColor.Button.background
+        switchControl.thumbTintColor = UIColor.NavBar.text
         
         container.addSubview(titleLabel)
         container.addSubview(switchControl)
@@ -285,22 +293,27 @@ class CreateEditTechnicianController: UIViewController {
     }
     
     private func saveTechnicianToDatabase() {
-        let isNew = self.technician.firebaseRef.nilIfEmpty == nil
+        let isNew = self.technician.firebaseRef == ""
 
         if isNew {
             FirestoreDatabaseService.getRoles(self.technician.email.trimmed.lowercased()) { roles in
                 if (roles ?? []).isEmpty {
                     var roles = [RoleConfig]()
                     let userRef = Firestore.firestore().collection("users").document()
-                    if self.technician.role == .technician || self.technician.role == .techMod {
-                        let techRole = RoleConfig(ref: userRef.documentID, email: self.technician.email, dataRef: UserSession.current.masterUserRef, userRef: userRef.documentID, role: .technician, onlineVersion: true)
-                        roles.append(techRole)
+                    if let masterUserRef = UserSession.current.masterUserRef {
+                        if self.technician.role == .technician || self.technician.role == .techMod {
+                            let techRole = RoleConfig(ref: userRef.documentID, email: self.technician.email, dataRef: UserSession.current.masterUserRef, userRef: userRef.documentID, role: .technician, onlineVersion: true)
+                            roles.append(techRole)
+                        }
+                        if self.technician.role == .moderator || self.technician.role == .techMod {
+                            let modeRole = RoleConfig(ref: userRef.documentID, email: self.technician.email, dataRef: UserSession.current.masterUserRef, userRef: userRef.documentID, role: .moderator, onlineVersion: true)
+                            roles.append(modeRole)
+                        }
+                    } else {
+                        self.logger.error("Error: masterUserRef is nil")
+                        self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
+                        return
                     }
-                    if self.technician.role == .moderator || self.technician.role == .techMod {
-                        let modeRole = RoleConfig(ref: userRef.documentID, email: self.technician.email, dataRef: UserSession.current.masterUserRef, userRef: userRef.documentID, role: .moderator, onlineVersion: true)
-                        roles.append(modeRole)
-                    }
-
                     var updateData = [String: Any]()
                     roles.forEach {
                         let key = "roles/\($0.firebaseRef)"

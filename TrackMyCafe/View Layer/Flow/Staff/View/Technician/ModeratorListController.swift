@@ -23,7 +23,8 @@ class ModeratorListController: PersonsListViewController<Technician> {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = R.string.global.staff_sectionMod()
+        title = R.string.global.staff_sectionSeniorWaiter()
+        view.backgroundColor = UIColor.Main.background
     }
     
     override func didSelect(item: Technician) {
@@ -34,17 +35,17 @@ class ModeratorListController: PersonsListViewController<Technician> {
     // MARK: - Actions
     @objc func addTechnician(_ sender: UIBarButtonItem) {
         let staffCount = RequestManager.shared.technicians.filter { $0.enabled }.count
-        if staffCount >= IAPManager.shared.currentSubscription.staffCount {
-            PopupFactory.showPopup(title: R.string.global.warning(),
-                                   description: R.string.global.technicianLimitReached(),
-                                   buttonTitle: R.string.global.changeSub()) {[weak self] in
-                let controller = SubscriptionController.makeReached()
-                self?.navigationController?.pushViewController(controller, animated: true)
-            }
-        } else {
+//        if staffCount >= IAPManager.shared.currentSubscription.staffCount {
+//            PopupFactory.showPopup(title: R.string.global.warning(),
+//                                   description: R.string.global.technicianLimitReached(),
+//                                   buttonTitle: R.string.global.changeSub()) {[weak self] in
+//                let controller = SubscriptionController.makeReached()
+//                self?.navigationController?.pushViewController(controller, animated: true)
+//            }
+//        } else {
             let controller = CreateEditTechnicianController(moderType: true)
             navigationController?.pushViewController(controller, animated: true)
-        }
+        //}
     }
 }
 

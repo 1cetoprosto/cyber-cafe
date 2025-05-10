@@ -12,7 +12,17 @@ import Kingfisher
 
 class CreateEditAdminController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    private var tableView: UITableView!
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        
+        //tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+
+        return tableView
+    }()
+    
     private var newImage: UIImage?
     private var imageView: UIImageView!
     
@@ -29,19 +39,16 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        view.backgroundColor = UIColor.Main.background
         title = R.string.global.edit()
+        
+        //tableView = UITableView(frame: view.bounds, style: .grouped)
+        tableView.dataSource = self
+        tableView.delegate = self
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTechnician))
         
-        setupTableView()
-    }
-    
-    private func setupTableView() {
-        tableView = UITableView(frame: view.bounds, style: .grouped)
-        tableView.dataSource = self
-        tableView.delegate = self
-        view.addSubview(tableView)
+        setConstraints()
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -76,10 +83,22 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        switch (indexPath.section, indexPath.row) {
+        case (0, 0):
+            return 150.0
+        case (2, 1), (3, 0):
+            return 70.0
+        default:
+            return 44.0
+        }
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch (indexPath.section, indexPath.row) {
         case (0, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.Main.background
             imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 150))
             imageView.contentMode = .scaleAspectFit
             if let url = admin.avatarThumbnailUrl?.url {
@@ -94,24 +113,32 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
             return cell
         case (1, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textField = createTextField(placeholder: R.string.global.lastName(), text: admin.lastName)
             textField.tag = 1
             cell.contentView.addSubview(textField)
             return cell
         case (1, 1):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textField = createTextField(placeholder: R.string.global.firstName(), text: admin.firstName)
             textField.tag = 2
             cell.contentView.addSubview(textField)
             return cell
         case (1, 2):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textField = createTextField(placeholder: R.string.global.middleName(), text: admin.middleName)
             textField.tag = 3
             cell.contentView.addSubview(textField)
             return cell
         case (2, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textField = createTextField(placeholder: R.string.global.phone(), text: admin.phone)
             textField.keyboardType = .phonePad
             textField.tag = 4
@@ -119,12 +146,16 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
             return cell
         case (2, 1):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textView = createTextView(placeholder: R.string.global.address(), text: admin.address)
             textView.tag = 5
             cell.contentView.addSubview(textView)
             return cell
         case (3, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
+            cell.backgroundColor = UIColor.TableView.cellBackground
+            cell.layer.cornerRadius = 10
             let textView = createTextView(placeholder: R.string.global.note(), text: admin.comment)
             textView.tag = 6
             cell.contentView.addSubview(textView)
@@ -138,13 +169,18 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         let textField = UITextField(frame: CGRect(x: 15, y: 0, width: view.bounds.width - 30, height: 44))
         textField.placeholder = placeholder
         textField.text = text
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.textColor = UIColor.Main.text
         textField.delegate = self
         return textField
     }
     
     private func createTextView(placeholder: String, text: String?) -> UITextView {
-        let textView = UITextView(frame: CGRect(x: 15, y: 0, width: view.bounds.width - 30, height: 70))
-        textView.text = text
+        let textView = UITextView(frame: CGRect(x: 10, y: 0, width: view.bounds.width - 40, height: 70))
+        textView.backgroundColor = UIColor.TableView.cellBackground
+        textView.text = text ?? placeholder
+        textView.font = UIFont.systemFont(ofSize: 16)
+        textView.textColor = text == nil ? UIColor.lightGray : UIColor.Main.text
         textView.delegate = self
         return textView
     }
@@ -231,12 +267,30 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        switch textView.tag {
+        case 5, 6:
+            textView.text = nil
+            textView.textColor = UIColor.Main.text
+        default:
+            break
+        }
+    }
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         switch textView.tag {
         case 5:
             admin.address = textView.text
+            if textView.text.isEmpty {
+                textView.text = R.string.global.address()
+                textView.textColor = UIColor.lightGray
+            }
         case 6:
             admin.comment = textView.text
+            if textView.text.isEmpty {
+                textView.text = R.string.global.note()
+                textView.textColor = UIColor.lightGray
+            }
         default:
             break
         }
@@ -252,5 +306,20 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+// MARK: Constraints
+extension CreateEditAdminController {
+    func setConstraints() {
+
+        view.addSubview(tableView)
+
+        NSLayoutConstraint.activate([
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
     }
 }

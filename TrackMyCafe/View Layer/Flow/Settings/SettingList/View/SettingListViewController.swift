@@ -44,7 +44,7 @@ struct SettingsDataOption {
     let handler: ((_ dataLabel: UILabel) -> Void)
 }
 
-class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Loggable {
     
     private let tableView: UITableView = {
         let table = UITableView(frame: .zero, style: .grouped)
@@ -108,10 +108,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         }))
         
         if UserSession.current.hasOnlineVersion {
-            options.append(.staticCell(model: SettingsStaticOption(title: "Exit",
-                                                                   icon: UIImage(named: "exit"),
-                                                                   iconBackgroundColor: .systemGreen) {
+            options.append(.dataCell(model: SettingsDataOption(title: "Exit",
+                                                               icon: UIImage(named: "exit"),
+                                                               iconBackgroundColor: .systemGreen,
+                                                               data: SettingsManager.shared.loadUserEmail()) { dataLabel in
                 UserSession.logOut()
+                
             }))
         }
         
@@ -127,12 +129,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                     icon: UIImage(systemName: "banknote.fill"),
                                                     iconBackgroundColor: .systemGreen) {
                                                         self.navigationController?.pushViewController(TypesListViewController(), animated: true)
-                                                    })//,
-//            .staticCell(model: SettingsStaticOption(title: "Personal",
-//                                                    icon: UIImage(systemName: "banknote.fill"),
-//                                                    iconBackgroundColor: .systemGreen) {
-//                                                        self.navigationController?.pushViewController(PersonsListViewController(), animated: true)
-//                                                    })
+                                                    }),
+            .staticCell(model: SettingsStaticOption(title: "Staff",
+                                                    icon: UIImage(systemName: "person.2.fill"),
+                                                    iconBackgroundColor: .systemMint) {
+                                                        self.navigationController?.pushViewController(StaffCategoriesController(), animated: true)
+                                                    })
             
         ]))
         
@@ -141,10 +143,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                                     icon: UIImage(systemName: "icloud.fill"),
                                                     iconBackgroundColor: .systemGreen,
                                                     isOn: SettingsManager.shared.loadOnline()) { isOn in
-                                                        SettingsManager.shared.saveOnline(isOn)
-                                                        print("Online mode is \(isOn ? "On" : "Off")")
-                                                        self.toggleOfflineOnlineMode()
-                                                        self.tableView.reloadData()
+                                                        //SettingsManager.shared.saveOnline(isOn)
+                                                        self.logger.notice("Online mode is \(isOn ? "On" : "Off")")
+                                                        self.toggleOfflineOnlineMode(isOn)
+                                                        //self.tableView.reloadData()
                                                     })
         ]))
     }
@@ -207,24 +209,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func switchToDarkTheme(isOn: Bool) {
-        print("Tap to switchDarkTheme isOn: \(isOn)")
+        logger.debug("Tap to switchDarkTheme isOn: \(isOn)")
     }
     
     func updateInterfaceForNewTheme() {
-        // Reload your tableview data after changing the theme
-        //tableView.reloadData()
-        // Update any other UI elements that may need to reflect the new theme
-        // For example, you may need to update navigation bar appearance, etc.
+        // Update the UI after changing the theme
+        configure()
+        tableView.reloadData()
+        self.restartApp()
+    }
+
+    private func restartApp() {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first else {
+            return
+        }
         
-        // Show an alert to inform the user to restart the app for the changes to take effect
-        let alert = UIAlertController(title: R.string.global.restartRequired(), message: R.string.global.restartRequiredMsg(), preferredStyle: .alert)
-        let okAction = UIAlertAction(title: R.string.global.actionOk(), style: .default)
-        alert.addAction(okAction)
-        self.present(alert, animated: true, completion: nil)
+        let rootViewController = MainTabBarController()
         
+        // Use animation for a ‘restart’
+        UIView.transition(with: window, duration: 0.5, options: .transitionCrossDissolve, animations: {
+            window.rootViewController = rootViewController
+        })
     }
     
-    func toggleOfflineOnlineMode() {
+    func toggleOfflineOnlineMode(_ isOn: Bool) {
         PopupFactory.showPopup(
             title: "Перенесення даних",
             description: "Перенести накопиченні данні, чи розпочати все спочатку?",
@@ -238,33 +247,84 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         return
                     }
                     
-                    if UserSession.current.hasOnlineVersion {
+                    if isOn { //UserSession.current.hasOnlineVersion
                         DomainDatabaseService.shared.transferDataFromRealmToFIR {
-                            SVProgressHUD.dismiss()
+                            self?.updateUIAfterDataTransfer(isOnline: isOn)
                         }
                     } else {
                         DomainDatabaseService.shared.transferDataFromFIRToRealm {
-                            //UserSession.logOut()
-                            SVProgressHUD.dismiss()
+                            self?.handleUserLogOut {
+                                        self?.updateUIAfterDataTransfer(isOnline: isOn)
+                                    }
+                        }
+                    }
+                }
+            },
+            startOverAction: { [weak self] in
+                self?.logger.debug("StartOverAction triggered")
+                self?.authenticateUser { [weak self] success in
+                    guard success else {
+                        self?.logger.error("Authentication failed")
+                        SVProgressHUD.dismiss()
+                        return
+                    }
+                    self?.logger.notice("Authentication successful")
+                    
+                    UserSession.current.saveOnline(true)
+                    
+                    DomainDatabaseService.shared.deleteActiveDatabaseData {_ in
+                        self?.logger.notice("Data deleted from local database")
+                        DispatchQueue.main.async {
+                            self?.updateUIAfterDataTransfer(isOnline: isOn)
                         }
                     }
                 }
             },
             cancelAction: { [weak self] in
                 self?.authenticateUser { success in
-                    if success {
-                        print("Якщо авторизація успішна, робіть тут що завгодно")
-                        if !UserSession.current.hasOnlineVersion {
-                            UserSession.logOut()
+                    guard success else {
+                        SVProgressHUD.dismiss()
+                        return
+                    }
+                    
+                    if !UserSession.current.hasOnlineVersion {
+                        self?.handleUserLogOut {
+                            self?.logger.notice("Cancelled \(isOn)")
                         }
                     } else {
-                        print("Обробте випадок, коли авторизація не вдалася")
+                        DispatchQueue.main.async {
+                            let newIsOn = !isOn
+                            SettingsManager.shared.saveOnline(newIsOn)
+                            self?.configure()
+                            self?.tableView.reloadData()
+                        }
                     }
                 }
             }
         )
     }
+    
+    private func handleUserLogOut(shouldReload: Bool = true, completion: (() -> Void)? = nil) {
+        UserSession.logOut()
 
+        DispatchQueue.main.async { [weak self] in
+            if shouldReload {
+                self?.configure()
+                self?.tableView.reloadData()
+            }
+            completion?()
+        }
+    }
+
+    private func updateUIAfterDataTransfer(isOnline: Bool) {
+        DispatchQueue.main.async { // UI update
+            self.logger.debug("Updating UI for online mode: \(isOnline)")
+            SVProgressHUD.dismiss()
+            SettingsManager.shared.saveOnline(isOnline)
+            self.configure()
+            self.tableView.reloadData()
+        }
+    }
     
     func authenticateUser(completion: @escaping (Bool) -> Void) {
         if Auth.auth().currentUser == nil {
@@ -272,7 +332,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             let signInController = SignInController()
             signInController.completionHandler = { success in
                 DispatchQueue.main.async {
-                    completion(success)
+                    if success {
+                        completion(success)
+                    } else {
+                        self.showErrorAlert(
+                            title: "Авторизація скасована",
+                            message: "Щоб продовжити, потрібно увійти в систему."
+                        )
+                        completion(false)
+                    }
                 }
             }
             let navigationController = UINavigationController(rootViewController: signInController)
@@ -282,6 +350,13 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             // User is already authenticated
             completion(true)
         }
+    }
+
+    private func showErrorAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "OK", style: .default)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
     }
 }
 

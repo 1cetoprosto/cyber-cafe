@@ -10,6 +10,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseStorage
+import os.log
 
 enum SubscriptionPurchaseLinkStatus {
     case notLinked
@@ -40,13 +41,19 @@ class RequestManager: NSObject {
         }
     }
     
-    var admin = Admin()
+    var admin = Admin() {
+        didSet {
+            NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+        }
+    }
     var technicians = [Technician]()
     var logs = [Log]()
     var users = [User]()
     var roles = [RoleConfig]()
     var settings: Settings?
     var subscription: Subscription?
+    
+    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "RequestManager")
     
     override init() {
         super.init()
@@ -75,7 +82,11 @@ class RequestManager: NSObject {
             self.listenToSettings()
             self.listenToSubscription()
             self.listenTo(.orders)
-            self.listenToAdmin()
+            self.listenToAdmin {
+                // Обробка після завантаження даних адміністратора
+                NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+                
+            }
         } else {
             //db.removeAllObservers()
         }
@@ -97,12 +108,12 @@ class RequestManager: NSObject {
             case .logs:
                 notifName = .logsInfoReload
             default:
-                print("should not be here")
+                logger.log("should not be here")
             }
             
             mainRef.collection(refId.rawValue).addSnapshotListener { (snapshot, error) in
                 guard let snapshot = snapshot else {
-                    print("Error listening to collection \(refId.rawValue): \(error?.localizedDescription ?? "No error description")")
+                    self.logger.log("Error listening to collection \(refId.rawValue): \(error?.localizedDescription ?? "No error description")")
                     return
                 }
                 
@@ -153,7 +164,7 @@ class RequestManager: NSObject {
         if Auth.auth().currentUser != nil {
             mainRef.collection(Refs.settings.rawValue).addSnapshotListener { (snapshot, error) in
                 guard let snapshot = snapshot else {
-                    print("Error listening to Settings collection: \(error?.localizedDescription ?? "No error description")")
+                    self.logger.log("Error listening to Settings collection: \(error?.localizedDescription ?? "No error description")")
                     return
                 }
                 
@@ -167,12 +178,20 @@ class RequestManager: NSObject {
         }
     }
     
-    func listenToAdmin() {
+    func listenToAdmin(completion: @escaping () -> Void) {
+        guard let mainRef = mainRef else {
+                    logger.log("mainRef is nil")
+                    completion()
+                    return
+                }
+        debugPrint(mainRef)
         let fields = ["email", "firstName", "lastName", "middleName", "phone", "address", "avatarThumbnailUrl", "avatarUrl", "comment"]
+        var pendingFields = Set(fields)
         for field in fields {
             mainRef.collection(field).addSnapshotListener { [weak self] (snapshot, error) in
+                guard let self = self else { return }
                 guard let snapshot = snapshot else {
-                    print("Error listening to Admin \(field): \(error?.localizedDescription ?? "No error description")")
+                    logger.log("Error listening to Admin \(field): \(error?.localizedDescription ?? "No error description")")
                     return
                 }
                 
@@ -180,25 +199,30 @@ class RequestManager: NSObject {
                 
                 switch field {
                 case "email":
-                    self?.admin.email = value
+                    self.admin.email = value
                 case "firstName":
-                    self?.admin.firstName = value
+                    self.admin.firstName = value
                 case "lastName":
-                    self?.admin.lastName = value
+                    self.admin.lastName = value
                 case "middleName":
-                    self?.admin.middleName = value
+                    self.admin.middleName = value
                 case "phone":
-                    self?.admin.phone = value
+                    self.admin.phone = value
                 case "address":
-                    self?.admin.address = value
+                    self.admin.address = value
                 case "avatarThumbnailUrl":
-                    self?.admin.avatarThumbnailUrl = value
+                    self.admin.avatarThumbnailUrl = value
                 case "avatarUrl":
-                    self?.admin.avatarUrl = value
+                    self.admin.avatarUrl = value
                 case "comment":
-                    self?.admin.comment = value
+                    self.admin.comment = value
                 default:
                     break
+                }
+                
+                pendingFields.remove(field)
+                if pendingFields.isEmpty {
+                    completion()
                 }
             }
         }
@@ -210,7 +234,7 @@ class RequestManager: NSObject {
         if Auth.auth().currentUser != nil {
             mainRef.collection(Refs.subscription.rawValue).addSnapshotListener { (snapshot, error) in
                 guard let snapshot = snapshot else {
-                    print("Error listening to Subscriptions collection: \(error?.localizedDescription ?? "No error description")")
+                    self.logger.log("Error listening to Subscriptions collection: \(error?.localizedDescription ?? "No error description")")
                     return
                 }
                 
@@ -292,9 +316,9 @@ class RequestManager: NSObject {
             
             logsRef.setData(data) { error in
                 if let error = error {
-                    print("LOG: FIRESTORE ERROR - \(error.localizedDescription)!")
+                    self.logger.log("LOG: FIRESTORE ERROR - \(error.localizedDescription)!")
                 } else {
-                    print("Data logged successfully!")
+                    self.logger.log("Data logged successfully!")
                 }
             }
         }
