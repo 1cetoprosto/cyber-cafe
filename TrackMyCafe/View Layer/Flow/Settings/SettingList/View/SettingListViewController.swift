@@ -80,11 +80,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func configure() {
-        
         models.removeAll()
         
         var options = [SettingsOptionType]()
         
+        // Language settings
         options.append(.dataCell(model: SettingsDataOption(title: "Language",
                                                            icon: UIImage(systemName: "globe"),
                                                            iconBackgroundColor: .systemPink,
@@ -95,6 +95,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }))
         
+        // Theme settings
         options.append(.dataCell(model: SettingsDataOption(title: "Theme",
                                                            icon: UIImage(systemName: "sun.max"),
                                                            iconBackgroundColor: .systemBlue,
@@ -107,13 +108,22 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }))
         
+        // Subscription management
+        options.append(.staticCell(model: SettingsStaticOption(title: "Subscription",
+                                                             icon: UIImage(systemName: "creditcard.circle.fill"),
+                                                             iconBackgroundColor: .systemIndigo) {
+            // Open subscription management screen
+            let controller = SubscriptionController.makeDefault()
+            self.navigationController?.pushViewController(controller, animated: true)
+        }))
+        
+        // Exit option for online users
         if UserSession.current.hasOnlineVersion {
             options.append(.dataCell(model: SettingsDataOption(title: "Exit",
                                                                icon: UIImage(named: "exit"),
                                                                iconBackgroundColor: .systemGreen,
                                                                data: SettingsManager.shared.loadUserEmail()) { dataLabel in
                 UserSession.logOut()
-                
             }))
         }
         
