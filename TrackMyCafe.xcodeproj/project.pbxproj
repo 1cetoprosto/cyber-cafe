@@ -34,6 +34,18 @@
 		F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */; };
 		F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC7E275C862C0035767E /* UILabel+Extension.swift */; };
 		F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC80275C89910035767E /* UITextField+Extension.swift */; };
+		F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */; };
+		F33D348A2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */; };
+		F33D348B2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */; };
+		F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */; };
+		F33D34942DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */; };
+		F33D34952DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */; };
+		F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */; };
+		F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */; };
+		F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */; };
+		F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */; };
+		F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */; };
+		F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */; };
 		F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
 		F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
 		F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
@@ -150,9 +162,6 @@
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
-		F3A640B42C3408D8006BCACD /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B32C3408D8006BCACD /* SubscriptionCell.swift */; };
-		F3A640B52C3408D8006BCACD /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B32C3408D8006BCACD /* SubscriptionCell.swift */; };
-		F3A640B62C3408D8006BCACD /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B32C3408D8006BCACD /* SubscriptionCell.swift */; };
 		F3A640B82C340D21006BCACD /* SubscriptionReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */; };
 		F3A640B92C340D21006BCACD /* SubscriptionReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */; };
 		F3A640BA2C340D21006BCACD /* SubscriptionReuseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */; };
@@ -526,6 +535,10 @@
 		F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
 		F32FDC7E275C862C0035767E /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		F32FDC80275C89910035767E /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
+		F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLinkButton.swift; sourceTree = "<group>"; };
+		F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionButtonCell.swift; sourceTree = "<group>"; };
+		F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
+		F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTextCell.swift; sourceTree = "<group>"; };
 		F3410E4A2BDD00C20007157B /* BioAuthController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioAuthController.swift; sourceTree = "<group>"; };
 		F3410E4C2BDD00C20007157B /* ForgotPassController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPassController.swift; sourceTree = "<group>"; };
 		F3410E4E2BDD00C20007157B /* SetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordController.swift; sourceTree = "<group>"; };
@@ -609,7 +622,6 @@
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
-		F3A640B32C3408D8006BCACD /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
 		F3A640BF2C34243F006BCACD /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -856,6 +868,27 @@
 				F31D5881291224190047EB44 /* Screenshot1.png */,
 			);
 			path = Screenshots;
+			sourceTree = "<group>";
+		};
+		F33D348E2DCF9C69001DBA6C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F33D34922DCF9C9A001DBA6C /* Cells */,
+				F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */,
+				F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */,
+				F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F33D34922DCF9C9A001DBA6C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */,
+				F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */,
+				F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F3410E4B2BDD00C20007157B /* BioAuth */ = {
@@ -1471,9 +1504,7 @@
 		F3A640AE2C340888006BCACD /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
-				F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */,
-				F3A640B32C3408D8006BCACD /* SubscriptionCell.swift */,
-				F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */,
+				F33D348E2DCF9C69001DBA6C /* Views */,
 			);
 			path = Subscription;
 			sourceTree = "<group>";
@@ -2155,9 +2186,9 @@
 				F3821C7E27EAEB0F006D40FC /* OrderDetailsViewModel.swift in Sources */,
 				F385B4082C1D785E00973CAA /* PersonDetailsViewController.swift in Sources */,
 				F383C8BA2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
+				F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F31BD82F284E022400B8FD3B /* FIRCostModel.swift in Sources */,
 				F385B4212C1D9AFE00973CAA /* Technician.swift in Sources */,
-				F3A640B42C3408D8006BCACD /* SubscriptionCell.swift in Sources */,
 				F3F6A60D2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
 				F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */,
 				F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */,
@@ -2241,6 +2272,9 @@
 				F3988AED27EB19C300215976 /* CostDetailsViewModel.swift in Sources */,
 				F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */,
 				F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */,
+				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
+				F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
+				F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
 				F3E357F92BEFF7F4005050CB /* CostModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
@@ -2292,9 +2326,9 @@
 				F3F6A6292C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3B339BE2C0B22FE0073F19A /* OrderDetailsViewModel.swift in Sources */,
 				F3F6A6062C2FEB9A000961C8 /* IAPManager.swift in Sources */,
+				F33D348A2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F383C8BB2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
 				F3B339BF2C0B22FE0073F19A /* FIRCostModel.swift in Sources */,
-				F3A640B52C3408D8006BCACD /* SubscriptionCell.swift in Sources */,
 				F3B339C02C0B22FE0073F19A /* FIRProductModel.swift in Sources */,
 				F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */,
@@ -2378,6 +2412,9 @@
 				F3B339FB2C0B22FE0073F19A /* SignUpController.swift in Sources */,
 				F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B339FD2C0B22FE0073F19A /* FIRTypeModel.swift in Sources */,
+				F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
+				F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
+				F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
 				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
 				F3B339FF2C0B22FE0073F19A /* CostModel.swift in Sources */,
 				F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */,
@@ -2429,9 +2466,9 @@
 				F3F6A62A2C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3B33A5D2C0B23450073F19A /* OrderDetailsViewModel.swift in Sources */,
 				F3F6A6072C2FEB9A000961C8 /* IAPManager.swift in Sources */,
+				F33D348B2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F383C8BC2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
 				F3B33A5E2C0B23450073F19A /* FIRCostModel.swift in Sources */,
-				F3A640B62C3408D8006BCACD /* SubscriptionCell.swift in Sources */,
 				F3B33A5F2C0B23450073F19A /* FIRProductModel.swift in Sources */,
 				F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */,
@@ -2515,6 +2552,9 @@
 				F3B33A9A2C0B23450073F19A /* SignUpController.swift in Sources */,
 				F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B33A9C2C0B23450073F19A /* FIRTypeModel.swift in Sources */,
+				F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
+				F33D34942DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
+				F33D34952DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
 				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,
 				F3B33A9E2C0B23450073F19A /* CostModel.swift in Sources */,
 				F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */,
