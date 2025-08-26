@@ -46,6 +46,9 @@
 		F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */; };
 		F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */; };
 		F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */; };
+		F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
+		F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
+		F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
 		F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
 		F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
 		F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
@@ -539,6 +542,7 @@
 		F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionButtonCell.swift; sourceTree = "<group>"; };
 		F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTextCell.swift; sourceTree = "<group>"; };
+		F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSettingsCell.swift; sourceTree = "<group>"; };
 		F3410E4A2BDD00C20007157B /* BioAuthController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioAuthController.swift; sourceTree = "<group>"; };
 		F3410E4C2BDD00C20007157B /* ForgotPassController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPassController.swift; sourceTree = "<group>"; };
 		F3410E4E2BDD00C20007157B /* SetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordController.swift; sourceTree = "<group>"; };
@@ -1293,6 +1297,7 @@
 			isa = PBXGroup;
 			children = (
 				F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */,
+				F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */,
 				F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */,
 				F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */,
 			);
@@ -2212,6 +2217,7 @@
 				F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */,
 				F3410EAC2BDD3E8E0007157B /* UIImage+Extension.swift in Sources */,
 				F385B4292C1DA60A00973CAA /* Subscription.swift in Sources */,
+				F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F38707D92BE5FBB900B6F313 /* UIView+Extension.swift in Sources */,
 				F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
@@ -2352,6 +2358,7 @@
 				F3B339CE2C0B22FE0073F19A /* FirestoreDB.swift in Sources */,
 				F3F6A6402C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61E2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
+				F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F3F6A6382C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */,
 				F3B339D02C0B22FE0073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
@@ -2492,6 +2499,7 @@
 				F3B33A6D2C0B23450073F19A /* FirestoreDB.swift in Sources */,
 				F3F6A6412C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61F2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
+				F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F3F6A6392C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */,
 				F3B33A6F2C0B23450073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
