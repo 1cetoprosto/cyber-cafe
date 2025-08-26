@@ -47,12 +47,15 @@ struct SettingsDataOption {
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Loggable {
     
     private let tableView: UITableView = {
-        let table = UITableView(frame: .zero, style: .grouped)
-        table.register(SettingsStaticTableViewCell.self, forCellReuseIdentifier: SettingsStaticTableViewCell.identifier)
-        table.register(SettingsSwitchTableViewCell.self, forCellReuseIdentifier: SettingsSwitchTableViewCell.identifier)
-        table.register(SettingsDataTableViewCell.self, forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
+        let tableView = UITableView(frame: .zero, style: .grouped)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(SettingsStaticTableViewCell.self, forCellReuseIdentifier: SettingsStaticTableViewCell.identifier)
+        tableView.register(SettingsSwitchTableViewCell.self, forCellReuseIdentifier: SettingsSwitchTableViewCell.identifier)
+        tableView.register(SettingsDataTableViewCell.self, forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
         
-        return table
+        return tableView
     }()
     
     var models = [Section]()
@@ -63,11 +66,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.menuSettings()
         
-        view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.frame = view.bounds
-        tableView.backgroundColor = UIColor.Main.background
         
         setConstraints()
     }
@@ -201,6 +201,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             cell.configure(with: model)
             return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -373,18 +377,13 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 // MARK: - Constraints
 extension SettingListViewController {
     func setConstraints() {
-        
-        let mainStackView = UIStackView(arrangedSubviews: [tableView],
-                                        axis: .vertical,
-                                        spacing: 10,
-                                        distribution: .fill)
-        view.addSubview(mainStackView)
+        view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-            mainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20)
+            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
         ])
     }
 }

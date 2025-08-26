@@ -25,61 +25,95 @@ class Theme {
     static var currentThemeStyle: ThemeStyle {
         get {
             let styleIdValue = (UserDefaults.standard.value(forKey: kThemeStyle) as? Int) ?? 0
-            return ThemeStyle(rawValue: styleIdValue) ?? .brown
+            return ThemeStyle(rawValue: styleIdValue) ?? .light
         }
         set {
             _current = nil
             UserDefaults.standard.setValue(newValue.rawValue, forKey: kThemeStyle)
             UserDefaults.standard.synchronize()
+            
+            // Застосовуємо системну тему
+            applySystemTheme(newValue)
         }
     }
     
     private static var _current: ThemeProtocol!
     static var current: ThemeProtocol {
         if let theme = _current { return theme }
-        _current = currentThemeStyle.theme
+        _current = AssetTheme()
         return _current
     }
     
+    // Застосування системної теми
+    private static func applySystemTheme(_ themeStyle: ThemeStyle) {
+        DispatchQueue.main.async {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first {
+                
+                switch themeStyle {
+                case .light:
+                    window.overrideUserInterfaceStyle = .light
+                case .dark:
+                    window.overrideUserInterfaceStyle = .dark
+                }
+            }
+        }
+    }
 }
 
 enum ThemeStyle: Int, CaseIterable {
-    case brown = 0
-    case blue = 1
-    
-    var theme: ThemeProtocol {
-        switch self {
-            case .brown: return BrownTheme()
-            case .blue: return BlueTheme()
-        }
-    }
+    case light = 0
+    case dark = 1
     
     var themeName: String {
         switch self {
-            case .brown: return "Default"
-            case .blue: return "Bluegray"
+        case .light: return "Світла"
+        case .dark: return "Темна"
         }
     }
 }
 
-struct BrownTheme: ThemeProtocol {
-    var primaryText: UIColor { return UIColor(hex: "#1C3209") }         //темно-зелений
-    var primaryBackground: UIColor { return UIColor(hex: "#C49E62") }   //кава з молоком
-    var secondaryText: UIColor { return UIColor(hex: "#EFD4A0") }       //світлий кава з молоком
-    var secondaryBackground: UIColor { return UIColor(hex: "#1C3209") } //темно-зелений
-    var tabBarTint: UIColor { return UIColor(hex: "#1C3209") }          //темно-зелений
-    var cellBackground: UIColor { return UIColor(hex: "#EFD4A0") }      //світлий кава з молоком
-    var navBarBackground: UIColor { return UIColor(hex: "#1C3209") }    //темно-зелений
-    var navBarText: UIColor { return UIColor(hex: "#EFD4A0") }          //світлий кава з молоком
-}
-
-struct BlueTheme: ThemeProtocol {
-    var primaryText: UIColor { return UIColor(hex: "#FFFFFF") }
-    var primaryBackground: UIColor { return UIColor(hex: "#0000FF") }
-    var secondaryText: UIColor { return UIColor(hex: "#FFFFFF") }
-    var secondaryBackground: UIColor { return UIColor(hex: "#0000FF") }
-    var tabBarTint: UIColor { return UIColor(hex: "#0000FF") }
-    var cellBackground: UIColor { return UIColor(hex: "#EFD4A0") }
-    var navBarBackground: UIColor { return UIColor(hex: "#0000FF") }
-    var navBarText: UIColor { return UIColor(hex: "#FFFFFF") }
+struct AssetTheme: ThemeProtocol {
+    
+    private func color(_ name: String, fallback: UIColor) -> UIColor {
+        guard let color = UIColor(named: name) else {
+            #if DEBUG
+            print("⚠️ Warning: Color '\(name)' not found in Assets.xcassets, using fallback")
+            #endif
+            return fallback
+        }
+        return color
+    }
+    
+    var primaryText: UIColor {
+        color("PrimaryText", fallback: .label)
+    }
+    
+    var primaryBackground: UIColor {
+        color("PrimaryBackground", fallback: .systemBackground)
+    }
+    
+    var secondaryText: UIColor {
+        color("SecondaryText", fallback: .secondaryLabel)
+    }
+    
+    var secondaryBackground: UIColor {
+        color("SecondaryBackground", fallback: .secondarySystemBackground)
+    }
+    
+    var tabBarTint: UIColor {
+        color("TabBarTint", fallback: .systemBlue)
+    }
+    
+    var cellBackground: UIColor {
+        color("CellBackground", fallback: .systemBackground)
+    }
+    
+    var navBarBackground: UIColor {
+        color("NavBarBackground", fallback: .systemBackground)
+    }
+    
+    var navBarText: UIColor {
+        color("NavBarText", fallback: .label)
+    }
 }

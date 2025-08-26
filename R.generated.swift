@@ -2992,12 +2992,36 @@ struct _R {
     }
   }
 
-  /// This `_R.color` struct is generated, and contains static references to 1 colors.
+  /// This `_R.color` struct is generated, and contains static references to 9 colors.
   struct color {
     let bundle: Foundation.Bundle
 
     /// Color `AccentColor`.
     var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
+
+    /// Color `CellBackground`.
+    var cellBackground: RswiftResources.ColorResource { .init(name: "CellBackground", path: [], bundle: bundle) }
+
+    /// Color `NavBarBackground`.
+    var navBarBackground: RswiftResources.ColorResource { .init(name: "NavBarBackground", path: [], bundle: bundle) }
+
+    /// Color `NavBarText`.
+    var navBarText: RswiftResources.ColorResource { .init(name: "NavBarText", path: [], bundle: bundle) }
+
+    /// Color `PrimaryBackground`.
+    var primaryBackground: RswiftResources.ColorResource { .init(name: "PrimaryBackground", path: [], bundle: bundle) }
+
+    /// Color `PrimaryText`.
+    var primaryText: RswiftResources.ColorResource { .init(name: "PrimaryText", path: [], bundle: bundle) }
+
+    /// Color `SecondaryBackground`.
+    var secondaryBackground: RswiftResources.ColorResource { .init(name: "SecondaryBackground", path: [], bundle: bundle) }
+
+    /// Color `SecondaryText`.
+    var secondaryText: RswiftResources.ColorResource { .init(name: "SecondaryText", path: [], bundle: bundle) }
+
+    /// Color `TabBarTint`.
+    var tabBarTint: RswiftResources.ColorResource { .init(name: "TabBarTint", path: [], bundle: bundle) }
   }
 
   /// This `_R.image` struct is generated, and contains static references to 19 images.
