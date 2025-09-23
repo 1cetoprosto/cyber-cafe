@@ -214,221 +214,280 @@
 "noteTitle" = "Заголовок";
 "noteBody" = "Текст";
 
-// MARK: - Elements
-"protesisElements" = "Елементи протезування";
-"extraElements" = "Елементи здорожчання";
-"typesElements" = "Типи протезування";
+// MARK: - Menu
+"menuSettings" = "Налаштування";
+"menuLogout" = "Вийти";
+"menuProfile" = "Профіль";
+"menuStaff" = "Персонал";
+"menuDoctors" = "Клієнти";
+"menuOrders" = "Замовлення";
+"menuStatistic" = "Статистика";
+"menuAccounting" = "Облік";
+"menuNotes" = "Нотатки";
+"menuSubscription" = "Підписка";
+"menuDeleteAccount" = "Видалити акаунт";
 
-"generalTypesElements" = "Загальні";
-"additionalTypesElements" = "Проміжні етапи";
-"detachableTypesElements" = "Знімні";
-"notDetachableTypesElements" = "Незнімні";
-"implantsTypesElements" = "Імпланти";
-"outsourceTypesElements" = "Аутсорс";
+// MARK: - Staff Section
+"staffSectionTitle" = "Персонал";
+"staffSectionAddNew" = "Додати нового";
+"staffSectionEdit" = "Редагувати";
+"staffSectionDelete" = "Видалити";
+"staffSectionDeleteConfirm" = "Ви впевнені, що хочете видалити цього співробітника?";
+"staffSectionDeleteSuccess" = "Співробітник успішно видалений";
+"staffSectionAddSuccess" = "Співробітник успішно доданий";
+"staffSectionEditSuccess" = "Співробітник успішно відредагований";
+"staffSectionAddTitle" = "Додати нового співробітника";
+"staffSectionEditTitle" = "Редагувати співробітника";
+"staffSectionFirstName" = "Ім'я";
+"staffSectionLastName" = "Прізвище";
+"staffSectionEmail" = "Email";
+"staffSectionPhone" = "Телефон";
+"staffSectionRole" = "Роль";
+"staffSectionPassword" = "Пароль";
+"staffSectionConfirmPassword" = "Підтвердити пароль";
+"staffSectionPasswordsDontMatch" = "Паролі не співпадають";
+"staffSectionPasswordTooShort" = "Пароль повинен містити не менше 6 символів";
+"staffSectionEmailInvalid" = "Email недійсний";
+"staffSectionEmailAlreadyExists" = "Email вже існує";
+"staffSectionFirstNameRequired" = "Ім'я обов'язкове";
+"staffSectionLastNameRequired" = "Прізвище обов'язкове";
+"staffSectionEmailRequired" = "Email обов'язковий";
+"staffSectionPasswordRequired" = "Пароль обов'язковий";
+"staffSectionConfirmPasswordRequired" = "Підтвердження пароля обов'язкове";
+"staffSectionRoleRequired" = "Роль обов'язкова";
 
-"newProtesisElement" = "Новий елемент протезування";
-"newExtraElement" = "Новий елемент здорожчання";
-"newElementType" = "Новий тип протезування";
+// MARK: - Feedback
+"cancel" = "Скасувати";
+"save" = "Зберегти";
+"delete" = "Видалити";
+"edit" = "Редагувати";
+"search" = "Пошук";
+"error" = "Помилка";
+"success" = "Успіх";
+"warning" = "Попередження";
+"back" = "Назад";
+"retry" = "Повторити";
+"none" = "Жоден";
+"startDate" = "Дата початку";
+"endDate" = "Дата закінчення";
+"startTime" = "Час початку";
+"endTime" = "Час закінчення";
+"deadline" = "Крайній термін";
+"schedule" = "Розклад";
+"appointment" = "Зустріч";
+"event" = "Подія";
+"task" = "Завдання";
+"project" = "Проект";
+"status" = "Статус";
+"state" = "Стан";
+"condition" = "Умова";
+"progress" = "Прогрес";
+"completed" = "Завершено";
+"incomplete" = "Незавершено";
+"pending" = "В очікуванні";
+"inProgress" = "В процесі";
+"onHold" = "На утриманні";
+"cancelled" = "Скасовано";
+"delayed" = "Відкладено";
+"failed" = "Не вдалося";
+"successful" = "Успішно";
+"approved" = "Затверджено";
+"rejected" = "Відхилено";
+"draft" = "Чернетка";
+"published" = "Опубліковано";
+"unpublished" = "Неопубліковано";
+"archived" = "Архівовано";
+"deleted" = "Видалено";
+"enabled" = "Увімкнено";
+"disabled" = "Вимкнено";
+"active" = "Активний";
+"inactive" = "Неактивний";
+"available" = "Доступний";
+"unavailable" = "Недоступний";
+"visible" = "Видимий";
+"invisible" = "Невидимий";
+"shown" = "Показано";
+"hidden" = "Приховано";
+"public" = "Публічний";
+"private" = "Приватний";
+"confidential" = "Конфіденційний";
+"restricted" = "Обмежений";
+"unrestricted" = "Необмежений";
+"locked" = "Заблоковано";
+"unlocked" = "Розблоковано";
+"secure" = "Безпечний";
+"insecure" = "Небезпечний";
+"safe" = "Безпечний";
+"unsafe" = "Небезпечний";
+"valid" = "Дійсний";
+"invalid" = "Недійсний";
+"correct" = "Правильний";
+"incorrect" = "Неправильний";
+"error" = "Помилка";
+"warning" = "Попередження";
+"info" = "Інформація";
+"debug" = "Налагодження";
+"trace" = "Трасування";
+"fatal" = "Фатальний";
+"critical" = "Критичний";
+"severe" = "Серйозний";
+"moderate" = "Помірний";
+"minor" = "Незначний";
+"major" = "Значний";
+"trivial" = "Тривіальний";
+"important" = "Важливий";
+"urgent" = "Терміновий";
+"high" = "Високий";
+"medium" = "Середній";
+"low" = "Низький";
+"highest" = "Найвищий";
+"lowest" = "Найнижчий";
+"normal" = "Нормальний";
+"abnormal" = "Ненормальний";
+"default" = "За замовчуванням";
+"custom" = "Користувацький";
+"automatic" = "Автоматичний";
+"manual" = "Ручний";
+"system" = "Система";
+"user" = "Користувач";
+"admin" = "Адміністратор";
+"guest" = "Гість";
+"anonymous" = "Анонімний";
+"authenticated" = "Автентифікований";
+"unauthenticated" = "Неавтентифікований";
+"authorized" = "Авторизований";
+"unauthorized" = "Неавторизований";
+"forbidden" = "Заборонений";
+"allowed" = "Дозволений";
+"permitted" = "Дозволений";
+"denied" = "Відмовлено";
+"granted" = "Надано";
+"revoked" = "Відкликано";
+"accepted" = "Прийнято";
+"declined" = "Відхилено";
+"confirmed" = "Підтверджено";
+"unconfirmed" = "Непідтверджено";
+"verified" = "Перевірено";
+"unverified" = "Неперевірено";
+"validated" = "Перевірено";
+"invalidated" = "Недійсний";
+"processed" = "Оброблено";
+"unprocessed" = "Необроблено";
+"filtered" = "Відфільтровано";
+"unfiltered" = "Невідфільтровано";
+"sorted" = "Відсортовано";
+"unsorted" = "Невідсортовано";
+"grouped" = "Згруповано";
+"ungrouped" = "Незгруповано";
+"collapsed" = "Згорнуто";
+"expanded" = "Розгорнуто";
+"minimized" = "Мінімізовано";
+"maximized" = "Максимізовано";
+"restored" = "Відновлено";
+"focused" = "Сфокусовано";
+"unfocused" = "Несфокусовано";
+"selected" = "Вибрано";
+"unselected" = "Не вибрано";
+"checked" = "Відмічено";
+"unchecked" = "Не відмічено";
+"indeterminate" = "Невизначено";
+"on" = "Увімкнено";
+"off" = "Вимкнено";
+"yes" = "Так";
+"no" = "Ні";
+"true" = "Істина";
+"false" = "Хибність";
+"none" = "Жоден";
+"all" = "Всі";
+"some" = "Деякі";
+"any" = "Будь-який";
+"each" = "Кожен";
+"every" = "Кожен";
+"many" = "Багато";
+"few" = "Декілька";
+"several" = "Кілька";
+"numerous" = "Численні";
+"multiple" = "Множинні";
+"single" = "Одиночний";
+"double" = "Подвійний";
+"triple" = "Потрійний";
+"quadruple" = "Четверний";
+"half" = "Половина";
+"quarter" = "Чверть";
+"third" = "Третина";
+"first" = "Перший";
+"last" = "Останній";
+"next" = "Наступний";
+"previous" = "Попередній";
+"current" = "Поточний";
+"past" = "Минулий";
+"future" = "Майбутній";
+"present" = "Присутній";
+"absent" = "Відсутній";
+"existing" = "Існуючий";
+"nonexistent" = "Неіснуючий";
+"new" = "Новий";
+"old" = "Старий";
+"young" = "Молодий";
+"senior" = "Старший";
+"junior" = "Молодший";
+"primary" = "Основний";
+"secondary" = "Вторинний";
+"tertiary" = "Третинний";
+"main" = "Головний";
+"alternative" = "Альтернативний";
+"optional" = "Необов'язковий";
+"required" = "Обов'язковий";
+"accessible" = "Доступний";
+"inaccessible" = "Недоступний";
+"reachable" = "Досяжний";
+"unreachable" = "Недосяжний";
+"connected" = "Підключено";
+"disconnected" = "Відключено";
+"online" = "Онлайн";
+"offline" = "Офлайн";
+"synced" = "Синхронізовано";
+"unsynced" = "Несинхронізовано";
+"synchronized" = "Синхронізований";
+"asynchronous" = "Асинхронний";
+"parallel" = "Паралельний";
+"serial" = "Послідовний";
+"sequential" = "Послідовний";
+"random" = "Випадковий";
+"ordered" = "Впорядкований";
+"sorted" = "Відсортований";
+"unsorted" = "Невідсортований";
+"filtered" = "Відфільтрований";
+"unfiltered" = "Невідфільтрований";
+"grouped" = "Згрупований";
+"ungrouped" = "Незгрупований";
+"categorized" = "Категоризований";
+"uncategorized" = "Некатегоризований";
+"classified" = "Класифікований";
+"unclassified" = "Некласифікований";
+"tagged" = "Позначений тегами";
+"untagged" = "Непозначений тегами";
+"labeled" = "Позначений";
 
-"elementName" = "Назва";
-"elementPrice" = "Ціна";
-"defaultPercentForTech" = "Відсоток за замовчуванням для техніків";
-"elementInfo" = "Інформація";
-"elementColor" = "Колір";
-"elementPriceForTech" = "Ціни для техніків";
-"elementPriceForDoctor" = "Ціни для клієнтів";
-"elementPriceOutsource" = "Аутсорс ціна";
 
-"elementPercentForTech" = "Відсотки для техніків";
-"elementPercentForDoctor" = "Відсотки для клієнтів";
+// MARK: - Form Validation
+"firstNameRequired" = "Ім'я обов'язкове";
+"emailRequired" = "Email обов'язковий";
+"titleRequired" = "Назва обов'язкова";
+"emailNotValid" = "Email недійсний";
 
-"elementNeedCaster" = "Потрібен ливарник";
-"elementNeedCadcam" = "Потрібен CAD-CAM";
-"elementAdditionalInfo" = "Додаткова інформація";
 
-"elementDetachable" = "Знімне";
-"elementNotDetachable" = "Незнімне";
-"elementImplant" = "Імплант";
-"elementOutsource" = "Аутсорс";
-"elementArchived" = "Архівний";
-"elementAdditional" = "Проміжний етап";
-"elementGeneral" = "Загальний етап";
 
-"elementRaisePercent" = "Відсоток здорожчання";
-"elementRaiseDefautPercentForTech" = "Відсоток за замовчуванням для техніків";
-"elementRaiseElements" = "Елементів протезування";
-"elementRaiseTypes" = "Типів протезування";
-"elementRaisePrice" = "Піднімає ціну";
 
-"elementRaisePriceElements" = "Піднімає ціну елементів протезування";
-"elementRaisePriceTypes" = "Піднімає ціну типів протезування";
 
-// MARK: - Accounting
-"startDate" = "Початкова дата";
-"endDate" = "Кінцева дата";
-"accountingWorkInProgress" = "В наявності роботи на:";
-"accountingWorkInDebt" = "Вам винні:";
-"accountingSalary" = "Ваша зарплатня з %@ по %@";
-"calculateTechnicianOrders" = "Розрахувати наряди техніка";
 
-// MARK: - Settings
-"managingElementsProthesis" = "Керування елементами протезування";
-"managingRises" = "Керування елементами здорожчання";
-"managingTypesProthesis" = "Керування типами протезування";
-"security" = "Безпека";
-"currency" = "Валюта";
-"theme" = "Теми";
-"print" = "Друк";
 
-"settingsSecuritySection" = "Тут ви можете змінити дані безпеки:";
-"settingsChangePassword" = "Змінити пароль";
-"settingsBioSecurity" = "Використовувати біометричну ідентифікацію для входу";
 
-"settingsEnterNewPassword" = "Введіть новий пароль";
-"settingsPasswordUpdated" = "Пароль оновлено!";
-"settingsReauthenticate" = "Будь-ласка, авторизуйтесь знову.";
 
-"settingsCurrencyPlaceholder" = "Гривня";
-"settingsCurrencySymbol" = "Символ";
-"settingsCurrencySymbolPlaceholder" = "₴";
-"settingsCurrencySection" = "Валюта яка буде відображатися в програмі";
-"currencyNameRequired" = "Потрібно вказати назву валюти";
-"currencySymbolRequired" = "Обов’язковий символ валюти";
 
-"printIcon" = "Логотип закладу для друку";
-"printComment" = "Універсальний коментар";
-"allowTechPrintOrders" = "Дозволяти підлеглим технікам друкувати наряди для клієнтів";
 
-// MARK: - Orders
-"count" = "од.";
-"patient" = "Пацієнт";
-"age" = "Вік";
-"orderFit" = "Примірка";
-"orderSubmit" = "Здача";
 
-"orders" = "Наряди";
-"hideOrdersColor" = "Сховати кольори";
-"showOrdersColor" = "Показати кольори";
-"groupOrders" = "Об'єднати наряди";
-"ungroupOrders" = "Роз'єднати наряди";
-"ungroupOneOrder" = "Відʼєднати наряд";
-"showEmptyDoctors" = "Показати клієнтів без нарядів";
-"hideEmptyDoctors" = "Сховати клієнтів без нарядів";
-"selectOrders" = "Виділити наряди";
 
-"dontSelectAnyOrderToGroup" = "Ви не обрали жодного наряду для об'єднання";
-"dontSelectAnyOrder" = "Ви не обрали жодного наряду";
-
-"ordersSearchPlaceholder" = "Введіть номер наряду або ім'я пацієнта";
-
-"orderPayed" = "Розраховано повністю";
-"orderInDebt" = "В борг";
-
-"changeOrderPrice" = "Змінити ціну";
-"changeOrderClientPrice" = "Змінити ціну для клієнта";
-"changeOrderTechnicianPrice" = "Змінити ціну для техніка";
-"enterNewOrderPrice" = "Введіть нову ціну для клієнта";
-"enterNewOrderTechnicianPrice" = "Введіть нову ціну для техніка";
-
-"prepaid" = "Аванс";
-"enterPrepaidAmount" = "Внесено авансу клієнтом";
-
-"selectOrderColor" = "Позначити кольором";
-
-"doctorOrdersInDebt" = "Борги клієнта";
-"ordersToPay" = "До розрахунку";
-"ordersInDebt" = "Наряди в боргу";
-
-"chooseDoctor" = "Виберіть клієнта";
-"editOrder" = "Редагувати наряд";
-
-"technician" = "Зубний технік";
-"patientName" = "Ім'я";
-"patientGender" = "Стать";
-"caster" = "Ливарник";
-"cadcam" = "CAD-CAM";
-"orderCreateDate" = "Дата створення";
-"didntSet" = "Не вказано";
-"payedToTech" = "Проплачено техніку";
-"techOrderPrice" = "Платня техніка";
-"orderPriceForDoctor" = "Ціна для клієнта";
-"debtValue" = "Борг";
-"debtToDoctor" = "Ви винні клієнту";
-"noteAboutDoctor" = "Замітка про клієнта";
-"attachments" = "Прикріплені файли";
-"show" = "Показати";
-"hide" = "Сховати";
-"doctor" = "Клієнт";
-"orderPrice" = "Ціна";
-"audioNote" = "Аудіо нотатка %@";
-"chooseColorForOrderTitle" = "Виберіть колір для нарядів";
-"chooseColorForOrder" = "Виберіть колір";
-
-// MARK: - Create Order
-"createOrderChooseDoctor" = "Оберіть клієнта";
-"createOrderChooseTech" = "Оберіть техніка";
-"createOrderAddElement" = "Додайте принаймні один тип протезування";
-
-"editOrderTitle" = "Редагування наряду № %@";
-"newOrder" = "Новий наряд";
-"wantExit" = "Всі ваші зміни буде втрачено, ви дійсно хочете вийти ?";
-"audioRecord" = "Аудіозапис";
-"exit" = "Вийти";
-"photo" = "Фото";
-"addAudioNote" = "Аудіо нотатку";
-"noAddedFiles" = "Не додано жодного файлу";
-
-"additionalInfo" = "Додаткові дані";
-"man" = "Чоловік";
-"woman" = "Жінка";
-"teethColorType" = "Розколірка";
-"teethSubcolor" = "Колір";
-
-"elementCount" = "Кількість";
-"enterElementCount" = "Введіть кількість(ціле число)";
-"date" = "Дата";
-"time" = "Час";
-"addFitDate" = "Додати дату примірки";
-"addSubmitDate" = "Додати дату здачі";
-"teethFormula" = "Зубна формула";
-"orderColor" = "Позначення кольором";
-
-// MARK: - Statistic
-"statisticByCreateDate" = "За датою створення";
-"statisticBySubmitDate" = "За датою здачі";
-"statisticAllDoctors" = "Всі клієнти";
-"statisticAllTechnicians" = "Всі техніки";
-"statisticAllCadCams" = "Всі CAD CAM центри";
-"statisticAllCasters" = "Всі ливарники";
-"statisticShow" = "Показати статистику";
-
-"statisticByWork" = "Статистика по роботі";
-"statisticTypes" = "Типи";
-"statisticElements" = "Елементи";
-"statisticOrders" = "Наряди";
-"statisticEmptyState" = "Немає даних статистики,\nщо відповідають заданим параметрам!";
-
-// MARK: - Print
-"printPriceForTech" = "Ціна для техніка";
-"printWorkPrice" = "Вартість виконаних робіт";
-"printTotalPrice" = "Сума виконаних робіт";
-"printOrder" = "Наряд";
-
-"printProtesisTypes" = "Типи протезування";
-"printProtesisType" = "Тип протезування";
-"printMainElements" = "Елементи протезування";
-"printMainElement" = "Елемент протезування";
-"printRaiseElements" = "Елементи здорожчання вартості";
-"printRaiseElement" = "Елемент здорожчання вартості";
-"printPrice" = "Вартість";
-"printPercent" = "Відсоток";
-"printElement" = "Типи та елементи протезування";
-"printSum" = "Сума";
-"printTotalSum" = "Загальна сума до сплати";
-"printTotalSumTech" = "Загальна сума виконаних робіт";
-"printPricePerItem" = "за од.";
-
-"printForClient" = "Друкувати для клієнта";
 
 // MARK: - Subscription
 "subscription" = "Підписка";
@@ -507,14 +566,9 @@
 "subPlanMaxiDescription" = "Лабораторія до тридцяти чоловік персоналу - включаючи адміністратора та модератора";
 "subPlanPremiumDescription" = "Немає ніяких обмежень";
 
-"confirmPaymentTitle" = "Підтвердити повний розрахунок на суму:";
-"confirmPaymentSum" = "Сума:";
-
 "showZeroPriceOrders" = "Показати наряди з нульовою ціною";
 "hideZeroPriceOrders" = "Сховати наряди з нульовою ціною";
 
-"fullPayment" = "Повний розрахунок";
-"confirmFullPayment" = "Ви підтверджуєте повний розрахунок по вибраних нарядах?";
 "selectAll" = "Виділити все";
 "deselectAll" = "Зняти виділення";
 "selectDoctorPayedOrders" = "Виділити наряди за які клієнта розрахувався";

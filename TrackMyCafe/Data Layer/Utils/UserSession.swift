@@ -63,12 +63,14 @@ class UserSession {
         UserSession.current.role = roleConfig.role
         UserSession.current.userRef = roleConfig.userRef
         UserSession.current.dataRef = roleConfig.dataRef
-        UserSession.current.rememberUser = true //rememberUser
+        //TODO: данні раніше бралися із rememberUser
+        UserSession.current.rememberUser = true // rememberUser
         UserSession.current.masterUserRef = roleConfig.dataRef
-        UserSession.current.hasOnlineVersion = true//roleConfig.hasOnlineVersion
+        //TODO: данні раніше бралися із roleConfig.hasOnlineVersion
+        UserSession.current.hasOnlineVersion = true // roleConfig.hasOnlineVersion
         UserSession.current.save()
         
-        //IAPManager.shared.completeTransactions() //TODO: розкоментувати тут щось повязане із покупками
+        IAPManager.shared.completeTransactions()
     }
     
     func restore() -> Bool {
