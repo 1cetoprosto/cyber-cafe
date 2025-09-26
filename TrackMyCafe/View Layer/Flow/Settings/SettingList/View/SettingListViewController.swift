@@ -91,20 +91,21 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     var options = [SettingsOptionType]()
 
-    // Language settings
-    options.append(
-      .dataCell(
-        model: SettingsDataOption(
-          title: "Language",
-          icon: UIImage(systemName: "globe"),
-          iconBackgroundColor: .systemPink,
-          data: SettingsManager.shared.loadLanguage()
-        ) { dataLabel in
-          self.alertLanguage(label: dataLabel) { language in
-            SettingsManager.shared.saveLanguage(language)
-            dataLabel.text = language
-          }
-        }))
+//    // Language settings
+//    options.append(
+//      .dataCell(
+//        model: SettingsDataOption(
+//          title: "Language",
+//          icon: UIImage(systemName: "globe"),
+//          iconBackgroundColor: .systemPink,
+//          data: SettingsManager.shared.loadLanguage()
+//        ) { dataLabel in
+//          self.alertLanguage(label: dataLabel) { language in
+//            SettingsManager.shared.setAppLanguage(language)
+//            dataLabel.text = language
+//            self.updateInterfaceForNewTheme()
+//          }
+//        }))
 
     // Theme settings
     options.append(
@@ -291,6 +292,9 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     else {
       return
     }
+
+    // Ensure the bundle is updated for the new language
+    UserDefaults.standard.synchronize()
 
     let rootViewController = MainTabBarController()
 
