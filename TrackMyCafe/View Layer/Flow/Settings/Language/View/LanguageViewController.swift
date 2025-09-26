@@ -9,11 +9,11 @@ import UIKit
 
 class LanguageViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+  override func viewDidLoad() {
+    super.viewDidLoad()
 
-        view.backgroundColor = UIColor.Main.background
-        title = "Languages"
-    }
+    view.backgroundColor = UIColor.Main.background
+    title = R.string.global.languages()
+  }
 
 }

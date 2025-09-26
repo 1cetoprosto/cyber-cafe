@@ -1,591 +1,155 @@
-/* 
+/*
   Global.strings
   Cyber-coffe
 
   Created by Леонід Квіт on 27.04.2024.
-  
+
 */
 
-
+// MARK: - Common Actions
 "back" = "Назад";
 "cancel" = "Скасувати";
 "retry" = "Повторити спробу";
 "save" = "Зберегти";
 "delete" = "Видалити";
-
 "actionOk" = "OK";
 "search" = "Пошук";
-"change" = "Змінити";
 "confirm" = "Підтвердити";
 "transfer" = "Перенести";
 "startOver" = "Все спочатку";
+"edit" = "Редагування";
+"chose" = "Виберіть";
+"clear" = "очистити";
 
-"resetAll" = "Скинути всі";
-
+// MARK: - Contact Information
+"phone" = "Телефон";
+"address" = "Адреса";
 "email" = "Email";
-"password" = "Пароль";
+"contactInfo" = "Контактна інформація";
+"noSpecified" = "Не вказано";
+"note" = "Замітка";
 
+// MARK: - Authentication & User Data
+"password" = "Пароль";
+"firstName" = "Ім'я";
+"lastName" = "Прізвище";
+"middleName" = "По-батькові";
+"names" = "ПІБ";
+
+// MARK: - Alerts & Messages
 "error" = "Помилка";
 "warning" = "Увага";
 "success" = "Успіх";
 "attention" = "Увага";
-
-"repeatAgain" = "Спробувати ще раз";
 "wentWrong" = "Щось пішло не так";
 "wentWrongTryAgain" = "Щось пішло не так, будь ласка, спробуйте пізніше";
-
-"title" = "Назва";
-"price" = "Ціна";
-"percent" = "Відсоток";
-"privilege" = "Обов'язки";
-
-"orders" = "Наряди";
-
-"userNote" = "Нотатка";
-"userNotes" = "Нотатки";
-
-"tapToSelect" = "Натисніть щоб вибрати...";
-"tapToAdd" = "Натисніть щоб додати...";
-
-"none" = "Немає";
-
-// MARK: - Feedback
-"emailSubject" = "Замовити в лабораторію";
-"emailBody" = "<p>Добрий день,</p><p>У мене запитання....</p><br><br>З найкращими побажаннями,<br>DTLab";
-
-"great" = "Чудово!";
-"emailNotConfig" = "Електронна пошта не налаштована в програмі налаштувань, або ми не можемо надіслати електронне повідомлення.";
-"feedbackMailSent" = "Дякуємо за замовлення!\Електронний лист успішно надіслано.";
-"mailFailed" = "Помилка надсилання пошти";
 
 // MARK: - Validation
 "fieldRequired" = "Поле '%@' обов'язкове";
 "enterCorrect" = "Введіть коректний %@";
-
 "emailInvalid" = "Електронна адреса недійсна";
 "passwordValidateDesc" = "Пароль має містити принаймні 6 символів";
 "passwordNotMatch" = "Паролі не збігаються";
-
-// MARK: - Default Element Types
-"denture" = "Протез";
-"veener" = "Вінір";
-"metalCeramic" = "Металокераміка";
-
-// MARK: - Menu
-"menuWorks" = "Мої наряди";
-"menuCalendar" = "Календар";
-"menuNotes" = "Нотатки";
-"menuDoctors" = "Клієнти";
-"menuStaff" = "Персонал";
-"menuAccountMoney" = "Облік грошей";
-"menuWorkStatistic" = "Статистика по роботі";
-"menuSettings" = "Налаштування";
-"menuUrls" = "Посилання";
-"menuHelp" = "Допомога";
-
-"menuContextFacebook" = "Група Facebook";
-"menuContextemail" = "Зворотній зв'язок";
-"menuContextExit" = "Вихід";
-
-// MARK: - Staff Section
-"staff_sectionWaiter" = "Офіціанти";
-"staff_sectionSeniorWaiter" = "Старші офіціанти";
-"staff_sectionCaster" = "Ливарники";
-"staff_sectionCadCam" = "CAD CAM-и";
-
-// MARK: - Prices
-"prices" = "Ціни";
-"pricesElements" = "Розцінки елементів протезування";
-"pricesRaises" = "Розцінки елементів здорожчання";
-"pricesTypes" = "Розцінки типів протезування";
-
-"doctorPricesList" = "Ціни для клієнта";
-"techinianPricesList" = "Ціни для техніка";
-
-"startPercent" = "Початковий:";
-"startPrice" = "Початкова:";
-"priceForDoctor" = "Для клієнта:";
-"priceForTech" = "Для техніка:";
-
-"popupEditDoctorPriceTitle" = "Ціна для клієнта";
-"popupEditDoctorPriceInfo" = "Ціна для клієнта: %@\nПочаткова: %@";
-
-"popupEditDoctorPercentTitle" = "Відсоток для клієнта";
-"popupEditDoctorPercentInfo" = "Відсоток для клієнта: %@\nПочатковий: %@";
-
-"popupEditTechPriceTitle" = "Ціна для техніка";
-"popupEditTechPriceInfo" = "Ціна для техніка: %@\nПочаткова: %@";
-
-"popupEditTechPercentTitle" = "Відсоток для техніка";
-"popupEditTechPercentInfo" = "Відсоток для техніка: %@\nПочатковий: %@";
-
-"popupEditPriceNotSet" = "Ви не вказали ціну";
-"popupEditPercentNotSet" = "Ви не вказали відсоток";
-
-"doctorPricesResetAllMessage" = "Ви впевнені, що хочете скинути всі ціни для цього клієнта до початкових?";
-
-// MARK: - Links Section
-"links_facebookGroup" = "DTLab support group";
-
-// MARK: - Global Items
-"askDeleteItem" = "Ви впевнені, що хочете видалити цей елемент?";
-"askDeleteButton" = "Видалити";
-
-"edit" = "Редагування";
-
-"name" = "Назва";
-"firstName" = "Ім'я";
-"lastName" = "Прізвище";
-"middleName" = "По-батькові";
-"phone" = "Телефон";
-"address" = "Адреса";
-
-"debt" = "Борги";
-
+"emailRequired" = "Email обов'язковий";
+"firstNameRequired" = "Ім'я обов'язкове";
+"emailNotValid" = "Email недійсний";
 "required" = "обов'язково";
 "noRequired" = "не обовязково";
-"noSpecified" = "Не вказано";
+"repeatAgain" = "Спробувати ще раз";
 
-"names" = "ПІБ";
-"contactInfo" = "Контактна інформація";
-"note" = "Замітка";
-
-"archive" = "Архів";
-"allElements" = "Всі елементи";
-
-"willShowAsDefault" = "Буде відображатися в наряді по замовчуванню";
-
-"adminPrivilege" = "Має обов'язки адміністратора";
-"hasModPrivilege" = "Має обов'язки модератора";
-"notHasModPrivilege" = "Не має обов'язків модератора";
-"hasTechnicianPrivilege" = "Має обов'язки зубного техніка";
-"notHasTechnicianPrivilege" = "Не має обов'язків зубного техніка";
-
-"addTechnicianPrivilege" = "Додати обов'язки зубного техніка";
-"addModerationPrivilege" = "Додати обов'язки модератора";
-
-"debtDetails" = "Борги детальніше";
-"printPrices" = "Друкувати розцінки";
-"restartRequired" = "Потрібен перезапуск";
-"restartRequiredMsg" = "Будь ласка, перезапустіть додаток, щоб зміни набули чинності";
-
-// MARK: - Technicians
-"newTechnician" = "Новий технік";
+// MARK: - Staff Management
 "newModerator" = "Новий модератор";
-"techOrders" = "Облік поточних нарядів техніка";
-"techAllOrders" = "Усі наряди техніка";
-"techPrices" = "Розцінки для техніка";
-"resendInvite" = "Надіслати посилання для входу";
-"allowCalculationForAdministrator" = "Дозвіл адміністратору проводити розрахунок";
+"newTechnician" = "Новий офіціант";
+"addTechnician" = "Додати офіціанта";
+"editTechnician" = "Редагувати офіціанта";
+"addAdmin" = "Додати адміністратора";
+"editAdmin" = "Редагувати адміністратора";
+"addTechnicianPrivilege" = "Додати обов'язки офіціанта";
+"addModerationPrivilege" = "Додати обов'язки модератора";
+"adminPrivilege" = "Має обов'язки адміністратора";
 "isAllowCalculationForAdministrator" = "Надати доступ";
-
 "failedSentTechnicianEmail" = "Щось пішло не так, будь ласка, повторіть спробу пізніше\nВи можете надіслати електронний лист із запрошенням із екрана деталей техніка";
 "successSentTechnicianEmail" = "Посилання для входу надіслано на електронну адресу техніка: %@";
 
-// MARK: - Doctors
-"newDoctor" = "Новий клієнт";
-"doctorNote" = "Клієнт надає перевагу";
-"editDoctorNote" = "Введіть те, чому клієнт віддає перевагу (відображається в кожному наряді)";
-"doctorOrders" = "Наряди клієнта";
-"doctorPrices" = "Розцінки для клієнта";
+// MARK: - Staff Sections
+"staff_sectionWaiter" = "Офіціанти";
+"staff_sectionSeniorWaiter" = "Старші офіціанти";
 
-// MARK: - Caster
-"newCaster" = "Новий ливарник";
-"makeCasterDefault" = "Ливарник по замовчуванню";
-"isDefaultCaster" = "Ливарник по замовчуванню\n(відображається в наряді по замовчуванню)";
-
-// MARK: - CAD-CAM
-"newCadcam" = "Новий CAD CAM";
-"makeCadcamDefault" = "CAD CAM по замовчуванню";
-"isDefaultCadcam" = "CAD CAM по замовчуванню\n(відображається в наряді по замовчуванню)";
-
-// MARK: - Form Validation
-"firstNameRequired" = "Ім'я обов'язкове";
-"emailRequired" = "Email обов'язковий";
-"titleRequired" = "Назва обов'язкова";
-"emailNotValid" = "Email недійсний";
-
-// MARK: - Notes
-"editNote" = "Редагування нотатки";
-"newNote" = "Нова нотатка";
-"alarmDate" = "Дата сигналу";
-"alarmTime" = "Час сигналу";
-"createAsReminder" = "Створити як нагадування";
-"noteTitle" = "Заголовок";
-"noteBody" = "Текст";
+// MARK: - Roles
+"roleAdmin" = "Адміністратор";
+"roleModerator" = "Модератор";
+"roleTechnician" = "Офіціант";
+"roleTechMod" = "Офіціант & Модератор";
+"choseSignInRole" = "Офіціант має декілька ролей, виберіть роль для авторизації:";
 
 // MARK: - Menu
-"menuSettings" = "Налаштування";
-"menuLogout" = "Вийти";
-"menuProfile" = "Профіль";
 "menuStaff" = "Персонал";
-"menuDoctors" = "Клієнти";
-"menuOrders" = "Замовлення";
-"menuStatistic" = "Статистика";
-"menuAccounting" = "Облік";
-"menuNotes" = "Нотатки";
-"menuSubscription" = "Підписка";
-"menuDeleteAccount" = "Видалити акаунт";
-
-// MARK: - Staff Section
-"staffSectionTitle" = "Персонал";
-"staffSectionAddNew" = "Додати нового";
-"staffSectionEdit" = "Редагувати";
-"staffSectionDelete" = "Видалити";
-"staffSectionDeleteConfirm" = "Ви впевнені, що хочете видалити цього співробітника?";
-"staffSectionDeleteSuccess" = "Співробітник успішно видалений";
-"staffSectionAddSuccess" = "Співробітник успішно доданий";
-"staffSectionEditSuccess" = "Співробітник успішно відредагований";
-"staffSectionAddTitle" = "Додати нового співробітника";
-"staffSectionEditTitle" = "Редагувати співробітника";
-"staffSectionFirstName" = "Ім'я";
-"staffSectionLastName" = "Прізвище";
-"staffSectionEmail" = "Email";
-"staffSectionPhone" = "Телефон";
-"staffSectionRole" = "Роль";
-"staffSectionPassword" = "Пароль";
-"staffSectionConfirmPassword" = "Підтвердити пароль";
-"staffSectionPasswordsDontMatch" = "Паролі не співпадають";
-"staffSectionPasswordTooShort" = "Пароль повинен містити не менше 6 символів";
-"staffSectionEmailInvalid" = "Email недійсний";
-"staffSectionEmailAlreadyExists" = "Email вже існує";
-"staffSectionFirstNameRequired" = "Ім'я обов'язкове";
-"staffSectionLastNameRequired" = "Прізвище обов'язкове";
-"staffSectionEmailRequired" = "Email обов'язковий";
-"staffSectionPasswordRequired" = "Пароль обов'язковий";
-"staffSectionConfirmPasswordRequired" = "Підтвердження пароля обов'язкове";
-"staffSectionRoleRequired" = "Роль обов'язкова";
-
-// MARK: - Feedback
-"cancel" = "Скасувати";
-"save" = "Зберегти";
-"delete" = "Видалити";
-"edit" = "Редагувати";
-"search" = "Пошук";
-"error" = "Помилка";
-"success" = "Успіх";
-"warning" = "Попередження";
-"back" = "Назад";
-"retry" = "Повторити";
-"none" = "Жоден";
-"startDate" = "Дата початку";
-"endDate" = "Дата закінчення";
-"startTime" = "Час початку";
-"endTime" = "Час закінчення";
-"deadline" = "Крайній термін";
-"schedule" = "Розклад";
-"appointment" = "Зустріч";
-"event" = "Подія";
-"task" = "Завдання";
-"project" = "Проект";
-"status" = "Статус";
-"state" = "Стан";
-"condition" = "Умова";
-"progress" = "Прогрес";
-"completed" = "Завершено";
-"incomplete" = "Незавершено";
-"pending" = "В очікуванні";
-"inProgress" = "В процесі";
-"onHold" = "На утриманні";
-"cancelled" = "Скасовано";
-"delayed" = "Відкладено";
-"failed" = "Не вдалося";
-"successful" = "Успішно";
-"approved" = "Затверджено";
-"rejected" = "Відхилено";
-"draft" = "Чернетка";
-"published" = "Опубліковано";
-"unpublished" = "Неопубліковано";
-"archived" = "Архівовано";
-"deleted" = "Видалено";
-"enabled" = "Увімкнено";
-"disabled" = "Вимкнено";
-"active" = "Активний";
-"inactive" = "Неактивний";
-"available" = "Доступний";
-"unavailable" = "Недоступний";
-"visible" = "Видимий";
-"invisible" = "Невидимий";
-"shown" = "Показано";
-"hidden" = "Приховано";
-"public" = "Публічний";
-"private" = "Приватний";
-"confidential" = "Конфіденційний";
-"restricted" = "Обмежений";
-"unrestricted" = "Необмежений";
-"locked" = "Заблоковано";
-"unlocked" = "Розблоковано";
-"secure" = "Безпечний";
-"insecure" = "Небезпечний";
-"safe" = "Безпечний";
-"unsafe" = "Небезпечний";
-"valid" = "Дійсний";
-"invalid" = "Недійсний";
-"correct" = "Правильний";
-"incorrect" = "Неправильний";
-"error" = "Помилка";
-"warning" = "Попередження";
-"info" = "Інформація";
-"debug" = "Налагодження";
-"trace" = "Трасування";
-"fatal" = "Фатальний";
-"critical" = "Критичний";
-"severe" = "Серйозний";
-"moderate" = "Помірний";
-"minor" = "Незначний";
-"major" = "Значний";
-"trivial" = "Тривіальний";
-"important" = "Важливий";
-"urgent" = "Терміновий";
-"high" = "Високий";
-"medium" = "Середній";
-"low" = "Низький";
-"highest" = "Найвищий";
-"lowest" = "Найнижчий";
-"normal" = "Нормальний";
-"abnormal" = "Ненормальний";
-"default" = "За замовчуванням";
-"custom" = "Користувацький";
-"automatic" = "Автоматичний";
-"manual" = "Ручний";
-"system" = "Система";
-"user" = "Користувач";
-"admin" = "Адміністратор";
-"guest" = "Гість";
-"anonymous" = "Анонімний";
-"authenticated" = "Автентифікований";
-"unauthenticated" = "Неавтентифікований";
-"authorized" = "Авторизований";
-"unauthorized" = "Неавторизований";
-"forbidden" = "Заборонений";
-"allowed" = "Дозволений";
-"permitted" = "Дозволений";
-"denied" = "Відмовлено";
-"granted" = "Надано";
-"revoked" = "Відкликано";
-"accepted" = "Прийнято";
-"declined" = "Відхилено";
-"confirmed" = "Підтверджено";
-"unconfirmed" = "Непідтверджено";
-"verified" = "Перевірено";
-"unverified" = "Неперевірено";
-"validated" = "Перевірено";
-"invalidated" = "Недійсний";
-"processed" = "Оброблено";
-"unprocessed" = "Необроблено";
-"filtered" = "Відфільтровано";
-"unfiltered" = "Невідфільтровано";
-"sorted" = "Відсортовано";
-"unsorted" = "Невідсортовано";
-"grouped" = "Згруповано";
-"ungrouped" = "Незгруповано";
-"collapsed" = "Згорнуто";
-"expanded" = "Розгорнуто";
-"minimized" = "Мінімізовано";
-"maximized" = "Максимізовано";
-"restored" = "Відновлено";
-"focused" = "Сфокусовано";
-"unfocused" = "Несфокусовано";
-"selected" = "Вибрано";
-"unselected" = "Не вибрано";
-"checked" = "Відмічено";
-"unchecked" = "Не відмічено";
-"indeterminate" = "Невизначено";
-"on" = "Увімкнено";
-"off" = "Вимкнено";
-"yes" = "Так";
-"no" = "Ні";
-"true" = "Істина";
-"false" = "Хибність";
-"none" = "Жоден";
-"all" = "Всі";
-"some" = "Деякі";
-"any" = "Будь-який";
-"each" = "Кожен";
-"every" = "Кожен";
-"many" = "Багато";
-"few" = "Декілька";
-"several" = "Кілька";
-"numerous" = "Численні";
-"multiple" = "Множинні";
-"single" = "Одиночний";
-"double" = "Подвійний";
-"triple" = "Потрійний";
-"quadruple" = "Четверний";
-"half" = "Половина";
-"quarter" = "Чверть";
-"third" = "Третина";
-"first" = "Перший";
-"last" = "Останній";
-"next" = "Наступний";
-"previous" = "Попередній";
-"current" = "Поточний";
-"past" = "Минулий";
-"future" = "Майбутній";
-"present" = "Присутній";
-"absent" = "Відсутній";
-"existing" = "Існуючий";
-"nonexistent" = "Неіснуючий";
-"new" = "Новий";
-"old" = "Старий";
-"young" = "Молодий";
-"senior" = "Старший";
-"junior" = "Молодший";
-"primary" = "Основний";
-"secondary" = "Вторинний";
-"tertiary" = "Третинний";
-"main" = "Головний";
-"alternative" = "Альтернативний";
-"optional" = "Необов'язковий";
-"required" = "Обов'язковий";
-"accessible" = "Доступний";
-"inaccessible" = "Недоступний";
-"reachable" = "Досяжний";
-"unreachable" = "Недосяжний";
-"connected" = "Підключено";
-"disconnected" = "Відключено";
-"online" = "Онлайн";
-"offline" = "Офлайн";
-"synced" = "Синхронізовано";
-"unsynced" = "Несинхронізовано";
-"synchronized" = "Синхронізований";
-"asynchronous" = "Асинхронний";
-"parallel" = "Паралельний";
-"serial" = "Послідовний";
-"sequential" = "Послідовний";
-"random" = "Випадковий";
-"ordered" = "Впорядкований";
-"sorted" = "Відсортований";
-"unsorted" = "Невідсортований";
-"filtered" = "Відфільтрований";
-"unfiltered" = "Невідфільтрований";
-"grouped" = "Згрупований";
-"ungrouped" = "Незгрупований";
-"categorized" = "Категоризований";
-"uncategorized" = "Некатегоризований";
-"classified" = "Класифікований";
-"unclassified" = "Некласифікований";
-"tagged" = "Позначений тегами";
-"untagged" = "Непозначений тегами";
-"labeled" = "Позначений";
-
-
-// MARK: - Form Validation
-"firstNameRequired" = "Ім'я обов'язкове";
-"emailRequired" = "Email обов'язковий";
-"titleRequired" = "Назва обов'язкова";
-"emailNotValid" = "Email недійсний";
-
-
-
-
-
-
-
-
-
-
-
-
-
+"menuSettings" = "Налаштування";
 
 // MARK: - Subscription
 "subscription" = "Підписка";
-"subscriptions" = "Підписки";
-
 "subscriptionDefaultHeader" = "Ви в будь-який час можете змінити підписку на ту, яка краще підходить для вашого закладу";
 "subscriptionReachedHeader" = "Ваша поточна підписка не дозволяє додати більше персоналу у вашу лабораторію. Ви можете змінити підписку на ту яка краще підходить для вашого закладу";
 "subscriptionExpiredHeader" = "Термін дії вашої підписки закінчився. Щоб продовжити користуватися додатком потрібно купити підписку, якщо у вас вже є куплена підписка, натисність кнопку \"Відновити покупки\"";
 "subscriptionNeedSubHeader" = "Для продовження роботи з додатком купіть підписку, або якщо ви вже маєте підписку ви можете відновити її натиснувши на кнопку \"Відновити покупки\"";
-
 "subscriptionFooter1" = "Для отримання доступу до програми потрібна підписка. Кожен тип підписки включає 1-місячну безкоштовну пробну версію. Випробувальний термін надається лише один раз. \n\nПісля безкоштовного пробного періоду підписка автоматично поновлюється із зазначеними вище ціною та тривалістю, якщо тільки вона не буде скасована принаймні за 24 години до кінця пробного місяця. \n\nПлатіж буде стягнено з вашого облікового запису Apple ID при підтвердженні покупки. З вашого рахунку буде стягнено плату за поновлення протягом 24 годин до кінця поточного періоду. Ви можете керувати своїми підписками та скасовувати їх, перейшовши в налаштування свого облікового запису в App Store після покупки.";
 "subscriptionFooter2" = "Видалення програми автоматично не скасовує підписку.";
-
 "manageSubscriptions" = "Керувати підписками";
 "restorePurchases" = "Відновити покупки";
-
 "currentSubscription" = "Ваша поточна підписка";
 "subscriptionOptions" = "Варіанти підписки";
-
 "purchaseRestored" = "Покупки успішно відновлено";
 "appleHasntPurhcase" = "Поточний AppleID не має покупок для даного закладу";
-
 "appleIDReserved" = "Ви не можете купити підписку для цього закладу з поточного AppleID, тому що цей AppleID вже використано для іншого закладу";
 "labReserved" = "Ви не можете купити підписку для цього закладу з поточного AppleID, тому що ця лабораторія вже привязана до іншого AppleID";
-
 "successPurchase" = "Вітаємо, ви успішно купили підписку";
-
 "hasPremiumPlan" = "У вас Преміум підписка, вам не потрібно купувати або змінювати підписку";
-
-"choseSignInRole" = "Технік має декілька ролей, виберіть роль для авторизації:";
-"chose" = "Виберіть";
-"printForWhom" = "Друкувати для кого?";
-"printForTechnician" = "Для техніка";
-"printForDoctor" = "Для клієнта";
-
-"chosePatient" = "Виберіть пацієнта";
-"chosePatientInfo" = "В обраних вами нарядах дані про пацієнтів не співпадають. Виберіть правильний варіант:";
-"deletePatientInfo" = "Видалити дані про пацієнта";
-
 "menuSubExpired" = "Термін дії вашої підписки закінчився. Щоб продовжити користуватися додатком потрібно купити підписку";
-"menuSubNeed" = "Для продовження роботи з додатком потрібно купити підписку";
 "menuBuySub" = "Купити підписку";
-"menuSubAndroid" = "Підписка не активна та була куплена на платформі Android. Для відновлення підписки адміністратору закладу потрібно зайти в додаток на відповідній платформі";
 "menuSubTech" = "Термін дії вашої підписки закінчився, звернітся до адміністратора для оновлення підписки";
-"menuSubRenewError" = "Виникли проблеми при оновленні даних підписки. Перевірте будь-ласка підключення до інтернету та перезапустіть додаток";
-
-"technicianLimitReached" = "Ваша поточна підписка не дозволяє додати більше персоналу у вашу лабораторію. Ви можете змінити підписку:";
+"technicianLimitReached" = "Ваша поточна підписка не дозволяє додати більше персоналу у ваше кафе. Ви можете змінити підписку:";
 "changeSub" = "Змінити";
-
 "month" = "Місяць";
 
-// Roles
-"roleAdmin" = "Admin";
-"roleModerator" = "Модератор";
-"roleTechnician" = "Зубний технік";
-"roleTechMod" = "Зубний технік & Модератор";
-
-"clear" = "очистити";
-
-// MARK: - Subscription plans
+// MARK: - Subscription Plans
 "subPlanNoneName" = "Без підписки";
-"subPlanSingleName" = "Одиночна";
-"subPlanMiniName" = "МініЛаб";
-"subPlanPentaName" = "ПантаЛаб";
-"subPlanMidName" = "МідЛаб";
-"subPlanBigName" = "БігЛаб";
-"subPlanMaxiName" = "МаксіЛаб";
+"subPlanSingleName" = "Одиночний";
+"subPlanMiniName" = "Міні";
+"subPlanPentaName" = "Пента";
+"subPlanMidName" = "Мід";
+"subPlanBigName" = "Біг";
+"subPlanMaxiName" = "Максі";
 "subPlanPremiumName" = "Преміум";
-
 "subPlanNoneDescription" = "Без підписки";
-"subPlanSingleDescription" = "Для одного зубного техніка";
-"subPlanMiniDescription" = "Маленька лабораторія не більше двох чоловік персоналу";
-"subPlanPentaDescription" = "Лабораторія не більше п'яти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanMidDescription" = "Лабораторія до дванадцяти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanBigDescription" = "Лабораторія до двадцяти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanMaxiDescription" = "Лабораторія до тридцяти чоловік персоналу - включаючи адміністратора та модератора";
+"subPlanSingleDescription" = "Для одного користувача";
+"subPlanMiniDescription" = "Маленьке кафе не більше двох чоловік персоналу";
+"subPlanPentaDescription" = "Кафе не більше п'яти чоловік персоналу - включаючи адміністратора та модератора";
+"subPlanMidDescription" = "Кафе до дванадцяти чоловік персоналу - включаючи адміністратора та модератора";
+"subPlanBigDescription" = "Кафе до двадцяти чоловік персоналу - включаючи адміністратора та модератора";
+"subPlanMaxiDescription" = "Кафе до тридцяти чоловік персоналу - включаючи адміністратора та модератора";
 "subPlanPremiumDescription" = "Немає ніяких обмежень";
 
-"showZeroPriceOrders" = "Показати наряди з нульовою ціною";
-"hideZeroPriceOrders" = "Сховати наряди з нульовою ціною";
-
-"selectAll" = "Виділити все";
-"deselectAll" = "Зняти виділення";
-"selectDoctorPayedOrders" = "Виділити наряди за які клієнта розрахувався";
-
-"notSavedChangesInTeethFormula" = "У вас є не підтверджені зміни в зубній формулі";
-
-"manageSubFromAndroid" = "Підписка для цього закладу була придбана на платформі Android. Якщо ви хочете керувати підпискою, увійдіть з Android пристрою";
-
+// MARK: - Gender & Personal Info
 "genderMale" = "Чоловіча";
 "genderFemale" = "Жіноча";
 "genderNoSpecified" = "Не вказано";
 
+// MARK: - Print & Services
+"printForWhom" = "Друкувати для кого?";
+"printForTechnician" = "Для офіціанта";
+"printForDoctor" = "Для клієнта";
+
+// MARK: - Media Access
 "camera" = "Камера";
 "gallery" = "Галерея";
 "access_image_title" = "Доступ до %@";
 "access_image_desc" = "Будь ласка, надайте доступ до вашої %@";
 
+// MARK: - Account Management
 "delete_account_title" = "Ви впевнені що хочете видалити свій акаунт, всі ваші дані буде видалено назавжди, цю дію не можна буде відмінити?";
-"delete_account_admin" = "Ви впевнені що хочете видалити свій акаунт, всі дані про лабораторію та наряди буде видалено назавжди, цю дію не можна буде відмінити?";
+"delete_account_admin" = "Ви впевнені що хочете видалити свій акаунт, всі дані про кафе та замовлення буде видалено назавжди, цю дію не можна буде відмінити?";
 "delete_account" = "Видалити акаунт";
+
+// MARK: - Theme Settings
+"lightThemeName" = "Світла";
+"darkThemeName" = "Темна";
