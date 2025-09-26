@@ -47,8 +47,8 @@ class SettingListViewModel: SettingListViewModelType {
     private var settings: [Section]?
     
     func getSettings(completion: @escaping () -> ()) {
-        settings.append(Section(title: "General", option: [
-            .dataCell(model: SettingsDataOption(title: "Language",
+        settings.append(Section(title: R.string.global.general(), option: [
+            .dataCell(model: SettingsDataOption(title: R.string.global.language(),
                                                 icon: "globe", //UIImage(systemName: "globe"),
                                                 iconBackgroundColor: "systemPink", //.systemPink,
                                                 data: "English") { dataLabel in
@@ -56,7 +56,7 @@ class SettingListViewModel: SettingListViewModelType {
                     print(language)
                 }
             }),
-            .switchCell(model: SettingsSwitchOption(title: "Dark Theme",
+            .switchCell(model: SettingsSwitchOption(title: R.string.global.darkTheme(),
                                                     icon: "sun.max", //UIImage(systemName: "sun.max"),
                                                     iconBackgroundColor: "systemBlue", //.systemBlue,
                                                     isOn: true) {
@@ -64,8 +64,8 @@ class SettingListViewModel: SettingListViewModelType {
             })
         ]))
 
-        settings.append(Section(title: "Sales", option: [
-            .staticCell(model: SettingsStaticOption(title: "Goods",
+        settings.append(Section(title: R.string.global.sales(), option: [
+            .staticCell(model: SettingsStaticOption(title: R.string.global.goods(),
                                                     icon: "cup.and.saucer.fill", //UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: "systemGreen", //.systemGreen) {
                 self.navigationController?.pushViewController(GoodListViewController(), animated: true)

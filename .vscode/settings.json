@@ -1,5 +1,5 @@
 {
-    "editor.semanticHighlighting.enabled": "configuredByTheme",
-    "editor.semanticTokenColorCustomizations": {},
-    "workbench.colorTheme": "Deep Blue"
+  "editor.semanticHighlighting.enabled": "configuredByTheme",
+  "editor.semanticTokenColorCustomizations": {},
+  "workbench.colorTheme": "Xcode Default Dark Customized Version"
 }
