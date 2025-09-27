@@ -6,29 +6,29 @@
   
 */
 
-"rememberMe" = "Запам'ятати мене";
-"signIn" = "Ввійти";
-"signUp" = "Зареєструватися";
-"forgotPass" = "Забули пароль ?";
-"bioAuthReason" = "Для авторизації в додатку";
-"signInHow" = "Увійти як:";
-"confirmEmail" = "Будь ласка, підтвердьте свою електронну адресу";
+"rememberMe" = "Remember me";
+"signIn" = "Sign In";
+"signUp" = "Sign Up";
+"forgotPass" = "Forgot password?";
+"bioAuthReason" = "To authorize in the app";
+"signInHow" = "Sign in as:";
+"confirmEmail" = "Please confirm your email address";
 
-"enterEmail" = "Введіть електронну пошту";
+"enterEmail" = "Enter email";
 
-"repeatPassword" = "Пароль ще раз";
-"resetPassword" = "Відновити пароль";
+"repeatPassword" = "Repeat password";
+"resetPassword" = "Reset password";
 
-"enableBioLater" = "Увімкнути пізніше в налаштуваннях";
-"useBioAuth" = "Використовуйте %@ для швидкої авторизації";
-"enableBioAuth" = "Увімкнути %@";
+"enableBioLater" = "Enable later in settings";
+"useBioAuth" = "Use %@ for quick authorization";
+"enableBioAuth" = "Enable %@";
 
-"sentAuthEmail" = "Ми надіслали вам листа з посиланням для авторизації";
+"sentAuthEmail" = "We sent you an email with authorization link";
 
-"setPassword.Title" = "Введіть будь-ласка новий пароль";
-"setPassword.Placeholder" = "Новий пароль";
-"setPassword.RePlaceholder" = "Новий пароль ще раз";
-"setPassword.EnterPassword" = "Введіть пароль";
-"setPassword.ValidLength" = "Пароль має містити не менше 6 символів";
-"setPassword.ReEnterPassword" = "Введіть пароль ще раз";
-"setPassword.EqualPasswords" = "Паролі мають співпадати";
+"setPassword.Title" = "Please enter new password";
+"setPassword.Placeholder" = "New password";
+"setPassword.RePlaceholder" = "Repeat new password";
+"setPassword.EnterPassword" = "Enter password";
+"setPassword.ValidLength" = "Password must contain at least 6 characters";
+"setPassword.ReEnterPassword" = "Enter password again";
+"setPassword.EqualPasswords" = "Passwords must match";

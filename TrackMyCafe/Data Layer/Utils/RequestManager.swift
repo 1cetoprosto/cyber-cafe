@@ -244,6 +244,17 @@ class RequestManager: NSObject {
                     self.subscription = Subscription()
                 }
                 IAPManager.shared.updateInfo(self.subscription!)
+                
+                // Checking for subscription expiration
+                if let subscription = self.subscription,
+                   let nextPaymentDate = subscription.nextPaymentDate, 
+                   nextPaymentDate < Date() {
+                    let controller = SubscriptionController.makeExpired()
+                    if let topVC = UIApplication.shared.keyWindow?.rootViewController {
+                        topVC.present(controller, animated: true)
+                    }
+                }
+                
                 NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
             }
         }
