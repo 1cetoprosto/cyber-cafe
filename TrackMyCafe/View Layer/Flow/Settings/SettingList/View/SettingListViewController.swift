@@ -91,21 +91,21 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     var options = [SettingsOptionType]()
 
-//    // Language settings
-//    options.append(
-//      .dataCell(
-//        model: SettingsDataOption(
-//          title: "Language",
-//          icon: UIImage(systemName: "globe"),
-//          iconBackgroundColor: .systemPink,
-//          data: SettingsManager.shared.loadLanguage()
-//        ) { dataLabel in
-//          self.alertLanguage(label: dataLabel) { language in
-//            SettingsManager.shared.setAppLanguage(language)
-//            dataLabel.text = language
-//            self.updateInterfaceForNewTheme()
-//          }
-//        }))
+    //    // Language settings
+    //    options.append(
+    //      .dataCell(
+    //        model: SettingsDataOption(
+    //          title: "Language",
+    //          icon: UIImage(systemName: "globe"),
+    //          iconBackgroundColor: .systemPink,
+    //          data: SettingsManager.shared.loadLanguage()
+    //        ) { dataLabel in
+    //          self.alertLanguage(label: dataLabel) { language in
+    //            SettingsManager.shared.setAppLanguage(language)
+    //            dataLabel.text = language
+    //            self.updateInterfaceForNewTheme()
+    //          }
+    //        }))
 
     // Theme settings
     options.append(
@@ -124,32 +124,32 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
           }
         }))
 
-    // Subscription management
-    options.append(
-      .staticCell(
-        model: SettingsStaticOption(
-          title: "Subscription",
-          icon: UIImage(systemName: "creditcard.circle.fill"),
-          iconBackgroundColor: .systemIndigo
-        ) {
-          // Open subscription management screen
-          let controller = SubscriptionController.makeDefault()
-          self.navigationController?.pushViewController(controller, animated: true)
-        }))
+    // // Subscription management
+    // options.append(
+    //   .staticCell(
+    //     model: SettingsStaticOption(
+    //       title: "Subscription",
+    //       icon: UIImage(systemName: "creditcard.circle.fill"),
+    //       iconBackgroundColor: .systemIndigo
+    //     ) {
+    //       // Open subscription management screen
+    //       let controller = SubscriptionController.makeDefault()
+    //       self.navigationController?.pushViewController(controller, animated: true)
+    //     }))
 
-    // Exit option for online users
-    if UserSession.current.hasOnlineVersion {
-      options.append(
-        .dataCell(
-          model: SettingsDataOption(
-            title: "Exit",
-            icon: UIImage(named: "exit"),
-            iconBackgroundColor: .systemGreen,
-            data: SettingsManager.shared.loadUserEmail()
-          ) { dataLabel in
-            UserSession.logOut()
-          }))
-    }
+    // // Exit option for online users
+    // if UserSession.current.hasOnlineVersion {
+    //   options.append(
+    //     .dataCell(
+    //       model: SettingsDataOption(
+    //         title: "Exit",
+    //         icon: UIImage(named: "exit"),
+    //         iconBackgroundColor: .systemGreen,
+    //         data: SettingsManager.shared.loadUserEmail()
+    //       ) { dataLabel in
+    //         UserSession.logOut()
+    //       }))
+    // }
 
     models.append(Section(title: "General", option: options))
 
@@ -175,35 +175,35 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
               self.navigationController?.pushViewController(
                 TypesListViewController(), animated: true)
             }),
-          .staticCell(
-            model: SettingsStaticOption(
-              title: "Staff",
-              icon: UIImage(systemName: "person.2.fill"),
-              iconBackgroundColor: .systemMint
-            ) {
-              self.navigationController?.pushViewController(
-                StaffCategoriesController(), animated: true)
-            }),
+          // .staticCell(
+          //   model: SettingsStaticOption(
+          //     title: "Staff",
+          //     icon: UIImage(systemName: "person.2.fill"),
+          //     iconBackgroundColor: .systemMint
+          //   ) {
+          //     self.navigationController?.pushViewController(
+          //       StaffCategoriesController(), animated: true)
+          //   }),
 
         ]))
 
-    models.append(
-      Section(
-        title: "Database",
-        option: [
-          .switchCell(
-            model: SettingsSwitchOption(
-              title: "Online",
-              icon: UIImage(systemName: "icloud.fill"),
-              iconBackgroundColor: .systemGreen,
-              isOn: SettingsManager.shared.loadOnline()
-            ) { isOn in
-              //SettingsManager.shared.saveOnline(isOn)
-              self.logger.notice("Online mode is \(isOn ? "On" : "Off")")
-              self.toggleOfflineOnlineMode(isOn)
-              //self.tableView.reloadData()
-            })
-        ]))
+    // models.append(
+    //   Section(
+    //     title: "Database",
+    //     option: [
+    //       .switchCell(
+    //         model: SettingsSwitchOption(
+    //           title: "Online",
+    //           icon: UIImage(systemName: "icloud.fill"),
+    //           iconBackgroundColor: .systemGreen,
+    //           isOn: SettingsManager.shared.loadOnline()
+    //         ) { isOn in
+    //           //SettingsManager.shared.saveOnline(isOn)
+    //           self.logger.notice("Online mode is \(isOn ? "On" : "Off")")
+    //           self.toggleOfflineOnlineMode(isOn)
+    //           //self.tableView.reloadData()
+    //         })
+    //     ]))
   }
 
   func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
