@@ -17,20 +17,20 @@ class SettingsManager {
   private let themeKey = "settings.theme"
   private let onlineKey = "settings.online"
 
-//  func saveLanguage(_ language: String) {
-//    UserDefaults.standard.set(language, forKey: languageKey)
-//  }
-//
-//  func loadLanguage() -> String {
-//    return UserDefaults.standard.string(forKey: languageKey) ?? "English"
-//  }
-//
-//  func setAppLanguage(_ languageCode: String) {
-//    UserDefaults.standard.set([languageCode], forKey: "AppleLanguages")
-//    UserDefaults.standard.synchronize()
-//    saveLanguage(languageCode)
-//    //Bundle.setLanguage(languageCode: languageCode)
-//  }
+  func saveLanguage(_ language: String) {
+    UserDefaults.standard.set(language, forKey: languageKey)
+  }
+
+  func loadLanguage() -> String {
+    return UserDefaults.standard.string(forKey: languageKey) ?? "English"
+  }
+
+  func setAppLanguage(_ languageCode: String) {
+    UserDefaults.standard.set([languageCode], forKey: "AppleLanguages")
+    UserDefaults.standard.synchronize()
+    saveLanguage(languageCode)
+    //Bundle.setLanguage(languageCode: languageCode)
+  }
 
   func saveTheme(_ theme: String) {
     UserDefaults.standard.set(theme, forKey: themeKey)
