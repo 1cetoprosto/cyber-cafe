@@ -167,11 +167,11 @@
 "languages" = "Languages";
 "english" = "English";
 "ukrainian" = "Ukrainian";
-"transferDataTitle" = "Transfer data title"; // "Перенесення даних"
-"transferDataDescription" = "Transfer data"; //"Перенести накопиченні данні, чи розпочати все спочатку?"
-"transferingData" = "Transfering data..."; // Триває перенесення даних..."
-"authenticationFailedTitle" = "Authentication failed"; // "Авторизація скасована"
-"authenticationFailedMessage" = "To continue, you need to log in."; // "Щоб продовжити, потрібно увійти в систему."
+"transferDataTitle" = "Transfer Data";
+"transferDataDescription" = "Transfer accumulated data or start fresh?";
+"transferingData" = "Transferring data...";
+"authenticationFailedTitle" = "Authentication Failed";
+"authenticationFailedMessage" = "To continue, you need to log in.";
 
 // MARK: - Product
 "products" = "Products";
@@ -181,8 +181,8 @@
 "price" = "Price";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
-"pleaseEnterProductName" = "Please enter product name"; // "Будь ласка, введіть назву товару"
-"failedToSaveProductPrice" = "Failed to save Product price"; // "Не вдалось записати Product price"
+"pleaseEnterProductName" = "Please enter product name";
+"failedToSaveProductPrice" = "Failed to save product price";
 "enterPrice" = "Enter price";
 
 // MARK: - Good
@@ -192,11 +192,11 @@
 "types" = "Types";
 "type" = "Type";
 "enterTypeName" = "Enter type's name";
-"pleaseEnterTypeName" = "Please enter the name of the item"; // "Будь ласка, введіть назву надходження"
-"failedToSaveType" = "Failed to save Type"; // "Не вдалось записати тип надходження"
+"pleaseEnterTypeName" = "Please enter the type name";
+"failedToSaveType" = "Failed to save type";
 
 // MARK: - Waiters
-"technicianEmailAlreadyExist" = "You cannot create a waiter with this email address because a user with this email address is already registered in the system."; // "Ви не можете створити офіціанта з таким e-mail, тому що користувач з таким e-mail вже зареєстрований в системі"
+"technicianEmailAlreadyExist" = "You cannot create a waiter with this email address because a user with this email address is already registered in the system.";
 "technicianNoteGoesHere" = "Technician's note goes here.";
 "resendInvite" = "Resend Invite";
 "areYouSureYouWantToDeleteThisItem" = "Are you sure you want to delete this item?";
@@ -211,7 +211,7 @@
 "money1" = "Money1";
 "money2" = "Money2";
 "money3" = "Money3";
-"defaultOrderType" = "Default"; // "За замовчуванням"
+"defaultOrderType" = "Default";
 "chooseType" = "Choose type";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them.";
 
@@ -222,8 +222,8 @@
 // MARK: - Cost
 "costs" = "Costs";
 "cost" = "Cost";
-"costDate" = "Date:"; // "Дата"
-"costName" = "Cost:";
+"costDate" = "Date";
+"costName" = "Cost";
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Sum:";
 "costSumPlaceholder" = "Enter cost sum";

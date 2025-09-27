@@ -23,6 +23,7 @@
 
 // MARK: - Contact Information
 "phone" = "Телефон";
+"enterPhoneNumber" = "Введіть номер телефону";
 "address" = "Адреса";
 "email" = "Email";
 "contactInfo" = "Контактна інформація";
@@ -56,6 +57,7 @@
 "required" = "обов'язково";
 "noRequired" = "не обовязково";
 "repeatAgain" = "Спробувати ще раз";
+"requiredDataIsMissingInUserSettings" = "Необхідні дані відсутні в налаштуваннях користувача";
 
 // MARK: - Staff Management
 "newModerator" = "Новий модератор";
@@ -68,12 +70,14 @@
 "addModerationPrivilege" = "Додати обов'язки модератора";
 "adminPrivilege" = "Має обов'язки адміністратора";
 "isAllowCalculationForAdministrator" = "Надати доступ";
+"allowCalculation" = "Дозволити розрахунки";
 "failedSentTechnicianEmail" = "Щось пішло не так, будь ласка, повторіть спробу пізніше\nВи можете надіслати електронний лист із запрошенням із екрана деталей техніка";
 "successSentTechnicianEmail" = "Посилання для входу надіслано на електронну адресу техніка: %@";
 
 // MARK: - Staff Sections
 "staff_sectionWaiter" = "Офіціанти";
 "staff_sectionSeniorWaiter" = "Старші офіціанти";
+"uploadedNewTechnicianImageAt" = "Завантажено нове зображення офіціанта о %@";
 
 // MARK: - Roles
 "roleAdmin" = "Адміністратор";
@@ -110,6 +114,8 @@
 "technicianLimitReached" = "Ваша поточна підписка не дозволяє додати більше персоналу у ваше кафе. Ви можете змінити підписку:";
 "changeSub" = "Змінити";
 "month" = "Місяць";
+"termsOfUse" = "Умови використання";
+"privacyPolicy" = "Політика конфіденційності";
 
 // MARK: - Subscription Plans
 "subPlanNoneName" = "Без підписки";
@@ -151,5 +157,74 @@
 "delete_account" = "Видалити акаунт";
 
 // MARK: - Theme Settings
+"general" = "Загальні";
+"selectTheme" = "Вибрати тему";
 "lightThemeName" = "Світла";
 "darkThemeName" = "Темна";
+"darkTheme" = "Темна тема";
+
+// MARK: - Settings
+"languages" = "Мови";
+"english" = "Англійська";
+"ukrainian" = "Українська";
+"transferDataTitle" = "Перенесення даних";
+"transferDataDescription" = "Перенести накопичені дані чи розпочати все спочатку?";
+"transferingData" = "Триває перенесення даних...";
+"authenticationFailedTitle" = "Помилка автентифікації";
+"authenticationFailedMessage" = "Щоб продовжити, потрібно увійти в систему";
+
+// MARK: - Product
+"products" = "Продукти";
+"product" = "Продукт";
+"productName" = "Назва продукту";
+"enterProductName" = "Введіть назву продукту";
+"price" = "Ціна";
+"prices" = "Ціни";
+"printPrices" = "Друкувати ціни";
+"pleaseEnterProductName" = "Будь ласка, введіть назву продукту";
+"failedToSaveProductPrice" = "Не вдалося зберегти ціну продукту";
+"enterPrice" = "Введіть ціну";
+
+// MARK: - Good
+"goods" = "Товари";
+
+// MARK: - Type
+"types" = "Типи";
+"type" = "Тип";
+"enterTypeName" = "Введіть назву типу";
+"pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
+"failedToSaveType" = "Не вдалося зберегти тип";
+
+// MARK: - Waiters
+"technicianEmailAlreadyExist" = "Ви не можете створити офіціанта з цією електронною адресою, оскільки користувач з цією електронною адресою вже зареєстрований в системі";
+"technicianNoteGoesHere" = "Тут розміщується замітка офіціанта";
+"resendInvite" = "Надіслати запрошення повторно";
+"areYouSureYouWantToDeleteThisItem" = "Ви впевнені, що хочете видалити цей елемент?";
+"somethingWentWrong" = "Щось пішло не так";
+
+// MARK: - Orders
+"orders" = "Замовлення";
+"allOrders" = "Всі замовлення";
+"order" = "Замовлення";
+"cash" = "Готівка";
+"card" = "Картка";
+"money1" = "Гроші1";
+"money2" = "Гроші2";
+"money3" = "Гроші3";
+"defaultOrderType" = "За замовчуванням";
+"chooseType" = "Виберіть тип";
+"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані для вибраної дати вже існують. Відкрийте та відредагуйте їх";
+
+// MARK: - Sales 
+"sales" = "Продажі";
+"plan" = "План";
+
+// MARK: - Cost
+"costs" = "Витрати";
+"cost" = "Витрата";
+"costDate" = "Дата";
+"costName" = "Витрата";
+"costNamePlaceholder" = "Введіть назву витрати";
+"costSum" = "Сума";
+"costSumPlaceholder" = "Введіть суму витрати";
+
