@@ -213,14 +213,14 @@ class AuthModel {
     
     private func login(_ id: String, _ email: String, _ role: RoleConfig, _ rememberUser: Bool) {
         UserSession.createSession(id: id, email: email, roleConfig: role, rememberUser: rememberUser)
-        RequestManager.shared.startListening() // TODO: розкоментувати
+        RequestManager.shared.startListening()
     }
     
     private func logOut() {
         do {
             try auth.signOut()
             UserSession.current.remove()
-            RequestManager.shared.resetData() // TODO: розкоментувати
+            RequestManager.shared.resetData() 
         } catch {
             print(error)
         }

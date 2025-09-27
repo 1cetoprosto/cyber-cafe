@@ -1,101 +1,42 @@
-//
-//  SettingsSwitchTableViewCell.swift
-//  Cyber-coffe
-//
-//  Created by Леонід Квіт on 24.11.2021.
-//
-
 import UIKit
 
-class SettingsSwitchTableViewCell: UITableViewCell {
-    static let identifier = "SettingsSwitchTableViewCell"
-
-    private let iconContainer: UIView = {
-        let view = UIView()
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 6
-        view.layer.masksToBounds = true
-        return view
+final class SettingsSwitchTableViewCell: BaseSettingsCell {
+    
+    private let switchView: UISwitch = {
+        let switchView = UISwitch()
+        switchView.onTintColor = .systemGreen
+        switchView.thumbTintColor = UIColor.Main.background
+        switchView.translatesAutoresizingMaskIntoConstraints = false
+        return switchView
     }()
-
-    private let iconImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.tintColor = .white
-        imageView.contentMode = .scaleAspectFit
-        return imageView
-    }()
-
-    private let label: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.textColor = UIColor.TableView.cellLabel
-        return label
-    }()
-
-    lazy var settingSwitch: UISwitch = {
-        let settingSwitch = UISwitch()
-        settingSwitch.onTintColor = UIColor.Button.background
-        settingSwitch.thumbTintColor = UIColor.NavBar.text
-        settingSwitch.addTarget(self, action: #selector(switchTheme), for: .valueChanged)
-        return settingSwitch
-    }()
-
-    private var model: SettingsSwitchOption?
-
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = UIColor.TableView.cellBackground
-        contentView.addSubview(iconContainer)
-        iconContainer.addSubview(iconImageView)
-        contentView.addSubview(label)
-        contentView.addSubview(settingSwitch)
-        contentView.clipsToBounds = true
-        layer.cornerRadius = 10
+        
+        accessoryType = .none
+        self.addSubview(switchView)
+        
+        NSLayoutConstraint.activate([
+            switchView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            switchView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
+        ])
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let size: CGFloat = contentView.frame.size.height - 12
-        iconContainer.frame = CGRect(x: 10, y: 6, width: size, height: size)
-        let imageSize: CGFloat = size / 1.5
-        iconImageView.frame = CGRect(x: (size - imageSize) / 2,
-                                     y: (size - imageSize) / 2,
-                                     width: imageSize,
-                                     height: imageSize)
-        settingSwitch.sizeToFit()
-        settingSwitch.frame = CGRect(x: contentView.frame.size.width - settingSwitch.frame.size.width - 20,
-                                     y: (contentView.frame.size.height - settingSwitch.frame.size.height) / 2,
-                                     width: settingSwitch.frame.size.width,
-                                     height: settingSwitch.frame.size.height)
-        label.frame = CGRect(x: 16 + iconContainer.frame.size.width,
-                             y: 0,
-                             width: contentView.frame.size.width - 16 - iconContainer.frame.size.width - 10 - settingSwitch.frame.size.width,
-                             height: contentView.frame.size.height)
+    
+    func configure(with option: SettingsSwitchOption) {
+        label.text = option.title
+        iconImageView.image = option.icon
+        iconContainer.backgroundColor = option.iconBackgroundColor
+        switchView.isOn = option.isOn
+        switchView.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
     }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        iconImageView.image = nil
-        label.text = nil
-        iconContainer.backgroundColor = nil
-        settingSwitch.isOn = false
-    }
-
-    public func configure(with model: SettingsSwitchOption) {
-        self.model = model
-        label.text = model.title
-        iconImageView.image = model.icon
-        iconContainer.backgroundColor = model.iconBackgroundColor
-        settingSwitch.isOn = model.isOn
-        selectionStyle = .none
-    }
-
-    @objc func switchTheme() {
-        guard let model = model else { return }
-        model.handler(settingSwitch.isOn)
+    
+    private var handler: ((Bool) -> Void)?
+    
+    @objc private func switchChanged(_ sender: UISwitch) {
+        handler?(sender.isOn)
     }
 }

@@ -5,14 +5,16 @@
 //  Created by Леонід Квіт on 02.11.2021.
 //
 
-import UIKit
 import FirebaseAuth
 import RealmSwift
+import UIKit
 
-class SceneDelegate: UIResponder, UIWindowSceneDelegate {
+class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     
     static var shared: SceneDelegate {
-        guard let scene = UIApplication.shared.connectedScenes.first, let delegate = scene.delegate as? SceneDelegate else {
+        guard let scene = UIApplication.shared.connectedScenes.first,
+              let delegate = scene.delegate as? SceneDelegate
+        else {
             fatalError("No active SceneDelegate instance found")
         }
         return delegate
@@ -24,22 +26,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     // Функція для налаштування Realm з міграцією
     func configureRealm() {
         // Визначте версію схеми як константу
-        let currentSchemaVersion: UInt64 = 2 // Збільшуйте це число при кожній міграції
+        let currentSchemaVersion: UInt64 = 2  // Збільшуйте це число при кожній міграції
         
         // Визначте блок міграції
         let migrationBlock: MigrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < currentSchemaVersion {
                 // Приклад: Додавання нової властивості з початковим значенням
                 if oldSchemaVersion < 2 {
-                    migration.enumerateObjects(ofType: RealmProductModel.className()) { oldObject, newObject in
-                        newObject!["orderId"] = "" // Початкове значення для нової властивості
+                    migration.enumerateObjects(ofType: RealmProductModel.className()) {
+                        oldObject, newObject in
+                        newObject!["orderId"] = ""  // Initial value for a new property
                     }
                     
                     // Заповнення поля orderId відповідними значеннями з RealmOrderModel
                     migration.enumerateObjects(ofType: RealmOrderModel.className()) { oldObject, newObject in
                         if let orderId = oldObject!["id"] as? String,
-                           let date = oldObject!["date"] as? Date {
-                            migration.enumerateObjects(ofType: RealmProductModel.className()) { productOldObject, productNewObject in
+                           let date = oldObject!["date"] as? Date
+                        {
+                            migration.enumerateObjects(ofType: RealmProductModel.className()) {
+                                productOldObject, productNewObject in
                                 if productOldObject!["date"] as? Date == date {
                                     productNewObject!["orderId"] = orderId
                                 }
@@ -61,13 +66,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     // MARK: Scene Lifecycle
-    func scene(_ scene: UIScene,
-               willConnectTo session: UISceneSession,
-               options connectionOptions: UIScene.ConnectionOptions) {
+    func scene(
+        _ scene: UIScene,
+        willConnectTo session: UISceneSession,
+        options connectionOptions: UIScene.ConnectionOptions
+    ) {
         
         //configureRealm()
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
+        logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
         window = UIWindow(windowScene: windowScene)
         
         let isValidSession = UserSession.current.restore()
@@ -96,10 +104,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         controller.view.addSubview(overlayView)
         window?.rootViewController = controller
         
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            overlayView.alpha = 0
-        }, completion: { finished in
-            overlayView.removeFromSuperview()
-        })
+        UIView.animate(
+            withDuration: 0.4, delay: 0, options: .transitionCrossDissolve,
+            animations: {
+                overlayView.alpha = 0
+            },
+            completion: { finished in
+                overlayView.removeFromSuperview()
+            })
     }
 }
