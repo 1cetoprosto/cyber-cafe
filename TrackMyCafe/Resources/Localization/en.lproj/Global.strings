@@ -161,7 +161,7 @@
 "selectTheme" = "Select Theme";
 "lightThemeName" = "Light";
 "darkThemeName" = "Dark";
-"darkTheme" = "Dark Theme";
+"systemThemeName" = "Automatic";
 
 // MARK: - Settings
 "languages" = "Languages";
