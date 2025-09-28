@@ -191,7 +191,7 @@
 // MARK: - Type
 "types" = "Типи";
 "type" = "Тип";
-"enterTypeName" = "Введіть назву типу";
+"enterTypeName" = "Введіть назву типу надходження";
 "pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
 "failedToSaveType" = "Не вдалося зберегти тип";
 
