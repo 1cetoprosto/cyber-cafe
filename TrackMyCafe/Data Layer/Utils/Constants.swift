@@ -98,10 +98,10 @@ enum Refs: String {
 }
 
 // Links
-let facebookGroup = ""  //"https://www.facebook.com/groups/1194517203901210/"
-let dtLabEmail = "1cetoprosto@gmail.com"
-let dtLabEmail2 = "leonid.kvit@gmail.com"
-
+let facebookGroup = ""  // "https://www.facebook.com/groups/1194517203901210/"
+let supportEmail = "1cetoprosto@gmail.com"
+let supportEmail2 = "leonid.kvit@gmail.com"
+//
 //enum Color: String, CaseIterable {
 //    case master3d = "VITA 3DMaster"
 //    case classic = "VITA classic"
