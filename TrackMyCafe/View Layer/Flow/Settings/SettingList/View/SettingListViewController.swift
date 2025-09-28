@@ -6,6 +6,7 @@
 //
 
 import FirebaseAuth
+import MessageUI
 import RealmSwift
 import SVProgressHUD
 import UIKit
@@ -45,7 +46,7 @@ struct SettingsDataOption {
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
-  Loggable
+  MFMailComposeViewControllerDelegate, Loggable
 {
 
   private let tableView: UITableView = {
@@ -136,6 +137,17 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             dataLabel.text = style.themeName
             self.updateInterfaceForNewTheme()
           }
+        }))
+
+    // Feedback option
+    options.append(
+      .staticCell(
+        model: SettingsStaticOption(
+          title: R.string.global.feedback(),
+          icon: UIImage(systemName: "envelope.fill"),
+          iconBackgroundColor: .systemOrange
+        ) {
+          self.presentFeedbackEmail()
         }))
 
     // // Subscription management
@@ -441,9 +453,77 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
   private func showErrorAlert(title: String, message: String) {
     let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-    let okAction = UIAlertAction(title: "OK", style: .default)
-    alert.addAction(okAction)
-    self.present(alert, animated: true, completion: nil)
+    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+    present(alert, animated: true)
+  }
+
+  // MARK: - Feedback Email
+  private func presentFeedbackEmail() {
+    guard MFMailComposeViewController.canSendMail() else {
+      showErrorAlert(
+        title: R.string.global.mailNotAvailableTitle(),
+        message: R.string.global.mailNotAvailableMessage()
+      )
+      return
+    }
+
+    let mailComposer = MFMailComposeViewController()
+    mailComposer.mailComposeDelegate = self
+    mailComposer.setToRecipients([supportEmail])
+    mailComposer.setSubject(R.string.global.feedbackEmailSubject())
+
+    // Get app version, device model, and OS version
+    let appVersion =
+      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+      let deviceModel = UIDevice.current.localizedModel
+    let osVersion = UIDevice.current.systemVersion
+
+    // Get user information
+    let userId = UserSession.current.userId ?? "Unknown"
+    let userEmail = UserSession.current.userEmail ?? "Unknown"
+    let userRole = UserSession.current.role?.name ?? "Unknown"
+
+    mailComposer.setMessageBody(
+      R.string.global.feedbackEmailBody(
+        appVersion, deviceModel, osVersion, userId, userEmail, userRole), isHTML: false)
+
+    present(mailComposer, animated: true)
+  }
+
+  // MARK: - MFMailComposeViewControllerDelegate
+  func mailComposeController(
+    _ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult,
+    error: Error?
+  ) {
+    controller.dismiss(animated: true) { [weak self] in
+      switch result {
+      case .sent:
+        self?.showSuccessAlert()
+      case .failed:
+        self?.showErrorAlert(
+          title: R.string.global.sendFailedTitle(),
+          message: R.string.global.sendFailedMessage()
+        )
+      case .cancelled, .saved:
+        break
+      @unknown default:
+        break
+      }
+    }
+  }
+
+  private func showSuccessAlert() {
+    let alert = UIAlertController(
+      title: R.string.global.feedbackSuccessTitle(),
+      message: R.string.global.feedbackSuccessMessage(),
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(
+        title: R.string.global.okButton(),
+        style: .default
+      ))
+    present(alert, animated: true)
   }
 }
 
