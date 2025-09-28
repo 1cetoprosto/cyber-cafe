@@ -477,13 +477,6 @@ struct _R {
       /// Locales: en, uk
       var currentSubscription: RswiftResources.StringResource { .init(key: "currentSubscription", tableName: "Global", source: source, developmentValue: "Your current subscription", comment: nil) }
 
-      /// en translation: Dark Theme
-      ///
-      /// Key: darkTheme
-      ///
-      /// Locales: en, uk
-      var darkTheme: RswiftResources.StringResource { .init(key: "darkTheme", tableName: "Global", source: source, developmentValue: "Dark Theme", comment: nil) }
-
       /// en translation: Dark
       ///
       /// Key: darkThemeName
@@ -1330,6 +1323,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var successSentTechnicianEmail: RswiftResources.StringResource1<String> { .init(key: "successSentTechnicianEmail", tableName: "Global", source: source, developmentValue: "Sign-in link has been sent to technician's email: %@", comment: nil) }
+
+      /// en translation: Automatic
+      ///
+      /// Key: systemThemeName
+      ///
+      /// Locales: en, uk
+      var systemThemeName: RswiftResources.StringResource { .init(key: "systemThemeName", tableName: "Global", source: source, developmentValue: "Automatic", comment: nil) }
 
       /// en translation: You cannot create a waiter with this email address because a user with this email address is already registered in the system.
       ///
