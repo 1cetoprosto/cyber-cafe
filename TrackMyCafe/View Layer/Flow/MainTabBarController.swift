@@ -16,6 +16,32 @@ class MainTabBarController: UITabBarController {
     self.tabBar.tintColor = UIColor.TabBar.tint
     navigationController?.view.backgroundColor = UIColor.NavBar.background
   }
+  
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+    
+    // Handle system theme changes only if user has selected "system" theme
+    if Theme.currentThemeStyle == .system {
+      let currentSystemTheme = traitCollection.userInterfaceStyle == .dark ? ThemeStyle.dark : ThemeStyle.light
+      Theme.followSystemTheme()
+      
+      // Update UI colors for current interface
+      updateInterfaceColors()
+    }
+  }
+  
+  private func updateInterfaceColors() {
+    // Update tab bar colors
+    self.tabBar.tintColor = UIColor.TabBar.tint
+    navigationController?.view.backgroundColor = UIColor.NavBar.background
+    
+    // Update all child navigation controllers
+    viewControllers?.forEach { viewController in
+      if let navController = viewController as? UINavigationController {
+        navController.view.backgroundColor = UIColor.NavBar.background
+      }
+    }
+  }
 
   func setupTabBar() {
     let ordersViewController = createNavController(
