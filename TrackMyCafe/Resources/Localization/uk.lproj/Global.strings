@@ -228,3 +228,17 @@
 "costSum" = "Сума";
 "costSumPlaceholder" = "Введіть суму витрати";
 
+// MARK: - Feedback
+"feedback" = "Відгук";
+"feedbackEmailSubject" = "Відгук про TrackMyCafe";
+"feedbackEmailBody" = "Привіт!\n\nЯ хотів би поділитися своїм відгуком про додаток TrackMyCafe:\n\n[Будь ласка, напишіть ваш відгук тут]\n\nВерсія додатку: %@\nПристрій: %@\nВерсія ОС: %@\nID користувача: %@\nEmail користувача: %@\nРоль користувача: %@\n\nДякую!";
+
+// Feedback Alerts
+"mailNotAvailableTitle" = "Пошта недоступна";
+"mailNotAvailableMessage" = "Будь ласка, налаштуйте поштовий акаунт в налаштуваннях пристрою для відправки відгуку.";
+"sendFailedTitle" = "Помилка відправки";
+"sendFailedMessage" = "Не вдалося відправити відгук. Спробуйте пізніше.";
+"feedbackSuccessTitle" = "Дякуємо!";
+"feedbackSuccessMessage" = "Ваш відгук успішно відправлено.";
+"okButton" = "OK";
+

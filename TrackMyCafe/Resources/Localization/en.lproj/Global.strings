@@ -227,3 +227,17 @@
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Sum:";
 "costSumPlaceholder" = "Enter cost sum";
+
+// MARK: - Feedback
+"feedback" = "Feedback";
+"feedbackEmailSubject" = "TrackMyCafe App Feedback";
+"feedbackEmailBody" = "Hello,\n\nI would like to share my feedback about the TrackMyCafe app:\n\n[Please write your feedback and suggestions here]\n\nApp Version: %@\nDevice: %@\nOS Version: %@\nUser ID: %@\nUser Email: %@\nUser Role: %@\n\nThank you!";
+
+// Feedback Alerts
+"mailNotAvailableTitle" = "Mail Not Available";
+"mailNotAvailableMessage" = "Please configure a mail account in your device settings to send feedback.";
+"sendFailedTitle" = "Send Failed";
+"sendFailedMessage" = "Failed to send feedback. Please try again later.";
+"feedbackSuccessTitle" = "Thank You!";
+"feedbackSuccessMessage" = "Your feedback has been sent successfully.";
+"okButton" = "OK";

@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 174 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 184 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -645,6 +645,41 @@ struct _R {
       /// Locales: en, uk
       var failedToSaveType: RswiftResources.StringResource { .init(key: "failedToSaveType", tableName: "Global", source: source, developmentValue: "Failed to save type", comment: nil) }
 
+      /// en translation: Feedback
+      ///
+      /// Key: feedback
+      ///
+      /// Locales: en, uk
+      var feedback: RswiftResources.StringResource { .init(key: "feedback", tableName: "Global", source: source, developmentValue: "Feedback", comment: nil) }
+
+      /// en translation: Hello,  I would like to share my feedback about the TrackMyCafe app:  [Please write your feedback and suggestions here]  App Version: %@ Device: %@ OS Version: %@ User ID: %@ User Email: %@ User Role: %@  Thank you!
+      ///
+      /// Key: feedbackEmailBody
+      ///
+      /// Locales: en, uk
+      var feedbackEmailBody: RswiftResources.StringResource6<String, String, String, String, String, String> { .init(key: "feedbackEmailBody", tableName: "Global", source: source, developmentValue: "Hello,\n\nI would like to share my feedback about the TrackMyCafe app:\n\n[Please write your feedback and suggestions here]\n\nApp Version: %@\nDevice: %@\nOS Version: %@\nUser ID: %@\nUser Email: %@\nUser Role: %@\n\nThank you!", comment: nil) }
+
+      /// en translation: TrackMyCafe App Feedback
+      ///
+      /// Key: feedbackEmailSubject
+      ///
+      /// Locales: en, uk
+      var feedbackEmailSubject: RswiftResources.StringResource { .init(key: "feedbackEmailSubject", tableName: "Global", source: source, developmentValue: "TrackMyCafe App Feedback", comment: nil) }
+
+      /// en translation: Your feedback has been sent successfully.
+      ///
+      /// Key: feedbackSuccessMessage
+      ///
+      /// Locales: en, uk
+      var feedbackSuccessMessage: RswiftResources.StringResource { .init(key: "feedbackSuccessMessage", tableName: "Global", source: source, developmentValue: "Your feedback has been sent successfully.", comment: nil) }
+
+      /// en translation: Thank You!
+      ///
+      /// Key: feedbackSuccessTitle
+      ///
+      /// Locales: en, uk
+      var feedbackSuccessTitle: RswiftResources.StringResource { .init(key: "feedbackSuccessTitle", tableName: "Global", source: source, developmentValue: "Thank You!", comment: nil) }
+
       /// en translation: Field '%@' required
       ///
       /// Key: fieldRequired
@@ -749,6 +784,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Light", comment: nil) }
+
+      /// en translation: Please configure a mail account in your device settings to send feedback.
+      ///
+      /// Key: mailNotAvailableMessage
+      ///
+      /// Locales: en, uk
+      var mailNotAvailableMessage: RswiftResources.StringResource { .init(key: "mailNotAvailableMessage", tableName: "Global", source: source, developmentValue: "Please configure a mail account in your device settings to send feedback.", comment: nil) }
+
+      /// en translation: Mail Not Available
+      ///
+      /// Key: mailNotAvailableTitle
+      ///
+      /// Locales: en, uk
+      var mailNotAvailableTitle: RswiftResources.StringResource { .init(key: "mailNotAvailableTitle", tableName: "Global", source: source, developmentValue: "Mail Not Available", comment: nil) }
 
       /// en translation: Manage subscriptions
       ///
@@ -868,6 +917,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var note: RswiftResources.StringResource { .init(key: "note", tableName: "Global", source: source, developmentValue: "Note", comment: nil) }
+
+      /// en translation: OK
+      ///
+      /// Key: okButton
+      ///
+      /// Locales: en, uk
+      var okButton: RswiftResources.StringResource { .init(key: "okButton", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
 
       /// en translation: Order
       ///
@@ -1106,6 +1162,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var selectTheme: RswiftResources.StringResource { .init(key: "selectTheme", tableName: "Global", source: source, developmentValue: "Select Theme", comment: nil) }
+
+      /// en translation: Failed to send feedback. Please try again later.
+      ///
+      /// Key: sendFailedMessage
+      ///
+      /// Locales: en, uk
+      var sendFailedMessage: RswiftResources.StringResource { .init(key: "sendFailedMessage", tableName: "Global", source: source, developmentValue: "Failed to send feedback. Please try again later.", comment: nil) }
+
+      /// en translation: Send Failed
+      ///
+      /// Key: sendFailedTitle
+      ///
+      /// Locales: en, uk
+      var sendFailedTitle: RswiftResources.StringResource { .init(key: "sendFailedTitle", tableName: "Global", source: source, developmentValue: "Send Failed", comment: nil) }
 
       /// en translation: Something went wrong
       ///
