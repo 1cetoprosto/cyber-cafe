@@ -610,12 +610,12 @@ struct _R {
       /// Locales: en, uk
       var enterProductName: RswiftResources.StringResource { .init(key: "enterProductName", tableName: "Global", source: source, developmentValue: "Enter product's name", comment: nil) }
 
-      /// en translation: Enter type's name
+      /// en translation: Enter the name of the type of receipt
       ///
       /// Key: enterTypeName
       ///
       /// Locales: en, uk
-      var enterTypeName: RswiftResources.StringResource { .init(key: "enterTypeName", tableName: "Global", source: source, developmentValue: "Enter type's name", comment: nil) }
+      var enterTypeName: RswiftResources.StringResource { .init(key: "enterTypeName", tableName: "Global", source: source, developmentValue: "Enter the name of the type of receipt", comment: nil) }
 
       /// en translation: Error
       ///

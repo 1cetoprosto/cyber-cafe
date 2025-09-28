@@ -191,7 +191,7 @@
 // MARK: - Type
 "types" = "Types";
 "type" = "Type";
-"enterTypeName" = "Enter type's name";
+"enterTypeName" = "Enter the name of the type of receipt";
 "pleaseEnterTypeName" = "Please enter the type name";
 "failedToSaveType" = "Failed to save type";
 

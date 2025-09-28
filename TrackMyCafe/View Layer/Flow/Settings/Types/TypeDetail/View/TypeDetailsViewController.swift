@@ -15,7 +15,7 @@ class TypeDetailsViewController: UIViewController {
     label.textAlignment = .left
     label.text = R.string.global.type()
     label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 20)
+    label.font = UIFont.systemFont(ofSize: 14)
     label.translatesAutoresizingMaskIntoConstraints = false
 
     return label
@@ -40,14 +40,6 @@ class TypeDetailsViewController: UIViewController {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
     button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
-
-    return button
-  }()
-
-  lazy var cancelButton: UIButton = {
-    let button = DefaultButton()
-    button.setTitle(R.string.global.cancel(), for: .normal)
-    button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
 
     return button
   }()
@@ -79,7 +71,7 @@ class TypeDetailsViewController: UIViewController {
   func setConstraints() {
 
     let buttonStackView = UIStackView(
-      arrangedSubviews: [saveButton, cancelButton],
+      arrangedSubviews: [saveButton],
       axis: .horizontal,
       spacing: 20,
       distribution: .fillEqually)
