@@ -86,6 +86,20 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     tableView.reloadData()
   }
 
+  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    super.traitCollectionDidChange(previousTraitCollection)
+
+    // Handle system theme changes only if user has selected "system" theme
+    if Theme.currentThemeStyle == .system {
+      Theme.followSystemTheme()
+
+      // Update UI colors
+      view.backgroundColor = UIColor.Main.background
+      tableView.backgroundColor = UIColor.Main.background
+      tableView.reloadData()
+    }
+  }
+
   func configure() {
     models.removeAll()
 

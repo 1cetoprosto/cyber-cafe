@@ -22,17 +22,28 @@ protocol ThemeProtocol {
 class Theme {
 
   private static let kThemeStyle = "kThemeStyle"
+  private static let kFirstLaunch = "kFirstLaunch"
+
   static var currentThemeStyle: ThemeStyle {
     get {
-      let styleIdValue = (UserDefaults.standard.value(forKey: kThemeStyle) as? Int) ?? 0
-      return ThemeStyle(rawValue: styleIdValue) ?? .light
+      // Check if this is the first launch
+      if !UserDefaults.standard.bool(forKey: kFirstLaunch) {
+        // Set system theme as default on first launch
+        UserDefaults.standard.setValue(ThemeStyle.system.rawValue, forKey: kThemeStyle)
+        UserDefaults.standard.setValue(true, forKey: kFirstLaunch)
+        UserDefaults.standard.synchronize()
+        return .system
+      }
+
+      let styleIdValue = (UserDefaults.standard.value(forKey: kThemeStyle) as? Int) ?? 2
+      return ThemeStyle(rawValue: styleIdValue) ?? .system
     }
     set {
       _current = nil
       UserDefaults.standard.setValue(newValue.rawValue, forKey: kThemeStyle)
       UserDefaults.standard.synchronize()
 
-      // Застосовуємо системну тему
+      // Apply system theme
       applySystemTheme(newValue)
     }
   }
@@ -56,8 +67,40 @@ class Theme {
           window.overrideUserInterfaceStyle = .light
         case .dark:
           window.overrideUserInterfaceStyle = .dark
+        case .system:
+          window.overrideUserInterfaceStyle = .unspecified
         }
       }
+    }
+  }
+
+  // Detect current system theme
+  private static func detectSystemTheme() -> ThemeStyle {
+    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+      let window = windowScene.windows.first
+    {
+      return window.traitCollection.userInterfaceStyle == .dark ? .dark : .light
+    }
+    // Fallback to system trait collection if window is not available
+    return UITraitCollection.current.userInterfaceStyle == .dark ? .dark : .light
+  }
+
+  // Method for automatic system theme following
+  static func followSystemTheme() {
+    if currentThemeStyle == .system {
+      let detectedTheme = detectSystemTheme()
+      applySystemTheme(detectedTheme)
+    }
+  }
+
+  // Apply current theme on app launch
+  static func applyCurrentTheme() {
+    let currentTheme = currentThemeStyle
+    if currentTheme == .system {
+      let detectedTheme = detectSystemTheme()
+      applySystemTheme(detectedTheme)
+    } else {
+      applySystemTheme(currentTheme)
     }
   }
 }
@@ -65,11 +108,13 @@ class Theme {
 enum ThemeStyle: Int, CaseIterable {
   case light = 0
   case dark = 1
+  case system = 2
 
   var themeName: String {
     switch self {
     case .light: return R.string.global.lightThemeName()
     case .dark: return R.string.global.darkThemeName()
+    case .system: return R.string.global.systemThemeName()
     }
   }
 }

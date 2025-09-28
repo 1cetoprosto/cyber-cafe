@@ -161,7 +161,7 @@
 "selectTheme" = "Вибрати тему";
 "lightThemeName" = "Світла";
 "darkThemeName" = "Темна";
-"darkTheme" = "Темна тема";
+"systemThemeName" = "Автоматично";
 
 // MARK: - Settings
 "languages" = "Мови";

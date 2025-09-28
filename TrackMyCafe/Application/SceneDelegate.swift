@@ -97,6 +97,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         }
         
         window?.makeKeyAndVisible()
+        
+        // Apply saved theme on app launch
+        Theme.applyCurrentTheme()
     }
     
     func set(root controller: UIViewController) {
