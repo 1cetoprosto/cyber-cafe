@@ -46,7 +46,7 @@ struct OrderModel {
         guard let id = data["id"] as? String else { return nil }
         self.id = id
         self.date = Date(timeIntervalSince1970: data["date"] as? Double ?? 0)
-        self.type = (data["type"] as? String)?.nilIfEmpty ?? "Default"
+        self.type = (data["type"] as? String)?.nilIfEmpty ?? DefaultValues.defaultOrderType
         self.sum = data["sum"] as? Double ?? 0.0
         self.cash = data["cash"] as? Double ?? 0.0
         self.card = data["card"] as? Double ?? 0.0

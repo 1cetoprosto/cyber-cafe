@@ -27,20 +27,20 @@ class Theme {
   static var currentThemeStyle: ThemeStyle {
     get {
       // Check if this is the first launch
-      if !UserDefaults.standard.bool(forKey: kFirstLaunch) {
+      if !UserDefaults.standard.bool(forKey: UserDefaultsKeys.firstLaunch) {
         // Set system theme as default on first launch
-        UserDefaults.standard.setValue(ThemeStyle.system.rawValue, forKey: kThemeStyle)
-        UserDefaults.standard.setValue(true, forKey: kFirstLaunch)
+        UserDefaults.standard.setValue(ThemeStyle.system.rawValue, forKey: UserDefaultsKeys.themeStyle)
+        UserDefaults.standard.setValue(true, forKey: UserDefaultsKeys.firstLaunch)
         UserDefaults.standard.synchronize()
         return .system
       }
 
-      let styleIdValue = (UserDefaults.standard.value(forKey: kThemeStyle) as? Int) ?? 2
+      let styleIdValue = (UserDefaults.standard.value(forKey: UserDefaultsKeys.themeStyle) as? Int) ?? 2
       return ThemeStyle(rawValue: styleIdValue) ?? .system
     }
     set {
       _current = nil
-      UserDefaults.standard.setValue(newValue.rawValue, forKey: kThemeStyle)
+      UserDefaults.standard.setValue(newValue.rawValue, forKey: UserDefaultsKeys.themeStyle)
       UserDefaults.standard.synchronize()
 
       // Apply system theme

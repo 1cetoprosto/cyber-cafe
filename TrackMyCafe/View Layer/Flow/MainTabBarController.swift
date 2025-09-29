@@ -47,15 +47,15 @@ class MainTabBarController: UITabBarController {
     let ordersViewController = createNavController(
       viewController: OrderListViewController(),
       itemName: R.string.global.orders(),
-      itemImage: "cup.and.saucer.fill")
+      itemImage: SystemImages.cupAndSaucerFill)
     let costsViewController = createNavController(
       viewController: CostListViewController(),
       itemName: R.string.global.costs(),
-      itemImage: "takeoutbag.and.cup.and.straw.fill")
+      itemImage: SystemImages.takeoutbagAndCupAndStrawFill)
     let settingsViewController = createNavController(
       viewController: SettingListViewController(),
       itemName: R.string.global.menuSettings(),
-      itemImage: "gearshape")
+      itemImage: SystemImages.gearshape)
 
     viewControllers = [ordersViewController, costsViewController, settingsViewController]
   }

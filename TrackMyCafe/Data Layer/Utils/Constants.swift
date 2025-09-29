@@ -18,175 +18,191 @@ struct Config {
     #endif
   }
 
-  static var dynamicDomain: String {
-    #if DEV
-      return "kvit1.page.link"
-    #else
-      return "kvit.page.link"
-    #endif
-  }
-
   //MARK: - Android App
   static let androidBundle = "com.kvit.adtd.online"
   static let androidVersion = "62"
 }
 
-// other colors
-let gray600 = UIColor(hex: "#757575")
-let lighterGray = UIColor(hex: "#dddddd")
-let veryLightGray = UIColor(hex: "#F0F0F0")
-let darkerBlue = UIColor(hex: "#0099cc")
-let grayNormal = UIColor(hex: "#9D9FA2")
-let materialGREEN = UIColor(hex: "#2aa621")
-let materialRED = UIColor(hex: "#ff6e6e")
-
 // notifications
 extension Notification.Name {
   static let adminInfoReload = Notification.Name("adminInfoReloadNotification")
-  static let doctorsInfoReload = Notification.Name("doctorsInfoReloadNotification")
   static let techniciansInfoReload = Notification.Name("techniciansInfoReloadNotification")
-  static let cadcamsInfoReload = Notification.Name("cadcamsInfoReload")
-  static let castersInfoReload = Notification.Name("castersInfoReload")
-  static let mainElementsInfoReload = Notification.Name("mainElementsInfoReload")
-  static let extraElementsInfoReload = Notification.Name("extraElementsInfoReload")
-  static let elementTypesInfoReload = Notification.Name("elementTypesInfoReload")
   static let settingsInfoReload = Notification.Name("settingsInfoReload")
   static let subscriptionInfoReload = Notification.Name("subscriptionInfoReload")
   static let ordersInfoReload = Notification.Name("ordersInfoReloadNotification")
-  static let commentsInfoReload = Notification.Name("commentsInfoReloadNotification")
   static let logsInfoReload = Notification.Name("logsInfoReload")
-  static let closeInfoView = Notification.Name("closeInfoViewNotification")
-  static let saveInfoViewStatus = Notification.Name("saveInfoViewStatusNotification")
-  static let closeTechicianAlert = Notification.Name("closeTechicianAlertNotification")
-  static let saveTechicianAlertStatus = Notification.Name("saveTechicianAlertStatusNotification")
-  static let groupEditorClose = Notification.Name("groupEditorCloseNotification")
-}
-
-enum Gender: Int {
-  case male = 0
-  case female
-  case none
-
-  var name: String {
-    switch self {
-    case .male: return R.string.global.genderMale()
-    case .female: return R.string.global.genderFemale()
-    case .none: return R.string.global.genderNoSpecified()
-    }
-  }
 }
 
 // Firebase refs
 enum Refs: String {
   case users = "Users"
-  case doctors = "Doctors"
   case technicians = "Technicians"
   case avatars = "Avatars"
   case comments = "Comments"
   case photos = "Photo"
   case audio = "Audio"
-  case cadcams = "CadCams"
-  case casters = "Casters"
-  case mainElements = "MainElements"
-  case extraElements = "ExtraElements"
-  case elementTypes = "ElementTypes"
   case settings = "Settings"
   case subscription = "Subscription"
-  case orders = "Orders"
   case logs = "Logs"
-  case roles = "Roles"
+  case orders = "Orders"
+}
+
+// MARK: - UI Constants
+struct UIConstants {
+  // Common spacing values
+  static let standardSpacing: CGFloat = 10
+  static let standardPadding: CGFloat = 16
+  static let largeSpacing: CGFloat = 20
+  static let smallSpacing: CGFloat = 5
+
+  // Common heights
+  static let buttonHeight: CGFloat = 50
+  static let headerHeight: CGFloat = 60
+  static let profileImageSize: CGFloat = 150
+  static let avatarSize: CGFloat = 100
+  static let cellHeight: CGFloat = 50
+  static let sectionHeight: CGFloat = 100
+  static let largeSectionHeight: CGFloat = 200
+  static let extraLargeSectionHeight: CGFloat = 270
+
+  // Common widths
+  static let iconSize: CGFloat = 20
+  static let imageSize: CGFloat = 80
+  static let iconContainerSize: CGFloat = 30
+  static let maxLabelWidth: CGFloat = 150
+}
+
+// MARK: - Keychain Keys
+struct KeychainKeys {
+    static let userId = "KeychainSessionUserId"
+    static let userEmail = "KeychainSessionUserEmail"
+    static let userRemember = "KeychainSessionUserRemember"
+    static let useBioUser = "KeychainSessionUserUseBioUser"
+    static let useBio = "KeychainSessionUserUseBio"
+    static let hasOnlineVersion = "KeychainSessionUserHasOnlineVersion"
+}
+
+// MARK: - UserDefaults Keys
+struct UserDefaultsKeys {
+    static let language = "settings.language"
+    static let theme = "settings.theme"
+    static let online = "settings.online"
+    static let themeStyle = "kThemeStyle"
+    static let firstLaunch = "kFirstLaunch"
+    static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
+    static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
+    static let appleLanguages = "AppleLanguages"
+}
+
+// MARK: - Firebase Collections
+struct FirebaseCollections {
+  static let users = "users"
+  static let roles = "roles"
+  static let admins = "admins"
+  static let technicians = "technicians"
+  static let productOfOrders = "productOfOrders"
+  static let orders = "orders"
+  static let productsPrice = "productsPrice"
+  static let costs = "costs"
+  static let types = "types"
+  static let subscriptions = "Subscriptions"
+  static let info = ".info"
+}
+
+// MARK: - Firebase Document Fields
+struct FirebaseFields {
+  static let email = "email"
+  static let firstName = "firstName"
+  static let lastName = "lastName"
+  static let middleName = "middleName"
+  static let phone = "phone"
+  static let address = "address"
+  static let avatarUrl = "avatarUrl"
+  static let avatarThumbnailUrl = "avatarThumbnailUrl"
+  static let comment = "comment"
+  static let firebaseRef = "firebaseRef"
+  static let createdDate = "createdDate"
+  static let updatedDate = "updatedDate"
+  static let enabled = "enabled"
+  static let role = "role"
+  static let connected = "connected"
+  static let timestamp = "timestamp"
+  static let userRef = "userRef"
+  static let dataRef = "dataRef"
+  static let uid = "uid"
+}
+
+// MARK: - Cell Identifiers
+struct CellIdentifiers {
+  static let ordersCell = "idOrdersCell"
+  static let costsCell = "idCostsCell"
+  static let typesCell = "idTypeCell"
+  static let productsCell = "idProductsCell"
+  static let orderCell = "idOrderCell"
+  static let personCell = "PersonTableViewCell"
+  static let subscriptionCell = "SubscriptionCell"
+}
+
+// MARK: - System Images
+struct SystemImages {
+  static let globe = "globe"
+  static let sunMax = "sun.max"
+  static let envelopeFill = "envelope.fill"
+  static let creditCardCircleFill = "creditcard.circle.fill"
+  static let cupAndSaucerFill = "cup.and.saucer.fill"
+  static let banknoteFill = "banknote.fill"
+  static let person2Fill = "person.2.fill"
+  static let icloudFill = "icloud.fill"
+  static let takeoutbagAndCupAndStrawFill = "takeoutbag.and.cup.and.straw.fill"
+  static let gearshape = "gearshape"
+}
+
+// MARK: - Asset Names
+struct AssetNames {
+  static let edit = "edit"
+  static let delete = "delete"
+  static let avatarPlaceholder = "avatarPlaceholder"
+  static let exit = "exit"
+}
+
+// MARK: - Color Names
+struct ColorNames {
+  static let primaryText = "PrimaryText"
+  static let primaryBackground = "PrimaryBackground"
+  static let secondaryText = "SecondaryText"
+  static let secondaryBackground = "SecondaryBackground"
+  static let tabBarTint = "TabBarTint"
+  static let cellBackground = "CellBackground"
+  static let navBarBackground = "NavBarBackground"
+  static let navBarText = "NavBarText"
+}
+
+// MARK: - File Extensions
+struct FileExtensions {
+  static let lock = "lock"
+  static let note = "note"
+  static let management = "management"
+  static let jpeg = "jpeg"
+  static let thumbnailJpeg = "_thumbnail.jpeg"
+  static let plist = "plist"
+  static let cer = "cer"
+  static let m4a = "m4a"
+}
+
+// MARK: - Default Values
+struct DefaultValues {
+  static let currencyName = "Гривня"
+  static let currencySymbol = "₴"
+  static let defaultLanguage = "English"
+  static let defaultOrderType = "Default"
+  static let unknownVersion = "Unknown"
+  static let unknownUser = "Unknown"
+  static let adminFirstName = "Admin"
+  static let dollarName = "Dollar"
+  static let dollarSymbol = "$"
+  static let trueString = "true"
+  static let falseString = "false"
 }
 
 // Links
-let facebookGroup = ""  // "https://www.facebook.com/groups/1194517203901210/"
 let supportEmail = "1cetoprosto@gmail.com"
-let supportEmail2 = "leonid.kvit@gmail.com"
-//
-//enum Color: String, CaseIterable {
-//    case master3d = "VITA 3DMaster"
-//    case classic = "VITA classic"
-//    var info: (code: Int, array: [String]) {
-//        switch self {
-//        case .master3d:
-//            return (0, Subcolor3D.allCases.map{$0.rawValue})
-//        case .classic:
-//            return (1, Subcolor.allCases.map{$0.rawValue})
-//        }
-//    }
-//}
-//
-//enum Subcolor: String, CaseIterable {
-//    case bl1 = "BL1"
-//    case bl2 = "BL2"
-//    case bl3 = "BL3"
-//    case bl4 = "BL4"
-//    case a1 = "A1"
-//    case a2 = "A2"
-//    case a3 = "A3"
-//    case a35 = "A3,5"
-//    case a4 = "A4"
-//    case b1 = "B1"
-//    case b2 = "B2"
-//    case b3 = "B3"
-//    case b4 = "B4"
-//    case c1 = "C1"
-//    case c2 = "C2"
-//    case c3 = "C3"
-//    case c4 = "C4"
-//    case d2 = "D2"
-//    case d3 = "D3"
-//    case d4 = "D4"
-//}
-//
-//enum Subcolor3D: String, CaseIterable {
-//    case bl1 = "BL1"
-//    case bl2 = "BL2"
-//    case bl3 = "BL3"
-//    case bl4 = "BL4"
-//    case m1 = "1M1"
-//    case m2 = "1M2"
-//    case l1 = "2L1.5"
-//    case l2 = "2L2.5"
-//    case m3 = "2M1"
-//    case m4 = "2M2"
-//    case m5 = "2M3"
-//    case r1 = "2R1.5"
-//    case r2 = "2R2.5"
-//    case l3 = "3L1.5"
-//    case l4 = "3L2.5"
-//    case m6 = "3M1"
-//    case m7 = "3M2"
-//    case m8 = "3M3"
-//    case r3 = "3R1.5"
-//    case r4 = "3R2.5"
-//    case l5 = "4L1.5"
-//    case l6 = "4L2.5"
-//    case m9 = "4M1"
-//    case m10 = "4M2"
-//    case m11 = "4M3"
-//    case r5 = "4R1.5"
-//    case r6 = "4R2.5"
-//    case m12 = "5M1"
-//    case m13 = "5M2"
-//    case m14 = "5M3"
-//}
-
-enum OrderState: Int {
-  case open = 0
-  case paid = 1
-  case inDebt = 2
-}
-
-enum ThemeColor: Int {
-  case dark = 0
-  case normal
-  case accent
-  case white
-}
-
-struct Constants {
-
-  static var ZeroPrice: String {
-    return "0\(Locale.current.decimalSeparator ?? ".")0"
-  }
-}

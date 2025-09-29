@@ -14,7 +14,6 @@ class ProductListViewController: UIViewController, Loggable {
   //var productsArray: Results<RealmProductsPriceModel>!
   var productsPrice = [ProductsPriceModel]()
 
-  let idProductsCell = "idProductsCell"
   let tableView: UITableView = {
     let tableView = UITableView()
     tableView.backgroundColor = UIColor.Main.background
@@ -35,7 +34,7 @@ class ProductListViewController: UIViewController, Loggable {
     view.backgroundColor = UIColor.Main.background
     title = R.string.global.products()
 
-    tableView.register(ProductPriceTableViewCell.self, forCellReuseIdentifier: idProductsCell)
+    tableView.register(ProductPriceTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.productsCell)
     tableView.dataSource = self
     tableView.delegate = self
 
@@ -84,8 +83,7 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell =
-      tableView.dequeueReusableCell(withIdentifier: idProductsCell, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.productsCell, for: indexPath)
       as! ProductPriceTableViewCell
     cell.configure(productPrice: productsPrice[indexPath.row], indexPath: indexPath)
 

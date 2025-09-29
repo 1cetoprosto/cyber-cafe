@@ -42,32 +42,32 @@ class Admin: CustomStringConvertible {
     init?(document: DocumentSnapshot) {
         guard let data = document.data() else { return nil }
         self.firebaseRef = document.documentID
-        self.firstName = data["firstName"] as? String ?? ""
-        self.lastName = data["lastName"] as? String
-        self.middleName = data["middleName"] as? String
-        self.email = data["email"] as? String ?? ""
-        self.phone = data["phone"] as? String
-        self.address = data["address"] as? String
-        self.comment = data["comment"] as? String
-        self.avatarUrl = data["avatarUrl"] as? String
-        self.avatarThumbnailUrl = data["avatarThumbnailUrl"] as? String
+        self.firstName = data[FirebaseFields.firstName] as? String ?? ""
+        self.lastName = data[FirebaseFields.lastName] as? String
+        self.middleName = data[FirebaseFields.middleName] as? String
+        self.email = data[FirebaseFields.email] as? String ?? ""
+        self.phone = data[FirebaseFields.phone] as? String
+        self.address = data[FirebaseFields.address] as? String
+        self.comment = data[FirebaseFields.comment] as? String
+        self.avatarUrl = data[FirebaseFields.avatarUrl] as? String
+        self.avatarThumbnailUrl = data[FirebaseFields.avatarThumbnailUrl] as? String
     }
     
     func forDatabase() -> [String: Any] {
         return [
-            "updatedDate": Date().timeIntervalSince1970,
+            FirebaseFields.updatedDate: Date().timeIntervalSince1970,
             
-            "firstName": firstName,
-            "lastName": lastName ?? "",
-            "middleName": middleName ?? "",
+            FirebaseFields.firstName: firstName,
+            FirebaseFields.lastName: lastName ?? "",
+            FirebaseFields.middleName: middleName ?? "",
             
-            "avatarUrl": avatarUrl ?? "",
-            "avatarThumbnailUrl": avatarThumbnailUrl ?? "",
+            FirebaseFields.avatarUrl: avatarUrl ?? "",
+            FirebaseFields.avatarThumbnailUrl: avatarThumbnailUrl ?? "",
             
-            "email": email.lowercased(),
-            "phone": phone ?? "",
-            "address": address ?? "",
-            "comment": comment ?? ""
+            FirebaseFields.email: email.lowercased(),
+            FirebaseFields.phone: phone ?? "",
+            FirebaseFields.address: address ?? "",
+            FirebaseFields.comment: comment ?? ""
         ]
     }
     
