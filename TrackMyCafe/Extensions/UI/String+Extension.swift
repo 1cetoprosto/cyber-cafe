@@ -69,7 +69,7 @@ extension String {
     }
     
     var isImage: Bool {
-        return contains(".jpg") || contains(".jpeg") || contains(".png")
+        return contains(FileExtensions.jpeg) || contains("." + FileExtensions.jpeg) || contains(".png")
     }
     
     var isAudio: Bool {

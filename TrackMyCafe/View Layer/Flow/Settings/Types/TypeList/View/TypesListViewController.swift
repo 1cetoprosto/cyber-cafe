@@ -13,7 +13,6 @@ class TypesListViewController: UIViewController, Loggable {
 
   var types = [TypeModel]()
 
-  let idTypesCell = "idTypeCell"
   let tableView: UITableView = {
     let tableView = UITableView()
     tableView.backgroundColor = UIColor.Main.background
@@ -35,7 +34,7 @@ class TypesListViewController: UIViewController, Loggable {
     view.backgroundColor = UIColor.Main.background
     title = R.string.global.types()
 
-    tableView.register(TypeTableViewCell.self, forCellReuseIdentifier: idTypesCell)
+    tableView.register(TypeTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.typesCell)
     tableView.dataSource = self
     tableView.delegate = self
 
@@ -82,8 +81,7 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell =
-      tableView.dequeueReusableCell(withIdentifier: idTypesCell, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.typesCell, for: indexPath)
       as! TypeTableViewCell
     cell.configure(type: types[indexPath.row], indexPath: indexPath)
 

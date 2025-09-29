@@ -9,7 +9,7 @@ import UIKit
 import StoreKit
 
 class SubscriptionCell: UITableViewCell {
-    static let identifier = "SubscriptionCell"
+    static let identifier = CellIdentifiers.subscriptionCell
     
     private lazy var containerView: UIView = {
         let view = UIView()

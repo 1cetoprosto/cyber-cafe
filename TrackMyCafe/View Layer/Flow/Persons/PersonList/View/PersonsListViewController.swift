@@ -31,7 +31,7 @@ class PersonsListViewController<ItemType: PersonListModelProtocol>: UITableViewC
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: updateNotification, object: nil)
-        tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: "PersonTableViewCell")
+        tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.personCell)
         tableView.tableFooterView = UIView()
         
         navigationItem.rightBarButtonItems = rightBarButtons

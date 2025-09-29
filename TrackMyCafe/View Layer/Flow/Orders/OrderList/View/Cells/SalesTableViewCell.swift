@@ -9,7 +9,7 @@ import UIKit
 
 class OrdersTableViewCell: UITableViewCell {
 
-  static let identifier = "idOrdersCell"
+  static let identifier = CellIdentifiers.ordersCell
 
   let backgroundViewCell: UIView = {
     let view = UIView()

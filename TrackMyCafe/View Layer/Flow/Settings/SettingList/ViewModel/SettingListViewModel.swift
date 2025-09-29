@@ -51,13 +51,13 @@ class SettingListViewModel: SettingListViewModelType {
             .dataCell(model: SettingsDataOption(title: R.string.global.language(),
                                                 icon: "globe", //UIImage(systemName: "globe"),
                                                 iconBackgroundColor: "systemPink", //.systemPink,
-                                                data: "English") { dataLabel in
+                                                data: DefaultValues.defaultLanguage) { dataLabel in
                 self.alertLanguage(label: dataLabel) { language in
                     print(language)
                 }
             }),
             .switchCell(model: SettingsSwitchOption(title: R.string.global.darkTheme(),
-                                                    icon: "sun.max", //UIImage(systemName: "sun.max"),
+                                                    icon: SystemImages.sunMax, //UIImage(systemName: "sun.max"),
                                                     iconBackgroundColor: "systemBlue", //.systemBlue,
                                                     isOn: true) {
                 self.switchToDarkTheme(isOn: true)
@@ -66,7 +66,7 @@ class SettingListViewModel: SettingListViewModelType {
 
         settings.append(Section(title: R.string.global.sales(), option: [
             .staticCell(model: SettingsStaticOption(title: R.string.global.goods(),
-                                                    icon: "cup.and.saucer.fill", //UIImage(systemName: "cup.and.saucer.fill"),
+                                                    icon: SystemImages.cupAndSaucerFill, //UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: "systemGreen", //.systemGreen) {
                 self.navigationController?.pushViewController(GoodListViewController(), animated: true)
             })
