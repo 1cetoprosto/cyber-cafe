@@ -67,8 +67,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
     profileImageView.isUserInteractionEnabled = true
     profileImageView.contentMode = .scaleAspectFill
     profileImageView.clipsToBounds = true
-    profileImageView.layer.cornerRadius = 75
-    profileImageView.layer.borderWidth = 1
+    profileImageView.layer.cornerRadius = UIConstants.profileImageCornerRadius
+    profileImageView.layer.borderWidth = UIConstants.standardBorderWidth
     profileImageView.layer.borderColor = UIColor.lightGray.cgColor
     profileImageView.addGestureRecognizer(
       UITapGestureRecognizer(target: self, action: #selector(changeImage)))
@@ -78,7 +78,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
     let fieldsStackView = UIStackView()
     fieldsStackView.translatesAutoresizingMaskIntoConstraints = false
     fieldsStackView.axis = .vertical
-    fieldsStackView.spacing = 10
+    fieldsStackView.spacing = UIConstants.standardSpacing
     view.addSubview(fieldsStackView)
 
     // Add subviews for fields
@@ -211,8 +211,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
     textView.backgroundColor = UIColor.TableView.cellBackground
     textView.text = value
     textView.layer.borderColor = UIColor.lightGray.cgColor
-    textView.layer.borderWidth = 1
-    textView.layer.cornerRadius = 5
+    textView.layer.borderWidth = UIConstants.standardBorderWidth
+    textView.layer.cornerRadius = UIConstants.standardCornerRadius
     textView.translatesAutoresizingMaskIntoConstraints = false
     textView.heightAnchor.constraint(equalToConstant: height).isActive = true
     textView.delegate = self
