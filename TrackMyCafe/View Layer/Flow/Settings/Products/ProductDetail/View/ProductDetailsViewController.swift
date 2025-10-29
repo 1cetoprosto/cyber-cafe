@@ -25,9 +25,9 @@ class ProductDetailsViewController: UIViewController {
     let textField = UITextField()
     textField.textAlignment = .left
     textField.placeholder = R.string.global.enterProductName()
-    textField.layer.borderWidth = 1
-    textField.layer.borderColor = UIColor.systemGray.cgColor
-    textField.layer.cornerRadius = 5
+    textField.layer.borderWidth = UIConstants.standardBorderWidth
+      textField.layer.borderColor = UIColor.Main.background.cgColor
+    textField.layer.cornerRadius = UIConstants.smallCornerRadius
     textField.backgroundColor = UIColor.TableView.cellBackground
     textField.font = UIFont.systemFont(ofSize: 20)
     textField.textColor = UIColor.TableView.cellLabel
@@ -51,9 +51,9 @@ class ProductDetailsViewController: UIViewController {
     let textField = UITextField()
     textField.textAlignment = .left
     textField.placeholder = R.string.global.enterPrice()
-    textField.layer.borderWidth = 1
-    textField.layer.borderColor = UIColor.systemGray.cgColor
-    textField.layer.cornerRadius = 5
+      textField.layer.borderWidth = UIConstants.standardBorderWidth
+      textField.layer.borderColor = UIColor.Main.background.cgColor
+    textField.layer.cornerRadius = UIConstants.smallCornerRadius
     textField.backgroundColor = UIColor.TableView.cellBackground
     textField.font = UIFont.systemFont(ofSize: 20)
     textField.textColor = UIColor.TableView.cellLabel
