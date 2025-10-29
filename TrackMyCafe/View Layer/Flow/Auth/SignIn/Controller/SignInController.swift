@@ -270,7 +270,7 @@ class SignInController: UIViewController {
 
     let fieldsStack = UIStackView(arrangedSubviews: [emailField, passwordField])
     fieldsStack.axis = .vertical
-    fieldsStack.spacing = 16
+    fieldsStack.spacing = UIConstants.standardPadding
 
     contentView.addSubview(fieldsStack)
     fieldsStack.topToBottom(of: logoView, offset: 50)

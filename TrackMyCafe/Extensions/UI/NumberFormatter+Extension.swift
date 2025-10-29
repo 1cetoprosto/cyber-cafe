@@ -24,7 +24,7 @@ extension NumberFormatter {
         formater.maximumFractionDigits = 2
         formater.currencyDecimalSeparator = ","
         formater.currencyGroupingSeparator = " "
-        formater.currencySymbol = RequestManager.shared.settings?.currencySymbol ?? "$"
+        formater.currencySymbol = RequestManager.shared.settings?.currencySymbol ?? DefaultValues.dollarSymbol
         return formater
     }
     

@@ -127,7 +127,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
       .dataCell(
         model: SettingsDataOption(
           title: "Theme",
-          icon: UIImage(systemName: "sun.max"),
+          icon: UIImage(systemName: SystemImages.sunMax),
           iconBackgroundColor: .systemBlue,
           data: SettingsManager.shared.loadTheme()
         ) { dataLabel in
@@ -144,7 +144,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
       .staticCell(
         model: SettingsStaticOption(
           title: R.string.global.feedback(),
-          icon: UIImage(systemName: "envelope.fill"),
+          icon: UIImage(systemName: SystemImages.envelopeFill),
           iconBackgroundColor: .systemOrange
         ) {
           self.presentFeedbackEmail()
@@ -186,7 +186,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
           .staticCell(
             model: SettingsStaticOption(
               title: "Price",
-              icon: UIImage(systemName: "cup.and.saucer.fill"),
+              icon: UIImage(systemName: SystemImages.cupAndSaucerFill),
               iconBackgroundColor: .systemBrown
             ) {
               self.navigationController?.pushViewController(
@@ -195,7 +195,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
           .staticCell(
             model: SettingsStaticOption(
               title: "Types",
-              icon: UIImage(systemName: "banknote.fill"),
+              icon: UIImage(systemName: SystemImages.banknoteFill),
               iconBackgroundColor: .systemGreen
             ) {
               self.navigationController?.pushViewController(
@@ -474,14 +474,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     // Get app version, device model, and OS version
     let appVersion =
-      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
-      let deviceModel = UIDevice.current.localizedModel
+      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? DefaultValues.unknownVersion
+    let deviceModel = UIDevice.current.localizedModel
     let osVersion = UIDevice.current.systemVersion
 
     // Get user information
-    let userId = UserSession.current.userId ?? "Unknown"
-    let userEmail = UserSession.current.userEmail ?? "Unknown"
-    let userRole = UserSession.current.role?.name ?? "Unknown"
+    let userId = UserSession.current.userId ?? DefaultValues.unknownUser
+        let userEmail = UserSession.current.userEmail ?? DefaultValues.unknownUser
+        let userRole = UserSession.current.role?.name ?? DefaultValues.unknownUser
 
     mailComposer.setMessageBody(
       R.string.global.feedbackEmailBody(

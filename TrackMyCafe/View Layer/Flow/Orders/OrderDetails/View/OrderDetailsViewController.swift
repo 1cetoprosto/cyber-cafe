@@ -25,11 +25,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     return picker
   }()
 
-  let idOrderCell = "idOrderCell"
   lazy var tableView: UITableView = {
     let tableView = UITableView()
     tableView.translatesAutoresizingMaskIntoConstraints = false
-    tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: idOrderCell)
+    tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
     tableView.delegate = self
     tableView.dataSource = self
     tableView.backgroundColor = UIColor.Main.background
@@ -310,7 +309,7 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell =
-      tableView.dequeueReusableCell(withIdentifier: idOrderCell, for: indexPath)
+      tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.orderCell, for: indexPath)
       as? OrderTableViewCell
 
     guard let tableViewCell = cell,
