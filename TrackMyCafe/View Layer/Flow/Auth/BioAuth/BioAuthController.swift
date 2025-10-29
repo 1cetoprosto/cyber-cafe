@@ -77,7 +77,7 @@ class BioAuthController: UIViewController {
         
         let buttonsStack = UIStackView(arrangedSubviews: [settingsButton, enableButton])
         buttonsStack.axis = .vertical
-        buttonsStack.spacing = 12
+        buttonsStack.spacing = UIConstants.mediumSpacing
         view.addSubview(buttonsStack)
         buttonsStack.centerXToSuperview()
         buttonsStack.bottomToSuperview(offset: -20, usingSafeArea: true)

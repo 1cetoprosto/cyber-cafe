@@ -151,7 +151,7 @@ class SignUpController: UIViewController {
         
         let fieldsStack = UIStackView(arrangedSubviews: [emailField, passwordField, passwordRepeatField])
         fieldsStack.axis = .vertical
-        fieldsStack.spacing = 16
+        fieldsStack.spacing = UIConstants.standardPadding
         
         contentView.addSubview(fieldsStack)
         fieldsStack.topToBottom(of: logoView, offset: 50)
