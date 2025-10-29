@@ -14,7 +14,7 @@ class OrdersTableViewCell: UITableViewCell {
   let backgroundViewCell: UIView = {
     let view = UIView()
     view.backgroundColor = UIColor.TableView.cellBackground
-    view.layer.cornerRadius = 10
+    view.layer.cornerRadius = UIConstants.largeCornerRadius
     view.translatesAutoresizingMaskIntoConstraints = false
 
     return view
@@ -30,13 +30,12 @@ class OrdersTableViewCell: UITableViewCell {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    layer.cornerRadius = 10
+    layer.cornerRadius = UIConstants.largeCornerRadius
     selectionStyle = .none
     accessoryType = .disclosureIndicator
     backgroundColor = UIColor.Main.background
 
     setConstraints()
-
   }
 
   required init?(coder: NSCoder) {

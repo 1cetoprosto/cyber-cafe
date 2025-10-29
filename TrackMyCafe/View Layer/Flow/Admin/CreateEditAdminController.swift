@@ -114,7 +114,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (1, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textField = createTextField(placeholder: R.string.global.lastName(), text: admin.lastName)
             textField.tag = 1
             cell.contentView.addSubview(textField)
@@ -122,7 +122,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (1, 1):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textField = createTextField(placeholder: R.string.global.firstName(), text: admin.firstName)
             textField.tag = 2
             cell.contentView.addSubview(textField)
@@ -130,7 +130,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (1, 2):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textField = createTextField(placeholder: R.string.global.middleName(), text: admin.middleName)
             textField.tag = 3
             cell.contentView.addSubview(textField)
@@ -138,7 +138,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (2, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textField = createTextField(placeholder: R.string.global.phone(), text: admin.phone)
             textField.keyboardType = .phonePad
             textField.tag = 4
@@ -147,7 +147,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (2, 1):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textView = createTextView(placeholder: R.string.global.address(), text: admin.address)
             textView.tag = 5
             cell.contentView.addSubview(textView)
@@ -155,7 +155,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         case (3, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             let textView = createTextView(placeholder: R.string.global.note(), text: admin.comment)
             textView.tag = 6
             cell.contentView.addSubview(textView)
