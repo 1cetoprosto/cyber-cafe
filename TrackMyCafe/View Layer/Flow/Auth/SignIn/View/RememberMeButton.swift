@@ -20,8 +20,8 @@ class RememberMeButton: UIControl {
     private lazy var boxView: UIView = {
         let view = UIView()
         view.layer.borderColor = UIColor.TabBar.tint.cgColor
-        view.layer.borderWidth = 1.5
-        view.layer.cornerRadius = 4
+        view.layer.borderWidth = UIConstants.thickBorderWidth
+        view.layer.cornerRadius = UIConstants.smallCornerRadius
         view.size(.init(width: 16, height: 16))
         view.isUserInteractionEnabled = false
         return view
