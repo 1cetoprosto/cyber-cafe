@@ -9,7 +9,7 @@ import UIKit
 
 class CostsTableViewCell: UITableViewCell {
 
-    static let identifier = "idCostsCell"
+    static let identifier = CellIdentifiers.costsCell
     
     let backgroundViewCell: UIView = {
         let view = UIView()

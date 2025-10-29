@@ -19,7 +19,7 @@ class StorageService {
         let ref = Storage.storage().reference()
             .child(Refs.comments.rawValue)
             .child(Refs.photos.rawValue)
-            .child(UUID().uuidString + ".jpeg")
+            .child(UUID().uuidString + "." + FileExtensions.jpeg)
         
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
@@ -37,7 +37,7 @@ class StorageService {
         let ref = Storage.storage().reference()
             .child(Refs.comments.rawValue)
             .child(Refs.audio.rawValue)
-            .child(UUID().uuidString + ".m4a")
+            .child(UUID().uuidString + "." + FileExtensions.m4a)
         
         ref.putFile(from: URL(fileURLWithPath: filePath), metadata: nil) { (_, error) in
             if error != nil {
@@ -51,7 +51,7 @@ class StorageService {
     
     static func uploadAvatar(_ image: UIImage, name: String, completion: @escaping (Bool, String?, String?) -> Void) {
         guard let data = image.jpegData(compressionQuality: 0.9) else { return }
-        let ref = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + ".jpeg")
+        let ref = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + "." + FileExtensions.jpeg)
         
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
@@ -74,7 +74,7 @@ class StorageService {
                     return
                 }
                 
-                let thumbnailRef = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + "_thumbnail.jpeg")
+                let thumbnailRef = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + FileExtensions.thumbnailJpeg)
                 
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"

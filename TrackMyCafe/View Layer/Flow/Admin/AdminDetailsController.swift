@@ -108,7 +108,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         case (0, 0):
             let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             cell.textLabel?.text = admin.fullName
             cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = R.string.global.adminPrivilege()
@@ -117,7 +117,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         case (1, 0):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             cell.textLabel?.text = R.string.global.phone()
             cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.phone ?? R.string.global.noSpecified()
@@ -131,7 +131,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         case (1, 1):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             cell.textLabel?.text = R.string.global.email()
             cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.email
@@ -145,7 +145,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         case (1, 2):
             let cell = UITableViewCell(style: .value1, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             cell.textLabel?.text = R.string.global.address()
             cell.textLabel?.textColor = UIColor.Main.text
             cell.detailTextLabel?.text = admin.address?.nilIfEmpty ?? R.string.global.noSpecified()
@@ -154,7 +154,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
         case (2, 0):
             let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
             cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = 10
+            cell.layer.cornerRadius = UIConstants.largeCornerRadius
             cell.textLabel?.text = admin.comment?.nilIfEmpty ?? R.string.global.noSpecified()
             cell.textLabel?.textColor = UIColor.Main.text
             cell.selectionStyle = .none

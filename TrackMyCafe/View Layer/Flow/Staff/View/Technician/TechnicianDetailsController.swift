@@ -109,12 +109,12 @@ class TechnicianDetailsController: UIViewController {
       headerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
       headerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       headerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      headerView.heightAnchor.constraint(equalToConstant: 200),
+      headerView.heightAnchor.constraint(equalToConstant: UIConstants.headerHeight),
 
       imageView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
       imageView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-      imageView.widthAnchor.constraint(equalToConstant: 100),
-      imageView.heightAnchor.constraint(equalToConstant: 100),
+      imageView.widthAnchor.constraint(equalToConstant: UIConstants.imageSize),
+      imageView.heightAnchor.constraint(equalToConstant: UIConstants.imageSize),
     ])
   }
 
@@ -138,13 +138,17 @@ class TechnicianDetailsController: UIViewController {
       sectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 220),
       sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      sectionView.heightAnchor.constraint(equalToConstant: 100),
+      sectionView.heightAnchor.constraint(equalToConstant: UIConstants.sectionHeight),
 
-      phoneLabel.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
-      phoneLabel.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor, constant: 20),
+      phoneLabel.topAnchor.constraint(
+        equalTo: sectionView.topAnchor, constant: UIConstants.standardPadding),
+      phoneLabel.leadingAnchor.constraint(
+        equalTo: sectionView.leadingAnchor, constant: UIConstants.standardPadding),
 
-      phoneField.topAnchor.constraint(equalTo: phoneLabel.topAnchor, constant: 20),
-      phoneField.leadingAnchor.constraint(equalTo: phoneLabel.leadingAnchor, constant: 20),
+      phoneField.topAnchor.constraint(
+        equalTo: phoneLabel.topAnchor, constant: UIConstants.standardPadding),
+      phoneField.leadingAnchor.constraint(
+        equalTo: phoneLabel.leadingAnchor, constant: UIConstants.standardPadding),
     ])
   }
 
@@ -175,13 +179,16 @@ class TechnicianDetailsController: UIViewController {
       sectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 340),
       sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      sectionView.heightAnchor.constraint(equalToConstant: 100),
+      sectionView.heightAnchor.constraint(equalToConstant: UIConstants.sectionHeight),
 
-      switchLabel.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
-      switchLabel.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor, constant: 20),
+      switchLabel.topAnchor.constraint(
+        equalTo: sectionView.topAnchor, constant: UIConstants.standardPadding),
+      switchLabel.leadingAnchor.constraint(
+        equalTo: sectionView.leadingAnchor, constant: UIConstants.standardPadding),
 
       switchControl.centerYAnchor.constraint(equalTo: switchLabel.centerYAnchor),
-      switchControl.trailingAnchor.constraint(equalTo: sectionView.trailingAnchor, constant: -20),
+      switchControl.trailingAnchor.constraint(
+        equalTo: sectionView.trailingAnchor, constant: -UIConstants.standardPadding),
     ])
   }
 
@@ -207,13 +214,18 @@ class TechnicianDetailsController: UIViewController {
       sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
       sectionView.heightAnchor.constraint(equalToConstant: 200),
 
-      noteLabel.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
-      noteLabel.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor, constant: 20),
+      noteLabel.topAnchor.constraint(
+        equalTo: sectionView.topAnchor, constant: UIConstants.standardPadding),
+      noteLabel.leadingAnchor.constraint(
+        equalTo: sectionView.leadingAnchor, constant: UIConstants.standardPadding),
 
-      noteTextView.topAnchor.constraint(equalTo: noteLabel.topAnchor, constant: 20),
+      noteTextView.topAnchor.constraint(
+        equalTo: noteLabel.topAnchor, constant: UIConstants.standardPadding),
       noteTextView.leadingAnchor.constraint(equalTo: noteLabel.leadingAnchor),
-      noteTextView.trailingAnchor.constraint(equalTo: sectionView.trailingAnchor, constant: -20),
-      noteTextView.bottomAnchor.constraint(equalTo: sectionView.bottomAnchor, constant: -20),
+      noteTextView.trailingAnchor.constraint(
+        equalTo: sectionView.trailingAnchor, constant: -UIConstants.standardPadding),
+      noteTextView.bottomAnchor.constraint(
+        equalTo: sectionView.bottomAnchor, constant: -UIConstants.standardPadding),
     ])
   }
 
@@ -251,13 +263,17 @@ class TechnicianDetailsController: UIViewController {
       sectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 680),
       sectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
       sectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      sectionView.heightAnchor.constraint(equalToConstant: 100),
+      sectionView.heightAnchor.constraint(equalToConstant: UIConstants.sectionHeight),
 
-      ordersButton.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
-      ordersButton.leadingAnchor.constraint(equalTo: sectionView.leadingAnchor, constant: 20),
+      ordersButton.topAnchor.constraint(
+        equalTo: sectionView.topAnchor, constant: UIConstants.standardPadding),
+      ordersButton.leadingAnchor.constraint(
+        equalTo: sectionView.leadingAnchor, constant: UIConstants.standardPadding),
 
-      allOrdersButton.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
-      allOrdersButton.leadingAnchor.constraint(equalTo: ordersButton.trailingAnchor, constant: 20),
+      allOrdersButton.topAnchor.constraint(
+        equalTo: sectionView.topAnchor, constant: UIConstants.standardPadding),
+      allOrdersButton.leadingAnchor.constraint(
+        equalTo: ordersButton.trailingAnchor, constant: UIConstants.standardPadding),
 
       pricesButton.topAnchor.constraint(equalTo: sectionView.topAnchor, constant: 20),
       pricesButton.leadingAnchor.constraint(equalTo: allOrdersButton.trailingAnchor, constant: 20),

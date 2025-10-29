@@ -22,8 +22,8 @@ class DefaultButton: UIButton {
     func setupButton() {
         translatesAutoresizingMaskIntoConstraints = false
         setTitleColor(UIColor.Button.title, for: .normal)
-        setTitleColor(UIColor.Button.title.withAlphaComponent(0.5), for: .highlighted)
+        setTitleColor(UIColor.Button.title.withAlphaComponent(UIConstants.highlightedAlpha), for: .highlighted)
         backgroundColor      = UIColor.Button.background
-        layer.cornerRadius   = 10
+        layer.cornerRadius   = UIConstants.largeCornerRadius
     }
 }
