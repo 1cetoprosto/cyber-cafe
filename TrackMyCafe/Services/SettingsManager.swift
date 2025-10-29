@@ -12,10 +12,10 @@ class SettingsManager {
 
   private init() {}
 
-  // Constants for UserDefaults keys
-  private let languageKey = "settings.language"
-  private let themeKey = "settings.theme"
-  private let onlineKey = "settings.online"
+  // Constants for UserDefaults keys - using existing constants from UserDefaultsKeys
+  private let languageKey = UserDefaultsKeys.language
+  private let themeKey = UserDefaultsKeys.theme
+  private let onlineKey = UserDefaultsKeys.online
 
   func saveLanguage(_ language: String) {
     UserDefaults.standard.set(language, forKey: UserDefaultsKeys.language)

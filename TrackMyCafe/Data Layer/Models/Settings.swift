@@ -34,38 +34,33 @@ class Settings: CustomStringConvertible {
     self.updatedDate = Date()
   }
 
-  init?(_ data: [String: Any]) {
-    guard
-      let createdDate = data[FirebaseFields.createdDate] as? Double,
-      let updateDate = data[FirebaseFields.updatedDate] as? Double
-    else { return nil }
-    self.createdDate = Date(timeIntervalSince1970: createdDate)
-    self.updatedDate = Date(timeIntervalSince1970: updateDate)
-
-    self.currencyName = (data["currencyName"] as? String) ?? DefaultValues.currencyName
-    self.currencySymbol = (data["currencySymbol"] as? String) ?? DefaultValues.currencySymbol
-    self.imageUrl = (data["imageUrl"] as? String)?.nilIfEmpty
-    self.imageThumbnailUrl = (data["imageThumbnailUrl"] as? String)?.nilIfEmpty
-    self.universalComment = (data["universalComment"] as? String)?.nilIfEmpty
-    self.isAllowed = (data["isAllowed"] as? Bool) ?? true
+  init(_ data: [String: AnyObject]) {
+    self.createdDate = Date(timeIntervalSince1970: data[FirebaseFields.createdDate] as? Double ?? 0)
+    self.updatedDate = Date(timeIntervalSince1970: data[FirebaseFields.updatedDate] as? Double ?? 0)
+    self.currencyName = (data[SettingsFields.currencyName] as? String) ?? DefaultValues.currencyName
+    self.currencySymbol = (data[SettingsFields.currencySymbol] as? String) ?? DefaultValues.currencySymbol
+    self.imageUrl = (data[SettingsFields.imageUrl] as? String)?.nilIfEmpty
+    self.imageThumbnailUrl = (data[SettingsFields.imageThumbnailUrl] as? String)?.nilIfEmpty
+    self.universalComment = (data[SettingsFields.universalComment] as? String)?.nilIfEmpty
+    self.isAllowed = (data[SettingsFields.isAllowed] as? Bool) ?? true
   }
 
   func forDatabase() -> [String: Any] {
     var values: [String: Any] = [
       FirebaseFields.createdDate: createdDate.interval,
       FirebaseFields.updatedDate: createdDate.interval,
-      "currencyName": currencyName,
-      "currencySymbol": currencySymbol,
-      "isAllowed": isAllowed,
+      SettingsFields.currencyName: currencyName,
+      SettingsFields.currencySymbol: currencySymbol,
+      SettingsFields.isAllowed: isAllowed,
     ]
     if let value = imageUrl {
-      values["imageUrl"] = value
+      values[SettingsFields.imageUrl] = value
     }
     if let value = imageThumbnailUrl {
-      values["imageThumbnailUrl"] = value
+      values[SettingsFields.imageThumbnailUrl] = value
     }
     if let value = universalComment {
-      values["universalComment"] = value
+      values[SettingsFields.universalComment] = value
     }
     return values
   }
