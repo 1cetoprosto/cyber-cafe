@@ -20,9 +20,11 @@ protocol ThemeProtocol {
 }
 
 class Theme {
-
-  private static let kThemeStyle = "kThemeStyle"
-  private static let kFirstLaunch = "kFirstLaunch"
+    
+    //static var currentThemeStyle: ThemeStyle = .light
+    
+    private static let kThemeStyle = UserDefaultsKeys.themeStyle
+    private static let kFirstLaunch = UserDefaultsKeys.firstLaunch
 
   static var currentThemeStyle: ThemeStyle {
     get {
