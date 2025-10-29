@@ -217,7 +217,7 @@ extension SubscriptionController: UITableViewDataSource, UITableViewDelegate {
         cell.textLabel?.font = .systemFont(ofSize: 14)
         cell.textLabel?.textColor = UIColor.TableView.cellLabel
         cell.backgroundColor = UIColor.TableView.cellBackground
-        cell.layer.cornerRadius = 10
+        cell.layer.cornerRadius = UIConstants.largeCornerRadius
         cell.textLabel?.text =
           "\(R.string.global.currentSubscription()): \(IAPManager.shared.currentSubscription.name)"
         cell.selectionStyle = .none
