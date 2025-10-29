@@ -54,6 +54,7 @@ struct UIConstants {
   static let standardPadding: CGFloat = 16
   static let largeSpacing: CGFloat = 20
   static let smallSpacing: CGFloat = 5
+  static let mediumSpacing: CGFloat = 12
 
   // Common heights
   static let buttonHeight: CGFloat = 50
@@ -70,28 +71,56 @@ struct UIConstants {
   static let imageSize: CGFloat = 80
   static let iconContainerSize: CGFloat = 30
   static let maxLabelWidth: CGFloat = 150
+
+  // Corner radius values
+  static let smallCornerRadius: CGFloat = 4
+  static let standardCornerRadius: CGFloat = 5
+  static let mediumCornerRadius: CGFloat = 8
+  static let largeCornerRadius: CGFloat = 10
+  static let extraLargeCornerRadius: CGFloat = 15
+  static let buttonCornerRadius: CGFloat = 20
+  static let profileImageCornerRadius: CGFloat = 75
+
+  // Border width values
+  static let standardBorderWidth: CGFloat = 1
+    //borderWidth
+  static let thickBorderWidth: CGFloat = 1.5
+
+  // Alpha values
+  static let highlightedAlpha: CGFloat = 0.5
+  static let backgroundOverlayAlpha: CGFloat = 0.3
 }
 
 // MARK: - Keychain Keys
 struct KeychainKeys {
-    static let userId = "KeychainSessionUserId"
-    static let userEmail = "KeychainSessionUserEmail"
-    static let userRemember = "KeychainSessionUserRemember"
-    static let useBioUser = "KeychainSessionUserUseBioUser"
-    static let useBio = "KeychainSessionUserUseBio"
-    static let hasOnlineVersion = "KeychainSessionUserHasOnlineVersion"
+  static let userId = "KeychainSessionUserId"
+  static let userEmail = "KeychainSessionUserEmail"
+  static let userRemember = "KeychainSessionUserRemember"
+  static let useBioUser = "KeychainSessionUserUseBioUser"
+  static let useBio = "KeychainSessionUserUseBio"
+  static let hasOnlineVersion = "KeychainSessionUserHasOnlineVersion"
 }
 
 // MARK: - UserDefaults Keys
 struct UserDefaultsKeys {
-    static let language = "settings.language"
-    static let theme = "settings.theme"
-    static let online = "settings.online"
-    static let themeStyle = "kThemeStyle"
-    static let firstLaunch = "kFirstLaunch"
-    static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
-    static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
-    static let appleLanguages = "AppleLanguages"
+  static let language = "settings.language"
+  static let theme = "settings.theme"
+  static let online = "settings.online"
+  static let themeStyle = "kThemeStyle"
+  static let firstLaunch = "kFirstLaunch"
+  static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
+  static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
+  static let appleLanguages = "AppleLanguages"
+}
+
+// MARK: - Settings Database Fields
+struct SettingsFields {
+  static let currencyName = "currencyName"
+  static let currencySymbol = "currencySymbol"
+  static let isAllowed = "isAllowed"
+  static let imageUrl = "imageUrl"
+  static let imageThumbnailUrl = "imageThumbnailUrl"
+  static let universalComment = "universalComment"
 }
 
 // MARK: - Firebase Collections

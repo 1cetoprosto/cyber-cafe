@@ -162,7 +162,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.delete(collection: FirebaseCollections.productOfOrders, documentId: order.id) {
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.productOfOrders, documentId: order.id
+      ) {
         result in
         switch result {
         case .success:
@@ -224,7 +226,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.orders, firModel: FIROrderModel.self
+      ) {
         result in
         switch result {
         case .success(let firOrders):
@@ -245,7 +249,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.orders, firModel: FIROrderModel.self
+      ) {
         result in
         switch result {
         case .success(let firOrders):
@@ -276,7 +282,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "orders", firModel: FIROrderModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.orders, firModel: FIROrderModel.self
+      ) {
         result in
         switch result {
         case .success(let firOrders):
@@ -300,7 +308,7 @@ class DomainDatabaseService: DomainDB {
 
     if isOnline {
       FirestoreDatabaseService.shared.create(
-        firModel: FIROrderModel(dataModel: order), collection: "orders"
+        firModel: FIROrderModel(dataModel: order), collection: FirebaseCollections.orders
       ) { result in
         switch result {
         case .success(let documentId):
@@ -325,7 +333,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.delete(collection: "orders", documentId: order.id) { result in
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.orders, documentId: order.id
+      ) { result in
         switch result {
         case .success:
           self.logger.info("Order deleted to Firestore successfully")
@@ -356,14 +366,15 @@ class DomainDatabaseService: DomainDB {
       updatedModel.name = name
       updatedModel.price = price
       FirestoreDatabaseService.shared.update(
-        firModel: updatedModel, collection: "productsPrice", documentId: model.id
+        firModel: updatedModel, collection: FirebaseCollections.productsPrice,
+        documentId: model.id
       ) { result in
         switch result {
         case .success():
           self.logger.info("Product price updated successfully in Firestore database")
         case .failure(let error):
           self.logger.error(
-            "Failed to update Product price in Firestore database: \(error.localizedDescription)")
+            "Failed to update product price in Firestore database: \(error.localizedDescription)")
         }
       }
     } else {
@@ -379,15 +390,15 @@ class DomainDatabaseService: DomainDB {
 
     if isOnline {
       FirestoreDatabaseService.shared.read(
-        collection: "productsPrice", firModel: FIRProductsPriceModel.self
+        collection: FirebaseCollections.productsPrice,
+        firModel: FIRProductsPriceModel.self
       ) { result in
         switch result {
-        case .success(let firProductsPrices):
-          let productsPrices = firProductsPrices.map { ProductsPriceModel(firebaseModel: $1) }
-          completion(productsPrices)
+        case .success(let firProducts):
+          let products = firProducts.map { ProductsPriceModel(firebaseModel: $1) }
+          completion(products)
         case .failure(let error):
-          self.logger.error(
-            "Error fetching productsPrice from Firestore: \(error.localizedDescription)")
+          self.logger.error("Error fetching products from Firestore: \(error.localizedDescription)")
           completion([])
         }
       }
@@ -404,15 +415,16 @@ class DomainDatabaseService: DomainDB {
 
     if isOnline {
       FirestoreDatabaseService.shared.create(
-        firModel: FIRProductsPriceModel(dataModel: productPrice), collection: "productsPrice"
+        firModel: FIRProductsPriceModel(dataModel: productPrice),
+        collection: FirebaseCollections.productsPrice
       ) { result in
         switch result {
         case .success(_):
-          self.logger.info("productsPrice saved to Firestore successfully")
+          self.logger.info("Product price saved to Firestore successfully")
           completion(true)
         case .failure(let error):
           self.logger.error(
-            "Failed to save productsPrice to Firestore with error: \(error.localizedDescription)")
+            "Failed to save product price to Firestore with error: \(error.localizedDescription)")
           completion(false)
         }
       }
@@ -426,7 +438,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.delete(collection: "productsPrice", documentId: model.id) {
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.productsPrice, documentId: model.id
+      ) {
         result in
         switch result {
         case .success:
@@ -459,14 +473,15 @@ class DomainDatabaseService: DomainDB {
       updatedModel.name = name
       updatedModel.sum = sum
       FirestoreDatabaseService.shared.update(
-        firModel: updatedModel, collection: "costs", documentId: model.id
+        firModel: updatedModel, collection: FirebaseCollections.costs,
+        documentId: model.id
       ) { result in
         switch result {
         case .success():
           self.logger.info("Cost updated successfully in Firestore database")
         case .failure(let error):
           self.logger.error(
-            "Failed to update Cost in Firestore database: \(error.localizedDescription)")
+            "Failed to update cost in Firestore database: \(error.localizedDescription)")
         }
       }
     } else {
@@ -479,7 +494,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.costs, firModel: FIRCostModel.self
+      ) {
         result in
         switch result {
         case .success(let firCosts):
@@ -490,7 +507,6 @@ class DomainDatabaseService: DomainDB {
           completion([])
         }
       }
-
     } else {
       let costs = RealmDatabaseService.shared.fetchCosts().map { CostModel(realmModel: $0) }
       completion(costs)
@@ -501,7 +517,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "costs", firModel: FIRCostModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.costs, firModel: FIRCostModel.self
+      ) {
         result in
         switch result {
         case .success(let firCosts):
@@ -534,7 +552,7 @@ class DomainDatabaseService: DomainDB {
 
     if isOnline {
       FirestoreDatabaseService.shared.create(
-        firModel: FIRCostModel(dataModel: model), collection: "costs"
+        firModel: FIRCostModel(dataModel: model), collection: FirebaseCollections.costs
       ) { result in
         switch result {
         case .success(_):
@@ -542,7 +560,7 @@ class DomainDatabaseService: DomainDB {
           completion(true)
         case .failure(let error):
           self.logger.error(
-            "Failed to save Cost to Firestore with error: \(error.localizedDescription)")
+            "Failed to save cost to Firestore with error: \(error.localizedDescription)")
           completion(false)
         }
       }
@@ -557,7 +575,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.delete(collection: "costs", documentId: model.id) { result in
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.costs, documentId: model.id
+      ) { result in
         switch result {
         case .success:
           self.logger.info("costs deleted to Firestore successfully")
@@ -587,14 +607,15 @@ class DomainDatabaseService: DomainDB {
       var updatedModel = FIRTypeModel(dataModel: model)
       updatedModel.name = type
       FirestoreDatabaseService.shared.update(
-        firModel: updatedModel, collection: "types", documentId: model.id
+        firModel: updatedModel, collection: FirebaseCollections.types,
+        documentId: model.id
       ) { result in
         switch result {
         case .success():
           self.logger.info("Type updated successfully in Firestore database")
         case .failure(let error):
           self.logger.error(
-            "Failed to update Type in Firestore database: \(error.localizedDescription)")
+            "Failed to update type in Firestore database: \(error.localizedDescription)")
         }
       }
     } else {
@@ -610,15 +631,17 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.read(collection: "types", firModel: FIRTypeModel.self) {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.types, firModel: FIRTypeModel.self
+      ) {
         result in
         switch result {
         case .success(let firTypes):
           let types = firTypes.map { TypeModel(firebaseModel: $1) }
           completion(types)
         case .failure(let error):
-          self.logger.error(
-            "Failed to fetch Types in Firestore database: \(error.localizedDescription)")
+          self.logger.error("Error fetching types from Firestore: \(error.localizedDescription)")
+          completion([])
         }
       }
     } else {
@@ -632,7 +655,7 @@ class DomainDatabaseService: DomainDB {
 
     if isOnline {
       FirestoreDatabaseService.shared.create(
-        firModel: FIRTypeModel(dataModel: model), collection: "types"
+        firModel: FIRTypeModel(dataModel: model), collection: FirebaseCollections.types
       ) { result in
         switch result {
         case .success(_):
@@ -654,7 +677,9 @@ class DomainDatabaseService: DomainDB {
     let isOnline = isOnlineModeEnabled()
 
     if isOnline {
-      FirestoreDatabaseService.shared.delete(collection: "types", documentId: model.id) { result in
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.types, documentId: model.id
+      ) { result in
         switch result {
         case .success:
           self.logger.info("Types deleted to Firestore successfully")
@@ -717,7 +742,7 @@ class DomainDatabaseService: DomainDB {
 
     dispatchGroup.enter()
     self.transferCollectionToRealm(
-      collection: "orders",
+      collection: FirebaseCollections.orders,
       firModelType: FIROrderModel.self,
       domainModelInit: OrderModel.init(firebaseModel:),
       realmModelInit: RealmOrderModel.init(dataModel:)
@@ -733,7 +758,7 @@ class DomainDatabaseService: DomainDB {
 
       dispatchGroup.enter()
       self.transferCollectionToRealm(
-        collection: "costs",
+        collection: FirebaseCollections.costs,
         firModelType: FIRCostModel.self,
         domainModelInit: CostModel.init(firebaseModel:),
         realmModelInit: RealmCostModel.init(dataModel:)
@@ -743,7 +768,7 @@ class DomainDatabaseService: DomainDB {
 
       dispatchGroup.enter()
       self.transferCollectionToRealm(
-        collection: "productsPrice",
+        collection: FirebaseCollections.productsPrice,
         firModelType: FIRProductsPriceModel.self,
         domainModelInit: ProductsPriceModel.init(firebaseModel:),
         realmModelInit: RealmProductsPriceModel.init(dataModel:)
@@ -753,7 +778,7 @@ class DomainDatabaseService: DomainDB {
 
       dispatchGroup.enter()
       self.transferCollectionToRealm(
-        collection: "types",
+        collection: FirebaseCollections.types,
         firModelType: FIRTypeModel.self,
         domainModelInit: TypeModel.init(firebaseModel:),
         realmModelInit: RealmTypeModel.init(dataModel:)
@@ -785,7 +810,7 @@ class DomainDatabaseService: DomainDB {
             let realmModel = realmModelInit(domainModel)
 
             RealmDatabaseService.shared.save(model: realmModel)
-            if collection == "orders" {
+            if collection == FirebaseCollections.orders {
               let model = domainModel as! OrderModel
               self.orderIdMap[documentId] = model.id  // Використання id з OrderModel як Realm ID
             }
@@ -807,7 +832,7 @@ class DomainDatabaseService: DomainDB {
 
   func transferProductOfOrdersToRealm(completion: @escaping () -> Void) {
     self.transferCollectionToRealm(
-      collection: "productOfOrders",
+      collection: FirebaseCollections.productOfOrders,
       firModelType: FIRProductModel.self,
       domainModelInit: { firModel in
         var domainModel = ProductOfOrderModel(firebaseModel: firModel)
@@ -841,7 +866,7 @@ class DomainDatabaseService: DomainDB {
       // Після того, як всі дані видалені, починаємо перенесення даних з Realm у Firestore
       transferDispatchGroup.enter()
       self.transferCollectionToFIR(
-        collection: "costs",
+        collection: FirebaseCollections.costs,
         realmModelType: RealmCostModel.self,
         domainModelInit: CostModel.init(realmModel:),
         firModelInit: FIRCostModel.init(dataModel:)
@@ -851,7 +876,7 @@ class DomainDatabaseService: DomainDB {
 
       transferDispatchGroup.enter()
       self.transferCollectionToFIR(
-        collection: "productsPrice",
+        collection: FirebaseCollections.productsPrice,
         realmModelType: RealmProductsPriceModel.self,
         domainModelInit: ProductsPriceModel.init(realmModel:),
         firModelInit: FIRProductsPriceModel.init(dataModel:)
@@ -861,7 +886,7 @@ class DomainDatabaseService: DomainDB {
 
       transferDispatchGroup.enter()
       self.transferCollectionToFIR(
-        collection: "types",
+        collection: FirebaseCollections.types,
         realmModelType: RealmTypeModel.self,
         domainModelInit: TypeModel.init(realmModel:),
         firModelInit: FIRTypeModel.init(dataModel:)
@@ -871,7 +896,7 @@ class DomainDatabaseService: DomainDB {
 
       transferDispatchGroup.enter()
       self.transferCollectionToFIR(
-        collection: "orders",
+        collection: FirebaseCollections.orders,
         realmModelType: RealmOrderModel.self,
         domainModelInit: OrderModel.init(realmModel:),
         firModelInit: FIROrderModel.init(dataModel:)
@@ -898,7 +923,7 @@ class DomainDatabaseService: DomainDB {
 
   func transferProductOfOrdersToFIR(completion: @escaping () -> Void) {
     self.transferCollectionToFIR(
-      collection: "productOfOrders",
+      collection: FirebaseCollections.productOfOrders,
       realmModelType: RealmProductModel.self,
       domainModelInit: { realmModel in
         var domainModel = ProductOfOrderModel(realmModel: realmModel)
@@ -937,7 +962,7 @@ class DomainDatabaseService: DomainDB {
           case .success(let documentId):
             self.logger.info(
               "Created document \(collection) with id - \(String(describing: documentId))")
-            if collection == "orders" {
+            if collection == FirebaseCollections.orders {
               let model = domainModel as! OrderModel
               self.orderIdMap[model.id] = documentId
             }

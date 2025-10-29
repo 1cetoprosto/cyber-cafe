@@ -46,16 +46,16 @@ class IAPManager: NSObject, Loggable {
         return SubscriptionType(rawValue: productId) ?? .none
     }
     
-    @AppDefaults<Date>(key: "kUserSubscriptionNextPaymentDate")
-    public private(set) var nextPaymentDate: Date?
+    @AppDefaults<Date>(key: UserDefaultsKeys.subscriptionNextPaymentDate)
+    var nextPaymentDate: Date?
     
-    @AppDefaults<Bool>(key: "kUserSubscriptionIsPremiumPlan")
-    public private(set) var premiumPlan: Bool?
+    @AppDefaults<Bool>(key: UserDefaultsKeys.subscriptionIsPremiumPlan)
+    var isPremiumPlan: Bool?
     
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
         nextPaymentDate = subscription.nextPaymentDate
-        premiumPlan = subscription.premiumPlan
+        isPremiumPlan = subscription.premiumPlan
     }
     
     func getProducts(_ completion: (([SKProduct]?) -> Void)?) {
