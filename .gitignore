@@ -46,6 +46,10 @@ playground.xcworkspace
 # hence it is not needed unless you have added a package configuration file to your project
  .swiftpm
 
+# Xcode user-specific data
+xcuserdata/
+*.xcuserstate
+
 .build/
 
 # CocoaPods
@@ -90,3 +94,11 @@ fastlane/test_output
 iOSInjectionProject/
 
 *.generated.swift
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
+
+# Common merge/editor artifacts
+*.orig
+*.rej
