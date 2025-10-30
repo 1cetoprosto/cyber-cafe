@@ -5,8 +5,9 @@
 //  Created by Leonid Kvit on 07.11.2022.
 //
 
-import UIKit
 import RswiftResources
+import TinyConstraints
+import UIKit
 
 class CostDetailsListViewController: UIViewController {
 
@@ -19,7 +20,6 @@ class CostDetailsListViewController: UIViewController {
   // MARK: - Scroll View & Main Container
   private lazy var scrollView: UIScrollView = {
     let scrollView = UIScrollView()
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
     scrollView.showsVerticalScrollIndicator = false
     scrollView.keyboardDismissMode = .onDrag
     return scrollView
@@ -27,7 +27,6 @@ class CostDetailsListViewController: UIViewController {
 
   private lazy var mainStackView: UIStackView = {
     let stackView = UIStackView()
-    stackView.translatesAutoresizingMaskIntoConstraints = false
     stackView.axis = .vertical
     stackView.spacing = UIConstants.standardPadding
     stackView.distribution = .fill
@@ -48,22 +47,20 @@ class CostDetailsListViewController: UIViewController {
   // MARK: - Name Section
   private lazy var nameInputContainer: InputContainerView = {
     let container = InputContainerView(
-      labelText: "Name",
+        labelText: R.string.global.costNamePlaceholder(),
       inputType: .text(keyboardType: .default),
       isEditable: true
     )
-    container.translatesAutoresizingMaskIntoConstraints = false
     return container
   }()
 
-  // MARK: - Price Section
+  // Price input container
   private lazy var priceInputContainer: InputContainerView = {
     let container = InputContainerView(
-      labelText: "Price",
+        labelText: R.string.global.costSum(),
       inputType: .text(keyboardType: .decimalPad),
       isEditable: true
     )
-    container.translatesAutoresizingMaskIntoConstraints = false
     return container
   }()
 
@@ -125,46 +122,34 @@ class CostDetailsListViewController: UIViewController {
   }
 
   private func setupConstraints() {
-    NSLayoutConstraint.activate([
-      // ScrollView constraints
-      scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-      scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-      scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-      scrollView.bottomAnchor.constraint(
-        equalTo: saveButton.topAnchor, constant: -UIConstants.standardPadding),
+    // ScrollView constraints
+    scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+    scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
-      // Main StackView constraints
-      mainStackView.topAnchor.constraint(
-        equalTo: scrollView.topAnchor, constant: UIConstants.largeSpacing),
-      mainStackView.leadingAnchor.constraint(
-        equalTo: scrollView.leadingAnchor, constant: UIConstants.standardPadding),
-      mainStackView.trailingAnchor.constraint(
-        equalTo: scrollView.trailingAnchor, constant: -UIConstants.standardPadding),
-      mainStackView.bottomAnchor.constraint(
-        equalTo: scrollView.bottomAnchor, constant: -UIConstants.largeSpacing),
-      mainStackView.widthAnchor.constraint(
-        equalTo: scrollView.widthAnchor, constant: -2 * UIConstants.standardPadding),
+    // Main StackView constraints
+    mainStackView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.largeSpacing,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.largeSpacing,
+        right: UIConstants.standardPadding
+      ))
+    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
 
-      // Container heights
-      dateInputContainer.heightAnchor.constraint(
-        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
-      nameInputContainer.heightAnchor.constraint(
-        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
-      priceInputContainer.heightAnchor.constraint(
-        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
+    // Container heights
+    let containerHeight =
+      UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+    dateInputContainer.height(containerHeight)
+    nameInputContainer.height(containerHeight)
+    priceInputContainer.height(containerHeight)
 
-      // Save Button constraints
-      saveButton.leadingAnchor.constraint(
-        equalTo: view.leadingAnchor, constant: UIConstants.standardPadding),
-      saveButton.trailingAnchor.constraint(
-        equalTo: view.trailingAnchor, constant: -UIConstants.standardPadding),
-      saveButton.heightAnchor.constraint(equalToConstant: UIConstants.buttonHeight),
-    ])
+    // Save Button constraints
+    saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    saveButton.height(UIConstants.buttonHeight)
 
     // Save button bottom constraint for keyboard handling
-    saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
-      equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIConstants.standardPadding)
-    saveButtonBottomConstraint.isActive = true
+    saveButtonBottomConstraint = saveButton.bottomToSuperview(
+      offset: -UIConstants.standardPadding, usingSafeArea: true)
   }
 
   private func setupData() {
@@ -190,7 +175,7 @@ class CostDetailsListViewController: UIViewController {
       object: nil
     )
 
-      addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
+    addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     view.addGestureRecognizer(tapGesture)

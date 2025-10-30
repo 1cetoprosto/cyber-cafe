@@ -5,6 +5,7 @@
 //  Created by AI Assistant on 30.12.2024.
 //
 
+import TinyConstraints
 import UIKit
 
 // MARK: - Input Type Enum
@@ -64,7 +65,6 @@ final class InputContainerView: UIView {
 
   private lazy var switchControl: UISwitch = {
     let switchControl = UISwitch()
-    switchControl.translatesAutoresizingMaskIntoConstraints = false
     switchControl.onTintColor = UIColor.Main.accent
     return switchControl
   }()
@@ -234,8 +234,6 @@ final class InputContainerView: UIView {
   // MARK: - Setup
 
   private func setupUI() {
-    translatesAutoresizingMaskIntoConstraints = false
-
     // Add container view
     addSubview(containerView)
 
@@ -246,108 +244,37 @@ final class InputContainerView: UIView {
   }
 
   private func setupContainerConstraints() {
-    NSLayoutConstraint.activate([
-      // Container view constraints
-      containerView.topAnchor.constraint(equalTo: topAnchor),
-      containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-      containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
+    // Container view constraints
+    containerView.edgesToSuperview()
 
-      // Title label constraints
-      titleLabel.topAnchor.constraint(
-        equalTo: containerView.topAnchor,
-        constant: UIConstants.mediumSpacing
-      ),
-      titleLabel.leadingAnchor.constraint(
-        equalTo: containerView.leadingAnchor,
-        constant: UIConstants.standardPadding
-      ),
-      titleLabel.trailingAnchor.constraint(
-        equalTo: containerView.trailingAnchor,
-        constant: -UIConstants.standardPadding
-      ),
-    ])
+    // Title label constraints
+    titleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+    titleLabel.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
   }
 
   private func setupTextFieldConstraints() {
-    NSLayoutConstraint.activate([
-      textField.topAnchor.constraint(
-        equalTo: titleLabel.bottomAnchor,
-        constant: UIConstants.smallSpacing
-      ),
-      textField.leadingAnchor.constraint(
-        equalTo: containerView.leadingAnchor,
-        constant: UIConstants.standardPadding
-      ),
-      textField.trailingAnchor.constraint(
-        equalTo: containerView.trailingAnchor,
-        constant: -UIConstants.standardPadding
-      ),
-      textField.bottomAnchor.constraint(
-        equalTo: containerView.bottomAnchor,
-        constant: -UIConstants.mediumSpacing
-      ),
-    ])
+    textField.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+    textField.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    textField.bottomToSuperview(offset: -UIConstants.mediumSpacing)
   }
 
   private func setupDatePickerConstraints() {
-    NSLayoutConstraint.activate([
-      datePicker.topAnchor.constraint(
-        equalTo: titleLabel.bottomAnchor,
-        constant: UIConstants.smallSpacing
-      ),
-      datePicker.leadingAnchor.constraint(
-        equalTo: containerView.leadingAnchor,
-        constant: UIConstants.standardPadding
-      ),
-      datePicker.trailingAnchor.constraint(
-        equalTo: containerView.trailingAnchor,
-        constant: -UIConstants.standardPadding
-      ),
-      datePicker.bottomAnchor.constraint(
-        equalTo: containerView.bottomAnchor,
-        constant: -UIConstants.mediumSpacing
-      ),
-    ])
+    datePicker.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+    datePicker.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    datePicker.bottomToSuperview(offset: -UIConstants.mediumSpacing)
   }
 
   private func setupPickerViewConstraints() {
-    NSLayoutConstraint.activate([
-      pickerView.topAnchor.constraint(
-        equalTo: titleLabel.bottomAnchor,
-        constant: UIConstants.smallSpacing
-      ),
-      pickerView.leadingAnchor.constraint(
-        equalTo: containerView.leadingAnchor,
-        constant: UIConstants.standardPadding
-      ),
-      pickerView.trailingAnchor.constraint(
-        equalTo: containerView.trailingAnchor,
-        constant: -UIConstants.standardPadding
-      ),
-      pickerView.bottomAnchor.constraint(
-        equalTo: containerView.bottomAnchor,
-        constant: -UIConstants.mediumSpacing
-      ),
-      pickerView.heightAnchor.constraint(equalToConstant: 120),
-    ])
+    pickerView.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+    pickerView.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    pickerView.bottomToSuperview(offset: -UIConstants.mediumSpacing)
+    pickerView.height(120)
   }
 
   private func setupSwitchConstraints() {
-    NSLayoutConstraint.activate([
-      switchControl.topAnchor.constraint(
-        equalTo: titleLabel.bottomAnchor,
-        constant: UIConstants.smallSpacing
-      ),
-      switchControl.leadingAnchor.constraint(
-        equalTo: containerView.leadingAnchor,
-        constant: UIConstants.standardPadding
-      ),
-      switchControl.bottomAnchor.constraint(
-        equalTo: containerView.bottomAnchor,
-        constant: -UIConstants.mediumSpacing
-      ),
-    ])
+    switchControl.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+    switchControl.leadingToSuperview(offset: UIConstants.standardPadding)
+    switchControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
   }
 
   // MARK: - Actions
