@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RswiftResources
 
 class CostDetailsListViewController: UIViewController {
 
@@ -35,103 +36,41 @@ class CostDetailsListViewController: UIViewController {
   }()
 
   // MARK: - Date Section
-  private lazy var dateContainerView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = UIColor.TableView.cellBackground
-    view.layer.cornerRadius = 12
-    return view
-  }()
-
-  private lazy var dateLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = R.string.global.costDate()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    label.textColor = UIColor.Main.text
-    return label
-  }()
-
-  private lazy var datePicker: UIDatePicker = {
-    let picker = UIDatePicker()
-    picker.translatesAutoresizingMaskIntoConstraints = false
-    picker.datePickerMode = .date
-    picker.preferredDatePickerStyle = .compact
-    picker.tintColor = UIColor.Main.accent
-    return picker
+  private lazy var dateInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.costDate(),
+      inputType: .date(mode: .date),
+      isEditable: true
+    )
+    return container
   }()
 
   // MARK: - Name Section
-  private lazy var nameContainerView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = UIColor.TableView.cellBackground
-    view.layer.cornerRadius = 12
-    return view
-  }()
-
-  private lazy var nameLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = R.string.global.costNamePlaceholder()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    label.textColor = UIColor.Main.text
-    return label
-  }()
-
-  private lazy var nameTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.font = UIFont.systemFont(ofSize: 20)
-    textField.textColor = UIColor.Main.text
-    textField.backgroundColor = .clear
-    textField.borderStyle = .none
-    textField.returnKeyType = .next
-    textField.delegate = self
-    return textField
+  private lazy var nameInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: "Name",
+      inputType: .text(keyboardType: .default),
+      isEditable: true
+    )
+    container.translatesAutoresizingMaskIntoConstraints = false
+    return container
   }()
 
   // MARK: - Price Section
-  private lazy var priceContainerView: UIView = {
-    let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
-    view.backgroundColor = UIColor.TableView.cellBackground
-    view.layer.cornerRadius = 12
-    return view
-  }()
-
-  private lazy var priceLabel: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    label.text = R.string.global.costSum()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    label.textColor = UIColor.Main.text
-    return label
-  }()
-
-  private lazy var priceTextField: UITextField = {
-    let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
-    textField.placeholder = "0.00"
-    textField.font = UIFont.systemFont(ofSize: 20)
-    textField.textColor = UIColor.Main.text
-    textField.backgroundColor = .clear
-    textField.borderStyle = .none
-    textField.keyboardType = .decimalPad
-    textField.returnKeyType = .done
-    textField.delegate = self
-    return textField
+  private lazy var priceInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: "Price",
+      inputType: .text(keyboardType: .decimalPad),
+      isEditable: true
+    )
+    container.translatesAutoresizingMaskIntoConstraints = false
+    return container
   }()
 
   // MARK: - Action Button
   private lazy var saveButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.translatesAutoresizingMaskIntoConstraints = false
+    let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
-    button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    button.setTitleColor(UIColor.Button.title, for: .normal)
-    button.backgroundColor = UIColor.Button.background
-    button.layer.cornerRadius = UIConstants.buttonCornerRadius
     button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
     return button
   }()
@@ -159,22 +98,17 @@ class CostDetailsListViewController: UIViewController {
     view.addSubview(saveButton)
     scrollView.addSubview(mainStackView)
 
+    // Configure input containers
+    nameInputContainer.setDelegate(self)
+    nameInputContainer.setReturnKeyType(.next)
+
+    priceInputContainer.setDelegate(self)
+    priceInputContainer.setReturnKeyType(.done)
+
     // Add containers to stack view
-    mainStackView.addArrangedSubview(dateContainerView)
-    mainStackView.addArrangedSubview(nameContainerView)
-    mainStackView.addArrangedSubview(priceContainerView)
-
-    // Add date section elements
-    dateContainerView.addSubview(dateLabel)
-    dateContainerView.addSubview(datePicker)
-
-    // Add name section elements
-    nameContainerView.addSubview(nameLabel)
-    nameContainerView.addSubview(nameTextField)
-
-    // Add price section elements
-    priceContainerView.addSubview(priceLabel)
-    priceContainerView.addSubview(priceTextField)
+    mainStackView.addArrangedSubview(dateInputContainer)
+    mainStackView.addArrangedSubview(nameInputContainer)
+    mainStackView.addArrangedSubview(priceInputContainer)
   }
 
   private func setupNavigationBar() {
@@ -212,56 +146,12 @@ class CostDetailsListViewController: UIViewController {
         equalTo: scrollView.widthAnchor, constant: -2 * UIConstants.standardPadding),
 
       // Container heights
-      dateContainerView.heightAnchor.constraint(equalToConstant: UIConstants.imageSize),
-      nameContainerView.heightAnchor.constraint(
-        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing),
-      priceContainerView.heightAnchor.constraint(
-        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing),
-
-      // Date container internal constraints
-      dateLabel.topAnchor.constraint(
-        equalTo: dateContainerView.topAnchor, constant: UIConstants.mediumSpacing),
-      dateLabel.leadingAnchor.constraint(
-        equalTo: dateContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      dateLabel.trailingAnchor.constraint(
-        equalTo: dateContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
-
-      datePicker.topAnchor.constraint(
-        equalTo: dateLabel.bottomAnchor, constant: UIConstants.smallSpacing),
-      datePicker.leadingAnchor.constraint(
-        equalTo: dateContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      datePicker.trailingAnchor.constraint(
-        equalTo: dateContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
-
-      // Name container internal constraints
-      nameLabel.topAnchor.constraint(
-        equalTo: nameContainerView.topAnchor, constant: UIConstants.mediumSpacing),
-      nameLabel.leadingAnchor.constraint(
-        equalTo: nameContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      nameLabel.trailingAnchor.constraint(
-        equalTo: nameContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
-
-      nameTextField.topAnchor.constraint(
-        equalTo: nameLabel.bottomAnchor, constant: UIConstants.smallSpacing),
-      nameTextField.leadingAnchor.constraint(
-        equalTo: nameContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      nameTextField.trailingAnchor.constraint(
-        equalTo: nameContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
-
-      // Price container internal constraints
-      priceLabel.topAnchor.constraint(
-        equalTo: priceContainerView.topAnchor, constant: UIConstants.mediumSpacing),
-      priceLabel.leadingAnchor.constraint(
-        equalTo: priceContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      priceLabel.trailingAnchor.constraint(
-        equalTo: priceContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
-
-      priceTextField.topAnchor.constraint(
-        equalTo: priceLabel.bottomAnchor, constant: UIConstants.smallSpacing),
-      priceTextField.leadingAnchor.constraint(
-        equalTo: priceContainerView.leadingAnchor, constant: UIConstants.standardPadding),
-      priceTextField.trailingAnchor.constraint(
-        equalTo: priceContainerView.trailingAnchor, constant: -UIConstants.standardPadding),
+      dateInputContainer.heightAnchor.constraint(
+        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
+      nameInputContainer.heightAnchor.constraint(
+        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
+      priceInputContainer.heightAnchor.constraint(
+        equalToConstant: UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding),
 
       // Save Button constraints
       saveButton.leadingAnchor.constraint(
@@ -279,9 +169,9 @@ class CostDetailsListViewController: UIViewController {
 
   private func setupData() {
     if let viewModel = viewModel {
-        datePicker.date = viewModel.costDate
-        nameTextField.text = viewModel.costName
-        priceTextField.text = String(viewModel.costSum)
+      dateInputContainer.date = viewModel.costDate
+      nameInputContainer.text = viewModel.costName
+      priceInputContainer.text = viewModel.costSum.formatted(.currency(code: "USD"))
     }
   }
 
@@ -300,7 +190,7 @@ class CostDetailsListViewController: UIViewController {
       object: nil
     )
 
-    addDoneButtonToTextField(priceTextField)
+      addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
     view.addGestureRecognizer(tapGesture)
@@ -312,7 +202,7 @@ class CostDetailsListViewController: UIViewController {
 
     let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
     let doneButton = UIBarButtonItem(
-        title: R.string.global.actionOk(),
+      title: R.string.global.actionOk(),
       style: .done,
       target: self,
       action: #selector(dismissKeyboard)
@@ -326,19 +216,20 @@ class CostDetailsListViewController: UIViewController {
   @objc private func saveAction(param: UIButton) {
     guard let viewModel = viewModel else { return }
 
-    guard let name = nameTextField.text, !name.isEmpty else {
+    guard let name = nameInputContainer.text, !name.isEmpty else {
       showValidationError()
       return
     }
 
-    guard let priceText = priceTextField.text, !priceText.isEmpty,
+    guard let priceText = priceInputContainer.text, !priceText.isEmpty,
       let price = Double(priceText)
     else {
       showValidationError()
       return
     }
 
-    viewModel.saveCostModel(costDate: datePicker.date, costName: name, costSum: price)
+    viewModel.saveCostModel(
+      costDate: dateInputContainer.date ?? Date(), costName: name, costSum: price)
     navigationController?.popViewController(animated: true)
   }
 
@@ -398,8 +289,9 @@ class CostDetailsListViewController: UIViewController {
 // MARK: - UITextFieldDelegate
 extension CostDetailsListViewController: UITextFieldDelegate {
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-    if textField == nameTextField {
-      priceTextField.becomeFirstResponder()
+    // Check which container's text field is active and navigate accordingly
+    if textField == nameInputContainer.textFieldReference {
+      priceInputContainer.becomeFirstResponder()
     } else {
       textField.resignFirstResponder()
     }
