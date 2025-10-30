@@ -10,6 +10,9 @@
 		627C10185917C36A6341E05F /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F7FA88294D4E4D33D020209 /* Pods_TrackMyCafe_Prod.framework */; };
 		6C6CBB92288E458EE39A8B3E /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB4489D933A350896987C07 /* Pods_TrackMyCafe_Dev.framework */; };
 		E224DFDF60E83D952A72AB94 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03ABC2C9CCBAE5A1E7589872 /* Pods_TrackMyCafe_Beta.framework */; };
+		F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
+		F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
+		F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
 		F3158C482763437200136861 /* RealmProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* RealmProductModel.swift */; };
 		F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* RealmDatabaseService.swift */; };
@@ -514,6 +517,7 @@
 		81A154C5942C10B9393DFA1F /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		AB41E39EBF36CC79C57540E9 /* Pods-TrackMyCafe Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		B387454C75F8298B111E8537 /* Pods-TrackMyCafe Beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.release.xcconfig"; sourceTree = "<group>"; };
+		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
 		F3158C472763437200136861 /* RealmProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductModel.swift; sourceTree = "<group>"; };
 		F3158C4A2763443700136861 /* RealmDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabaseService.swift; sourceTree = "<group>"; };
@@ -1035,6 +1039,7 @@
 		F3410EA82BDD3E150007157B /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
 			);
@@ -1939,9 +1944,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1956,9 +1965,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1973,9 +1986,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2170,6 +2187,7 @@
 				F3E357F52BEFF26E005050CB /* ProductOfOrderModel.swift in Sources */,
 				F3410EA22BDD3AFC0007157B /* String+Extension.swift in Sources */,
 				F385B4042C1D782500973CAA /* PersonsListViewController.swift in Sources */,
+				F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */,
 				F3B7C2522806D8DA00DF5C2B /* RealmTypeModel.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
@@ -2311,6 +2329,7 @@
 				F3B339AD2C0B22FE0073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */,
 				F39D78572C2034E70003B556 /* Subscription.swift in Sources */,
+				F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B339AF2C0B22FE0073F19A /* TypeTableViewCell.swift in Sources */,
 				F3B339B02C0B22FE0073F19A /* RealmTypeModel.swift in Sources */,
 				F3B339B12C0B22FE0073F19A /* MainTabBarController.swift in Sources */,
@@ -2452,6 +2471,7 @@
 				F3B33A4C2C0B23450073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B33A4D2C0B23450073F19A /* String+Extension.swift in Sources */,
 				F39D78582C2034E70003B556 /* Subscription.swift in Sources */,
+				F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B33A4E2C0B23450073F19A /* TypeTableViewCell.swift in Sources */,
 				F3B33A4F2C0B23450073F19A /* RealmTypeModel.swift in Sources */,
 				F3B33A502C0B23450073F19A /* MainTabBarController.swift in Sources */,
