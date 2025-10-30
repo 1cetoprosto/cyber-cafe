@@ -37,6 +37,10 @@ class CostListViewController: UIViewController {
     view.backgroundColor = UIColor.Main.background
     title = R.string.global.costs()
 
+    // Налаштування кнопки назад без тексту
+    navigationItem.backBarButtonItem = UIBarButtonItem(
+      title: "", style: .plain, target: nil, action: nil)
+
     tableView.dataSource = self
     tableView.delegate = self
 
@@ -52,6 +56,8 @@ class CostListViewController: UIViewController {
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
     let costVC = CostDetailsListViewController()
+    // costVC.viewModel = CostDetailsViewModel(cost: CostModel(id: "", date: Date(), name: "", sum: 0))
+    // costVC.delegate = self
     navigationController?.pushViewController(costVC, animated: true)
   }
 
@@ -96,8 +102,7 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     guard let viewModel = viewModel else { return }
     viewModel.selectRow(atIndexPath: indexPath)
-    var detailViewModel = viewModel.viewModelForSelectedRow()
-    //detailViewModel?.newModel = false
+    let detailViewModel = viewModel.viewModelForSelectedRow()
 
     let costVC = CostDetailsListViewController()
     costVC.viewModel = detailViewModel
@@ -122,6 +127,18 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     return UISwipeActionsConfiguration(actions: [deleteAction])
   }
 }
+
+// // MARK: - CostDetailsListViewControllerDelegate
+// extension CostListViewController: CostDetailsListViewControllerDelegate {
+//   func didSaveCost(_ cost: CostDetailsViewModelType) {
+//     // Оновлюємо дані після збереження
+//     viewModel?.getCosts { [weak self] in
+//       DispatchQueue.main.async {
+//         self?.tableView.reloadData()
+//       }
+//     }
+//   }
+// }
 
 // MARK: setConstraints
 extension CostListViewController {

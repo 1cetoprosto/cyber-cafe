@@ -14,12 +14,12 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
     
     var costDate: Date { return cost.date }
     var costName: String { return cost.name }
-    var costSum: String { return cost.sum.description }
+    var costSum: Double { return cost.sum }
     
-    func saveCostModel(costDate: Date, costName: String?, costSum: String?) {
+    func saveCostModel(costDate: Date, costName: String?, costSum: Double?) {
 
         let costName = costName ?? ""
-        let costSum = costSum?.doubleOrZero
+        let costSum = costSum//?.doubleOrZero
         
         //if newModel {
             cost.date = costDate

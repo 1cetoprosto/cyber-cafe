@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 184 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 185 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -686,6 +686,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var fieldRequired: RswiftResources.StringResource1<String> { .init(key: "fieldRequired", tableName: "Global", source: source, developmentValue: "Field '%@' required", comment: nil) }
+
+      /// en translation: Please fill in all fields
+      ///
+      /// Key: fillAllFields
+      ///
+      /// Locales: en, uk
+      var fillAllFields: RswiftResources.StringResource { .init(key: "fillAllFields", tableName: "Global", source: source, developmentValue: "Please fill in all fields", comment: nil) }
 
       /// en translation: First name
       ///
@@ -1508,7 +1515,7 @@ struct _R {
     }
   }
 
-  /// This `_R.color` struct is generated, and contains static references to 9 colors.
+  /// This `_R.color` struct is generated, and contains static references to 10 colors.
   struct color {
     let bundle: Foundation.Bundle
 
@@ -1523,6 +1530,9 @@ struct _R {
 
     /// Color `NavBarText`.
     var navBarText: RswiftResources.ColorResource { .init(name: "NavBarText", path: [], bundle: bundle) }
+
+    /// Color `NavBarText1`.
+    var navBarText1: RswiftResources.ColorResource { .init(name: "NavBarText1", path: [], bundle: bundle) }
 
     /// Color `PrimaryBackground`.
     var primaryBackground: RswiftResources.ColorResource { .init(name: "PrimaryBackground", path: [], bundle: bundle) }
