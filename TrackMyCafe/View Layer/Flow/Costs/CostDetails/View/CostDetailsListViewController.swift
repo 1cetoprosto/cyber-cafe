@@ -11,29 +11,130 @@ class CostDetailsListViewController: UIViewController {
 
   // MARK: - Properties
   var viewModel: CostDetailsViewModelType?
+  private var saveButtonBottomConstraint: NSLayoutConstraint!
 
   // MARK: - UI Elements
-  private let scrollView = UIScrollView()
-  private let mainStackView = UIStackView()
 
-  // Date section
-  private let dateContainerView = UIView()
-  private let dateLabel = UILabel()
-  private let datePicker = UIDatePicker()
+  // MARK: - Scroll View & Main Container
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.translatesAutoresizingMaskIntoConstraints = false
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.keyboardDismissMode = .onDrag
+    return scrollView
+  }()
 
-  // Name section
-  private let nameContainerView = UIView()
-  private let nameLabel = UILabel()
-  private let nameTextField = UITextField()
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.spacing = UIConstants.standardPadding
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    return stackView
+  }()
 
-  // Price section
-  private let priceContainerView = UIView()
-  private let priceLabel = UILabel()
-  private let priceTextField = UITextField()
+  // MARK: - Date Section
+  private lazy var dateContainerView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor.TableView.cellBackground
+    view.layer.cornerRadius = 12
+    return view
+  }()
 
-  // Save button
-  private let saveButton = UIButton(type: .system)
-  private var saveButtonBottomConstraint: NSLayoutConstraint!
+  private lazy var dateLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = R.string.global.costDate()
+    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    label.textColor = UIColor.Main.text
+    return label
+  }()
+
+  private lazy var datePicker: UIDatePicker = {
+    let picker = UIDatePicker()
+    picker.translatesAutoresizingMaskIntoConstraints = false
+    picker.datePickerMode = .date
+    picker.preferredDatePickerStyle = .compact
+    picker.tintColor = UIColor.Main.accent
+    return picker
+  }()
+
+  // MARK: - Name Section
+  private lazy var nameContainerView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor.TableView.cellBackground
+    view.layer.cornerRadius = 12
+    return view
+  }()
+
+  private lazy var nameLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = R.string.global.costNamePlaceholder()
+    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    label.textColor = UIColor.Main.text
+    return label
+  }()
+
+  private lazy var nameTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.font = UIFont.systemFont(ofSize: 20)
+    textField.textColor = UIColor.Main.text
+    textField.backgroundColor = .clear
+    textField.borderStyle = .none
+    textField.returnKeyType = .next
+    textField.delegate = self
+    return textField
+  }()
+
+  // MARK: - Price Section
+  private lazy var priceContainerView: UIView = {
+    let view = UIView()
+    view.translatesAutoresizingMaskIntoConstraints = false
+    view.backgroundColor = UIColor.TableView.cellBackground
+    view.layer.cornerRadius = 12
+    return view
+  }()
+
+  private lazy var priceLabel: UILabel = {
+    let label = UILabel()
+    label.translatesAutoresizingMaskIntoConstraints = false
+    label.text = R.string.global.costSum()
+    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    label.textColor = UIColor.Main.text
+    return label
+  }()
+
+  private lazy var priceTextField: UITextField = {
+    let textField = UITextField()
+    textField.translatesAutoresizingMaskIntoConstraints = false
+    textField.placeholder = "0.00"
+    textField.font = UIFont.systemFont(ofSize: 20)
+    textField.textColor = UIColor.Main.text
+    textField.backgroundColor = .clear
+    textField.borderStyle = .none
+    textField.keyboardType = .decimalPad
+    textField.returnKeyType = .done
+    textField.delegate = self
+    return textField
+  }()
+
+  // MARK: - Action Button
+  private lazy var saveButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.translatesAutoresizingMaskIntoConstraints = false
+    button.setTitle(R.string.global.save(), for: .normal)
+    button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+    button.setTitleColor(UIColor.Button.title, for: .normal)
+    button.backgroundColor = UIColor.Button.background
+    button.layer.cornerRadius = UIConstants.buttonCornerRadius
+    button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+    return button
+  }()
 
   // MARK: - Lifecycle
   override func viewDidLoad() {
@@ -53,36 +154,6 @@ class CostDetailsListViewController: UIViewController {
   private func setupUI() {
     view.backgroundColor = UIColor.Main.background
 
-    // Configure scroll view
-    scrollView.translatesAutoresizingMaskIntoConstraints = false
-    scrollView.showsVerticalScrollIndicator = false
-    scrollView.keyboardDismissMode = .onDrag
-
-    // Configure main stack view
-    mainStackView.translatesAutoresizingMaskIntoConstraints = false
-    mainStackView.axis = .vertical
-    mainStackView.spacing = UIConstants.standardPadding
-    mainStackView.distribution = .fill
-    mainStackView.alignment = .fill
-
-    // Configure date container
-    setupDateContainer()
-
-    // Configure name container
-    setupNameContainer()
-
-    // Configure price container
-    setupPriceContainer()
-
-    // Configure save button
-    saveButton.translatesAutoresizingMaskIntoConstraints = false
-    saveButton.setTitle(R.string.global.save(), for: .normal)
-    saveButton.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-    saveButton.setTitleColor(UIColor.Button.title, for: .normal)
-    saveButton.backgroundColor = UIColor.Button.background
-    saveButton.layer.cornerRadius = UIConstants.buttonCornerRadius
-    saveButton.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
-
     // Add subviews
     view.addSubview(scrollView)
     view.addSubview(saveButton)
@@ -92,69 +163,16 @@ class CostDetailsListViewController: UIViewController {
     mainStackView.addArrangedSubview(dateContainerView)
     mainStackView.addArrangedSubview(nameContainerView)
     mainStackView.addArrangedSubview(priceContainerView)
-  }
 
-  private func setupDateContainer() {
-    dateContainerView.translatesAutoresizingMaskIntoConstraints = false
-    dateContainerView.backgroundColor = UIColor.TableView.cellBackground
-    dateContainerView.layer.cornerRadius = 12
-
-    dateLabel.translatesAutoresizingMaskIntoConstraints = false
-    dateLabel.text = R.string.global.costDate()
-    dateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    dateLabel.textColor = UIColor.Main.text
-
-    datePicker.translatesAutoresizingMaskIntoConstraints = false
-    datePicker.datePickerMode = .date
-    datePicker.preferredDatePickerStyle = .compact
-    datePicker.tintColor = UIColor.Main.accent
-
+    // Add date section elements
     dateContainerView.addSubview(dateLabel)
     dateContainerView.addSubview(datePicker)
-  }
 
-  private func setupNameContainer() {
-    nameContainerView.translatesAutoresizingMaskIntoConstraints = false
-    nameContainerView.backgroundColor = UIColor.TableView.cellBackground
-    nameContainerView.layer.cornerRadius = 12
-
-    nameLabel.translatesAutoresizingMaskIntoConstraints = false
-    nameLabel.text = R.string.global.costNamePlaceholder()
-    nameLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    nameLabel.textColor = UIColor.Main.text
-
-    nameTextField.translatesAutoresizingMaskIntoConstraints = false
-    nameTextField.font = UIFont.systemFont(ofSize: 20)
-    nameTextField.textColor = UIColor.Main.text
-    nameTextField.backgroundColor = .clear
-    nameTextField.borderStyle = .none
-    nameTextField.returnKeyType = .next
-    nameTextField.delegate = self
-
+    // Add name section elements
     nameContainerView.addSubview(nameLabel)
     nameContainerView.addSubview(nameTextField)
-  }
 
-  private func setupPriceContainer() {
-    priceContainerView.translatesAutoresizingMaskIntoConstraints = false
-    priceContainerView.backgroundColor = UIColor.TableView.cellBackground
-    priceContainerView.layer.cornerRadius = 12
-
-    priceLabel.translatesAutoresizingMaskIntoConstraints = false
-    priceLabel.text = R.string.global.costSum()
-    priceLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-    priceLabel.textColor = UIColor.Main.text
-
-    priceTextField.translatesAutoresizingMaskIntoConstraints = false
-    priceTextField.placeholder = "0.00"
-    priceTextField.font = UIFont.systemFont(ofSize: 20)
-    priceTextField.textColor = UIColor.Main.text
-    priceTextField.backgroundColor = .clear
-    priceTextField.borderStyle = .none
-    priceTextField.keyboardType = .decimalPad
-    priceTextField.returnKeyType = .done
-    priceTextField.delegate = self
-
+    // Add price section elements
     priceContainerView.addSubview(priceLabel)
     priceContainerView.addSubview(priceTextField)
   }
