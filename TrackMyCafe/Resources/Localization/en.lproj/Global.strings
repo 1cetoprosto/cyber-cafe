@@ -226,7 +226,7 @@
 "costDate" = "Date";
 "costName" = "Cost";
 "costNamePlaceholder" = "Enter cost name";
-"costSum" = "Sum:";
+"costSum" = "Sum";
 "costSumPlaceholder" = "Enter cost sum";
 
 // MARK: - Feedback
