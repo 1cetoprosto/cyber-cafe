@@ -449,12 +449,12 @@ struct _R {
       /// Locales: en, uk
       var costNamePlaceholder: RswiftResources.StringResource { .init(key: "costNamePlaceholder", tableName: "Global", source: source, developmentValue: "Enter cost name", comment: nil) }
 
-      /// en translation: Sum:
+      /// en translation: Sum
       ///
       /// Key: costSum
       ///
       /// Locales: en, uk
-      var costSum: RswiftResources.StringResource { .init(key: "costSum", tableName: "Global", source: source, developmentValue: "Sum:", comment: nil) }
+      var costSum: RswiftResources.StringResource { .init(key: "costSum", tableName: "Global", source: source, developmentValue: "Sum", comment: nil) }
 
       /// en translation: Enter cost sum
       ///
