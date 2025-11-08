@@ -163,6 +163,7 @@
 "lightThemeName" = "Light";
 "darkThemeName" = "Dark";
 "systemThemeName" = "Automatic";
+"lightAltThemeName" = "Light (Alt)";
 
 // MARK: - Settings
 "languages" = "Languages";
