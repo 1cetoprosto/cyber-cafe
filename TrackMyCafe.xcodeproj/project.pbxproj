@@ -10,6 +10,9 @@
 		627C10185917C36A6341E05F /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F7FA88294D4E4D33D020209 /* Pods_TrackMyCafe_Prod.framework */; };
 		6C6CBB92288E458EE39A8B3E /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BB4489D933A350896987C07 /* Pods_TrackMyCafe_Dev.framework */; };
 		E224DFDF60E83D952A72AB94 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03ABC2C9CCBAE5A1E7589872 /* Pods_TrackMyCafe_Beta.framework */; };
+		F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
+		F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
+		F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
 		F3158C482763437200136861 /* RealmProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C472763437200136861 /* RealmProductModel.swift */; };
 		F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3158C4A2763443700136861 /* RealmDatabaseService.swift */; };
@@ -84,6 +87,9 @@
 		F3410EBC2BDD66590007157B /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EBB2BDD66590007157B /* RequestManager.swift */; };
 		F3583B9F2BE8D4680079441F /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
 		F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
+		F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
+		F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
+		F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
 		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
@@ -434,6 +440,12 @@
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
 		F3D862D7277C33C100DD43DB /* RealmCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* RealmCostModel.swift */; };
+		F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
+		F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
+		F3DB41B72EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
+		F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */; };
+		F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */; };
+		F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */; };
 		F3DD2197277AEF76001570D3 /* RealmProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */; };
 		F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E16E912BF89FC20008BD6A /* SettingsManager.swift */; };
 		F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */; };
@@ -514,6 +526,7 @@
 		81A154C5942C10B9393DFA1F /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		AB41E39EBF36CC79C57540E9 /* Pods-TrackMyCafe Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		B387454C75F8298B111E8537 /* Pods-TrackMyCafe Beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.release.xcconfig"; sourceTree = "<group>"; };
+		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
 		F3158C472763437200136861 /* RealmProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductModel.swift; sourceTree = "<group>"; };
 		F3158C4A2763443700136861 /* RealmDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDatabaseService.swift; sourceTree = "<group>"; };
@@ -576,6 +589,7 @@
 		F3410EBB2BDD66590007157B /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
 		F3583B9E2BE8D4680079441F /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
+		F36217C02EBF006C00965886 /* DomainCostDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainCostDataService.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
 		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
@@ -648,6 +662,8 @@
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		F3D862D6277C33C100DD43DB /* RealmCostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCostModel.swift; sourceTree = "<group>"; };
+		F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextInputFilter.swift; sourceTree = "<group>"; };
+		F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+NumericInput.swift"; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductsPriceModel.swift; sourceTree = "<group>"; };
 		F3E16E912BF89FC20008BD6A /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDatabaseService.swift; sourceTree = "<group>"; };
@@ -831,6 +847,7 @@
 			isa = PBXGroup;
 			children = (
 				F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */,
+				F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */,
 				F385B4142C1D863D00973CAA /* BaseReusableView.swift */,
 				F385B4122C1D85FC00973CAA /* UITableView+Reusable.swift */,
 				F316A2FC27380A850083E830 /* UIStackView+Extension.swift */,
@@ -1035,6 +1052,8 @@
 		F3410EA82BDD3E150007157B /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
+				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
 			);
@@ -1628,6 +1647,7 @@
 			isa = PBXGroup;
 			children = (
 				F3E358022BF22B76005050CB /* DomainDB.swift */,
+				F36217C02EBF006C00965886 /* DomainCostDataService.swift */,
 				F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */,
 			);
 			path = Domain;
@@ -1939,9 +1959,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1956,9 +1980,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1973,9 +2001,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2170,6 +2202,7 @@
 				F3E357F52BEFF26E005050CB /* ProductOfOrderModel.swift in Sources */,
 				F3410EA22BDD3AFC0007157B /* String+Extension.swift in Sources */,
 				F385B4042C1D782500973CAA /* PersonsListViewController.swift in Sources */,
+				F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */,
 				F3B7C2522806D8DA00DF5C2B /* RealmTypeModel.swift in Sources */,
 				F39A52F927311FDD00C8F2D3 /* MainTabBarController.swift in Sources */,
@@ -2186,6 +2219,7 @@
 				F3988AEF27EB2EC500215976 /* CostListViewModel.swift in Sources */,
 				F3F6A61D2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
 				F39A52F527311FDD00C8F2D3 /* AppDelegate.swift in Sources */,
+				F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F3821C8027EAEB80006D40FC /* OrderListItemViewModel.swift in Sources */,
 				F3410E612BDD00C20007157B /* AuthManager.swift in Sources */,
 				F3821C7E27EAEB0F006D40FC /* OrderDetailsViewModel.swift in Sources */,
@@ -2220,6 +2254,7 @@
 				F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F38707D92BE5FBB900B6F313 /* UIView+Extension.swift in Sources */,
 				F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */,
+				F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
 				F3410E5E2BDD00C20007157B /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */,
@@ -2248,6 +2283,7 @@
 				F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F316A2F3273803CE0083E830 /* ProductListViewController.swift in Sources */,
 				F3410EB22BDD408B0007157B /* Settings.swift in Sources */,
+				F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
 				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
@@ -2311,6 +2347,7 @@
 				F3B339AD2C0B22FE0073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */,
 				F39D78572C2034E70003B556 /* Subscription.swift in Sources */,
+				F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B339AF2C0B22FE0073F19A /* TypeTableViewCell.swift in Sources */,
 				F3B339B02C0B22FE0073F19A /* RealmTypeModel.swift in Sources */,
 				F3B339B12C0B22FE0073F19A /* MainTabBarController.swift in Sources */,
@@ -2327,6 +2364,7 @@
 				F3B339BB2C0B22FE0073F19A /* AppDelegate.swift in Sources */,
 				F3F6A6122C2FEBFE000961C8 /* IAPReceiptAdapterAppleValidation.swift in Sources */,
 				F3B339BC2C0B22FE0073F19A /* OrderListItemViewModel.swift in Sources */,
+				F3DB41B72EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F39D78512C2034C80003B556 /* Admin.swift in Sources */,
 				F3B339BD2C0B22FE0073F19A /* AuthManager.swift in Sources */,
 				F3F6A6292C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
@@ -2361,6 +2399,7 @@
 				F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F3F6A6382C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */,
+				F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3B339D02C0B22FE0073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3F6A63C2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
 				F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */,
@@ -2389,6 +2428,7 @@
 				F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B339E62C0B22FE0073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60E2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
 				F3B339E82C0B22FE0073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
@@ -2452,6 +2492,7 @@
 				F3B33A4C2C0B23450073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B33A4D2C0B23450073F19A /* String+Extension.swift in Sources */,
 				F39D78582C2034E70003B556 /* Subscription.swift in Sources */,
+				F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
 				F3B33A4E2C0B23450073F19A /* TypeTableViewCell.swift in Sources */,
 				F3B33A4F2C0B23450073F19A /* RealmTypeModel.swift in Sources */,
 				F3B33A502C0B23450073F19A /* MainTabBarController.swift in Sources */,
@@ -2468,6 +2509,7 @@
 				F3B33A5A2C0B23450073F19A /* AppDelegate.swift in Sources */,
 				F3F6A6132C2FEBFE000961C8 /* IAPReceiptAdapterAppleValidation.swift in Sources */,
 				F3B33A5B2C0B23450073F19A /* OrderListItemViewModel.swift in Sources */,
+				F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F39D78522C2034C90003B556 /* Admin.swift in Sources */,
 				F3B33A5C2C0B23450073F19A /* AuthManager.swift in Sources */,
 				F3F6A62A2C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
@@ -2502,6 +2544,7 @@
 				F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
 				F3F6A6392C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */,
+				F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3B33A6F2C0B23450073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3F6A63D2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
 				F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */,
@@ -2530,6 +2573,7 @@
 				F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B33A852C0B23450073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60F2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,
 				F3B33A872C0B23450073F19A /* SettingsSwitchTableViewCell.swift in Sources */,

@@ -51,7 +51,7 @@ class CostListViewModel: CostListViewModelType, Loggable {
               let sectionsCosts = self.sectionsCosts else { return nil }
         let cost = sectionsCosts[selectedIndexPath.section].items[selectedIndexPath.row]
         
-        return CostDetailsViewModel(cost: cost)
+        return CostDetailsViewModel(cost: cost, dataService: DomainCostDataService())
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {
