@@ -23,7 +23,6 @@ final class InputContainerView: UIView {
 
   private lazy var containerView: UIView = {
     let view = UIView()
-    view.translatesAutoresizingMaskIntoConstraints = false
     view.backgroundColor = UIColor.TableView.cellBackground
     view.layer.cornerRadius = 12
     return view
@@ -31,7 +30,6 @@ final class InputContainerView: UIView {
 
   private lazy var titleLabel: UILabel = {
     let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
     label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
     label.textColor = UIColor.Main.text
     return label
@@ -40,7 +38,6 @@ final class InputContainerView: UIView {
   // Input Elements
   private lazy var textField: UITextField = {
     let textField = UITextField()
-    textField.translatesAutoresizingMaskIntoConstraints = false
     textField.font = UIFont.systemFont(ofSize: 20)
     textField.textColor = UIColor.Main.text
     textField.backgroundColor = .clear
@@ -51,7 +48,6 @@ final class InputContainerView: UIView {
 
   private lazy var datePicker: UIDatePicker = {
     let picker = UIDatePicker()
-    picker.translatesAutoresizingMaskIntoConstraints = false
     picker.preferredDatePickerStyle = .compact
     picker.datePickerMode = .date
     return picker
@@ -59,7 +55,6 @@ final class InputContainerView: UIView {
 
   private lazy var pickerView: UIPickerView = {
     let picker = UIPickerView()
-    picker.translatesAutoresizingMaskIntoConstraints = false
     return picker
   }()
 
@@ -73,6 +68,8 @@ final class InputContainerView: UIView {
 
   private var inputType: InputType = .text()
   private var pickerData: [String] = []
+  private var numericFilter: NumericTextInputFilter?
+  private var initialPlaceholder: String?
 
   var onChange: ((Any) -> Void)?
   var onTextChange: ((String) -> Void)?
@@ -147,11 +144,13 @@ final class InputContainerView: UIView {
   convenience init(
     labelText: String,
     inputType: InputType,
-    isEditable: Bool = true
+    isEditable: Bool = true,
+    placeholder: String? = nil
   ) {
     self.init(frame: .zero)
     self.inputType = inputType
     self.isEditable = isEditable
+    self.initialPlaceholder = placeholder
     configure(labelText: labelText)
   }
 
@@ -171,6 +170,9 @@ final class InputContainerView: UIView {
     titleLabel.text = labelText
     setupInputElement()
     setupTargets()
+    if let placeholder = initialPlaceholder, case .text = inputType {
+      setPlaceholder(placeholder)
+    }
   }
 
   private func setupInputElement() {
@@ -280,9 +282,16 @@ final class InputContainerView: UIView {
   // MARK: - Actions
 
   @objc private func textFieldDidChange() {
-    let text = textField.text ?? ""
-    onTextChange?(text)
-    onChange?(text)
+    var current = textField.text ?? ""
+    if let filter = numericFilter {
+      let sanitized = filter.sanitize(current)
+      if sanitized != current {
+        textField.text = sanitized
+        current = sanitized
+      }
+    }
+    onTextChange?(current)
+    onChange?(current)
   }
 
   @objc private func datePickerDidChange() {
@@ -314,6 +323,14 @@ final class InputContainerView: UIView {
   func setDelegate(_ delegate: UITextFieldDelegate?) {
     if case .text = inputType {
       textField.delegate = delegate
+    }
+  }
+
+  // Enable numeric-only input with locale-aware decimal separator and fraction limit
+  func enableNumericInput(maxFractionDigits: Int = 2) {
+    numericFilter = NumericTextInputFilter(maxFractionDigits: maxFractionDigits)
+    if case .text = inputType {
+      textField.keyboardType = .decimalPad
     }
   }
 
