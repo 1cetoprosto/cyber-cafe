@@ -2,6 +2,37 @@ name: Add issues and PRs to project
 
 on:
   issues:
+    types: [opened, reopened]
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+# Permissions for GITHUB_TOKEN (granular permissions)
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  projects: write
+
+jobs:
+  add-to-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add issue to project
+        if: ${{ github.event_name == 'issues' }}
+        uses: actions/add-to-project@v0.6.0
+        with:
+          project-url: ${{ secrets.PROJECT_URL }}
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+      - name: Add PR to project
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: actions/add-to-project@v0.6.0
+        with:
+          project-url: ${{ secrets.PROJECT_URL }}
+          github-token: ${{ secrets.PROJECT_TOKEN }}
+
+on:
+  issues:
     types:
       - opened
   pull_request:
