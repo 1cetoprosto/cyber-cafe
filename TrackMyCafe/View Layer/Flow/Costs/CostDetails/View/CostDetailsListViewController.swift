@@ -9,10 +9,10 @@ import RswiftResources
 import TinyConstraints
 import UIKit
 
-class CostDetailsListViewController: UIViewController {
+final class CostDetailsListViewController: UIViewController {
 
   // MARK: - Properties
-  var viewModel: CostDetailsViewModelType?
+  private let viewModel: CostDetailsViewModelType
   private var saveButtonBottomConstraint: NSLayoutConstraint!
 
   // MARK: - UI Elements
@@ -47,9 +47,10 @@ class CostDetailsListViewController: UIViewController {
   // MARK: - Name Section
   private lazy var nameInputContainer: InputContainerView = {
     let container = InputContainerView(
-        labelText: R.string.global.costNamePlaceholder(),
+      labelText: R.string.global.costName(),
       inputType: .text(keyboardType: .default),
-      isEditable: true
+      isEditable: true,
+      placeholder: R.string.global.costNamePlaceholder()
     )
     return container
   }()
@@ -57,9 +58,10 @@ class CostDetailsListViewController: UIViewController {
   // Price input container
   private lazy var priceInputContainer: InputContainerView = {
     let container = InputContainerView(
-        labelText: R.string.global.costSum(),
+      labelText: R.string.global.costSum(),
       inputType: .text(keyboardType: .decimalPad),
-      isEditable: true
+      isEditable: true,
+      placeholder: R.string.global.costSumPlaceholder()
     )
     return container
   }()
@@ -68,9 +70,19 @@ class CostDetailsListViewController: UIViewController {
   private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
-    button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
     return button
   }()
+
+  // MARK: - Init
+  init(viewModel: CostDetailsViewModelType) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   // MARK: - Lifecycle
   override func viewDidLoad() {
@@ -100,6 +112,7 @@ class CostDetailsListViewController: UIViewController {
     nameInputContainer.setReturnKeyType(.next)
 
     priceInputContainer.setDelegate(self)
+    priceInputContainer.enableNumericInput(maxFractionDigits: 2)
     priceInputContainer.setReturnKeyType(.done)
 
     // Add containers to stack view
@@ -146,38 +159,30 @@ class CostDetailsListViewController: UIViewController {
     // Save Button constraints
     saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
     saveButton.height(UIConstants.buttonHeight)
-
-    // Save button bottom constraint for keyboard handling
-    saveButtonBottomConstraint = saveButton.bottomToSuperview(
-      offset: -UIConstants.standardPadding, usingSafeArea: true)
+    // Save button bottom constraint using standard keyboardLayoutGuide (iOS 15+)
+    saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
+      equalTo: view.keyboardLayoutGuide.topAnchor,
+      constant: -UIConstants.standardPadding
+    )
+    saveButtonBottomConstraint.isActive = true
   }
 
   private func setupData() {
-    if let viewModel = viewModel {
-      dateInputContainer.date = viewModel.costDate
-      nameInputContainer.text = viewModel.costName
-      priceInputContainer.text = viewModel.costSum.formatted(.currency(code: "USD"))
+    dateInputContainer.date = viewModel.costDate
+    nameInputContainer.text = viewModel.costName
+    if viewModel.costSum > 0 {
+      priceInputContainer.text = viewModel.costSum.decimalFormat
+    } else {
+      priceInputContainer.text = nil
     }
   }
 
   private func setupKeyboardHandling() {
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(keyboardWillShow),
-      name: UIResponder.keyboardWillShowNotification,
-      object: nil
-    )
-
-    NotificationCenter.default.addObserver(
-      self,
-      selector: #selector(keyboardWillHide),
-      name: UIResponder.keyboardWillHideNotification,
-      object: nil
-    )
-
+    // Standard handling: rely on keyboardLayoutGuide for layout and provide Done accessory.
     addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
 
     let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
     view.addGestureRecognizer(tapGesture)
   }
 
@@ -198,62 +203,45 @@ class CostDetailsListViewController: UIViewController {
   }
 
   // MARK: - Actions
-  @objc private func saveAction(param: UIButton) {
-    guard let viewModel = viewModel else { return }
+  @objc private func saveAction() {
+    let name = nameInputContainer.text
+    let sumText = priceInputContainer.text
 
-    guard let name = nameInputContainer.text, !name.isEmpty else {
+    guard viewModel.validate(name: name, sumText: sumText) else {
       showValidationError()
       return
     }
 
-    guard let priceText = priceInputContainer.text, !priceText.isEmpty,
-      let price = Double(priceText)
-    else {
-      showValidationError()
-      return
-    }
+    let sum = viewModel.parsedSum(from: sumText) ?? 0.0
 
-    viewModel.saveCostModel(
-      costDate: dateInputContainer.date ?? Date(), costName: name, costSum: price)
-    navigationController?.popViewController(animated: true)
+    saveButton.isEnabled = false
+    Task { [weak self] in
+      guard let self = self else { return }
+      do {
+        try await self.viewModel.saveCostModel(
+          costDate: self.dateInputContainer.date ?? Date(),
+          costName: name,
+          costSum: sum
+        )
+        await MainActor.run {
+          self.navigationController?.popViewController(animated: true)
+        }
+      } catch {
+        await MainActor.run {
+          self.showErrorAlert(error)
+        }
+      }
+      await MainActor.run {
+        self.saveButton.isEnabled = true
+      }
+    }
   }
 
   @objc private func dismissKeyboard() {
     view.endEditing(true)
   }
 
-  @objc private func keyboardWillShow(notification: NSNotification) {
-    guard
-      let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey]
-        as? CGRect,
-      let animationDuration = notification.userInfo?[
-        UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-    else {
-      return
-    }
-
-    let keyboardHeight = keyboardFrame.height
-    saveButtonBottomConstraint.constant = -keyboardHeight - UIConstants.smallSpacing
-
-    UIView.animate(withDuration: animationDuration) {
-      self.view.layoutIfNeeded()
-    }
-  }
-
-  @objc private func keyboardWillHide(notification: NSNotification) {
-    guard
-      let animationDuration = notification.userInfo?[
-        UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-    else {
-      return
-    }
-
-    saveButtonBottomConstraint.constant = -UIConstants.standardPadding
-
-    UIView.animate(withDuration: animationDuration) {
-      self.view.layoutIfNeeded()
-    }
-  }
+  // Manual keyboard show/hide handling removed in favor of UIKeyboardLayoutGuide.
 
   private func showValidationError() {
     let alert = UIAlertController(
@@ -266,9 +254,17 @@ class CostDetailsListViewController: UIViewController {
     present(alert, animated: true)
   }
 
-  deinit {
-    NotificationCenter.default.removeObserver(self)
+  private func showErrorAlert(_ error: Error) {
+    let alert = UIAlertController(
+      title: R.string.global.error(),
+      message: error.localizedDescription,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+    present(alert, animated: true)
   }
+
+  deinit {}
 }
 
 // MARK: - UITextFieldDelegate
@@ -282,4 +278,16 @@ extension CostDetailsListViewController: UITextFieldDelegate {
     }
     return true
   }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    // If price field starts with default zero value, clear it for convenient input
+    if textField == priceInputContainer.textFieldReference {
+      let current = textField.text?.trimmed ?? ""
+      if current == "0" || current == "0,0" || current == "0.0" {
+        textField.text = ""
+      }
+    }
+  }
+
+  // Numeric filtering moved into InputContainerView via enableNumericInput.
 }
