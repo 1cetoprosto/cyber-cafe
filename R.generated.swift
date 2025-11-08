@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 185 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 186 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -784,6 +784,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var lastName: RswiftResources.StringResource { .init(key: "lastName", tableName: "Global", source: source, developmentValue: "Last name", comment: nil) }
+
+      /// en translation: Light (Alt)
+      ///
+      /// Key: lightAltThemeName
+      ///
+      /// Locales: en, uk
+      var lightAltThemeName: RswiftResources.StringResource { .init(key: "lightAltThemeName", tableName: "Global", source: source, developmentValue: "Light (Alt)", comment: nil) }
 
       /// en translation: Light
       ///
@@ -1515,7 +1522,7 @@ struct _R {
     }
   }
 
-  /// This `_R.color` struct is generated, and contains static references to 10 colors.
+  /// This `_R.color` struct is generated, and contains static references to 18 colors.
   struct color {
     let bundle: Foundation.Bundle
 
@@ -1525,8 +1532,14 @@ struct _R {
     /// Color `CellBackground`.
     var cellBackground: RswiftResources.ColorResource { .init(name: "CellBackground", path: [], bundle: bundle) }
 
+    /// Color `CellBackgroundAlt`.
+    var cellBackgroundAlt: RswiftResources.ColorResource { .init(name: "CellBackgroundAlt", path: [], bundle: bundle) }
+
     /// Color `NavBarBackground`.
     var navBarBackground: RswiftResources.ColorResource { .init(name: "NavBarBackground", path: [], bundle: bundle) }
+
+    /// Color `NavBarBackgroundAlt`.
+    var navBarBackgroundAlt: RswiftResources.ColorResource { .init(name: "NavBarBackgroundAlt", path: [], bundle: bundle) }
 
     /// Color `NavBarText`.
     var navBarText: RswiftResources.ColorResource { .init(name: "NavBarText", path: [], bundle: bundle) }
@@ -1534,20 +1547,38 @@ struct _R {
     /// Color `NavBarText1`.
     var navBarText1: RswiftResources.ColorResource { .init(name: "NavBarText1", path: [], bundle: bundle) }
 
+    /// Color `NavBarTextAlt`.
+    var navBarTextAlt: RswiftResources.ColorResource { .init(name: "NavBarTextAlt", path: [], bundle: bundle) }
+
     /// Color `PrimaryBackground`.
     var primaryBackground: RswiftResources.ColorResource { .init(name: "PrimaryBackground", path: [], bundle: bundle) }
+
+    /// Color `PrimaryBackgroundAlt`.
+    var primaryBackgroundAlt: RswiftResources.ColorResource { .init(name: "PrimaryBackgroundAlt", path: [], bundle: bundle) }
 
     /// Color `PrimaryText`.
     var primaryText: RswiftResources.ColorResource { .init(name: "PrimaryText", path: [], bundle: bundle) }
 
+    /// Color `PrimaryTextAlt`.
+    var primaryTextAlt: RswiftResources.ColorResource { .init(name: "PrimaryTextAlt", path: [], bundle: bundle) }
+
     /// Color `SecondaryBackground`.
     var secondaryBackground: RswiftResources.ColorResource { .init(name: "SecondaryBackground", path: [], bundle: bundle) }
+
+    /// Color `SecondaryBackgroundAlt`.
+    var secondaryBackgroundAlt: RswiftResources.ColorResource { .init(name: "SecondaryBackgroundAlt", path: [], bundle: bundle) }
 
     /// Color `SecondaryText`.
     var secondaryText: RswiftResources.ColorResource { .init(name: "SecondaryText", path: [], bundle: bundle) }
 
+    /// Color `SecondaryTextAlt`.
+    var secondaryTextAlt: RswiftResources.ColorResource { .init(name: "SecondaryTextAlt", path: [], bundle: bundle) }
+
     /// Color `TabBarTint`.
     var tabBarTint: RswiftResources.ColorResource { .init(name: "TabBarTint", path: [], bundle: bundle) }
+
+    /// Color `TabBarTintAlt`.
+    var tabBarTintAlt: RswiftResources.ColorResource { .init(name: "TabBarTintAlt", path: [], bundle: bundle) }
   }
 
   /// This `_R.image` struct is generated, and contains static references to 19 images.
