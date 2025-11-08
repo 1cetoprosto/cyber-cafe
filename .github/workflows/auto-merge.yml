@@ -1,0 +1,52 @@
+// Вмикає native auto-merge (squash) для PR з feature/* через GraphQL.
+// Тригер: pull_request_target (безпечний для прав на базовій гілці).
+name: Enable auto-merge (squash) for PRs
+
+on:
+  pull_request_target:
+    types: [opened, edited, synchronize, ready_for_review, reopened]
+
+jobs:
+  enable-auto-merge:
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feature/') }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+    steps:
+      - name: Debug PR refs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.info(`head.ref=${context.payload.pull_request.head.ref}`);
+            core.info(`base.ref=${context.payload.pull_request.base.ref}`);
+            core.summary.addHeading('Auto-merge debug').addRaw(`head=${context.payload.pull_request.head.ref}, base=${context.payload.pull_request.base.ref}`);
+      - name: Enable auto-merge via GraphQL (squash)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const { data: pr } = await github.rest.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            });
+
+            const nodeId = pr.node_id;
+            const mutation = `mutation($pullRequestId: ID!, $method: PullRequestMergeMethod!) {
+              enablePullRequestAutoMerge(input: { pullRequestId: $pullRequestId, mergeMethod: $method }) {
+                pullRequest { number, autoMergeRequest { enabledAt } }
+              }
+            }`;
+
+            try {
+              await github.graphql(mutation, {
+                pullRequestId: nodeId,
+                method: 'SQUASH'
+              });
+              core.info(`Auto-merge enabled for PR #${prNumber}`);
+              core.summary.addHeading('Auto-merge enabled').addRaw(`PR #${prNumber} will squash-merge when required checks pass.`);
+            } catch (e) {
+              core.warning(`Failed to enable auto-merge for PR #${prNumber}: ${e.message}`);
+              core.summary.addHeading('Auto-merge not enabled').addRaw(`PR #${prNumber}: ${e.message}`);
+            }
