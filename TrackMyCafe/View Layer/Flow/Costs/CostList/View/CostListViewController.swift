@@ -55,9 +55,11 @@ class CostListViewController: UIViewController {
 
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
-    let costVC = CostDetailsListViewController()
-    // costVC.viewModel = CostDetailsViewModel(cost: CostModel(id: "", date: Date(), name: "", sum: 0))
-    // costVC.delegate = self
+    let vm = CostDetailsViewModel(
+      cost: CostModel(id: "", date: Date(), name: "", sum: 0.0),
+      dataService: DomainCostDataService()
+    )
+    let costVC = CostDetailsListViewController(viewModel: vm)
     navigationController?.pushViewController(costVC, animated: true)
   }
 
@@ -104,9 +106,8 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     viewModel.selectRow(atIndexPath: indexPath)
     let detailViewModel = viewModel.viewModelForSelectedRow()
 
-    let costVC = CostDetailsListViewController()
-    costVC.viewModel = detailViewModel
-
+    guard let vm = detailViewModel else { return }
+    let costVC = CostDetailsListViewController(viewModel: vm)
     self.navigationController?.pushViewController(costVC, animated: true)
   }
 
