@@ -47,6 +47,7 @@
 
 // MARK: - Validation
 "fieldRequired" = "Field '%@' required";
+"fillAllFields" = "Please fill in all fields";
 "enterCorrect" = "Enter the correct %@";
 "emailInvalid" = "Email is not valid";
 "passwordValidateDesc" = "Password must contain at least 6 characters";
@@ -225,7 +226,7 @@
 "costDate" = "Date";
 "costName" = "Cost";
 "costNamePlaceholder" = "Enter cost name";
-"costSum" = "Sum:";
+"costSum" = "Sum";
 "costSumPlaceholder" = "Enter cost sum";
 
 // MARK: - Feedback

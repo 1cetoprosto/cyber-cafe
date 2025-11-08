@@ -12,10 +12,11 @@ extension UIColor {
     struct Main {
         static var text: UIColor { Theme.current.primaryText }
         static var background: UIColor { Theme.current.primaryBackground }
+        static var accent: UIColor { Theme.current.secondaryText }
     }
 
     struct Button {
-        static var title: UIColor { Theme.current.secondaryText }
+        static var title: UIColor { Theme.current.primaryBackground }
         static var background: UIColor { Theme.current.secondaryBackground }
     }
 

@@ -1,156 +1,293 @@
 //
 //  CostDetailsListViewController.swift
-//  Cyber-coffe
+//  TrackMyCafe
 //
-//  Created by Леонід Квіт on 04.12.2021.
+//  Created by Leonid Kvit on 07.11.2022.
 //
 
+import RswiftResources
+import TinyConstraints
 import UIKit
 
-class CostDetailsListViewController: UIViewController {
+final class CostDetailsListViewController: UIViewController {
 
-  var viewModel: CostDetailsViewModelType?
+  // MARK: - Properties
+  private let viewModel: CostDetailsViewModelType
+  private var saveButtonBottomConstraint: NSLayoutConstraint!
 
-  let costDateLabel: UILabel = {
-    let label = UILabel(
-      text: R.string.global.costDate(), font: UIFont.systemFont(ofSize: 20), aligment: .left)
+  // MARK: - UI Elements
 
-    return label
+  // MARK: - Scroll View & Main Container
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.keyboardDismissMode = .onDrag
+    return scrollView
   }()
 
-  let costdatePiker: UIDatePicker = {
-    let datePiker = UIDatePicker(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
-    datePiker.datePickerMode = .date
-    datePiker.contentHorizontalAlignment = .left
-    datePiker.preferredDatePickerStyle = .automatic
-
-    return datePiker
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = UIConstants.standardPadding
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    return stackView
   }()
 
-  let costNameLabel: UILabel = {
-    let label = UILabel(
-      text: R.string.global.costName(), font: UIFont.systemFont(ofSize: 20), aligment: .left)
-
-    return label
+  // MARK: - Date Section
+  private lazy var dateInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.costDate(),
+      inputType: .date(mode: .date),
+      isEditable: true
+    )
+    return container
   }()
 
-  let costNameTextfield: UITextField = {
-    let textField = UITextField(
-      placeholder: R.string.global.costNamePlaceholder(), font: UIFont.systemFont(ofSize: 28))
-
-    return textField
+  // MARK: - Name Section
+  private lazy var nameInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.costName(),
+      inputType: .text(keyboardType: .default),
+      isEditable: true,
+      placeholder: R.string.global.costNamePlaceholder()
+    )
+    return container
   }()
 
-  let costSumLabel: UILabel = {
-    let label = UILabel(
-      text: R.string.global.costSum(), font: UIFont.systemFont(ofSize: 20), aligment: .left)
-
-    return label
+  // Price input container
+  private lazy var priceInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.costSum(),
+      inputType: .text(keyboardType: .decimalPad),
+      isEditable: true,
+      placeholder: R.string.global.costSumPlaceholder()
+    )
+    return container
   }()
 
-  let costSumTextfield: UITextField = {
-    let textField = UITextField(
-      placeholder: R.string.global.costSumPlaceholder(), font: UIFont.systemFont(ofSize: 28))
-
-    return textField
-  }()
-
-  lazy var saveButton: UIButton = {
+  // MARK: - Action Button
+  private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
-    button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+    button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
     return button
   }()
 
-  lazy var cancelButton: UIButton = {
-    let button = DefaultButton()
-    button.setTitle(R.string.global.cancel(), for: .normal)
-    button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
-    return button
-  }()
+  // MARK: - Init
+  init(viewModel: CostDetailsViewModelType) {
+    self.viewModel = viewModel
+    super.init(nibName: nil, bundle: nil)
+  }
 
-  //    override func viewWillAppear(_ animated: Bool) {
-  //        super.viewWillAppear(animated)
-  //
-  //        setData()
-  //    }
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
+  // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
+    setupConstraints()
+    setupData()
+    setupKeyboardHandling()
+  }
 
-    title = R.string.global.cost()
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setupNavigationBar()
+  }
+
+  // MARK: - Setup Methods
+  private func setupUI() {
     view.backgroundColor = UIColor.Main.background
-    navigationController?.view.backgroundColor = UIColor.NavBar.background
 
-    setData()
+    // Add subviews
+    view.addSubview(scrollView)
+    view.addSubview(saveButton)
+    scrollView.addSubview(mainStackView)
 
-    setConstraints()
+    // Configure input containers
+    nameInputContainer.setDelegate(self)
+    nameInputContainer.setReturnKeyType(.next)
 
+    priceInputContainer.setDelegate(self)
+    priceInputContainer.enableNumericInput(maxFractionDigits: 2)
+    priceInputContainer.setReturnKeyType(.done)
+
+    // Add containers to stack view
+    mainStackView.addArrangedSubview(dateInputContainer)
+    mainStackView.addArrangedSubview(nameInputContainer)
+    mainStackView.addArrangedSubview(priceInputContainer)
   }
 
-  // MARK: - Method
-  fileprivate func setData() {
-    if viewModel == nil {
-      viewModel = CostDetailsViewModel(cost: CostModel(id: "", date: Date(), name: "", sum: 0))
-    }
+  private func setupNavigationBar() {
+    title = R.string.global.cost()
+    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationItem.largeTitleDisplayMode = .always
 
-    guard let viewModel = viewModel else { return }
-    if viewModel.costName != "" {
-      costNameTextfield.text = viewModel.costName
-    }
-    if viewModel.costSum != "" {
-      costSumTextfield.text = viewModel.costSum
-    }
-
-    costdatePiker.date = viewModel.costDate
+    navigationController?.navigationBar.largeTitleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
+    navigationController?.navigationBar.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
   }
 
-  @objc func saveAction(param: UIButton) {
-    viewModel?.saveCostModel(
-      costDate: costdatePiker.date, costName: costNameTextfield.text, costSum: costSumTextfield.text
+  private func setupConstraints() {
+    // ScrollView constraints
+    scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+    scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
+
+    // Main StackView constraints
+    mainStackView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.largeSpacing,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.largeSpacing,
+        right: UIConstants.standardPadding
+      ))
+    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
+
+    // Container heights
+    let containerHeight =
+      UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+    dateInputContainer.height(containerHeight)
+    nameInputContainer.height(containerHeight)
+    priceInputContainer.height(containerHeight)
+
+    // Save Button constraints
+    saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    saveButton.height(UIConstants.buttonHeight)
+    // Save button bottom constraint using standard keyboardLayoutGuide (iOS 15+)
+    saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
+      equalTo: view.keyboardLayoutGuide.topAnchor,
+      constant: -UIConstants.standardPadding
     )
-    navigationController?.popToRootViewController(animated: true)
+    saveButtonBottomConstraint.isActive = true
   }
 
-  @objc func cancelAction(param: UIButton) {
-    navigationController?.popToRootViewController(animated: true)
+  private func setupData() {
+    dateInputContainer.date = viewModel.costDate
+    nameInputContainer.text = viewModel.costName
+    if viewModel.costSum > 0 {
+      priceInputContainer.text = viewModel.costSum.decimalFormat
+    } else {
+      priceInputContainer.text = nil
+    }
   }
+
+  private func setupKeyboardHandling() {
+    // Standard handling: rely on keyboardLayoutGuide for layout and provide Done accessory.
+    addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
+
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
+  }
+
+  private func addDoneButtonToTextField(_ textField: UITextField) {
+    let toolbar = UIToolbar()
+    toolbar.sizeToFit()
+
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let doneButton = UIBarButtonItem(
+      title: R.string.global.actionOk(),
+      style: .done,
+      target: self,
+      action: #selector(dismissKeyboard)
+    )
+
+    toolbar.items = [flexSpace, doneButton]
+    textField.inputAccessoryView = toolbar
+  }
+
+  // MARK: - Actions
+  @objc private func saveAction() {
+    let name = nameInputContainer.text
+    let sumText = priceInputContainer.text
+
+    guard viewModel.validate(name: name, sumText: sumText) else {
+      showValidationError()
+      return
+    }
+
+    let sum = viewModel.parsedSum(from: sumText) ?? 0.0
+
+    saveButton.isEnabled = false
+    Task { [weak self] in
+      guard let self = self else { return }
+      do {
+        try await self.viewModel.saveCostModel(
+          costDate: self.dateInputContainer.date ?? Date(),
+          costName: name,
+          costSum: sum
+        )
+        await MainActor.run {
+          self.navigationController?.popViewController(animated: true)
+        }
+      } catch {
+        await MainActor.run {
+          self.showErrorAlert(error)
+        }
+      }
+      await MainActor.run {
+        self.saveButton.isEnabled = true
+      }
+    }
+  }
+
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
+  }
+
+  // Manual keyboard show/hide handling removed in favor of UIKeyboardLayoutGuide.
+
+  private func showValidationError() {
+    let alert = UIAlertController(
+      title: R.string.global.error(),
+      message: R.string.global.fillAllFields(),
+      preferredStyle: .alert
+    )
+
+    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+    present(alert, animated: true)
+  }
+
+  private func showErrorAlert(_ error: Error) {
+    let alert = UIAlertController(
+      title: R.string.global.error(),
+      message: error.localizedDescription,
+      preferredStyle: .alert
+    )
+    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+    present(alert, animated: true)
+  }
+
+  deinit {}
 }
 
-// MARK: - Constraints
-extension CostDetailsListViewController {
-  func setConstraints() {
-    let buttonStackView = UIStackView(
-      arrangedSubviews: [saveButton, cancelButton],
-      axis: .horizontal,
-      spacing: 20,
-      distribution: .fillEqually)
-
-    let dateStackView = UIStackView(
-      arrangedSubviews: [costDateLabel, costdatePiker],
-      axis: .horizontal,
-      spacing: 20,
-      distribution: .fill)
-
-    let costStackView = UIStackView(
-      arrangedSubviews: [
-        dateStackView,
-        costNameLabel,
-        costNameTextfield,
-        costSumLabel,
-        costSumTextfield,
-        buttonStackView,
-      ],
-      axis: .vertical,
-      spacing: 10,
-      distribution: .fillEqually)
-    view.addSubview(costStackView)
-
-    NSLayoutConstraint.activate([
-      costStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-      costStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      costStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-      costStackView.heightAnchor.constraint(equalToConstant: 270),
-    ])
+// MARK: - UITextFieldDelegate
+extension CostDetailsListViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    // Check which container's text field is active and navigate accordingly
+    if textField == nameInputContainer.textFieldReference {
+      priceInputContainer.becomeFirstResponder()
+    } else {
+      textField.resignFirstResponder()
+    }
+    return true
   }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    // If price field starts with default zero value, clear it for convenient input
+    if textField == priceInputContainer.textFieldReference {
+      let current = textField.text?.trimmed ?? ""
+      if current == "0" || current == "0,0" || current == "0.0" {
+        textField.text = ""
+      }
+    }
+  }
+
+  // Numeric filtering moved into InputContainerView via enableNumericInput.
 }

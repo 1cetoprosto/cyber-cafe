@@ -47,6 +47,7 @@
 
 // MARK: - Validation
 "fieldRequired" = "Поле '%@' обов'язкове";
+"fillAllFields" = "Будь ласка, заповніть всі поля";
 "enterCorrect" = "Введіть коректний %@";
 "emailInvalid" = "Електронна адреса недійсна";
 "passwordValidateDesc" = "Пароль має містити принаймні 6 символів";
