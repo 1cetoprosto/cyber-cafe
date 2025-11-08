@@ -1,5 +1,3 @@
-// Вмикає native auto-merge (squash) для PR з feature/* через GraphQL.
-// Тригер: pull_request_target (безпечний для прав на базовій гілці).
 name: Enable auto-merge (squash) for PRs
 
 on:
