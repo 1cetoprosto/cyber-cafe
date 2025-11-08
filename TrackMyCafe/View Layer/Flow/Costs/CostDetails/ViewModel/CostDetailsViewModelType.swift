@@ -12,9 +12,7 @@ protocol CostDetailsViewModelType {
   var costName: String { get }
   var costSum: Double { get }
 
-  //var newModel: Bool { get set }
-
-  func saveCostModel(costDate: Date, costName: String?, costSum: Double?)
-  // TODO: Boxing
-  //var age: Box<String?> { get }
+  func validate(name: String?, sumText: String?) -> Bool
+  func parsedSum(from text: String?) -> Double?
+  func saveCostModel(costDate: Date, costName: String?, costSum: Double?) async throws
 }
