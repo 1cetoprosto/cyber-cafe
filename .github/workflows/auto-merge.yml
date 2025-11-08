@@ -6,12 +6,19 @@ on:
 
 jobs:
   enable-auto-merge:
-    if: ${{ startsWith(github.head_ref, 'feature/') }}
+    if: ${{ startsWith(github.event.pull_request.head.ref, 'feature/') }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
       contents: write
     steps:
+      - name: Debug PR refs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            core.info(`head.ref=${context.payload.pull_request.head.ref}`);
+            core.info(`base.ref=${context.payload.pull_request.base.ref}`);
+            core.summary.addHeading('Auto-merge debug').addRaw(`head=${context.payload.pull_request.head.ref}, base=${context.payload.pull_request.base.ref}`);
       - name: Enable auto-merge via GraphQL (squash)
         uses: actions/github-script@v7
         with:
