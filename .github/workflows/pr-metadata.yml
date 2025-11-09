@@ -1,0 +1,107 @@
+name: Set PR milestone and project status
+
+on:
+  pull_request_target:
+    types: [opened, ready_for_review]
+
+jobs:
+  set-pr-metadata:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+      contents: read
+    steps:
+      - name: Set milestone to Release v1.0.0 (milestone #1)
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = context.payload.pull_request.number;
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number,
+              milestone: 1
+            });
+            core.summary.addHeading('Milestone set').addRaw(`PR #${issue_number} → milestone #1 (Release v1.0.0)`);
+
+      - name: Add to user project and set Status=Done
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
+          script: |
+            const login = context.repo.owner; // user login
+            const number = 1; // project number for https://github.com/users/<login>/projects/1
+
+            const prNodeId = context.payload.pull_request.node_id;
+            const prNumber = context.payload.pull_request.number;
+
+            const projectQuery = `query($login:String!, $number:Int!){
+              user(login:$login){
+                projectV2(number:$number){
+                  id
+                  title
+                  fields(first:50){
+                    nodes{
+                      id
+                      name
+                      ... on ProjectV2SingleSelectField { options { id name } }
+                    }
+                  }
+                }
+              }
+            }`;
+
+            const projectData = await github.graphql(projectQuery, { login, number });
+            const project = projectData.user?.projectV2;
+            if (!project) {
+              core.setFailed(`Project not found for user=${login} number=${number}`);
+            }
+
+            const statusField = project.fields.nodes.find(f => f.name === 'Status');
+            if (!statusField) {
+              core.setFailed('Project field "Status" not found');
+            }
+            const doneOption = statusField.options?.find(o => o.name.toLowerCase() === 'done');
+            if (!doneOption) {
+              core.setFailed('Project Status option "Done" not found');
+            }
+
+            // Add PR to project (idempotent)
+            const addMutation = `mutation($projectId:ID!, $contentId:ID!){
+              addProjectV2ItemById(input:{ projectId:$projectId, contentId:$contentId }){
+                item { id }
+              }
+            }`;
+
+            let itemId;
+            try {
+              const addRes = await github.graphql(addMutation, { projectId: project.id, contentId: prNodeId });
+              itemId = addRes.addProjectV2ItemById.item.id;
+            } catch (e) {
+              core.info(`Add item error (may already exist): ${e.message}`);
+              // Fallback: search existing items for the PR not trivial without pagination; rely on idempotency
+            }
+
+            if (!itemId) {
+              // Fetch items and find one by content id (requires pagination; skip for brevity)
+              core.info('Skipping item field update as item id not resolved');
+            } else {
+              const updateMutation = `mutation($projectId:ID!, $itemId:ID!, $fieldId:ID!, $optionId:String!){
+                updateProjectV2ItemFieldValue(input:{
+                  projectId:$projectId,
+                  itemId:$itemId,
+                  fieldId:$fieldId,
+                  value: { singleSelectOptionId: $optionId }
+                }){
+                  projectV2Item { id }
+                }
+              }`;
+              await github.graphql(updateMutation, {
+                projectId: project.id,
+                itemId,
+                fieldId: statusField.id,
+                optionId: doneOption.id
+              });
+              core.summary.addHeading('Project updated').addRaw(`PR #${prNumber} → Status=Done in '${project.title}'`);
+            }

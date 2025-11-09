@@ -1,0 +1,32 @@
+{
+  "labels": [
+    { "name": "type: bug", "color": "d73a4a", "description": "Виправлення помилок" },
+    { "name": "type: feature", "color": "0e8a16", "description": "Нова функціональність" },
+    { "name": "type: enhancement", "color": "a2eeef", "description": "Поліпшення існуючих речей" },
+    { "name": "type: refactor", "color": "cfd3d7", "description": "Рефакторинг без зміни поведінки" },
+    { "name": "type: docs", "color": "0075ca", "description": "Документація/README/коментарі" },
+    { "name": "type: test", "color": "fbca04", "description": "Тести, фікстури" },
+    { "name": "type: security", "color": "b60205", "description": "Безпека" },
+
+    { "name": "state: wip", "color": "6f42c1", "description": "Draft / в процесі" },
+    { "name": "state: needs review", "color": "5319e7", "description": "Готово до самоперевірки/перегляду" },
+    { "name": "state: changes requested", "color": "f9d0c4", "description": "Потрібні правки" },
+    { "name": "state: ready to merge", "color": "0b6623", "description": "Готово до злиття" },
+    { "name": "state: blocked", "color": "b31d28", "description": "Заблоковано зовнішнім фактором" },
+    { "name": "state: on hold", "color": "e4e669", "description": "Поставлено на паузу" },
+
+    { "name": "priority: high", "color": "e11d21", "description": "Високий пріоритет/терміново" },
+    { "name": "priority: medium", "color": "fbca04", "description": "Середній пріоритет" },
+    { "name": "priority: low", "color": "c2e0c6", "description": "Низький пріоритет" },
+
+    { "name": "area: UI", "color": "0052cc", "description": "Інтерфейс, SwiftUI/UIKit" },
+    { "name": "area: Networking", "color": "5319e7", "description": "API-клієнт, мережа" },
+    { "name": "area: Persistence", "color": "1d76db", "description": "Core Data/SQLite/Files/Keychain" },
+    { "name": "area: Auth", "color": "b60205", "description": "Авторизація/Аутентифікація" },
+    { "name": "area: Finance", "color": "0e8a16", "description": "Логіка доходів/видатків/звітів" },
+    { "name": "area: Build/CI", "color": "d4c5f9", "description": "Збірка, конфіг, CI" },
+
+    { "name": "breaking change", "color": "ff8c00", "description": "Несумісна зміна" },
+    { "name": "backport", "color": "5319e7", "description": "Повернення фіксу у стабільну гілку" }
+  ]
+}
