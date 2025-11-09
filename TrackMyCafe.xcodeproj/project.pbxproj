@@ -90,6 +90,15 @@
 		F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
 		F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
 		F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C02EBF006C00965886 /* DomainCostDataService.swift */; };
+		F36217C62EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */; };
+		F36217C72EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */; };
+		F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */; };
+		F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */; };
+		F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */; };
+		F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */; };
+		F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
+		F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
+		F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
 		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
@@ -590,6 +599,9 @@
 		F3583B9E2BE8D4680079441F /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		F36217C02EBF006C00965886 /* DomainCostDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainCostDataService.swift; sourceTree = "<group>"; };
+		F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
+		F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModelType.swift; sourceTree = "<group>"; };
+		F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductPriceDataService.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
 		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
@@ -1292,6 +1304,8 @@
 		F3821C7527E9FFE0006D40FC /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */,
+				F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1646,6 +1660,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */,
 				F3E358022BF22B76005050CB /* DomainDB.swift */,
 				F36217C02EBF006C00965886 /* DomainCostDataService.swift */,
 				F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */,
@@ -2297,6 +2312,7 @@
 				F3410EB02BDD40410007157B /* Date+Extension.swift in Sources */,
 				F3988ADE27EB11EB00215976 /* CostListItemViewModelType.swift in Sources */,
 				F39A53352732525900C8F2D3 /* OrderListViewController.swift in Sources */,
+				F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
 				F328BA89274EB4DA00960829 /* SettingsStaticTableViewCell.swift in Sources */,
 				F3410E5F2BDD00C20007157B /* RememberMeButton.swift in Sources */,
 				F316A2FF2738FD710083E830 /* OrderDetailsViewController.swift in Sources */,
@@ -2317,6 +2333,8 @@
 				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F36217C62EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
+				F36217C72EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3E357F92BEFF7F4005050CB /* CostModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
@@ -2442,6 +2460,7 @@
 				F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F39D78532C2034DD0003B556 /* Technician.swift in Sources */,
 				F3B339EF2C0B22FE0073F19A /* RememberMeButton.swift in Sources */,
+				F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
 				F3B339F02C0B22FE0073F19A /* OrderDetailsViewController.swift in Sources */,
 				F3B339F12C0B22FE0073F19A /* CostDetailsViewModelType.swift in Sources */,
 				F3B339F22C0B22FE0073F19A /* RealmOrderModel.swift in Sources */,
@@ -2462,6 +2481,8 @@
 				F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
+				F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
 				F3B339FF2C0B22FE0073F19A /* CostModel.swift in Sources */,
 				F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */,
@@ -2587,6 +2608,7 @@
 				F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F39D78542C2034DE0003B556 /* Technician.swift in Sources */,
 				F3B33A8E2C0B23450073F19A /* RememberMeButton.swift in Sources */,
+				F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
 				F3B33A8F2C0B23450073F19A /* OrderDetailsViewController.swift in Sources */,
 				F3B33A902C0B23450073F19A /* CostDetailsViewModelType.swift in Sources */,
 				F3B33A912C0B23450073F19A /* RealmOrderModel.swift in Sources */,
@@ -2607,6 +2629,8 @@
 				F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34942DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34952DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
+				F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,
 				F3B33A9E2C0B23450073F19A /* CostModel.swift in Sources */,
 				F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */,

@@ -70,8 +70,9 @@ class ProductListViewController: UIViewController, Loggable {
 
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
-    let productVC = ProductDetailsViewController(
-      productPrice: ProductsPriceModel(id: "", name: "", price: 0.0))
+    let model = ProductsPriceModel(id: "", name: "", price: 0.0)
+    let vm = ProductDetailsViewModel(model: model, dataService: DomainProductPriceDataService())
+    let productVC = ProductDetailsViewController(viewModel: vm)
     navigationController?.pushViewController(productVC, animated: true)
   }
 }
@@ -97,8 +98,8 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let model = productsPrice[indexPath.row]
 
-    let productVC = ProductDetailsViewController(productPrice: model)
-    productVC.productPrice = model
+    let vm = ProductDetailsViewModel(model: model, dataService: DomainProductPriceDataService())
+    let productVC = ProductDetailsViewController(viewModel: vm)
     navigationController?.pushViewController(productVC, animated: true)
   }
 
