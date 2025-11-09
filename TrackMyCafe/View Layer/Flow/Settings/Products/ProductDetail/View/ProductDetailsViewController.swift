@@ -5,89 +5,61 @@
 //  Created by Леонід Квіт on 27.11.2021.
 //
 
-import RealmSwift
+import TinyConstraints
 import UIKit
 
 class ProductDetailsViewController: UIViewController {
 
-  let productLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .left
-    label.text = R.string.global.productName()
-    label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 20)
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    return label
+  // MARK: - UI: Scroll & Stack
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.keyboardDismissMode = .onDrag
+    return scrollView
   }()
 
-  let productTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = R.string.global.enterProductName()
-    textField.layer.borderWidth = UIConstants.standardBorderWidth
-      textField.layer.borderColor = UIColor.Main.background.cgColor
-    textField.layer.cornerRadius = UIConstants.smallCornerRadius
-    textField.backgroundColor = UIColor.TableView.cellBackground
-    textField.font = UIFont.systemFont(ofSize: 20)
-    textField.textColor = UIColor.TableView.cellLabel
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = UIConstants.standardPadding
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    return stackView
   }()
 
-  let priceLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .left
-    label.text = R.string.global.price()
-    label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 20)
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    return label
+  // MARK: - Inputs
+  private lazy var nameInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.productName(),
+      inputType: .text(keyboardType: .default),
+      isEditable: true,
+      placeholder: R.string.global.enterProductName()
+    )
+    return container
   }()
 
-  let priceTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = R.string.global.enterPrice()
-      textField.layer.borderWidth = UIConstants.standardBorderWidth
-      textField.layer.borderColor = UIColor.Main.background.cgColor
-    textField.layer.cornerRadius = UIConstants.smallCornerRadius
-    textField.backgroundColor = UIColor.TableView.cellBackground
-    textField.font = UIFont.systemFont(ofSize: 20)
-    textField.textColor = UIColor.TableView.cellLabel
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
+  private lazy var priceInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.price(),
+      inputType: .text(keyboardType: .decimalPad),
+      isEditable: true,
+      placeholder: R.string.global.enterPrice()
+    )
+    return container
   }()
 
-  lazy var saveButton: UIButton = {
+  // MARK: - Bottom Buttons
+  private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
     button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
-
     return button
   }()
 
-  lazy var cancelButton: UIButton = {
-    let button = DefaultButton()
-    button.setTitle(R.string.global.cancel(), for: .normal)
-    button.addTarget(self, action: #selector(cancelAction(param:)), for: .touchUpInside)
+  private let viewModel: ProductDetailsViewModelType
 
-    return button
-  }()
-
-  //    var product: String = ""
-  //    var price: Double = 0.0
-  var productPrice: ProductsPriceModel
-
-  //    let localRealm = try! Realm()
-  //    var productsModel = RealmProductsPriceModel()
-  //    var newModel = true
-
-  init(productPrice: ProductsPriceModel) {
-    self.productPrice = productPrice
+  init(viewModel: ProductDetailsViewModelType) {
+    self.viewModel = viewModel
     super.init(nibName: nil, bundle: nil)
   }
 
@@ -98,82 +70,184 @@ class ProductDetailsViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
 
+    setupUI()
+    setupConstraints()
+    setupData()
+    setupKeyboardHandling()
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setupNavigationBar()
+  }
+
+  // MARK: - Setup
+  private func setupUI() {
     view.backgroundColor = UIColor.Main.background
     title = R.string.global.product()
 
-    productTextfield.text = productPrice.name
-    if productPrice.price != 0 {
-      priceTextfield.text = productPrice.price.string
+    // Add subviews
+    view.addSubview(scrollView)
+    view.addSubview(saveButton)
+    scrollView.addSubview(mainStackView)
+
+    // Configure input containers
+    nameInputContainer.setDelegate(self)
+    nameInputContainer.setReturnKeyType(.next)
+
+    priceInputContainer.setDelegate(self)
+    priceInputContainer.enableNumericInput(maxFractionDigits: 2)
+    priceInputContainer.setReturnKeyType(.done)
+
+    // Add containers to stack
+    mainStackView.addArrangedSubview(nameInputContainer)
+    mainStackView.addArrangedSubview(priceInputContainer)
+  }
+
+  private func setupNavigationBar() {
+    title = R.string.global.product()
+    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationItem.largeTitleDisplayMode = .always
+
+    navigationController?.navigationBar.largeTitleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
+    navigationController?.navigationBar.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
+  }
+
+  private func setupConstraints() {
+    // ScrollView constraints
+    scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+    scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
+
+    // Main StackView constraints
+    mainStackView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.largeSpacing,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.largeSpacing,
+        right: UIConstants.standardPadding
+      ))
+    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
+
+    // Container heights
+    let containerHeight =
+      UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+    nameInputContainer.height(containerHeight)
+    priceInputContainer.height(containerHeight)
+
+    // Save button constraints
+    saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    saveButton.height(UIConstants.buttonHeight)
+    let saveButtonBottom = saveButton.bottomAnchor.constraint(
+      equalTo: view.keyboardLayoutGuide.topAnchor,
+      constant: -UIConstants.standardPadding
+    )
+    saveButtonBottom.isActive = true
+  }
+
+  private func setupData() {
+    nameInputContainer.text = viewModel.productName
+    if viewModel.productPrice > 0 {
+      priceInputContainer.text = viewModel.productPrice.decimalFormat
+    } else {
+      priceInputContainer.text = nil
     }
-
-    navigationController?.view.backgroundColor = UIColor.NavBar.background
-
-    setConstraints()
   }
 
-  func setConstraints() {
+  private func setupKeyboardHandling() {
+    // Add Done accessory to numeric price field
+    addDoneButtonToTextField(priceInputContainer.textFieldReference ?? UITextField())
 
-    let buttonStackView = UIStackView(
-      arrangedSubviews: [saveButton, cancelButton],
-      axis: .horizontal,
-      spacing: 20,
-      distribution: .fillEqually)
-
-    let productStackView = UIStackView(
-      arrangedSubviews: [
-        productLabel,
-        productTextfield,
-        priceLabel,
-        priceTextfield,
-        buttonStackView,
-      ],
-      axis: .vertical,
-      spacing: 5,
-      distribution: .fillEqually)
-    view.addSubview(productStackView)
-
-    NSLayoutConstraint.activate([
-      productStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-      productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-      productStackView.heightAnchor.constraint(equalToConstant: 200),
-    ])
-
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
   }
 
-  // MARK: - Method
+  private func addDoneButtonToTextField(_ textField: UITextField) {
+    let toolbar = UIToolbar()
+    toolbar.sizeToFit()
+
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let doneButton = UIBarButtonItem(
+      title: R.string.global.actionOk(),
+      style: .done,
+      target: self,
+      action: #selector(dismissKeyboard)
+    )
+
+    toolbar.items = [flexSpace, doneButton]
+    textField.inputAccessoryView = toolbar
+  }
+
+  // MARK: - Actions
   @objc func saveAction(param: UIButton) {
-    guard let name = productTextfield.text, !name.isEmpty else {
-      PopupFactory.showPopup(
-        title: R.string.global.error(), description: R.string.global.pleaseEnterProductName()
-      ) {}
+    let nameText = nameInputContainer.text
+    let priceText = priceInputContainer.text
+
+    let trimmedName = (nameText ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
+    let priceRawText = priceText ?? ""
+    guard viewModel.validate(name: nameText, priceText: priceText) else {
+      let message: String
+      if trimmedName.isEmpty {
+        message = R.string.global.pleaseEnterProductName()
+      } else if priceRawText.isEmpty {
+        message = R.string.global.enterPrice()
+      } else {
+        message = R.string.global.fillAllFields()
+      }
+      PopupFactory.showPopup(title: R.string.global.error(), description: message) {}
       return
     }
 
-    let price = priceTextfield.text?.double ?? 0.0
+    let parsedPrice = viewModel.parsedPrice(from: priceText) ?? 0.0
 
-    productPrice.name = name
-    productPrice.price = price
-
-    if productPrice.id.isEmpty {
-      productPrice.id = UUID().uuidString
-      DomainDatabaseService.shared.saveProductsPrice(productPrice: productPrice) { success in
-        if !success {
+    saveButton.isEnabled = false
+    Task { [weak self] in
+      guard let self = self else { return }
+      do {
+        try await self.viewModel.saveProductPrice(name: nameText, price: parsedPrice)
+        await MainActor.run {
+          self.navigationController?.popViewController(animated: true)
+        }
+      } catch {
+        await MainActor.run {
           PopupFactory.showPopup(
             title: R.string.global.error(), description: R.string.global.failedToSaveProductPrice()
           ) {}
         }
       }
-    } else {
-      DomainDatabaseService.shared.updateProductsPrice(
-        model: productPrice, name: name, price: price)
+      await MainActor.run {
+        self.saveButton.isEnabled = true
+      }
     }
-
-    navigationController?.popViewController(animated: true)
   }
 
-  @objc func cancelAction(param: UIButton) {
-    navigationController?.popViewController(animated: true)
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
   }
 
+}
+
+// MARK: - UITextFieldDelegate
+extension ProductDetailsViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    if textField == nameInputContainer.textFieldReference {
+      priceInputContainer.becomeFirstResponder()
+    } else {
+      textField.resignFirstResponder()
+    }
+    return true
+  }
+
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    if textField == priceInputContainer.textFieldReference {
+      let current = textField.text?.trimmed ?? ""
+      if current == "0" || current == "0,0" || current == "0.0" {
+        textField.text = ""
+      }
+    }
+  }
 }

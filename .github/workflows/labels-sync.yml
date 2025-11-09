@@ -25,14 +25,17 @@ jobs:
 
             async function upsertLabel(label) {
               const name = label.name;
-              const color = (label.color || '').replace('#','');
+              const color = label.color.replace('#','');
               const description = label.description || '';
               try {
+                // Try to get existing label
                 await github.rest.issues.getLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   name
                 });
+                // Update existing
+                core.info(`Updating label: ${name}`);
                 await github.rest.issues.updateLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
@@ -43,6 +46,7 @@ jobs:
                 });
               } catch (e) {
                 if (e.status === 404) {
+                  core.info(`Creating label: ${name}`);
                   await github.rest.issues.createLabel({
                     owner: context.repo.owner,
                     repo: context.repo.repo,

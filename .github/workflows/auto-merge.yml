@@ -38,7 +38,7 @@ jobs:
             }`;
 
             try {
-              await github.graphql(mutation, {
+              const result = await github.graphql(mutation, {
                 pullRequestId: nodeId,
                 method: 'SQUASH'
               });

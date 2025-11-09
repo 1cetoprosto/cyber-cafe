@@ -172,3 +172,25 @@ refactor(models): extract Order validation logic
 - **iPad-specific:** Consider split view, multitasking, larger screens
 - **Accessibility:** Follow iOS accessibility guidelines
 - **Performance:** Consider memory usage on older devices (iOS 15+ support)
+
+---
+
+## 🚀 Workflow Automation
+
+- Base PR branch: always `main`.
+- Branch naming: `feature/<ticket-number>-<slug>` (e.g., `feature/89-add-another-light-theme`).
+- PR title: follow Conventional Commits format `<type>(<scope>): <message>`.
+- Default reviewers: none (solo developer).
+- Default assignee: repository owner (project maintainer) automatically.
+- Merge strategy: `squash` by default for all PRs.
+- Automerge: enabled when all required checks pass.
+  - Required checks: `Add issues and PRs to project`.
+- UI changes policy: remind to run local simulator preview in Xcode before PR; attach screenshots optionally.
+- PR body template: Minimal — `Plan → Code → Expected outcome → Validation` (no Acceptance Criteria).
+- Task/incident linking: include `Closes #<issue>` in PR body under References.
+- Release tags: `vMAJOR.MINOR.PATCH` using SemVer.
+- Release notes: generate from Conventional Commits and PR titles.
+
+### 🏷 Default Labels Configuration
+
+The GitHub labels configuration is stored at `.github/labels.json` with color and description metadata. Labels include types, states, priorities, areas, and special flags (breaking change, backport). The assistant will maintain and apply these labels to PRs as appropriate.
