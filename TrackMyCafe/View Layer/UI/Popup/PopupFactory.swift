@@ -40,7 +40,8 @@ class PopupFactory {
         )
         attributes.entryInteraction = .absorbTouches
         attributes.screenInteraction = .dismiss
-        attributes.entryBackground = .color(color: .standardBackground)
+        // Use dynamic system background to support light/dark mode
+        attributes.entryBackground = .color(color: EKColor(UIColor.systemBackground))
         attributes.screenBackground = .color(color: EKColor(UIColor(white: 50.0/255.0, alpha: 0.3)))
         attributes.border = .value(
             color: UIColor(white: 0.6, alpha: 1),
@@ -78,7 +79,7 @@ class PopupFactory {
             text: title,
             style: .init(
                 font: .systemFont(ofSize: 17, weight: .medium),
-                color: .black,
+                color: EKColor(UIColor.label),
                 alignment: .center
             )
         )
@@ -88,7 +89,7 @@ class PopupFactory {
             text: text,
             style: .init(
                 font: .systemFont(ofSize: 14),
-                color: .black,
+                color: EKColor(UIColor.secondaryLabel),
                 alignment: .center
             )
         )
@@ -131,7 +132,7 @@ class PopupFactory {
             text: title,
             style: .init(
                 font: .systemFont(ofSize: 17, weight: .medium),
-                color: .black,
+                color: EKColor(UIColor.label),
                 alignment: .center
             )
         )
@@ -141,7 +142,7 @@ class PopupFactory {
             text: text,
             style: .init(
                 font: .systemFont(ofSize: 14),
-                color: .black,
+                color: EKColor(UIColor.secondaryLabel),
                 alignment: .center
             )
         )
@@ -195,7 +196,7 @@ class PopupFactory {
             text: R.string.auth.signInHow(),
             style: .init(
                 font: .systemFont(ofSize: 17, weight: .medium),
-                color: .black,
+                color: EKColor(UIColor.label),
                 alignment: .center
             )
         )
@@ -205,7 +206,7 @@ class PopupFactory {
             text: text,
             style: .init(
                 font: .systemFont(ofSize: 14),
-                color: .black,
+                color: EKColor(UIColor.secondaryLabel),
                 alignment: .center
             )
         )
@@ -259,7 +260,7 @@ class PopupFactory {
             text: R.string.global.chose(),
             style: .init(
                 font: .systemFont(ofSize: 17, weight: .medium),
-                color: .black,
+                color: EKColor(UIColor.label),
                 alignment: .center
             )
         )
@@ -269,7 +270,7 @@ class PopupFactory {
             text: text,
             style: .init(
                 font: .systemFont(ofSize: 14),
-                color: .black,
+                color: EKColor(UIColor.secondaryLabel),
                 alignment: .center
             )
         )
@@ -338,7 +339,7 @@ class PopupFactory {
             text: title,
             style: .init(
                 font: .systemFont(ofSize: 17, weight: .medium),
-                color: .black,
+                color: EKColor(UIColor.label),
                 alignment: .center
             )
         )
@@ -348,7 +349,7 @@ class PopupFactory {
             text: text,
             style: .init(
                 font: .systemFont(ofSize: 14),
-                color: .black,
+                color: EKColor(UIColor.secondaryLabel),
                 alignment: .center
             )
         )
