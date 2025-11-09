@@ -208,7 +208,10 @@ final class CostDetailsListViewController: UIViewController {
     let sumText = priceInputContainer.text
 
     guard viewModel.validate(name: name, sumText: sumText) else {
-      showValidationError()
+      PopupFactory.showPopup(
+        title: R.string.global.error(),
+        description: R.string.global.fillAllFields()
+      ) {}
       return
     }
 
@@ -228,7 +231,10 @@ final class CostDetailsListViewController: UIViewController {
         }
       } catch {
         await MainActor.run {
-          self.showErrorAlert(error)
+          PopupFactory.showPopup(
+            title: R.string.global.error(),
+            description: error.localizedDescription
+          ) {}
         }
       }
       await MainActor.run {
@@ -239,29 +245,6 @@ final class CostDetailsListViewController: UIViewController {
 
   @objc private func dismissKeyboard() {
     view.endEditing(true)
-  }
-
-  // Manual keyboard show/hide handling removed in favor of UIKeyboardLayoutGuide.
-
-  private func showValidationError() {
-    let alert = UIAlertController(
-      title: R.string.global.error(),
-      message: R.string.global.fillAllFields(),
-      preferredStyle: .alert
-    )
-
-    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-    present(alert, animated: true)
-  }
-
-  private func showErrorAlert(_ error: Error) {
-    let alert = UIAlertController(
-      title: R.string.global.error(),
-      message: error.localizedDescription,
-      preferredStyle: .alert
-    )
-    alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-    present(alert, animated: true)
   }
 
   deinit {}
@@ -289,5 +272,4 @@ extension CostDetailsListViewController: UITextFieldDelegate {
     }
   }
 
-  // Numeric filtering moved into InputContainerView via enableNumericInput.
 }
