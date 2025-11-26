@@ -160,10 +160,15 @@
 // MARK: - Theme Settings
 "general" = "General"; 
 "selectTheme" = "Select Theme";
-"lightThemeName" = "Light";
-"darkThemeName" = "Dark";
-"systemThemeName" = "Automatic";
-"lightAltThemeName" = "Light (Alt)";
+"lightThemeName" = "Classic (Light)";
+"darkThemeName" = "Classic (Dark)";
+"systemThemeName" = "Classic (Automatic)";
+"systemAltThemeName" = "Slate (Automatic)";
+"lightAltThemeName" = "Slate (Light)";
+"darkAltThemeName" = "Slate (Dark)";
+"coffeeWithMilkThemeName" = "Latte (Automatic)";
+"coffeeWithMilkLightThemeName" = "Latte (Light)";
+"coffeeWithMilkDarkThemeName" = "Latte (Dark)";
 
 // MARK: - Settings
 "languages" = "Languages";

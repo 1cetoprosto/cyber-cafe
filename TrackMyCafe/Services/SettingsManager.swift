@@ -37,7 +37,12 @@ class SettingsManager {
   }
 
   func loadTheme() -> String {
-      return UserDefaults.standard.string(forKey: UserDefaultsKeys.theme) ?? Theme.currentThemeStyle.themeName
+      if let saved = UserDefaults.standard.string(forKey: UserDefaultsKeys.theme) {
+        return saved
+      }
+      // Fallback to current selection's display name
+      let option = ThemeOption.allCases.first(where: { $0.selection.appearance == Theme.currentSelection.appearance && $0.selection.palette == Theme.currentSelection.palette })
+      return option?.displayName ?? Theme.currentThemeStyle.themeName
   }
 
   func saveOnline(_ isOn: Bool) {

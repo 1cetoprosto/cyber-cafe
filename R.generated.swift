@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 186 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 191 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -407,6 +407,27 @@ struct _R {
       /// Locales: en, uk
       var clear: RswiftResources.StringResource { .init(key: "clear", tableName: "Global", source: source, developmentValue: "clear", comment: nil) }
 
+      /// en translation: Latte (Dark)
+      ///
+      /// Key: coffeeWithMilkDarkThemeName
+      ///
+      /// Locales: en, uk
+      var coffeeWithMilkDarkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkDarkThemeName", tableName: "Global", source: source, developmentValue: "Latte (Dark)", comment: nil) }
+
+      /// en translation: Latte (Light)
+      ///
+      /// Key: coffeeWithMilkLightThemeName
+      ///
+      /// Locales: en, uk
+      var coffeeWithMilkLightThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkLightThemeName", tableName: "Global", source: source, developmentValue: "Latte (Light)", comment: nil) }
+
+      /// en translation: Latte (Automatic)
+      ///
+      /// Key: coffeeWithMilkThemeName
+      ///
+      /// Locales: en, uk
+      var coffeeWithMilkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkThemeName", tableName: "Global", source: source, developmentValue: "Latte (Automatic)", comment: nil) }
+
       /// en translation: Confirm
       ///
       /// Key: confirm
@@ -477,12 +498,19 @@ struct _R {
       /// Locales: en, uk
       var currentSubscription: RswiftResources.StringResource { .init(key: "currentSubscription", tableName: "Global", source: source, developmentValue: "Your current subscription", comment: nil) }
 
-      /// en translation: Dark
+      /// en translation: Slate (Dark)
+      ///
+      /// Key: darkAltThemeName
+      ///
+      /// Locales: en, uk
+      var darkAltThemeName: RswiftResources.StringResource { .init(key: "darkAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Dark)", comment: nil) }
+
+      /// en translation: Classic (Dark)
       ///
       /// Key: darkThemeName
       ///
       /// Locales: en, uk
-      var darkThemeName: RswiftResources.StringResource { .init(key: "darkThemeName", tableName: "Global", source: source, developmentValue: "Dark", comment: nil) }
+      var darkThemeName: RswiftResources.StringResource { .init(key: "darkThemeName", tableName: "Global", source: source, developmentValue: "Classic (Dark)", comment: nil) }
 
       /// en translation: Data for the selected date already exists. Open and edit them.
       ///
@@ -785,19 +813,19 @@ struct _R {
       /// Locales: en, uk
       var lastName: RswiftResources.StringResource { .init(key: "lastName", tableName: "Global", source: source, developmentValue: "Last name", comment: nil) }
 
-      /// en translation: Light (Alt)
+      /// en translation: Slate (Light)
       ///
       /// Key: lightAltThemeName
       ///
       /// Locales: en, uk
-      var lightAltThemeName: RswiftResources.StringResource { .init(key: "lightAltThemeName", tableName: "Global", source: source, developmentValue: "Light (Alt)", comment: nil) }
+      var lightAltThemeName: RswiftResources.StringResource { .init(key: "lightAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Light)", comment: nil) }
 
-      /// en translation: Light
+      /// en translation: Classic (Light)
       ///
       /// Key: lightThemeName
       ///
       /// Locales: en, uk
-      var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Light", comment: nil) }
+      var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Classic (Light)", comment: nil) }
 
       /// en translation: Please configure a mail account in your device settings to send feedback.
       ///
@@ -1408,12 +1436,19 @@ struct _R {
       /// Locales: en, uk
       var successSentTechnicianEmail: RswiftResources.StringResource1<String> { .init(key: "successSentTechnicianEmail", tableName: "Global", source: source, developmentValue: "Sign-in link has been sent to technician's email: %@", comment: nil) }
 
-      /// en translation: Automatic
+      /// en translation: Slate (Automatic)
+      ///
+      /// Key: systemAltThemeName
+      ///
+      /// Locales: en, uk
+      var systemAltThemeName: RswiftResources.StringResource { .init(key: "systemAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Automatic)", comment: nil) }
+
+      /// en translation: Classic (Automatic)
       ///
       /// Key: systemThemeName
       ///
       /// Locales: en, uk
-      var systemThemeName: RswiftResources.StringResource { .init(key: "systemThemeName", tableName: "Global", source: source, developmentValue: "Automatic", comment: nil) }
+      var systemThemeName: RswiftResources.StringResource { .init(key: "systemThemeName", tableName: "Global", source: source, developmentValue: "Classic (Automatic)", comment: nil) }
 
       /// en translation: You cannot create a waiter with this email address because a user with this email address is already registered in the system.
       ///
@@ -1522,12 +1557,9 @@ struct _R {
     }
   }
 
-  /// This `_R.color` struct is generated, and contains static references to 18 colors.
+  /// This `_R.color` struct is generated, and contains static references to 27 colors.
   struct color {
     let bundle: Foundation.Bundle
-
-    /// Color `AccentColor`.
-    var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
 
     /// Color `CellBackground`.
     var cellBackground: RswiftResources.ColorResource { .init(name: "CellBackground", path: [], bundle: bundle) }
@@ -1535,20 +1567,26 @@ struct _R {
     /// Color `CellBackgroundAlt`.
     var cellBackgroundAlt: RswiftResources.ColorResource { .init(name: "CellBackgroundAlt", path: [], bundle: bundle) }
 
+    /// Color `CellBackgroundCoffeeMilk`.
+    var cellBackgroundCoffeeMilk: RswiftResources.ColorResource { .init(name: "CellBackgroundCoffeeMilk", path: [], bundle: bundle) }
+
     /// Color `NavBarBackground`.
     var navBarBackground: RswiftResources.ColorResource { .init(name: "NavBarBackground", path: [], bundle: bundle) }
 
     /// Color `NavBarBackgroundAlt`.
     var navBarBackgroundAlt: RswiftResources.ColorResource { .init(name: "NavBarBackgroundAlt", path: [], bundle: bundle) }
 
+    /// Color `NavBarBackgroundCoffeeMilk`.
+    var navBarBackgroundCoffeeMilk: RswiftResources.ColorResource { .init(name: "NavBarBackgroundCoffeeMilk", path: [], bundle: bundle) }
+
     /// Color `NavBarText`.
     var navBarText: RswiftResources.ColorResource { .init(name: "NavBarText", path: [], bundle: bundle) }
 
-    /// Color `NavBarText1`.
-    var navBarText1: RswiftResources.ColorResource { .init(name: "NavBarText1", path: [], bundle: bundle) }
-
     /// Color `NavBarTextAlt`.
     var navBarTextAlt: RswiftResources.ColorResource { .init(name: "NavBarTextAlt", path: [], bundle: bundle) }
+
+    /// Color `NavBarTextCoffeeMilk`.
+    var navBarTextCoffeeMilk: RswiftResources.ColorResource { .init(name: "NavBarTextCoffeeMilk", path: [], bundle: bundle) }
 
     /// Color `PrimaryBackground`.
     var primaryBackground: RswiftResources.ColorResource { .init(name: "PrimaryBackground", path: [], bundle: bundle) }
@@ -1556,11 +1594,17 @@ struct _R {
     /// Color `PrimaryBackgroundAlt`.
     var primaryBackgroundAlt: RswiftResources.ColorResource { .init(name: "PrimaryBackgroundAlt", path: [], bundle: bundle) }
 
+    /// Color `PrimaryBackgroundCoffeeMilk`.
+    var primaryBackgroundCoffeeMilk: RswiftResources.ColorResource { .init(name: "PrimaryBackgroundCoffeeMilk", path: [], bundle: bundle) }
+
     /// Color `PrimaryText`.
     var primaryText: RswiftResources.ColorResource { .init(name: "PrimaryText", path: [], bundle: bundle) }
 
     /// Color `PrimaryTextAlt`.
     var primaryTextAlt: RswiftResources.ColorResource { .init(name: "PrimaryTextAlt", path: [], bundle: bundle) }
+
+    /// Color `PrimaryTextCoffeeMilk`.
+    var primaryTextCoffeeMilk: RswiftResources.ColorResource { .init(name: "PrimaryTextCoffeeMilk", path: [], bundle: bundle) }
 
     /// Color `SecondaryBackground`.
     var secondaryBackground: RswiftResources.ColorResource { .init(name: "SecondaryBackground", path: [], bundle: bundle) }
@@ -1568,17 +1612,35 @@ struct _R {
     /// Color `SecondaryBackgroundAlt`.
     var secondaryBackgroundAlt: RswiftResources.ColorResource { .init(name: "SecondaryBackgroundAlt", path: [], bundle: bundle) }
 
+    /// Color `SecondaryBackgroundCoffeeMilk`.
+    var secondaryBackgroundCoffeeMilk: RswiftResources.ColorResource { .init(name: "SecondaryBackgroundCoffeeMilk", path: [], bundle: bundle) }
+
     /// Color `SecondaryText`.
     var secondaryText: RswiftResources.ColorResource { .init(name: "SecondaryText", path: [], bundle: bundle) }
 
     /// Color `SecondaryTextAlt`.
     var secondaryTextAlt: RswiftResources.ColorResource { .init(name: "SecondaryTextAlt", path: [], bundle: bundle) }
 
+    /// Color `SecondaryTextCoffeeMilk`.
+    var secondaryTextCoffeeMilk: RswiftResources.ColorResource { .init(name: "SecondaryTextCoffeeMilk", path: [], bundle: bundle) }
+
     /// Color `TabBarTint`.
     var tabBarTint: RswiftResources.ColorResource { .init(name: "TabBarTint", path: [], bundle: bundle) }
 
     /// Color `TabBarTintAlt`.
     var tabBarTintAlt: RswiftResources.ColorResource { .init(name: "TabBarTintAlt", path: [], bundle: bundle) }
+
+    /// Color `TabBarTintCoffeeMilk`.
+    var tabBarTintCoffeeMilk: RswiftResources.ColorResource { .init(name: "TabBarTintCoffeeMilk", path: [], bundle: bundle) }
+
+    /// Color `TabBarUnselectedTint`.
+    var tabBarUnselectedTint: RswiftResources.ColorResource { .init(name: "TabBarUnselectedTint", path: [], bundle: bundle) }
+
+    /// Color `TabBarUnselectedTintAlt`.
+    var tabBarUnselectedTintAlt: RswiftResources.ColorResource { .init(name: "TabBarUnselectedTintAlt", path: [], bundle: bundle) }
+
+    /// Color `TabBarUnselectedTintCoffeeMilk`.
+    var tabBarUnselectedTintCoffeeMilk: RswiftResources.ColorResource { .init(name: "TabBarUnselectedTintCoffeeMilk", path: [], bundle: bundle) }
   }
 
   /// This `_R.image` struct is generated, and contains static references to 19 images.
