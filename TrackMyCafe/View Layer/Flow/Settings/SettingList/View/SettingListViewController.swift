@@ -90,8 +90,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
-    // Handle system theme changes only if user has selected "system" theme
-    if Theme.currentThemeStyle == .system {
+    // Handle system theme changes only if user has selected system appearance
+    if Theme.currentSelection.appearance == .system {
       Theme.followSystemTheme()
 
       // Update UI colors
@@ -131,10 +131,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
           iconBackgroundColor: .systemBlue,
           data: SettingsManager.shared.loadTheme()
         ) { dataLabel in
-          self.alertTheme(label: dataLabel) { style in
-            Theme.currentThemeStyle = style
-            SettingsManager.shared.saveTheme(style.themeName)
-            dataLabel.text = style.themeName
+          self.alertTheme(label: dataLabel) { option in
+            Theme.apply(option: option)
+            SettingsManager.shared.saveTheme(option.displayName)
+            dataLabel.text = option.displayName
             self.updateInterfaceForNewTheme()
           }
         }))
@@ -474,14 +474,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     // Get app version, device model, and OS version
     let appVersion =
-      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? DefaultValues.unknownVersion
+      Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+      ?? DefaultValues.unknownVersion
     let deviceModel = UIDevice.current.localizedModel
     let osVersion = UIDevice.current.systemVersion
 
     // Get user information
     let userId = UserSession.current.userId ?? DefaultValues.unknownUser
-        let userEmail = UserSession.current.userEmail ?? DefaultValues.unknownUser
-        let userRole = UserSession.current.role?.name ?? DefaultValues.unknownUser
+    let userEmail = UserSession.current.userEmail ?? DefaultValues.unknownUser
+    let userRole = UserSession.current.role?.name ?? DefaultValues.unknownUser
 
     mailComposer.setMessageBody(
       R.string.global.feedbackEmailBody(

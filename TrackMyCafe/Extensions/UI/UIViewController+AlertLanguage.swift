@@ -41,14 +41,14 @@ extension UIViewController {
 
   }
 
-  func alertTheme(label: UILabel, completionHandle: @escaping (ThemeStyle) -> Void) {
+  func alertTheme(label: UILabel, completionHandle: @escaping (ThemeOption) -> Void) {
     let alert = UIAlertController(
       title: R.string.global.selectTheme(), message: nil, preferredStyle: .actionSheet)
 
-    for style in ThemeStyle.allCases {
-      let action = UIAlertAction(title: style.themeName, style: .default) { _ in
-        label.text = style.themeName
-        completionHandle(style)
+    for option in ThemeOption.allCases {
+      let action = UIAlertAction(title: option.displayName, style: .default) { _ in
+        label.text = option.displayName
+        completionHandle(option)
       }
       alert.addAction(action)
     }

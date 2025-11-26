@@ -160,10 +160,15 @@
 // MARK: - Theme Settings
 "general" = "Загальні";
 "selectTheme" = "Вибрати тему";
-"lightThemeName" = "Світла";
-"darkThemeName" = "Темна";
-"systemThemeName" = "Автоматично";
-"lightAltThemeName" = "Світла (Альт.)";
+"lightThemeName" = "Класична (Світла)";
+"darkThemeName" = "Класична (Темна)";
+"systemThemeName" = "Класична (Автоматично)";
+"systemAltThemeName" = "Сланцева (Автоматично)";
+"lightAltThemeName" = "Сланцева (Світла)";
+"darkAltThemeName" = "Сланцева (Темна)";
+"coffeeWithMilkThemeName" = "Лате (Автоматично)";
+"coffeeWithMilkLightThemeName" = "Лате (Світла)";
+"coffeeWithMilkDarkThemeName" = "Лате (Темна)";
 
 // MARK: - Settings
 "languages" = "Мови";
@@ -243,4 +248,3 @@
 "feedbackSuccessTitle" = "Дякуємо!";
 "feedbackSuccessMessage" = "Ваш відгук успішно відправлено.";
 "okButton" = "OK";
-
