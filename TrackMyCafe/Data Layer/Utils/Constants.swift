@@ -107,6 +107,8 @@ struct UserDefaultsKeys {
   static let theme = "settings.theme"
   static let online = "settings.online"
   static let themeStyle = "kThemeStyle"
+  static let appearanceStyle = "kAppearanceStyle"
+  static let paletteStyle = "kPaletteStyle"
   static let firstLaunch = "kFirstLaunch"
   static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
   static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
