@@ -79,6 +79,29 @@ extension UIColor {
         
         return RGBA32(red: UInt8(red*255.0), green: UInt8(green*255.0), blue: UInt8(blue*255.0), alpha: UInt8(alpha*255.0))
     }
+
+    // Calculate relative luminance according to WCAG for contrast computation
+    private func srgbComponent(_ c: CGFloat) -> CGFloat {
+        return c <= 0.03928 ? (c / 12.92) : pow((c + 0.055) / 1.055, 2.4)
+    }
+
+    var relativeLuminance: CGFloat {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+        guard getRed(&r, green: &g, blue: &b, alpha: &a) else { return 0 }
+        let R = srgbComponent(r)
+        let G = srgbComponent(g)
+        let B = srgbComponent(b)
+        return 0.2126 * R + 0.7152 * G + 0.0722 * B
+    }
+
+    func contrastRatio(with other: UIColor) -> CGFloat {
+        let l1 = max(self.relativeLuminance, other.relativeLuminance)
+        let l2 = min(self.relativeLuminance, other.relativeLuminance)
+        return (l1 + 0.05) / (l2 + 0.05)
+    }
 }
 
 struct RGBA32: Equatable {
@@ -134,4 +157,3 @@ struct RGBA32: Equatable {
 //        self.init(red: components.R, green: components.G, blue: components.B, alpha: 1)
 //    }
 //}
-
