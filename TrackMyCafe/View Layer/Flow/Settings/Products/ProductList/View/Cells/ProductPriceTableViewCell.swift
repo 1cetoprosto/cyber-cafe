@@ -23,6 +23,7 @@ class ProductPriceTableViewCell: UITableViewCell {
     label.text = "Esspresso"
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = UIColor.TableView.cellLabel
+    label.applyDynamic(Typography.body)
 
     return label
   }()
@@ -32,6 +33,7 @@ class ProductPriceTableViewCell: UITableViewCell {
     label.text = "0"
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = UIColor.TableView.cellLabel
+    label.applyDynamic(Typography.body)
 
     return label
   }()
