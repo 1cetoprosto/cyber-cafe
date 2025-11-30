@@ -15,7 +15,7 @@ class TypeDetailsViewController: UIViewController {
     label.textAlignment = .left
     label.text = R.string.global.type()
     label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 14)
+    label.applyDynamic(Typography.footnote)
     label.translatesAutoresizingMaskIntoConstraints = false
 
     return label
@@ -29,8 +29,9 @@ class TypeDetailsViewController: UIViewController {
       textField.layer.borderColor = UIColor.TableView.cellBackground.cgColor
     textField.layer.cornerRadius = UIConstants.smallCornerRadius
     textField.backgroundColor = UIColor.TableView.cellBackground
-    textField.font = UIFont.systemFont(ofSize: 20)
+    textField.font = Typography.title3
     textField.textColor = UIColor.TableView.cellLabel
+    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
     textField.translatesAutoresizingMaskIntoConstraints = false
 
     return textField
