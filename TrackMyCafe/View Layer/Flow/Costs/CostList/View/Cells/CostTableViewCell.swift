@@ -20,8 +20,8 @@ class CostsTableViewCell: UITableViewCell {
         return view
     }()
 
-    lazy var costName = createOrdersLabel(text: "Milk", font: .avenirNext20(), aligment: .left)
-    lazy var costSum = createOrdersLabel(text: "640", font: .avenirNext20(), aligment: .right) 
+    lazy var costName = createOrdersLabel(text: "Milk", font: Typography.body, aligment: .left)
+    lazy var costSum = createOrdersLabel(text: "640", font: Typography.body, aligment: .right) 
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
