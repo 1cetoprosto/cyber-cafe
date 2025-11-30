@@ -37,7 +37,7 @@ class RememberMeButton: UIControl {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 14)
+        label.font = Typography.footnote
         label.text = R.string.auth.rememberMe()
         label.textColor = UIColor.Main.text
         return label
