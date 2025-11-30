@@ -30,7 +30,7 @@ final class InputContainerView: UIView {
 
   private lazy var titleLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+    label.font = Typography.footnote
     label.textColor = UIColor.Main.text
     return label
   }()
@@ -38,7 +38,7 @@ final class InputContainerView: UIView {
   // Input Elements
   private lazy var textField: UITextField = {
     let textField = UITextField()
-    textField.font = UIFont.systemFont(ofSize: 20)
+    textField.font = Typography.title3
     textField.textColor = UIColor.Main.text
     textField.backgroundColor = .clear
     textField.borderStyle = .none
