@@ -41,7 +41,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     let label = UILabel()
     label.textAlignment = .left
     label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 20)
+    label.applyDynamic(Typography.title3)
     label.translatesAutoresizingMaskIntoConstraints = false
 
     return label
@@ -51,7 +51,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     let textField = UITextField()
     textField.textAlignment = .left
     textField.placeholder = "0"
-    textField.font = UIFont.systemFont(ofSize: 28)
+    textField.font = Typography.largeTitle
+    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
     textField.translatesAutoresizingMaskIntoConstraints = false
 
     return textField
@@ -61,7 +62,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     let label = UILabel()
     label.textAlignment = .left
     label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 20)
+    label.applyDynamic(Typography.title3)
     label.translatesAutoresizingMaskIntoConstraints = false
 
     return label
@@ -71,7 +72,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     let textField = UITextField()
     textField.textAlignment = .left
     textField.placeholder = "0"
-    textField.font = UIFont.systemFont(ofSize: 28)
+    textField.font = Typography.largeTitle
+    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
     textField.translatesAutoresizingMaskIntoConstraints = false
 
     return textField
@@ -82,7 +84,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     label.textAlignment = .right
     label.text = "0"
     label.textColor = UIColor.Main.text
-    label.font = UIFont.systemFont(ofSize: 28)
+    label.applyDynamic(Typography.largeTitle)
     label.translatesAutoresizingMaskIntoConstraints = false
 
     return label
@@ -92,8 +94,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     let textField = UITextField()
     textField.textAlignment = .left
     textField.placeholder = R.string.global.chooseType()
-    textField.font = UIFont.systemFont(ofSize: 20)
+    textField.font = Typography.title3
     textField.textColor = UIColor.Main.text
+    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
     textField.translatesAutoresizingMaskIntoConstraints = false
 
     return textField

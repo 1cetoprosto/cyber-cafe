@@ -22,8 +22,11 @@ class DefaultButton: UIButton {
     func setupButton() {
         translatesAutoresizingMaskIntoConstraints = false
         setTitleColor(UIColor.Button.title, for: .normal)
-        setTitleColor(UIColor.Button.title.withAlphaComponent(UIConstants.highlightedAlpha), for: .highlighted)
-        backgroundColor      = UIColor.Button.background
-        layer.cornerRadius   = UIConstants.largeCornerRadius
+        setTitleColor(
+            UIColor.Button.title.withAlphaComponent(UIConstants.highlightedAlpha), for: .highlighted)
+        backgroundColor = UIColor.Button.background
+        layer.cornerRadius = UIConstants.largeCornerRadius
+        titleLabel?.font = Typography.title3
+        if #available(iOS 11.0, *) { titleLabel?.adjustsFontForContentSizeCategory = true }
     }
 }

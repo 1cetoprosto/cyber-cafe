@@ -42,6 +42,7 @@ class BaseSettingsCell: UITableViewCell {
     let label: UILabel = {
         let label = UILabel()
         label.numberOfLines = 1
+        label.applyDynamic(Typography.body)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

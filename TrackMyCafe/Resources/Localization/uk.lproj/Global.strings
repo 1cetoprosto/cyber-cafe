@@ -210,9 +210,9 @@
 "somethingWentWrong" = "Щось пішло не так";
 
 // MARK: - Orders
-"orders" = "Замовлення";
-"allOrders" = "Всі замовлення";
-"order" = "Замовлення";
+"orders" = "Доходи";
+"allOrders" = "Всі доходи";
+"order" = "Дохід";
 "cash" = "Готівка";
 "card" = "Картка";
 "money1" = "Гроші1";

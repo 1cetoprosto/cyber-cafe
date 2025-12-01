@@ -21,11 +21,11 @@ class OrdersTableViewCell: UITableViewCell {
   }()
 
   lazy var productsName = createOrdersLabel(
-    text: "05.09.21", font: .avenirNext20(), aligment: .left)
-  lazy var ordersSum = createOrdersLabel(text: "640", font: .avenirNext14(), aligment: .right)
+    text: "05.09.21", font: Typography.body, aligment: .left)
+  lazy var ordersSum = createOrdersLabel(text: "640", font: Typography.footnote, aligment: .right)
   lazy var ordersLabel = createOrdersLabel(
-    text: R.string.global.plan(), font: .avenirNext14(), aligment: .left)
-  lazy var cashSum = createOrdersLabel(text: "230", font: .avenirNext20(), aligment: .right)
+    text: R.string.global.plan(), font: Typography.footnote, aligment: .left)
+  lazy var cashSum = createOrdersLabel(text: "230", font: Typography.title3, aligment: .right)
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -51,10 +51,10 @@ class OrdersTableViewCell: UITableViewCell {
     }
   }
 
-  func createOrdersLabel(text: String, font: UIFont?, aligment: NSTextAlignment) -> UILabel {
+  func createOrdersLabel(text: String, font: UIFont, aligment: NSTextAlignment) -> UILabel {
     let label = UILabel()
     label.text = text
-    label.font = font
+    label.applyDynamic(font)
     label.textColor = UIColor.TableView.cellLabel
     label.textAlignment = aligment
     label.adjustsFontSizeToFitWidth = true
