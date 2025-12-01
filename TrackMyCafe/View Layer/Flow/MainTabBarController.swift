@@ -59,12 +59,12 @@ class MainTabBarController: UITabBarController {
     stacked.selected.iconColor = selectedColor
     stacked.selected.titleTextAttributes = [
       .foregroundColor: selectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
     stacked.normal.iconColor = unselectedColor
     stacked.normal.titleTextAttributes = [
       .foregroundColor: unselectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
 
     // Apply to inline layout
@@ -72,12 +72,12 @@ class MainTabBarController: UITabBarController {
     inline.selected.iconColor = selectedColor
     inline.selected.titleTextAttributes = [
       .foregroundColor: selectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
     inline.normal.iconColor = unselectedColor
     inline.normal.titleTextAttributes = [
       .foregroundColor: unselectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
 
     // Apply to compact inline layout
@@ -85,12 +85,12 @@ class MainTabBarController: UITabBarController {
     compact.selected.iconColor = selectedColor
     compact.selected.titleTextAttributes = [
       .foregroundColor: selectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
     compact.normal.iconColor = unselectedColor
     compact.normal.titleTextAttributes = [
       .foregroundColor: unselectedColor,
-      .font: Typography.footnote
+      .font: Typography.footnote,
     ]
 
     tabBar.standardAppearance = appearance
@@ -130,6 +130,37 @@ class MainTabBarController: UITabBarController {
     let navController = UINavigationController(rootViewController: viewController)
     navController.tabBarItem = item
     navController.view.backgroundColor = UIColor.NavBar.background
+
+    let navAppearance = UINavigationBarAppearance()
+    navAppearance.configureWithOpaqueBackground()
+    navAppearance.backgroundColor = UIColor.NavBar.background
+    navAppearance.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.title,
+      .font: Typography.title3DemiBold,
+    ]
+    navAppearance.largeTitleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.title,
+      .font: Typography.largeTitle,
+    ]
+
+    let buttonAppearance = UIBarButtonItemAppearance()
+    buttonAppearance.normal.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.title,
+      .font: Typography.body,
+    ]
+    buttonAppearance.highlighted.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.title,
+      .font: Typography.bodyMedium,
+    ]
+    navAppearance.buttonAppearance = buttonAppearance
+    navAppearance.doneButtonAppearance = buttonAppearance
+    navAppearance.backButtonAppearance = buttonAppearance
+
+    navController.navigationBar.standardAppearance = navAppearance
+    if #available(iOS 15.0, *) {
+      navController.navigationBar.scrollEdgeAppearance = navAppearance
+    }
+    navController.navigationBar.prefersLargeTitles = true
 
     return navController
   }
