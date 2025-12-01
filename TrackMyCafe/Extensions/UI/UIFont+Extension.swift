@@ -59,6 +59,8 @@ enum Typography {
     static let body = FontPalette.avenir(.body, weight: .regular)
     static let bodyMedium = FontPalette.avenir(.body, weight: .medium)
     static let bodyBold = FontPalette.avenir(.body, weight: .bold)
+    static let title2 = FontPalette.avenir(.title2, weight: .regular)
+    static let title2DemiBold = FontPalette.avenir(.title2, weight: .demiBold)
     static let title3 = FontPalette.avenir(.title3, weight: .regular)
     static let title3DemiBold = FontPalette.avenir(.title3, weight: .demiBold)
     static let largeTitle = FontPalette.avenir(.largeTitle, weight: .regular)
