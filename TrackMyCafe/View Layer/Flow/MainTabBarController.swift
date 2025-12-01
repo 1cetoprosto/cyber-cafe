@@ -135,22 +135,22 @@ class MainTabBarController: UITabBarController {
     navAppearance.configureWithOpaqueBackground()
     navAppearance.backgroundColor = UIColor.NavBar.background
     navAppearance.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.title,
-      .font: Typography.title3DemiBold,
+      .foregroundColor: UIColor.NavBar.text,
+      .font: Typography.title3DemiBold
     ]
     navAppearance.largeTitleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.title,
-      .font: Typography.largeTitle,
+      .foregroundColor: UIColor.NavBar.text,
+      .font: Typography.largeTitle
     ]
 
     let buttonAppearance = UIBarButtonItemAppearance()
     buttonAppearance.normal.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.title,
-      .font: Typography.body,
+      .foregroundColor: UIColor.NavBar.text,
+      .font: Typography.body
     ]
     buttonAppearance.highlighted.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.title,
-      .font: Typography.bodyMedium,
+      .foregroundColor: UIColor.NavBar.text,
+      .font: Typography.bodyMedium
     ]
     navAppearance.buttonAppearance = buttonAppearance
     navAppearance.doneButtonAppearance = buttonAppearance
