@@ -9,11 +9,12 @@ import UIKit
 
 class SettingsDataTableViewCell: BaseSettingsCell {
 
-    let dataLabel: UILabel = {
+  let dataLabel: UILabel = {
     let label = UILabel()
     label.numberOfLines = 1
     label.textAlignment = .right
     label.textColor = UIColor.TableView.cellLabel
+    label.applyDynamic(Typography.footnote)
     label.translatesAutoresizingMaskIntoConstraints = false
     return label
   }()

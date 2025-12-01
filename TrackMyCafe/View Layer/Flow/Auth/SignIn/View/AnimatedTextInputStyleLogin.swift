@@ -18,7 +18,7 @@ public struct AnimatedTextInputStyleLogin: AnimatedTextInputStyle {
     public let lineActiveColor = UIColor.Main.text
     public let lineHeight: CGFloat = 1.0 / UIScreen.main.scale
     public let errorColor = UIColor.red
-    public let textInputFont = UIFont.systemFont(ofSize: 17)
+    public let textInputFont = Typography.body
     public let textInputFontColor = UIColor.Main.text
     public let placeholderMinFontSize: CGFloat = 14
     public let counterLabelFont: UIFont? = UIFont.systemFont(ofSize: 9)

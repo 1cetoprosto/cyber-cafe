@@ -301,6 +301,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
   }
 
+  func tableView(
+    _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
+  ) {
+    guard let header = view as? UITableViewHeaderFooterView else { return }
+    header.textLabel?.font = Typography.footnote
+    header.textLabel?.textColor = UIColor.Main.text
+    if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
+  }
+
   func switchToDarkTheme(isOn: Bool) {
     logger.debug("Tap to switchDarkTheme isOn: \(isOn)")
   }

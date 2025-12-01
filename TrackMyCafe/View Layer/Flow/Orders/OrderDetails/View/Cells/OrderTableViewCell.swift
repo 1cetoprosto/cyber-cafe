@@ -23,6 +23,7 @@ class OrderTableViewCell: UITableViewCell {
         label.text = "Esspresso"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
+        label.applyDynamic(Typography.body)
 
         return label
     }()
@@ -32,7 +33,8 @@ class OrderTableViewCell: UITableViewCell {
         label.text = "0"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
-
+        label.applyDynamic(Typography.body)
+        
         return label
     }()
 

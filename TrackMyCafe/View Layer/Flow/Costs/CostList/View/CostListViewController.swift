@@ -37,10 +37,6 @@ class CostListViewController: UIViewController {
     view.backgroundColor = UIColor.Main.background
     title = R.string.global.costs()
 
-    // Налаштування кнопки назад без тексту
-    navigationItem.backBarButtonItem = UIBarButtonItem(
-      title: "", style: .plain, target: nil, action: nil)
-
     tableView.dataSource = self
     tableView.delegate = self
 
@@ -109,6 +105,15 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     guard let vm = detailViewModel else { return }
     let costVC = CostDetailsListViewController(viewModel: vm)
     self.navigationController?.pushViewController(costVC, animated: true)
+  }
+
+  func tableView(
+    _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
+  ) {
+    guard let header = view as? UITableViewHeaderFooterView else { return }
+    header.textLabel?.font = Typography.footnote
+    header.textLabel?.textColor = UIColor.Main.text
+    if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
   }
 
   func tableView(
