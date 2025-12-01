@@ -123,6 +123,13 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 
     return UISwipeActionsConfiguration(actions: [deleteAction])
   }
+
+  func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    guard let header = view as? UITableViewHeaderFooterView else { return }
+    header.textLabel?.font = Typography.footnote
+    header.textLabel?.textColor = UIColor.Main.text
+    if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
+  }
 }
 
 // MARK: Constraints

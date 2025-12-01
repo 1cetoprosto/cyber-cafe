@@ -111,6 +111,13 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     self.navigationController?.pushViewController(costVC, animated: true)
   }
 
+  func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    guard let header = view as? UITableViewHeaderFooterView else { return }
+    header.textLabel?.font = Typography.footnote
+    header.textLabel?.textColor = UIColor.Main.text
+    if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
+  }
+
   func tableView(
     _ tableView: UITableView,
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
