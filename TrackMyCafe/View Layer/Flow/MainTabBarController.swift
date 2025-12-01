@@ -57,23 +57,41 @@ class MainTabBarController: UITabBarController {
     // Apply to stacked layout
     let stacked = appearance.stackedLayoutAppearance
     stacked.selected.iconColor = selectedColor
-    stacked.selected.titleTextAttributes = [.foregroundColor: selectedColor]
+    stacked.selected.titleTextAttributes = [
+      .foregroundColor: selectedColor,
+      .font: Typography.footnote
+    ]
     stacked.normal.iconColor = unselectedColor
-    stacked.normal.titleTextAttributes = [.foregroundColor: unselectedColor]
+    stacked.normal.titleTextAttributes = [
+      .foregroundColor: unselectedColor,
+      .font: Typography.footnote
+    ]
 
     // Apply to inline layout
     let inline = appearance.inlineLayoutAppearance
     inline.selected.iconColor = selectedColor
-    inline.selected.titleTextAttributes = [.foregroundColor: selectedColor]
+    inline.selected.titleTextAttributes = [
+      .foregroundColor: selectedColor,
+      .font: Typography.footnote
+    ]
     inline.normal.iconColor = unselectedColor
-    inline.normal.titleTextAttributes = [.foregroundColor: unselectedColor]
+    inline.normal.titleTextAttributes = [
+      .foregroundColor: unselectedColor,
+      .font: Typography.footnote
+    ]
 
     // Apply to compact inline layout
     let compact = appearance.compactInlineLayoutAppearance
     compact.selected.iconColor = selectedColor
-    compact.selected.titleTextAttributes = [.foregroundColor: selectedColor]
+    compact.selected.titleTextAttributes = [
+      .foregroundColor: selectedColor,
+      .font: Typography.footnote
+    ]
     compact.normal.iconColor = unselectedColor
-    compact.normal.titleTextAttributes = [.foregroundColor: unselectedColor]
+    compact.normal.titleTextAttributes = [
+      .foregroundColor: unselectedColor,
+      .font: Typography.footnote
+    ]
 
     tabBar.standardAppearance = appearance
     if #available(iOS 15.0, *) {
