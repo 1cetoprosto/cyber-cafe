@@ -140,7 +140,7 @@ class MainTabBarController: UITabBarController {
     ]
     navAppearance.largeTitleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.largeTitle
+      .font: Typography.title2DemiBold
     ]
 
     let buttonAppearance = UIBarButtonItemAppearance()
