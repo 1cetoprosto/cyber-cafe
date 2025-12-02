@@ -26,7 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     // Функція для налаштування Realm з міграцією
     func configureRealm() {
         // Визначте версію схеми як константу
-        let currentSchemaVersion: UInt64 = 2  // Збільшуйте це число при кожній міграції
+        let currentSchemaVersion: UInt64 = 3
         
         // Визначте блок міграції
         let migrationBlock: MigrationBlock = { migration, oldSchemaVersion in
@@ -52,6 +52,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
                         }
                     }
                 }
+                if oldSchemaVersion < 3 {
+                    migration.enumerateObjects(ofType: RealmTypeModel.className()) { _, newObject in
+                        newObject!["isDefault"] = false
+                    }
+                }
             }
         }
         
@@ -66,11 +71,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
     
     // MARK: Scene Lifecycle
-    func scene(
-        _ scene: UIScene,
-        willConnectTo session: UISceneSession,
-        options connectionOptions: UIScene.ConnectionOptions
-    ) {
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+  ) {
         
         //configureRealm()
         
@@ -96,13 +101,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             window?.rootViewController = MainTabBarController()
         }
         
-        window?.makeKeyAndVisible()
-        
-        // Apply saved theme on app launch
-        Theme.applyCurrentTheme()
-    }
+    window?.makeKeyAndVisible()
     
-    func set(root controller: UIViewController) {
+    // Apply saved theme on app launch
+    Theme.applyCurrentTheme()
+
+    seedDefaultIncomeTypesIfNeeded()
+  }
+  
+  func set(root controller: UIViewController) {
         let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
         controller.view.addSubview(overlayView)
         window?.rootViewController = controller
@@ -115,5 +122,37 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             completion: { finished in
                 overlayView.removeFromSuperview()
             })
+  }
+}
+
+extension SceneDelegate {
+    private func seedDefaultIncomeTypesIfNeeded() {
+        let key = UserDefaultsKeys.firstLaunch
+        let seeded = UserDefaults.standard.bool(forKey: key)
+        if seeded { return }
+        DomainDatabaseService.shared.fetchTypes { types in
+            if !types.isEmpty {
+                UserDefaults.standard.set(true, forKey: key)
+                UserDefaults.standard.synchronize()
+                return
+            }
+            let names = [
+                R.string.global.typeHall(),
+                R.string.global.typeTakeaway(),
+                R.string.global.typeDelivery()
+            ]
+            let group = DispatchGroup()
+            for name in names {
+                group.enter()
+                let model = TypeModel(id: UUID().uuidString, name: name)
+                DomainDatabaseService.shared.saveType(model: model) { _ in
+                    group.leave()
+                }
+            }
+            group.notify(queue: .main) {
+                UserDefaults.standard.set(true, forKey: key)
+                UserDefaults.standard.synchronize()
+            }
+        }
     }
 }

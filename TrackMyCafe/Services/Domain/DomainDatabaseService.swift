@@ -673,6 +673,38 @@ class DomainDatabaseService: DomainDB {
     }
   }
 
+  func setDefaultType(model: TypeModel, isDefault: Bool) {
+    let isOnline = isOnlineModeEnabled()
+
+    if isOnline {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.types, firModel: FIRTypeModel.self
+      ) { result in
+        switch result {
+        case .success(let firTypes):
+          let types = firTypes.map { TypeModel(firebaseModel: $1) }
+          for t in types {
+            var updated = FIRTypeModel(dataModel: t)
+            updated.isDefault = (t.id == model.id) ? isDefault : false
+            FirestoreDatabaseService.shared.update(
+              firModel: updated, collection: FirebaseCollections.types, documentId: t.id
+            ) { _ in }
+          }
+          self.logger.info("Default type updated in Firestore")
+        case .failure(let error):
+          self.logger.error("Failed to update default type in Firestore: \(error.localizedDescription)")
+        }
+      }
+    } else {
+      let realmTypes = RealmDatabaseService.shared.fetchTypes()
+      for rm in realmTypes {
+        RealmDatabaseService.shared.updateTypeDefault(
+          model: rm, isDefault: (rm.id == model.id) ? isDefault : false)
+      }
+      logger.log("Default type updated in Realm")
+    }
+  }
+
   func deleteType(model: TypeModel, completion: @escaping (Bool) -> Void) {
     let isOnline = isOnlineModeEnabled()
 

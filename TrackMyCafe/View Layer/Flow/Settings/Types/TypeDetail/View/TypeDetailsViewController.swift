@@ -42,6 +42,15 @@ final class TypeDetailsViewController: UIViewController {
     return container
   }()
 
+  private lazy var defaultToggleContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.defaultType(),
+      inputType: .toggle(isOn: false),
+      isEditable: true
+    )
+    return container
+  }()
+
   private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
@@ -84,6 +93,7 @@ final class TypeDetailsViewController: UIViewController {
     typeInputContainer.setReturnKeyType(.done)
 
     mainStackView.addArrangedSubview(typeInputContainer)
+    mainStackView.addArrangedSubview(defaultToggleContainer)
   }
 
   private func setupNavigationBar() {
@@ -119,6 +129,7 @@ final class TypeDetailsViewController: UIViewController {
     let containerHeight =
       UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
     typeInputContainer.height(containerHeight)
+    defaultToggleContainer.height(containerHeight)
 
     // Save Button constraints
     saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
@@ -132,6 +143,7 @@ final class TypeDetailsViewController: UIViewController {
 
   private func setupData() {
     typeInputContainer.text = type.name
+    defaultToggleContainer.isOn = type.isDefault
   }
 
   private func setupKeyboardHandling() {
@@ -151,6 +163,7 @@ final class TypeDetailsViewController: UIViewController {
     }
 
     type.name = name
+    let isDefault = defaultToggleContainer.isOn
     if type.id.isEmpty {
       type.id = UUID().uuidString
       DomainDatabaseService.shared.saveType(model: type) { success in
@@ -160,9 +173,13 @@ final class TypeDetailsViewController: UIViewController {
             description: R.string.global.failedToSaveType()
           ) {}
         }
+        if success {
+          DomainDatabaseService.shared.setDefaultType(model: self.type, isDefault: isDefault)
+        }
       }
     } else {
       DomainDatabaseService.shared.updateType(model: type, type: name)
+      DomainDatabaseService.shared.setDefaultType(model: type, isDefault: isDefault)
     }
 
     navigationController?.popViewController(animated: true)
