@@ -6,47 +6,50 @@
 //
 
 import RealmSwift
+import TinyConstraints
 import UIKit
 
-class TypeDetailsViewController: UIViewController {
+final class TypeDetailsViewController: UIViewController {
 
-  let typeLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .left
-    label.text = R.string.global.type()
-    label.textColor = UIColor.Main.text
-    label.applyDynamic(Typography.footnote)
-    label.translatesAutoresizingMaskIntoConstraints = false
+  // MARK: - Properties
+  private var saveButtonBottomConstraint: NSLayoutConstraint!
+  var type: TypeModel
 
-    return label
+  // MARK: - UI Elements
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.keyboardDismissMode = .onDrag
+    return scrollView
   }()
 
-  let typeTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = R.string.global.enterTypeName()
-      textField.layer.borderWidth = UIConstants.standardBorderWidth
-      textField.layer.borderColor = UIColor.TableView.cellBackground.cgColor
-    textField.layer.cornerRadius = UIConstants.smallCornerRadius
-    textField.backgroundColor = UIColor.TableView.cellBackground
-    textField.font = Typography.title3
-    textField.textColor = UIColor.TableView.cellLabel
-    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = UIConstants.standardPadding
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    return stackView
   }()
 
-  lazy var saveButton: UIButton = {
+  private lazy var typeInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.type(),
+      inputType: .text(keyboardType: .default),
+      isEditable: true,
+      placeholder: R.string.global.enterTypeName()
+    )
+    return container
+  }()
+
+  private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
-    button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
-
+    button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
     return button
   }()
 
-  var type: TypeModel
-
+  // MARK: - Init
   init(type: TypeModel) {
     self.type = type
     super.init(nibName: nil, bundle: nil)
@@ -56,52 +59,93 @@ class TypeDetailsViewController: UIViewController {
     fatalError("init(coder:) has not been implemented")
   }
 
+  // MARK: - Lifecycle
   override func viewDidLoad() {
     super.viewDidLoad()
+    setupUI()
+    setupConstraints()
+    setupData()
+    setupKeyboardHandling()
+  }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    setupNavigationBar()
+  }
+
+  // MARK: - Setup Methods
+  private func setupUI() {
     view.backgroundColor = UIColor.Main.background
+    view.addSubview(scrollView)
+    view.addSubview(saveButton)
+    scrollView.addSubview(mainStackView)
+
+    typeInputContainer.setDelegate(self)
+    typeInputContainer.setReturnKeyType(.done)
+
+    mainStackView.addArrangedSubview(typeInputContainer)
+  }
+
+  private func setupNavigationBar() {
     title = R.string.global.type()
-
-    typeTextfield.text = type.name
-
+    navigationController?.navigationBar.prefersLargeTitles = true
+    navigationItem.largeTitleDisplayMode = .always
+    navigationController?.navigationBar.largeTitleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
+    navigationController?.navigationBar.titleTextAttributes = [
+      .foregroundColor: UIColor.NavBar.text
+    ]
     navigationController?.view.backgroundColor = UIColor.NavBar.background
-
-    setConstraints()
   }
 
-  func setConstraints() {
+  private func setupConstraints() {
+    // ScrollView constraints
+    scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+    scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
-    let buttonStackView = UIStackView(
-      arrangedSubviews: [saveButton],
-      axis: .horizontal,
-      spacing: 20,
-      distribution: .fillEqually)
+    // Main StackView constraints
+    mainStackView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.largeSpacing,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.largeSpacing,
+        right: UIConstants.standardPadding
+      )
+    )
+    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
 
-    let productStackView = UIStackView(
-      arrangedSubviews: [
-        typeLabel,
-        typeTextfield,
-        buttonStackView,
-      ],
-      axis: .vertical,
-      spacing: 5,
-      distribution: .fillEqually)
-    view.addSubview(productStackView)
+    // Single input container height
+    let containerHeight =
+      UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+    typeInputContainer.height(containerHeight)
 
-    NSLayoutConstraint.activate([
-      productStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-      productStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-      productStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-      productStackView.heightAnchor.constraint(equalToConstant: 120),
-    ])
-
+    // Save Button constraints
+    saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    saveButton.height(UIConstants.buttonHeight)
+    saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
+      equalTo: view.keyboardLayoutGuide.topAnchor,
+      constant: -UIConstants.standardPadding
+    )
+    saveButtonBottomConstraint.isActive = true
   }
 
-  // MARK: - Method
-  @objc func saveAction(param: UIButton) {
-    guard let name = typeTextfield.text, !name.isEmpty else {
+  private func setupData() {
+    typeInputContainer.text = type.name
+  }
+
+  private func setupKeyboardHandling() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
+  }
+
+  // MARK: - Actions
+  @objc private func saveAction() {
+    guard let name = typeInputContainer.text, !name.isEmpty else {
       PopupFactory.showPopup(
-        title: R.string.global.error(), description: R.string.global.pleaseEnterTypeName()
+        title: R.string.global.error(),
+        description: R.string.global.pleaseEnterTypeName()
       ) {}
       return
     }
@@ -112,7 +156,8 @@ class TypeDetailsViewController: UIViewController {
       DomainDatabaseService.shared.saveType(model: type) { success in
         if !success {
           PopupFactory.showPopup(
-            title: R.string.global.error(), description: R.string.global.failedToSaveType()
+            title: R.string.global.error(),
+            description: R.string.global.failedToSaveType()
           ) {}
         }
       }
@@ -123,8 +168,15 @@ class TypeDetailsViewController: UIViewController {
     navigationController?.popViewController(animated: true)
   }
 
-  @objc func cancelAction(param: UIButton) {
-    navigationController?.popViewController(animated: true)
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
   }
+}
 
+// MARK: - UITextFieldDelegate
+extension TypeDetailsViewController: UITextFieldDelegate {
+  func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    textField.resignFirstResponder()
+    return true
+  }
 }

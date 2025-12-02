@@ -67,12 +67,10 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     
     func totalSum() -> String {
         var totalSum: Double = 0.0
-        
         for product in products {
             totalSum += product.sum
         }
-        
-        return String(totalSum)
+        return totalSum.currency
     }
     
     func saveOrder(withOrderId id: String, date: Date) {
