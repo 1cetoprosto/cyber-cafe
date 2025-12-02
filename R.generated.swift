@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 193 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 197 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -525,6 +525,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var defaultOrderType: RswiftResources.StringResource { .init(key: "defaultOrderType", tableName: "Global", source: source, developmentValue: "Default", comment: nil) }
+
+      /// en translation: Default type
+      ///
+      /// Key: defaultType
+      ///
+      /// Locales: en, uk
+      var defaultType: RswiftResources.StringResource { .init(key: "defaultType", tableName: "Global", source: source, developmentValue: "Default type", comment: nil) }
 
       /// en translation: Delete
       ///
@@ -1526,6 +1533,27 @@ struct _R {
       ///
       /// Locales: en, uk
       var type: RswiftResources.StringResource { .init(key: "type", tableName: "Global", source: source, developmentValue: "Type", comment: nil) }
+
+      /// en translation: Delivery
+      ///
+      /// Key: typeDelivery
+      ///
+      /// Locales: en, uk
+      var typeDelivery: RswiftResources.StringResource { .init(key: "typeDelivery", tableName: "Global", source: source, developmentValue: "Delivery", comment: nil) }
+
+      /// en translation: Dine‑in
+      ///
+      /// Key: typeHall
+      ///
+      /// Locales: en, uk
+      var typeHall: RswiftResources.StringResource { .init(key: "typeHall", tableName: "Global", source: source, developmentValue: "Dine‑in", comment: nil) }
+
+      /// en translation: Takeaway
+      ///
+      /// Key: typeTakeaway
+      ///
+      /// Locales: en, uk
+      var typeTakeaway: RswiftResources.StringResource { .init(key: "typeTakeaway", tableName: "Global", source: source, developmentValue: "Takeaway", comment: nil) }
 
       /// en translation: Types
       ///
