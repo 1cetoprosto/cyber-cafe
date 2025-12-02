@@ -11,10 +11,12 @@ import FirebaseFirestoreSwift
 struct FIRTypeModel: Codable {
     @DocumentID var id: String?
     var name: String = ""
+    var isDefault: Bool = false
     
     init(dataModel: TypeModel) {
         self.id = dataModel.id
         self.name = dataModel.name
+        self.isDefault = dataModel.isDefault
     }
 }
 

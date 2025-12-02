@@ -208,6 +208,15 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     dateInputContainer.date = viewModel.date
     typeInputContainer.text = viewModel.type
 
+    if (typeInputContainer.text == nil || typeInputContainer.text == "") && viewModel.isNewModel {
+      DomainDatabaseService.shared.fetchTypes { [weak self] types in
+        guard let self = self else { return }
+        if let def = types.first(where: { $0.isDefault }) {
+          DispatchQueue.main.async { self.typeInputContainer.text = def.name }
+        }
+      }
+    }
+
     if tableViewModel == nil {
       tableViewModel = ProductListViewModel()
       tableViewModel?.getProducts(withIdOrder: viewModel.id) {

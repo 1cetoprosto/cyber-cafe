@@ -198,6 +198,10 @@
 // MARK: - Type
 "types" = "Types";
 "type" = "Type";
+"typeHall" = "Dine‑in";
+"typeTakeaway" = "Takeaway";
+"typeDelivery" = "Delivery";
+"defaultType" = "Default type";
 "enterTypeName" = "Enter the name of the type of receipt";
 "pleaseEnterTypeName" = "Please enter the type name";
 "failedToSaveType" = "Failed to save type";
