@@ -18,7 +18,7 @@ class RealmDatabaseService: RealmDB {
 
   private init() {
     var config = Realm.Configuration()
-    config.schemaVersion = 2  // Поточна версія схеми
+    config.schemaVersion = 3
     config.migrationBlock = { migration, oldSchemaVersion in
       if oldSchemaVersion < 1 {
         // Міграція з версії 0 до 1 (якщо є)
@@ -33,6 +33,11 @@ class RealmDatabaseService: RealmDB {
         // migration.enumerateObjects(ofType: AnotherObjectClass.className()) { oldObject, newObject in
         //     newObject!["anotherNewProperty"] = 0
         // }
+      }
+      if oldSchemaVersion < 3 {
+        migration.enumerateObjects(ofType: RealmTypeModel.className()) { _, newObject in
+          newObject!["isDefault"] = false
+        }
       }
     }
 
@@ -285,6 +290,13 @@ class RealmDatabaseService: RealmDB {
     executeWrite {
       model.name = type
       logger.log("Updated type with id: \(model.id, privacy: .public)")
+    }
+  }
+
+  func updateTypeDefault(model: RealmTypeModel, isDefault: Bool) {
+    executeWrite {
+      model.isDefault = isDefault
+      logger.log("Updated type default flag with id: \(model.id, privacy: .public)")
     }
   }
 
