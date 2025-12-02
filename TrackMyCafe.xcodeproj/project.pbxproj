@@ -524,6 +524,7 @@
 		F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
+		F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FCF72C2EDF570D00B337BE /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -727,6 +728,7 @@
 				F3F6A61B2C2FED7F000961C8 /* TPInAppReceipt-Objc in Frameworks */,
 				F39B5D222846112F000F7D43 /* FirebaseFirestore in Frameworks */,
 				F3410E9C2BDD34540007157B /* TinyConstraints in Frameworks */,
+				F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */,
 				627C10185917C36A6341E05F /* Pods_TrackMyCafe_Prod.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1768,6 +1770,7 @@
 				F3F6A6182C2FED7F000961C8 /* TPInAppReceipt */,
 				F3F6A61A2C2FED7F000961C8 /* TPInAppReceipt-Objc */,
 				F3F6A6212C327849000961C8 /* SwiftyStoreKit */,
+				F3FCF72C2EDF570D00B337BE /* Kingfisher */,
 			);
 			productName = "Cyber-coffe";
 			productReference = F39A52F127311FDD00C8F2D3 /* TrackMyCafe Prod.app */;
@@ -2108,7 +2111,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B339A92C0B22FE0073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2126,7 +2129,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B339AA2C0B22FE0073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2163,7 +2166,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "${PODS_ROOT}/SwiftLint/swiftlint\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B33A492C0B23450073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -3451,6 +3454,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
 			productName = SwiftyStoreKit;
+		};
+		F3FCF72C2EDF570D00B337BE /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

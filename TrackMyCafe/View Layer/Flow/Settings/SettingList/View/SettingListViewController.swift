@@ -126,7 +126,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     options.append(
       .dataCell(
         model: SettingsDataOption(
-          title: "Theme",
+          title: R.string.global.theme(),
           icon: UIImage(systemName: SystemImages.sunMax),
           iconBackgroundColor: .systemBlue,
           data: SettingsManager.shared.loadTheme()
@@ -143,7 +143,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     options.append(
       .staticCell(
         model: SettingsStaticOption(
-          title: R.string.global.feedback(),
+          title: R.string.global.writeToDeveloper(),
           icon: UIImage(systemName: SystemImages.envelopeFill),
           iconBackgroundColor: .systemOrange
         ) {
@@ -177,15 +177,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     //       }))
     // }
 
-    models.append(Section(title: "General", option: options))
+    models.append(Section(title: R.string.global.general(), option: options))
 
     models.append(
       Section(
-        title: "Orders",
+        title: R.string.global.income(),
         option: [
           .staticCell(
             model: SettingsStaticOption(
-              title: "Price",
+              title: R.string.global.priceList(),
               icon: UIImage(systemName: SystemImages.cupAndSaucerFill),
               iconBackgroundColor: .systemBrown
             ) {
@@ -194,7 +194,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             }),
           .staticCell(
             model: SettingsStaticOption(
-              title: "Types",
+              title: R.string.global.receiptTypes(),
               icon: UIImage(systemName: SystemImages.banknoteFill),
               iconBackgroundColor: .systemGreen
             ) {
@@ -213,42 +213,43 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
         ]))
 
-#if DEBUG
-#if targetEnvironment(simulator)
-    let devOptions: [SettingsOptionType] = [
-      .staticCell(
-        model: SettingsStaticOption(
-          title: "Seed Test Data",
-          icon: UIImage(systemName: SystemImages.gearshape),
-          iconBackgroundColor: .systemPurple
-        ) {
-          let alert = UIAlertController(
-            title: "Seed Test Data",
-            message: "Enter number of days",
-            preferredStyle: .alert
-          )
-          alert.addTextField { tf in
-            tf.keyboardType = .numberPad
-            tf.text = "14"
-          }
-          alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-          alert.addAction(UIAlertAction(title: "Seed", style: .default) { _ in
-            let daysText = alert.textFields?.first?.text ?? "14"
-            let days = Int(daysText) ?? 14
-            SVProgressHUD.show(withStatus: "Seeding data...")
-            Task {
-              await DomainDatabaseService.shared.seedTestData(forDays: days)
-                await SVProgressHUD.dismiss()
-              self.tableView.reloadData()
-            }
-          })
-          self.present(alert, animated: true)
-        })
-    ]
+    #if DEBUG
+      #if targetEnvironment(simulator)
+        let devOptions: [SettingsOptionType] = [
+          .staticCell(
+            model: SettingsStaticOption(
+              title: R.string.global.seedTestData(),
+              icon: UIImage(systemName: SystemImages.gearshape),
+              iconBackgroundColor: .systemPurple
+            ) {
+              let alert = UIAlertController(
+                title: R.string.global.seedTestData(),
+                message: R.string.global.enterNumberOfDays(),
+                preferredStyle: .alert
+              )
+              alert.addTextField { tf in
+                tf.keyboardType = .numberPad
+                tf.text = "14"
+              }
+              alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+              alert.addAction(
+                UIAlertAction(title: R.string.global.seedAction(), style: .default) { _ in
+                  let daysText = alert.textFields?.first?.text ?? "14"
+                  let days = Int(daysText) ?? 14
+                  SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                  Task {
+                    await DomainDatabaseService.shared.seedTestData(forDays: days)
+                    await SVProgressHUD.dismiss()
+                    self.tableView.reloadData()
+                  }
+                })
+              self.present(alert, animated: true)
+            })
+        ]
 
-    models.append(Section(title: "Developer", option: devOptions))
-#endif
-#endif
+        models.append(Section(title: R.string.global.developer(), option: devOptions))
+      #endif
+    #endif
 
     // models.append(
     //   Section(

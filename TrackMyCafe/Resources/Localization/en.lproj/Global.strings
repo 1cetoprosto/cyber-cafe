@@ -169,6 +169,7 @@
 "coffeeWithMilkThemeName" = "Latte (Automatic)";
 "coffeeWithMilkLightThemeName" = "Latte (Light)";
 "coffeeWithMilkDarkThemeName" = "Latte (Dark)";
+"theme" = "Theme";
 
 // MARK: - Settings
 "languages" = "Languages";
@@ -179,12 +180,20 @@
 "transferingData" = "Transferring data...";
 "authenticationFailedTitle" = "Authentication Failed";
 "authenticationFailedMessage" = "To continue, you need to log in.";
+"developer" = "Developer";
+"seedTestData" = "Seed Test Data";
+"priceList" = "Price list";
+"receiptTypes" = "Receipt types";
+"writeToDeveloper" = "Write to developer";
+"enterNumberOfDays" = "Enter number of days";
+"seedAction" = "Seed";
+"seedingData" = "Seeding data...";
 
 // MARK: - Product
-"products" = "Products";
-"product" = "Product";
-"productName" = "Product name";
-"enterProductName" = "Enter product's name";
+"products" = "Price list";
+"product" = "Good";
+"productName" = "Good name";
+"enterProductName" = "Enter good's name";
 "price" = "Price";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
@@ -196,7 +205,7 @@
 "goods" = "Goods";
 
 // MARK: - Type
-"types" = "Types";
+"types" = "Types ";
 "type" = "Type";
 "typeHall" = "Dine‑in";
 "typeTakeaway" = "Takeaway";
@@ -214,9 +223,9 @@
 "somethingWentWrong" = "Something went wrong";
 
 // MARK: - Orders
-"orders" = "Orders";
-"allOrders" = "All Orders";
-"order" = "Order";
+"orders" = "Incomes";
+"allOrders" = "All Incomes";
+"order" = "Income";
 "cash" = "Cash";
 "card" = "Card";
 "receivedInCash" = "Received in cash";
@@ -228,18 +237,21 @@
 "chooseType" = "Choose type";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them.";
 
+// MARK: - Income
+"income" = "Income";
+
 // MARK: - Sales
 "sales" = "Sales";
 "plan" = "Plan";
 
 // MARK: - Cost
-"costs" = "Costs";
-"cost" = "Cost";
+"costs" = "Expenses";
+"cost" = "Expense";
 "costDate" = "Date";
-"costName" = "Cost";
-"costNamePlaceholder" = "Enter cost name";
+"costName" = "Expense";
+"costNamePlaceholder" = "Enter expense name";
 "costSum" = "Sum";
-"costSumPlaceholder" = "Enter cost sum";
+"costSumPlaceholder" = "Enter expense sum";
 
 // MARK: - Feedback
 "feedback" = "Feedback";
