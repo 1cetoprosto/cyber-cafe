@@ -144,7 +144,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     cashInputContainer.enableNumericInput(maxFractionDigits: 2)
     cardInputContainer.enableNumericInput(maxFractionDigits: 2)
     let currencySymbol =
-      RequestManager.shared.settings?.currencySymbol ?? DefaultValues.dollarSymbol
+      RequestManager.shared.settings?.currencySymbol
+      ?? ((Locale.current.languageCode == "uk")
+        ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
     cashInputContainer.enableCurrencySuffix(symbol: currencySymbol)
     cardInputContainer.enableCurrencySuffix(symbol: currencySymbol)
     cashInputContainer.setReturnKeyType(.done)
@@ -193,10 +195,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     guard let viewModel = viewModel else { return }
 
     if viewModel.cash != 0 {
-      cashInputContainer.text = viewModel.cash.description
+      cashInputContainer.text = viewModel.cash.decimalFormat
     }
     if viewModel.card != 0 {
-      cardInputContainer.text = viewModel.card.description
+      cardInputContainer.text = viewModel.card.decimalFormat
     }
     if viewModel.sum != 0 {
       orderLabel.text = viewModel.sum.currency

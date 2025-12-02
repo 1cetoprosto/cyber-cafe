@@ -52,7 +52,7 @@ class ProductPriceTableViewCell: UITableViewCell {
 
   func configure(productPrice: ProductsPriceModel, indexPath: IndexPath) {
     productLabel.text = productPrice.name
-    quantityLabel.text = String(productPrice.price)
+    quantityLabel.text = productPrice.price.currency
 
     selectionStyle = .none
   }
