@@ -64,7 +64,12 @@ final class InputContainerView: UIView {
 
   private lazy var switchControl: UISwitch = {
     let switchControl = UISwitch()
-    switchControl.onTintColor = UIColor.Main.accent
+    switchControl.onTintColor = UIColor.Button.background
+    switchControl.thumbTintColor = UIColor.Main.background
+    let offColor = UIColor.Main.text.alpha(0.18)
+    switchControl.tintColor = offColor
+    switchControl.backgroundColor = offColor
+    switchControl.layer.cornerRadius = 16
     return switchControl
   }()
 
