@@ -5,6 +5,7 @@
 //  Created by Леонід Квіт on 08.11.2021.
 //
 
+import TinyConstraints
 import UIKit
 
 class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
@@ -13,21 +14,35 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
   var tableViewModel: ProductListViewModelType?
   var onSave: (() -> Void)?
   private var dateChanged: Bool = false
+  private var saveButtonBottomConstraint: NSLayoutConstraint!
 
-  let datePicker: UIDatePicker = {
-    let picker = UIDatePicker(frame: CGRect(x: 0, y: 70, width: 100, height: 50))
-    picker.datePickerMode = .date
-    picker.locale = .current
-    picker.contentHorizontalAlignment = .center
-    picker.preferredDatePickerStyle = .automatic
-    picker.addTarget(self, action: #selector(datePickerChanged), for: .valueChanged)
-
-    return picker
+  private lazy var scrollView: UIScrollView = {
+    let scrollView = UIScrollView()
+    scrollView.showsVerticalScrollIndicator = false
+    scrollView.keyboardDismissMode = .onDrag
+    return scrollView
   }()
 
-  lazy var tableView: UITableView = {
+  private lazy var mainStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = UIConstants.standardPadding
+    stackView.distribution = .fill
+    stackView.alignment = .fill
+    return stackView
+  }()
+
+  private lazy var dateInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.costDate(),
+      inputType: .date(mode: .date),
+      isEditable: true
+    )
+    return container
+  }()
+
+  private lazy var tableView: UITableView = {
     let tableView = UITableView()
-    tableView.translatesAutoresizingMaskIntoConstraints = false
     tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
     tableView.delegate = self
     tableView.dataSource = self
@@ -37,72 +52,55 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     return tableView
   }()
 
-  let cashLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .left
-    label.textColor = UIColor.Main.text
-    label.applyDynamic(Typography.title3)
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    return label
+  private lazy var cashInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: "",
+      inputType: .text(keyboardType: .decimalPad),
+      isEditable: true,
+      placeholder: "0"
+    )
+    return container
   }()
 
-  let cashTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = "0"
-    textField.font = Typography.largeTitle
-    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
+  private lazy var cardInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: "",
+      inputType: .text(keyboardType: .decimalPad),
+      isEditable: true,
+      placeholder: "0"
+    )
+    return container
   }()
 
-  let cardLabel: UILabel = {
-    let label = UILabel()
-    label.textAlignment = .left
-    label.textColor = UIColor.Main.text
-    label.applyDynamic(Typography.title3)
-    label.translatesAutoresizingMaskIntoConstraints = false
-
-    return label
-  }()
-
-  let cardTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = "0"
-    textField.font = Typography.largeTitle
-    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
-  }()
-
-  let orderLabel: UILabel = {
+  private let orderLabel: UILabel = {
     let label = UILabel()
     label.textAlignment = .right
     label.text = "0"
     label.textColor = UIColor.Main.text
-    label.applyDynamic(Typography.largeTitle)
-    label.translatesAutoresizingMaskIntoConstraints = false
+    label.applyDynamic(Typography.title3)
 
     return label
   }()
 
-  let typeTextfield: UITextField = {
-    let textField = UITextField()
-    textField.textAlignment = .left
-    textField.placeholder = R.string.global.chooseType()
-    textField.font = Typography.title3
-    textField.textColor = UIColor.Main.text
-    if #available(iOS 11.0, *) { textField.adjustsFontForContentSizeCategory = true }
-    textField.translatesAutoresizingMaskIntoConstraints = false
-
-    return textField
+  private let totalTitleLabel: UILabel = {
+    let label = UILabel()
+    label.textAlignment = .right
+    label.textColor = UIColor.Main.text
+    label.applyDynamic(Typography.title3)
+    return label
   }()
 
-  lazy var saveButton: UIButton = {
+  private lazy var typeInputContainer: InputContainerView = {
+    let container = InputContainerView(
+      labelText: R.string.global.type(),
+      inputType: .text(keyboardType: .default),
+      isEditable: true,
+      placeholder: R.string.global.chooseType()
+    )
+    return container
+  }()
+
+  private lazy var saveButton: UIButton = {
     let button = DefaultButton()
     button.setTitle(R.string.global.save(), for: .normal)
     button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
@@ -137,19 +135,41 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     view.backgroundColor = UIColor.Main.background
     navigationController?.view.backgroundColor = UIColor.NavBar.background
 
-    self.cashTextfield.delegate = self
-    self.cardTextfield.delegate = self
+    view.addSubview(scrollView)
+    view.addSubview(saveButton)
+    scrollView.addSubview(mainStackView)
+
+    cashInputContainer.setDelegate(self)
+    cardInputContainer.setDelegate(self)
+    cashInputContainer.enableNumericInput(maxFractionDigits: 2)
+    cardInputContainer.enableNumericInput(maxFractionDigits: 2)
+    let currencySymbol =
+      RequestManager.shared.settings?.currencySymbol ?? DefaultValues.dollarSymbol
+    cashInputContainer.enableCurrencySuffix(symbol: currencySymbol)
+    cardInputContainer.enableCurrencySuffix(symbol: currencySymbol)
+    cashInputContainer.setReturnKeyType(.done)
+    cardInputContainer.setReturnKeyType(.done)
+    typeInputContainer.setReturnKeyType(.done)
+    cashInputContainer.textFieldReference?.textAlignment = .right
+    cardInputContainer.textFieldReference?.textAlignment = .right
 
     let pickerView = UIPickerView()
     pickerView.delegate = self
     pickerView.dataSource = self
     pickerView.center = view.center
 
-    typeTextfield.inputView = pickerView
-    typeTextfield.inputAccessoryView = toolbar
+    typeInputContainer.textFieldReference?.inputView = pickerView
+    typeInputContainer.textFieldReference?.inputAccessoryView = toolbar
 
     setData()
-    setConstraints()
+    setupConstraints()
+    setupKeyboardHandling()
+
+    dateInputContainer.onDateChange = { [weak self] _ in
+      guard let self = self else { return }
+      self.dateChanged = true
+      self.orderLabel.text = self.tableViewModel?.totalSum()
+    }
 
     verifyRequiredData {
 
@@ -173,18 +193,20 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     guard let viewModel = viewModel else { return }
 
     if viewModel.cash != 0 {
-      cashTextfield.text = viewModel.cash.description
+      cashInputContainer.text = viewModel.cash.description
     }
     if viewModel.card != 0 {
-      cardTextfield.text = viewModel.card.description
+      cardInputContainer.text = viewModel.card.description
     }
     if viewModel.sum != 0 {
-      orderLabel.text = viewModel.sum.description
+      orderLabel.text = viewModel.sum.currency
     }
-    cashLabel.text = viewModel.cashLabel
-    cardLabel.text = viewModel.cardLabel
-    datePicker.date = viewModel.date
-    typeTextfield.text = viewModel.type
+    cashInputContainer.configure(labelText: viewModel.cashLabel)
+    cardInputContainer.configure(labelText: viewModel.cardLabel)
+    totalTitleLabel.text = viewModel.orderLabel
+    totalTitleLabel.isHidden = false
+    dateInputContainer.date = viewModel.date
+    typeInputContainer.text = viewModel.type
 
     if tableViewModel == nil {
       tableViewModel = ProductListViewModel()
@@ -253,13 +275,20 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
   @objc func datePickerChanged(_ sender: UIDatePicker) {
     dateChanged = true
-    //TODO: need calculate totalSum
     orderLabel.text = tableViewModel?.totalSum()
   }
 
   func textFieldShouldReturn(_ textField: UITextField) -> Bool {
     self.view.endEditing(true)
     return false
+  }
+  func textFieldDidBeginEditing(_ textField: UITextField) {
+    let current = textField.text ?? ""
+    if current == "0" || current == "0,0" || current == "0.0" { textField.text = "" }
+  }
+
+  @objc private func dismissKeyboard() {
+    view.endEditing(true)
   }
 
   @objc private func donePicker() {
@@ -272,10 +301,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     if viewModel.isNewModel {
       viewModel.saveOrders(
         id: "",
-        date: datePicker.date,
-        type: typeTextfield.text,
-        cash: cashTextfield.text,
-        card: cardTextfield.text,
+        date: dateInputContainer.date ?? Date(),
+        type: typeInputContainer.text,
+        cash: cashInputContainer.text,
+        card: cardInputContainer.text,
         sum: orderLabel.text
       ) {
         completion()
@@ -284,10 +313,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     } else {
       viewModel.updateOrders(
         id: viewModel.id,
-        date: datePicker.date,
-        type: typeTextfield.text,
-        cash: cashTextfield.text,
-        card: cardTextfield.text,
+        date: dateInputContainer.date ?? Date(),
+        type: typeInputContainer.text,
+        cash: cashInputContainer.text,
+        card: cardInputContainer.text,
         sum: orderLabel.text
       ) {
         completion()
@@ -296,9 +325,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
     guard let tableViewModel = self.tableViewModel else { return }
     if viewModel.isNewModel {
-      tableViewModel.saveOrder(withOrderId: viewModel.id, date: datePicker.date)
+      tableViewModel.saveOrder(withOrderId: viewModel.id, date: dateInputContainer.date ?? Date())
     } else {
-      tableViewModel.updateOrder(date: datePicker.date)
+      tableViewModel.updateOrder(date: dateInputContainer.date ?? Date())
     }
   }
 }
@@ -358,7 +387,7 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
     guard let viewModel = viewModel else { return }
     //viewModel.setType(row: row, component: component)
     guard let type = viewModel.titleForRow(row: row, component: component) else { return }
-    typeTextfield.text = type
+    typeInputContainer.text = type
     view.endEditing(true)
 
     //        if type != "Sunday service" {
@@ -380,55 +409,87 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
 
 // MARK: - Constraints
 extension OrderDetailsViewController {
-  func setConstraints() {
+  private func setupConstraints() {
+    scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+    scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
-    let cashStackView = UIStackView(
-      arrangedSubviews: [cashLabel, cashTextfield],
-      axis: .horizontal,
-      spacing: 5,
-      distribution: .equalSpacing)
-    view.addSubview(cashStackView)
+    mainStackView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.largeSpacing,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.largeSpacing,
+        right: UIConstants.standardPadding
+      )
+    )
+    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
 
-    let cardStackView = UIStackView(
-      arrangedSubviews: [cardLabel, cardTextfield],
-      axis: .horizontal,
-      spacing: 5,
-      distribution: .equalSpacing)
-    view.addSubview(cardStackView)
+    let containerHeight =
+      UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+    dateInputContainer.height(containerHeight)
+    typeInputContainer.height(containerHeight)
+    cashInputContainer.height(containerHeight)
+    cardInputContainer.height(containerHeight)
+    tableView.height(300)
+
+    saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+    saveButton.height(UIConstants.buttonHeight)
+    saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
+      equalTo: view.keyboardLayoutGuide.topAnchor,
+      constant: -UIConstants.standardPadding
+    )
+    saveButtonBottomConstraint.isActive = true
 
     let cashCardStackView = UIStackView(
-      arrangedSubviews: [cashStackView, cardStackView],
-      axis: .vertical,
-      spacing: 5,
-      distribution: .equalSpacing)
-    view.addSubview(cashCardStackView)
-
-    let moneyStackView = UIStackView(
-      arrangedSubviews: [cashCardStackView, orderLabel],
+      arrangedSubviews: [cashInputContainer, cardInputContainer],
       axis: .horizontal,
-      spacing: 10,
-      distribution: .fillEqually)
-    view.addSubview(moneyStackView)
+      spacing: UIConstants.standardPadding,
+      distribution: .fillEqually
+    )
+    // let moneyStackView = UIStackView(
+    //   arrangedSubviews: [cashCardStackView, orderLabel],
+    //   axis: .horizontal,
+    //   spacing: UIConstants.standardPadding,
+    //   distribution: .fillEqually
+    // )
 
-    NSLayoutConstraint.activate([
-      saveButton.heightAnchor.constraint(equalToConstant: 50)
-    ])
+    let dateTypeStackView = UIStackView(
+      arrangedSubviews: [dateInputContainer, typeInputContainer],
+      axis: .horizontal,
+      spacing: UIConstants.standardPadding,
+      distribution: .fillEqually
+    )
+    mainStackView.addArrangedSubview(dateTypeStackView)
+    mainStackView.addArrangedSubview(tableView)
+    let totalStackView = UIStackView(
+      arrangedSubviews: [totalTitleLabel, orderLabel],
+      axis: .horizontal,
+      spacing: UIConstants.smallSpacing,
+      distribution: .fill
+    )
+    mainStackView.addArrangedSubview(totalStackView)
+    mainStackView.addArrangedSubview(cashCardStackView)
+  }
+}
 
-    let mainStackView = UIStackView(
-      arrangedSubviews: [datePicker, tableView, typeTextfield, moneyStackView, saveButton],
-      axis: .vertical,
-      spacing: 10,
-      distribution: .fill)
-    view.addSubview(mainStackView)
-
-    NSLayoutConstraint.activate([
-      mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-      mainStackView.leadingAnchor.constraint(
-        equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 10),
-      mainStackView.trailingAnchor.constraint(
-        equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -10),
-      mainStackView.bottomAnchor.constraint(
-        equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-    ])
+extension OrderDetailsViewController {
+  private func setupKeyboardHandling() {
+    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+    tapGesture.cancelsTouchesInView = false
+    view.addGestureRecognizer(tapGesture)
+    if let cashTF = cashInputContainer.textFieldReference { addDoneButtonToTextField(cashTF) }
+    if let cardTF = cardInputContainer.textFieldReference { addDoneButtonToTextField(cardTF) }
+  }
+  private func addDoneButtonToTextField(_ textField: UITextField) {
+    let toolbar = UIToolbar()
+    toolbar.sizeToFit()
+    let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+    let doneButton = UIBarButtonItem(
+      title: R.string.global.actionOk(),
+      style: .done,
+      target: self,
+      action: #selector(dismissKeyboard)
+    )
+    toolbar.items = [flexSpace, doneButton]
+    textField.inputAccessoryView = toolbar
   }
 }

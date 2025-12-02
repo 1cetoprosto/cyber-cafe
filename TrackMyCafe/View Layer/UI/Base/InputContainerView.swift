@@ -32,6 +32,10 @@ final class InputContainerView: UIView {
     let label = UILabel()
     label.font = Typography.footnote
     label.textColor = UIColor.Main.text
+    label.numberOfLines = 1
+    label.adjustsFontSizeToFitWidth = true
+    label.minimumScaleFactor = 0.8
+    label.lineBreakMode = .byTruncatingTail
     return label
   }()
 
@@ -332,6 +336,19 @@ final class InputContainerView: UIView {
     if case .text = inputType {
       textField.keyboardType = .decimalPad
     }
+  }
+
+  // Show a currency symbol as a persistent suffix inside the text field
+  func enableCurrencySuffix(symbol: String? = nil) {
+    guard case .text = inputType else { return }
+    let currency = symbol ?? Locale.current.currencySymbol ?? "$"
+    let label = UILabel()
+    label.text = " \(currency)"
+    label.font = Typography.title3
+    label.textColor = UIColor.Main.text
+    label.sizeToFit()
+    textField.rightView = label
+    textField.rightViewMode = .always
   }
 
   @discardableResult
