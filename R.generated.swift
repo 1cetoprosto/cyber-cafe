@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 191 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 193 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -890,13 +890,6 @@ struct _R {
       /// Locales: en, uk
       var middleName: RswiftResources.StringResource { .init(key: "middleName", tableName: "Global", source: source, developmentValue: "Middle name", comment: nil) }
 
-      /// en translation: Money1
-      ///
-      /// Key: money1
-      ///
-      /// Locales: en, uk
-      var money1: RswiftResources.StringResource { .init(key: "money1", tableName: "Global", source: source, developmentValue: "Money1", comment: nil) }
-
       /// en translation: Money2
       ///
       /// Key: money2
@@ -1106,6 +1099,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchases resumed successfully", comment: nil) }
+
+      /// en translation: Received by card
+      ///
+      /// Key: receivedByCard
+      ///
+      /// Locales: en, uk
+      var receivedByCard: RswiftResources.StringResource { .init(key: "receivedByCard", tableName: "Global", source: source, developmentValue: "Received by card", comment: nil) }
+
+      /// en translation: Received in cash
+      ///
+      /// Key: receivedInCash
+      ///
+      /// Locales: en, uk
+      var receivedInCash: RswiftResources.StringResource { .init(key: "receivedInCash", tableName: "Global", source: source, developmentValue: "Received in cash", comment: nil) }
 
       /// en translation: Please try again
       ///
@@ -1477,6 +1484,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var termsOfUse: RswiftResources.StringResource { .init(key: "termsOfUse", tableName: "Global", source: source, developmentValue: "Terms of use", comment: nil) }
+
+      /// en translation: Total
+      ///
+      /// Key: totalTitle
+      ///
+      /// Locales: en, uk
+      var totalTitle: RswiftResources.StringResource { .init(key: "totalTitle", tableName: "Global", source: source, developmentValue: "Total", comment: nil) }
 
       /// en translation: Transfer
       ///
