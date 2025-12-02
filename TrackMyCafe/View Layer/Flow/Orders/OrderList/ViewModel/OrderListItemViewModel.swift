@@ -16,7 +16,7 @@ class OrderListItemViewModel: OrderListItemViewModelType {
   }
 
   var ordersSum: String {
-    return String(Int(model.sum))
+    return model.sum.currency
   }
 
   var ordersLabel: String {
@@ -24,7 +24,7 @@ class OrderListItemViewModel: OrderListItemViewModelType {
   }
 
   var cashSum: String {
-    return String(Int(model.cash))
+    return model.cash.currency
   }
 
   var cashLabel: String {
