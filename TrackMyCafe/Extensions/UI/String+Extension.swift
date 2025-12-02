@@ -60,8 +60,10 @@ extension String {
     
     var double: Double? {
         if let value = Double(self) { return value }
-        let normalized = self.replacingOccurrences(of: ",", with: ".").replacingOccurrences(of: " ", with: "")
-        return Double(normalized)
+        let normalized = self.replacingOccurrences(of: ",", with: ".")
+        let allowed = CharacterSet(charactersIn: "0123456789.-")
+        let filtered = normalized.unicodeScalars.filter { allowed.contains($0) }.map { String($0) }.joined()
+        return Double(filtered)
     }
     
     var doubleOrZero: Double {
@@ -109,4 +111,3 @@ extension CustomStringConvertible {
         return description
     }
 }
-
