@@ -215,7 +215,9 @@
 "order" = "Order";
 "cash" = "Cash";
 "card" = "Card";
-"money1" = "Money1";
+"receivedInCash" = "Received in cash";
+"receivedByCard" = "Received by card";
+"totalTitle" = "Total";
 "money2" = "Money2";
 "money3" = "Money3";
 "defaultOrderType" = "Default";

@@ -215,7 +215,9 @@
 "order" = "Дохід";
 "cash" = "Готівка";
 "card" = "Картка";
-"money1" = "Гроші1";
+"receivedInCash" = "Отримано готівкою";
+"receivedByCard" = "Отримано карткою";
+"totalTitle" = "Всього";
 "money2" = "Гроші2";
 "money3" = "Гроші3";
 "defaultOrderType" = "За замовчуванням";
