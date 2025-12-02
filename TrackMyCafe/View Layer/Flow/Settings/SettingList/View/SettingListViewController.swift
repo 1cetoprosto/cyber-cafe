@@ -213,6 +213,43 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
         ]))
 
+#if DEBUG
+#if targetEnvironment(simulator)
+    let devOptions: [SettingsOptionType] = [
+      .staticCell(
+        model: SettingsStaticOption(
+          title: "Seed Test Data",
+          icon: UIImage(systemName: SystemImages.gearshape),
+          iconBackgroundColor: .systemPurple
+        ) {
+          let alert = UIAlertController(
+            title: "Seed Test Data",
+            message: "Enter number of days",
+            preferredStyle: .alert
+          )
+          alert.addTextField { tf in
+            tf.keyboardType = .numberPad
+            tf.text = "14"
+          }
+          alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+          alert.addAction(UIAlertAction(title: "Seed", style: .default) { _ in
+            let daysText = alert.textFields?.first?.text ?? "14"
+            let days = Int(daysText) ?? 14
+            SVProgressHUD.show(withStatus: "Seeding data...")
+            Task {
+              await DomainDatabaseService.shared.seedTestData(forDays: days)
+                await SVProgressHUD.dismiss()
+              self.tableView.reloadData()
+            }
+          })
+          self.present(alert, animated: true)
+        })
+    ]
+
+    models.append(Section(title: "Developer", option: devOptions))
+#endif
+#endif
+
     // models.append(
     //   Section(
     //     title: "Database",

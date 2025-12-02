@@ -692,7 +692,8 @@ class DomainDatabaseService: DomainDB {
           }
           self.logger.info("Default type updated in Firestore")
         case .failure(let error):
-          self.logger.error("Failed to update default type in Firestore: \(error.localizedDescription)")
+          self.logger.error(
+            "Failed to update default type in Firestore: \(error.localizedDescription)")
         }
       }
     } else {
@@ -969,6 +970,165 @@ class DomainDatabaseService: DomainDB {
       firModelInit: FIRProductModel.init(dataModel:)
     ) {
       completion()
+    }
+  }
+
+  @MainActor
+  func seedTestData(forDays days: Int) async {
+    await withCheckedContinuation { continuation in
+      self.deleteActiveDatabaseData { _ in
+        continuation.resume()
+      }
+    }
+
+    let typeHall = R.string.global.typeHall()
+    let typeTakeaway = R.string.global.typeTakeaway()
+    let typeDelivery = R.string.global.typeDelivery()
+    let types: [TypeModel] = [
+      TypeModel(id: UUID().uuidString, name: typeHall, isDefault: true),
+      TypeModel(id: UUID().uuidString, name: typeTakeaway, isDefault: false),
+      TypeModel(id: UUID().uuidString, name: typeDelivery, isDefault: false),
+    ]
+
+    for t in types {
+      await withCheckedContinuation { continuation in
+        self.saveType(model: t) { _ in
+          continuation.resume()
+        }
+      }
+    }
+
+    let isUkrainian = Locale.current.languageCode == "uk"
+    let catalog: [(uk: String, en: String, price: Double)] = [
+      ("Еспресо", "Espresso", 8),
+      ("Еспресо з молоком", "Espresso with milk", 10),
+      ("Американо", "Americano", 8),
+      ("Американо з молоком", "Americano with milk", 12),
+      ("Капучіно", "Cappuccino", 15),
+      ("Лате", "Latte", 20),
+      ("Лате макіато", "Latte macchiato", 20),
+      ("Айріш", "Irish", 14),
+      ("Айріш великий", "Irish large", 16),
+      ("Гарячий шоколад", "Hot chocolate", 12),
+      ("Гарячий шоколад великий", "Hot chocolate large", 16),
+      ("Какао", "Cocoa", 10),
+      ("Дитяче лате", "Kids latte", 15),
+      ("Чай", "Tea", 5),
+      ("Айс лате", "Ice latte", 15),
+    ]
+
+    let products: [ProductsPriceModel] = catalog.map { entry in
+      let name = isUkrainian ? entry.uk : entry.en
+      return ProductsPriceModel(id: UUID().uuidString, name: name, price: entry.price)
+    }
+
+    for p in products {
+      await withCheckedContinuation { continuation in
+        self.saveProductsPrice(productPrice: p) { _ in
+          continuation.resume()
+        }
+      }
+    }
+
+    let calendar = Calendar.current
+    for i in 0..<max(1, days) {
+      guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
+
+      let typeCount = (i % 3) + 1
+      var rotated = types
+      let shift = i % max(1, rotated.count)
+      if shift > 0 {
+        rotated = Array(rotated[shift...]) + Array(rotated[..<shift])
+      }
+      let dayTypes = Array(rotated.prefix(typeCount))
+
+      for type in dayTypes {
+        let orderId = UUID().uuidString
+        let itemCount = 3 + (i % 3)  // 3..5 items per order
+        var chosen = Array(products.shuffled().prefix(itemCount))
+        var orderItems = [ProductOfOrderModel]()
+
+        for (idx, base) in chosen.enumerated() {
+          let qty = 1 + ((i + idx) % 4)  // 1..4 units per item
+          let sum = Double(qty) * base.price
+          orderItems.append(
+            ProductOfOrderModel(
+              id: UUID().uuidString,
+              orderId: orderId,
+              date: date,
+              name: base.name,
+              quantity: qty,
+              price: base.price,
+              sum: sum
+            )
+          )
+        }
+
+        let total = orderItems.reduce(0) { $0 + $1.sum }
+        let cash = total * 0.6
+        let card = total - cash
+
+        let order = OrderModel(
+          id: orderId,
+          date: date,
+          type: type.name,
+          sum: total,
+          cash: cash,
+          card: card
+        )
+
+        let savedOrderId: String? = await withCheckedContinuation { continuation in
+          self.saveOrder(order: order) { id in
+            continuation.resume(returning: id)
+          }
+        }
+
+        let targetOrderId = savedOrderId ?? orderId
+        for var item in orderItems {
+          item.orderId = targetOrderId
+          await withCheckedContinuation { continuation in
+            self.saveProduct(order: item) { _ in
+              continuation.resume()
+            }
+          }
+        }
+
+        let costCatalog: [(uk: String, en: String, base: Double)] = [
+          ("Молоко", "Milk", 30),
+          ("Цукор", "Sugar", 20),
+          ("Кавові зерна", "Coffee beans", 500),
+          ("Оренда", "Rent", 1200),
+          ("Комунальні послуги", "Utilities", 300),
+          ("Електроенергія", "Electricity", 400),
+          ("Вода", "Water", 60),
+          ("Інтернет", "Internet", 25),
+          ("Заробітна плата", "Salary", 800),
+          ("Податки", "Taxes", 350),
+          ("Маркетинг", "Marketing", 200),
+          ("Пакування", "Packaging", 70),
+          ("Прибирання", "Cleaning", 50),
+          ("Обслуговування обладнання", "Equipment maintenance", 150),
+        ]
+
+        let costCount = 2 + ((i + dayTypes.count) % 3)
+        for j in 0..<costCount {
+          let entry = costCatalog[(i + j) % costCatalog.count]
+          let name = isUkrainian ? entry.uk : entry.en
+          let variance = Double(((i * 17) + (j * 11)) % 120)
+          let amount = (entry.base + variance).rounded(.toNearestOrAwayFromZero)
+          let cost = CostModel(
+            id: UUID().uuidString,
+            date: date,
+            name: name,
+            sum: amount
+          )
+          await withCheckedContinuation { continuation in
+            self.saveCost(model: cost) { _ in
+              continuation.resume()
+            }
+          }
+        }
+      }
     }
   }
 
