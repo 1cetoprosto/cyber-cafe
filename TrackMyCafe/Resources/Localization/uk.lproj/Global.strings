@@ -198,6 +198,10 @@
 // MARK: - Type
 "types" = "Типи";
 "type" = "Тип";
+"typeHall" = "Зал";
+"typeTakeaway" = "Самовинос";
+"typeDelivery" = "Доставка";
+"defaultType" = "Тип за замовчуванням";
 "enterTypeName" = "Введіть назву типу надходження";
 "pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
 "failedToSaveType" = "Не вдалося зберегти тип";
