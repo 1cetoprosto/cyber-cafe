@@ -21,9 +21,9 @@ class CostListItemViewModel: CostListItemViewModelType {
         return cost.name
     }
     
-    var costSum: String {
-        return cost.sum.description
-    }
+  var costSum: String {
+        return cost.sum.currency
+  }
     
     init(cost: CostModel) {
         self.cost = cost

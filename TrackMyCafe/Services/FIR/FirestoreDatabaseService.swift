@@ -476,8 +476,11 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
       FirebaseFields.avatarThumbnailUrl: "",
     ]
 
+    let isUkrainian = Locale.current.languageCode == "uk"
+    let defaultCurrencyName = isUkrainian ? DefaultValues.currencyName : DefaultValues.dollarName
+    let defaultCurrencySymbol = isUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol
     userValue["Settings"] = Settings(
-      currencyName: DefaultValues.dollarName, currencySymbol: DefaultValues.dollarSymbol
+      currencyName: defaultCurrencyName, currencySymbol: defaultCurrencySymbol
     ).forDatabase()
 
     return userValue

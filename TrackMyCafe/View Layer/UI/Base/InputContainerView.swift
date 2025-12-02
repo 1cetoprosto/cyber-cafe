@@ -195,6 +195,9 @@ final class InputContainerView: UIView {
     case .text(let keyboardType):
       containerView.addSubview(textField)
       textField.keyboardType = keyboardType
+      if keyboardType == .decimalPad || keyboardType == .numberPad {
+        textField.textAlignment = .right
+      }
       setupTextFieldConstraints()
 
     case .date(let mode):
@@ -340,13 +343,23 @@ final class InputContainerView: UIView {
     numericFilter = NumericTextInputFilter(maxFractionDigits: maxFractionDigits)
     if case .text = inputType {
       textField.keyboardType = .decimalPad
+      textField.textAlignment = .right
     }
   }
 
   // Show a currency symbol as a persistent suffix inside the text field
   func enableCurrencySuffix(symbol: String? = nil) {
     guard case .text = inputType else { return }
-    let currency = symbol ?? Locale.current.currencySymbol ?? "$"
+    let currency: String
+    if let symbol = symbol {
+      currency = symbol
+    } else {
+      let isUkrainian = Locale.current.languageCode == "uk"
+      currency =
+        isUkrainian
+        ? DefaultValues.currencySymbol
+        : (Locale.current.currencySymbol ?? DefaultValues.dollarSymbol)
+    }
     let label = UILabel()
     label.text = " \(currency)"
     label.font = Typography.title3
