@@ -169,6 +169,7 @@
 "coffeeWithMilkThemeName" = "Лате (Автоматично)";
 "coffeeWithMilkLightThemeName" = "Лате (Світла)";
 "coffeeWithMilkDarkThemeName" = "Лате (Темна)";
+"theme" = "Тема";
 
 // MARK: - Settings
 "languages" = "Мови";
@@ -179,25 +180,33 @@
 "transferingData" = "Триває перенесення даних...";
 "authenticationFailedTitle" = "Помилка автентифікації";
 "authenticationFailedMessage" = "Щоб продовжити, потрібно увійти в систему";
+"developer" = "Розробник";
+"seedTestData" = "Ініціювати тестові дані";
+"priceList" = "Прайс";
+"receiptTypes" = "Типи надходжень";
+"writeToDeveloper" = "Написати розробнику";
+"enterNumberOfDays" = "Введіть кількість днів";
+"seedAction" = "Ініціювати";
+"seedingData" = "Ініціалізація даних...";
 
 // MARK: - Product
-"products" = "Продукти";
-"product" = "Продукт";
-"productName" = "Назва продукту";
-"enterProductName" = "Введіть назву продукту";
+"products" = "Прайс";
+"product" = "Товар";
+"productName" = "Назва товару";
+"enterProductName" = "Введіть назву товару";
 "price" = "Ціна";
 "prices" = "Ціни";
 "printPrices" = "Друкувати ціни";
-"pleaseEnterProductName" = "Будь ласка, введіть назву продукту";
-"failedToSaveProductPrice" = "Не вдалося зберегти ціну продукту";
+"pleaseEnterProductName" = "Будь ласка, введіть назву товару";
+"failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
 "enterPrice" = "Введіть ціну";
 
 // MARK: - Good
 "goods" = "Товари";
 
 // MARK: - Type
-"types" = "Типи";
-"type" = "Тип";
+"types" = "Типи надходжень";
+"type" = "Тип надходження";
 "typeHall" = "Зал";
 "typeTakeaway" = "Самовинос";
 "typeDelivery" = "Доставка";
@@ -227,6 +236,9 @@
 "defaultOrderType" = "За замовчуванням";
 "chooseType" = "Виберіть тип";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані для вибраної дати вже існують. Відкрийте та відредагуйте їх";
+
+// MARK: - Income
+"income" = "Надходження";
 
 // MARK: - Sales 
 "sales" = "Продажі";
