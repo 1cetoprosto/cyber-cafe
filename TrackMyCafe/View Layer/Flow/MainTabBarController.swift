@@ -106,7 +106,7 @@ class MainTabBarController: UITabBarController {
   func setupTabBar() {
     let ordersViewController = createNavController(
       viewController: OrderListViewController(),
-      itemName: R.string.global.orders(),
+      itemName: R.string.global.income(),
       itemImage: SystemImages.cupAndSaucerFill)
     let costsViewController = createNavController(
       viewController: CostListViewController(),
