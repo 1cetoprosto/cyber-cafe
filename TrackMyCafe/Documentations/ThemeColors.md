@@ -4,15 +4,15 @@
 
 | Name | Light | Dark |
 |---|---|---|
-| PrimaryText | #000000 | #F4ECE5 |
-| PrimaryBackground | #F9F2ED | #1C1412 |
-| SecondaryText | #FFFFFF | #C9BAAF |
-| SecondaryBackground | #2A6146 | #221A18 |
-| TabBarTint | #3E2723 | #E6C09A |
-| TabBarUnselectedTint | #A38462 | #6D4C41 |
-| CellBackground | #FFFFFF | #201A17 |
-| NavBarBackground | #F9F2ED | #1A1412 |
-| NavBarText | #000000 | #F4ECE5 |
+| PrimaryText | #000000 | #E8DAD0 |
+| PrimaryBackground | #F9F2ED | #2A201C |
+| SecondaryText | #FFFFFF | #F5ECE6 |
+| SecondaryBackground | #2A6146 | #4B3A33 |
+| TabBarTint | #3E2723 | #D9B99A |
+| TabBarUnselectedTint | #A38462 | #8A6C5A |
+| CellBackground | #FFFFFF | #332824 |
+| NavBarBackground | #F9F2ED | #241C19 |
+| NavBarText | #000000 | #E8DAD0 |
 
 ## Base (AssetTheme)
 
