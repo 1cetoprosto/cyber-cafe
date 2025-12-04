@@ -310,9 +310,12 @@ enum ThemeStyle: Int, CaseIterable {
   // Control which theme options appear in the selection UI
   static var allCases: [ThemeStyle] {
     return [
-      .coffeeWithMilk,
-      .coffeeWithMilkLight,
-      .coffeeWithMilkDark,
+      // Latte first
+      .coffeeWithMilk, .coffeeWithMilkLight, .coffeeWithMilkDark,
+      // Then Classic (Standard)
+      //.system, .light, .dark,
+      // Then Slate (Alt)
+      //.lightAlt, .darkAlt,
     ]
   }
 }
