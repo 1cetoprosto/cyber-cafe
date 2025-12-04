@@ -54,6 +54,14 @@ enum ThemeOption: CaseIterable {
   case lightAlt
   case darkAlt
 
+  static var allCases: [ThemeOption] {
+    return [
+      .coffeeAuto,
+      .coffeeLight,
+      .coffeeDark,
+    ]
+  }
+
   var displayName: String {
     switch self {
     case .automatic: return R.string.global.systemThemeName()
@@ -301,15 +309,10 @@ enum ThemeStyle: Int, CaseIterable {
 
   // Control which theme options appear in the selection UI
   static var allCases: [ThemeStyle] {
-    // Present system-driven Base, plus Alt and Coffee with Milk variants.
-    // Include forced Light/Dark options to give advanced control.
     return [
-      // Latte first
-      .coffeeWithMilk, .coffeeWithMilkLight, .coffeeWithMilkDark,
-      // Then Classic (Standard)
-      .system, .light, .dark,
-      // Then Slate (Alt)
-      .lightAlt, .darkAlt,
+      .coffeeWithMilk,
+      .coffeeWithMilkLight,
+      .coffeeWithMilkDark,
     ]
   }
 }
