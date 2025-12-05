@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 55;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -437,6 +437,7 @@
 		F3B33AC92C0B23450073F19A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */; };
 		F3B33AD32C0B26080073F19A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3B33AD02C0B26080073F19A /* GoogleService-Info.plist */; };
 		F3B33ADA2C0B29500073F19A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3B33AD82C0B29500073F19A /* GoogleService-Info.plist */; };
+		F3B7A83C2EE224E4007BF216 /* Instructions in Frameworks */ = {isa = PBXBuildFile; productRef = F3B7A83B2EE224E4007BF216 /* Instructions */; };
 		F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C24C2806D81300DF5C2B /* TypesListViewController.swift */; };
 		F3B7C2522806D8DA00DF5C2B /* RealmTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2512806D8DA00DF5C2B /* RealmTypeModel.swift */; };
 		F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
@@ -706,6 +707,10 @@
 		F851AB8758970DBD572833B6 /* Pods-TrackMyCafe Beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
+
 /* Begin PBXFrameworksBuildPhase section */
 		F39A52EE27311FDD00C8F2D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
@@ -768,6 +773,7 @@
 				F3B33AAE2C0B23450073F19A /* FirebaseAnalytics in Frameworks */,
 				F3B33AAF2C0B23450073F19A /* SVProgressHUD in Frameworks */,
 				F3A640C62C3438D6006BCACD /* TPInAppReceipt in Frameworks */,
+				F3B7A83C2EE224E4007BF216 /* Instructions in Frameworks */,
 				F3B33AB02C0B23450073F19A /* FirebaseAuth in Frameworks */,
 				F3B33AB12C0B23450073F19A /* FirebaseFirestoreSwift in Frameworks */,
 				F3B33AB22C0B23450073F19A /* KeychainAccess in Frameworks */,
@@ -1036,6 +1042,7 @@
 				F3410EB82BDD444B0007157B /* Popup */,
 				F385B40B2C1D7DDD00973CAA /* UIKitFactory.swift */,
 				F3A640BF2C34243F006BCACD /* ImagePicker.swift */,
+				F3B7A8342EE220F0007BF216 /* Onboarding */,
 			);
 			path = UI;
 			sourceTree = "<group>";
@@ -1751,6 +1758,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				F3B7A8342EE220F0007BF216 /* Onboarding */,
+			);
 			name = "TrackMyCafe Prod";
 			packageProductDependencies = (
 				F39B5D192846112F000F7D43 /* FirebaseAnalytics */,
@@ -1792,6 +1802,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				F3B7A8342EE220F0007BF216 /* Onboarding */,
+			);
 			name = "TrackMyCafe Beta";
 			packageProductDependencies = (
 				F3B339932C0B22FE0073F19A /* FirebaseAnalytics */,
@@ -1829,6 +1842,9 @@
 			);
 			dependencies = (
 			);
+			fileSystemSynchronizedGroups = (
+				F3B7A8342EE220F0007BF216 /* Onboarding */,
+			);
 			name = "TrackMyCafe Dev";
 			packageProductDependencies = (
 				F3B33A322C0B23450073F19A /* FirebaseAnalytics */,
@@ -1849,6 +1865,7 @@
 				F3A640C32C3438A8006BCACD /* SwiftyStoreKit */,
 				F3A640C52C3438D6006BCACD /* TPInAppReceipt */,
 				F3A640C72C3438D6006BCACD /* TPInAppReceipt-Objc */,
+				F3B7A83B2EE224E4007BF216 /* Instructions */,
 			);
 			productName = "Cyber-coffe";
 			productReference = F3B33ACE2C0B23450073F19A /* TrackMyCafe Dev.app */;
@@ -1890,6 +1907,7 @@
 				F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F3F6A6172C2FED7F000961C8 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */,
 				F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
+				F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */,
 			);
 			productRefGroup = F39A52F227311FDD00C8F2D3 /* Products */;
 			projectDirPath = "";
@@ -3191,6 +3209,14 @@
 				minimumVersion = 5.1.4;
 			};
 		};
+		F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ephread/Instructions";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
 		F3F6A6172C2FED7F000961C8 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/tikhop/TPInAppReceipt.git";
@@ -3439,6 +3465,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F3B33A462C0B23450073F19A /* XCRemoteSwiftPackageReference "Stevia" */;
 			productName = Stevia;
+		};
+		F3B7A83B2EE224E4007BF216 /* Instructions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */;
+			productName = Instructions;
 		};
 		F3F6A6182C2FED7F000961C8 /* TPInAppReceipt */ = {
 			isa = XCSwiftPackageProductDependency;
