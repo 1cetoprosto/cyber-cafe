@@ -87,6 +87,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     tableView.reloadData()
   }
 
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
+    OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
+  }
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
@@ -137,6 +143,26 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             dataLabel.text = option.displayName
             self.updateInterfaceForNewTheme()
           }
+        }))
+
+    options.append(
+      .staticCell(
+        model: SettingsStaticOption(
+          title: R.string.global.restartOnboarding(),
+          icon: UIImage(systemName: SystemImages.gearshape),
+          iconBackgroundColor: .systemMint
+        ) {
+          OnboardingManager.shared.resetForCurrentAppVersion()
+          let alert = UIAlertController(
+            title: R.string.global.onboardingResetTitle(),
+            message: R.string.global.onboardingResetMessage(),
+            preferredStyle: .alert)
+          alert.addAction(
+            UIAlertAction(title: R.string.global.actionOk(), style: .default) { _ in
+              OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
+              OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
+            })
+          self.present(alert, animated: true)
         }))
 
     // Feedback option
@@ -296,6 +322,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         return UITableViewCell()
       }
       cell.configure(with: model)
+      if model.title == R.string.global.priceList() {
+        cell.accessibilityIdentifier = "priceListCell"
+      } else if model.title == R.string.global.receiptTypes() {
+        cell.accessibilityIdentifier = "typesCell"
+      }
       return cell
     case .switchCell(let model):
       guard
