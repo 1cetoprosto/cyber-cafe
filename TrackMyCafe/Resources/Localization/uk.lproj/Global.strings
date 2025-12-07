@@ -188,9 +188,9 @@
 "enterNumberOfDays" = "Введіть кількість днів";
 "seedAction" = "Ініціювати";
 "seedingData" = "Ініціалізація даних...";
-"restartOnboarding" = "Перезапустити онбординг";
-"onboardingResetTitle" = "Скидання онбордингу";
-"onboardingResetMessage" = "Онбординг буде показано знову.";
+"restartOnboarding" = "Перезапустити ознайомлення з функціями";
+"onboardingResetTitle" = "Скидання ознайомлення з функціями";
+"onboardingResetMessage" = "Ознайомлення з функціями буде показано знову.";
 
 // MARK: - Product
 "products" = "Прайс";
