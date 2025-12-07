@@ -23,6 +23,14 @@ class ProductListViewController: UIViewController, Loggable {
     return tableView
   }()
 
+  private lazy var addButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(UIImage(systemName: "plus"), for: .normal)
+    button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
+    button.accessibilityIdentifier = "navBarAddProduct"
+    return button
+  }()
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     configure()
@@ -38,11 +46,7 @@ class ProductListViewController: UIViewController, Loggable {
     tableView.dataSource = self
     tableView.delegate = self
 
-    // Кнопка справа
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .add,
-      target: self,
-      action: #selector(performAdd(param:)))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
 
     setConstraints()
 

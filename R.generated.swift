@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 207 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 210 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -988,6 +988,20 @@ struct _R {
       /// Locales: en, uk
       var okButton: RswiftResources.StringResource { .init(key: "okButton", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
 
+      /// en translation: Onboarding will show again.
+      ///
+      /// Key: onboardingResetMessage
+      ///
+      /// Locales: en, uk
+      var onboardingResetMessage: RswiftResources.StringResource { .init(key: "onboardingResetMessage", tableName: "Global", source: source, developmentValue: "Onboarding will show again.", comment: nil) }
+
+      /// en translation: Onboarding reset
+      ///
+      /// Key: onboardingResetTitle
+      ///
+      /// Locales: en, uk
+      var onboardingResetTitle: RswiftResources.StringResource { .init(key: "onboardingResetTitle", tableName: "Global", source: source, developmentValue: "Onboarding reset", comment: nil) }
+
       /// en translation: Income
       ///
       /// Key: order
@@ -1183,6 +1197,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var resendInvite: RswiftResources.StringResource { .init(key: "resendInvite", tableName: "Global", source: source, developmentValue: "Resend Invite", comment: nil) }
+
+      /// en translation: Restart onboarding
+      ///
+      /// Key: restartOnboarding
+      ///
+      /// Locales: en, uk
+      var restartOnboarding: RswiftResources.StringResource { .init(key: "restartOnboarding", tableName: "Global", source: source, developmentValue: "Restart onboarding", comment: nil) }
 
       /// en translation: Restore purchases
       ///
