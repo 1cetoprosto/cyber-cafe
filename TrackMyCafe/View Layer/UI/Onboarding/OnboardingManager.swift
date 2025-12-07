@@ -98,8 +98,8 @@ func buildDefaultOnboardingRegistry() {
     steps: [
       OnboardingStepModel(
         targetKey: "navBarAddOrder",
-        title: "Створити продаж",
-        message: "Натисніть плюс, щоб додати щоденний продаж.",
+        title: R.string.global.onboardingOrdersAddTitle(),
+        message: R.string.global.onboardingOrdersAddMessage(),
         order: 1
       )
     ]
@@ -110,24 +110,24 @@ func buildDefaultOnboardingRegistry() {
     versionTag: "1.2",
     steps: [
       OnboardingStepModel(
-        targetKey: "dateInput", title: "Дата продажу", message: "Переконайтесь, що дата правильна.",
+        targetKey: "dateInput", title: R.string.global.onboardingOrderDetailsDateTitle(), message: R.string.global.onboardingOrderDetailsDateMessage(),
         order: 1),
       OnboardingStepModel(
-        targetKey: "typeInput", title: "Тип продажу",
-        message: "Оберіть тип: зал/доставка/самовиніс.", order: 2),
+        targetKey: "typeInput", title: R.string.global.onboardingOrderDetailsTypeTitle(),
+        message: R.string.global.onboardingOrderDetailsTypeMessage(), order: 2),
       OnboardingStepModel(
-        targetKey: "productsTable", title: "Кількість товарів",
-        message: "Вкажіть кількість проданих одиниць.", order: 3),
+        targetKey: "productsTable", title: R.string.global.onboardingOrderDetailsProductsTitle(),
+        message: R.string.global.onboardingOrderDetailsProductsMessage(), order: 3),
       OnboardingStepModel(
-        targetKey: "totalsRow", title: "Підсумок", message: "Перевірте загальну суму.", order: 4),
+        targetKey: "totalsRow", title: R.string.global.onboardingOrderDetailsTotalsTitle(), message: R.string.global.onboardingOrderDetailsTotalsMessage(), order: 4),
       OnboardingStepModel(
-        targetKey: "cashInput", title: "Готівка", message: "Внесіть суму готівки за день.", order: 5
+        targetKey: "cashInput", title: R.string.global.onboardingOrderDetailsCashTitle(), message: R.string.global.onboardingOrderDetailsCashMessage(), order: 5
       ),
       OnboardingStepModel(
-        targetKey: "cardInput", title: "Картка", message: "Внесіть надходження на картку.", order: 6
+        targetKey: "cardInput", title: R.string.global.onboardingOrderDetailsCardTitle(), message: R.string.global.onboardingOrderDetailsCardMessage(), order: 6
       ),
       OnboardingStepModel(
-        targetKey: "saveButton", title: "Зберегти", message: "Збережіть щоденний продаж.", order: 7),
+        targetKey: "saveButton", title: R.string.global.onboardingOrderDetailsSaveTitle(), message: R.string.global.onboardingOrderDetailsSaveMessage(), order: 7),
     ]
   )
 
@@ -137,8 +137,8 @@ func buildDefaultOnboardingRegistry() {
     steps: [
       OnboardingStepModel(
         targetKey: "navBarAddCost",
-        title: "Додати витрату",
-        message: "Натисніть плюс, щоб додати витрату.",
+        title: R.string.global.onboardingCostsAddTitle(),
+        message: R.string.global.onboardingCostsAddMessage(),
         order: 1
       )
     ]
@@ -149,13 +149,13 @@ func buildDefaultOnboardingRegistry() {
     versionTag: "1.0",
     steps: [
       OnboardingStepModel(
-        targetKey: "dateInput", title: "Дата", message: "Вкажіть дату витрати.", order: 1),
+        targetKey: "dateInput", title: R.string.global.onboardingCostDetailsDateTitle(), message: R.string.global.onboardingCostDetailsDateMessage(), order: 1),
       OnboardingStepModel(
-        targetKey: "nameInput", title: "Назва", message: "Опишіть витрату.", order: 2),
+        targetKey: "nameInput", title: R.string.global.onboardingCostDetailsNameTitle(), message: R.string.global.onboardingCostDetailsNameMessage(), order: 2),
       OnboardingStepModel(
-        targetKey: "sumInput", title: "Сума", message: "Вкажіть суму у валюті додатку.", order: 3),
+        targetKey: "sumInput", title: R.string.global.onboardingCostDetailsSumTitle(), message: R.string.global.onboardingCostDetailsSumMessage(), order: 3),
       OnboardingStepModel(
-        targetKey: "saveButton", title: "Зберегти", message: "Збережіть витрату.", order: 4),
+        targetKey: "saveButton", title: R.string.global.onboardingCostDetailsSaveTitle(), message: R.string.global.onboardingCostDetailsSaveMessage(), order: 4),
     ]
   )
 
@@ -164,10 +164,10 @@ func buildDefaultOnboardingRegistry() {
     versionTag: "1.2",
     steps: [
       OnboardingStepModel(
-        targetKey: "priceListCell", title: "Товари та ціни",
-        message: "Спочатку додайте товари й ціни.", order: 1),
+        targetKey: "priceListCell", title: R.string.global.onboardingSettingsPriceListTitle(),
+        message: R.string.global.onboardingSettingsPriceListMessage(), order: 1),
       OnboardingStepModel(
-        targetKey: "navBarAddProduct", title: "Новий товар", message: "Додайте товар з ціною.",
+        targetKey: "navBarAddProduct", title: R.string.global.onboardingSettingsAddProductTitle(), message: R.string.global.onboardingSettingsAddProductMessage(),
         order: 2),
     ]
   )
@@ -177,8 +177,8 @@ func buildDefaultOnboardingRegistry() {
     versionTag: "1.2",
     steps: [
       OnboardingStepModel(
-        targetKey: "typesCell", title: "Типи продажу",
-        message: "Створіть типи та встановіть тип за замовчуванням.", order: 1)
+        targetKey: "typesCell", title: R.string.global.onboardingSettingsTypesTitle(),
+        message: R.string.global.onboardingSettingsTypesMessage(), order: 1)
     ]
   )
 
