@@ -139,6 +139,14 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     view.addSubview(saveButton)
     scrollView.addSubview(mainStackView)
 
+    dateInputContainer.accessibilityIdentifier = "dateInput"
+    typeInputContainer.accessibilityIdentifier = "typeInput"
+    tableView.accessibilityIdentifier = "productsTable"
+    orderLabel.accessibilityIdentifier = "totalsRow"
+    cashInputContainer.accessibilityIdentifier = "cashInput"
+    cardInputContainer.accessibilityIdentifier = "cardInput"
+    saveButton.accessibilityIdentifier = "saveButton"
+
     cashInputContainer.setDelegate(self)
     cardInputContainer.setDelegate(self)
     cashInputContainer.enableNumericInput(maxFractionDigits: 2)
@@ -176,6 +184,11 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     verifyRequiredData {
 
     }
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
   }
 
   fileprivate func setData() {

@@ -22,6 +22,14 @@ class CostListViewController: UIViewController {
     return tableView
   }()
 
+  private lazy var addButton: UIButton = {
+    let button = UIButton(type: .system)
+    button.setImage(UIImage(systemName: "plus"), for: .normal)
+    button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
+    button.accessibilityIdentifier = "navBarAddCost"
+    return button
+  }()
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
@@ -40,13 +48,14 @@ class CostListViewController: UIViewController {
     tableView.dataSource = self
     tableView.delegate = self
 
-    // Button right
-    navigationItem.rightBarButtonItem = UIBarButtonItem(
-      barButtonSystemItem: .add,
-      target: self,
-      action: #selector(performAdd(param:)))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
     setConstraints()
 
+  }
+
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
+    OnboardingManager.shared.startIfNeeded(for: .costs, on: self)
   }
 
   // MARK: - Method
