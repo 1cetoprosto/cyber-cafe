@@ -47,7 +47,8 @@ import UIKit
       let views = coachMarksController.helper.makeDefaultCoachViews(
         withArrow: true, arrowOrientation: coachMark.arrowOrientation)
       views.bodyView.hintLabel.text = steps[index].title + "\n" + steps[index].message
-      views.bodyView.nextLabel.text = (index == steps.count - 1) ? "Done" : "Next"
+      views.bodyView.nextLabel.text =
+        (index == steps.count - 1) ? R.string.global.actionDone() : R.string.global.actionNext()
       return (views.bodyView, views.arrowView)
     }
 
