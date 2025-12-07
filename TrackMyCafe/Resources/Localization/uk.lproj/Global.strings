@@ -20,6 +20,8 @@
 "edit" = "Редагування";
 "chose" = "Виберіть";
 "clear" = "очистити";
+"actionNext" = "Далі";
+"actionDone" = "Готово";
 
 // MARK: - Contact Information
 "phone" = "Телефон";
