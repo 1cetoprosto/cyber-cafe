@@ -194,6 +194,43 @@
 "onboardingResetTitle" = "Feature tour reset";
 "onboardingResetMessage" = "Feature tour will show again.";
 
+"onboardingOrdersAddTitle" = "Create sale";
+"onboardingOrdersAddMessage" = "Tap plus to add a daily sale.";
+
+"onboardingOrderDetailsDateTitle" = "Sale date";
+"onboardingOrderDetailsDateMessage" = "Ensure the date is correct.";
+"onboardingOrderDetailsTypeTitle" = "Sale type";
+"onboardingOrderDetailsTypeMessage" = "Choose type: dine‑in/takeaway/delivery.";
+"onboardingOrderDetailsProductsTitle" = "Items quantity";
+"onboardingOrderDetailsProductsMessage" = "Enter sold units.";
+"onboardingOrderDetailsTotalsTitle" = "Summary";
+"onboardingOrderDetailsTotalsMessage" = "Check total amount.";
+"onboardingOrderDetailsCashTitle" = "Cash";
+"onboardingOrderDetailsCashMessage" = "Enter daily cash.";
+"onboardingOrderDetailsCardTitle" = "Card";
+"onboardingOrderDetailsCardMessage" = "Enter card revenue.";
+"onboardingOrderDetailsSaveTitle" = "Save";
+"onboardingOrderDetailsSaveMessage" = "Save the daily sale.";
+
+"onboardingCostsAddTitle" = "Add expense";
+"onboardingCostsAddMessage" = "Tap plus to add an expense.";
+
+"onboardingCostDetailsDateTitle" = "Date";
+"onboardingCostDetailsDateMessage" = "Enter expense date.";
+"onboardingCostDetailsNameTitle" = "Name";
+"onboardingCostDetailsNameMessage" = "Describe the expense.";
+"onboardingCostDetailsSumTitle" = "Sum";
+"onboardingCostDetailsSumMessage" = "Enter amount in app currency.";
+"onboardingCostDetailsSaveTitle" = "Save";
+"onboardingCostDetailsSaveMessage" = "Save the expense.";
+
+"onboardingSettingsPriceListTitle" = "Goods and prices";
+"onboardingSettingsPriceListMessage" = "First add goods and prices.";
+"onboardingSettingsAddProductTitle" = "New product";
+"onboardingSettingsAddProductMessage" = "Add a product with a price.";
+"onboardingSettingsTypesTitle" = "Sale types";
+"onboardingSettingsTypesMessage" = "Create types and set the default type.";
+
 // MARK: - Product
 "products" = "Price list";
 "product" = "Good";
