@@ -20,6 +20,8 @@
 "edit" = "Редагування";
 "chose" = "Виберіть";
 "clear" = "очистити";
+"actionNext" = "Далі";
+"actionDone" = "Готово";
 
 // MARK: - Contact Information
 "phone" = "Телефон";
@@ -191,6 +193,43 @@
 "restartOnboarding" = "Перезапустити ознайомлення з функціями";
 "onboardingResetTitle" = "Скидання ознайомлення з функціями";
 "onboardingResetMessage" = "Ознайомлення з функціями буде показано знову.";
+
+"onboardingOrdersAddTitle" = "Створити продаж";
+"onboardingOrdersAddMessage" = "Натисніть плюс, щоб додати щоденний продаж.";
+
+"onboardingOrderDetailsDateTitle" = "Дата продажу";
+"onboardingOrderDetailsDateMessage" = "Переконайтесь, що дата правильна.";
+"onboardingOrderDetailsTypeTitle" = "Тип продажу";
+"onboardingOrderDetailsTypeMessage" = "Оберіть тип: зал/самовинос/доставка.";
+"onboardingOrderDetailsProductsTitle" = "Кількість товарів";
+"onboardingOrderDetailsProductsMessage" = "Вкажіть кількість проданих одиниць.";
+"onboardingOrderDetailsTotalsTitle" = "Підсумок";
+"onboardingOrderDetailsTotalsMessage" = "Перевірте загальну суму.";
+"onboardingOrderDetailsCashTitle" = "Готівка";
+"onboardingOrderDetailsCashMessage" = "Внесіть суму готівки за день.";
+"onboardingOrderDetailsCardTitle" = "Картка";
+"onboardingOrderDetailsCardMessage" = "Внесіть надходження на картку.";
+"onboardingOrderDetailsSaveTitle" = "Зберегти";
+"onboardingOrderDetailsSaveMessage" = "Збережіть щоденний продаж.";
+
+"onboardingCostsAddTitle" = "Додати витрату";
+"onboardingCostsAddMessage" = "Натисніть плюс, щоб додати витрату.";
+
+"onboardingCostDetailsDateTitle" = "Дата";
+"onboardingCostDetailsDateMessage" = "Вкажіть дату витрати.";
+"onboardingCostDetailsNameTitle" = "Назва";
+"onboardingCostDetailsNameMessage" = "Опишіть витрату.";
+"onboardingCostDetailsSumTitle" = "Сума";
+"onboardingCostDetailsSumMessage" = "Вкажіть суму у валюті додатку.";
+"onboardingCostDetailsSaveTitle" = "Зберегти";
+"onboardingCostDetailsSaveMessage" = "Збережіть витрату.";
+
+"onboardingSettingsPriceListTitle" = "Товари та ціни";
+"onboardingSettingsPriceListMessage" = "Спочатку додайте товари й ціни.";
+"onboardingSettingsAddProductTitle" = "Новий товар";
+"onboardingSettingsAddProductMessage" = "Додайте товар з ціною.";
+"onboardingSettingsTypesTitle" = "Типи продажу";
+"onboardingSettingsTypesMessage" = "Створіть типи та встановіть тип за замовчуванням.";
 
 // MARK: - Product
 "products" = "Прайс";
