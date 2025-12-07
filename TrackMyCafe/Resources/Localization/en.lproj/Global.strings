@@ -188,6 +188,9 @@
 "enterNumberOfDays" = "Enter number of days";
 "seedAction" = "Seed";
 "seedingData" = "Seeding data...";
+"restartOnboarding" = "Restart feature tour";
+"onboardingResetTitle" = "Feature tour reset";
+"onboardingResetMessage" = "Feature tour will show again.";
 
 // MARK: - Product
 "products" = "Price list";
