@@ -20,6 +20,8 @@
 "edit" = "Edit";
 "chose" = "Choose";
 "clear" = "clear";
+"actionNext" = "Next";
+"actionDone" = "Done";
 
 // MARK: - Contact Information
 "phone" = "Phone";
