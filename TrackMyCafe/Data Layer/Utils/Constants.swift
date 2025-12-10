@@ -176,6 +176,7 @@ struct CellIdentifiers {
 
 // MARK: - System Images
 struct SystemImages {
+  static let home = "house"
   static let globe = "globe"
   static let sunMax = "sun.max"
   static let envelopeFill = "envelope.fill"

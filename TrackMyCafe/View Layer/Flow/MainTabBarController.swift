@@ -104,6 +104,10 @@ class MainTabBarController: UITabBarController {
   }
 
   func setupTabBar() {
+    let homeViewController = createNavController(
+      viewController: HomeViewController(),
+      itemName: R.string.global.home(),
+      itemImage: SystemImages.home)
     let ordersViewController = createNavController(
       viewController: OrderListViewController(),
       itemName: R.string.global.income(),
@@ -116,8 +120,7 @@ class MainTabBarController: UITabBarController {
       viewController: SettingListViewController(),
       itemName: R.string.global.menuSettings(),
       itemImage: SystemImages.gearshape)
-
-    viewControllers = [ordersViewController, costsViewController, settingsViewController]
+    viewControllers = [homeViewController, ordersViewController, costsViewController, settingsViewController]
   }
 
   func createNavController(
