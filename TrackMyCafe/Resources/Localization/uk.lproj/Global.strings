@@ -120,6 +120,16 @@
 "termsOfUse" = "Умови використання";
 "privacyPolicy" = "Політика конфіденційності";
 
+// MARK: - Головна/Дашборд
+"home" = "Головна";
+"today" = "Сьогодні";
+"week" = "Тиждень";
+"monthlyProfit" = "Прибуток за місяць";
+"expensesPrefix" = "Витрати: ";
+"recentIncomes" = "Останні доходи";
+"recentExpenses" = "Останні витрати";
+"allArrow" = "Всі →";
+
 // MARK: - Subscription Plans
 "subPlanNoneName" = "Без підписки";
 "subPlanSingleName" = "Одиночний";
