@@ -3,6 +3,7 @@ import UIKit
 
 final class HomeViewController: UIViewController {
   private let viewModel: HomeViewModelType = HomeViewModel()
+  private var lastHeaderWidth: CGFloat = 0
 
   private let tableView: UITableView = {
     let tv = UITableView(frame: .zero, style: .plain)
@@ -19,7 +20,7 @@ final class HomeViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = UIColor.Main.background
-    title = ""
+    title = R.string.global.home()
     navigationItem.largeTitleDisplayMode = .never
     navigationController?.navigationBar.prefersLargeTitles = false
 
@@ -44,7 +45,11 @@ final class HomeViewController: UIViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    setTableHeaderSized()
+    let width = tableView.bounds.width
+    if width != lastHeaderWidth || tableView.tableHeaderView == nil {
+      setTableHeaderSized()
+      lastHeaderWidth = width
+    }
   }
 
   private func setTableHeaderSized() {
@@ -99,26 +104,10 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   func numberOfSections(in tableView: UITableView) -> Int { 2 }
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    let container = UIView()
-    container.backgroundColor = UIColor.Main.background
-    let title = UILabel()
-    title.applyDynamic(Typography.title3DemiBold)
-    title.textColor = UIColor.Main.text
-    title.text = section == 0 ? R.string.global.recentIncomes() : R.string.global.recentExpenses()
-    let button = UIButton(type: .system)
-    button.setTitle(R.string.global.allArrow(), for: .normal)
-    button.setTitleColor(UIColor.systemGreen, for: .normal)
-    button.titleLabel?.font = Typography.footnote
-    button.addTarget(
-      self, action: section == 0 ? #selector(openIncomeList) : #selector(openCostList),
-      for: .touchUpInside)
-    container.addSubview(title)
-    container.addSubview(button)
-    title.leadingToSuperview(offset: UIConstants.standardSpacing)
-    title.centerYToSuperview()
-    button.trailingToSuperview(offset: UIConstants.standardSpacing)
-    button.centerYToSuperview()
-    return container
+    let titleText =
+      section == 0 ? R.string.global.recentIncomes() : R.string.global.recentExpenses()
+    let action = section == 0 ? #selector(openIncomeList) : #selector(openCostList)
+    return makeSectionHeader(title: titleText, action: action)
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -158,5 +147,26 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   }
   @objc private func openCostList() {
     navigationController?.pushViewController(CostListViewController(), animated: true)
+  }
+
+  private func makeSectionHeader(title: String, action: Selector) -> UIView {
+    let container = UIView()
+    container.backgroundColor = UIColor.Main.background
+    let titleLabel = UILabel()
+    titleLabel.applyDynamic(Typography.title3DemiBold)
+    titleLabel.textColor = UIColor.Main.text
+    titleLabel.text = title
+    let button = UIButton(type: .system)
+    button.setTitle(R.string.global.allArrow(), for: .normal)
+    button.setTitleColor(UIColor.systemGreen, for: .normal)
+    button.titleLabel?.font = Typography.footnote
+    button.addTarget(self, action: action, for: .touchUpInside)
+    container.addSubview(titleLabel)
+    container.addSubview(button)
+    titleLabel.leadingToSuperview(offset: UIConstants.standardSpacing)
+    titleLabel.centerYToSuperview()
+    button.trailingToSuperview(offset: UIConstants.standardSpacing)
+    button.centerYToSuperview()
+    return container
   }
 }
