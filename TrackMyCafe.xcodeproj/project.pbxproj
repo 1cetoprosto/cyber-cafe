@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 71;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -526,6 +526,10 @@
 		F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FCF72C2EDF570D00B337BE /* Kingfisher */; };
+		F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */; };
+		F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */; };
+		F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */; };
+		F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52F2EEF300900C24082 /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -708,28 +712,8 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -767,16 +751,20 @@
 				F3B33A0D2C0B22FE0073F19A /* Stevia in Frameworks */,
 				F3B33A0E2C0B22FE0073F19A /* FirebaseDatabaseSwift in Frameworks */,
 				F383C8B42C0B5E9B00DF6124 /* RealmSwift in Frameworks */,
+				F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */,
 				F3B33A0F2C0B22FE0073F19A /* FirebaseAnalytics in Frameworks */,
 				F3B33A102C0B22FE0073F19A /* SVProgressHUD in Frameworks */,
 				F3B33A112C0B22FE0073F19A /* FirebaseAuth in Frameworks */,
 				F3B33A122C0B22FE0073F19A /* FirebaseFirestoreSwift in Frameworks */,
 				F3B33A132C0B22FE0073F19A /* KeychainAccess in Frameworks */,
+				F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */,
 				F3B33A142C0B22FE0073F19A /* FirebaseDatabase in Frameworks */,
 				F3B33A152C0B22FE0073F19A /* FirebaseStorage in Frameworks */,
 				F3B33A162C0B22FE0073F19A /* SwiftEntryKit in Frameworks */,
+				F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */,
 				F3B33A182C0B22FE0073F19A /* FirebaseFirestore in Frameworks */,
 				F3B33A1B2C0B22FE0073F19A /* TinyConstraints in Frameworks */,
+				F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */,
 				76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1845,6 +1833,10 @@
 				F3B339A62C0B22FE0073F19A /* Stevia */,
 				F383C8B12C0B5E9B00DF6124 /* Realm */,
 				F383C8B32C0B5E9B00DF6124 /* RealmSwift */,
+				F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */,
+				F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */,
+				F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */,
+				F3FED52F2EEF300900C24082 /* Kingfisher */,
 			);
 			productName = "Cyber-coffe";
 			productReference = F3B33A2F2C0B22FE0073F19A /* TrackMyCafe Beta.app */;
@@ -2064,9 +2056,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2081,9 +2077,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2231,9 +2231,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3500,6 +3504,24 @@
 			productName = SwiftyStoreKit;
 		};
 		F3FCF72C2EDF570D00B337BE /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
+			productName = SwiftyStoreKit;
+		};
+		F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TPInAppReceipt;
+		};
+		F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "TPInAppReceipt-Objc";
+		};
+		F3FED52F2EEF300900C24082 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
