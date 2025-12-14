@@ -40,3 +40,11 @@ extension Date {
     }
 }
 
+extension DateFormatter {
+  static let appFullDate: DateFormatter = {
+    let df = DateFormatter()
+    df.locale = .autoupdatingCurrent
+    df.dateFormat = "dd MMMM yyyy"
+    return df
+  }()
+}
