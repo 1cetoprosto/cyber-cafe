@@ -120,6 +120,16 @@
 "termsOfUse" = "Terms of use";
 "privacyPolicy" = "Privacy policy";
 
+// MARK: - Home/Dashboard
+"home" = "Home";
+"today" = "Today";
+"week" = "Week";
+"monthlyProfit" = "Monthly profit";
+"expensesPrefix" = "Expenses: ";
+"recentIncomes" = "Recent incomes";
+"recentExpenses" = "Recent expenses";
+"allArrow" = "All →";
+
 // MARK: - Subscription Plans
 "subPlanNoneName" = "No subscription";
 "subPlanSingleName" = "Single";
@@ -280,7 +290,7 @@
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them.";
 
 // MARK: - Income
-"income" = "Income";
+"income" = "Incomes";
 
 // MARK: - Sales
 "sales" = "Sales";
