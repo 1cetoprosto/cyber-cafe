@@ -841,12 +841,12 @@ struct _R {
       /// Locales: en, uk
       var home: RswiftResources.StringResource { .init(key: "home", tableName: "Global", source: source, developmentValue: "Home", comment: nil) }
 
-      /// en translation: Income
+      /// en translation: Incomes
       ///
       /// Key: income
       ///
       /// Locales: en, uk
-      var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Income", comment: nil) }
+      var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
 
       /// en translation: Provide access
       ///
