@@ -59,6 +59,7 @@ struct UIConstants {
   // Common heights
   static let buttonHeight: CGFloat = 50
   static let headerHeight: CGFloat = 60
+  static let tableSectionHeaderHeight: CGFloat = 44
   static let profileImageSize: CGFloat = 150
   static let avatarSize: CGFloat = 100
   static let cellHeight: CGFloat = 50
@@ -71,6 +72,8 @@ struct UIConstants {
   static let imageSize: CGFloat = 80
   static let iconContainerSize: CGFloat = 30
   static let maxLabelWidth: CGFloat = 150
+  static let largeIconSize: CGFloat = 40
+  static let badgeSize: CGFloat = 44
 
   // Corner radius values
   static let smallCornerRadius: CGFloat = 4
@@ -80,10 +83,11 @@ struct UIConstants {
   static let extraLargeCornerRadius: CGFloat = 15
   static let buttonCornerRadius: CGFloat = 20
   static let profileImageCornerRadius: CGFloat = 75
+  static let badgeCornerRadius: CGFloat = 12
 
   // Border width values
   static let standardBorderWidth: CGFloat = 1
-    //borderWidth
+  //borderWidth
   static let thickBorderWidth: CGFloat = 1.5
 
   // Alpha values
