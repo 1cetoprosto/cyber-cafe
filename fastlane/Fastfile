@@ -32,12 +32,12 @@ platform :ios do
                 key_filepath: key_path
             )
             upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
                                     changelog: changelog,
                                     submit_beta_review: true)
         else
             upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
                                     changelog: changelog,
                                     submit_beta_review: true)
         end
@@ -72,7 +72,7 @@ platform :ios do
                 key_filepath: key_path
             )
             upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
                                     changelog: changelog,
                                     submit_beta_review: true)
         else
@@ -111,7 +111,7 @@ platform :ios do
                 key_filepath: key_path
             )
             upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
                                     changelog: changelog,
                                     submit_beta_review: true)
         else
