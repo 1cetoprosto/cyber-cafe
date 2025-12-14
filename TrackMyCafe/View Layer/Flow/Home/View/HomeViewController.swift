@@ -8,13 +8,13 @@ final class HomeViewController: UIViewController {
     let tv = UITableView(frame: .zero, style: .plain)
     tv.backgroundColor = UIColor.Main.background
     tv.separatorStyle = .none
-    tv.translatesAutoresizingMaskIntoConstraints = false
     tv.register(
       TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.identifier)
     return tv
   }()
 
   private let headerView = HomeHeaderView()
+  private let headerContainer = UIView()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -30,18 +30,35 @@ final class HomeViewController: UIViewController {
     headerView.onAddExpense = { [weak self] in self?.openAddExpense() }
 
     view.addSubview(tableView)
-    tableView.edgesToSuperview(insets: .init(top: 10, left: 10, bottom: 0, right: 10))
+    tableView.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.standardSpacing,
+        left: UIConstants.standardSpacing,
+        bottom: 0,
+        right: UIConstants.standardSpacing
+      )
+    )
 
     Task { await loadData() }
   }
 
+  override func viewDidLayoutSubviews() {
+    super.viewDidLayoutSubviews()
+    setTableHeaderSized()
+  }
+
   private func setTableHeaderSized() {
-    headerView.layoutIfNeeded()
-    let targetSize = CGSize(
-      width: view.bounds.width, height: UIView.layoutFittingCompressedSize.height)
-    let height = headerView.systemLayoutSizeFitting(targetSize).height
-    headerView.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: height)
-    tableView.tableHeaderView = headerView
+    headerContainer.backgroundColor = UIColor.Main.background
+    if headerView.superview !== headerContainer {
+      headerContainer.addSubview(headerView)
+      headerView.edgesToSuperview()
+    }
+    headerContainer.layoutIfNeeded()
+    let width = tableView.bounds.width
+    let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
+    let height = headerContainer.systemLayoutSizeFitting(targetSize).height
+    headerContainer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+    tableView.tableHeaderView = headerContainer
   }
 
   @MainActor
@@ -97,21 +114,15 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
       for: .touchUpInside)
     container.addSubview(title)
     container.addSubview(button)
-    title.translatesAutoresizingMaskIntoConstraints = false
-    button.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      title.leadingAnchor.constraint(
-        equalTo: container.leadingAnchor, constant: UIConstants.standardPadding),
-      title.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-      button.trailingAnchor.constraint(
-        equalTo: container.trailingAnchor, constant: -UIConstants.standardPadding),
-      button.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-    ])
+    title.leadingToSuperview(offset: UIConstants.standardSpacing)
+    title.centerYToSuperview()
+    button.trailingToSuperview(offset: UIConstants.standardSpacing)
+    button.centerYToSuperview()
     return container
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    44
+    UIConstants.tableSectionHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
