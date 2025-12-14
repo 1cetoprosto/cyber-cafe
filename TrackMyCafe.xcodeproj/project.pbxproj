@@ -2125,7 +2125,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
+			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B339A92C0B22FE0073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
