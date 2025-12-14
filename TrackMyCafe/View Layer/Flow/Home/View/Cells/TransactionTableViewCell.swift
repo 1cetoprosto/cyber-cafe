@@ -28,7 +28,7 @@ final class TransactionTableViewCell: UITableViewCell {
 
   private let amountLabel: UILabel = {
     let l = UILabel()
-    l.applyDynamic(Typography.bodyMedium)
+      l.applyDynamic(Typography.body)
     l.textAlignment = .right
     return l
   }()
@@ -52,7 +52,7 @@ final class TransactionTableViewCell: UITableViewCell {
     let prefix = isIncome ? "+" : "-"
     let formatted = NumberFormatter.currencyInteger.string(amount)
     amountLabel.text = "\(prefix)\(formatted)"
-    amountLabel.textColor = isIncome ? UIColor.systemGreen : UIColor.systemRed
+      amountLabel.textColor = Theme.current.primaryText
   }
 
   override func prepareForReuse() {
@@ -60,7 +60,7 @@ final class TransactionTableViewCell: UITableViewCell {
     titleLabel.text = nil
     dateLabel.text = nil
     amountLabel.text = nil
-    amountLabel.textColor = UIColor.Main.text
+    amountLabel.textColor = Theme.current.primaryText
   }
 
   private func setupLayout() {
