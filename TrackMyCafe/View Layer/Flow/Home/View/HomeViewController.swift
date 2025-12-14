@@ -145,28 +145,28 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
   @objc private func openIncomeList() {
     navigationController?.pushViewController(OrderListViewController(), animated: true)
   }
-  @objc private func openCostList() {
-    navigationController?.pushViewController(CostListViewController(), animated: true)
-  }
-
-  private func makeSectionHeader(title: String, action: Selector) -> UIView {
-    let container = UIView()
-    container.backgroundColor = UIColor.Main.background
-    let titleLabel = UILabel()
-    titleLabel.applyDynamic(Typography.title3DemiBold)
-    titleLabel.textColor = UIColor.Main.text
-    titleLabel.text = title
-    let button = UIButton(type: .system)
-    button.setTitle(R.string.global.allArrow(), for: .normal)
-    button.setTitleColor(UIColor.systemGreen, for: .normal)
-    button.titleLabel?.font = Typography.footnote
-    button.addTarget(self, action: action, for: .touchUpInside)
-    container.addSubview(titleLabel)
-    container.addSubview(button)
-    titleLabel.leadingToSuperview(offset: UIConstants.standardSpacing)
-    titleLabel.centerYToSuperview()
-    button.trailingToSuperview(offset: UIConstants.standardSpacing)
-    button.centerYToSuperview()
-    return container
-  }
+    @objc private func openCostList() {
+        navigationController?.pushViewController(CostListViewController(), animated: true)
+    }
+    
+    private func makeSectionHeader(title: String, action: Selector) -> UIView {
+        let container = UIView()
+        container.backgroundColor = UIColor.Main.background
+        let titleLabel = UILabel()
+        titleLabel.applyDynamic(Typography.title3DemiBold)
+        titleLabel.textColor = UIColor.Main.text
+        titleLabel.text = title
+        let button = UIButton(type: .system)
+        button.setTitle(R.string.global.allArrow(), for: .normal)
+        button.setTitleColor(Theme.current.tabBarUnselectedTint, for: .normal)
+        button.titleLabel?.font = Typography.body
+        button.addTarget(self, action: action, for: .touchUpInside)
+        container.addSubview(titleLabel)
+        container.addSubview(button)
+        titleLabel.leadingToSuperview(offset: UIConstants.standardSpacing)
+        titleLabel.centerYToSuperview()
+        button.trailingToSuperview(offset: UIConstants.standardSpacing)
+        button.centerYToSuperview()
+        return container
+    }
 }
