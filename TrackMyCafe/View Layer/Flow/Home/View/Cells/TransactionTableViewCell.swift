@@ -8,7 +8,6 @@ final class TransactionTableViewCell: UITableViewCell {
     let v = UIView()
     v.backgroundColor = UIColor.TableView.cellBackground
     v.layer.cornerRadius = UIConstants.extraLargeCornerRadius
-    v.translatesAutoresizingMaskIntoConstraints = false
     return v
   }()
 
@@ -16,7 +15,6 @@ final class TransactionTableViewCell: UITableViewCell {
     let l = UILabel()
     l.applyDynamic(Typography.body)
     l.textColor = UIColor.Main.text
-    l.translatesAutoresizingMaskIntoConstraints = false
     return l
   }()
 
@@ -24,15 +22,13 @@ final class TransactionTableViewCell: UITableViewCell {
     let l = UILabel()
     l.applyDynamic(Typography.footnote)
     l.textColor = UIColor.Main.text.alpha(0.6)
-    l.translatesAutoresizingMaskIntoConstraints = false
     return l
   }()
 
   private let amountLabel: UILabel = {
     let l = UILabel()
-    l.applyDynamic(Typography.bodyBold)
+    l.applyDynamic(Typography.bodyMedium)
     l.textAlignment = .right
-    l.translatesAutoresizingMaskIntoConstraints = false
     return l
   }()
 
