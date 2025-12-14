@@ -22,10 +22,25 @@ platform :ios do
             }
         )
         changelog = File.read("changelog.txt")
-        upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
-                                changelog: changelog,
-                                submit_beta_review: true)
+        key_id = ENV["ASC_KEY_ID"]
+        issuer_id = ENV["ASC_ISSUER_ID"]
+        key_path = ENV["ASC_KEY_PATH"]
+        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
+            api_key = app_store_connect_api_key(
+                key_id: key_id,
+                issuer_id: issuer_id,
+                key_filepath: key_path
+            )
+            upload_to_testflight(api_key: api_key,
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        else
+            upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        end
     end
 
     lane :beta do
@@ -47,11 +62,25 @@ platform :ios do
         )
 
         changelog = File.read("changelog.txt")
-
-        upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
-                                changelog: changelog,
-                                submit_beta_review: true)
+        key_id = ENV["ASC_KEY_ID"]
+        issuer_id = ENV["ASC_ISSUER_ID"]
+        key_path = ENV["ASC_KEY_PATH"]
+        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
+            api_key = app_store_connect_api_key(
+                key_id: key_id,
+                issuer_id: issuer_id,
+                key_filepath: key_path
+            )
+            upload_to_testflight(api_key: api_key,
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        else
+            upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        end
 
     end
     
@@ -72,11 +101,25 @@ platform :ios do
         )
 
         changelog = File.read("changelog.txt")
-
-        upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
-                                changelog: changelog,
-                                submit_beta_review: true)
+        key_id = ENV["ASC_KEY_ID"]
+        issuer_id = ENV["ASC_ISSUER_ID"]
+        key_path = ENV["ASC_KEY_PATH"]
+        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
+            api_key = app_store_connect_api_key(
+                key_id: key_id,
+                issuer_id: issuer_id,
+                key_filepath: key_path
+            )
+            upload_to_testflight(api_key: api_key,
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        else
+            upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
+                                    changelog: changelog,
+                                    submit_beta_review: true)
+        end
 
     end
 
