@@ -1,0 +1,33 @@
+included:
+  - TrackMyCafe
+excluded:
+  - Pods
+  - R.generated.swift
+disabled_rules:
+  - large_tuple
+  - function_parameter_count
+  - trailing_comma
+  - trailing_whitespace
+  - line_length
+  - nesting
+  - vertical_whitespace
+identifier_name:
+  min_length: 2
+  severity: warning
+  excluded:
+    - i
+    - j
+    - id
+type_body_length:
+  warning: 1200
+  error: 2000
+file_length:
+  warning: 1300
+  error: 3000
+function_body_length:
+  warning: 160
+  error: 300
+force_cast:
+  severity: warning
+force_try:
+  severity: warning
