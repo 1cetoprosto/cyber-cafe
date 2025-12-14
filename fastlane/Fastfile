@@ -23,6 +23,7 @@ platform :ios do
         )
         changelog = File.read("changelog.txt")
         upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                itc_team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
                                 changelog: changelog,
                                 submit_beta_review: true)
     end
@@ -48,6 +49,7 @@ platform :ios do
         changelog = File.read("changelog.txt")
 
         upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                itc_team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
                                 changelog: changelog,
                                 submit_beta_review: true)
 
@@ -72,6 +74,7 @@ platform :ios do
         changelog = File.read("changelog.txt")
 
         upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                itc_team_id: ENV["FASTLANE_ITC_TEAM_ID"] || "128170660",
                                 changelog: changelog,
                                 submit_beta_review: true)
 
