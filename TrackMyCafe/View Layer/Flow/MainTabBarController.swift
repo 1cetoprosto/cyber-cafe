@@ -120,7 +120,9 @@ class MainTabBarController: UITabBarController {
       viewController: SettingListViewController(),
       itemName: R.string.global.menuSettings(),
       itemImage: SystemImages.gearshape)
-    viewControllers = [homeViewController, ordersViewController, costsViewController, settingsViewController]
+    viewControllers = [
+      homeViewController, ordersViewController, costsViewController, settingsViewController,
+    ]
   }
 
   func createNavController(
@@ -129,6 +131,8 @@ class MainTabBarController: UITabBarController {
     itemImage: String
   ) -> UINavigationController {
     let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
+    item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+    item.imageInsets = .zero
 
     let navController = UINavigationController(rootViewController: viewController)
     navController.tabBarItem = item
@@ -139,21 +143,21 @@ class MainTabBarController: UITabBarController {
     navAppearance.backgroundColor = UIColor.NavBar.background
     navAppearance.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title3DemiBold
+      .font: Typography.title3DemiBold,
     ]
     navAppearance.largeTitleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title2DemiBold
+      .font: Typography.title2DemiBold,
     ]
 
     let buttonAppearance = UIBarButtonItemAppearance()
     buttonAppearance.normal.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.body
+      .font: Typography.body,
     ]
     buttonAppearance.highlighted.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.bodyMedium
+      .font: Typography.bodyMedium,
     ]
     navAppearance.buttonAppearance = buttonAppearance
     navAppearance.doneButtonAppearance = buttonAppearance
