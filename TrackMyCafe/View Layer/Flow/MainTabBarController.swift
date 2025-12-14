@@ -111,11 +111,11 @@ class MainTabBarController: UITabBarController {
     let ordersViewController = createNavController(
       viewController: OrderListViewController(),
       itemName: R.string.global.income(),
-      itemImage: SystemImages.cupAndSaucerFill)
+      itemImage: SystemImages.cupAndSaucer)
     let costsViewController = createNavController(
       viewController: CostListViewController(),
       itemName: R.string.global.costs(),
-      itemImage: SystemImages.takeoutbagAndCupAndStrawFill)
+      itemImage: SystemImages.takeoutbagAndCupAndStraw)
     let settingsViewController = createNavController(
       viewController: SettingListViewController(),
       itemName: R.string.global.menuSettings(),
