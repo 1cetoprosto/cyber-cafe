@@ -2,22 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>CLIENT_ID</key>
-	<string>203584203176-qbo4tmqluqnc0psi0srq5qg76hsj0qm2.apps.googleusercontent.com</string>
-	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.203584203176-qbo4tmqluqnc0psi0srq5qg76hsj0qm2</string>
 	<key>API_KEY</key>
-	<string>AIzaSyBU-KhjX4y7-y98PeaBkWM2TQBa6Lu-tu8</string>
+	<string>AIzaSyD2qQ4hzWpHdD2lRv8vIEJDZ4_5I2YyTVg</string>
 	<key>GCM_SENDER_ID</key>
-	<string>203584203176</string>
+	<string>216054156318</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>ICSOFT.Cyber-coffe</string>
+	<string>ICSOFT.TrackMyCafe</string>
 	<key>PROJECT_ID</key>
-	<string>donat-cafe</string>
+	<string>trackmycafe-prod</string>
 	<key>STORAGE_BUCKET</key>
-	<string>donat-cafe.appspot.com</string>
+	<string>trackmycafe-prod.firebasestorage.app</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:203584203176:ios:b9e4cb00cade06f1ab159d</string>
+	<string>1:216054156318:ios:bb524c641b037df684720f</string>
 </dict>
 </plist>

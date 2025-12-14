@@ -1,0 +1,106 @@
+default_platform(:ios)
+ENV["FASTLANE_TEAM_ID"] = ENV["TEAM_ID"] if ENV["TEAM_ID"] && !ENV["TEAM_ID"].empty?
+ENV["FASTLANE_ITC_TEAM_ID"] = ENV["ITC_TEAM_ID"] if ENV["ITC_TEAM_ID"] && !ENV["ITC_TEAM_ID"].empty?
+
+platform :ios do 
+
+    lane :dev do
+        ensure_git_status_clean
+        increment_build_number
+        commit_version_bump
+
+        build_app(
+            workspace: "TrackMyCafe.xcworkspace",
+            scheme: "TrackMyCafe Dev",
+            export_method: "app-store",
+            export_options: {
+                provisioningProfiles: {
+                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
+                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
+                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
+                }
+            }
+        )
+        changelog = File.read("changelog.txt")
+        upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                changelog: changelog,
+                                submit_beta_review: true)
+    end
+
+    lane :beta do
+        ensure_git_status_clean
+        increment_build_number
+        commit_version_bump
+
+        build_app(
+            workspace: "TrackMyCafe.xcworkspace",
+            scheme: "TrackMyCafe Beta",
+            export_method: "app-store",
+            export_options: {
+                provisioningProfiles: {
+                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
+                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
+                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
+                }
+            }
+        )
+
+        changelog = File.read("changelog.txt")
+
+        upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                changelog: changelog,
+                                submit_beta_review: true)
+
+    end
+    
+    lane :prod do
+        ensure_git_status_clean
+
+        build_app(
+            workspace: "TrackMyCafe.xcworkspace",
+            scheme: "TrackMyCafe Prod",
+            export_method: "app-store",
+            export_options: {
+                provisioningProfiles: {
+                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
+                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
+                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
+                }
+            }
+        )
+
+        changelog = File.read("changelog.txt")
+
+        upload_to_testflight(username: ENV["FASTLANE_USER"],
+                                changelog: changelog,
+                                submit_beta_review: true)
+
+    end
+
+    lane :profiles do
+        UI.message("Downloading App Store provisioning profiles for all TrackMyCafe bundles")
+        sigh(
+            app_identifier: "ICSOFT.TrackMyCafe.dev",
+            username: ENV["FASTLANE_USER"],
+            team_id: ENV["FASTLANE_TEAM_ID"],
+            provisioning_name: ENV["PP_DEV"],
+            readonly: true
+        )
+        sigh(
+            app_identifier: "ICSOFT.TrackMyCafe.beta",
+            username: ENV["FASTLANE_USER"],
+            team_id: ENV["FASTLANE_TEAM_ID"],
+            provisioning_name: ENV["PP_BETA"],
+            readonly: true
+        )
+        sigh(
+            app_identifier: "ICSOFT.TrackMyCafe",
+            username: ENV["FASTLANE_USER"],
+            team_id: ENV["FASTLANE_TEAM_ID"],
+            provisioning_name: ENV["PP_PROD"],
+            readonly: true
+        )
+        UI.success("Provisioning profiles downloaded and installed")
+    end
+
+end

@@ -99,6 +99,9 @@ iOSInjectionProject/
 .DS_Store
 **/.DS_Store
 
+# Provisioning profiles (do not commit to repo)
+*.mobileprovision
+
 # Common merge/editor artifacts
 *.orig
 *.rej
