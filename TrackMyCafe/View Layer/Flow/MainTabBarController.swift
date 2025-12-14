@@ -104,20 +104,25 @@ class MainTabBarController: UITabBarController {
   }
 
   func setupTabBar() {
+    let homeViewController = createNavController(
+      viewController: HomeViewController(),
+      itemName: R.string.global.home(),
+      itemImage: SystemImages.home)
     let ordersViewController = createNavController(
       viewController: OrderListViewController(),
       itemName: R.string.global.income(),
-      itemImage: SystemImages.cupAndSaucerFill)
+      itemImage: SystemImages.mug)
     let costsViewController = createNavController(
       viewController: CostListViewController(),
       itemName: R.string.global.costs(),
-      itemImage: SystemImages.takeoutbagAndCupAndStrawFill)
+      itemImage: SystemImages.bag)
     let settingsViewController = createNavController(
       viewController: SettingListViewController(),
       itemName: R.string.global.menuSettings(),
       itemImage: SystemImages.gearshape)
-
-    viewControllers = [ordersViewController, costsViewController, settingsViewController]
+    viewControllers = [
+      homeViewController, ordersViewController, costsViewController, settingsViewController,
+    ]
   }
 
   func createNavController(
@@ -126,6 +131,8 @@ class MainTabBarController: UITabBarController {
     itemImage: String
   ) -> UINavigationController {
     let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
+    item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+    item.imageInsets = .zero
 
     let navController = UINavigationController(rootViewController: viewController)
     navController.tabBarItem = item
@@ -136,21 +143,21 @@ class MainTabBarController: UITabBarController {
     navAppearance.backgroundColor = UIColor.NavBar.background
     navAppearance.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title3DemiBold
+      .font: Typography.title3DemiBold,
     ]
     navAppearance.largeTitleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title2DemiBold
+      .font: Typography.title2DemiBold,
     ]
 
     let buttonAppearance = UIBarButtonItemAppearance()
     buttonAppearance.normal.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.body
+      .font: Typography.body,
     ]
     buttonAppearance.highlighted.titleTextAttributes = [
       .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.bodyMedium
+      .font: Typography.bodyMedium,
     ]
     navAppearance.buttonAppearance = buttonAppearance
     navAppearance.doneButtonAppearance = buttonAppearance

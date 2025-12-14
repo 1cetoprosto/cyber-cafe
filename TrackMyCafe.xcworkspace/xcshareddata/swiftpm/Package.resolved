@@ -1,5 +1,5 @@
 {
-  "originHash" : "cab74dba8b8a3c1842b2d20764a436e5c4d096e9c468ab7a2d01f5f7da096aeb",
+  "originHash" : "17c3f731ee9dea511d62aa850116409f1bc6b8fd744176acdf367b6af2ca08cd",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -80,6 +80,15 @@
       "state" : {
         "revision" : "0382ca27f22fb3494cf657d8dc356dc282cd1193",
         "version" : "3.4.1"
+      }
+    },
+    {
+      "identity" : "instructions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ephread/Instructions",
+      "state" : {
+        "revision" : "54f50ec058a118107178f641f7475db353080c6d",
+        "version" : "2.3.0"
       }
     },
     {
