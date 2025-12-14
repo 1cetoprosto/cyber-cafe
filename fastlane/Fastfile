@@ -5,9 +5,9 @@ ENV["FASTLANE_ITC_TEAM_ID"] = ENV["ITC_TEAM_ID"] if ENV["ITC_TEAM_ID"] && !ENV["
 platform :ios do 
 
     lane :dev do
-        ensure_git_status_clean
+        ensure_git_status_clean unless ENV["ALLOW_DIRTY"] == "1"
         increment_build_number
-        commit_version_bump
+        commit_version_bump(force: true)
 
         build_app(
             workspace: "TrackMyCafe.xcworkspace",
