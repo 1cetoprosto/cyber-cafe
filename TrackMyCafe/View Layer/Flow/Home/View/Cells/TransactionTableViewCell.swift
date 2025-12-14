@@ -3,6 +3,7 @@ import UIKit
 
 final class TransactionTableViewCell: UITableViewCell {
   static let identifier = "TransactionTableViewCell"
+  private static let df = DateFormatter.appFullDate
 
   private let cardView: UIView = {
     let v = UIView()
@@ -46,15 +47,20 @@ final class TransactionTableViewCell: UITableViewCell {
 
   func configure(title: String, date: Date, amount: Double, isIncome: Bool) {
     titleLabel.text = title
-    let df = DateFormatter()
-    df.locale = .autoupdatingCurrent
-    df.dateFormat = "dd MMMM yyyy"
-    dateLabel.text = df.string(from: date)
+    dateLabel.text = Self.df.string(from: date)
 
     let prefix = isIncome ? "+" : "-"
     let formatted = NumberFormatter.currencyInteger.string(amount)
     amountLabel.text = "\(prefix)\(formatted)"
     amountLabel.textColor = isIncome ? UIColor.systemGreen : UIColor.systemRed
+  }
+
+  override func prepareForReuse() {
+    super.prepareForReuse()
+    titleLabel.text = nil
+    dateLabel.text = nil
+    amountLabel.text = nil
+    amountLabel.textColor = UIColor.Main.text
   }
 
   private func setupLayout() {

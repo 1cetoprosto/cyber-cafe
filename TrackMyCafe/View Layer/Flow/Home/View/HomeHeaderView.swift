@@ -48,10 +48,7 @@ final class HomeHeaderView: UIView {
   func configure(
     date: Date, today: Double, week: Double, month: Double, expenses: Double, profit: Double
   ) {
-    let df = DateFormatter()
-    df.locale = .autoupdatingCurrent
-    df.dateFormat = "d MMMM yyyy"
-    dateLabel.text = df.string(from: date)
+    dateLabel.text = DateFormatter.appFullDate.string(from: date)
 
     todayCard.valueText = NumberFormatter.currencyInteger.string(today)
     weekContainer.text = NumberFormatter.currencyInteger.string(week)
@@ -73,6 +70,7 @@ final class HomeHeaderView: UIView {
     incomeButton.setTitle("+ " + R.string.global.income(), for: .normal)
     incomeButton.addTarget(self, action: #selector(incomeTap), for: .touchUpInside)
     incomeButton.height(UIConstants.buttonHeight)
+    incomeButton.accessibilityIdentifier = "homeAddIncome"
 
     expenseButton.setTitle("+ " + R.string.global.cost(), for: .normal)
     expenseButton.setTitleColor(UIColor.Main.text, for: .normal)
@@ -84,6 +82,7 @@ final class HomeHeaderView: UIView {
     }
     expenseButton.addTarget(self, action: #selector(expenseTap), for: .touchUpInside)
     expenseButton.height(UIConstants.buttonHeight)
+    expenseButton.accessibilityIdentifier = "homeAddExpense"
 
     actionsStack.addArrangedSubview(incomeButton)
     actionsStack.addArrangedSubview(expenseButton)
