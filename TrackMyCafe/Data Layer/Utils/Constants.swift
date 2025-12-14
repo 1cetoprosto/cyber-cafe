@@ -181,6 +181,7 @@ struct CellIdentifiers {
 // MARK: - System Images
 struct SystemImages {
   static let home = "house"
+  static let cupAndSaucer = "cup.and.saucer"
   static let globe = "globe"
   static let sunMax = "sun.max"
   static let envelopeFill = "envelope.fill"
@@ -189,6 +190,7 @@ struct SystemImages {
   static let banknoteFill = "banknote.fill"
   static let person2Fill = "person.2.fill"
   static let icloudFill = "icloud.fill"
+  static let takeoutbagAndCupAndStraw = "takeoutbag.and.cup.and.straw"
   static let takeoutbagAndCupAndStrawFill = "takeoutbag.and.cup.and.straw.fill"
   static let gearshape = "gearshape"
 }
