@@ -1,0 +1,2 @@
+Оновлення:
+- перший реліз fastlane для TrackMyCafe
