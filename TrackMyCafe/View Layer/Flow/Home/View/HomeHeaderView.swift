@@ -22,7 +22,7 @@ final class HomeHeaderView: UIView {
 
   private let actionsStack = UIStackView()
   private let incomeButton = DefaultButton()
-  private let expenseButton = UIButton(type: .system)
+  private let expenseButton = DefaultButton()
 
   private let todayCard = TodayCardView()
   private let weekContainer = InputContainerView(
@@ -72,22 +72,18 @@ final class HomeHeaderView: UIView {
 
     incomeButton.setTitle("+ " + R.string.global.income(), for: .normal)
     incomeButton.addTarget(self, action: #selector(incomeTap), for: .touchUpInside)
-    incomeButton.translatesAutoresizingMaskIntoConstraints = false
-    incomeButton.heightAnchor.constraint(equalToConstant: UIConstants.buttonHeight).isActive = true
+    incomeButton.height(UIConstants.buttonHeight)
 
     expenseButton.setTitle("+ " + R.string.global.cost(), for: .normal)
     expenseButton.setTitleColor(UIColor.Main.text, for: .normal)
-    expenseButton.layer.cornerRadius = UIConstants.largeCornerRadius
     expenseButton.layer.borderWidth = UIConstants.standardBorderWidth
     expenseButton.layer.borderColor = UIColor.Main.text.alpha(0.15).cgColor
     expenseButton.backgroundColor = UIColor.Main.background
-    expenseButton.titleLabel?.font = Typography.title3
     if #available(iOS 11.0, *) {
       expenseButton.titleLabel?.adjustsFontForContentSizeCategory = true
     }
     expenseButton.addTarget(self, action: #selector(expenseTap), for: .touchUpInside)
-    expenseButton.translatesAutoresizingMaskIntoConstraints = false
-    expenseButton.heightAnchor.constraint(equalToConstant: UIConstants.buttonHeight).isActive = true
+    expenseButton.height(UIConstants.buttonHeight)
 
     actionsStack.addArrangedSubview(incomeButton)
     actionsStack.addArrangedSubview(expenseButton)
@@ -109,9 +105,9 @@ final class HomeHeaderView: UIView {
     contentStack.edgesToSuperview(
       insets: .init(
         top: UIConstants.largeSpacing,
-        left: UIConstants.standardPadding,
+        left: 0,
         bottom: UIConstants.largeSpacing,
-        right: UIConstants.standardPadding
+        right: 0
       )
     )
 
@@ -143,7 +139,7 @@ private final class ProfitCard: UIView {
     layer.cornerRadius = UIConstants.extraLargeCornerRadius
 
     badgeView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.2)
-    badgeView.layer.cornerRadius = 12
+    badgeView.layer.cornerRadius = UIConstants.badgeCornerRadius
     iconView.image = UIImage(systemName: "arrow.down.right")
     iconView.tintColor = UIColor.systemPink
     iconView.contentMode = .scaleAspectFit
@@ -157,37 +153,36 @@ private final class ProfitCard: UIView {
     footerLabel.textColor = UIColor.Main.text.alpha(0.7)
 
     badgeView.addSubview(iconView)
-    iconView.size(CGSize(width: 40, height: 40))
+    iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
     iconView.centerInSuperview()
-    badgeView.size(CGSize(width: 44, height: 44))
+    badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
-      
-      let vStack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-      vStack.axis = .vertical
-      vStack.spacing = UIConstants.smallSpacing
-      
-      let hStack = UIStackView(arrangedSubviews: [badgeView, vStack])
-      hStack.axis = .horizontal
-      hStack.spacing = UIConstants.smallSpacing
-      
-      //    let header = UIStackView(arrangedSubviews: [badgeView, titleLabel])
-      //    header.axis = .horizontal
-      //    header.spacing = UIConstants.smallSpacing
-      
-      let stack = UIStackView(arrangedSubviews: [hStack, divider, footerLabel])
-      stack.axis = .vertical
-      stack.spacing = UIConstants.smallSpacing
-      
-      addSubview(stack)
-    stack.translatesAutoresizingMaskIntoConstraints = false
-    NSLayoutConstraint.activate([
-      stack.topAnchor.constraint(equalTo: topAnchor, constant: UIConstants.standardPadding),
-      stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: UIConstants.standardPadding),
-      stack.trailingAnchor.constraint(
-        equalTo: trailingAnchor, constant: -UIConstants.standardPadding),
-      stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -UIConstants.standardPadding),
-    ])
-    divider.heightAnchor.constraint(equalToConstant: 1).isActive = true
+    let vStack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+    vStack.axis = .vertical
+    vStack.spacing = UIConstants.smallSpacing
+
+    let hStack = UIStackView(arrangedSubviews: [badgeView, vStack])
+    hStack.axis = .horizontal
+    hStack.spacing = UIConstants.smallSpacing
+
+    //    let header = UIStackView(arrangedSubviews: [badgeView, titleLabel])
+    //    header.axis = .horizontal
+    //    header.spacing = UIConstants.smallSpacing
+
+    let stack = UIStackView(arrangedSubviews: [hStack, divider, footerLabel])
+    stack.axis = .vertical
+    stack.spacing = UIConstants.standardSpacing
+
+    addSubview(stack)
+    stack.edgesToSuperview(
+      insets: .init(
+        top: UIConstants.standardPadding,
+        left: UIConstants.standardPadding,
+        bottom: UIConstants.standardPadding,
+        right: UIConstants.standardPadding
+      )
+    )
+    divider.height(UIConstants.standardBorderWidth)
   }
 
   required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
@@ -216,9 +211,9 @@ private final class TodayCardView: UIView {
     layer.cornerRadius = UIConstants.extraLargeCornerRadius
 
     iconBadge.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
-    iconBadge.layer.cornerRadius = 12
+    iconBadge.layer.cornerRadius = UIConstants.badgeCornerRadius
     iconView.image = UIImage(systemName: "calendar")
-      iconView.tintColor = UIColor.Button.background
+    iconView.tintColor = UIColor.Button.background
     iconView.contentMode = .scaleAspectFit
     titleLabel.applyDynamic(Typography.footnote)
     titleLabel.textColor = UIColor.Main.text.alpha(0.7)
@@ -227,18 +222,17 @@ private final class TodayCardView: UIView {
     valueLabel.textColor = UIColor.Main.text
 
     iconBadge.addSubview(iconView)
-    iconView.size(CGSize(width: 40, height: 40))
+    iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
     iconView.centerInSuperview()
-    iconBadge.size(CGSize(width: 44, height: 44))
+    iconBadge.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
-      let header = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-      header.axis = .vertical
-      header.spacing = UIConstants.smallSpacing
-      
+    let header = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+    header.axis = .vertical
+    header.spacing = UIConstants.smallSpacing
+
     let stack = UIStackView(arrangedSubviews: [iconBadge, header])
-      stack.axis = .horizontal
-      stack.spacing = UIConstants.smallSpacing
-
+    stack.axis = .horizontal
+    stack.spacing = UIConstants.smallSpacing
 
     addSubview(stack)
     stack.edgesToSuperview(
