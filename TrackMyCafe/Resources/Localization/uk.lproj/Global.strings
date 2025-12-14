@@ -290,7 +290,7 @@
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані для вибраної дати вже існують. Відкрийте та відредагуйте їх";
 
 // MARK: - Income
-"income" = "Надходження";
+"income" = "Доходи";
 
 // MARK: - Sales 
 "sales" = "Продажі";

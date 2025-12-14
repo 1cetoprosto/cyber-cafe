@@ -290,7 +290,7 @@
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them.";
 
 // MARK: - Income
-"income" = "Income";
+"income" = "Incomes";
 
 // MARK: - Sales
 "sales" = "Sales";
