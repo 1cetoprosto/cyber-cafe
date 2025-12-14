@@ -31,3 +31,7 @@ force_cast:
   severity: warning
 force_try:
   severity: warning
+attribute_name_spacing:
+  severity: warning
+shorthand_operator:
+  severity: warning
