@@ -2125,7 +2125,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
+			shellScript = "export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH\nif which swiftlint >/dev/null; then\n  swiftlint --reporter xcode || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B339A92C0B22FE0073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2143,7 +2143,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
+			shellScript = "export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH\nif which swiftlint >/dev/null; then\n  swiftlint --reporter xcode || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B339AA2C0B22FE0073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -2180,7 +2180,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n  swiftlint || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
+			shellScript = "export PATH=/opt/homebrew/bin:/usr/local/bin:$PATH\nif which swiftlint >/dev/null; then\n  swiftlint --reporter xcode || true\nelse\n  echo \"warning: SwiftLint not installed. Install via Homebrew with 'brew install swiftlint'.\"\nfi\n";
 		};
 		F3B33A492C0B23450073F19A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
