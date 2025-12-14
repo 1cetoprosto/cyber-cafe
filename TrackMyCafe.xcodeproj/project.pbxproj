@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -1874,7 +1874,7 @@
 				};
 			};
 			buildConfigurationList = F39A52EC27311FDD00C8F2D3 /* Build configuration list for PBXProject "TrackMyCafe" */;
-			compatibilityVersion = "Xcode 13.0";
+			compatibilityVersion = "Xcode 16.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
