@@ -13,7 +13,7 @@ class RememberMeButton: UIControl {
     
     var isCheck = false {
         didSet {
-            checkImageView.image = isCheck ? R.image.checkmark() : nil
+            checkImageView.image = isCheck ? R.image.icon_checkmark() : nil
         }
     }
     

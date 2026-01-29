@@ -1,5 +1,5 @@
 {
-  "originHash" : "17c3f731ee9dea511d62aa850116409f1bc6b8fd744176acdf367b6af2ca08cd",
+  "originHash" : "b7082711d529645a42028ef0893f9ab334d39e10676fb4f2fda5be2188e6d076",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -161,15 +161,6 @@
       "state" : {
         "revision" : "b442ee3e9caa1abab26fd9b23f060f6f0815ff48",
         "version" : "10.33.0"
-      }
-    },
-    {
-      "identity" : "stevia",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/freshOS/Stevia",
-      "state" : {
-        "revision" : "090ffddd48f2f64f5c17a74f0cc61fe9387d71a5",
-        "version" : "5.1.4"
       }
     },
     {
