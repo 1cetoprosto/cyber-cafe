@@ -138,7 +138,6 @@
 		F385B4272C1DA01B00973CAA /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4262C1DA01B00973CAA /* Log.swift */; };
 		F385B4292C1DA60A00973CAA /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4282C1DA60A00973CAA /* Subscription.swift */; };
 		F38707D92BE5FBB900B6F313 /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */; };
-		F38707DC2BE600EB00B6F313 /* Stevia in Frameworks */ = {isa = PBXBuildFile; productRef = F38707DB2BE600EB00B6F313 /* Stevia */; };
 		F38EE5162C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
 		F38EE5172C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
 		F38EE5182C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */; };
@@ -289,7 +288,6 @@
 		F3B33A092C0B22FE0073F19A /* OrderListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C8127EAEB97006D40FC /* OrderListItemViewModelType.swift */; };
 		F3B33A0A2C0B22FE0073F19A /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont+Extension.swift */; };
 		F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */; };
-		F3B33A0D2C0B22FE0073F19A /* Stevia in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339A62C0B22FE0073F19A /* Stevia */; };
 		F3B33A0E2C0B22FE0073F19A /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339972C0B22FE0073F19A /* FirebaseDatabaseSwift */; };
 		F3B33A0F2C0B22FE0073F19A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339932C0B22FE0073F19A /* FirebaseAnalytics */; };
 		F3B33A102C0B22FE0073F19A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3B3399E2C0B22FE0073F19A /* SVProgressHUD */; };
@@ -410,7 +408,6 @@
 		F3B33AA82C0B23450073F19A /* OrderListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C8127EAEB97006D40FC /* OrderListItemViewModelType.swift */; };
 		F3B33AA92C0B23450073F19A /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont+Extension.swift */; };
 		F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */; };
-		F3B33AAC2C0B23450073F19A /* Stevia in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A452C0B23450073F19A /* Stevia */; };
 		F3B33AAD2C0B23450073F19A /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A362C0B23450073F19A /* FirebaseDatabaseSwift */; };
 		F3B33AAE2C0B23450073F19A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A322C0B23450073F19A /* FirebaseAnalytics */; };
 		F3B33AAF2C0B23450073F19A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A3D2C0B23450073F19A /* SVProgressHUD */; };
@@ -722,7 +719,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F383C8AE2C0B4D8400DF6124 /* Realm in Frameworks */,
-				F38707DC2BE600EB00B6F313 /* Stevia in Frameworks */,
 				F39B5D202846112F000F7D43 /* FirebaseDatabaseSwift in Frameworks */,
 				F3F6A6222C327849000961C8 /* SwiftyStoreKit in Frameworks */,
 				F383C8B02C0B4D8400DF6124 /* RealmSwift in Frameworks */,
@@ -748,7 +744,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F383C8B22C0B5E9B00DF6124 /* Realm in Frameworks */,
-				F3B33A0D2C0B22FE0073F19A /* Stevia in Frameworks */,
 				F3B33A0E2C0B22FE0073F19A /* FirebaseDatabaseSwift in Frameworks */,
 				F383C8B42C0B5E9B00DF6124 /* RealmSwift in Frameworks */,
 				F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */,
@@ -775,7 +770,6 @@
 			files = (
 				F3A640C42C3438A8006BCACD /* SwiftyStoreKit in Frameworks */,
 				F383C8B62C0B5EAA00DF6124 /* Realm in Frameworks */,
-				F3B33AAC2C0B23450073F19A /* Stevia in Frameworks */,
 				F3B33AAD2C0B23450073F19A /* FirebaseDatabaseSwift in Frameworks */,
 				F383C8B82C0B5EAA00DF6124 /* RealmSwift in Frameworks */,
 				F385B4112C1D854700973CAA /* Kingfisher in Frameworks */,
@@ -1785,7 +1779,6 @@
 				F3410E9B2BDD34540007157B /* TinyConstraints */,
 				F3410EA62BDD3D5E0007157B /* KeychainAccess */,
 				F3410EB42BDD434B0007157B /* SwiftEntryKit */,
-				F38707DB2BE600EB00B6F313 /* Stevia */,
 				F383C8AD2C0B4D8400DF6124 /* Realm */,
 				F383C8AF2C0B4D8400DF6124 /* RealmSwift */,
 				F3F6A6182C2FED7F000961C8 /* TPInAppReceipt */,
@@ -1830,7 +1823,6 @@
 				F3B339A02C0B22FE0073F19A /* TinyConstraints */,
 				F3B339A22C0B22FE0073F19A /* KeychainAccess */,
 				F3B339A42C0B22FE0073F19A /* SwiftEntryKit */,
-				F3B339A62C0B22FE0073F19A /* Stevia */,
 				F383C8B12C0B5E9B00DF6124 /* Realm */,
 				F383C8B32C0B5E9B00DF6124 /* RealmSwift */,
 				F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */,
@@ -1875,7 +1867,6 @@
 				F3B33A3F2C0B23450073F19A /* TinyConstraints */,
 				F3B33A412C0B23450073F19A /* KeychainAccess */,
 				F3B33A432C0B23450073F19A /* SwiftEntryKit */,
-				F3B33A452C0B23450073F19A /* Stevia */,
 				F383C8B52C0B5EAA00DF6124 /* Realm */,
 				F383C8B72C0B5EAA00DF6124 /* RealmSwift */,
 				F385B4102C1D854700973CAA /* Kingfisher */,
@@ -1919,7 +1910,6 @@
 				F3410E9A2BDD34540007157B /* XCRemoteSwiftPackageReference "TinyConstraints" */,
 				F3410EA52BDD3D5E0007157B /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				F3410EB32BDD434B0007157B /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
-				F38707DA2BE600EB00B6F313 /* XCRemoteSwiftPackageReference "Stevia" */,
 				F383C8AC2C0B4D8400DF6124 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F3F6A6172C2FED7F000961C8 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */,
@@ -3114,14 +3104,6 @@
 				minimumVersion = 7.12.0;
 			};
 		};
-		F38707DA2BE600EB00B6F313 /* XCRemoteSwiftPackageReference "Stevia" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freshOS/Stevia";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.4;
-			};
-		};
 		F39B5D182846112F000F7D43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -3170,14 +3152,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		F3B339A72C0B22FE0073F19A /* XCRemoteSwiftPackageReference "Stevia" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freshOS/Stevia";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.4;
-			};
-		};
 		F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -3216,14 +3190,6 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 2.0.0;
-			};
-		};
-		F3B33A462C0B23450073F19A /* XCRemoteSwiftPackageReference "Stevia" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/freshOS/Stevia";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.1.4;
 			};
 		};
 		F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */ = {
@@ -3307,11 +3273,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
-		};
-		F38707DB2BE600EB00B6F313 /* Stevia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F38707DA2BE600EB00B6F313 /* XCRemoteSwiftPackageReference "Stevia" */;
-			productName = Stevia;
 		};
 		F39B5D192846112F000F7D43 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -3418,11 +3379,6 @@
 			package = F3B339A52C0B22FE0073F19A /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
 			productName = SwiftEntryKit;
 		};
-		F3B339A62C0B22FE0073F19A /* Stevia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B339A72C0B22FE0073F19A /* XCRemoteSwiftPackageReference "Stevia" */;
-			productName = Stevia;
-		};
 		F3B33A322C0B23450073F19A /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -3477,11 +3433,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F3B33A442C0B23450073F19A /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
 			productName = SwiftEntryKit;
-		};
-		F3B33A452C0B23450073F19A /* Stevia */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B33A462C0B23450073F19A /* XCRemoteSwiftPackageReference "Stevia" */;
-			productName = Stevia;
 		};
 		F3B7A83B2EE224E4007BF216 /* Instructions */ = {
 			isa = XCSwiftPackageProductDependency;
