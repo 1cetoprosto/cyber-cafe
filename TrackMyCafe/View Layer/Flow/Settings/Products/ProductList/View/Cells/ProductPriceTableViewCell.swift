@@ -20,7 +20,7 @@ class ProductPriceTableViewCell: UITableViewCell {
 
   let productLabel: UILabel = {
     let label = UILabel()
-    label.text = "Esspresso"
+    label.text = ""
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = UIColor.TableView.cellLabel
     label.applyDynamic(Typography.body)
@@ -30,7 +30,7 @@ class ProductPriceTableViewCell: UITableViewCell {
 
   let quantityLabel: UILabel = {
     let label = UILabel()
-    label.text = "0"
+    label.text = ""
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = UIColor.TableView.cellLabel
     label.applyDynamic(Typography.body)
