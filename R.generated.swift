@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 252 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 258 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -253,12 +253,26 @@ struct _R {
       /// Locales: en, uk
       var actionOk: RswiftResources.StringResource { .init(key: "actionOk", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
 
+      /// en translation: Add
+      ///
+      /// Key: add
+      ///
+      /// Locales: en, uk
+      var add: RswiftResources.StringResource { .init(key: "add", tableName: "Global", source: source, developmentValue: "Add", comment: nil) }
+
       /// en translation: Add admin
       ///
       /// Key: addAdmin
       ///
       /// Locales: en, uk
       var addAdmin: RswiftResources.StringResource { .init(key: "addAdmin", tableName: "Global", source: source, developmentValue: "Add admin", comment: nil) }
+
+      /// en translation: Add Ingredient
+      ///
+      /// Key: addIngredient
+      ///
+      /// Locales: en, uk
+      var addIngredient: RswiftResources.StringResource { .init(key: "addIngredient", tableName: "Global", source: source, developmentValue: "Add Ingredient", comment: nil) }
 
       /// en translation: Add moderator responsibilities
       ///
@@ -315,6 +329,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var allowCalculation: RswiftResources.StringResource { .init(key: "allowCalculation", tableName: "Global", source: source, developmentValue: "Allow Calculation", comment: nil) }
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: appName
+      ///
+      /// Locales: en, uk
+      var appName: RswiftResources.StringResource { .init(key: "appName", tableName: "Global", source: source, developmentValue: "TrackMyCafe", comment: nil) }
 
       /// en translation: The current AppleID has no costs for this cafe
       ///
@@ -679,6 +700,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var enterProductName: RswiftResources.StringResource { .init(key: "enterProductName", tableName: "Global", source: source, developmentValue: "Enter good's name", comment: nil) }
+
+      /// en translation: Enter quantity per unit (%@)
+      ///
+      /// Key: enterQuantityPerUnit
+      ///
+      /// Locales: en, uk
+      var enterQuantityPerUnit: RswiftResources.StringResource1<String> { .init(key: "enterQuantityPerUnit", tableName: "Global", source: source, developmentValue: "Enter quantity per unit (%@)", comment: nil) }
 
       /// en translation: Enter the name of the type of receipt
       ///
@@ -1450,6 +1478,13 @@ struct _R {
       /// Locales: en, uk
       var recentIncomes: RswiftResources.StringResource { .init(key: "recentIncomes", tableName: "Global", source: source, developmentValue: "Recent incomes", comment: nil) }
 
+      /// en translation: Recipe
+      ///
+      /// Key: recipe
+      ///
+      /// Locales: en, uk
+      var recipe: RswiftResources.StringResource { .init(key: "recipe", tableName: "Global", source: source, developmentValue: "Recipe", comment: nil) }
+
       /// en translation: Please try again
       ///
       /// Key: repeatAgain
@@ -1568,6 +1603,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var seedingData: RswiftResources.StringResource { .init(key: "seedingData", tableName: "Global", source: source, developmentValue: "Seeding data...", comment: nil) }
+
+      /// en translation: Select Ingredient
+      ///
+      /// Key: selectIngredient
+      ///
+      /// Locales: en, uk
+      var selectIngredient: RswiftResources.StringResource { .init(key: "selectIngredient", tableName: "Global", source: source, developmentValue: "Select Ingredient", comment: nil) }
 
       /// en translation: Select Theme
       ///
@@ -1984,9 +2026,12 @@ struct _R {
     }
   }
 
-  /// This `_R.color` struct is generated, and contains static references to 27 colors.
+  /// This `_R.color` struct is generated, and contains static references to 28 colors.
   struct color {
     let bundle: Foundation.Bundle
+
+    /// Color `AccentColor`.
+    var accentColor: RswiftResources.ColorResource { .init(name: "AccentColor", path: [], bundle: bundle) }
 
     /// Color `CellBackground`.
     var cellBackground: RswiftResources.ColorResource { .init(name: "CellBackground", path: [], bundle: bundle) }
@@ -2104,9 +2149,6 @@ struct _R {
     /// Image `call`.
     var call: RswiftResources.ImageResource { .init(name: "call", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
-    /// Image `checkmark`.
-    var checkmark: RswiftResources.ImageResource { .init(name: "checkmark", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
-
     /// Image `delete`.
     var delete: RswiftResources.ImageResource { .init(name: "delete", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
@@ -2118,6 +2160,9 @@ struct _R {
 
     /// Image `face-id`.
     var faceId: RswiftResources.ImageResource { .init(name: "face-id", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
+
+    /// Image `icon_checkmark`.
+    var icon_checkmark: RswiftResources.ImageResource { .init(name: "icon_checkmark", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
 
     /// Image `mail`.
     var mail: RswiftResources.ImageResource { .init(name: "mail", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
