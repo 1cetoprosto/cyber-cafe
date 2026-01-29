@@ -9,7 +9,7 @@ final class HomeHeaderView: UIView {
     let l = UILabel()
     l.applyDynamic(Typography.title2DemiBold)
     l.textColor = UIColor.Main.text
-    l.text = "TrackMyCafe"
+    l.text = R.string.global.appName()
     return l
   }()
 
