@@ -48,6 +48,30 @@ class ProductDetailsViewController: UIViewController {
     return container
   }()
 
+  // MARK: - Recipe UI
+  private lazy var recipeTitleLabel: UILabel = {
+    let label = UILabel()
+    label.text = R.string.global.recipe()
+    label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+    label.textColor = UIColor.Main.text
+    return label
+  }()
+
+  private lazy var recipeStackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.axis = .vertical
+    stackView.spacing = 8
+    stackView.distribution = .fill
+    return stackView
+  }()
+
+  private lazy var addIngredientButton: UIButton = {
+    let button = DefaultButton()
+    button.setTitle(R.string.global.addIngredient(), for: .normal)
+    button.addTarget(self, action: #selector(addIngredientAction), for: .touchUpInside)
+    return button
+  }()
+
   // MARK: - Bottom Buttons
   private lazy var saveButton: UIButton = {
     let button = DefaultButton()
@@ -97,14 +121,72 @@ class ProductDetailsViewController: UIViewController {
 
     priceInputContainer.setDelegate(self)
     priceInputContainer.enableNumericInput(maxFractionDigits: 2)
-    let currencySymbol = RequestManager.shared.settings?.currencySymbol
-      ?? ((Locale.current.languageCode == "uk") ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
+    let currencySymbol =
+      RequestManager.shared.settings?.currencySymbol
+      ?? ((Locale.current.languageCode == "uk")
+        ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
     priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
     priceInputContainer.setReturnKeyType(.done)
 
     // Add containers to stack
     mainStackView.addArrangedSubview(nameInputContainer)
     mainStackView.addArrangedSubview(priceInputContainer)
+
+    // Add recipe section
+    mainStackView.addArrangedSubview(recipeTitleLabel)
+    mainStackView.addArrangedSubview(recipeStackView)
+    mainStackView.addArrangedSubview(addIngredientButton)
+
+    updateRecipeUI()
+  }
+
+  private func updateRecipeUI() {
+    recipeStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+    for (index, item) in viewModel.currentRecipe.enumerated() {
+      let itemView = createRecipeItemView(item: item, index: index)
+      recipeStackView.addArrangedSubview(itemView)
+    }
+  }
+
+  private func createRecipeItemView(item: RecipeItemModel, index: Int) -> UIView {
+    let container = UIView()
+    container.backgroundColor = UIColor.Main.secondaryBackground
+    container.layer.cornerRadius = 8
+
+    let nameLabel = UILabel()
+    nameLabel.text = item.ingredientName
+    nameLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    nameLabel.textColor = UIColor.Main.text
+
+    let quantityLabel = UILabel()
+    quantityLabel.text = "\(item.quantity) \(item.unit)"
+    quantityLabel.font = UIFont.systemFont(ofSize: 14)
+    quantityLabel.textColor = UIColor.Main.secondaryText
+
+    let deleteButton = UIButton(type: .system)
+    deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+    deleteButton.tintColor = .red
+    deleteButton.tag = index
+    deleteButton.addTarget(self, action: #selector(deleteRecipeItemAction(_:)), for: .touchUpInside)
+
+    container.addSubview(nameLabel)
+    container.addSubview(quantityLabel)
+    container.addSubview(deleteButton)
+
+    nameLabel.edgesToSuperview(
+      excluding: .right, insets: .init(top: 8, left: 12, bottom: 28, right: 12))
+    quantityLabel.topToBottom(of: nameLabel, offset: 4)
+    quantityLabel.left(to: nameLabel)
+
+    deleteButton.centerYToSuperview()
+    deleteButton.rightToSuperview(offset: -12)
+    deleteButton.width(30)
+    deleteButton.height(30)
+
+    container.height(60)
+
+    return container
   }
 
   private func setupNavigationBar() {
@@ -140,6 +222,7 @@ class ProductDetailsViewController: UIViewController {
       UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
     nameInputContainer.height(containerHeight)
     priceInputContainer.height(containerHeight)
+    addIngredientButton.height(UIConstants.buttonHeight)
 
     // Save button constraints
     saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
@@ -157,6 +240,14 @@ class ProductDetailsViewController: UIViewController {
       priceInputContainer.text = viewModel.productPrice.decimalFormat
     } else {
       priceInputContainer.text = nil
+    }
+
+    viewModel.onRecipeChanged = { [weak self] in
+      self?.updateRecipeUI()
+    }
+
+    Task {
+      await viewModel.fetchIngredients()
     }
   }
 
@@ -186,6 +277,57 @@ class ProductDetailsViewController: UIViewController {
   }
 
   // MARK: - Actions
+  @objc func addIngredientAction() {
+    let ingredients = viewModel.allIngredients
+
+    let alert = UIAlertController(
+      title: R.string.global.selectIngredient(), message: nil,
+      preferredStyle: .actionSheet)
+
+    for ingredient in ingredients {
+      alert.addAction(
+        UIAlertAction(title: ingredient.name, style: .default) { [weak self] _ in
+          self?.showQuantityInput(for: ingredient)
+        })
+    }
+
+    alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
+
+    if let popoverController = alert.popoverPresentationController {
+      popoverController.sourceView = addIngredientButton
+      popoverController.sourceRect = addIngredientButton.bounds
+    }
+
+    present(alert, animated: true, completion: nil)
+  }
+
+  private func showQuantityInput(for ingredient: IngredientModel) {
+    let message = String(
+      format: NSLocalizedString("enterQuantityPerUnit", comment: ""), ingredient.unit.rawValue)
+    let alert = UIAlertController(title: ingredient.name, message: message, preferredStyle: .alert)
+
+    alert.addTextField { textField in
+      textField.keyboardType = .decimalPad
+      textField.placeholder = "0.0"
+    }
+
+    alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
+    alert.addAction(
+      UIAlertAction(title: NSLocalizedString("add", comment: ""), style: .default) {
+        [weak self] _ in
+        guard let text = alert.textFields?.first?.text,
+          let quantity = Double(text.replacingOccurrences(of: ",", with: "."))
+        else { return }
+        self?.viewModel.addRecipeItem(ingredient: ingredient, quantity: quantity)
+      })
+
+    present(alert, animated: true, completion: nil)
+  }
+
+  @objc func deleteRecipeItemAction(_ sender: UIButton) {
+    viewModel.removeRecipeItem(at: sender.tag)
+  }
+
   @objc func saveAction(param: UIButton) {
     let nameText = nameInputContainer.text
     let priceText = priceInputContainer.text

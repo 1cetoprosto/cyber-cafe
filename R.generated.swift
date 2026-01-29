@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 258 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 260 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -694,12 +694,12 @@ struct _R {
       /// Locales: en, uk
       var enterPrice: RswiftResources.StringResource { .init(key: "enterPrice", tableName: "Global", source: source, developmentValue: "Enter price", comment: nil) }
 
-      /// en translation: Enter good's name
+      /// en translation: Enter product name
       ///
       /// Key: enterProductName
       ///
       /// Locales: en, uk
-      var enterProductName: RswiftResources.StringResource { .init(key: "enterProductName", tableName: "Global", source: source, developmentValue: "Enter good's name", comment: nil) }
+      var enterProductName: RswiftResources.StringResource { .init(key: "enterProductName", tableName: "Global", source: source, developmentValue: "Enter product name", comment: nil) }
 
       /// en translation: Enter quantity per unit (%@)
       ///
@@ -875,6 +875,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
+
+      /// en translation: Ingredients
+      ///
+      /// Key: ingredients
+      ///
+      /// Locales: en, uk
+      var ingredients: RswiftResources.StringResource { .init(key: "ingredients", tableName: "Global", source: source, developmentValue: "Ingredients", comment: nil) }
 
       /// en translation: Provide access
       ///
@@ -1415,19 +1422,19 @@ struct _R {
       /// Locales: en, uk
       var privacyPolicy: RswiftResources.StringResource { .init(key: "privacyPolicy", tableName: "Global", source: source, developmentValue: "Privacy policy", comment: nil) }
 
-      /// en translation: Good
+      /// en translation: Product
       ///
       /// Key: product
       ///
       /// Locales: en, uk
-      var product: RswiftResources.StringResource { .init(key: "product", tableName: "Global", source: source, developmentValue: "Good", comment: nil) }
+      var product: RswiftResources.StringResource { .init(key: "product", tableName: "Global", source: source, developmentValue: "Product", comment: nil) }
 
-      /// en translation: Good name
+      /// en translation: Product Name
       ///
       /// Key: productName
       ///
       /// Locales: en, uk
-      var productName: RswiftResources.StringResource { .init(key: "productName", tableName: "Global", source: source, developmentValue: "Good name", comment: nil) }
+      var productName: RswiftResources.StringResource { .init(key: "productName", tableName: "Global", source: source, developmentValue: "Product Name", comment: nil) }
 
       /// en translation: Price list
       ///
@@ -1442,6 +1449,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchases resumed successfully", comment: nil) }
+
+      /// en translation: Quantity
+      ///
+      /// Key: quantity
+      ///
+      /// Locales: en, uk
+      var quantity: RswiftResources.StringResource { .init(key: "quantity", tableName: "Global", source: source, developmentValue: "Quantity", comment: nil) }
 
       /// en translation: Receipt types
       ///

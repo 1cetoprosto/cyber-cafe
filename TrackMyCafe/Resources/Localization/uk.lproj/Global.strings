@@ -243,20 +243,22 @@
 
 // MARK: - Product
 "products" = "Прайс";
-"product" = "Товар";
-"productName" = "Назва товару";
-"enterProductName" = "Введіть назву товару";
+"product" = "Продукт";
+"productName" = "Назва продукту";
+"enterProductName" = "Введіть назву продукту";
 "price" = "Ціна";
 "prices" = "Ціни";
 "printPrices" = "Друкувати ціни";
-"pleaseEnterProductName" = "Будь ласка, введіть назву товару";
+"pleaseEnterProductName" = "Будь ласка, введіть назву продукту";
 "failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
 "enterPrice" = "Введіть ціну";
 
 // Recipe & Ingredients
 "recipe" = "Рецепт";
+"ingredients" = "Інгредієнти";
 "addIngredient" = "Додати інгредієнт";
-"selectIngredient" = "Виберіть інгредієнт";
+"quantity" = "Кількість";
+"selectIngredient" = "Оберіть інгредієнт";
 "enterQuantityPerUnit" = "Введіть кількість на одиницю (%@)";
 "add" = "Додати";
 

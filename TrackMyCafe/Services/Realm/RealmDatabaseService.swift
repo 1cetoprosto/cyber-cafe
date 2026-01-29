@@ -18,7 +18,7 @@ class RealmDatabaseService: RealmDB {
 
   private init() {
     var config = Realm.Configuration()
-    config.schemaVersion = 3
+    config.schemaVersion = 4
     config.migrationBlock = { migration, oldSchemaVersion in
       if oldSchemaVersion < 1 {
         // Міграція з версії 0 до 1 (якщо є)
@@ -38,6 +38,10 @@ class RealmDatabaseService: RealmDB {
         migration.enumerateObjects(ofType: RealmTypeModel.className()) { _, newObject in
           newObject!["isDefault"] = false
         }
+      }
+      if oldSchemaVersion < 4 {
+        // Realm automatically handles adding new properties (recipe in RealmProductsPriceModel)
+        // and new object types (RealmIngredientModel, RealmRecipeItemModel)
       }
     }
 
@@ -240,10 +244,15 @@ class RealmDatabaseService: RealmDB {
 
   // MARK: - Work with Product Prices
 
-  func updateProductPrice(model: RealmProductsPriceModel, name: String, price: Double) {
+  func updateProductPrice(
+    model: RealmProductsPriceModel, name: String, price: Double, recipe: [RecipeItemModel]
+  ) {
     executeWrite {
       model.name = name
       model.price = price
+      let recipeList = List<RealmRecipeItemModel>()
+      recipeList.append(objectsIn: recipe.map { RealmRecipeItemModel(dataModel: $0) })
+      model.recipe = recipeList
       logger.log("Updated product price with id: \(model.id, privacy: .public)")
     }
   }
@@ -282,6 +291,30 @@ class RealmDatabaseService: RealmDB {
   func fetchCostSections() -> [(date: Date, items: [RealmCostModel])] {
     logger.log("Fetched cost sections")
     return fetchSections(ofType: RealmCostModel.self, sortedByKeyPath: "date")
+  }
+
+  // MARK: - Work with Ingredients
+
+  func updateIngredient(
+    model: RealmIngredientModel, name: String, cost: Double, stock: Double, unit: String
+  ) {
+    executeWrite {
+      model.name = name
+      model.averageCost = cost
+      model.stockQuantity = stock
+      model.unit = unit
+      logger.log("Updated ingredient with id: \(model.id, privacy: .public)")
+    }
+  }
+
+  func fetchIngredients() -> [RealmIngredientModel] {
+    logger.log("Fetched all ingredients")
+    return Array(localRealm.objects(RealmIngredientModel.self).sorted(byKeyPath: "name"))
+  }
+
+  func fetchIngredient(byId id: String) -> RealmIngredientModel? {
+    logger.log("Fetched ingredient with id: \(id, privacy: .public)")
+    return fetchObjectById(ofType: RealmIngredientModel.self, id: id)
   }
 
   // MARK: - Work with Types
