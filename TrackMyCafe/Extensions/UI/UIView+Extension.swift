@@ -5,6 +5,7 @@
 //  Created by Леонід Квіт on 04.05.2024.
 //
 
+import TinyConstraints
 import UIKit
 
 extension UIView {
