@@ -20,6 +20,81 @@ class DomainDatabaseService: DomainDB {
     return SettingsManager.shared.loadOnline()
   }
 
+  // MARK: - Ingredient Operations
+
+  func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void) {
+    let isOnline = isOnlineModeEnabled()
+
+    if isOnline {
+      FirestoreDatabaseService.shared.read(
+        collection: FirebaseCollections.ingredients, firModel: FIRIngredientModel.self
+      ) { result in
+        switch result {
+        case .success(let firModels):
+          let models = firModels.map { IngredientModel(firebaseModel: $0.1) }
+          completion(models)
+        case .failure(let error):
+          self.logger.error(
+            "Error fetching ingredients from Firestore: \(error.localizedDescription)")
+          completion([])
+        }
+      }
+    } else {
+      let models = RealmDatabaseService.shared.fetchIngredients().map {
+        IngredientModel(realmModel: $0)
+      }
+      completion(models)
+    }
+  }
+
+  func saveIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void) {
+    let isOnline = isOnlineModeEnabled()
+
+    if isOnline {
+      let firModel = FIRIngredientModel(dataModel: model)
+      FirestoreDatabaseService.shared.create(
+        firModel: firModel, collection: FirebaseCollections.ingredients
+      ) { result in
+        switch result {
+        case .success:
+          completion(true)
+        case .failure(let error):
+          self.logger.error("Failed to save ingredient to Firestore: \(error.localizedDescription)")
+          completion(false)
+        }
+      }
+    } else {
+      let realmModel = RealmIngredientModel(dataModel: model)
+      RealmDatabaseService.shared.save(model: realmModel)
+      completion(true)
+    }
+  }
+
+  func deleteIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void) {
+    let isOnline = isOnlineModeEnabled()
+
+    if isOnline {
+      FirestoreDatabaseService.shared.delete(
+        collection: FirebaseCollections.ingredients, documentId: model.id
+      ) { result in
+        switch result {
+        case .success:
+          completion(true)
+        case .failure(let error):
+          self.logger.error("Failed to delete ingredient from Firestore: \(error)")
+          completion(false)
+        }
+      }
+    } else {
+      guard let realmModel = RealmDatabaseService.shared.fetchIngredient(byId: model.id) else {
+        completion(false)
+        return
+      }
+      RealmDatabaseService.shared.delete(model: realmModel)
+      completion(true)
+    }
+  }
+
   // MARK: - Product Operations
 
   func updateProduct(
@@ -381,7 +456,8 @@ class DomainDatabaseService: DomainDB {
       guard let updatedModel = RealmDatabaseService.shared.fetchProductPrice(byId: model.id) else {
         return
       }
-      RealmDatabaseService.shared.updateProductPrice(model: updatedModel, name: name, price: price)
+      RealmDatabaseService.shared.updateProductPrice(
+        model: updatedModel, name: name, price: price, recipe: model.recipe)
     }
   }
 
@@ -815,6 +891,16 @@ class DomainDatabaseService: DomainDB {
         firModelType: FIRTypeModel.self,
         domainModelInit: TypeModel.init(firebaseModel:),
         realmModelInit: RealmTypeModel.init(dataModel:)
+      ) {
+        dispatchGroup.leave()
+      }
+
+      dispatchGroup.enter()
+      self.transferCollectionToRealm(
+        collection: FirebaseCollections.ingredients,
+        firModelType: FIRIngredientModel.self,
+        domainModelInit: IngredientModel.init(firebaseModel:),
+        realmModelInit: RealmIngredientModel.init(dataModel:)
       ) {
         dispatchGroup.leave()
       }

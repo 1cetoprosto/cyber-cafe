@@ -140,6 +140,7 @@ struct FirebaseCollections {
   static let productsPrice = "productsPrice"
   static let costs = "costs"
   static let types = "types"
+  static let ingredients = "ingredients"
   static let subscriptions = "Subscriptions"
   static let info = ".info"
 }

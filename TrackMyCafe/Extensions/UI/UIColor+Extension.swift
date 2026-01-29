@@ -11,7 +11,9 @@ extension UIColor {
 
   struct Main {
     static var text: UIColor { Theme.current.primaryText }
+    static var secondaryText: UIColor { Theme.current.secondaryText }
     static var background: UIColor { Theme.current.primaryBackground }
+    static var secondaryBackground: UIColor { Theme.current.secondaryBackground }
     static var accent: UIColor { Theme.current.secondaryText }
   }
 

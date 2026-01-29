@@ -243,9 +243,9 @@
 
 // MARK: - Product
 "products" = "Price list";
-"product" = "Good";
-"productName" = "Good name";
-"enterProductName" = "Enter good's name";
+"product" = "Product";
+"productName" = "Product Name";
+"enterProductName" = "Enter product name";
 "price" = "Price";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
@@ -255,7 +255,9 @@
 
 // Recipe & Ingredients
 "recipe" = "Recipe";
+"ingredients" = "Ingredients";
 "addIngredient" = "Add Ingredient";
+"quantity" = "Quantity";
 "selectIngredient" = "Select Ingredient";
 "enterQuantityPerUnit" = "Enter quantity per unit (%@)";
 "add" = "Add";
