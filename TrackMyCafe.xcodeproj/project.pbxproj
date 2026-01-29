@@ -35,6 +35,30 @@
 		F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
 		F328BA89274EB4DA00960829 /* SettingsStaticTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */; };
 		F328BA8B2750BB2900960829 /* SettingsSwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */; };
+		F32B52B72F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
+		F32B52B82F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
+		F32B52B92F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
+		F32B52BC2F2B6F620005E63D /* RecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */; };
+		F32B52BD2F2B6F620005E63D /* IngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BA2F2B6F620005E63D /* IngredientModel.swift */; };
+		F32B52BE2F2B6F620005E63D /* RecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */; };
+		F32B52BF2F2B6F620005E63D /* IngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BA2F2B6F620005E63D /* IngredientModel.swift */; };
+		F32B52C02F2B6F620005E63D /* RecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */; };
+		F32B52C12F2B6F620005E63D /* IngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52BA2F2B6F620005E63D /* IngredientModel.swift */; };
+		F32B52C52F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C32F2B6F800005E63D /* RealmRecipeItemModel.swift */; };
+		F32B52C62F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */; };
+		F32B52C72F2B6F800005E63D /* RealmIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C22F2B6F800005E63D /* RealmIngredientModel.swift */; };
+		F32B52C82F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C32F2B6F800005E63D /* RealmRecipeItemModel.swift */; };
+		F32B52C92F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */; };
+		F32B52CA2F2B6F800005E63D /* RealmIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C22F2B6F800005E63D /* RealmIngredientModel.swift */; };
+		F32B52CB2F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C32F2B6F800005E63D /* RealmRecipeItemModel.swift */; };
+		F32B52CC2F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */; };
+		F32B52CD2F2B6F800005E63D /* RealmIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52C22F2B6F800005E63D /* RealmIngredientModel.swift */; };
+		F32B52D02F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */; };
+		F32B52D12F2B6F940005E63D /* FIRIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */; };
+		F32B52D22F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */; };
+		F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */; };
+		F32B52D42F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */; };
+		F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */; };
 		F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC7E275C862C0035767E /* UILabel+Extension.swift */; };
 		F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC80275C89910035767E /* UITextField+Extension.swift */; };
 		F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */; };
@@ -562,6 +586,14 @@
 		F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePurchaseDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStaticTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainIngredientDataService.swift; sourceTree = "<group>"; };
+		F32B52BA2F2B6F620005E63D /* IngredientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientModel.swift; sourceTree = "<group>"; };
+		F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipeItemModel.swift; sourceTree = "<group>"; };
+		F32B52C22F2B6F800005E63D /* RealmIngredientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmIngredientModel.swift; sourceTree = "<group>"; };
+		F32B52C32F2B6F800005E63D /* RealmRecipeItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmRecipeItemModel.swift; sourceTree = "<group>"; };
+		F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSaleGoodModel.swift; sourceTree = "<group>"; };
+		F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRIngredientModel.swift; sourceTree = "<group>"; };
+		F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRRecipeItemModel.swift; sourceTree = "<group>"; };
 		F32FDC7E275C862C0035767E /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		F32FDC80275C89910035767E /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLinkButton.swift; sourceTree = "<group>"; };
@@ -819,6 +851,9 @@
 		F3158C462763435000136861 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
+				F32B52C22F2B6F800005E63D /* RealmIngredientModel.swift */,
+				F32B52C32F2B6F800005E63D /* RealmRecipeItemModel.swift */,
+				F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */,
 				F31FCA3B2768789B00124366 /* RealmOrderModel.swift */,
 				F3158C472763437200136861 /* RealmProductModel.swift */,
 				F3D862D6277C33C100DD43DB /* RealmCostModel.swift */,
@@ -897,6 +932,8 @@
 		F31BD827284DF3FE00B8FD3B /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
+				F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */,
+				F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */,
 				F31BD828284DF42800B8FD3B /* FIROrderModel.swift */,
 				F31FD0DC281D218500353BF7 /* FIRProductModel.swift */,
 				F31BD82E284E022400B8FD3B /* FIRCostModel.swift */,
@@ -1673,6 +1710,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
 				F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */,
 				F3E358022BF22B76005050CB /* DomainDB.swift */,
 				F36217C02EBF006C00965886 /* DomainCostDataService.swift */,
@@ -1694,6 +1732,8 @@
 		F3E357F32BEFF209005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F32B52BA2F2B6F620005E63D /* IngredientModel.swift */,
+				F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */,
 				F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */,
 				F3E357F62BEFF2AB005050CB /* OrderModel.swift */,
 				F3E357F82BEFF7F4005050CB /* CostModel.swift */,
@@ -2277,6 +2317,9 @@
 				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
 				F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
+				F32B52C82F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
+				F32B52C92F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
+				F32B52CA2F2B6F800005E63D /* RealmIngredientModel.swift in Sources */,
 				F3821C7A27EAEA8B006D40FC /* OrderListViewModelType.swift in Sources */,
 				F385B4132C1D85FC00973CAA /* UITableView+Reusable.swift in Sources */,
 				F385B4252C1D9F0C00973CAA /* Admin.swift in Sources */,
@@ -2338,6 +2381,7 @@
 				F39A52F727311FDD00C8F2D3 /* SceneDelegate.swift in Sources */,
 				F3A640B82C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3410EB02BDD40410007157B /* Date+Extension.swift in Sources */,
+				F32B52B92F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
 				F3988ADE27EB11EB00215976 /* CostListItemViewModelType.swift in Sources */,
 				F39A53352732525900C8F2D3 /* OrderListViewController.swift in Sources */,
 				F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -2349,6 +2393,8 @@
 				F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */,
 				F3264981275B32AA00836077 /* CostTableViewCell.swift in Sources */,
 				F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */,
+				F32B52D22F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
+				F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3988AF127EB310900215976 /* CostListItemViewModel.swift in Sources */,
 				F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */,
 				F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */,
@@ -2361,6 +2407,8 @@
 				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32B52C02F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
+				F32B52C12F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C62EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217C72EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3E357F92BEFF7F4005050CB /* CostModel.swift in Sources */,
@@ -2425,6 +2473,9 @@
 				F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */,
 				F3B339C42C0B22FE0073F19A /* SetPasswordController.swift in Sources */,
+				F32B52C52F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
+				F32B52C62F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
+				F32B52C72F2B6F800005E63D /* RealmIngredientModel.swift in Sources */,
 				F3F6A63E2C327C18000961C8 /* ModeratorListController.swift in Sources */,
 				F3B339C52C0B22FE0073F19A /* RealmDatabaseService.swift in Sources */,
 				F3B339C62C0B22FE0073F19A /* DefaultButton.swift in Sources */,
@@ -2486,6 +2537,7 @@
 				F3B339EE2C0B22FE0073F19A /* SettingsStaticTableViewCell.swift in Sources */,
 				F3A640B92C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
+				F32B52B82F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
 				F39D78532C2034DD0003B556 /* Technician.swift in Sources */,
 				F3B339EF2C0B22FE0073F19A /* RememberMeButton.swift in Sources */,
 				F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -2497,6 +2549,8 @@
 				F3B339F42C0B22FE0073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6332C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
 				F3B339F52C0B22FE0073F19A /* ForgotPassController.swift in Sources */,
+				F32B52D02F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
+				F32B52D12F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B339F62C0B22FE0073F19A /* CostListItemViewModel.swift in Sources */,
 				F3B339F72C0B22FE0073F19A /* DomainDatabaseService.swift in Sources */,
 				F3B339F82C0B22FE0073F19A /* ProductListItemViewModelType.swift in Sources */,
@@ -2509,6 +2563,8 @@
 				F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32B52BE2F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
+				F32B52BF2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
@@ -2573,6 +2629,9 @@
 				F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */,
 				F3B33A632C0B23450073F19A /* SetPasswordController.swift in Sources */,
+				F32B52CB2F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
+				F32B52CC2F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
+				F32B52CD2F2B6F800005E63D /* RealmIngredientModel.swift in Sources */,
 				F3F6A63F2C327C19000961C8 /* ModeratorListController.swift in Sources */,
 				F3B33A642C0B23450073F19A /* RealmDatabaseService.swift in Sources */,
 				F3B33A652C0B23450073F19A /* DefaultButton.swift in Sources */,
@@ -2634,6 +2693,7 @@
 				F3B33A8D2C0B23450073F19A /* SettingsStaticTableViewCell.swift in Sources */,
 				F3A640BA2C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
+				F32B52B72F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
 				F39D78542C2034DE0003B556 /* Technician.swift in Sources */,
 				F3B33A8E2C0B23450073F19A /* RememberMeButton.swift in Sources */,
 				F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -2645,6 +2705,8 @@
 				F3B33A932C0B23450073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6342C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
 				F3B33A942C0B23450073F19A /* ForgotPassController.swift in Sources */,
+				F32B52D42F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
+				F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B33A952C0B23450073F19A /* CostListItemViewModel.swift in Sources */,
 				F3B33A962C0B23450073F19A /* DomainDatabaseService.swift in Sources */,
 				F3B33A972C0B23450073F19A /* ProductListItemViewModelType.swift in Sources */,
@@ -2657,6 +2719,8 @@
 				F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34942DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34952DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32B52BC2F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
+				F32B52BD2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,

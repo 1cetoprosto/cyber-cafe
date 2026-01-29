@@ -69,6 +69,11 @@ class SettingListViewModel: SettingListViewModelType {
                                                     icon: SystemImages.cupAndSaucerFill, //UIImage(systemName: "cup.and.saucer.fill"),
                                                     iconBackgroundColor: "systemGreen", //.systemGreen) {
                 self.navigationController?.pushViewController(GoodListViewController(), animated: true)
+            }),
+            .staticCell(model: SettingsStaticOption(title: NSLocalizedString("ingredients", comment: ""),
+                                                    icon: "cart", // SystemImages.cart or similar
+                                                    iconBackgroundColor: "systemOrange", //.systemOrange) {
+                self.navigationController?.pushViewController(IngredientListViewController(), animated: true)
             })
         ]))
         
