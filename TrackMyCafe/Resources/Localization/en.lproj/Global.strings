@@ -253,6 +253,16 @@
 "failedToSaveProductPrice" = "Failed to save product price";
 "enterPrice" = "Enter price";
 
+// Recipe & Ingredients
+"recipe" = "Recipe";
+"addIngredient" = "Add Ingredient";
+"selectIngredient" = "Select Ingredient";
+"enterQuantityPerUnit" = "Enter quantity per unit (%@)";
+"add" = "Add";
+
+// App
+"appName" = "TrackMyCafe";
+
 // MARK: - Good
 "goods" = "Goods";
 
