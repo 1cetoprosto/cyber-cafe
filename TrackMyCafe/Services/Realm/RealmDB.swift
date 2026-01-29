@@ -26,7 +26,7 @@ protocol RealmDB {
     func fetchOrder(byId id: String) -> RealmOrderModel?
     func fetchOrders(forDate date: Date, ofType type: String?) -> [RealmOrderModel]
     
-    func updateProductPrice(model: RealmProductsPriceModel, name: String, price: Double)
+    func updateProductPrice(model: RealmProductsPriceModel, name: String, price: Double, recipe: [RecipeItemModel])
     func fetchProductPrices() -> [RealmProductsPriceModel]
     func fetchProductPrice(byId id: String) -> RealmProductsPriceModel?
     

@@ -17,6 +17,9 @@ class RealmSaleGoodModel: Object {
     @Persisted var salePrice: Double = 0.0
     @Persisted var saleSum: Double = 0.0
     
+    // MARK: - Deprecated / Missing Dependency
+    // FIRSaleGoodModel is missing in the project and this class appears to be unused.
+    /*
     convenience init(documentId firId: String, firModel: FIRSaleGoodModel) {
         self.init()
         self.id = firId
@@ -27,4 +30,5 @@ class RealmSaleGoodModel: Object {
         self.salePrice = firModel.salePrice
         self.saleSum = firModel.saleSum
     }
+    */
 }

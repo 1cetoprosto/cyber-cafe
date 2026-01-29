@@ -10,13 +10,55 @@ import Foundation
 final class ProductDetailsViewModel: ProductDetailsViewModelType, Loggable {
   private var model: ProductsPriceModel
   private let dataService: ProductPriceDataServiceProtocol
+  private let ingredientService: IngredientDataServiceProtocol
 
   var productName: String { model.name }
   var productPrice: Double { model.price }
+  var currentRecipe: [RecipeItemModel] { model.recipe }
+  var allIngredients: [IngredientModel] = []
+  
+  var onRecipeChanged: (() -> Void)?
+  var onIngredientsLoaded: (() -> Void)?
 
-  init(model: ProductsPriceModel, dataService: ProductPriceDataServiceProtocol) {
+  init(model: ProductsPriceModel, 
+       dataService: ProductPriceDataServiceProtocol,
+       ingredientService: IngredientDataServiceProtocol = DomainIngredientDataService.shared) {
     self.model = model
     self.dataService = dataService
+    self.ingredientService = ingredientService
+  }
+  
+  func fetchIngredients() async {
+    do {
+      let ingredients = try await ingredientService.fetchIngredients()
+      self.allIngredients = ingredients
+      await MainActor.run {
+          self.onIngredientsLoaded?()
+      }
+    } catch {
+      logger.error("Failed to fetch ingredients: \(error)")
+    }
+  }
+
+  func addRecipeItem(ingredient: IngredientModel, quantity: Double) {
+    guard quantity > 0 else { return }
+    let item = RecipeItemModel(ingredientId: ingredient.id, ingredientName: ingredient.name, quantity: quantity, unit: ingredient.unit)
+    model.recipe.append(item)
+    onRecipeChanged?()
+  }
+
+  func removeRecipeItem(at index: Int) {
+    guard index >= 0 && index < model.recipe.count else { return }
+    model.recipe.remove(at: index)
+    onRecipeChanged?()
+  }
+
+  func updateRecipeItem(at index: Int, quantity: Double) {
+    guard index >= 0 && index < model.recipe.count else { return }
+    var item = model.recipe[index]
+    item.quantity = quantity
+    model.recipe[index] = item
+    onRecipeChanged?()
   }
 
   func validate(name: String?, priceText: String?) -> Bool {
