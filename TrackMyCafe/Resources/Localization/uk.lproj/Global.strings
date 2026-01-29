@@ -253,6 +253,16 @@
 "failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
 "enterPrice" = "Введіть ціну";
 
+// Recipe & Ingredients
+"recipe" = "Рецепт";
+"addIngredient" = "Додати інгредієнт";
+"selectIngredient" = "Виберіть інгредієнт";
+"enterQuantityPerUnit" = "Введіть кількість на одиницю (%@)";
+"add" = "Додати";
+
+// App
+"appName" = "TrackMyCafe";
+
 // MARK: - Good
 "goods" = "Товари";
 
