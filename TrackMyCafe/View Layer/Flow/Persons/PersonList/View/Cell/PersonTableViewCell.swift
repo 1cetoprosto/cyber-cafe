@@ -5,7 +5,7 @@
 //  Created by Леонід Квіт on 15.06.2024.
 //
 
-import Stevia
+import TinyConstraints
 import UIKit
 
 class PersonTableViewCell: UITableViewCell {
@@ -24,8 +24,6 @@ class PersonTableViewCell: UITableViewCell {
     view.contentMode = .scaleAspectFill
     view.layer.cornerRadius = 20
     view.clipsToBounds = true
-    view.size(40)
-
     return view
   }()
 
@@ -54,7 +52,6 @@ class PersonTableViewCell: UITableViewCell {
     button.addTarget(self, action: #selector(callAction(_:)), for: .touchUpInside)
     button.layer.cornerRadius = 15
     button.clipsToBounds = true
-    button.size(30)
     return button
   }()
 
@@ -85,14 +82,21 @@ class PersonTableViewCell: UITableViewCell {
     vStack.axis = .vertical
     vStack.spacing = UIConstants.smallSpacing
 
-    let hStack = UIStackView(arrangedSubviews: [profileImage.wrapV(), vStack, callButton.wrapV()])
+    let hStack = UIStackView(arrangedSubviews: [profileImage, vStack, callButton])
     hStack.axis = .horizontal
     hStack.spacing = UIConstants.standardSpacing
+    hStack.alignment = .center
 
     contentView.addSubview(hStack)
-    hStack.horizontalToSuperview(
-      insets: .init(
-        top: 0, left: UIConstants.standardPadding, bottom: 0, right: UIConstants.standardPadding))
+    
+    // Constraints
+    profileImage.height(40)
+    profileImage.width(40)
+    
+    callButton.height(30)
+    callButton.width(30)
+    
+    hStack.edgesToSuperview(excluding: .vertical, insets: .init(top: 0, left: UIConstants.standardPadding, bottom: 0, right: UIConstants.standardPadding))
     hStack.centerInSuperview()
   }
 
