@@ -18,6 +18,15 @@ extension NumberFormatter {
     return numberFormatter
   }
 
+  static var quantity: NumberFormatter {
+    let numberFormatter = NumberFormatter()
+    numberFormatter.numberStyle = .decimal
+    numberFormatter.minimumFractionDigits = 0
+    numberFormatter.maximumFractionDigits = 4
+    numberFormatter.groupingSeparator = ""
+    return numberFormatter
+  }
+
   static var currencyInteger: NumberFormatter {
     let formater = NumberFormatter()
     formater.numberStyle = .currency
