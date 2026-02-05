@@ -57,25 +57,8 @@ class IngredientListViewController: UIViewController {
     }
     
     @objc private func addIngredientAction() {
-        let alert = UIAlertController(title: R.string.global.addIngredient(), message: nil, preferredStyle: .alert)
-        
-        alert.addTextField { $0.placeholder = R.string.global.productName() }
-        alert.addTextField { $0.placeholder = R.string.global.price(); $0.keyboardType = .decimalPad }
-        alert.addTextField { $0.placeholder = R.string.global.quantity(); $0.keyboardType = .decimalPad }
-        
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(UIAlertAction(title: R.string.global.add(), style: .default) { [weak self] _ in
-            guard let name = alert.textFields?[0].text, !name.isEmpty,
-                  let costText = alert.textFields?[1].text, let cost = Double(costText.replacingOccurrences(of: ",", with: ".")),
-                  let stockText = alert.textFields?[2].text, let stock = Double(stockText.replacingOccurrences(of: ",", with: "."))
-            else { return }
-            
-            Task {
-                await self?.viewModel.createIngredient(name: name, cost: cost, stock: stock, unit: .kg) // Defaulting to kg for simplicity
-            }
-        })
-        
-        present(alert, animated: true)
+        let createVC = CreateIngredientViewController(viewModel: viewModel)
+        present(createVC, animated: true)
     }
 }
 
