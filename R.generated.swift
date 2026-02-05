@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 260 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 281 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -238,6 +238,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var actionDone: RswiftResources.StringResource { .init(key: "actionDone", tableName: "Global", source: source, developmentValue: "Done", comment: nil) }
+
+      /// en translation: To Settings
+      ///
+      /// Key: actionGoToSettings
+      ///
+      /// Locales: en, uk
+      var actionGoToSettings: RswiftResources.StringResource { .init(key: "actionGoToSettings", tableName: "Global", source: source, developmentValue: "To Settings", comment: nil) }
 
       /// en translation: Next
       ///
@@ -498,6 +505,13 @@ struct _R {
       /// Locales: en, uk
       var costDate: RswiftResources.StringResource { .init(key: "costDate", tableName: "Global", source: source, developmentValue: "Date", comment: nil) }
 
+      /// en translation: Average purchase price for one unit
+      ///
+      /// Key: costExplanation
+      ///
+      /// Locales: en, uk
+      var costExplanation: RswiftResources.StringResource { .init(key: "costExplanation", tableName: "Global", source: source, developmentValue: "Average purchase price for one unit", comment: nil) }
+
       /// en translation: Expense
       ///
       /// Key: costName
@@ -511,6 +525,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var costNamePlaceholder: RswiftResources.StringResource { .init(key: "costNamePlaceholder", tableName: "Global", source: source, developmentValue: "Enter expense name", comment: nil) }
+
+      /// en translation: Cost per Unit
+      ///
+      /// Key: costPlaceholder
+      ///
+      /// Locales: en, uk
+      var costPlaceholder: RswiftResources.StringResource { .init(key: "costPlaceholder", tableName: "Global", source: source, developmentValue: "Cost per Unit", comment: nil) }
 
       /// en translation: Sum
       ///
@@ -876,6 +897,27 @@ struct _R {
       /// Locales: en, uk
       var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
 
+      /// en translation: Ingredient already exists
+      ///
+      /// Key: ingredientAlreadyExists
+      ///
+      /// Locales: en, uk
+      var ingredientAlreadyExists: RswiftResources.StringResource { .init(key: "ingredientAlreadyExists", tableName: "Global", source: source, developmentValue: "Ingredient already exists", comment: nil) }
+
+      /// en translation: Enter a clear name for the ingredient
+      ///
+      /// Key: ingredientNameExplanation
+      ///
+      /// Locales: en, uk
+      var ingredientNameExplanation: RswiftResources.StringResource { .init(key: "ingredientNameExplanation", tableName: "Global", source: source, developmentValue: "Enter a clear name for the ingredient", comment: nil) }
+
+      /// en translation: Ingredient Name (e.g. Sugar)
+      ///
+      /// Key: ingredientNamePlaceholder
+      ///
+      /// Locales: en, uk
+      var ingredientNamePlaceholder: RswiftResources.StringResource { .init(key: "ingredientNamePlaceholder", tableName: "Global", source: source, developmentValue: "Ingredient Name (e.g. Sugar)", comment: nil) }
+
       /// en translation: Ingredients
       ///
       /// Key: ingredients
@@ -1023,6 +1065,13 @@ struct _R {
       /// Locales: en, uk
       var names: RswiftResources.StringResource { .init(key: "names", tableName: "Global", source: source, developmentValue: "Name", comment: nil) }
 
+      /// en translation: New Ingredient
+      ///
+      /// Key: newIngredient
+      ///
+      /// Locales: en, uk
+      var newIngredient: RswiftResources.StringResource { .init(key: "newIngredient", tableName: "Global", source: source, developmentValue: "New Ingredient", comment: nil) }
+
       /// en translation: New moderator
       ///
       /// Key: newModerator
@@ -1036,6 +1085,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var newTechnician: RswiftResources.StringResource { .init(key: "newTechnician", tableName: "Global", source: source, developmentValue: "New waiter", comment: nil) }
+
+      /// en translation: No
+      ///
+      /// Key: no
+      ///
+      /// Locales: en, uk
+      var no: RswiftResources.StringResource { .init(key: "no", tableName: "Global", source: source, developmentValue: "No", comment: nil) }
+
+      /// en translation: No ingredients
+      ///
+      /// Key: noIngredients
+      ///
+      /// Locales: en, uk
+      var noIngredients: RswiftResources.StringResource { .init(key: "noIngredients", tableName: "Global", source: source, developmentValue: "No ingredients", comment: nil) }
 
       /// en translation: not required
       ///
@@ -1317,6 +1380,13 @@ struct _R {
       /// Locales: en, uk
       var orders: RswiftResources.StringResource { .init(key: "orders", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
 
+      /// en translation: Overwrite this ingredient?
+      ///
+      /// Key: overwriteIngredientMessage
+      ///
+      /// Locales: en, uk
+      var overwriteIngredientMessage: RswiftResources.StringResource { .init(key: "overwriteIngredientMessage", tableName: "Global", source: source, developmentValue: "Overwrite this ingredient?", comment: nil) }
+
       /// en translation: Password
       ///
       /// Key: password
@@ -1351,6 +1421,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var plan: RswiftResources.StringResource { .init(key: "plan", tableName: "Global", source: source, developmentValue: "Plan", comment: nil) }
+
+      /// en translation: Please add ingredients in the settings menu
+      ///
+      /// Key: pleaseAddIngredients
+      ///
+      /// Locales: en, uk
+      var pleaseAddIngredients: RswiftResources.StringResource { .init(key: "pleaseAddIngredients", tableName: "Global", source: source, developmentValue: "Please add ingredients in the settings menu", comment: nil) }
 
       /// en translation: Please enter product name
       ///
@@ -1674,6 +1751,20 @@ struct _R {
       /// Locales: en, uk
       var startOver: RswiftResources.StringResource { .init(key: "startOver", tableName: "Global", source: source, developmentValue: "Start over", comment: nil) }
 
+      /// en translation: Quantity currently in stock
+      ///
+      /// Key: stockExplanation
+      ///
+      /// Locales: en, uk
+      var stockExplanation: RswiftResources.StringResource { .init(key: "stockExplanation", tableName: "Global", source: source, developmentValue: "Quantity currently in stock", comment: nil) }
+
+      /// en translation: Current Stock
+      ///
+      /// Key: stockPlaceholder
+      ///
+      /// Locales: en, uk
+      var stockPlaceholder: RswiftResources.StringResource { .init(key: "stockPlaceholder", tableName: "Global", source: source, developmentValue: "Current Stock", comment: nil) }
+
       /// en translation: Cafe with up to twenty staff members, including an administrator and moderator
       ///
       /// Key: subPlanBigDescription
@@ -1996,6 +2087,55 @@ struct _R {
       /// Locales: en, uk
       var ukrainian: RswiftResources.StringResource { .init(key: "ukrainian", tableName: "Global", source: source, developmentValue: "Ukrainian", comment: nil) }
 
+      /// en translation: How this ingredient is measured
+      ///
+      /// Key: unitExplanation
+      ///
+      /// Locales: en, uk
+      var unitExplanation: RswiftResources.StringResource { .init(key: "unitExplanation", tableName: "Global", source: source, developmentValue: "How this ingredient is measured", comment: nil) }
+
+      /// en translation: Unit of Measurement
+      ///
+      /// Key: unitLabel
+      ///
+      /// Locales: en, uk
+      var unitLabel: RswiftResources.StringResource { .init(key: "unitLabel", tableName: "Global", source: source, developmentValue: "Unit of Measurement", comment: nil) }
+
+      /// en translation: g
+      ///
+      /// Key: unit_g
+      ///
+      /// Locales: en, uk
+      var unit_g: RswiftResources.StringResource { .init(key: "unit_g", tableName: "Global", source: source, developmentValue: "g", comment: nil) }
+
+      /// en translation: kg
+      ///
+      /// Key: unit_kg
+      ///
+      /// Locales: en, uk
+      var unit_kg: RswiftResources.StringResource { .init(key: "unit_kg", tableName: "Global", source: source, developmentValue: "kg", comment: nil) }
+
+      /// en translation: l
+      ///
+      /// Key: unit_l
+      ///
+      /// Locales: en, uk
+      var unit_l: RswiftResources.StringResource { .init(key: "unit_l", tableName: "Global", source: source, developmentValue: "l", comment: nil) }
+
+      /// en translation: ml
+      ///
+      /// Key: unit_ml
+      ///
+      /// Locales: en, uk
+      var unit_ml: RswiftResources.StringResource { .init(key: "unit_ml", tableName: "Global", source: source, developmentValue: "ml", comment: nil) }
+
+      /// en translation: pcs
+      ///
+      /// Key: unit_pcs
+      ///
+      /// Locales: en, uk
+      var unit_pcs: RswiftResources.StringResource { .init(key: "unit_pcs", tableName: "Global", source: source, developmentValue: "pcs", comment: nil) }
+
       /// en translation: Uploaded new technician image at %@
       ///
       /// Key: uploadedNewTechnicianImageAt
@@ -2037,6 +2177,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var writeToDeveloper: RswiftResources.StringResource { .init(key: "writeToDeveloper", tableName: "Global", source: source, developmentValue: "Write to developer", comment: nil) }
+
+      /// en translation: Yes
+      ///
+      /// Key: yes
+      ///
+      /// Locales: en, uk
+      var yes: RswiftResources.StringResource { .init(key: "yes", tableName: "Global", source: source, developmentValue: "Yes", comment: nil) }
     }
   }
 
