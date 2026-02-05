@@ -98,6 +98,12 @@
 "subscriptionDefaultHeader" = "You can change your subscription to one that is best for your cafe at any time";
 "subscriptionReachedHeader" = "Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe";
 "subscriptionExpiredHeader" = "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"";
+
+// MARK: - Ingredients
+"ingredientAlreadyExists" = "Ingredient already exists";
+"overwriteIngredientMessage" = "Overwrite this ingredient?";
+"yes" = "Yes";
+"no" = "No";
 "subscriptionNeedSubHeader" = "To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the \"Restore Costs\"";
 "subscriptionFooter1" = "Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once. \n\nAfter the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.\n\nPayment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.";
 "subscriptionFooter2" = "Removing the app doesn't automatically cancel the subscription.";
@@ -261,6 +267,11 @@
 "selectIngredient" = "Select Ingredient";
 "enterQuantityPerUnit" = "Enter quantity per unit (%@)";
 "add" = "Add";
+"noIngredients" = "No ingredients";
+"pleaseAddIngredients" = "Please add ingredients in the settings menu";
+"actionGoToSettings" = "To Settings";
+"ingredientAlreadyExists" = "Ingredient already exists";
+"overwriteIngredientMessage" = "Overwrite this ingredient?";
 
 // App
 "appName" = "TrackMyCafe";
@@ -330,3 +341,19 @@
 "feedbackSuccessTitle" = "Thank You!";
 "feedbackSuccessMessage" = "Your feedback has been sent successfully.";
 "okButton" = "OK";
+
+// MARK: - Ingredients
+"unit_kg" = "kg";
+"unit_g" = "g";
+"unit_l" = "l";
+"unit_ml" = "ml";
+"unit_pcs" = "pcs";
+"ingredientNamePlaceholder" = "Ingredient Name (e.g. Sugar)";
+"costPlaceholder" = "Cost per Unit";
+"stockPlaceholder" = "Current Stock";
+"unitLabel" = "Unit of Measurement";
+"ingredientNameExplanation" = "Enter a clear name for the ingredient";
+"costExplanation" = "Average purchase price for one unit";
+"stockExplanation" = "Quantity currently in stock";
+"unitExplanation" = "How this ingredient is measured";
+"newIngredient" = "New Ingredient";
