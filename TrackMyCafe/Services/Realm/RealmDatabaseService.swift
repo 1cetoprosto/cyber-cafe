@@ -126,6 +126,9 @@ class RealmDatabaseService: RealmDB {
                 RealmProductsPriceModel.self,
                 RealmTypeModel.self,
                 RealmCostModel.self,
+                RealmIngredientModel.self,
+                RealmPurchaseModel.self,
+                RealmRecipeItemModel.self,
             ]
 
             for objectType in objectTypes {
