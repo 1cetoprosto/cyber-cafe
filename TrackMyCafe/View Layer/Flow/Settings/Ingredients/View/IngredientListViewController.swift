@@ -14,11 +14,15 @@ class IngredientListViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 70
         return tableView
     }()
+
+    // MARK: - Init
     
     init(viewModel: IngredientListViewModelType = IngredientListViewModel()) {
         self.viewModel = viewModel
@@ -68,17 +72,17 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .value1, reuseIdentifier: "Cell")
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: IngredientTableViewCell.identifier, for: indexPath)
+                as? IngredientTableViewCell
+        else {
+            return UITableViewCell()
+        }
+
         let ingredient = viewModel.ingredients[indexPath.row]
-        
-        let name = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.localizedName))"
-        let cost = String(format: "%.2f", ingredient.averageCost)
-        
-        cell.textLabel?.text = name
-        cell.detailTextLabel?.text = cost
-        cell.detailTextLabel?.font = .boldSystemFont(ofSize: 16)
-        cell.detailTextLabel?.textColor = .label
-        
+        cell.configure(with: ingredient)
+
         return cell
     }
     
