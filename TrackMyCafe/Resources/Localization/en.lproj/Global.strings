@@ -183,6 +183,7 @@
 "selectIngredient" = "Select Ingredient";
 "quantity" = "Quantity";
 "pricePerUnit" = "Price per Unit";
+"per" = "per";
 
 // MARK: - Themes
 "systemThemeName" = "System";

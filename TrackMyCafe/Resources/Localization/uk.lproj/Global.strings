@@ -183,6 +183,7 @@
 "selectIngredient" = "Оберіть інгредієнт";
 "quantity" = "Кількість";
 "pricePerUnit" = "Ціна за одиницю";
+"per" = "за";
 
 // MARK: - Themes
 "systemThemeName" = "Системна";
