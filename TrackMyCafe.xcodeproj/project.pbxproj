@@ -8,17 +8,56 @@
 
 /* Begin PBXBuildFile section */
 		0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
+		053B057E633F68A37D8C6489 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
+		11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
+		1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
+		1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
+		2062336CEFB66EE59F9C22D2 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
+		290BC38D0FC7339835D90AD3 /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
+		2CE263E0E30F498DF06D8515 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
+		309C9BC32731315EFC798532 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
+		32B8B86C01018A89A21F3C3C /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
+		33685760B24A285E00EB5505 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
+		36DE2B9C5DA8D5E537AF3479 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
+		3F2453C445B3640596D717FF /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		59C05FDE199AFA314FF13092 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
 		61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
+		701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */; };
+		8022698E009A355D97397BAA /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
 		8085320D6FEC24703DD60FA6 /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */; };
+		8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
+		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
+		9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
 		97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
+		9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
+		9CE2CCDB6EBC99D5108A5B63 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
+		A33C597EEE9963EE8DACCC14 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
+		ACAB351423CD8EDEC4EE4E2C /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
+		B219C4C17A1B02090B190ADE /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
+		B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
+		B5B7A6795D15E8B29F771777 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
+		B5DB7B6A930451C341851FAE /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
+		BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
+		BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
+		BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
 		D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */; };
 		DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
+		DCEDBEB2BBF150953BA5FC1F /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
+		E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
+		E50180A38BAE4BBB1AB7473E /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
+		EC45ACC3713979B621CC2EF6 /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
 		EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
+		F07FA7D16A86021102274D6B /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
@@ -566,19 +605,32 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexExpenseModel.swift; sourceTree = "<group>"; };
 		06D59AF2F0AA53F1BA973F5E /* Pods-TrackMyCafe Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewController.swift; sourceTree = "<group>"; };
 		0BD579A062148876F7E9DAEE /* Pods-TrackMyCafe Beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.debug.xcconfig"; sourceTree = "<group>"; };
+		176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexCategoryModel.swift; sourceTree = "<group>"; };
 		2E9A0E08923E359F5819A334 /* Pods-TrackMyCafe Beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.release.xcconfig"; sourceTree = "<group>"; };
+		3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewController.swift; sourceTree = "<group>"; };
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
+		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		4B312FE796496BD93EED1CB1 /* CreateIngredientViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateIngredientViewController.swift; path = "TrackMyCafe/View Layer/Flow/Settings/Ingredients/View/CreateIngredientViewController.swift"; sourceTree = "<group>"; };
+		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
+		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModelType.swift; sourceTree = "<group>"; };
 		6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewController.swift; sourceTree = "<group>"; };
+		72B5E49A3B9441A9E185BBF2 /* CostingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostingService.swift; sourceTree = "<group>"; };
 		755C0AF4BCD86A9E7FECC83D /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.release.xcconfig"; sourceTree = "<group>"; };
 		933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
+		D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
+		DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewModel.swift; sourceTree = "<group>"; };
+		E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModel.swift; sourceTree = "<group>"; };
 		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
 		F3158C472763437200136861 /* RealmProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductModel.swift; sourceTree = "<group>"; };
@@ -758,9 +810,39 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
-		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F362781C2EE5508D00A69CFE /* Home */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -843,6 +925,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E0F478DA2ABDE3235ED4A05 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */,
+				E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */,
+			);
+			name = ViewModel;
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		181F6BF06D6997A1288EFB30 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -851,6 +943,24 @@
 				F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		22C6BDFFD8C6790A8561B5F7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */,
+			);
+			name = View;
+			path = View;
+			sourceTree = "<group>";
+		};
+		365EEC962101546D7576DFD2 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */,
+			);
+			name = ViewModel;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		376F0012AAD22EF4E9E21620 /* Frameworks */ = {
@@ -885,6 +995,45 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		A27F15580607CEC8588159BB /* View */ = {
+			isa = PBXGroup;
+			children = (
+				3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */,
+			);
+			name = View;
+			path = View;
+			sourceTree = "<group>";
+		};
+		E11F671C95FACE85B4E5B435 /* PurchaseList */ = {
+			isa = PBXGroup;
+			children = (
+				0E0F478DA2ABDE3235ED4A05 /* ViewModel */,
+				22C6BDFFD8C6790A8561B5F7 /* View */,
+			);
+			name = PurchaseList;
+			path = PurchaseList;
+			sourceTree = "<group>";
+		};
+		E1540B5694647F275E9A01A4 /* Purchase */ = {
+			isa = PBXGroup;
+			children = (
+				E11F671C95FACE85B4E5B435 /* PurchaseList */,
+				E8B7E3E61527E9C10B6660D3 /* CreatePurchase */,
+			);
+			name = Purchase;
+			path = Purchase;
+			sourceTree = "<group>";
+		};
+		E8B7E3E61527E9C10B6660D3 /* CreatePurchase */ = {
+			isa = PBXGroup;
+			children = (
+				365EEC962101546D7576DFD2 /* ViewModel */,
+				A27F15580607CEC8588159BB /* View */,
+			);
+			name = CreatePurchase;
+			path = CreatePurchase;
+			sourceTree = "<group>";
+		};
 		F3158C462763435000136861 /* Realm */ = {
 			isa = PBXGroup;
 			children = (
@@ -896,6 +1045,7 @@
 				F3D862D6277C33C100DD43DB /* RealmCostModel.swift */,
 				F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */,
 				F3B7C2512806D8DA00DF5C2B /* RealmTypeModel.swift */,
+				D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */,
 			);
 			path = Realm;
 			sourceTree = "<group>";
@@ -1136,6 +1286,7 @@
 				F385B4162C1D8FA700973CAA /* Staff */,
 				F39C8030275772BD00674CF4 /* Settings */,
 				F385B3FD2C1C5A1300973CAA /* Persons */,
+				E1540B5694647F275E9A01A4 /* Purchase */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -1754,6 +1905,8 @@
 				F3E358022BF22B76005050CB /* DomainDB.swift */,
 				F36217C02EBF006C00965886 /* DomainCostDataService.swift */,
 				F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */,
+				B162B8F1542975346D60E96C /* InventoryService.swift */,
+				72B5E49A3B9441A9E185BBF2 /* CostingService.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -1778,6 +1931,11 @@
 				F3E357F82BEFF7F4005050CB /* CostModel.swift */,
 				F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */,
 				F3E357FC2BEFF978005050CB /* TypeModel.swift */,
+				404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */,
+				03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */,
+				176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */,
+				5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */,
+				8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -2485,6 +2643,19 @@
 				6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */,
 				2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */,
 				EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */,
+				1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */,
+				EC45ACC3713979B621CC2EF6 /* OpexExpenseModel.swift in Sources */,
+				563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */,
+				36DE2B9C5DA8D5E537AF3479 /* InventoryService.swift in Sources */,
+				32B8B86C01018A89A21F3C3C /* CostingService.swift in Sources */,
+				9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */,
+				2CE263E0E30F498DF06D8515 /* OrderItemModel.swift in Sources */,
+				87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */,
+				9CE2CCDB6EBC99D5108A5B63 /* PurchaseListItemViewModel.swift in Sources */,
+				BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */,
+				290BC38D0FC7339835D90AD3 /* CreatePurchaseViewModel.swift in Sources */,
+				BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */,
+				1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2645,6 +2816,19 @@
 				6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */,
 				97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */,
 				175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */,
+				11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */,
+				E50180A38BAE4BBB1AB7473E /* OpexExpenseModel.swift in Sources */,
+				B219C4C17A1B02090B190ADE /* OpexCategoryModel.swift in Sources */,
+				1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */,
+				8022698E009A355D97397BAA /* CostingService.swift in Sources */,
+				2062336CEFB66EE59F9C22D2 /* InventoryAdjustmentModel.swift in Sources */,
+				59C05FDE199AFA314FF13092 /* OrderItemModel.swift in Sources */,
+				DCEDBEB2BBF150953BA5FC1F /* PurchaseListViewModel.swift in Sources */,
+				053B057E633F68A37D8C6489 /* PurchaseListItemViewModel.swift in Sources */,
+				B5B7A6795D15E8B29F771777 /* PurchaseListViewController.swift in Sources */,
+				8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */,
+				B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */,
+				9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2805,6 +2989,19 @@
 				0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */,
 				DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */,
 				61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */,
+				E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */,
+				BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */,
+				4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */,
+				3F2453C445B3640596D717FF /* InventoryService.swift in Sources */,
+				B5DB7B6A930451C341851FAE /* CostingService.swift in Sources */,
+				F07FA7D16A86021102274D6B /* InventoryAdjustmentModel.swift in Sources */,
+				ACAB351423CD8EDEC4EE4E2C /* OrderItemModel.swift in Sources */,
+				33685760B24A285E00EB5505 /* PurchaseListViewModel.swift in Sources */,
+				309C9BC32731315EFC798532 /* PurchaseListItemViewModel.swift in Sources */,
+				A33C597EEE9963EE8DACCC14 /* PurchaseListViewController.swift in Sources */,
+				3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */,
+				701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */,
+				B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
