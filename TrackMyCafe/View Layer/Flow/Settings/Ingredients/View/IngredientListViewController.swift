@@ -17,6 +17,8 @@ class IngredientListViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .singleLine
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 70
         return tableView
