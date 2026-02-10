@@ -88,6 +88,13 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
         return cell
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let ingredient = viewModel.ingredients[indexPath.row]
+        let createVC = CreateIngredientViewController(viewModel: viewModel, ingredient: ingredient)
+        present(createVC, animated: true)
+    }
+    
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             Task {
