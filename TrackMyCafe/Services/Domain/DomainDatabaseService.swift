@@ -1214,9 +1214,92 @@ class DomainDatabaseService: DomainDB {
             }
         }
 
+        // Ingredients
+        let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] = [
+            ("Молоко", "Milk", .l, 35.0),
+            ("Кавові зерна", "Coffee Beans", .kg, 600.0),
+            ("Цукор", "Sugar", .kg, 30.0),
+            ("Стаканчики", "Cups", .pcs, 3.5),
+            ("Сироп Карамель", "Caramel Syrup", .ml, 0.5),
+            ("Вода", "Water", .l, 2.0)
+        ]
+
+        var createdIngredients: [IngredientModel] = []
+
+        for item in ingredientCatalog {
+            let name = isUkrainian ? item.uk : item.en
+            let ingredient = IngredientModel(
+                id: UUID().uuidString,
+                name: name,
+                averageCost: item.baseCost,
+                stockQuantity: 0,
+                unit: item.unit
+            )
+            createdIngredients.append(ingredient)
+
+            await withCheckedContinuation { continuation in
+                self.saveIngredient(model: ingredient) { _ in
+                    continuation.resume()
+                }
+            }
+        }
+
         let calendar = Calendar.current
         for i in 0..<max(1, days) {
             guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
+
+            // Generate Purchases (30% chance per day)
+            if !createdIngredients.isEmpty && Int.random(in: 0...100) < 30 {
+                let purchaseCount = Int.random(in: 1...3)
+                for _ in 0..<purchaseCount {
+                    if var randomIngredient = createdIngredients.randomElement() {
+                        let qty = Double(Int.random(in: 5...50))
+                        let priceVariation = Double.random(in: 0.9...1.1)
+                        let price = (randomIngredient.averageCost * priceVariation).round(to: 2)
+
+                        let purchase = PurchaseModel(
+                            id: UUID().uuidString,
+                            date: date,
+                            ingredientId: randomIngredient.id,
+                            quantity: qty,
+                            price: price,
+                            supplierId: nil
+                        )
+
+                        // Update stock and avg cost
+                        let oldTotalValue = randomIngredient.stockQuantity * randomIngredient.averageCost
+                        let newPurchaseValue = qty * price
+                        let newTotalQuantity = randomIngredient.stockQuantity + qty
+                        let newAverageCost =
+                            newTotalQuantity > 0
+                            ? (oldTotalValue + newPurchaseValue) / newTotalQuantity : price
+
+                        randomIngredient.stockQuantity = newTotalQuantity
+                        randomIngredient.averageCost = newAverageCost
+
+                        // Update local array
+                        if let index = createdIngredients.firstIndex(where: {
+                            $0.id == randomIngredient.id
+                        }) {
+                            createdIngredients[index] = randomIngredient
+                        }
+
+                        // Save Purchase
+                        await withCheckedContinuation { continuation in
+                            self.savePurchase(model: purchase) { _ in
+                                continuation.resume()
+                            }
+                        }
+
+                        // Save Updated Ingredient
+                        await withCheckedContinuation { continuation in
+                            self.saveIngredient(model: randomIngredient) { _ in
+                                continuation.resume()
+                            }
+                        }
+                    }
+                }
+            }
 
             let typeCount = (i % 3) + 1
             var rotated = types
