@@ -90,13 +90,15 @@ class IngredientTableViewCell: UITableViewCell {
     func configure(with ingredient: IngredientModel) {
         nameLabel.text = ingredient.name
 
-        // Stock: "35.0 l"
+        // Stock (Left Bottom, Gray): "35.0 l"
         stockLabel.text = "\(ingredient.stockQuantity) \(ingredient.unit.localizedName)"
 
-        // Cost: "12.50"
-        costLabel.text = String(format: "%.2f", ingredient.averageCost)
+        // Total Stock Value (Right Top, Bold): Stock * AvgCost
+        let totalValue = ingredient.stockQuantity * ingredient.averageCost
+        costLabel.text = String(format: "%.2f", totalValue)
 
-        // Unit label: "per l" (e.g. "за л")
-        unitLabel.text = "\(R.string.global.per()) \(ingredient.unit.localizedName)"
+        // Average Cost (Right Bottom): "12.50 per l"
+        let avgCost = String(format: "%.2f", ingredient.averageCost)
+        unitLabel.text = "\(avgCost) \(R.string.global.per()) \(ingredient.unit.localizedName)"
     }
 }
