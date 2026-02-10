@@ -74,19 +74,13 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
         let name = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.localizedName))"
         let cost = String(format: "%.2f", ingredient.averageCost)
         
-        let attributedText = NSMutableAttributedString(string: name)
-        let costAttributes: [NSAttributedString.Key: Any] = [
-            .font: UIFont.boldSystemFont(ofSize: 16)
-        ]
-        let costString = NSAttributedString(string: "\n\(cost)", attributes: costAttributes)
-        
         // Use default cell configuration but customized
-        var content = cell.defaultContentConfiguration()
+        var content = UIListContentConfiguration.value1() // Use value1 style for side-by-side text
         content.text = name
         content.secondaryText = cost
         content.secondaryTextProperties.font = .boldSystemFont(ofSize: 16)
         content.secondaryTextProperties.alignment = .natural
-        content.prefersSideBySideSecondaryText = true
+        // prefersSideBySideSecondaryText is not needed for .value1() style as it is default behavior
         
         cell.contentConfiguration = content
         return cell
