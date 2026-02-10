@@ -1244,6 +1244,81 @@ class DomainDatabaseService: DomainDB {
             }
         }
 
+        // Assign recipes to products
+        for var product in products {
+            var recipe: [RecipeItemModel] = []
+
+            // Helper to find ingredient by EN/UK name
+            func findIngredient(_ key: String) -> IngredientModel? {
+                return createdIngredients.first { $0.name.lowercased().contains(key.lowercased()) }
+            }
+
+            let pName = product.name.lowercased()
+
+            // Coffee base (Espresso, Americano, Latte, Cappuccino, Irish)
+            if pName.contains("espresso") || pName.contains("еспресо") || pName.contains("americano")
+                || pName.contains("американо") || pName.contains("latte") || pName.contains("лате")
+                || pName.contains("cappuccino") || pName.contains("капучіно")
+                || pName.contains("irish") || pName.contains("айріш")
+            {
+                if let coffee = findIngredient(isUkrainian ? "зерна" : "beans") {
+                    recipe.append(
+                        RecipeItemModel(
+                            id: UUID().uuidString, ingredientId: coffee.id,
+                            ingredientName: coffee.name, quantity: 0.018, unit: .kg))
+                }
+                if let water = findIngredient(isUkrainian ? "вода" : "water") {
+                    recipe.append(
+                        RecipeItemModel(
+                            id: UUID().uuidString, ingredientId: water.id, ingredientName: water.name,
+                            quantity: 0.05, unit: .l))
+                }
+            }
+
+            // Milk based (Latte, Cappuccino, Cocoa, Hot Chocolate)
+            if pName.contains("latte") || pName.contains("лате") || pName.contains("cappuccino")
+                || pName.contains("капучіно") || pName.contains("cocoa") || pName.contains("какао")
+                || pName.contains("chocolate") || pName.contains("шоколад")
+            {
+                if let milk = findIngredient(isUkrainian ? "молоко" : "milk") {
+                    let qty = pName.contains("large") || pName.contains("великий") ? 0.3 : 0.2
+                    recipe.append(
+                        RecipeItemModel(
+                            id: UUID().uuidString, ingredientId: milk.id, ingredientName: milk.name,
+                            quantity: qty, unit: .l))
+                }
+            }
+
+            // Sugar (Optional logic, let's assume some drinks have sugar by default or just add to recipe)
+            if pName.contains("cocoa") || pName.contains("какао") || pName.contains("chocolate")
+                || pName.contains("шоколад")
+            {
+                if let sugar = findIngredient(isUkrainian ? "цукор" : "sugar") {
+                    recipe.append(
+                        RecipeItemModel(
+                            id: UUID().uuidString, ingredientId: sugar.id, ingredientName: sugar.name,
+                            quantity: 0.01, unit: .kg))
+                }
+            }
+
+            // Cups
+            if let cup = findIngredient(isUkrainian ? "стакан" : "cup") {
+                recipe.append(
+                    RecipeItemModel(
+                        id: UUID().uuidString, ingredientId: cup.id, ingredientName: cup.name,
+                        quantity: 1, unit: .pcs))
+            }
+
+            if !recipe.isEmpty {
+                product.recipe = recipe
+                await withCheckedContinuation { continuation in
+                    self.saveProductsPrice(productPrice: product) { _ in
+                        continuation.resume()
+                    }
+                }
+            }
+        }
+
         let calendar = Calendar.current
         for i in 0..<max(1, days) {
             guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
