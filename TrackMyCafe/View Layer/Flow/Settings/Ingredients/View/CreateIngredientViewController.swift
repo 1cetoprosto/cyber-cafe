@@ -12,6 +12,7 @@ final class CreateIngredientViewController: UIViewController {
     
     // MARK: - Properties
     private let viewModel: IngredientListViewModelType
+    private let ingredientToEdit: IngredientModel?
     private var saveButtonBottomConstraint: NSLayoutConstraint!
     
     // MARK: - UI Elements
@@ -112,14 +113,16 @@ final class CreateIngredientViewController: UIViewController {
     // Save Button
     private lazy var saveButton: UIButton = {
         let button = DefaultButton()
-        button.setTitle(R.string.global.add(), for: .normal)
+        let title = ingredientToEdit == nil ? R.string.global.add() : R.string.global.save()
+        button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         return button
     }()
     
     // MARK: - Init
-    init(viewModel: IngredientListViewModelType) {
+    init(viewModel: IngredientListViewModelType, ingredient: IngredientModel? = nil) {
         self.viewModel = viewModel
+        self.ingredientToEdit = ingredient
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -133,12 +136,13 @@ final class CreateIngredientViewController: UIViewController {
         setupUI()
         setupConstraints()
         setupKeyboardHandling()
+        fillData()
     }
     
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
-        title = R.string.global.newIngredient()
+        title = ingredientToEdit == nil ? R.string.global.newIngredient() : R.string.global.edit()
         
         view.addSubview(scrollView)
         view.addSubview(saveButton)
@@ -149,6 +153,14 @@ final class CreateIngredientViewController: UIViewController {
         addSection(input: costInputContainer, explanation: costExplanationLabel)
         addSection(input: stockInputContainer, explanation: stockExplanationLabel)
         addSection(input: unitInputContainer, explanation: unitExplanationLabel)
+    }
+    
+    private func fillData() {
+        guard let ingredient = ingredientToEdit else { return }
+        nameInputContainer.text = ingredient.name
+        costInputContainer.text = String(format: "%.2f", ingredient.averageCost)
+        stockInputContainer.text = String(format: "%.3f", ingredient.stockQuantity)
+        unitInputContainer.text = ingredient.unit.localizedName
     }
     
     private func addSection(input: UIView, explanation: UIView) {
@@ -206,7 +218,19 @@ final class CreateIngredientViewController: UIViewController {
         let unit = MeasurementUnit.allCases.first { $0.localizedName == selectedUnitString } ?? .pcs
         
         Task {
-            await viewModel.createIngredient(name: name, cost: cost, stock: stock, unit: unit)
+            if let existingIngredient = ingredientToEdit {
+                // Update existing
+                var updated = existingIngredient
+                updated.name = name
+                updated.averageCost = cost
+                updated.stockQuantity = stock
+                updated.unit = unit
+                await viewModel.updateIngredient(updated)
+            } else {
+                // Create new
+                await viewModel.createIngredient(name: name, cost: cost, stock: stock, unit: unit)
+            }
+            
             await MainActor.run {
                 dismiss(animated: true)
             }
