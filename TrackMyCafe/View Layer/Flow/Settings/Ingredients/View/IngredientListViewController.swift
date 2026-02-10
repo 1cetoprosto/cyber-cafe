@@ -70,7 +70,7 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let ingredient = viewModel.ingredients[indexPath.row]
-        cell.textLabel?.text = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.rawValue)) - \(ingredient.averageCost)"
+        cell.textLabel?.text = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.localizedName)) - \(ingredient.averageCost)"
         return cell
     }
     
