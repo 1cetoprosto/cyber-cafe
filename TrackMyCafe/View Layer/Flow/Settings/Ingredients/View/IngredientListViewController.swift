@@ -70,7 +70,25 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
         let ingredient = viewModel.ingredients[indexPath.row]
-        cell.textLabel?.text = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.localizedName)) - \(ingredient.averageCost)"
+        
+        let name = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.localizedName))"
+        let cost = String(format: "%.2f", ingredient.averageCost)
+        
+        let attributedText = NSMutableAttributedString(string: name)
+        let costAttributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.boldSystemFont(ofSize: 16)
+        ]
+        let costString = NSAttributedString(string: "\n\(cost)", attributes: costAttributes)
+        
+        // Use default cell configuration but customized
+        var content = cell.defaultContentConfiguration()
+        content.text = name
+        content.secondaryText = cost
+        content.secondaryTextProperties.font = .boldSystemFont(ofSize: 16)
+        content.secondaryTextProperties.alignment = .natural
+        content.prefersSideBySideSecondaryText = true
+        
+        cell.contentConfiguration = content
         return cell
     }
     
