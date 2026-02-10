@@ -285,10 +285,10 @@ class ProductDetailsViewController: UIViewController {
     }
 
     private func showQuantityInput(for ingredient: IngredientModel) {
-        let message = R.string.global.enterQuantityPerUnit(ingredient.unit.localizedName)
+        let message = R.string.global.enterQuantityPerUnit() + " (" + ingredient.unit.localizedName + ")"
         let alert = UIAlertController(title: ingredient.name, message: message, preferredStyle: .alert)
 
-        alert.addTextField { [weak self] textField in
+        alert.addTextField { (textField: UITextField) in
             textField.keyboardType = UIKeyboardType.decimalPad
             textField.placeholder = "0.0"
             textField.delegate = self
