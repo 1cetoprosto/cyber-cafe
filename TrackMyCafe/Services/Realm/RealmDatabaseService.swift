@@ -91,9 +91,8 @@ class RealmDatabaseService: RealmDB {
 
     func save<T: Object>(model object: T) {
         executeWrite {
-            // Fix: Check if the object has a primary key.
-            // If yes, use update: .modified to avoid "Object already exists" crash.
-            if T.primaryKey() != nil {
+            // Fix: Check object schema for primary key instead of generic type T
+            if object.objectSchema.primaryKeyProperty != nil {
                 localRealm.add(object, update: .modified)
             } else {
                 localRealm.add(object)
