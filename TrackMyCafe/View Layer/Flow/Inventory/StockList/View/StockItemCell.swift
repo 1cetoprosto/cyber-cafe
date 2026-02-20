@@ -96,11 +96,14 @@ class StockItemCell: UITableViewCell {
         quantityLabel.text = String(format: "%.2f", model.stockQuantity)
 
         // 3. Average Price (was at bottom right) -> now below Name
-        unitLabel.text = String(format: "Avg: %.2f UAH", model.averageCost)
+        unitLabel.text = String(
+            format: R.string.global.inventoryAvgPrice(model.averageCost), model.averageCost)
+        unitLabel.textColor = UIColor.Main.secondaryText
 
         // 4. Total Value (new) -> now at bottom right
         let totalValue = model.stockQuantity * model.averageCost
-        costLabel.text = String(format: "Sum: %.2f UAH", totalValue)
+        costLabel.text = String(format: R.string.global.inventorySumValue(totalValue), totalValue)
+        costLabel.textColor = UIColor.Main.secondaryText
 
         // Highlight low stock (hardcoded threshold 5.0 for now, ideally from settings)
         if model.stockQuantity < 5.0 {
