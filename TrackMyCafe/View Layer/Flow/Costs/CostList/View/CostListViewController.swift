@@ -61,7 +61,9 @@ class CostListViewController: UIViewController {
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
     let vm = CostDetailsViewModel(
-      cost: CostModel(id: "", date: Date(), name: "", sum: 0.0),
+      cost: OpexExpenseModel(
+        id: "", date: Date(), categoryId: "General", amount: 0.0, note: ""
+      ),
       dataService: DomainCostDataService()
     )
     let costVC = CostDetailsListViewController(viewModel: vm)

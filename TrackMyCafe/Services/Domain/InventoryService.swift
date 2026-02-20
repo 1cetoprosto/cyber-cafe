@@ -106,7 +106,8 @@ class InventoryService: InventoryServiceProtocol {
     ) {
         if oldPurchase.ingredientId == newPurchase.ingredientId {
             // Same Ingredient: Revert old and Apply new in one step
-            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) { [weak self] ingredient in
+            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) {
+                [weak self] ingredient in
                 guard var ingredient = ingredient else {
                     completion(
                         .failure(
@@ -163,7 +164,8 @@ class InventoryService: InventoryServiceProtocol {
             }
         } else {
             // Different Ingredient: Revert old, then Process new
-            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) { [weak self] oldIngredient in
+            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) {
+                [weak self] oldIngredient in
                 guard var oldIngredient = oldIngredient else {
                     completion(
                         .failure(
@@ -175,20 +177,20 @@ class InventoryService: InventoryServiceProtocol {
 
                 let currentTotalValue = oldIngredient.stockQuantity * oldIngredient.averageCost
                 let oldPurchaseValue = oldPurchase.quantity * oldPurchase.price
-                
+
                 let revertedTotalValue = currentTotalValue - oldPurchaseValue
                 let revertedStock = oldIngredient.stockQuantity - oldPurchase.quantity
-                
+
                 let revertedAvg: Double
                 if revertedStock > 0 {
                     revertedAvg = revertedTotalValue / revertedStock
                 } else {
                     revertedAvg = oldIngredient.averageCost
                 }
-                
+
                 oldIngredient.stockQuantity = revertedStock
                 oldIngredient.averageCost = revertedAvg
-                
+
                 self?.databaseService.saveIngredient(model: oldIngredient) { success in
                     if success {
                         self?.processPurchase(purchase: newPurchase, completion: completion)
@@ -211,30 +213,51 @@ class InventoryService: InventoryServiceProtocol {
     func processStockAdjustment(
         adjustment: InventoryAdjustmentModel, completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        databaseService.fetchIngredient(byId: adjustment.ingredientId) { [weak self] ingredient in
-            guard var ingredient = ingredient else {
-                completion(
-                    .failure(
-                        NSError(
-                            domain: "InventoryService", code: 404,
-                            userInfo: [NSLocalizedDescriptionKey: "Ingredient not found"])))
-                return
-            }
-
-            // Adjust quantity ONLY. Average cost remains unchanged.
-            ingredient.stockQuantity += adjustment.quantityDelta
-
-            self?.databaseService.saveIngredient(model: ingredient) { success in
-                if success {
-                    // TODO: Save Adjustment record (when DB supports it)
-                    completion(.success(()))
-                } else {
+        // Ensure we are on the main thread when fetching/updating Realm objects
+        // to avoid "Realm accessed from incorrect thread" error
+        DispatchQueue.main.async { [weak self] in
+            self?.databaseService.fetchIngredient(byId: adjustment.ingredientId) { ingredient in
+                guard var ingredient = ingredient else {
                     completion(
                         .failure(
                             NSError(
-                                domain: "InventoryService", code: 500,
-                                userInfo: [NSLocalizedDescriptionKey: "Failed to save ingredient"]))
-                    )
+                                domain: "InventoryService", code: 404,
+                                userInfo: [NSLocalizedDescriptionKey: "Ingredient not found"])))
+                    return
+                }
+
+                // Adjust quantity ONLY. Average cost remains unchanged.
+                ingredient.stockQuantity += adjustment.quantityDelta
+
+                // Create a local copy for saving to avoid thread issues with reference types
+                let ingredientToSave = ingredient
+
+                self?.databaseService.saveIngredient(model: ingredientToSave) { success in
+                    if success {
+                        // Save Adjustment record
+                        self?.databaseService.saveInventoryAdjustment(model: adjustment) { adjSuccess in
+                            if adjSuccess {
+                                completion(.success(()))
+                            } else {
+                                completion(
+                                    .failure(
+                                        NSError(
+                                            domain: "InventoryService", code: 500,
+                                            userInfo: [
+                                                NSLocalizedDescriptionKey: "Failed to save adjustment record"
+                                            ])))
+                            }
+                        }
+                    } else {
+                        completion(
+                            .failure(
+                                NSError(
+                                    domain: "InventoryService", code: 500,
+                                    userInfo: [
+                                        NSLocalizedDescriptionKey: "Failed to save ingredient"
+                                    ]))
+                        )
+                    }
                 }
             }
         }
