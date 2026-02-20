@@ -325,6 +325,9 @@ class RealmDatabaseService: RealmDB {
 
     func fetchIngredient(byId id: String) -> RealmIngredientModel? {
         logger.log("Fetched ingredient with id: \(id, privacy: .public)")
+        // Create a thread-safe reference if passing between threads,
+        // but for now, just fetch directly.
+        // If used across threads, we should use ThreadSafeReference or fetch by ID on the target thread.
         return fetchObjectById(ofType: RealmIngredientModel.self, id: id)
     }
 
