@@ -54,10 +54,12 @@ class PurchaseListViewController: UIViewController {
 
     // MARK: - Setup
     private func setupUI() {
-        title = R.string.global.purchases()
+        // title = R.string.global.purchases() // Managed by parent
         view.backgroundColor = UIColor.Main.background
         view.addSubview(tableView)
 
+        // Navigation button is handled by parent container via updateNavigationItems
+        // but we need to set it here so parent can pick it up
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
     }
 

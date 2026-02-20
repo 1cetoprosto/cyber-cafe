@@ -13,8 +13,7 @@ class InventoryContainerViewController: UIViewController {
     // MARK: - Properties
 
     private let segmentedControl: UISegmentedControl = {
-        let items = ["Stock", "Purchases", "Audit"]  // Localize later
-        let sc = UISegmentedControl(items: items)
+        let sc = UISegmentedControl(items: ["Stock", "Purchases", "Audit"])  // Will be updated in setupUI
         sc.selectedSegmentIndex = 0
         return sc
     }()
@@ -22,10 +21,13 @@ class InventoryContainerViewController: UIViewController {
     private let containerView = UIView()
 
     // Child View Controllers
-    private lazy var stockListVC = StockListViewController()
+    private lazy var stockListVC: UIViewController = {
+        let vm = StockListViewModel()
+        return StockListViewController(viewModel: vm)
+    }()
 
-    // PurchaseListViewController requires a ViewModel
-    private lazy var purchaseListVC: PurchaseListViewController = {
+    private lazy var purchaseListVC: UIViewController = {
+        // Initialize Purchase List
         let vm = PurchaseListViewModel()
         return PurchaseListViewController(viewModel: vm)
     }()
@@ -34,7 +36,7 @@ class InventoryContainerViewController: UIViewController {
         let vc = UIViewController()
         vc.view.backgroundColor = .systemGroupedBackground
         let label = UILabel()
-        label.text = "Inventory Audit (Coming Soon)"
+        label.text = R.string.global.inventoryAuditComingSoon()
         label.textColor = .label
         vc.view.addSubview(label)
         label.centerInSuperview()
@@ -48,14 +50,22 @@ class InventoryContainerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        // Start with Stock List
-        displayChild(stockListVC)
+        displayChild(stockListVC)  // Default
     }
 
     // MARK: - Setup
 
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
+
+        segmentedControl.removeAllSegments()
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.inventorySegmentStock(), at: 0, animated: false)
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.inventorySegmentPurchases(), at: 1, animated: false)
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.inventorySegmentAudit(), at: 2, animated: false)
+        segmentedControl.selectedSegmentIndex = 0
 
         view.addSubview(segmentedControl)
         view.addSubview(containerView)
@@ -107,5 +117,23 @@ class InventoryContainerViewController: UIViewController {
         child.didMove(toParent: self)
 
         currentChild = child
+
+        // Update Navigation Items
+        updateNavigationItems(for: child)
+    }
+
+    private func updateNavigationItems(for child: UIViewController) {
+        // Since we are inside CostsTabViewController (which also has a container),
+        // we need to push items up to parent's navigation item if possible,
+        // or just set them on self.navigationItem so parent can read them.
+
+        navigationItem.rightBarButtonItems = child.navigationItem.rightBarButtonItems
+        navigationItem.leftBarButtonItems = child.navigationItem.leftBarButtonItems
+
+        // Notify parent (CostsTabViewController) to update its navigation items
+        // This is a bit hacky but works for nested containers
+        if let parent = parent as? CostsTabViewController {
+            parent.updateNavigationItems(for: self)
+        }
     }
 }
