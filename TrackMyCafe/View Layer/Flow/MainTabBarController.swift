@@ -104,28 +104,50 @@ class MainTabBarController: UITabBarController {
     }
 
     func setupTabBar() {
+        // Tab 1: Home (Dashboard)
         let homeViewController = createNavController(
             viewController: HomeViewController(),
             itemName: R.string.global.home(),
             itemImage: SystemImages.home)
+        
+        // Tab 2: Income (Orders)
         let ordersViewController = createNavController(
             viewController: OrderListViewController(),
-            itemName: R.string.global.income(),
+            itemName: R.string.global.income(), // Or "Orders" / "POS"
             itemImage: SystemImages.mug)
-        let costsViewController = createNavController(
-            viewController: CostListViewController(),
-            itemName: R.string.global.costs(),
+        
+        // Tab 3: Costs & Inventory (New Container)
+        let costsTabViewController = createNavController(
+            viewController: CostsTabViewController(),
+            itemName: R.string.global.costs(), // Should ideally be "Costs & Inventory"
             itemImage: SystemImages.bag)
-        let purchasesViewController = createNavController(
-            viewController: PurchaseListViewController(viewModel: PurchaseListViewModel()),
-            itemName: R.string.global.purchases(),
-            itemImage: SystemImages.takeoutbagAndCupAndStraw)
+        
+        // Tab 4: Reports (Placeholder for now, using existing logic or empty)
+        // For now, let's skip Reports tab creation until implemented, or use a placeholder
+        // Using PurchaseListViewController as a temporary placeholder if needed,
+        // but since Purchases are now in Tab 3, we can leave Tab 4 for Reports later.
+        // For MVP 2.0 structure, let's keep 5 tabs if possible, or 4.
+        // Let's create a temporary Reports placeholder.
+        let reportsViewController = createNavController(
+            viewController: UIViewController(), // Placeholder
+            itemName: "Reports", // Localize later
+            itemImage: "chart.bar") // SystemImages.chartBar if exists, or string
+        reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
+        reportsViewController.viewControllers.first?.title = "Reports"
+        
+        // Tab 5: Settings
         let settingsViewController = createNavController(
             viewController: SettingListViewController(),
             itemName: R.string.global.menuSettings(),
             itemImage: SystemImages.gearshape)
+        
+        // Update: Removed separate Purchases tab (now in Tab 3)
+        // Added Reports placeholder
         viewControllers = [
-            homeViewController, ordersViewController, costsViewController, purchasesViewController,
+            homeViewController,
+            ordersViewController,
+            costsTabViewController,
+            reportsViewController,
             settingsViewController,
         ]
     }
