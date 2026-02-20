@@ -184,6 +184,11 @@
 "quantity" = "Quantity";
 "pricePerUnit" = "Price per Unit";
 "per" = "per";
+"editPurchase" = "Edit Purchase";
+"updatePurchase" = "Update Purchase";
+"pleaseSelectIngredient" = "Please select an ingredient";
+"invalidQuantity" = "Invalid quantity";
+"invalidPrice" = "Invalid price";
 
 // MARK: - Themes
 "systemThemeName" = "System";

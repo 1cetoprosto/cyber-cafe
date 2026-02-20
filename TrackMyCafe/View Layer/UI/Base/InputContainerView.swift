@@ -154,13 +154,27 @@ final class InputContainerView: UIView {
     labelText: String,
     inputType: InputType,
     isEditable: Bool = true,
-    placeholder: String? = nil
+    placeholder: String? = nil,
+    isSelection: Bool = false
   ) {
     self.init(frame: .zero)
     self.inputType = inputType
     self.isEditable = isEditable
     self.initialPlaceholder = placeholder
     configure(labelText: labelText)
+    
+    if isSelection, case .text = inputType {
+        // Prevent keyboard from showing up
+        textField.inputView = UIView()
+        // Make text field non-interactive so touches pass through to container
+        textField.isUserInteractionEnabled = false
+        // Add chevron icon or similar indicator if needed
+        let icon = UIImageView(image: UIImage(systemName: "chevron.right"))
+        icon.tintColor = UIColor.Main.text
+        icon.contentMode = .scaleAspectFit
+        textField.rightView = icon
+        textField.rightViewMode = .always
+    }
   }
 
   override init(frame: CGRect) {

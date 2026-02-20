@@ -9,7 +9,6 @@ import Foundation
 
 protocol PurchaseListItemViewModelType {
     var name: String { get }
-    var date: String { get }
     var quantity: String { get }
     var price: String { get }
     var total: String { get }
@@ -26,13 +25,6 @@ class PurchaseListItemViewModel: PurchaseListItemViewModelType {
     
     var name: String {
         return ingredientName
-    }
-    
-    var date: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter.string(from: purchase.date)
     }
     
     var quantity: String {

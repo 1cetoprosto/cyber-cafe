@@ -184,6 +184,11 @@
 "quantity" = "Кількість";
 "pricePerUnit" = "Ціна за одиницю";
 "per" = "за";
+"editPurchase" = "Редагувати закупку";
+"updatePurchase" = "Оновити закупку";
+"pleaseSelectIngredient" = "Будь ласка, оберіть інгредієнт";
+"invalidQuantity" = "Невірна кількість";
+"invalidPrice" = "Невірна ціна";
 
 // MARK: - Themes
 "systemThemeName" = "Системна";

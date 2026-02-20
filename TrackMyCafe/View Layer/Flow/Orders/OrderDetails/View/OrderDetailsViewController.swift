@@ -108,7 +108,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         return button
     }()
     
-    private let toolbar: UIToolbar = {
+    private lazy var toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem(
@@ -259,7 +259,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Method
     @objc func saveAction(param: UIButton?) {
-        guard let viewModel = viewModel else { return }
+        guard self.viewModel != nil else { return }
         
         // Validate stock first
         if let tableViewModel = tableViewModel {
@@ -270,8 +270,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                     // Show warning alert
                     let message = warnings.map { warning in
                         let shortage = warning.requiredQty - warning.currentStock
-                        return
-                        "\(warning.ingredientName): Need \(String(format: "%.2f", shortage)) more"
+                        return "\(warning.ingredientName): Need \(String(format: "%.2f", shortage)) more"
                     }.joined(separator: "\n")
                     
                     let alert = UIAlertController(
@@ -308,7 +307,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func saveAndNavigate() {
-        let isNewOrder = viewModel?.isNewModel ?? false
         
         saveModels { [weak self] in
             guard let self = self else { return }
