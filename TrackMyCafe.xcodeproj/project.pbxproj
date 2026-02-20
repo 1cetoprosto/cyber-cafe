@@ -38,6 +38,7 @@
 		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
 		97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
+		9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		9CE2CCDB6EBC99D5108A5B63 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
 		A33C597EEE9963EE8DACCC14 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
@@ -47,9 +48,11 @@
 		B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		B5B7A6795D15E8B29F771777 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
 		B5DB7B6A930451C341851FAE /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
+		B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
 		BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
+		C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */; };
 		DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		DCEDBEB2BBF150953BA5FC1F /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
@@ -174,6 +177,9 @@
 		F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
 		F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
 		F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
+		F36DA6AB2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
+		F36DA6AC2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
+		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
 		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
@@ -614,7 +620,6 @@
 		3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewController.swift; sourceTree = "<group>"; };
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
 		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
-		4B312FE796496BD93EED1CB1 /* CreateIngredientViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateIngredientViewController.swift; path = "TrackMyCafe/View Layer/Flow/Settings/Ingredients/View/CreateIngredientViewController.swift"; sourceTree = "<group>"; };
 		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
 		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModelType.swift; sourceTree = "<group>"; };
@@ -707,6 +712,7 @@
 		F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
 		F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModelType.swift; sourceTree = "<group>"; };
 		F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductPriceDataService.swift; sourceTree = "<group>"; };
+		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
 		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
@@ -807,42 +813,14 @@
 		F3F6A6362C327B83000961C8 /* AdminDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDetailsController.swift; sourceTree = "<group>"; };
 		F3F6A63A2C327BA3000961C8 /* CreateEditAdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAdminController.swift; sourceTree = "<group>"; };
 		F3F6A6432C3280AF000961C8 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F3299A932F35065600EA6532 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
+		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -931,7 +909,6 @@
 				58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */,
 				E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */,
 			);
-			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -939,7 +916,7 @@
 			isa = PBXGroup;
 			children = (
 				06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */,
-				4B312FE796496BD93EED1CB1 /* CreateIngredientViewController.swift */,
+				F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */,
 				F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */,
 			);
 			path = View;
@@ -949,8 +926,8 @@
 			isa = PBXGroup;
 			children = (
 				6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */,
+				F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -959,7 +936,6 @@
 			children = (
 				DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */,
 			);
-			name = ViewModel;
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
@@ -1000,7 +976,6 @@
 			children = (
 				3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1010,7 +985,6 @@
 				0E0F478DA2ABDE3235ED4A05 /* ViewModel */,
 				22C6BDFFD8C6790A8561B5F7 /* View */,
 			);
-			name = PurchaseList;
 			path = PurchaseList;
 			sourceTree = "<group>";
 		};
@@ -1020,7 +994,6 @@
 				E11F671C95FACE85B4E5B435 /* PurchaseList */,
 				E8B7E3E61527E9C10B6660D3 /* CreatePurchase */,
 			);
-			name = Purchase;
 			path = Purchase;
 			sourceTree = "<group>";
 		};
@@ -1030,7 +1003,6 @@
 				365EEC962101546D7576DFD2 /* ViewModel */,
 				A27F15580607CEC8588159BB /* View */,
 			);
-			name = CreatePurchase;
 			path = CreatePurchase;
 			sourceTree = "<group>";
 		};
@@ -1302,6 +1274,7 @@
 		F3410EA82BDD3E150007157B /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				F324E60A2F486E99003A7469 /* Selection */,
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
@@ -2009,6 +1982,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
@@ -2054,6 +2028,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
@@ -2099,6 +2074,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
@@ -2646,6 +2622,7 @@
 				1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */,
 				EC45ACC3713979B621CC2EF6 /* OpexExpenseModel.swift in Sources */,
 				563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */,
+				F36DA6AC2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */,
 				36DE2B9C5DA8D5E537AF3479 /* InventoryService.swift in Sources */,
 				32B8B86C01018A89A21F3C3C /* CostingService.swift in Sources */,
 				9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */,
@@ -2656,6 +2633,7 @@
 				290BC38D0FC7339835D90AD3 /* CreatePurchaseViewModel.swift in Sources */,
 				BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */,
 				1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */,
+				9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2819,6 +2797,7 @@
 				11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */,
 				E50180A38BAE4BBB1AB7473E /* OpexExpenseModel.swift in Sources */,
 				B219C4C17A1B02090B190ADE /* OpexCategoryModel.swift in Sources */,
+				F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */,
 				1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */,
 				8022698E009A355D97397BAA /* CostingService.swift in Sources */,
 				2062336CEFB66EE59F9C22D2 /* InventoryAdjustmentModel.swift in Sources */,
@@ -2829,6 +2808,7 @@
 				8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */,
 				B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */,
 				9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */,
+				B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2992,6 +2972,7 @@
 				E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */,
 				BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */,
 				4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */,
+				F36DA6AB2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */,
 				3F2453C445B3640596D717FF /* InventoryService.swift in Sources */,
 				B5DB7B6A930451C341851FAE /* CostingService.swift in Sources */,
 				F07FA7D16A86021102274D6B /* InventoryAdjustmentModel.swift in Sources */,
@@ -3002,6 +2983,7 @@
 				3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */,
 				701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */,
 				B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */,
+				C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

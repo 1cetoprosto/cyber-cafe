@@ -9,167 +9,172 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-    setupTabBar()
-    applyTabBarAppearance()
-    navigationController?.view.backgroundColor = UIColor.NavBar.background
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    // Handle system theme changes only if user has selected system appearance
-    if Theme.currentSelection.appearance == .system {
-      Theme.followSystemTheme()
-
-      // Update UI colors for current interface
-      updateInterfaceColors()
+        setupTabBar()
+        applyTabBarAppearance()
+        navigationController?.view.backgroundColor = UIColor.NavBar.background
     }
-  }
 
-  private func updateInterfaceColors() {
-    // Update tab bar colors
-    applyTabBarAppearance()
-    navigationController?.view.backgroundColor = UIColor.NavBar.background
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
 
-    // Update all child navigation controllers
-    viewControllers?.forEach { viewController in
-      if let navController = viewController as? UINavigationController {
+        // Handle system theme changes only if user has selected system appearance
+        if Theme.currentSelection.appearance == .system {
+            Theme.followSystemTheme()
+
+            // Update UI colors for current interface
+            updateInterfaceColors()
+        }
+    }
+
+    private func updateInterfaceColors() {
+        // Update tab bar colors
+        applyTabBarAppearance()
+        navigationController?.view.backgroundColor = UIColor.NavBar.background
+
+        // Update all child navigation controllers
+        viewControllers?.forEach { viewController in
+            if let navController = viewController as? UINavigationController {
+                navController.view.backgroundColor = UIColor.NavBar.background
+            }
+        }
+    }
+
+    // Configure UITabBarAppearance to ensure good contrast for selected/unselected icons
+    private func applyTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = Theme.current.primaryBackground
+
+        // Unified selected/unselected icon colors across palettes
+        let selectedColor: UIColor = Theme.current.tabBarTint
+
+        // Unselected color sourced from theme for consistency across palettes
+        let unselectedColor = Theme.current.tabBarUnselectedTint
+
+        // Apply to stacked layout
+        let stacked = appearance.stackedLayoutAppearance
+        stacked.selected.iconColor = selectedColor
+        stacked.selected.titleTextAttributes = [
+            .foregroundColor: selectedColor,
+            .font: Typography.footnote,
+        ]
+        stacked.normal.iconColor = unselectedColor
+        stacked.normal.titleTextAttributes = [
+            .foregroundColor: unselectedColor,
+            .font: Typography.footnote,
+        ]
+
+        // Apply to inline layout
+        let inline = appearance.inlineLayoutAppearance
+        inline.selected.iconColor = selectedColor
+        inline.selected.titleTextAttributes = [
+            .foregroundColor: selectedColor,
+            .font: Typography.footnote,
+        ]
+        inline.normal.iconColor = unselectedColor
+        inline.normal.titleTextAttributes = [
+            .foregroundColor: unselectedColor,
+            .font: Typography.footnote,
+        ]
+
+        // Apply to compact inline layout
+        let compact = appearance.compactInlineLayoutAppearance
+        compact.selected.iconColor = selectedColor
+        compact.selected.titleTextAttributes = [
+            .foregroundColor: selectedColor,
+            .font: Typography.footnote,
+        ]
+        compact.normal.iconColor = unselectedColor
+        compact.normal.titleTextAttributes = [
+            .foregroundColor: unselectedColor,
+            .font: Typography.footnote,
+        ]
+
+        tabBar.standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            tabBar.scrollEdgeAppearance = appearance
+        }
+
+        // Keep legacy properties in sync (used by some UIKit APIs)
+        tabBar.tintColor = selectedColor
+        tabBar.unselectedItemTintColor = unselectedColor
+    }
+
+    func setupTabBar() {
+        let homeViewController = createNavController(
+            viewController: HomeViewController(),
+            itemName: R.string.global.home(),
+            itemImage: SystemImages.home)
+        let ordersViewController = createNavController(
+            viewController: OrderListViewController(),
+            itemName: R.string.global.income(),
+            itemImage: SystemImages.mug)
+        let costsViewController = createNavController(
+            viewController: CostListViewController(),
+            itemName: R.string.global.costs(),
+            itemImage: SystemImages.bag)
+        let purchasesViewController = createNavController(
+            viewController: PurchaseListViewController(viewModel: PurchaseListViewModel()),
+            itemName: R.string.global.purchases(),
+            itemImage: SystemImages.takeoutbagAndCupAndStraw)
+        let settingsViewController = createNavController(
+            viewController: SettingListViewController(),
+            itemName: R.string.global.menuSettings(),
+            itemImage: SystemImages.gearshape)
+        viewControllers = [
+            homeViewController, ordersViewController, costsViewController, purchasesViewController,
+            settingsViewController,
+        ]
+    }
+
+    func createNavController(
+        viewController: UIViewController,
+        itemName: String,
+        itemImage: String
+    ) -> UINavigationController {
+        let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
+        item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+        item.imageInsets = .zero
+
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.tabBarItem = item
         navController.view.backgroundColor = UIColor.NavBar.background
-      }
+
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithOpaqueBackground()
+        navAppearance.backgroundColor = UIColor.NavBar.background
+        navAppearance.titleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text,
+            .font: Typography.title3DemiBold,
+        ]
+        navAppearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text,
+            .font: Typography.title2DemiBold,
+        ]
+
+        let buttonAppearance = UIBarButtonItemAppearance()
+        buttonAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text,
+            .font: Typography.body,
+        ]
+        buttonAppearance.highlighted.titleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text,
+            .font: Typography.bodyMedium,
+        ]
+        navAppearance.buttonAppearance = buttonAppearance
+        navAppearance.doneButtonAppearance = buttonAppearance
+        navAppearance.backButtonAppearance = buttonAppearance
+
+        navController.navigationBar.standardAppearance = navAppearance
+        if #available(iOS 15.0, *) {
+            navController.navigationBar.scrollEdgeAppearance = navAppearance
+        }
+        navController.navigationBar.prefersLargeTitles = true
+
+        return navController
     }
-  }
-
-  // Configure UITabBarAppearance to ensure good contrast for selected/unselected icons
-  private func applyTabBarAppearance() {
-    let appearance = UITabBarAppearance()
-    appearance.configureWithOpaqueBackground()
-    appearance.backgroundColor = Theme.current.primaryBackground
-
-    // Unified selected/unselected icon colors across palettes
-    let selectedColor: UIColor = Theme.current.tabBarTint
-
-    // Unselected color sourced from theme for consistency across palettes
-    let unselectedColor = Theme.current.tabBarUnselectedTint
-
-    // Apply to stacked layout
-    let stacked = appearance.stackedLayoutAppearance
-    stacked.selected.iconColor = selectedColor
-    stacked.selected.titleTextAttributes = [
-      .foregroundColor: selectedColor,
-      .font: Typography.footnote,
-    ]
-    stacked.normal.iconColor = unselectedColor
-    stacked.normal.titleTextAttributes = [
-      .foregroundColor: unselectedColor,
-      .font: Typography.footnote,
-    ]
-
-    // Apply to inline layout
-    let inline = appearance.inlineLayoutAppearance
-    inline.selected.iconColor = selectedColor
-    inline.selected.titleTextAttributes = [
-      .foregroundColor: selectedColor,
-      .font: Typography.footnote,
-    ]
-    inline.normal.iconColor = unselectedColor
-    inline.normal.titleTextAttributes = [
-      .foregroundColor: unselectedColor,
-      .font: Typography.footnote,
-    ]
-
-    // Apply to compact inline layout
-    let compact = appearance.compactInlineLayoutAppearance
-    compact.selected.iconColor = selectedColor
-    compact.selected.titleTextAttributes = [
-      .foregroundColor: selectedColor,
-      .font: Typography.footnote,
-    ]
-    compact.normal.iconColor = unselectedColor
-    compact.normal.titleTextAttributes = [
-      .foregroundColor: unselectedColor,
-      .font: Typography.footnote,
-    ]
-
-    tabBar.standardAppearance = appearance
-    if #available(iOS 15.0, *) {
-      tabBar.scrollEdgeAppearance = appearance
-    }
-
-    // Keep legacy properties in sync (used by some UIKit APIs)
-    tabBar.tintColor = selectedColor
-    tabBar.unselectedItemTintColor = unselectedColor
-  }
-
-  func setupTabBar() {
-    let homeViewController = createNavController(
-      viewController: HomeViewController(),
-      itemName: R.string.global.home(),
-      itemImage: SystemImages.home)
-    let ordersViewController = createNavController(
-      viewController: OrderListViewController(),
-      itemName: R.string.global.income(),
-      itemImage: SystemImages.mug)
-    let costsViewController = createNavController(
-      viewController: CostListViewController(),
-      itemName: R.string.global.costs(),
-      itemImage: SystemImages.bag)
-    let settingsViewController = createNavController(
-      viewController: SettingListViewController(),
-      itemName: R.string.global.menuSettings(),
-      itemImage: SystemImages.gearshape)
-    viewControllers = [
-      homeViewController, ordersViewController, costsViewController, settingsViewController,
-    ]
-  }
-
-  func createNavController(
-    viewController: UIViewController,
-    itemName: String,
-    itemImage: String
-  ) -> UINavigationController {
-    let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
-    item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
-    item.imageInsets = .zero
-
-    let navController = UINavigationController(rootViewController: viewController)
-    navController.tabBarItem = item
-    navController.view.backgroundColor = UIColor.NavBar.background
-
-    let navAppearance = UINavigationBarAppearance()
-    navAppearance.configureWithOpaqueBackground()
-    navAppearance.backgroundColor = UIColor.NavBar.background
-    navAppearance.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title3DemiBold,
-    ]
-    navAppearance.largeTitleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.title2DemiBold,
-    ]
-
-    let buttonAppearance = UIBarButtonItemAppearance()
-    buttonAppearance.normal.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.body,
-    ]
-    buttonAppearance.highlighted.titleTextAttributes = [
-      .foregroundColor: UIColor.NavBar.text,
-      .font: Typography.bodyMedium,
-    ]
-    navAppearance.buttonAppearance = buttonAppearance
-    navAppearance.doneButtonAppearance = buttonAppearance
-    navAppearance.backButtonAppearance = buttonAppearance
-
-    navController.navigationBar.standardAppearance = navAppearance
-    if #available(iOS 15.0, *) {
-      navController.navigationBar.scrollEdgeAppearance = navAppearance
-    }
-    navController.navigationBar.prefersLargeTitles = true
-
-    return navController
-  }
 
 }

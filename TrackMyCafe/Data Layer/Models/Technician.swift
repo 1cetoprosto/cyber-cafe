@@ -144,8 +144,7 @@ extension Technician {
         if lastName?.nilIfEmpty == nil {
             return firstName
         }
-        return
-        ([lastName].compactMap { $0 }
+        return ([lastName].compactMap { $0 }
          + [firstName.first, middleName?.first].compactMap { $0 }.map { "\($0)." }).joined(
             separator: " ")
     }

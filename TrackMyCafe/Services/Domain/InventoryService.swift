@@ -8,12 +8,17 @@
 import Foundation
 
 protocol InventoryServiceProtocol {
-    func processPurchase(purchase: PurchaseModel, completion: @escaping (Result<Void, Error>) -> Void)
+    func processPurchase(
+        purchase: PurchaseModel, completion: @escaping (Result<Void, Error>) -> Void)
+    func editPurchase(
+        oldPurchase: PurchaseModel, newPurchase: PurchaseModel,
+        completion: @escaping (Result<Void, Error>) -> Void)
     func processStockAdjustment(
         adjustment: InventoryAdjustmentModel, completion: @escaping (Result<Void, Error>) -> Void)
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void)
-    func deductStock(for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void)
+    func deductStock(
+        for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 struct StockWarning {
@@ -31,8 +36,9 @@ class InventoryService: InventoryServiceProtocol {
 
     // MARK: - Purchase Processing
 
-    func processPurchase(purchase: PurchaseModel, completion: @escaping (Result<Void, Error>) -> Void)
-    {
+    func processPurchase(
+        purchase: PurchaseModel, completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         // 1. Fetch current ingredient state
         databaseService.fetchIngredient(byId: purchase.ingredientId) { [weak self] ingredient in
             guard var ingredient = ingredient else {
@@ -65,14 +71,136 @@ class InventoryService: InventoryServiceProtocol {
             // 4. Save updated ingredient
             self?.databaseService.saveIngredient(model: ingredient) { success in
                 if success {
-                    // TODO: Save Purchase record to history (when DB supports it)
-                    completion(.success(()))
+                    // 5. Save Purchase record to history
+                    self?.databaseService.savePurchase(model: purchase) { purchaseSuccess in
+                        if purchaseSuccess {
+                            completion(.success(()))
+                        } else {
+                            completion(
+                                .failure(
+                                    NSError(
+                                        domain: "InventoryService", code: 500,
+                                        userInfo: [
+                                            NSLocalizedDescriptionKey:
+                                                "Failed to save purchase history"
+                                        ])))
+                        }
+                    }
                 } else {
                     completion(
                         .failure(
                             NSError(
                                 domain: "InventoryService", code: 500,
-                                userInfo: [NSLocalizedDescriptionKey: "Failed to save ingredient"])))
+                                userInfo: [NSLocalizedDescriptionKey: "Failed to save ingredient"]))
+                    )
+                }
+            }
+        }
+    }
+
+    // MARK: - Purchase Editing
+
+    func editPurchase(
+        oldPurchase: PurchaseModel, newPurchase: PurchaseModel,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        if oldPurchase.ingredientId == newPurchase.ingredientId {
+            // Same Ingredient: Revert old and Apply new in one step
+            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) { [weak self] ingredient in
+                guard var ingredient = ingredient else {
+                    completion(
+                        .failure(
+                            NSError(
+                                domain: "InventoryService", code: 404,
+                                userInfo: [NSLocalizedDescriptionKey: "Ingredient not found"])))
+                    return
+                }
+
+                let currentTotalValue = ingredient.stockQuantity * ingredient.averageCost
+                let oldPurchaseValue = oldPurchase.quantity * oldPurchase.price
+                let newPurchaseValue = newPurchase.quantity * newPurchase.price
+
+                let finalTotalValue = currentTotalValue - oldPurchaseValue + newPurchaseValue
+                let finalStock =
+                    ingredient.stockQuantity - oldPurchase.quantity + newPurchase.quantity
+
+                let finalAverageCost: Double
+                if finalStock > 0 {
+                    finalAverageCost = finalTotalValue / finalStock
+                } else {
+                    finalAverageCost = newPurchase.price
+                }
+
+                ingredient.stockQuantity = finalStock
+                ingredient.averageCost = finalAverageCost
+
+                self?.databaseService.saveIngredient(model: ingredient) { success in
+                    if success {
+                        self?.databaseService.savePurchase(model: newPurchase) { purchaseSuccess in
+                            if purchaseSuccess {
+                                completion(.success(()))
+                            } else {
+                                completion(
+                                    .failure(
+                                        NSError(
+                                            domain: "InventoryService", code: 500,
+                                            userInfo: [
+                                                NSLocalizedDescriptionKey:
+                                                    "Failed to save purchase history"
+                                            ])))
+                            }
+                        }
+                    } else {
+                        completion(
+                            .failure(
+                                NSError(
+                                    domain: "InventoryService", code: 500,
+                                    userInfo: [
+                                        NSLocalizedDescriptionKey: "Failed to save ingredient"
+                                    ])))
+                    }
+                }
+            }
+        } else {
+            // Different Ingredient: Revert old, then Process new
+            databaseService.fetchIngredient(byId: oldPurchase.ingredientId) { [weak self] oldIngredient in
+                guard var oldIngredient = oldIngredient else {
+                    completion(
+                        .failure(
+                            NSError(
+                                domain: "InventoryService", code: 404,
+                                userInfo: [NSLocalizedDescriptionKey: "Old ingredient not found"])))
+                    return
+                }
+
+                let currentTotalValue = oldIngredient.stockQuantity * oldIngredient.averageCost
+                let oldPurchaseValue = oldPurchase.quantity * oldPurchase.price
+                
+                let revertedTotalValue = currentTotalValue - oldPurchaseValue
+                let revertedStock = oldIngredient.stockQuantity - oldPurchase.quantity
+                
+                let revertedAvg: Double
+                if revertedStock > 0 {
+                    revertedAvg = revertedTotalValue / revertedStock
+                } else {
+                    revertedAvg = oldIngredient.averageCost
+                }
+                
+                oldIngredient.stockQuantity = revertedStock
+                oldIngredient.averageCost = revertedAvg
+                
+                self?.databaseService.saveIngredient(model: oldIngredient) { success in
+                    if success {
+                        self?.processPurchase(purchase: newPurchase, completion: completion)
+                    } else {
+                        completion(
+                            .failure(
+                                NSError(
+                                    domain: "InventoryService", code: 500,
+                                    userInfo: [
+                                        NSLocalizedDescriptionKey: "Failed to revert old ingredient"
+                                    ])))
+                    }
                 }
             }
         }
@@ -105,7 +233,8 @@ class InventoryService: InventoryServiceProtocol {
                         .failure(
                             NSError(
                                 domain: "InventoryService", code: 500,
-                                userInfo: [NSLocalizedDescriptionKey: "Failed to save ingredient"])))
+                                userInfo: [NSLocalizedDescriptionKey: "Failed to save ingredient"]))
+                    )
                 }
             }
         }
@@ -113,8 +242,9 @@ class InventoryService: InventoryServiceProtocol {
 
     // MARK: - Stock Deduction
 
-    func deductStock(for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void)
-    {
+    func deductStock(
+        for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         let dispatchGroup = DispatchGroup()
         var errors: [Error] = []
 
@@ -137,7 +267,8 @@ class InventoryService: InventoryServiceProtocol {
                 for recipeItem in recipeItems {
                     innerGroup.enter()
                     // 2. Fetch Ingredient
-                    self.databaseService.fetchIngredient(byId: recipeItem.ingredientId) { ingredient in
+                    self.databaseService.fetchIngredient(byId: recipeItem.ingredientId) {
+                        ingredient in
                         guard var ingredient = ingredient else {
                             innerGroup.leave()
                             return
@@ -154,7 +285,8 @@ class InventoryService: InventoryServiceProtocol {
                                     NSError(
                                         domain: "InventoryService", code: 500,
                                         userInfo: [
-                                            NSLocalizedDescriptionKey: "Failed to save ingredient \(ingredient.name)"
+                                            NSLocalizedDescriptionKey:
+                                                "Failed to save ingredient \(ingredient.name)"
                                         ]))
                             }
                             innerGroup.leave()
@@ -207,24 +339,25 @@ class InventoryService: InventoryServiceProtocol {
         dispatchGroup.notify(queue: .main) { [weak self] in
             // 2. Check stock against requirements
             let checkGroup = DispatchGroup()
-            
+
             for (ingredientId, requiredQty) in requiredIngredients {
                 checkGroup.enter()
                 self?.databaseService.fetchIngredient(byId: ingredientId) { ingredient in
                     if let ingredient = ingredient {
                         if ingredient.stockQuantity < requiredQty {
-                            warnings.append(StockWarning(
-                                ingredientId: ingredientId,
-                                ingredientName: ingredient.name,
-                                requiredQty: requiredQty,
-                                currentStock: ingredient.stockQuantity
-                            ))
+                            warnings.append(
+                                StockWarning(
+                                    ingredientId: ingredientId,
+                                    ingredientName: ingredient.name,
+                                    requiredQty: requiredQty,
+                                    currentStock: ingredient.stockQuantity
+                                ))
                         }
                     }
                     checkGroup.leave()
                 }
             }
-            
+
             checkGroup.notify(queue: .main) {
                 completion(warnings)
             }

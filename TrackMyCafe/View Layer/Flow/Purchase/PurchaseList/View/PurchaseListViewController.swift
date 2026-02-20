@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import TinyConstraints
 
 class PurchaseListViewController: UIViewController {
 
@@ -18,7 +19,6 @@ class PurchaseListViewController: UIViewController {
             PurchaseTableViewCell.self, forCellReuseIdentifier: PurchaseTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .singleLine
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
 
@@ -67,12 +67,7 @@ class PurchaseListViewController: UIViewController {
     }
 
     private func setupConstraints() {
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        ])
+        tableView.edgesToSuperview(usingSafeArea: true)
     }
 
     private func fetchData() {
@@ -124,7 +119,10 @@ extension PurchaseListViewController: UITableViewDataSource {
 extension PurchaseListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        // Navigate to details if needed
+        let purchase = viewModel.purchase(at: indexPath)
+        let createVM = CreatePurchaseViewModel(purchaseToEdit: purchase)
+        let createVC = CreatePurchaseViewController(viewModel: createVM)
+        navigationController?.pushViewController(createVC, animated: true)
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
