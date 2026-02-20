@@ -13,8 +13,7 @@ class CostsTabViewController: UIViewController {
     // MARK: - Properties
 
     private let segmentedControl: UISegmentedControl = {
-        let items = ["Inventory", "Costs"]  // Localize later
-        let sc = UISegmentedControl(items: items)
+        let sc = UISegmentedControl(items: ["Inventory", "Costs"])  // Will be updated in setupUI
         sc.selectedSegmentIndex = 0
         return sc
     }()
@@ -36,13 +35,20 @@ class CostsTabViewController: UIViewController {
     }
 
     // MARK: - Setup
-
+    
     private func setupUI() {
-        title = "Costs & Inventory"
+        title = R.string.global.costs()
         view.backgroundColor = UIColor.Main.background
-
+        
         // Setup Segmented Control in Navigation Title View or below Navigation Bar
         // Placing it below navigation bar for better accessibility and standard iOS look
+
+        segmentedControl.removeAllSegments()
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.costsSegmentInventory(), at: 0, animated: false)
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.costsSegmentCosts(), at: 1, animated: false)
+        segmentedControl.selectedSegmentIndex = 0
 
         view.addSubview(segmentedControl)
         view.addSubview(containerView)
@@ -97,10 +103,14 @@ class CostsTabViewController: UIViewController {
         updateNavigationItems(for: child)
     }
 
-    private func updateNavigationItems(for child: UIViewController) {
+    // MARK: - Helper
+    
+    // Made internal so child controllers can call it
+    func updateNavigationItems(for child: UIViewController) {
         // Proxy the navigation items from the child to this container
         navigationItem.rightBarButtonItems = child.navigationItem.rightBarButtonItems
         navigationItem.leftBarButtonItems = child.navigationItem.leftBarButtonItems
-        title = child.title ?? "Costs & Inventory"
+        // Use consistent title for the tab
+        title = R.string.global.costs()
     }
 }
