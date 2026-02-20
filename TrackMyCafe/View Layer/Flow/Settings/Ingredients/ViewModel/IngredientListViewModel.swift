@@ -61,4 +61,17 @@ final class IngredientListViewModel: IngredientListViewModelType, Loggable {
             logger.error("Failed to save ingredient: \(error)")
         }
     }
+    
+    @MainActor
+    func updateIngredient(_ ingredient: IngredientModel) async {
+        do {
+            try await dataService.saveIngredient(ingredient)
+            if let index = ingredients.firstIndex(where: { $0.id == ingredient.id }) {
+                ingredients[index] = ingredient
+                onIngredientsUpdated?()
+            }
+        } catch {
+            logger.error("Failed to update ingredient: \(error)")
+        }
+    }
 }
