@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		053B057E633F68A37D8C6489 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
+		06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
 		11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
@@ -28,8 +29,11 @@
 		36DE2B9C5DA8D5E537AF3479 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
 		3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		3F2453C445B3640596D717FF /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		59C05FDE199AFA314FF13092 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
 		60515BB5E807E37BB705E174 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
 		61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
@@ -40,20 +44,25 @@
 		701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
 		76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */; };
+		772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
+		7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
 		8022698E009A355D97397BAA /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
 		8085320D6FEC24703DD60FA6 /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */; };
 		8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
+		9327316B3511B41DCA377F2A /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
 		97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		9CE2CCDB6EBC99D5108A5B63 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
 		A33C597EEE9963EE8DACCC14 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
+		A4F5E2DF01331DAF58FE6170 /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
 		A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
 		ACAB351423CD8EDEC4EE4E2C /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
+		AD123069E8110835BA7FDD0D /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
 		AF243119E910850D446E788B /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
 		B219C4C17A1B02090B190ADE /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
@@ -90,7 +99,6 @@
 		F31BD829284DF42800B8FD3B /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F31BD82B284DF90200B8FD3B /* FIRProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */; };
 		F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
-		F31BD82F284E022400B8FD3B /* FIRCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82E284E022400B8FD3B /* FIRCostModel.swift */; };
 		F31D5882291224190047EB44 /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
 		F31D5886291230AE0047EB44 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
 		F31FCA3C2768789B00124366 /* RealmOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FCA3B2768789B00124366 /* RealmOrderModel.swift */; };
@@ -299,14 +307,12 @@
 		F3B339B52C0B22FE0073F19A /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EBB2BDD66590007157B /* RequestManager.swift */; };
 		F3B339B62C0B22FE0073F19A /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F3B339B72C0B22FE0073F19A /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EB92BDD45AA0007157B /* UIDevice+Extension.swift */; };
-		F3B339B82C0B22FE0073F19A /* RealmCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* RealmCostModel.swift */; };
 		F3B339B92C0B22FE0073F19A /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9F2BDD3A950007157B /* UIViewController+Extension.swift */; };
 		F3B339BA2C0B22FE0073F19A /* CostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEE27EB2EC500215976 /* CostListViewModel.swift */; };
 		F3B339BB2C0B22FE0073F19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */; };
 		F3B339BC2C0B22FE0073F19A /* OrderListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7F27EAEB80006D40FC /* OrderListItemViewModel.swift */; };
 		F3B339BD2C0B22FE0073F19A /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E582BDD00C20007157B /* AuthManager.swift */; };
 		F3B339BE2C0B22FE0073F19A /* OrderDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7D27EAEB0F006D40FC /* OrderDetailsViewModel.swift */; };
-		F3B339BF2C0B22FE0073F19A /* FIRCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82E284E022400B8FD3B /* FIRCostModel.swift */; };
 		F3B339C02C0B22FE0073F19A /* FIRProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRProductModel.swift */; };
 		F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
@@ -370,7 +376,6 @@
 		F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEC27EB19C300215976 /* CostDetailsViewModel.swift */; };
 		F3B339FD2C0B22FE0073F19A /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
 		F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
-		F3B339FF2C0B22FE0073F19A /* CostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F82BEFF7F4005050CB /* CostModel.swift */; };
 		F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F3B33A022C0B22FE0073F19A /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
@@ -419,14 +424,12 @@
 		F3B33A542C0B23450073F19A /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EBB2BDD66590007157B /* RequestManager.swift */; };
 		F3B33A552C0B23450073F19A /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F3B33A562C0B23450073F19A /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EB92BDD45AA0007157B /* UIDevice+Extension.swift */; };
-		F3B33A572C0B23450073F19A /* RealmCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* RealmCostModel.swift */; };
 		F3B33A582C0B23450073F19A /* UIViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9F2BDD3A950007157B /* UIViewController+Extension.swift */; };
 		F3B33A592C0B23450073F19A /* CostListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEE27EB2EC500215976 /* CostListViewModel.swift */; };
 		F3B33A5A2C0B23450073F19A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F427311FDD00C8F2D3 /* AppDelegate.swift */; };
 		F3B33A5B2C0B23450073F19A /* OrderListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7F27EAEB80006D40FC /* OrderListItemViewModel.swift */; };
 		F3B33A5C2C0B23450073F19A /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E582BDD00C20007157B /* AuthManager.swift */; };
 		F3B33A5D2C0B23450073F19A /* OrderDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7D27EAEB0F006D40FC /* OrderDetailsViewModel.swift */; };
-		F3B33A5E2C0B23450073F19A /* FIRCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82E284E022400B8FD3B /* FIRCostModel.swift */; };
 		F3B33A5F2C0B23450073F19A /* FIRProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRProductModel.swift */; };
 		F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
@@ -490,7 +493,6 @@
 		F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEC27EB19C300215976 /* CostDetailsViewModel.swift */; };
 		F3B33A9C2C0B23450073F19A /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
 		F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
-		F3B33A9E2C0B23450073F19A /* CostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F82BEFF7F4005050CB /* CostModel.swift */; };
 		F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F3B33AA12C0B23450073F19A /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
@@ -541,7 +543,6 @@
 		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
-		F3D862D7277C33C100DD43DB /* RealmCostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D862D6277C33C100DD43DB /* RealmCostModel.swift */; };
 		F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
 		F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
 		F3DB41B72EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
@@ -554,7 +555,6 @@
 		F3E357EE2BEFD754005050CB /* RealmDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357ED2BEFD754005050CB /* RealmDB.swift */; };
 		F3E357F52BEFF26E005050CB /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
 		F3E357F72BEFF2AB005050CB /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
-		F3E357F92BEFF7F4005050CB /* CostModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F82BEFF7F4005050CB /* CostModel.swift */; };
 		F3E357FB2BEFF8C7005050CB /* ProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */; };
 		F3E357FD2BEFF978005050CB /* TypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FC2BEFF978005050CB /* TypeModel.swift */; };
 		F3E358032BF22B76005050CB /* DomainDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E358022BF22B76005050CB /* DomainDB.swift */; };
@@ -635,6 +635,7 @@
 		3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewController.swift; sourceTree = "<group>"; };
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
 		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
+		47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRInventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
 		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockItemCell.swift; sourceTree = "<group>"; };
@@ -645,11 +646,13 @@
 		72B5E49A3B9441A9E185BBF2 /* CostingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostingService.swift; sourceTree = "<group>"; };
 		755C0AF4BCD86A9E7FECC83D /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRPurchaseModel.swift; sourceTree = "<group>"; };
 		8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.release.xcconfig"; sourceTree = "<group>"; };
 		933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewModel.swift; sourceTree = "<group>"; };
 		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
+		B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIROpexExpenseModel.swift; sourceTree = "<group>"; };
 		C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostsTabViewController.swift; sourceTree = "<group>"; };
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
 		D5FB0242092853861442A8F6 /* StockListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
@@ -669,7 +672,6 @@
 		F31BD828284DF42800B8FD3B /* FIROrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIROrderModel.swift; sourceTree = "<group>"; };
 		F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRProductsPriceModel.swift; sourceTree = "<group>"; };
 		F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRTypeModel.swift; sourceTree = "<group>"; };
-		F31BD82E284E022400B8FD3B /* FIRCostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRCostModel.swift; sourceTree = "<group>"; };
 		F31D5881291224190047EB44 /* Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot1.png; sourceTree = "<group>"; };
 		F31D5885291230AE0047EB44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F31FCA3B2768789B00124366 /* RealmOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmOrderModel.swift; sourceTree = "<group>"; };
@@ -804,7 +806,6 @@
 		F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodsPriceModel.png; sourceTree = "<group>"; };
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
-		F3D862D6277C33C100DD43DB /* RealmCostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmCostModel.swift; sourceTree = "<group>"; };
 		F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextInputFilter.swift; sourceTree = "<group>"; };
 		F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+NumericInput.swift"; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductsPriceModel.swift; sourceTree = "<group>"; };
@@ -813,7 +814,6 @@
 		F3E357ED2BEFD754005050CB /* RealmDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmDB.swift; sourceTree = "<group>"; };
 		F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductOfOrderModel.swift; sourceTree = "<group>"; };
 		F3E357F62BEFF2AB005050CB /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
-		F3E357F82BEFF7F4005050CB /* CostModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostModel.swift; sourceTree = "<group>"; };
 		F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsPriceModel.swift; sourceTree = "<group>"; };
 		F3E357FC2BEFF978005050CB /* TypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeModel.swift; sourceTree = "<group>"; };
 		F3E358022BF22B76005050CB /* DomainDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDB.swift; sourceTree = "<group>"; };
@@ -1101,7 +1101,6 @@
 				F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */,
 				F31FCA3B2768789B00124366 /* RealmOrderModel.swift */,
 				F3158C472763437200136861 /* RealmProductModel.swift */,
-				F3D862D6277C33C100DD43DB /* RealmCostModel.swift */,
 				F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */,
 				F3B7C2512806D8DA00DF5C2B /* RealmTypeModel.swift */,
 				D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */,
@@ -1182,9 +1181,11 @@
 				F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */,
 				F31BD828284DF42800B8FD3B /* FIROrderModel.swift */,
 				F31FD0DC281D218500353BF7 /* FIRProductModel.swift */,
-				F31BD82E284E022400B8FD3B /* FIRCostModel.swift */,
 				F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */,
 				F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */,
+				7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */,
+				47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */,
+				B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */,
 			);
 			path = Firestore;
 			sourceTree = "<group>";
@@ -1990,7 +1991,6 @@
 				F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */,
 				F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */,
 				F3E357F62BEFF2AB005050CB /* OrderModel.swift */,
-				F3E357F82BEFF7F4005050CB /* CostModel.swift */,
 				F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */,
 				F3E357FC2BEFF978005050CB /* TypeModel.swift */,
 				404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */,
@@ -2571,7 +2571,6 @@
 				F3410EBC2BDD66590007157B /* RequestManager.swift in Sources */,
 				F31BD829284DF42800B8FD3B /* FIROrderModel.swift in Sources */,
 				F3410EBA2BDD45AA0007157B /* UIDevice+Extension.swift in Sources */,
-				F3D862D7277C33C100DD43DB /* RealmCostModel.swift in Sources */,
 				F3410EA02BDD3A950007157B /* UIViewController+Extension.swift in Sources */,
 				F3988AEF27EB2EC500215976 /* CostListViewModel.swift in Sources */,
 				F3F6A61D2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
@@ -2583,7 +2582,6 @@
 				F385B4082C1D785E00973CAA /* PersonDetailsViewController.swift in Sources */,
 				F383C8BA2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
 				F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
-				F31BD82F284E022400B8FD3B /* FIRCostModel.swift in Sources */,
 				F385B4212C1D9AFE00973CAA /* Technician.swift in Sources */,
 				F3F6A60D2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
 				F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */,
@@ -2685,7 +2683,6 @@
 				F32B52C12F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C62EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217C72EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
-				F3E357F92BEFF7F4005050CB /* CostModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
 				F3F6A6112C2FEBFE000961C8 /* IAPReceiptAdapterAppleValidation.swift in Sources */,
@@ -2728,6 +2725,9 @@
 				A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */,
 				CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */,
 				FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */,
+				7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */,
+				9327316B3511B41DCA377F2A /* FIRInventoryAdjustmentModel.swift in Sources */,
+				06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2749,7 +2749,6 @@
 				F3B339B52C0B22FE0073F19A /* RequestManager.swift in Sources */,
 				F3B339B62C0B22FE0073F19A /* FIROrderModel.swift in Sources */,
 				F3B339B72C0B22FE0073F19A /* UIDevice+Extension.swift in Sources */,
-				F3B339B82C0B22FE0073F19A /* RealmCostModel.swift in Sources */,
 				F3B339B92C0B22FE0073F19A /* UIViewController+Extension.swift in Sources */,
 				F3B339BA2C0B22FE0073F19A /* CostListViewModel.swift in Sources */,
 				F3F6A6252C3279B0000961C8 /* StaffCategoriesController.swift in Sources */,
@@ -2764,7 +2763,6 @@
 				F3F6A6062C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348A2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F383C8BB2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
-				F3B339BF2C0B22FE0073F19A /* FIRCostModel.swift in Sources */,
 				F3B339C02C0B22FE0073F19A /* FIRProductModel.swift in Sources */,
 				F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */,
@@ -2866,7 +2864,6 @@
 				F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
-				F3B339FF2C0B22FE0073F19A /* CostModel.swift in Sources */,
 				F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */,
 				F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33A022C0B22FE0073F19A /* UINavigationBar+Custom.swift in Sources */,
@@ -2908,6 +2905,9 @@
 				186B79D935E57A4C5F860FA5 /* StockItemCell.swift in Sources */,
 				6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */,
 				60515BB5E807E37BB705E174 /* CostsTabViewController.swift in Sources */,
+				A4F5E2DF01331DAF58FE6170 /* FIRPurchaseModel.swift in Sources */,
+				58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */,
+				772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2929,7 +2929,6 @@
 				F3B33A542C0B23450073F19A /* RequestManager.swift in Sources */,
 				F3B33A552C0B23450073F19A /* FIROrderModel.swift in Sources */,
 				F3B33A562C0B23450073F19A /* UIDevice+Extension.swift in Sources */,
-				F3B33A572C0B23450073F19A /* RealmCostModel.swift in Sources */,
 				F3B33A582C0B23450073F19A /* UIViewController+Extension.swift in Sources */,
 				F3B33A592C0B23450073F19A /* CostListViewModel.swift in Sources */,
 				F3F6A6262C3279B1000961C8 /* StaffCategoriesController.swift in Sources */,
@@ -2944,7 +2943,6 @@
 				F3F6A6072C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348B2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F383C8BC2C0E25C000DF6124 /* DateContainableType.swift in Sources */,
-				F3B33A5E2C0B23450073F19A /* FIRCostModel.swift in Sources */,
 				F3B33A5F2C0B23450073F19A /* FIRProductModel.swift in Sources */,
 				F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */,
@@ -3046,7 +3044,6 @@
 				F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,
-				F3B33A9E2C0B23450073F19A /* CostModel.swift in Sources */,
 				F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */,
 				F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33AA12C0B23450073F19A /* UINavigationBar+Custom.swift in Sources */,
@@ -3088,6 +3085,9 @@
 				069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */,
 				86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */,
 				E18E1ABFBDE7419B635C321F /* CostsTabViewController.swift in Sources */,
+				AD123069E8110835BA7FDD0D /* FIRPurchaseModel.swift in Sources */,
+				41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */,
+				4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -44,4 +44,13 @@ struct PurchaseModel: Identifiable, Codable {
         self.price = realmModel.price
         self.supplierId = realmModel.supplierId
     }
+
+    init(firebaseModel: FIRPurchaseModel) {
+        self.id = firebaseModel.id ?? UUID().uuidString
+        self.date = firebaseModel.date
+        self.ingredientId = firebaseModel.ingredientId
+        self.quantity = firebaseModel.quantity
+        self.price = firebaseModel.price
+        self.supplierId = firebaseModel.supplierId
+    }
 }

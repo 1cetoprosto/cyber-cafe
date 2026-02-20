@@ -88,7 +88,9 @@ final class HomeViewController: UIViewController {
   }
 
   private func openAddExpense() {
-    let empty = CostModel(id: "", date: Date(), name: "", sum: 0)
+    let empty = OpexExpenseModel(
+      id: "", date: Date(), categoryId: "General", amount: 0, note: ""
+    )
     let vm = CostDetailsViewModel(cost: empty, dataService: DomainCostDataService())
     let vc = CostDetailsListViewController(viewModel: vm)
     vc.modalPresentationStyle = .fullScreen
@@ -129,7 +131,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
       cell.configure(title: item.type, date: item.date, amount: item.sum, isIncome: true)
     } else {
       let item = viewModel.lastExpense[indexPath.row]
-      cell.configure(title: item.name, date: item.date, amount: item.sum, isIncome: false)
+      cell.configure(title: item.note ?? "", date: item.date, amount: item.amount, isIncome: false)
     }
     return cell
   }

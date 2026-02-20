@@ -8,14 +8,14 @@
 import Foundation
 
 class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
-    private var cost: CostModel
+    private var cost: OpexExpenseModel
     private let dataService: CostDataServiceProtocol
 
     var costDate: Date { cost.date }
-    var costName: String { cost.name }
-    var costSum: Double { cost.sum }
+    var costName: String { cost.note ?? "" }
+    var costSum: Double { cost.amount }
 
-    init(cost: CostModel, dataService: CostDataServiceProtocol) {
+    init(cost: OpexExpenseModel, dataService: CostDataServiceProtocol) {
         self.cost = cost
         self.dataService = dataService
     }
@@ -39,22 +39,33 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
         let name = (costName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let sum = costSum ?? 0.0
 
-        cost.date = costDate
-        cost.name = name
-        cost.sum = sum
+        // Create new model with updated values since structs are immutable
+        var updatedCost = OpexExpenseModel(
+            id: cost.id,
+            date: costDate,
+            categoryId: cost.categoryId,
+            amount: sum,
+            note: name
+        )
 
-        if cost.id.isEmpty {
-            cost.id = UUID().uuidString
+        if updatedCost.id.isEmpty {
+            updatedCost = OpexExpenseModel(
+                id: UUID().uuidString,
+                date: costDate,
+                categoryId: "General", // Default category for new items
+                amount: sum,
+                note: name
+            )
             do {
-                try await dataService.saveCost(cost)
-                logger.notice("Cost \(cost.id) saved successfully")
+                try await dataService.saveCost(updatedCost)
+                logger.notice("Cost \(updatedCost.id) saved successfully")
             } catch {
-                logger.error("Failed to save Cost \(cost.id)")
+                logger.error("Failed to save Cost \(updatedCost.id)")
                 throw error
             }
         } else {
-            await dataService.updateCost(cost, date: costDate, name: name, sum: sum)
-            logger.notice("Cost \(cost.id) updated successfully")
+            await dataService.updateCost(updatedCost, date: costDate, name: name, sum: sum)
+            logger.notice("Cost \(updatedCost.id) updated successfully")
         }
     }
 }

@@ -43,11 +43,11 @@ protocol DomainDB {
     func deleteProductsPrice(model: ProductsPriceModel, completion: @escaping (Bool) -> Void)
 
     // Asynchronous methods for updating and retrieving purchase data
-    func updateCost(model: CostModel, date: Date, name: String, sum: Double)
-    func fetchCosts(completion: @escaping ([CostModel]) -> Void)
-    func fetchSectionsOfCosts(completion: @escaping ([(date: Date, items: [CostModel])]) -> Void)
-    func saveCost(model: CostModel, completion: @escaping (Bool) -> Void)
-    func deleteCost(model: CostModel, completion: @escaping (Bool) -> Void)
+    func updateOpexExpense(model: OpexExpenseModel)
+    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void)
+    func fetchSectionsOfOpexExpenses(completion: @escaping ([(date: Date, items: [OpexExpenseModel])]) -> Void)
+    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
+    func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
 
     // Asynchronous methods for updating and retrieving data on income types
     func updateType(model: TypeModel, type: String)
@@ -75,6 +75,7 @@ protocol DomainDB {
 
     // Test Data & Migration
     func seedTestData(forDays days: Int) async
-    func transferDataFromRealmToFIR(completion: @escaping () -> Void)
-    func transferDataFromFIRToRealm(completion: @escaping () -> Void)
+    // Removed Realm migration methods
+    // func transferDataFromRealmToFIR(completion: @escaping () -> Void)
+    // func transferDataFromFIRToRealm(completion: @escaping () -> Void)
 }

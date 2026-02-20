@@ -9,7 +9,7 @@ import Foundation
 
 class CostListItemViewModel: CostListItemViewModelType {
     
-    private var cost: CostModel
+    private var cost: OpexExpenseModel
     
     var costDate: String {
         let dateFormatter = DateFormatter()
@@ -18,14 +18,14 @@ class CostListItemViewModel: CostListItemViewModelType {
     }
     
     var costName: String {
-        return cost.name
+        return cost.note ?? ""
     }
     
   var costSum: String {
-        return cost.sum.currency
+        return cost.amount.currency
   }
     
-    init(cost: CostModel) {
+    init(cost: OpexExpenseModel) {
         self.cost = cost
     }
 }
