@@ -226,8 +226,9 @@
 
 // MARK: - Orders
 "orders" = "Orders";
+"income" = "Income";
 "chooseType" = "Choose type";
-"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit it?";
+"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them?";
 
 // MARK: - Products
 "products" = "Products";
@@ -240,13 +241,33 @@
 "totalTitle" = "Total";
 "defaultOrderType" = "Order";
 
+// MARK: - Inventory
+"inventoryTitle" = "Inventory";
+"inventorySegmentStock" = "Stock";
+"inventorySegmentPurchases" = "Purchases";
+"inventorySegmentAudit" = "Audit";
+"inventoryAuditComingSoon" = "Inventory Audit (Coming Soon)";
+"inventoryAdjustStock" = "Adjust Stock";
+"inventoryEnterNewQuantity" = "Enter new quantity for %@";
+"inventoryQuantityPlaceholder" = "Quantity";
+"inventoryAvgPrice" = "Avg: %.2f UAH";
+"inventorySumValue" = "Sum: %.2f UAH";
+"inventoryLowStock" = "Low Stock";
+
 // MARK: - Costs
+"costsTitle" = "Costs";
+"costsSegmentInventory" = "Inventory";
+"costsSegmentCosts" = "Costs";
+"costsTabTitle" = "Costs & Inventory";
 "costDate" = "Date";
 "costName" = "Cost Name";
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Amount";
 "costSumPlaceholder" = "Enter amount";
 "cost" = "Cost";
+
+// MARK: - Reports
+"reportsTitle" = "Reports";
 
 // MARK: - Ingredients & Products
 "month" = "month";
@@ -335,3 +356,5 @@
 "onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
 "onboardingSettingsTypesTitle" = "Order Types";
 "onboardingSettingsTypesMessage" = "Configure different order types here.";
+"logout" = "Logout";
+"account" = "Account";

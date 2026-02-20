@@ -9,7 +9,7 @@ protocol HomeViewModelType {
   var dateToday: Date { get }
 
   var lastIncome: [OrderModel] { get }
-  var lastExpense: [CostModel] { get }
+  var lastExpense: [OpexExpenseModel] { get }
 
   @MainActor
   func loadDashboard() async

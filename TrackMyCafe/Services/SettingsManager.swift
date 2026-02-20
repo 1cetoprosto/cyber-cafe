@@ -45,13 +45,13 @@ class SettingsManager {
       return option?.displayName ?? Theme.currentThemeStyle.themeName
   }
 
-  func saveOnline(_ isOn: Bool) {
-    UserSession.current.saveOnline(isOn)
-  }
+  // func saveOnline(_ isOn: Bool) {
+  //   UserSession.current.saveOnline(isOn)
+  // }
 
-  func loadOnline() -> Bool {
-    return UserSession.current.hasOnlineVersion
-  }
+  // func loadOnline() -> Bool {
+  //   return UserSession.current.hasOnlineVersion
+  // }
 
   func loadUserEmail() -> String {
     return UserSession.current.userEmail ?? "Not Autorized"

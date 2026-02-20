@@ -226,6 +226,7 @@
 
 // MARK: - Orders
 "orders" = "Замовлення";
+"income" = "Доходи";
 "chooseType" = "Оберіть тип";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані за обрану дату вже існують. Відкрити та редагувати їх?";
 
@@ -240,7 +241,24 @@
 "totalTitle" = "Всього";
 "defaultOrderType" = "Замовлення";
 
+// MARK: - Inventory
+"inventoryTitle" = "Склад";
+"inventorySegmentStock" = "Залишки";
+"inventorySegmentPurchases" = "Закупівлі";
+"inventorySegmentAudit" = "Ревізія";
+"inventoryAuditComingSoon" = "Інвентаризація (Скоро)";
+"inventoryAdjustStock" = "Коригувати залишок";
+"inventoryEnterNewQuantity" = "Введіть нову кількість для %@";
+"inventoryQuantityPlaceholder" = "Кількість";
+"inventoryAvgPrice" = "Сер.: %.2f грн";
+"inventorySumValue" = "Сума: %.2f грн";
+"inventoryLowStock" = "Мало товару";
+
 // MARK: - Costs
+"costsTitle" = "Витрати";
+"costsSegmentInventory" = "Склад";
+"costsSegmentCosts" = "Витрати";
+"costsTabTitle" = "Витрати та Склад";
 "costDate" = "Дата";
 "costName" = "Назва витрати";
 "costNamePlaceholder" = "Введіть назву витрати";
@@ -335,3 +353,8 @@
 "onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
 "onboardingSettingsTypesTitle" = "Типи замовлень";
 "onboardingSettingsTypesMessage" = "Налаштуйте різні типи замовлень тут.";
+"logout" = "Вийти";
+"account" = "Акаунт";
+
+// MARK: - Reports
+"reportsTitle" = "Звіти";

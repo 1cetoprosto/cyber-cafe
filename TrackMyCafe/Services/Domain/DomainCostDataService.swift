@@ -12,15 +12,15 @@ enum DomainCostError: Error {
 }
 
 protocol CostDataServiceProtocol {
-  func saveCost(_ cost: CostModel) async throws
-  func updateCost(_ cost: CostModel, date: Date, name: String, sum: Double) async
+  func saveCost(_ cost: OpexExpenseModel) async throws
+  func updateCost(_ cost: OpexExpenseModel, date: Date, name: String, sum: Double) async
 }
 
 final class DomainCostDataService: CostDataServiceProtocol {
   @MainActor
-  func saveCost(_ cost: CostModel) async throws {
+  func saveCost(_ cost: OpexExpenseModel) async throws {
     try await withCheckedThrowingContinuation { continuation in
-      DomainDatabaseService.shared.saveCost(model: cost) { success in
+      DomainDatabaseService.shared.saveOpexExpense(model: cost) { success in
         if success {
           continuation.resume()
         } else {
@@ -31,7 +31,14 @@ final class DomainCostDataService: CostDataServiceProtocol {
   }
 
   @MainActor
-  func updateCost(_ cost: CostModel, date: Date, name: String, sum: Double) async {
-    DomainDatabaseService.shared.updateCost(model: cost, date: date, name: name, sum: sum)
+  func updateCost(_ cost: OpexExpenseModel, date: Date, name: String, sum: Double) async {
+      let updatedCost = OpexExpenseModel(
+          id: cost.id,
+          date: date,
+          categoryId: cost.categoryId,
+          amount: sum,
+          note: name
+      )
+      DomainDatabaseService.shared.updateOpexExpense(model: updatedCost)
   }
 }

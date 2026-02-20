@@ -61,7 +61,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             SettingsSwitchTableViewCell.self,
             forCellReuseIdentifier: SettingsSwitchTableViewCell.identifier)
         tableView.register(
-            SettingsDataTableViewCell.self, forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
+            SettingsDataTableViewCell.self,
+            forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
 
         return tableView
     }()
@@ -159,7 +160,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         preferredStyle: .alert)
                     alert.addAction(
                         UIAlertAction(title: R.string.global.actionOk(), style: .default) { _ in
-                            OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
+                            OnboardingManager.shared.startIfNeeded(
+                                for: .settingsPriceList, on: self)
                             OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
                         })
                     self.present(alert, animated: true)
@@ -188,20 +190,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         //       let controller = SubscriptionController.makeDefault()
         //       self.navigationController?.pushViewController(controller, animated: true)
         //     }))
-
-        // // Exit option for online users
-        // if UserSession.current.hasOnlineVersion {
-        //   options.append(
-        //     .dataCell(
-        //       model: SettingsDataOption(
-        //         title: "Exit",
-        //         icon: UIImage(named: "exit"),
-        //         iconBackgroundColor: .systemGreen,
-        //         data: SettingsManager.shared.loadUserEmail()
-        //       ) { dataLabel in
-        //         UserSession.logOut()
-        //       }))
-        // }
 
         models.append(Section(title: R.string.global.general(), option: options))
 
@@ -249,60 +237,57 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 ]))
 
         #if DEBUG
-            #if targetEnvironment(simulator)
-                let devOptions: [SettingsOptionType] = [
-                    .staticCell(
-                        model: SettingsStaticOption(
+            let devOptions: [SettingsOptionType] = [
+                .staticCell(
+                    model: SettingsStaticOption(
+                        title: R.string.global.seedTestData(),
+                        icon: UIImage(systemName: SystemImages.gearshape),
+                        iconBackgroundColor: .systemPurple
+                    ) {
+                        let alert = UIAlertController(
                             title: R.string.global.seedTestData(),
-                            icon: UIImage(systemName: SystemImages.gearshape),
-                            iconBackgroundColor: .systemPurple
-                        ) {
-                            let alert = UIAlertController(
-                                title: R.string.global.seedTestData(),
-                                message: R.string.global.enterNumberOfDays(),
-                                preferredStyle: .alert
-                            )
-                            alert.addTextField { tf in
-                                tf.keyboardType = .numberPad
-                                tf.text = "14"
-                            }
-                            alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-                            alert.addAction(
-                                UIAlertAction(title: R.string.global.seedAction(), style: .default) { _ in
-                                    let daysText = alert.textFields?.first?.text ?? "14"
-                                    let days = Int(daysText) ?? 14
-                                    SVProgressHUD.show(withStatus: R.string.global.seedingData())
-                                    Task {
-                                        await DomainDatabaseService.shared.seedTestData(forDays: days)
-                                        await SVProgressHUD.dismiss()
+                            message: R.string.global.enterNumberOfDays(),
+                            preferredStyle: .alert
+                        )
+                        alert.addTextField { tf in
+                            tf.keyboardType = .numberPad
+                            tf.text = "14"
+                        }
+                        alert.addAction(
+                            UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+                        alert.addAction(
+                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
+                                _ in
+                                let daysText = alert.textFields?.first?.text ?? "14"
+                                let days = Int(daysText) ?? 14
+                                SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                                Task {
+                                    await DomainDatabaseService.shared.seedTestData(forDays: days)
+                                    await MainActor.run {
+                                        SVProgressHUD.dismiss()
+                                        SVProgressHUD.showSuccess(withStatus: "Done")
                                         self.tableView.reloadData()
                                     }
-                                })
-                            self.present(alert, animated: true)
-                        })
-                ]
+                                }
+                            })
+                        self.present(alert, animated: true)
+                    })
+            ]
 
-                models.append(Section(title: R.string.global.developer(), option: devOptions))
-            #endif
+            models.append(Section(title: R.string.global.developer(), option: devOptions))
         #endif
 
-        // models.append(
-        //   Section(
-        //     title: "Database",
-        //     option: [
-        //       .switchCell(
-        //         model: SettingsSwitchOption(
-        //           title: "Online",
-        //           icon: UIImage(systemName: "icloud.fill"),
-        //           iconBackgroundColor: .systemGreen,
-        //           isOn: SettingsManager.shared.loadOnline()
-        //         ) { isOn in
-        //           //SettingsManager.shared.saveOnline(isOn)
-        //           self.logger.notice("Online mode is \(isOn ? "On" : "Off")")
-        //           self.toggleOfflineOnlineMode(isOn)
-        //           //self.tableView.reloadData()
-        //         })
-        //     ]))
+        // Add Logout button at the end
+        let logout = SettingsOptionType.staticCell(
+            model: SettingsStaticOption(
+                title: R.string.global.logout(),
+                icon: UIImage(systemName: "rectangle.portrait.and.arrow.right"),
+                iconBackgroundColor: .systemRed
+            ) { [weak self] in
+                self?.handleUserLogOut()
+            }
+        )
+        models.append(Section(title: R.string.global.account(), option: [logout]))
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -419,77 +404,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             })
     }
 
-    func toggleOfflineOnlineMode(_ isOn: Bool) {
-        PopupFactory.showPopup(
-            title: R.string.global.transferDataTitle(),
-            description: R.string.global.transferDataDescription(),
-            buttonTitle: R.string.global.transfer(),
-            buttonAction: { [weak self] in
-                SVProgressHUD.show(withStatus: R.string.global.transferingData())
-
-                self?.authenticateUser { [weak self] success in
-                    guard success else {
-                        SVProgressHUD.dismiss()
-                        return
-                    }
-
-                    if isOn {  //UserSession.current.hasOnlineVersion
-                        DomainDatabaseService.shared.transferDataFromRealmToFIR {
-                            self?.updateUIAfterDataTransfer(isOnline: isOn)
-                        }
-                    } else {
-                        DomainDatabaseService.shared.transferDataFromFIRToRealm {
-                            self?.handleUserLogOut {
-                                self?.updateUIAfterDataTransfer(isOnline: isOn)
-                            }
-                        }
-                    }
-                }
-            },
-            startOverAction: { [weak self] in
-                self?.logger.debug("StartOverAction triggered")
-                self?.authenticateUser { [weak self] success in
-                    guard success else {
-                        self?.logger.error("Authentication failed")
-                        SVProgressHUD.dismiss()
-                        return
-                    }
-                    self?.logger.notice("Authentication successful")
-
-                    UserSession.current.saveOnline(true)
-
-                    DomainDatabaseService.shared.deleteActiveDatabaseData { _ in
-                        self?.logger.notice("Data deleted from local database")
-                        DispatchQueue.main.async {
-                            self?.updateUIAfterDataTransfer(isOnline: isOn)
-                        }
-                    }
-                }
-            },
-            cancelAction: { [weak self] in
-                self?.authenticateUser { success in
-                    guard success else {
-                        SVProgressHUD.dismiss()
-                        return
-                    }
-
-                    if !UserSession.current.hasOnlineVersion {
-                        self?.handleUserLogOut {
-                            self?.logger.notice("Cancelled \(isOn)")
-                        }
-                    } else {
-                        DispatchQueue.main.async {
-                            let newIsOn = !isOn
-                            SettingsManager.shared.saveOnline(newIsOn)
-                            self?.configure()
-                            self?.tableView.reloadData()
-                        }
-                    }
-                }
-            }
-        )
-    }
-
     private func handleUserLogOut(shouldReload: Bool = true, completion: (() -> Void)? = nil) {
         UserSession.logOut()
 
@@ -499,16 +413,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 self?.tableView.reloadData()
             }
             completion?()
-        }
-    }
-
-    private func updateUIAfterDataTransfer(isOnline: Bool) {
-        DispatchQueue.main.async {  // UI update
-            self.logger.debug("Updating UI for online mode: \(isOnline)")
-            SVProgressHUD.dismiss()
-            SettingsManager.shared.saveOnline(isOnline)
-            self.configure()
-            self.tableView.reloadData()
         }
     }
 
@@ -621,7 +525,8 @@ extension SettingListViewController {
         view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            tableView.topAnchor.constraint(
+                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),

@@ -45,7 +45,8 @@ class UserSession {
 
   public private(set) var masterUserRef: String!
 
-  public private(set) var hasOnlineVersion: Bool = false
+  // Deprecated: Always true in new architecture
+  // public private(set) var hasOnlineVersion: Bool = false
 
   var techRef: String {
     switch role! {
@@ -67,7 +68,7 @@ class UserSession {
     UserSession.current.rememberUser = true  // rememberUser
     UserSession.current.masterUserRef = roleConfig.dataRef
     //TODO: данні раніше бралися із roleConfig.hasOnlineVersion
-    UserSession.current.hasOnlineVersion = true  // roleConfig.hasOnlineVersion
+    // UserSession.current.hasOnlineVersion = true  // roleConfig.hasOnlineVersion
     UserSession.current.save()
 
     IAPManager.shared.completeTransactions()
@@ -83,8 +84,7 @@ class UserSession {
       useBioAuthUser = try chain.getString(KeychainKeys.useBioUser)
       useBioAuth = try chain.getString(KeychainKeys.useBio) == DefaultValues.trueString
 
-      hasOnlineVersion =
-        try chain.getString(KeychainKeys.hasOnlineVersion) == DefaultValues.trueString
+      // hasOnlineVersion = try chain.getString(KeychainKeys.hasOnlineVersion) == DefaultValues.trueString
 
       return userId != nil && userEmail != nil
     } catch {
@@ -108,9 +108,9 @@ class UserSession {
       if let value = useBioAuth {
         try chain.set(
           value ? DefaultValues.trueString : DefaultValues.falseString, key: KeychainKeys.useBio)
-        try chain.set(
-          hasOnlineVersion ? DefaultValues.trueString : DefaultValues.falseString,
-          key: KeychainKeys.hasOnlineVersion)
+        // try chain.set(
+        //   hasOnlineVersion ? DefaultValues.trueString : DefaultValues.falseString,
+        //   key: KeychainKeys.hasOnlineVersion)
       }
     } catch {
       remove()
@@ -127,7 +127,7 @@ class UserSession {
       try chain.remove(KeychainKeys.userRemember)
       try chain.remove(KeychainKeys.useBioUser)
       try chain.remove(KeychainKeys.useBio)
-      try chain.remove(KeychainKeys.hasOnlineVersion)
+      try? chain.remove(KeychainKeys.hasOnlineVersion)
     } catch { print(error) }
 
     userId = nil
@@ -137,7 +137,7 @@ class UserSession {
     dataRef = nil
     rememberUser = false
     masterUserRef = nil
-    hasOnlineVersion = false
+    // hasOnlineVersion = false
 
     //NotificationManager.removeAllScheduledComments() //TODO: розібратися навіщо це потрібно
   }
@@ -148,35 +148,32 @@ class UserSession {
     UserSession.current.save()
   }
 
-  public func saveOnline(_ isOn: Bool) {
-    let chain = Keychain()
-    do {
-      hasOnlineVersion = isOn
-      try chain.set(
-        hasOnlineVersion ? DefaultValues.trueString : DefaultValues.falseString,
-        key: KeychainKeys.hasOnlineVersion)
-    } catch {
-      //remove()
-      print(error)
-    }
-  }
+  // public func saveOnline(_ isOn: Bool) {
+  //   let chain = Keychain()
+  //   do {
+  //     hasOnlineVersion = isOn
+  //     try chain.set(
+  //       hasOnlineVersion ? DefaultValues.trueString : DefaultValues.falseString,
+  //       key: KeychainKeys.hasOnlineVersion)
+  //   } catch {
+  //     //remove()
+  //     print(error)
+  //   }
+  // }
 
   static func logOut() {
     do {
       try Auth.auth().signOut()
       deleteSession()
-      if UserSession.current.hasOnlineVersion {
-        UserSession.current.saveOnline(false)
-        //                let navigation = UINavigationController(rootViewController: SignInController())
-        //                navigation.setNavigationBarHidden(true, animated: false)
-        //                SceneDelegate.shared.set(root: navigation)
-        //                //logger.log("Deleted Session (Logout) hasOnlineVersion - \(UserSession.current.hasOnlineVersion)")
-        //                //            if UserSession.current.hasOnlineVersion {
+      
+      // Removed Online check
+      // if UserSession.current.hasOnlineVersion {
+        // UserSession.current.saveOnline(false)
         let isValidSession = UserSession.current.restore()
         if isValidSession {
           UserSession.current.remove()
         }
-      }
+      // }
     } catch {
       print(error)
     }
