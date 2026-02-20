@@ -214,23 +214,23 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 260 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 276 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
-      /// en translation: Please provide access to your %@
+      /// en translation: Please allow access to %@ in Settings
       ///
       /// Key: access_image_desc
       ///
       /// Locales: en, uk
-      var access_image_desc: RswiftResources.StringResource1<String> { .init(key: "access_image_desc", tableName: "Global", source: source, developmentValue: "Please provide access to your %@", comment: nil) }
+      var access_image_desc: RswiftResources.StringResource1<String> { .init(key: "access_image_desc", tableName: "Global", source: source, developmentValue: "Please allow access to %@ in Settings", comment: nil) }
 
-      /// en translation: Access to the %@
+      /// en translation: Access Denied
       ///
       /// Key: access_image_title
       ///
       /// Locales: en, uk
-      var access_image_title: RswiftResources.StringResource1<String> { .init(key: "access_image_title", tableName: "Global", source: source, developmentValue: "Access to the %@", comment: nil) }
+      var access_image_title: RswiftResources.StringResource { .init(key: "access_image_title", tableName: "Global", source: source, developmentValue: "Access Denied", comment: nil) }
 
       /// en translation: Done
       ///
@@ -238,6 +238,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var actionDone: RswiftResources.StringResource { .init(key: "actionDone", tableName: "Global", source: source, developmentValue: "Done", comment: nil) }
+
+      /// en translation: Go to Settings
+      ///
+      /// Key: actionGoToSettings
+      ///
+      /// Locales: en, uk
+      var actionGoToSettings: RswiftResources.StringResource { .init(key: "actionGoToSettings", tableName: "Global", source: source, developmentValue: "Go to Settings", comment: nil) }
 
       /// en translation: Next
       ///
@@ -309,19 +316,19 @@ struct _R {
       /// Locales: en, uk
       var adminPrivilege: RswiftResources.StringResource { .init(key: "adminPrivilege", tableName: "Global", source: source, developmentValue: "Has administrator responsibilities", comment: nil) }
 
-      /// en translation: All →
+      /// en translation: All ->
       ///
       /// Key: allArrow
       ///
       /// Locales: en, uk
-      var allArrow: RswiftResources.StringResource { .init(key: "allArrow", tableName: "Global", source: source, developmentValue: "All →", comment: nil) }
+      var allArrow: RswiftResources.StringResource { .init(key: "allArrow", tableName: "Global", source: source, developmentValue: "All ->", comment: nil) }
 
-      /// en translation: All Incomes
+      /// en translation: All Orders
       ///
       /// Key: allOrders
       ///
       /// Locales: en, uk
-      var allOrders: RswiftResources.StringResource { .init(key: "allOrders", tableName: "Global", source: source, developmentValue: "All Incomes", comment: nil) }
+      var allOrders: RswiftResources.StringResource { .init(key: "allOrders", tableName: "Global", source: source, developmentValue: "All Orders", comment: nil) }
 
       /// en translation: Allow Calculation
       ///
@@ -337,19 +344,12 @@ struct _R {
       /// Locales: en, uk
       var appName: RswiftResources.StringResource { .init(key: "appName", tableName: "Global", source: source, developmentValue: "TrackMyCafe", comment: nil) }
 
-      /// en translation: The current AppleID has no costs for this cafe
-      ///
-      /// Key: appleHasntPurhcase
-      ///
-      /// Locales: en, uk
-      var appleHasntPurhcase: RswiftResources.StringResource { .init(key: "appleHasntPurhcase", tableName: "Global", source: source, developmentValue: "The current AppleID has no costs for this cafe", comment: nil) }
-
-      /// en translation: You cannot cost a subscription for this cafe from the current AppleID because this AppleID has already been used for another cafe
+      /// en translation: This Apple ID is already linked to another account.
       ///
       /// Key: appleIDReserved
       ///
       /// Locales: en, uk
-      var appleIDReserved: RswiftResources.StringResource { .init(key: "appleIDReserved", tableName: "Global", source: source, developmentValue: "You cannot cost a subscription for this cafe from the current AppleID because this AppleID has already been used for another cafe", comment: nil) }
+      var appleIDReserved: RswiftResources.StringResource { .init(key: "appleIDReserved", tableName: "Global", source: source, developmentValue: "This Apple ID is already linked to another account.", comment: nil) }
 
       /// en translation: Are you sure you want to delete this item?
       ///
@@ -365,12 +365,12 @@ struct _R {
       /// Locales: en, uk
       var attention: RswiftResources.StringResource { .init(key: "attention", tableName: "Global", source: source, developmentValue: "Attention", comment: nil) }
 
-      /// en translation: To continue, you need to log in.
+      /// en translation: Please sign in to continue.
       ///
       /// Key: authenticationFailedMessage
       ///
       /// Locales: en, uk
-      var authenticationFailedMessage: RswiftResources.StringResource { .init(key: "authenticationFailedMessage", tableName: "Global", source: source, developmentValue: "To continue, you need to log in.", comment: nil) }
+      var authenticationFailedMessage: RswiftResources.StringResource { .init(key: "authenticationFailedMessage", tableName: "Global", source: source, developmentValue: "Please sign in to continue.", comment: nil) }
 
       /// en translation: Authentication Failed
       ///
@@ -400,13 +400,6 @@ struct _R {
       /// Locales: en, uk
       var cancel: RswiftResources.StringResource { .init(key: "cancel", tableName: "Global", source: source, developmentValue: "Cancel", comment: nil) }
 
-      /// en translation: Card
-      ///
-      /// Key: card
-      ///
-      /// Locales: en, uk
-      var card: RswiftResources.StringResource { .init(key: "card", tableName: "Global", source: source, developmentValue: "Card", comment: nil) }
-
       /// en translation: Cash
       ///
       /// Key: cash
@@ -414,12 +407,12 @@ struct _R {
       /// Locales: en, uk
       var cash: RswiftResources.StringResource { .init(key: "cash", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
 
-      /// en translation: Change
+      /// en translation: Change Subscription
       ///
       /// Key: changeSub
       ///
       /// Locales: en, uk
-      var changeSub: RswiftResources.StringResource { .init(key: "changeSub", tableName: "Global", source: source, developmentValue: "Change", comment: nil) }
+      var changeSub: RswiftResources.StringResource { .init(key: "changeSub", tableName: "Global", source: source, developmentValue: "Change Subscription", comment: nil) }
 
       /// en translation: Choose type
       ///
@@ -449,26 +442,26 @@ struct _R {
       /// Locales: en, uk
       var clear: RswiftResources.StringResource { .init(key: "clear", tableName: "Global", source: source, developmentValue: "clear", comment: nil) }
 
-      /// en translation: Latte (Dark)
+      /// en translation: Dark (Latte)
       ///
       /// Key: coffeeWithMilkDarkThemeName
       ///
       /// Locales: en, uk
-      var coffeeWithMilkDarkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkDarkThemeName", tableName: "Global", source: source, developmentValue: "Latte (Dark)", comment: nil) }
+      var coffeeWithMilkDarkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkDarkThemeName", tableName: "Global", source: source, developmentValue: "Dark (Latte)", comment: nil) }
 
-      /// en translation: Latte (Light)
+      /// en translation: Light (Latte)
       ///
       /// Key: coffeeWithMilkLightThemeName
       ///
       /// Locales: en, uk
-      var coffeeWithMilkLightThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkLightThemeName", tableName: "Global", source: source, developmentValue: "Latte (Light)", comment: nil) }
+      var coffeeWithMilkLightThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkLightThemeName", tableName: "Global", source: source, developmentValue: "Light (Latte)", comment: nil) }
 
-      /// en translation: Latte (Automatic)
+      /// en translation: System (Latte)
       ///
       /// Key: coffeeWithMilkThemeName
       ///
       /// Locales: en, uk
-      var coffeeWithMilkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkThemeName", tableName: "Global", source: source, developmentValue: "Latte (Automatic)", comment: nil) }
+      var coffeeWithMilkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkThemeName", tableName: "Global", source: source, developmentValue: "System (Latte)", comment: nil) }
 
       /// en translation: Confirm
       ///
@@ -484,12 +477,12 @@ struct _R {
       /// Locales: en, uk
       var contactInfo: RswiftResources.StringResource { .init(key: "contactInfo", tableName: "Global", source: source, developmentValue: "Contact Information", comment: nil) }
 
-      /// en translation: Expense
+      /// en translation: Cost
       ///
       /// Key: cost
       ///
       /// Locales: en, uk
-      var cost: RswiftResources.StringResource { .init(key: "cost", tableName: "Global", source: source, developmentValue: "Expense", comment: nil) }
+      var cost: RswiftResources.StringResource { .init(key: "cost", tableName: "Global", source: source, developmentValue: "Cost", comment: nil) }
 
       /// en translation: Date
       ///
@@ -498,82 +491,96 @@ struct _R {
       /// Locales: en, uk
       var costDate: RswiftResources.StringResource { .init(key: "costDate", tableName: "Global", source: source, developmentValue: "Date", comment: nil) }
 
-      /// en translation: Expense
+      /// en translation: Enter the cost per unit
+      ///
+      /// Key: costExplanation
+      ///
+      /// Locales: en, uk
+      var costExplanation: RswiftResources.StringResource { .init(key: "costExplanation", tableName: "Global", source: source, developmentValue: "Enter the cost per unit", comment: nil) }
+
+      /// en translation: Cost Name
       ///
       /// Key: costName
       ///
       /// Locales: en, uk
-      var costName: RswiftResources.StringResource { .init(key: "costName", tableName: "Global", source: source, developmentValue: "Expense", comment: nil) }
+      var costName: RswiftResources.StringResource { .init(key: "costName", tableName: "Global", source: source, developmentValue: "Cost Name", comment: nil) }
 
-      /// en translation: Enter expense name
+      /// en translation: Enter cost name
       ///
       /// Key: costNamePlaceholder
       ///
       /// Locales: en, uk
-      var costNamePlaceholder: RswiftResources.StringResource { .init(key: "costNamePlaceholder", tableName: "Global", source: source, developmentValue: "Enter expense name", comment: nil) }
+      var costNamePlaceholder: RswiftResources.StringResource { .init(key: "costNamePlaceholder", tableName: "Global", source: source, developmentValue: "Enter cost name", comment: nil) }
 
-      /// en translation: Sum
+      /// en translation: Cost
+      ///
+      /// Key: costPlaceholder
+      ///
+      /// Locales: en, uk
+      var costPlaceholder: RswiftResources.StringResource { .init(key: "costPlaceholder", tableName: "Global", source: source, developmentValue: "Cost", comment: nil) }
+
+      /// en translation: Amount
       ///
       /// Key: costSum
       ///
       /// Locales: en, uk
-      var costSum: RswiftResources.StringResource { .init(key: "costSum", tableName: "Global", source: source, developmentValue: "Sum", comment: nil) }
+      var costSum: RswiftResources.StringResource { .init(key: "costSum", tableName: "Global", source: source, developmentValue: "Amount", comment: nil) }
 
-      /// en translation: Enter expense sum
+      /// en translation: Enter amount
       ///
       /// Key: costSumPlaceholder
       ///
       /// Locales: en, uk
-      var costSumPlaceholder: RswiftResources.StringResource { .init(key: "costSumPlaceholder", tableName: "Global", source: source, developmentValue: "Enter expense sum", comment: nil) }
+      var costSumPlaceholder: RswiftResources.StringResource { .init(key: "costSumPlaceholder", tableName: "Global", source: source, developmentValue: "Enter amount", comment: nil) }
 
-      /// en translation: Expenses
+      /// en translation: Costs
       ///
       /// Key: costs
       ///
       /// Locales: en, uk
-      var costs: RswiftResources.StringResource { .init(key: "costs", tableName: "Global", source: source, developmentValue: "Expenses", comment: nil) }
+      var costs: RswiftResources.StringResource { .init(key: "costs", tableName: "Global", source: source, developmentValue: "Costs", comment: nil) }
 
-      /// en translation: Your current subscription
+      /// en translation: Current Subscription
       ///
       /// Key: currentSubscription
       ///
       /// Locales: en, uk
-      var currentSubscription: RswiftResources.StringResource { .init(key: "currentSubscription", tableName: "Global", source: source, developmentValue: "Your current subscription", comment: nil) }
+      var currentSubscription: RswiftResources.StringResource { .init(key: "currentSubscription", tableName: "Global", source: source, developmentValue: "Current Subscription", comment: nil) }
 
-      /// en translation: Slate (Dark)
+      /// en translation: Dark (Slate)
       ///
       /// Key: darkAltThemeName
       ///
       /// Locales: en, uk
-      var darkAltThemeName: RswiftResources.StringResource { .init(key: "darkAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Dark)", comment: nil) }
+      var darkAltThemeName: RswiftResources.StringResource { .init(key: "darkAltThemeName", tableName: "Global", source: source, developmentValue: "Dark (Slate)", comment: nil) }
 
-      /// en translation: Classic (Dark)
+      /// en translation: Dark
       ///
       /// Key: darkThemeName
       ///
       /// Locales: en, uk
-      var darkThemeName: RswiftResources.StringResource { .init(key: "darkThemeName", tableName: "Global", source: source, developmentValue: "Classic (Dark)", comment: nil) }
+      var darkThemeName: RswiftResources.StringResource { .init(key: "darkThemeName", tableName: "Global", source: source, developmentValue: "Dark", comment: nil) }
 
-      /// en translation: Data for the selected date already exists. Open and edit them.
+      /// en translation: Data for the selected date already exists. Open and edit it?
       ///
       /// Key: dataForTheSelectedDateAlreadyExistsOpenAndEditThem
       ///
       /// Locales: en, uk
-      var dataForTheSelectedDateAlreadyExistsOpenAndEditThem: RswiftResources.StringResource { .init(key: "dataForTheSelectedDateAlreadyExistsOpenAndEditThem", tableName: "Global", source: source, developmentValue: "Data for the selected date already exists. Open and edit them.", comment: nil) }
+      var dataForTheSelectedDateAlreadyExistsOpenAndEditThem: RswiftResources.StringResource { .init(key: "dataForTheSelectedDateAlreadyExistsOpenAndEditThem", tableName: "Global", source: source, developmentValue: "Data for the selected date already exists. Open and edit it?", comment: nil) }
 
-      /// en translation: Default
+      /// en translation: Order
       ///
       /// Key: defaultOrderType
       ///
       /// Locales: en, uk
-      var defaultOrderType: RswiftResources.StringResource { .init(key: "defaultOrderType", tableName: "Global", source: source, developmentValue: "Default", comment: nil) }
+      var defaultOrderType: RswiftResources.StringResource { .init(key: "defaultOrderType", tableName: "Global", source: source, developmentValue: "Order", comment: nil) }
 
-      /// en translation: Default type
+      /// en translation: Default Type
       ///
       /// Key: defaultType
       ///
       /// Locales: en, uk
-      var defaultType: RswiftResources.StringResource { .init(key: "defaultType", tableName: "Global", source: source, developmentValue: "Default type", comment: nil) }
+      var defaultType: RswiftResources.StringResource { .init(key: "defaultType", tableName: "Global", source: source, developmentValue: "Default Type", comment: nil) }
 
       /// en translation: Delete
       ///
@@ -581,27 +588,6 @@ struct _R {
       ///
       /// Locales: en, uk
       var delete: RswiftResources.StringResource { .init(key: "delete", tableName: "Global", source: source, developmentValue: "Delete", comment: nil) }
-
-      /// en translation: Delete Account
-      ///
-      /// Key: delete_account
-      ///
-      /// Locales: en, uk
-      var delete_account: RswiftResources.StringResource { .init(key: "delete_account", tableName: "Global", source: source, developmentValue: "Delete Account", comment: nil) }
-
-      /// en translation: Are you sure you want to delete your account, all cafe data and orders will be deleted forever, this action cannot be undone?
-      ///
-      /// Key: delete_account_admin
-      ///
-      /// Locales: en, uk
-      var delete_account_admin: RswiftResources.StringResource { .init(key: "delete_account_admin", tableName: "Global", source: source, developmentValue: "Are you sure you want to delete your account, all cafe data and orders will be deleted forever, this action cannot be undone?", comment: nil) }
-
-      /// en translation: Are you sure you want to delete your account, all your data will be deleted forever, this action cannot be undone?
-      ///
-      /// Key: delete_account_title
-      ///
-      /// Locales: en, uk
-      var delete_account_title: RswiftResources.StringResource { .init(key: "delete_account_title", tableName: "Global", source: source, developmentValue: "Are you sure you want to delete your account, all your data will be deleted forever, this action cannot be undone?", comment: nil) }
 
       /// en translation: Developer
       ///
@@ -623,6 +609,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var editAdmin: RswiftResources.StringResource { .init(key: "editAdmin", tableName: "Global", source: source, developmentValue: "Edit admin", comment: nil) }
+
+      /// en translation: Edit Purchase
+      ///
+      /// Key: editPurchase
+      ///
+      /// Locales: en, uk
+      var editPurchase: RswiftResources.StringResource { .init(key: "editPurchase", tableName: "Global", source: source, developmentValue: "Edit Purchase", comment: nil) }
 
       /// en translation: Edit wainer
       ///
@@ -673,12 +666,12 @@ struct _R {
       /// Locales: en, uk
       var enterCorrect: RswiftResources.StringResource1<String> { .init(key: "enterCorrect", tableName: "Global", source: source, developmentValue: "Enter the correct %@", comment: nil) }
 
-      /// en translation: Enter number of days
+      /// en translation: Enter number of days to seed
       ///
       /// Key: enterNumberOfDays
       ///
       /// Locales: en, uk
-      var enterNumberOfDays: RswiftResources.StringResource { .init(key: "enterNumberOfDays", tableName: "Global", source: source, developmentValue: "Enter number of days", comment: nil) }
+      var enterNumberOfDays: RswiftResources.StringResource { .init(key: "enterNumberOfDays", tableName: "Global", source: source, developmentValue: "Enter number of days to seed", comment: nil) }
 
       /// en translation: Enter phone number
       ///
@@ -701,19 +694,19 @@ struct _R {
       /// Locales: en, uk
       var enterProductName: RswiftResources.StringResource { .init(key: "enterProductName", tableName: "Global", source: source, developmentValue: "Enter product name", comment: nil) }
 
-      /// en translation: Enter quantity per unit (%@)
+      /// en translation: Enter quantity per unit
       ///
       /// Key: enterQuantityPerUnit
       ///
       /// Locales: en, uk
-      var enterQuantityPerUnit: RswiftResources.StringResource1<String> { .init(key: "enterQuantityPerUnit", tableName: "Global", source: source, developmentValue: "Enter quantity per unit (%@)", comment: nil) }
+      var enterQuantityPerUnit: RswiftResources.StringResource { .init(key: "enterQuantityPerUnit", tableName: "Global", source: source, developmentValue: "Enter quantity per unit", comment: nil) }
 
-      /// en translation: Enter the name of the type of receipt
+      /// en translation: Enter type name
       ///
       /// Key: enterTypeName
       ///
       /// Locales: en, uk
-      var enterTypeName: RswiftResources.StringResource { .init(key: "enterTypeName", tableName: "Global", source: source, developmentValue: "Enter the name of the type of receipt", comment: nil) }
+      var enterTypeName: RswiftResources.StringResource { .init(key: "enterTypeName", tableName: "Global", source: source, developmentValue: "Enter type name", comment: nil) }
 
       /// en translation: Error
       ///
@@ -750,40 +743,33 @@ struct _R {
       /// Locales: en, uk
       var failedToSaveType: RswiftResources.StringResource { .init(key: "failedToSaveType", tableName: "Global", source: source, developmentValue: "Failed to save type", comment: nil) }
 
-      /// en translation: Feedback
-      ///
-      /// Key: feedback
-      ///
-      /// Locales: en, uk
-      var feedback: RswiftResources.StringResource { .init(key: "feedback", tableName: "Global", source: source, developmentValue: "Feedback", comment: nil) }
-
-      /// en translation: Hello,  I would like to share my feedback about the TrackMyCafe app:  [Please write your feedback and suggestions here]  App Version: %@ Device: %@ OS Version: %@ User ID: %@ User Email: %@ User Role: %@  Thank you!
+      /// en translation:    --- App Version: %@ Device: %@ OS: %@ User ID: %@ Email: %@ Role: %@
       ///
       /// Key: feedbackEmailBody
       ///
       /// Locales: en, uk
-      var feedbackEmailBody: RswiftResources.StringResource6<String, String, String, String, String, String> { .init(key: "feedbackEmailBody", tableName: "Global", source: source, developmentValue: "Hello,\n\nI would like to share my feedback about the TrackMyCafe app:\n\n[Please write your feedback and suggestions here]\n\nApp Version: %@\nDevice: %@\nOS Version: %@\nUser ID: %@\nUser Email: %@\nUser Role: %@\n\nThank you!", comment: nil) }
+      var feedbackEmailBody: RswiftResources.StringResource6<String, String, String, String, String, String> { .init(key: "feedbackEmailBody", tableName: "Global", source: source, developmentValue: "\n\n\n---\nApp Version: %@\nDevice: %@\nOS: %@\nUser ID: %@\nEmail: %@\nRole: %@", comment: nil) }
 
-      /// en translation: TrackMyCafe App Feedback
+      /// en translation: TrackMyCafe Feedback
       ///
       /// Key: feedbackEmailSubject
       ///
       /// Locales: en, uk
-      var feedbackEmailSubject: RswiftResources.StringResource { .init(key: "feedbackEmailSubject", tableName: "Global", source: source, developmentValue: "TrackMyCafe App Feedback", comment: nil) }
+      var feedbackEmailSubject: RswiftResources.StringResource { .init(key: "feedbackEmailSubject", tableName: "Global", source: source, developmentValue: "TrackMyCafe Feedback", comment: nil) }
 
-      /// en translation: Your feedback has been sent successfully.
+      /// en translation: Thank you for your feedback!
       ///
       /// Key: feedbackSuccessMessage
       ///
       /// Locales: en, uk
-      var feedbackSuccessMessage: RswiftResources.StringResource { .init(key: "feedbackSuccessMessage", tableName: "Global", source: source, developmentValue: "Your feedback has been sent successfully.", comment: nil) }
+      var feedbackSuccessMessage: RswiftResources.StringResource { .init(key: "feedbackSuccessMessage", tableName: "Global", source: source, developmentValue: "Thank you for your feedback!", comment: nil) }
 
-      /// en translation: Thank You!
+      /// en translation: Feedback Sent
       ///
       /// Key: feedbackSuccessTitle
       ///
       /// Locales: en, uk
-      var feedbackSuccessTitle: RswiftResources.StringResource { .init(key: "feedbackSuccessTitle", tableName: "Global", source: source, developmentValue: "Thank You!", comment: nil) }
+      var feedbackSuccessTitle: RswiftResources.StringResource { .init(key: "feedbackSuccessTitle", tableName: "Global", source: source, developmentValue: "Feedback Sent", comment: nil) }
 
       /// en translation: Field '%@' required
       ///
@@ -813,33 +799,12 @@ struct _R {
       /// Locales: en, uk
       var firstNameRequired: RswiftResources.StringResource { .init(key: "firstNameRequired", tableName: "Global", source: source, developmentValue: "First name is required", comment: nil) }
 
-      /// en translation: Photo Gallery
+      /// en translation: Gallery
       ///
       /// Key: gallery
       ///
       /// Locales: en, uk
-      var gallery: RswiftResources.StringResource { .init(key: "gallery", tableName: "Global", source: source, developmentValue: "Photo Gallery", comment: nil) }
-
-      /// en translation: Female
-      ///
-      /// Key: genderFemale
-      ///
-      /// Locales: en, uk
-      var genderFemale: RswiftResources.StringResource { .init(key: "genderFemale", tableName: "Global", source: source, developmentValue: "Female", comment: nil) }
-
-      /// en translation: Male
-      ///
-      /// Key: genderMale
-      ///
-      /// Locales: en, uk
-      var genderMale: RswiftResources.StringResource { .init(key: "genderMale", tableName: "Global", source: source, developmentValue: "Male", comment: nil) }
-
-      /// en translation: Not specified
-      ///
-      /// Key: genderNoSpecified
-      ///
-      /// Locales: en, uk
-      var genderNoSpecified: RswiftResources.StringResource { .init(key: "genderNoSpecified", tableName: "Global", source: source, developmentValue: "Not specified", comment: nil) }
+      var gallery: RswiftResources.StringResource { .init(key: "gallery", tableName: "Global", source: source, developmentValue: "Gallery", comment: nil) }
 
       /// en translation: General
       ///
@@ -848,19 +813,12 @@ struct _R {
       /// Locales: en, uk
       var general: RswiftResources.StringResource { .init(key: "general", tableName: "Global", source: source, developmentValue: "General", comment: nil) }
 
-      /// en translation: Goods
-      ///
-      /// Key: goods
-      ///
-      /// Locales: en, uk
-      var goods: RswiftResources.StringResource { .init(key: "goods", tableName: "Global", source: source, developmentValue: "Goods", comment: nil) }
-
-      /// en translation: You have a Premium subscription, you do not need to buy or change the subscription
+      /// en translation: You have Premium Plan
       ///
       /// Key: hasPremiumPlan
       ///
       /// Locales: en, uk
-      var hasPremiumPlan: RswiftResources.StringResource { .init(key: "hasPremiumPlan", tableName: "Global", source: source, developmentValue: "You have a Premium subscription, you do not need to buy or change the subscription", comment: nil) }
+      var hasPremiumPlan: RswiftResources.StringResource { .init(key: "hasPremiumPlan", tableName: "Global", source: source, developmentValue: "You have Premium Plan", comment: nil) }
 
       /// en translation: Home
       ///
@@ -869,12 +827,33 @@ struct _R {
       /// Locales: en, uk
       var home: RswiftResources.StringResource { .init(key: "home", tableName: "Global", source: source, developmentValue: "Home", comment: nil) }
 
-      /// en translation: Incomes
+      /// en translation: Income
       ///
       /// Key: income
       ///
       /// Locales: en, uk
-      var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
+      var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Income", comment: nil) }
+
+      /// en translation: Ingredient already exists
+      ///
+      /// Key: ingredientAlreadyExists
+      ///
+      /// Locales: en, uk
+      var ingredientAlreadyExists: RswiftResources.StringResource { .init(key: "ingredientAlreadyExists", tableName: "Global", source: source, developmentValue: "Ingredient already exists", comment: nil) }
+
+      /// en translation: Enter the name of the ingredient
+      ///
+      /// Key: ingredientNameExplanation
+      ///
+      /// Locales: en, uk
+      var ingredientNameExplanation: RswiftResources.StringResource { .init(key: "ingredientNameExplanation", tableName: "Global", source: source, developmentValue: "Enter the name of the ingredient", comment: nil) }
+
+      /// en translation: Ingredient Name
+      ///
+      /// Key: ingredientNamePlaceholder
+      ///
+      /// Locales: en, uk
+      var ingredientNamePlaceholder: RswiftResources.StringResource { .init(key: "ingredientNamePlaceholder", tableName: "Global", source: source, developmentValue: "Ingredient Name", comment: nil) }
 
       /// en translation: Ingredients
       ///
@@ -883,6 +862,20 @@ struct _R {
       /// Locales: en, uk
       var ingredients: RswiftResources.StringResource { .init(key: "ingredients", tableName: "Global", source: source, developmentValue: "Ingredients", comment: nil) }
 
+      /// en translation: Invalid price
+      ///
+      /// Key: invalidPrice
+      ///
+      /// Locales: en, uk
+      var invalidPrice: RswiftResources.StringResource { .init(key: "invalidPrice", tableName: "Global", source: source, developmentValue: "Invalid price", comment: nil) }
+
+      /// en translation: Invalid quantity
+      ///
+      /// Key: invalidQuantity
+      ///
+      /// Locales: en, uk
+      var invalidQuantity: RswiftResources.StringResource { .init(key: "invalidQuantity", tableName: "Global", source: source, developmentValue: "Invalid quantity", comment: nil) }
+
       /// en translation: Provide access
       ///
       /// Key: isAllowCalculationForAdministrator
@@ -890,12 +883,12 @@ struct _R {
       /// Locales: en, uk
       var isAllowCalculationForAdministrator: RswiftResources.StringResource { .init(key: "isAllowCalculationForAdministrator", tableName: "Global", source: source, developmentValue: "Provide access", comment: nil) }
 
-      /// en translation: You cannot cost a subscription for this cafe from the current AppleID because this cafe is already tied to another AppleID
+      /// en translation: This subscription is already linked to another Cafe.
       ///
       /// Key: labReserved
       ///
       /// Locales: en, uk
-      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "You cannot cost a subscription for this cafe from the current AppleID because this cafe is already tied to another AppleID", comment: nil) }
+      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "This subscription is already linked to another Cafe.", comment: nil) }
 
       /// en translation: Languages
       ///
@@ -911,26 +904,26 @@ struct _R {
       /// Locales: en, uk
       var lastName: RswiftResources.StringResource { .init(key: "lastName", tableName: "Global", source: source, developmentValue: "Last name", comment: nil) }
 
-      /// en translation: Slate (Light)
+      /// en translation: Light (Slate)
       ///
       /// Key: lightAltThemeName
       ///
       /// Locales: en, uk
-      var lightAltThemeName: RswiftResources.StringResource { .init(key: "lightAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Light)", comment: nil) }
+      var lightAltThemeName: RswiftResources.StringResource { .init(key: "lightAltThemeName", tableName: "Global", source: source, developmentValue: "Light (Slate)", comment: nil) }
 
-      /// en translation: Classic (Light)
+      /// en translation: Light
       ///
       /// Key: lightThemeName
       ///
       /// Locales: en, uk
-      var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Classic (Light)", comment: nil) }
+      var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Light", comment: nil) }
 
-      /// en translation: Please configure a mail account in your device settings to send feedback.
+      /// en translation: Please configure a mail account in Settings to send email.
       ///
       /// Key: mailNotAvailableMessage
       ///
       /// Locales: en, uk
-      var mailNotAvailableMessage: RswiftResources.StringResource { .init(key: "mailNotAvailableMessage", tableName: "Global", source: source, developmentValue: "Please configure a mail account in your device settings to send feedback.", comment: nil) }
+      var mailNotAvailableMessage: RswiftResources.StringResource { .init(key: "mailNotAvailableMessage", tableName: "Global", source: source, developmentValue: "Please configure a mail account in Settings to send email.", comment: nil) }
 
       /// en translation: Mail Not Available
       ///
@@ -939,19 +932,12 @@ struct _R {
       /// Locales: en, uk
       var mailNotAvailableTitle: RswiftResources.StringResource { .init(key: "mailNotAvailableTitle", tableName: "Global", source: source, developmentValue: "Mail Not Available", comment: nil) }
 
-      /// en translation: Manage subscriptions
+      /// en translation: Manage Subscriptions
       ///
       /// Key: manageSubscriptions
       ///
       /// Locales: en, uk
-      var manageSubscriptions: RswiftResources.StringResource { .init(key: "manageSubscriptions", tableName: "Global", source: source, developmentValue: "Manage subscriptions", comment: nil) }
-
-      /// en translation: Buy subscription
-      ///
-      /// Key: menuBuySub
-      ///
-      /// Locales: en, uk
-      var menuBuySub: RswiftResources.StringResource { .init(key: "menuBuySub", tableName: "Global", source: source, developmentValue: "Buy subscription", comment: nil) }
+      var manageSubscriptions: RswiftResources.StringResource { .init(key: "manageSubscriptions", tableName: "Global", source: source, developmentValue: "Manage Subscriptions", comment: nil) }
 
       /// en translation: Settings
       ///
@@ -967,20 +953,6 @@ struct _R {
       /// Locales: en, uk
       var menuStaff: RswiftResources.StringResource { .init(key: "menuStaff", tableName: "Global", source: source, developmentValue: "Staff", comment: nil) }
 
-      /// en translation: Your subscription has expired. To continue using the application you need to buy a subscription
-      ///
-      /// Key: menuSubExpired
-      ///
-      /// Locales: en, uk
-      var menuSubExpired: RswiftResources.StringResource { .init(key: "menuSubExpired", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription", comment: nil) }
-
-      /// en translation: Your subscription has expired, please contact your administrator to renew your subscription
-      ///
-      /// Key: menuSubTech
-      ///
-      /// Locales: en, uk
-      var menuSubTech: RswiftResources.StringResource { .init(key: "menuSubTech", tableName: "Global", source: source, developmentValue: "Your subscription has expired, please contact your administrator to renew your subscription", comment: nil) }
-
       /// en translation: Middle name
       ///
       /// Key: middleName
@@ -988,33 +960,33 @@ struct _R {
       /// Locales: en, uk
       var middleName: RswiftResources.StringResource { .init(key: "middleName", tableName: "Global", source: source, developmentValue: "Middle name", comment: nil) }
 
-      /// en translation: Money2
+      /// en translation: 0.00
       ///
       /// Key: money2
       ///
       /// Locales: en, uk
-      var money2: RswiftResources.StringResource { .init(key: "money2", tableName: "Global", source: source, developmentValue: "Money2", comment: nil) }
+      var money2: RswiftResources.StringResource { .init(key: "money2", tableName: "Global", source: source, developmentValue: "0.00", comment: nil) }
 
-      /// en translation: Money3
+      /// en translation: 0.00
       ///
       /// Key: money3
       ///
       /// Locales: en, uk
-      var money3: RswiftResources.StringResource { .init(key: "money3", tableName: "Global", source: source, developmentValue: "Money3", comment: nil) }
+      var money3: RswiftResources.StringResource { .init(key: "money3", tableName: "Global", source: source, developmentValue: "0.00", comment: nil) }
 
-      /// en translation: Month
+      /// en translation: month
       ///
       /// Key: month
       ///
       /// Locales: en, uk
-      var month: RswiftResources.StringResource { .init(key: "month", tableName: "Global", source: source, developmentValue: "Month", comment: nil) }
+      var month: RswiftResources.StringResource { .init(key: "month", tableName: "Global", source: source, developmentValue: "month", comment: nil) }
 
-      /// en translation: Monthly profit
+      /// en translation: Monthly Profit
       ///
       /// Key: monthlyProfit
       ///
       /// Locales: en, uk
-      var monthlyProfit: RswiftResources.StringResource { .init(key: "monthlyProfit", tableName: "Global", source: source, developmentValue: "Monthly profit", comment: nil) }
+      var monthlyProfit: RswiftResources.StringResource { .init(key: "monthlyProfit", tableName: "Global", source: source, developmentValue: "Monthly Profit", comment: nil) }
 
       /// en translation: Name
       ///
@@ -1023,6 +995,13 @@ struct _R {
       /// Locales: en, uk
       var names: RswiftResources.StringResource { .init(key: "names", tableName: "Global", source: source, developmentValue: "Name", comment: nil) }
 
+      /// en translation: New Ingredient
+      ///
+      /// Key: newIngredient
+      ///
+      /// Locales: en, uk
+      var newIngredient: RswiftResources.StringResource { .init(key: "newIngredient", tableName: "Global", source: source, developmentValue: "New Ingredient", comment: nil) }
+
       /// en translation: New moderator
       ///
       /// Key: newModerator
@@ -1030,12 +1009,33 @@ struct _R {
       /// Locales: en, uk
       var newModerator: RswiftResources.StringResource { .init(key: "newModerator", tableName: "Global", source: source, developmentValue: "New moderator", comment: nil) }
 
+      /// en translation: New Purchase
+      ///
+      /// Key: newPurchase
+      ///
+      /// Locales: en, uk
+      var newPurchase: RswiftResources.StringResource { .init(key: "newPurchase", tableName: "Global", source: source, developmentValue: "New Purchase", comment: nil) }
+
       /// en translation: New waiter
       ///
       /// Key: newTechnician
       ///
       /// Locales: en, uk
       var newTechnician: RswiftResources.StringResource { .init(key: "newTechnician", tableName: "Global", source: source, developmentValue: "New waiter", comment: nil) }
+
+      /// en translation: No
+      ///
+      /// Key: no
+      ///
+      /// Locales: en, uk
+      var no: RswiftResources.StringResource { .init(key: "no", tableName: "Global", source: source, developmentValue: "No", comment: nil) }
+
+      /// en translation: No ingredients
+      ///
+      /// Key: noIngredients
+      ///
+      /// Locales: en, uk
+      var noIngredients: RswiftResources.StringResource { .init(key: "noIngredients", tableName: "Global", source: source, developmentValue: "No ingredients", comment: nil) }
 
       /// en translation: not required
       ///
@@ -1065,12 +1065,12 @@ struct _R {
       /// Locales: en, uk
       var okButton: RswiftResources.StringResource { .init(key: "okButton", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
 
-      /// en translation: Enter expense date.
+      /// en translation: Select the date of the expense.
       ///
       /// Key: onboardingCostDetailsDateMessage
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsDateMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsDateMessage", tableName: "Global", source: source, developmentValue: "Enter expense date.", comment: nil) }
+      var onboardingCostDetailsDateMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsDateMessage", tableName: "Global", source: source, developmentValue: "Select the date of the expense.", comment: nil) }
 
       /// en translation: Date
       ///
@@ -1079,243 +1079,250 @@ struct _R {
       /// Locales: en, uk
       var onboardingCostDetailsDateTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsDateTitle", tableName: "Global", source: source, developmentValue: "Date", comment: nil) }
 
-      /// en translation: Describe the expense.
+      /// en translation: Enter a description for the cost.
       ///
       /// Key: onboardingCostDetailsNameMessage
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsNameMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsNameMessage", tableName: "Global", source: source, developmentValue: "Describe the expense.", comment: nil) }
+      var onboardingCostDetailsNameMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsNameMessage", tableName: "Global", source: source, developmentValue: "Enter a description for the cost.", comment: nil) }
 
-      /// en translation: Name
+      /// en translation: Description
       ///
       /// Key: onboardingCostDetailsNameTitle
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsNameTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsNameTitle", tableName: "Global", source: source, developmentValue: "Name", comment: nil) }
+      var onboardingCostDetailsNameTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsNameTitle", tableName: "Global", source: source, developmentValue: "Description", comment: nil) }
 
-      /// en translation: Save the expense.
+      /// en translation: Tap to save the expense.
       ///
       /// Key: onboardingCostDetailsSaveMessage
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsSaveMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSaveMessage", tableName: "Global", source: source, developmentValue: "Save the expense.", comment: nil) }
+      var onboardingCostDetailsSaveMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSaveMessage", tableName: "Global", source: source, developmentValue: "Tap to save the expense.", comment: nil) }
 
-      /// en translation: Save
+      /// en translation: Save Cost
       ///
       /// Key: onboardingCostDetailsSaveTitle
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsSaveTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSaveTitle", tableName: "Global", source: source, developmentValue: "Save", comment: nil) }
+      var onboardingCostDetailsSaveTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSaveTitle", tableName: "Global", source: source, developmentValue: "Save Cost", comment: nil) }
 
-      /// en translation: Enter amount in app currency.
+      /// en translation: Enter the cost amount.
       ///
       /// Key: onboardingCostDetailsSumMessage
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsSumMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSumMessage", tableName: "Global", source: source, developmentValue: "Enter amount in app currency.", comment: nil) }
+      var onboardingCostDetailsSumMessage: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSumMessage", tableName: "Global", source: source, developmentValue: "Enter the cost amount.", comment: nil) }
 
-      /// en translation: Sum
+      /// en translation: Amount
       ///
       /// Key: onboardingCostDetailsSumTitle
       ///
       /// Locales: en, uk
-      var onboardingCostDetailsSumTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSumTitle", tableName: "Global", source: source, developmentValue: "Sum", comment: nil) }
+      var onboardingCostDetailsSumTitle: RswiftResources.StringResource { .init(key: "onboardingCostDetailsSumTitle", tableName: "Global", source: source, developmentValue: "Amount", comment: nil) }
 
-      /// en translation: Tap plus to add an expense.
+      /// en translation: Tap here to record a new expense.
       ///
       /// Key: onboardingCostsAddMessage
       ///
       /// Locales: en, uk
-      var onboardingCostsAddMessage: RswiftResources.StringResource { .init(key: "onboardingCostsAddMessage", tableName: "Global", source: source, developmentValue: "Tap plus to add an expense.", comment: nil) }
+      var onboardingCostsAddMessage: RswiftResources.StringResource { .init(key: "onboardingCostsAddMessage", tableName: "Global", source: source, developmentValue: "Tap here to record a new expense.", comment: nil) }
 
-      /// en translation: Add expense
+      /// en translation: Add Cost
       ///
       /// Key: onboardingCostsAddTitle
       ///
       /// Locales: en, uk
-      var onboardingCostsAddTitle: RswiftResources.StringResource { .init(key: "onboardingCostsAddTitle", tableName: "Global", source: source, developmentValue: "Add expense", comment: nil) }
+      var onboardingCostsAddTitle: RswiftResources.StringResource { .init(key: "onboardingCostsAddTitle", tableName: "Global", source: source, developmentValue: "Add Cost", comment: nil) }
 
-      /// en translation: Enter card revenue.
+      /// en translation: Enter the amount paid by card.
       ///
       /// Key: onboardingOrderDetailsCardMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsCardMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCardMessage", tableName: "Global", source: source, developmentValue: "Enter card revenue.", comment: nil) }
+      var onboardingOrderDetailsCardMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCardMessage", tableName: "Global", source: source, developmentValue: "Enter the amount paid by card.", comment: nil) }
 
-      /// en translation: Card
+      /// en translation: Card Payment
       ///
       /// Key: onboardingOrderDetailsCardTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsCardTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCardTitle", tableName: "Global", source: source, developmentValue: "Card", comment: nil) }
+      var onboardingOrderDetailsCardTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCardTitle", tableName: "Global", source: source, developmentValue: "Card Payment", comment: nil) }
 
-      /// en translation: Enter daily cash.
+      /// en translation: Enter the amount paid in cash.
       ///
       /// Key: onboardingOrderDetailsCashMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsCashMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCashMessage", tableName: "Global", source: source, developmentValue: "Enter daily cash.", comment: nil) }
+      var onboardingOrderDetailsCashMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCashMessage", tableName: "Global", source: source, developmentValue: "Enter the amount paid in cash.", comment: nil) }
 
-      /// en translation: Cash
+      /// en translation: Cash Payment
       ///
       /// Key: onboardingOrderDetailsCashTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsCashTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCashTitle", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
+      var onboardingOrderDetailsCashTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsCashTitle", tableName: "Global", source: source, developmentValue: "Cash Payment", comment: nil) }
 
-      /// en translation: Ensure the date is correct.
+      /// en translation: Select the date of the order.
       ///
       /// Key: onboardingOrderDetailsDateMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsDateMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsDateMessage", tableName: "Global", source: source, developmentValue: "Ensure the date is correct.", comment: nil) }
+      var onboardingOrderDetailsDateMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsDateMessage", tableName: "Global", source: source, developmentValue: "Select the date of the order.", comment: nil) }
 
-      /// en translation: Sale date
+      /// en translation: Date
       ///
       /// Key: onboardingOrderDetailsDateTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsDateTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsDateTitle", tableName: "Global", source: source, developmentValue: "Sale date", comment: nil) }
+      var onboardingOrderDetailsDateTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsDateTitle", tableName: "Global", source: source, developmentValue: "Date", comment: nil) }
 
-      /// en translation: Enter sold units.
+      /// en translation: Add products to the order here.
       ///
       /// Key: onboardingOrderDetailsProductsMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsProductsMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsProductsMessage", tableName: "Global", source: source, developmentValue: "Enter sold units.", comment: nil) }
+      var onboardingOrderDetailsProductsMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsProductsMessage", tableName: "Global", source: source, developmentValue: "Add products to the order here.", comment: nil) }
 
-      /// en translation: Items quantity
+      /// en translation: Products
       ///
       /// Key: onboardingOrderDetailsProductsTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsProductsTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsProductsTitle", tableName: "Global", source: source, developmentValue: "Items quantity", comment: nil) }
+      var onboardingOrderDetailsProductsTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsProductsTitle", tableName: "Global", source: source, developmentValue: "Products", comment: nil) }
 
-      /// en translation: Save the daily sale.
+      /// en translation: Tap to save the order.
       ///
       /// Key: onboardingOrderDetailsSaveMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsSaveMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsSaveMessage", tableName: "Global", source: source, developmentValue: "Save the daily sale.", comment: nil) }
+      var onboardingOrderDetailsSaveMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsSaveMessage", tableName: "Global", source: source, developmentValue: "Tap to save the order.", comment: nil) }
 
-      /// en translation: Save
+      /// en translation: Save Order
       ///
       /// Key: onboardingOrderDetailsSaveTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsSaveTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsSaveTitle", tableName: "Global", source: source, developmentValue: "Save", comment: nil) }
+      var onboardingOrderDetailsSaveTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsSaveTitle", tableName: "Global", source: source, developmentValue: "Save Order", comment: nil) }
 
-      /// en translation: Check total amount.
+      /// en translation: Review the total amount.
       ///
       /// Key: onboardingOrderDetailsTotalsMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsTotalsMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTotalsMessage", tableName: "Global", source: source, developmentValue: "Check total amount.", comment: nil) }
+      var onboardingOrderDetailsTotalsMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTotalsMessage", tableName: "Global", source: source, developmentValue: "Review the total amount.", comment: nil) }
 
-      /// en translation: Summary
+      /// en translation: Totals
       ///
       /// Key: onboardingOrderDetailsTotalsTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsTotalsTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTotalsTitle", tableName: "Global", source: source, developmentValue: "Summary", comment: nil) }
+      var onboardingOrderDetailsTotalsTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTotalsTitle", tableName: "Global", source: source, developmentValue: "Totals", comment: nil) }
 
-      /// en translation: Choose type: dine‑in/takeaway/delivery.
+      /// en translation: Choose the type of order (e.g., Dine-in, Takeaway).
       ///
       /// Key: onboardingOrderDetailsTypeMessage
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsTypeMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTypeMessage", tableName: "Global", source: source, developmentValue: "Choose type: dine‑in/takeaway/delivery.", comment: nil) }
+      var onboardingOrderDetailsTypeMessage: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTypeMessage", tableName: "Global", source: source, developmentValue: "Choose the type of order (e.g., Dine-in, Takeaway).", comment: nil) }
 
-      /// en translation: Sale type
+      /// en translation: Order Type
       ///
       /// Key: onboardingOrderDetailsTypeTitle
       ///
       /// Locales: en, uk
-      var onboardingOrderDetailsTypeTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTypeTitle", tableName: "Global", source: source, developmentValue: "Sale type", comment: nil) }
+      var onboardingOrderDetailsTypeTitle: RswiftResources.StringResource { .init(key: "onboardingOrderDetailsTypeTitle", tableName: "Global", source: source, developmentValue: "Order Type", comment: nil) }
 
-      /// en translation: Tap plus to add a daily sale.
+      /// en translation: Tap here to create a new order.
       ///
       /// Key: onboardingOrdersAddMessage
       ///
       /// Locales: en, uk
-      var onboardingOrdersAddMessage: RswiftResources.StringResource { .init(key: "onboardingOrdersAddMessage", tableName: "Global", source: source, developmentValue: "Tap plus to add a daily sale.", comment: nil) }
+      var onboardingOrdersAddMessage: RswiftResources.StringResource { .init(key: "onboardingOrdersAddMessage", tableName: "Global", source: source, developmentValue: "Tap here to create a new order.", comment: nil) }
 
-      /// en translation: Create sale
+      /// en translation: Add Order
       ///
       /// Key: onboardingOrdersAddTitle
       ///
       /// Locales: en, uk
-      var onboardingOrdersAddTitle: RswiftResources.StringResource { .init(key: "onboardingOrdersAddTitle", tableName: "Global", source: source, developmentValue: "Create sale", comment: nil) }
+      var onboardingOrdersAddTitle: RswiftResources.StringResource { .init(key: "onboardingOrdersAddTitle", tableName: "Global", source: source, developmentValue: "Add Order", comment: nil) }
 
-      /// en translation: Feature tour will show again.
+      /// en translation: This will reset your onboarding progress. Do you want to continue?
       ///
       /// Key: onboardingResetMessage
       ///
       /// Locales: en, uk
-      var onboardingResetMessage: RswiftResources.StringResource { .init(key: "onboardingResetMessage", tableName: "Global", source: source, developmentValue: "Feature tour will show again.", comment: nil) }
+      var onboardingResetMessage: RswiftResources.StringResource { .init(key: "onboardingResetMessage", tableName: "Global", source: source, developmentValue: "This will reset your onboarding progress. Do you want to continue?", comment: nil) }
 
-      /// en translation: Feature tour reset
+      /// en translation: Restart Onboarding?
       ///
       /// Key: onboardingResetTitle
       ///
       /// Locales: en, uk
-      var onboardingResetTitle: RswiftResources.StringResource { .init(key: "onboardingResetTitle", tableName: "Global", source: source, developmentValue: "Feature tour reset", comment: nil) }
+      var onboardingResetTitle: RswiftResources.StringResource { .init(key: "onboardingResetTitle", tableName: "Global", source: source, developmentValue: "Restart Onboarding?", comment: nil) }
 
-      /// en translation: Add a product with a price.
+      /// en translation: Add a new product to your menu.
       ///
       /// Key: onboardingSettingsAddProductMessage
       ///
       /// Locales: en, uk
-      var onboardingSettingsAddProductMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsAddProductMessage", tableName: "Global", source: source, developmentValue: "Add a product with a price.", comment: nil) }
+      var onboardingSettingsAddProductMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsAddProductMessage", tableName: "Global", source: source, developmentValue: "Add a new product to your menu.", comment: nil) }
 
-      /// en translation: New product
+      /// en translation: Add Product
       ///
       /// Key: onboardingSettingsAddProductTitle
       ///
       /// Locales: en, uk
-      var onboardingSettingsAddProductTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsAddProductTitle", tableName: "Global", source: source, developmentValue: "New product", comment: nil) }
+      var onboardingSettingsAddProductTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsAddProductTitle", tableName: "Global", source: source, developmentValue: "Add Product", comment: nil) }
 
-      /// en translation: First add goods and prices.
+      /// en translation: Manage your products and prices here.
       ///
       /// Key: onboardingSettingsPriceListMessage
       ///
       /// Locales: en, uk
-      var onboardingSettingsPriceListMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListMessage", tableName: "Global", source: source, developmentValue: "First add goods and prices.", comment: nil) }
+      var onboardingSettingsPriceListMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListMessage", tableName: "Global", source: source, developmentValue: "Manage your products and prices here.", comment: nil) }
 
-      /// en translation: Goods and prices
+      /// en translation: Price List
       ///
       /// Key: onboardingSettingsPriceListTitle
       ///
       /// Locales: en, uk
-      var onboardingSettingsPriceListTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListTitle", tableName: "Global", source: source, developmentValue: "Goods and prices", comment: nil) }
+      var onboardingSettingsPriceListTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListTitle", tableName: "Global", source: source, developmentValue: "Price List", comment: nil) }
 
-      /// en translation: Create types and set the default type.
+      /// en translation: Configure different order types here.
       ///
       /// Key: onboardingSettingsTypesMessage
       ///
       /// Locales: en, uk
-      var onboardingSettingsTypesMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsTypesMessage", tableName: "Global", source: source, developmentValue: "Create types and set the default type.", comment: nil) }
+      var onboardingSettingsTypesMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsTypesMessage", tableName: "Global", source: source, developmentValue: "Configure different order types here.", comment: nil) }
 
-      /// en translation: Sale types
+      /// en translation: Order Types
       ///
       /// Key: onboardingSettingsTypesTitle
       ///
       /// Locales: en, uk
-      var onboardingSettingsTypesTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsTypesTitle", tableName: "Global", source: source, developmentValue: "Sale types", comment: nil) }
+      var onboardingSettingsTypesTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsTypesTitle", tableName: "Global", source: source, developmentValue: "Order Types", comment: nil) }
 
-      /// en translation: Income
+      /// en translation: Order
       ///
       /// Key: order
       ///
       /// Locales: en, uk
-      var order: RswiftResources.StringResource { .init(key: "order", tableName: "Global", source: source, developmentValue: "Income", comment: nil) }
+      var order: RswiftResources.StringResource { .init(key: "order", tableName: "Global", source: source, developmentValue: "Order", comment: nil) }
 
-      /// en translation: Incomes
+      /// en translation: Orders
       ///
       /// Key: orders
       ///
       /// Locales: en, uk
-      var orders: RswiftResources.StringResource { .init(key: "orders", tableName: "Global", source: source, developmentValue: "Incomes", comment: nil) }
+      var orders: RswiftResources.StringResource { .init(key: "orders", tableName: "Global", source: source, developmentValue: "Orders", comment: nil) }
+
+      /// en translation: This ingredient is already in the recipe. Do you want to overwrite it?
+      ///
+      /// Key: overwriteIngredientMessage
+      ///
+      /// Locales: en, uk
+      var overwriteIngredientMessage: RswiftResources.StringResource { .init(key: "overwriteIngredientMessage", tableName: "Global", source: source, developmentValue: "This ingredient is already in the recipe. Do you want to overwrite it?", comment: nil) }
 
       /// en translation: Password
       ///
@@ -1338,6 +1345,13 @@ struct _R {
       /// Locales: en, uk
       var passwordValidateDesc: RswiftResources.StringResource { .init(key: "passwordValidateDesc", tableName: "Global", source: source, developmentValue: "Password must contain at least 6 characters", comment: nil) }
 
+      /// en translation: per
+      ///
+      /// Key: per
+      ///
+      /// Locales: en, uk
+      var per: RswiftResources.StringResource { .init(key: "per", tableName: "Global", source: source, developmentValue: "per", comment: nil) }
+
       /// en translation: Phone
       ///
       /// Key: phone
@@ -1345,12 +1359,12 @@ struct _R {
       /// Locales: en, uk
       var phone: RswiftResources.StringResource { .init(key: "phone", tableName: "Global", source: source, developmentValue: "Phone", comment: nil) }
 
-      /// en translation: Plan
+      /// en translation: Please add ingredients
       ///
-      /// Key: plan
+      /// Key: pleaseAddIngredients
       ///
       /// Locales: en, uk
-      var plan: RswiftResources.StringResource { .init(key: "plan", tableName: "Global", source: source, developmentValue: "Plan", comment: nil) }
+      var pleaseAddIngredients: RswiftResources.StringResource { .init(key: "pleaseAddIngredients", tableName: "Global", source: source, developmentValue: "Please add ingredients", comment: nil) }
 
       /// en translation: Please enter product name
       ///
@@ -1359,12 +1373,19 @@ struct _R {
       /// Locales: en, uk
       var pleaseEnterProductName: RswiftResources.StringResource { .init(key: "pleaseEnterProductName", tableName: "Global", source: source, developmentValue: "Please enter product name", comment: nil) }
 
-      /// en translation: Please enter the type name
+      /// en translation: Please enter type name
       ///
       /// Key: pleaseEnterTypeName
       ///
       /// Locales: en, uk
-      var pleaseEnterTypeName: RswiftResources.StringResource { .init(key: "pleaseEnterTypeName", tableName: "Global", source: source, developmentValue: "Please enter the type name", comment: nil) }
+      var pleaseEnterTypeName: RswiftResources.StringResource { .init(key: "pleaseEnterTypeName", tableName: "Global", source: source, developmentValue: "Please enter type name", comment: nil) }
+
+      /// en translation: Please select an ingredient
+      ///
+      /// Key: pleaseSelectIngredient
+      ///
+      /// Locales: en, uk
+      var pleaseSelectIngredient: RswiftResources.StringResource { .init(key: "pleaseSelectIngredient", tableName: "Global", source: source, developmentValue: "Please select an ingredient", comment: nil) }
 
       /// en translation: Price
       ///
@@ -1373,12 +1394,19 @@ struct _R {
       /// Locales: en, uk
       var price: RswiftResources.StringResource { .init(key: "price", tableName: "Global", source: source, developmentValue: "Price", comment: nil) }
 
-      /// en translation: Price list
+      /// en translation: Price List
       ///
       /// Key: priceList
       ///
       /// Locales: en, uk
-      var priceList: RswiftResources.StringResource { .init(key: "priceList", tableName: "Global", source: source, developmentValue: "Price list", comment: nil) }
+      var priceList: RswiftResources.StringResource { .init(key: "priceList", tableName: "Global", source: source, developmentValue: "Price List", comment: nil) }
+
+      /// en translation: Price per Unit
+      ///
+      /// Key: pricePerUnit
+      ///
+      /// Locales: en, uk
+      var pricePerUnit: RswiftResources.StringResource { .init(key: "pricePerUnit", tableName: "Global", source: source, developmentValue: "Price per Unit", comment: nil) }
 
       /// en translation: Prices
       ///
@@ -1387,26 +1415,26 @@ struct _R {
       /// Locales: en, uk
       var prices: RswiftResources.StringResource { .init(key: "prices", tableName: "Global", source: source, developmentValue: "Prices", comment: nil) }
 
-      /// en translation: For client
+      /// en translation: For Admin
       ///
       /// Key: printForDoctor
       ///
       /// Locales: en, uk
-      var printForDoctor: RswiftResources.StringResource { .init(key: "printForDoctor", tableName: "Global", source: source, developmentValue: "For client", comment: nil) }
+      var printForDoctor: RswiftResources.StringResource { .init(key: "printForDoctor", tableName: "Global", source: source, developmentValue: "For Admin", comment: nil) }
 
-      /// en translation: For waiter
+      /// en translation: For Waiter
       ///
       /// Key: printForTechnician
       ///
       /// Locales: en, uk
-      var printForTechnician: RswiftResources.StringResource { .init(key: "printForTechnician", tableName: "Global", source: source, developmentValue: "For waiter", comment: nil) }
+      var printForTechnician: RswiftResources.StringResource { .init(key: "printForTechnician", tableName: "Global", source: source, developmentValue: "For Waiter", comment: nil) }
 
-      /// en translation: Print for whom?
+      /// en translation: For whom to print?
       ///
       /// Key: printForWhom
       ///
       /// Locales: en, uk
-      var printForWhom: RswiftResources.StringResource { .init(key: "printForWhom", tableName: "Global", source: source, developmentValue: "Print for whom?", comment: nil) }
+      var printForWhom: RswiftResources.StringResource { .init(key: "printForWhom", tableName: "Global", source: source, developmentValue: "For whom to print?", comment: nil) }
 
       /// en translation: Print Prices
       ///
@@ -1415,12 +1443,12 @@ struct _R {
       /// Locales: en, uk
       var printPrices: RswiftResources.StringResource { .init(key: "printPrices", tableName: "Global", source: source, developmentValue: "Print Prices", comment: nil) }
 
-      /// en translation: Privacy policy
+      /// en translation: Privacy Policy
       ///
       /// Key: privacyPolicy
       ///
       /// Locales: en, uk
-      var privacyPolicy: RswiftResources.StringResource { .init(key: "privacyPolicy", tableName: "Global", source: source, developmentValue: "Privacy policy", comment: nil) }
+      var privacyPolicy: RswiftResources.StringResource { .init(key: "privacyPolicy", tableName: "Global", source: source, developmentValue: "Privacy Policy", comment: nil) }
 
       /// en translation: Product
       ///
@@ -1436,19 +1464,26 @@ struct _R {
       /// Locales: en, uk
       var productName: RswiftResources.StringResource { .init(key: "productName", tableName: "Global", source: source, developmentValue: "Product Name", comment: nil) }
 
-      /// en translation: Price list
+      /// en translation: Products
       ///
       /// Key: products
       ///
       /// Locales: en, uk
-      var products: RswiftResources.StringResource { .init(key: "products", tableName: "Global", source: source, developmentValue: "Price list", comment: nil) }
+      var products: RswiftResources.StringResource { .init(key: "products", tableName: "Global", source: source, developmentValue: "Products", comment: nil) }
 
-      /// en translation: Purchases resumed successfully
+      /// en translation: Purchase restored
       ///
       /// Key: purchaseRestored
       ///
       /// Locales: en, uk
-      var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchases resumed successfully", comment: nil) }
+      var purchaseRestored: RswiftResources.StringResource { .init(key: "purchaseRestored", tableName: "Global", source: source, developmentValue: "Purchase restored", comment: nil) }
+
+      /// en translation: Purchases
+      ///
+      /// Key: purchases
+      ///
+      /// Locales: en, uk
+      var purchases: RswiftResources.StringResource { .init(key: "purchases", tableName: "Global", source: source, developmentValue: "Purchases", comment: nil) }
 
       /// en translation: Quantity
       ///
@@ -1457,12 +1492,12 @@ struct _R {
       /// Locales: en, uk
       var quantity: RswiftResources.StringResource { .init(key: "quantity", tableName: "Global", source: source, developmentValue: "Quantity", comment: nil) }
 
-      /// en translation: Receipt types
+      /// en translation: Receipt Types
       ///
       /// Key: receiptTypes
       ///
       /// Locales: en, uk
-      var receiptTypes: RswiftResources.StringResource { .init(key: "receiptTypes", tableName: "Global", source: source, developmentValue: "Receipt types", comment: nil) }
+      var receiptTypes: RswiftResources.StringResource { .init(key: "receiptTypes", tableName: "Global", source: source, developmentValue: "Receipt Types", comment: nil) }
 
       /// en translation: Received by card
       ///
@@ -1478,19 +1513,19 @@ struct _R {
       /// Locales: en, uk
       var receivedInCash: RswiftResources.StringResource { .init(key: "receivedInCash", tableName: "Global", source: source, developmentValue: "Received in cash", comment: nil) }
 
-      /// en translation: Recent expenses
+      /// en translation: Recent Expenses
       ///
       /// Key: recentExpenses
       ///
       /// Locales: en, uk
-      var recentExpenses: RswiftResources.StringResource { .init(key: "recentExpenses", tableName: "Global", source: source, developmentValue: "Recent expenses", comment: nil) }
+      var recentExpenses: RswiftResources.StringResource { .init(key: "recentExpenses", tableName: "Global", source: source, developmentValue: "Recent Expenses", comment: nil) }
 
-      /// en translation: Recent incomes
+      /// en translation: Recent Incomes
       ///
       /// Key: recentIncomes
       ///
       /// Locales: en, uk
-      var recentIncomes: RswiftResources.StringResource { .init(key: "recentIncomes", tableName: "Global", source: source, developmentValue: "Recent incomes", comment: nil) }
+      var recentIncomes: RswiftResources.StringResource { .init(key: "recentIncomes", tableName: "Global", source: source, developmentValue: "Recent Incomes", comment: nil) }
 
       /// en translation: Recipe
       ///
@@ -1527,19 +1562,19 @@ struct _R {
       /// Locales: en, uk
       var resendInvite: RswiftResources.StringResource { .init(key: "resendInvite", tableName: "Global", source: source, developmentValue: "Resend Invite", comment: nil) }
 
-      /// en translation: Restart feature tour
+      /// en translation: Restart Onboarding
       ///
       /// Key: restartOnboarding
       ///
       /// Locales: en, uk
-      var restartOnboarding: RswiftResources.StringResource { .init(key: "restartOnboarding", tableName: "Global", source: source, developmentValue: "Restart feature tour", comment: nil) }
+      var restartOnboarding: RswiftResources.StringResource { .init(key: "restartOnboarding", tableName: "Global", source: source, developmentValue: "Restart Onboarding", comment: nil) }
 
-      /// en translation: Restore purchases
+      /// en translation: Restore Purchases
       ///
       /// Key: restorePurchases
       ///
       /// Locales: en, uk
-      var restorePurchases: RswiftResources.StringResource { .init(key: "restorePurchases", tableName: "Global", source: source, developmentValue: "Restore purchases", comment: nil) }
+      var restorePurchases: RswiftResources.StringResource { .init(key: "restorePurchases", tableName: "Global", source: source, developmentValue: "Restore Purchases", comment: nil) }
 
       /// en translation: Retry
       ///
@@ -1576,19 +1611,19 @@ struct _R {
       /// Locales: en, uk
       var roleTechnician: RswiftResources.StringResource { .init(key: "roleTechnician", tableName: "Global", source: source, developmentValue: "Waiter", comment: nil) }
 
-      /// en translation: Sales
-      ///
-      /// Key: sales
-      ///
-      /// Locales: en, uk
-      var sales: RswiftResources.StringResource { .init(key: "sales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
-
       /// en translation: Save
       ///
       /// Key: save
       ///
       /// Locales: en, uk
       var save: RswiftResources.StringResource { .init(key: "save", tableName: "Global", source: source, developmentValue: "Save", comment: nil) }
+
+      /// en translation: Save Purchase
+      ///
+      /// Key: savePurchase
+      ///
+      /// Locales: en, uk
+      var savePurchase: RswiftResources.StringResource { .init(key: "savePurchase", tableName: "Global", source: source, developmentValue: "Save Purchase", comment: nil) }
 
       /// en translation: Search
       ///
@@ -1632,12 +1667,12 @@ struct _R {
       /// Locales: en, uk
       var selectTheme: RswiftResources.StringResource { .init(key: "selectTheme", tableName: "Global", source: source, developmentValue: "Select Theme", comment: nil) }
 
-      /// en translation: Failed to send feedback. Please try again later.
+      /// en translation: Could not send email. Please try again later.
       ///
       /// Key: sendFailedMessage
       ///
       /// Locales: en, uk
-      var sendFailedMessage: RswiftResources.StringResource { .init(key: "sendFailedMessage", tableName: "Global", source: source, developmentValue: "Failed to send feedback. Please try again later.", comment: nil) }
+      var sendFailedMessage: RswiftResources.StringResource { .init(key: "sendFailedMessage", tableName: "Global", source: source, developmentValue: "Could not send email. Please try again later.", comment: nil) }
 
       /// en translation: Send Failed
       ///
@@ -1674,12 +1709,26 @@ struct _R {
       /// Locales: en, uk
       var startOver: RswiftResources.StringResource { .init(key: "startOver", tableName: "Global", source: source, developmentValue: "Start over", comment: nil) }
 
-      /// en translation: Cafe with up to twenty staff members, including an administrator and moderator
+      /// en translation: Enter current stock quantity
+      ///
+      /// Key: stockExplanation
+      ///
+      /// Locales: en, uk
+      var stockExplanation: RswiftResources.StringResource { .init(key: "stockExplanation", tableName: "Global", source: source, developmentValue: "Enter current stock quantity", comment: nil) }
+
+      /// en translation: Stock Quantity
+      ///
+      /// Key: stockPlaceholder
+      ///
+      /// Locales: en, uk
+      var stockPlaceholder: RswiftResources.StringResource { .init(key: "stockPlaceholder", tableName: "Global", source: source, developmentValue: "Stock Quantity", comment: nil) }
+
+      /// en translation: Up to 20 staff members
       ///
       /// Key: subPlanBigDescription
       ///
       /// Locales: en, uk
-      var subPlanBigDescription: RswiftResources.StringResource { .init(key: "subPlanBigDescription", tableName: "Global", source: source, developmentValue: "Cafe with up to twenty staff members, including an administrator and moderator", comment: nil) }
+      var subPlanBigDescription: RswiftResources.StringResource { .init(key: "subPlanBigDescription", tableName: "Global", source: source, developmentValue: "Up to 20 staff members", comment: nil) }
 
       /// en translation: Big
       ///
@@ -1688,12 +1737,12 @@ struct _R {
       /// Locales: en, uk
       var subPlanBigName: RswiftResources.StringResource { .init(key: "subPlanBigName", tableName: "Global", source: source, developmentValue: "Big", comment: nil) }
 
-      /// en translation: Cafe with up to thirty staff members, including an administrator and moderator
+      /// en translation: Unlimited staff
       ///
       /// Key: subPlanMaxiDescription
       ///
       /// Locales: en, uk
-      var subPlanMaxiDescription: RswiftResources.StringResource { .init(key: "subPlanMaxiDescription", tableName: "Global", source: source, developmentValue: "Cafe with up to thirty staff members, including an administrator and moderator", comment: nil) }
+      var subPlanMaxiDescription: RswiftResources.StringResource { .init(key: "subPlanMaxiDescription", tableName: "Global", source: source, developmentValue: "Unlimited staff", comment: nil) }
 
       /// en translation: Maxi
       ///
@@ -1702,12 +1751,12 @@ struct _R {
       /// Locales: en, uk
       var subPlanMaxiName: RswiftResources.StringResource { .init(key: "subPlanMaxiName", tableName: "Global", source: source, developmentValue: "Maxi", comment: nil) }
 
-      /// en translation: Cafe with up to twelve staff members, including an administrator and moderator
+      /// en translation: Up to 10 staff members
       ///
       /// Key: subPlanMidDescription
       ///
       /// Locales: en, uk
-      var subPlanMidDescription: RswiftResources.StringResource { .init(key: "subPlanMidDescription", tableName: "Global", source: source, developmentValue: "Cafe with up to twelve staff members, including an administrator and moderator", comment: nil) }
+      var subPlanMidDescription: RswiftResources.StringResource { .init(key: "subPlanMidDescription", tableName: "Global", source: source, developmentValue: "Up to 10 staff members", comment: nil) }
 
       /// en translation: Mid
       ///
@@ -1716,12 +1765,12 @@ struct _R {
       /// Locales: en, uk
       var subPlanMidName: RswiftResources.StringResource { .init(key: "subPlanMidName", tableName: "Global", source: source, developmentValue: "Mid", comment: nil) }
 
-      /// en translation: A small café with no more than two staff members
+      /// en translation: Up to 3 staff members
       ///
       /// Key: subPlanMiniDescription
       ///
       /// Locales: en, uk
-      var subPlanMiniDescription: RswiftResources.StringResource { .init(key: "subPlanMiniDescription", tableName: "Global", source: source, developmentValue: "A small café with no more than two staff members", comment: nil) }
+      var subPlanMiniDescription: RswiftResources.StringResource { .init(key: "subPlanMiniDescription", tableName: "Global", source: source, developmentValue: "Up to 3 staff members", comment: nil) }
 
       /// en translation: Mini
       ///
@@ -1737,19 +1786,19 @@ struct _R {
       /// Locales: en, uk
       var subPlanNoneDescription: RswiftResources.StringResource { .init(key: "subPlanNoneDescription", tableName: "Global", source: source, developmentValue: "No subscription", comment: nil) }
 
-      /// en translation: No subscription
+      /// en translation: None
       ///
       /// Key: subPlanNoneName
       ///
       /// Locales: en, uk
-      var subPlanNoneName: RswiftResources.StringResource { .init(key: "subPlanNoneName", tableName: "Global", source: source, developmentValue: "No subscription", comment: nil) }
+      var subPlanNoneName: RswiftResources.StringResource { .init(key: "subPlanNoneName", tableName: "Global", source: source, developmentValue: "None", comment: nil) }
 
-      /// en translation: Cafes with no more than five staff members, including the administrator and moderator
+      /// en translation: Up to 5 staff members
       ///
       /// Key: subPlanPentaDescription
       ///
       /// Locales: en, uk
-      var subPlanPentaDescription: RswiftResources.StringResource { .init(key: "subPlanPentaDescription", tableName: "Global", source: source, developmentValue: "Cafes with no more than five staff members, including the administrator and moderator", comment: nil) }
+      var subPlanPentaDescription: RswiftResources.StringResource { .init(key: "subPlanPentaDescription", tableName: "Global", source: source, developmentValue: "Up to 5 staff members", comment: nil) }
 
       /// en translation: Penta
       ///
@@ -1758,12 +1807,12 @@ struct _R {
       /// Locales: en, uk
       var subPlanPentaName: RswiftResources.StringResource { .init(key: "subPlanPentaName", tableName: "Global", source: source, developmentValue: "Penta", comment: nil) }
 
-      /// en translation: There are no limits
+      /// en translation: All features included
       ///
       /// Key: subPlanPremiumDescription
       ///
       /// Locales: en, uk
-      var subPlanPremiumDescription: RswiftResources.StringResource { .init(key: "subPlanPremiumDescription", tableName: "Global", source: source, developmentValue: "There are no limits", comment: nil) }
+      var subPlanPremiumDescription: RswiftResources.StringResource { .init(key: "subPlanPremiumDescription", tableName: "Global", source: source, developmentValue: "All features included", comment: nil) }
 
       /// en translation: Premium
       ///
@@ -1772,12 +1821,12 @@ struct _R {
       /// Locales: en, uk
       var subPlanPremiumName: RswiftResources.StringResource { .init(key: "subPlanPremiumName", tableName: "Global", source: source, developmentValue: "Premium", comment: nil) }
 
-      /// en translation: For single user
+      /// en translation: Single establishment
       ///
       /// Key: subPlanSingleDescription
       ///
       /// Locales: en, uk
-      var subPlanSingleDescription: RswiftResources.StringResource { .init(key: "subPlanSingleDescription", tableName: "Global", source: source, developmentValue: "For single user", comment: nil) }
+      var subPlanSingleDescription: RswiftResources.StringResource { .init(key: "subPlanSingleDescription", tableName: "Global", source: source, developmentValue: "Single establishment", comment: nil) }
 
       /// en translation: Single
       ///
@@ -1807,33 +1856,33 @@ struct _R {
       /// Locales: en, uk
       var subscriptionExpiredHeader: RswiftResources.StringResource { .init(key: "subscriptionExpiredHeader", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"", comment: nil) }
 
-      /// en translation: Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once.   After the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.  Payment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.
+      /// en translation: Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.
       ///
       /// Key: subscriptionFooter1
       ///
       /// Locales: en, uk
-      var subscriptionFooter1: RswiftResources.StringResource { .init(key: "subscriptionFooter1", tableName: "Global", source: source, developmentValue: "Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once. \n\nAfter the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.\n\nPayment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.", comment: nil) }
+      var subscriptionFooter1: RswiftResources.StringResource { .init(key: "subscriptionFooter1", tableName: "Global", source: source, developmentValue: "Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.", comment: nil) }
 
-      /// en translation: Removing the app doesn't automatically cancel the subscription.
+      /// en translation: Account will be charged for renewal within 24-hours prior to the end of the current period.
       ///
       /// Key: subscriptionFooter2
       ///
       /// Locales: en, uk
-      var subscriptionFooter2: RswiftResources.StringResource { .init(key: "subscriptionFooter2", tableName: "Global", source: source, developmentValue: "Removing the app doesn't automatically cancel the subscription.", comment: nil) }
+      var subscriptionFooter2: RswiftResources.StringResource { .init(key: "subscriptionFooter2", tableName: "Global", source: source, developmentValue: "Account will be charged for renewal within 24-hours prior to the end of the current period.", comment: nil) }
 
-      /// en translation: To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the "Restore Costs"
+      /// en translation: You need a subscription to access this feature
       ///
       /// Key: subscriptionNeedSubHeader
       ///
       /// Locales: en, uk
-      var subscriptionNeedSubHeader: RswiftResources.StringResource { .init(key: "subscriptionNeedSubHeader", tableName: "Global", source: source, developmentValue: "To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the \"Restore Costs\"", comment: nil) }
+      var subscriptionNeedSubHeader: RswiftResources.StringResource { .init(key: "subscriptionNeedSubHeader", tableName: "Global", source: source, developmentValue: "You need a subscription to access this feature", comment: nil) }
 
-      /// en translation: Subscription options
+      /// en translation: Subscription Options
       ///
       /// Key: subscriptionOptions
       ///
       /// Locales: en, uk
-      var subscriptionOptions: RswiftResources.StringResource { .init(key: "subscriptionOptions", tableName: "Global", source: source, developmentValue: "Subscription options", comment: nil) }
+      var subscriptionOptions: RswiftResources.StringResource { .init(key: "subscriptionOptions", tableName: "Global", source: source, developmentValue: "Subscription Options", comment: nil) }
 
       /// en translation: Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe
       ///
@@ -1849,12 +1898,12 @@ struct _R {
       /// Locales: en, uk
       var success: RswiftResources.StringResource { .init(key: "success", tableName: "Global", source: source, developmentValue: "Success", comment: nil) }
 
-      /// en translation: Congratulations, you have successfully costd a subscription
+      /// en translation: Purchase successful
       ///
       /// Key: successPurchase
       ///
       /// Locales: en, uk
-      var successPurchase: RswiftResources.StringResource { .init(key: "successPurchase", tableName: "Global", source: source, developmentValue: "Congratulations, you have successfully costd a subscription", comment: nil) }
+      var successPurchase: RswiftResources.StringResource { .init(key: "successPurchase", tableName: "Global", source: source, developmentValue: "Purchase successful", comment: nil) }
 
       /// en translation: Sign-in link has been sent to technician's email: %@
       ///
@@ -1863,47 +1912,47 @@ struct _R {
       /// Locales: en, uk
       var successSentTechnicianEmail: RswiftResources.StringResource1<String> { .init(key: "successSentTechnicianEmail", tableName: "Global", source: source, developmentValue: "Sign-in link has been sent to technician's email: %@", comment: nil) }
 
-      /// en translation: Slate (Automatic)
+      /// en translation: System (Slate)
       ///
       /// Key: systemAltThemeName
       ///
       /// Locales: en, uk
-      var systemAltThemeName: RswiftResources.StringResource { .init(key: "systemAltThemeName", tableName: "Global", source: source, developmentValue: "Slate (Automatic)", comment: nil) }
+      var systemAltThemeName: RswiftResources.StringResource { .init(key: "systemAltThemeName", tableName: "Global", source: source, developmentValue: "System (Slate)", comment: nil) }
 
-      /// en translation: Classic (Automatic)
+      /// en translation: System
       ///
       /// Key: systemThemeName
       ///
       /// Locales: en, uk
-      var systemThemeName: RswiftResources.StringResource { .init(key: "systemThemeName", tableName: "Global", source: source, developmentValue: "Classic (Automatic)", comment: nil) }
+      var systemThemeName: RswiftResources.StringResource { .init(key: "systemThemeName", tableName: "Global", source: source, developmentValue: "System", comment: nil) }
 
-      /// en translation: You cannot create a waiter with this email address because a user with this email address is already registered in the system.
+      /// en translation: Technician with this email already exists
       ///
       /// Key: technicianEmailAlreadyExist
       ///
       /// Locales: en, uk
-      var technicianEmailAlreadyExist: RswiftResources.StringResource { .init(key: "technicianEmailAlreadyExist", tableName: "Global", source: source, developmentValue: "You cannot create a waiter with this email address because a user with this email address is already registered in the system.", comment: nil) }
+      var technicianEmailAlreadyExist: RswiftResources.StringResource { .init(key: "technicianEmailAlreadyExist", tableName: "Global", source: source, developmentValue: "Technician with this email already exists", comment: nil) }
 
-      /// en translation: Your current subscription does not allow more staff to be added to your cafe. You can change your subscription:
+      /// en translation: Technician limit reached
       ///
       /// Key: technicianLimitReached
       ///
       /// Locales: en, uk
-      var technicianLimitReached: RswiftResources.StringResource { .init(key: "technicianLimitReached", tableName: "Global", source: source, developmentValue: "Your current subscription does not allow more staff to be added to your cafe. You can change your subscription:", comment: nil) }
+      var technicianLimitReached: RswiftResources.StringResource { .init(key: "technicianLimitReached", tableName: "Global", source: source, developmentValue: "Technician limit reached", comment: nil) }
 
-      /// en translation: Technician's note goes here.
+      /// en translation: Technician note goes here
       ///
       /// Key: technicianNoteGoesHere
       ///
       /// Locales: en, uk
-      var technicianNoteGoesHere: RswiftResources.StringResource { .init(key: "technicianNoteGoesHere", tableName: "Global", source: source, developmentValue: "Technician's note goes here.", comment: nil) }
+      var technicianNoteGoesHere: RswiftResources.StringResource { .init(key: "technicianNoteGoesHere", tableName: "Global", source: source, developmentValue: "Technician note goes here", comment: nil) }
 
-      /// en translation: Terms of use
+      /// en translation: Terms of Use
       ///
       /// Key: termsOfUse
       ///
       /// Locales: en, uk
-      var termsOfUse: RswiftResources.StringResource { .init(key: "termsOfUse", tableName: "Global", source: source, developmentValue: "Terms of use", comment: nil) }
+      var termsOfUse: RswiftResources.StringResource { .init(key: "termsOfUse", tableName: "Global", source: source, developmentValue: "Terms of Use", comment: nil) }
 
       /// en translation: Theme
       ///
@@ -1933,19 +1982,19 @@ struct _R {
       /// Locales: en, uk
       var transfer: RswiftResources.StringResource { .init(key: "transfer", tableName: "Global", source: source, developmentValue: "Transfer", comment: nil) }
 
-      /// en translation: Transfer accumulated data or start fresh?
+      /// en translation: Do you want to transfer your data?
       ///
       /// Key: transferDataDescription
       ///
       /// Locales: en, uk
-      var transferDataDescription: RswiftResources.StringResource { .init(key: "transferDataDescription", tableName: "Global", source: source, developmentValue: "Transfer accumulated data or start fresh?", comment: nil) }
+      var transferDataDescription: RswiftResources.StringResource { .init(key: "transferDataDescription", tableName: "Global", source: source, developmentValue: "Do you want to transfer your data?", comment: nil) }
 
-      /// en translation: Transfer Data
+      /// en translation: Data Transfer
       ///
       /// Key: transferDataTitle
       ///
       /// Locales: en, uk
-      var transferDataTitle: RswiftResources.StringResource { .init(key: "transferDataTitle", tableName: "Global", source: source, developmentValue: "Transfer Data", comment: nil) }
+      var transferDataTitle: RswiftResources.StringResource { .init(key: "transferDataTitle", tableName: "Global", source: source, developmentValue: "Data Transfer", comment: nil) }
 
       /// en translation: Transferring data...
       ///
@@ -1968,12 +2017,12 @@ struct _R {
       /// Locales: en, uk
       var typeDelivery: RswiftResources.StringResource { .init(key: "typeDelivery", tableName: "Global", source: source, developmentValue: "Delivery", comment: nil) }
 
-      /// en translation: Dine‑in
+      /// en translation: Dine-in
       ///
       /// Key: typeHall
       ///
       /// Locales: en, uk
-      var typeHall: RswiftResources.StringResource { .init(key: "typeHall", tableName: "Global", source: source, developmentValue: "Dine‑in", comment: nil) }
+      var typeHall: RswiftResources.StringResource { .init(key: "typeHall", tableName: "Global", source: source, developmentValue: "Dine-in", comment: nil) }
 
       /// en translation: Takeaway
       ///
@@ -1982,12 +2031,12 @@ struct _R {
       /// Locales: en, uk
       var typeTakeaway: RswiftResources.StringResource { .init(key: "typeTakeaway", tableName: "Global", source: source, developmentValue: "Takeaway", comment: nil) }
 
-      /// en translation: Types 
+      /// en translation: Types
       ///
       /// Key: types
       ///
       /// Locales: en, uk
-      var types: RswiftResources.StringResource { .init(key: "types", tableName: "Global", source: source, developmentValue: "Types ", comment: nil) }
+      var types: RswiftResources.StringResource { .init(key: "types", tableName: "Global", source: source, developmentValue: "Types", comment: nil) }
 
       /// en translation: Ukrainian
       ///
@@ -1995,6 +2044,62 @@ struct _R {
       ///
       /// Locales: en, uk
       var ukrainian: RswiftResources.StringResource { .init(key: "ukrainian", tableName: "Global", source: source, developmentValue: "Ukrainian", comment: nil) }
+
+      /// en translation: Select measurement unit
+      ///
+      /// Key: unitExplanation
+      ///
+      /// Locales: en, uk
+      var unitExplanation: RswiftResources.StringResource { .init(key: "unitExplanation", tableName: "Global", source: source, developmentValue: "Select measurement unit", comment: nil) }
+
+      /// en translation: Unit
+      ///
+      /// Key: unitLabel
+      ///
+      /// Locales: en, uk
+      var unitLabel: RswiftResources.StringResource { .init(key: "unitLabel", tableName: "Global", source: source, developmentValue: "Unit", comment: nil) }
+
+      /// en translation: g
+      ///
+      /// Key: unit_g
+      ///
+      /// Locales: en, uk
+      var unit_g: RswiftResources.StringResource { .init(key: "unit_g", tableName: "Global", source: source, developmentValue: "g", comment: nil) }
+
+      /// en translation: kg
+      ///
+      /// Key: unit_kg
+      ///
+      /// Locales: en, uk
+      var unit_kg: RswiftResources.StringResource { .init(key: "unit_kg", tableName: "Global", source: source, developmentValue: "kg", comment: nil) }
+
+      /// en translation: l
+      ///
+      /// Key: unit_l
+      ///
+      /// Locales: en, uk
+      var unit_l: RswiftResources.StringResource { .init(key: "unit_l", tableName: "Global", source: source, developmentValue: "l", comment: nil) }
+
+      /// en translation: ml
+      ///
+      /// Key: unit_ml
+      ///
+      /// Locales: en, uk
+      var unit_ml: RswiftResources.StringResource { .init(key: "unit_ml", tableName: "Global", source: source, developmentValue: "ml", comment: nil) }
+
+      /// en translation: pcs
+      ///
+      /// Key: unit_pcs
+      ///
+      /// Locales: en, uk
+      var unit_pcs: RswiftResources.StringResource { .init(key: "unit_pcs", tableName: "Global", source: source, developmentValue: "pcs", comment: nil) }
+
+      /// en translation: Update Purchase
+      ///
+      /// Key: updatePurchase
+      ///
+      /// Locales: en, uk
+      var updatePurchase: RswiftResources.StringResource { .init(key: "updatePurchase", tableName: "Global", source: source, developmentValue: "Update Purchase", comment: nil) }
 
       /// en translation: Uploaded new technician image at %@
       ///
@@ -2031,12 +2136,19 @@ struct _R {
       /// Locales: en, uk
       var wentWrongTryAgain: RswiftResources.StringResource { .init(key: "wentWrongTryAgain", tableName: "Global", source: source, developmentValue: "Something went wrong, please try again later", comment: nil) }
 
-      /// en translation: Write to developer
+      /// en translation: Write to Developer
       ///
       /// Key: writeToDeveloper
       ///
       /// Locales: en, uk
-      var writeToDeveloper: RswiftResources.StringResource { .init(key: "writeToDeveloper", tableName: "Global", source: source, developmentValue: "Write to developer", comment: nil) }
+      var writeToDeveloper: RswiftResources.StringResource { .init(key: "writeToDeveloper", tableName: "Global", source: source, developmentValue: "Write to Developer", comment: nil) }
+
+      /// en translation: Yes
+      ///
+      /// Key: yes
+      ///
+      /// Locales: en, uk
+      var yes: RswiftResources.StringResource { .init(key: "yes", tableName: "Global", source: source, developmentValue: "Yes", comment: nil) }
     }
   }
 

@@ -61,6 +61,10 @@ extension Double {
     var decimalFormat: String {
         return NumberFormatter.decimal.string(self)
     }
+
+    var quantityFormat: String {
+        return NumberFormatter.quantity.string(self)
+    }
 }
 
 extension Int {

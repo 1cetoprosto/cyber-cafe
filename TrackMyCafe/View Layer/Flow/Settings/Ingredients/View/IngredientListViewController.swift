@@ -14,11 +14,17 @@ class IngredientListViewController: UIViewController {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "Cell")
-        tableView.dataSource = self
         tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .singleLine
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 70
         return tableView
     }()
+
+    // MARK: - Init
     
     init(viewModel: IngredientListViewModelType = IngredientListViewModel()) {
         self.viewModel = viewModel
@@ -57,25 +63,8 @@ class IngredientListViewController: UIViewController {
     }
     
     @objc private func addIngredientAction() {
-        let alert = UIAlertController(title: R.string.global.addIngredient(), message: nil, preferredStyle: .alert)
-        
-        alert.addTextField { $0.placeholder = R.string.global.productName() }
-        alert.addTextField { $0.placeholder = R.string.global.price(); $0.keyboardType = .decimalPad }
-        alert.addTextField { $0.placeholder = R.string.global.quantity(); $0.keyboardType = .decimalPad }
-        
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(UIAlertAction(title: R.string.global.add(), style: .default) { [weak self] _ in
-            guard let name = alert.textFields?[0].text, !name.isEmpty,
-                  let costText = alert.textFields?[1].text, let cost = Double(costText.replacingOccurrences(of: ",", with: ".")),
-                  let stockText = alert.textFields?[2].text, let stock = Double(stockText.replacingOccurrences(of: ",", with: "."))
-            else { return }
-            
-            Task {
-                await self?.viewModel.createIngredient(name: name, cost: cost, stock: stock, unit: .kg) // Defaulting to kg for simplicity
-            }
-        })
-        
-        present(alert, animated: true)
+        let createVC = CreateIngredientViewController(viewModel: viewModel)
+        present(createVC, animated: true)
     }
 }
 
@@ -85,10 +74,25 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: IngredientTableViewCell.identifier, for: indexPath)
+                as? IngredientTableViewCell
+        else {
+            return UITableViewCell()
+        }
+
         let ingredient = viewModel.ingredients[indexPath.row]
-        cell.textLabel?.text = "\(ingredient.name) (\(ingredient.stockQuantity) \(ingredient.unit.rawValue)) - \(ingredient.averageCost)"
+        cell.configure(with: ingredient)
+
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let ingredient = viewModel.ingredients[indexPath.row]
+        let createVC = CreateIngredientViewController(viewModel: viewModel, ingredient: ingredient)
+        present(createVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

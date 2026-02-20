@@ -22,6 +22,7 @@
 "clear" = "clear";
 "actionNext" = "Next";
 "actionDone" = "Done";
+"add" = "Add";
 
 // MARK: - Contact Information
 "phone" = "Phone";
@@ -46,6 +47,9 @@
 "attention" = "Attention";
 "wentWrong" = "Something went wrong";
 "wentWrongTryAgain" = "Something went wrong, please try again later";
+"printForWhom" = "For whom to print?";
+"printForDoctor" = "For Admin";
+"printForTechnician" = "For Waiter";
 
 // MARK: - Validation
 "fieldRequired" = "Field '%@' required";
@@ -90,243 +94,244 @@
 "choseSignInRole" = "The waiter has several roles, select a role for authorization:";
 
 // MARK: - Menu
+"home" = "Home";
+"appName" = "TrackMyCafe";
+"income" = "Income";
+"costs" = "Costs";
 "menuStaff" = "Staff";
 "menuSettings" = "Settings";
-
-// MARK: - Subscription
-"subscription" = "Subscription";
-"subscriptionDefaultHeader" = "You can change your subscription to one that is best for your cafe at any time";
-"subscriptionReachedHeader" = "Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe";
-"subscriptionExpiredHeader" = "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"";
-"subscriptionNeedSubHeader" = "To continue working with the application, buy a subscription, or if you already have a subscription, you can renew it by clicking on the \"Restore Costs\"";
-"subscriptionFooter1" = "Subscription is required to get access to application. Every type of subscription include 1 month free trial. The trial period is provided only once. \n\nAfter the free trial period the subscription automatically renews with the price and duration given above unless it is canceled at least 24 hours before the end of the trial month.\n\nPayment will be charged to your Apple ID account at the confirmation of cost. Your account will be charged for renewal within 24 hours prior to the end of the current period. You can manage and cancel your subscriptions by going to your account settings on the App Store after cost.";
-"subscriptionFooter2" = "Removing the app doesn't automatically cancel the subscription.";
-"manageSubscriptions" = "Manage subscriptions";
-"restorePurchases" = "Restore purchases";
-"currentSubscription" = "Your current subscription";
-"subscriptionOptions" = "Subscription options";
-"purchaseRestored" = "Purchases resumed successfully";
-"appleHasntPurhcase" = "The current AppleID has no costs for this cafe";
-"appleIDReserved" = "You cannot cost a subscription for this cafe from the current AppleID because this AppleID has already been used for another cafe";
-"labReserved" = "You cannot cost a subscription for this cafe from the current AppleID because this cafe is already tied to another AppleID";
-"successPurchase" = "Congratulations, you have successfully costd a subscription";
-"hasPremiumPlan" = "You have a Premium subscription, you do not need to buy or change the subscription";
-"menuSubExpired" = "Your subscription has expired. To continue using the application you need to buy a subscription";
-"menuBuySub" = "Buy subscription";
-"menuSubTech" = "Your subscription has expired, please contact your administrator to renew your subscription";
-"technicianLimitReached" = "Your current subscription does not allow more staff to be added to your cafe. You can change your subscription:";
-"changeSub" = "Change";
-"month" = "Month";
-"termsOfUse" = "Terms of use";
-"privacyPolicy" = "Privacy policy";
-
-// MARK: - Home/Dashboard
-"home" = "Home";
-"today" = "Today";
-"week" = "Week";
-"monthlyProfit" = "Monthly profit";
-"expensesPrefix" = "Expenses: ";
-"recentIncomes" = "Recent incomes";
-"recentExpenses" = "Recent expenses";
-"allArrow" = "All →";
-
-// MARK: - Subscription Plans
-"subPlanNoneName" = "No subscription";
-"subPlanSingleName" = "Single";
-"subPlanMiniName" = "Mini";
-"subPlanPentaName" = "Penta";
-"subPlanMidName" = "Mid";
-"subPlanBigName" = "Big";
-"subPlanMaxiName" = "Maxi";
-"subPlanPremiumName" = "Premium";
-"subPlanNoneDescription" = "No subscription";
-"subPlanSingleDescription" = "For single user";
-"subPlanMiniDescription" = "A small café with no more than two staff members";
-"subPlanPentaDescription" = "Cafes with no more than five staff members, including the administrator and moderator";
-"subPlanMidDescription" = "Cafe with up to twelve staff members, including an administrator and moderator";
-"subPlanBigDescription" = "Cafe with up to twenty staff members, including an administrator and moderator";
-"subPlanMaxiDescription" = "Cafe with up to thirty staff members, including an administrator and moderator";
-"subPlanPremiumDescription" = "There are no limits";
-
-// MARK: - Gender & Personal Info
-"genderMale" = "Male";
-"genderFemale" = "Female";
-"genderNoSpecified" = "Not specified";
-
-// MARK: - Print & Services
-"printForWhom" = "Print for whom?";
-"printForTechnician" = "For waiter";
-"printForDoctor" = "For client";
-
-// MARK: - Media Access
-"camera" = "Camera";
-"gallery" = "Photo Gallery";
-"access_image_title" = "Access to the %@";
-"access_image_desc" = "Please provide access to your %@";
-
-// MARK: - Account Management
-"delete_account_title" = "Are you sure you want to delete your account, all your data will be deleted forever, this action cannot be undone?";
-"delete_account_admin" = "Are you sure you want to delete your account, all cafe data and orders will be deleted forever, this action cannot be undone?";
-"delete_account" = "Delete Account";
-
-// MARK: - Theme Settings
-"general" = "General"; 
-"selectTheme" = "Select Theme";
-"lightThemeName" = "Classic (Light)";
-"darkThemeName" = "Classic (Dark)";
-"systemThemeName" = "Classic (Automatic)";
-"systemAltThemeName" = "Slate (Automatic)";
-"lightAltThemeName" = "Slate (Light)";
-"darkAltThemeName" = "Slate (Dark)";
-"coffeeWithMilkThemeName" = "Latte (Automatic)";
-"coffeeWithMilkLightThemeName" = "Latte (Light)";
-"coffeeWithMilkDarkThemeName" = "Latte (Dark)";
-"theme" = "Theme";
-
-// MARK: - Settings
 "languages" = "Languages";
-"english" = "English";
-"ukrainian" = "Ukrainian";
-"transferDataTitle" = "Transfer Data";
-"transferDataDescription" = "Transfer accumulated data or start fresh?";
-"transferingData" = "Transferring data...";
-"authenticationFailedTitle" = "Authentication Failed";
-"authenticationFailedMessage" = "To continue, you need to log in.";
-"developer" = "Developer";
-"seedTestData" = "Seed Test Data";
-"priceList" = "Price list";
-"receiptTypes" = "Receipt types";
-"writeToDeveloper" = "Write to developer";
-"enterNumberOfDays" = "Enter number of days";
-"seedAction" = "Seed";
-"seedingData" = "Seeding data...";
-"restartOnboarding" = "Restart feature tour";
-"onboardingResetTitle" = "Feature tour reset";
-"onboardingResetMessage" = "Feature tour will show again.";
 
-"onboardingOrdersAddTitle" = "Create sale";
-"onboardingOrdersAddMessage" = "Tap plus to add a daily sale.";
+// MARK: - Home Dashboard
+"week" = "Week";
+"monthlyProfit" = "Monthly Profit";
+"expensesPrefix" = "Expenses: ";
+"today" = "Today";
+"recentIncomes" = "Recent Incomes";
+"recentExpenses" = "Recent Expenses";
+"allArrow" = "All ->";
 
-"onboardingOrderDetailsDateTitle" = "Sale date";
-"onboardingOrderDetailsDateMessage" = "Ensure the date is correct.";
-"onboardingOrderDetailsTypeTitle" = "Sale type";
-"onboardingOrderDetailsTypeMessage" = "Choose type: dine‑in/takeaway/delivery.";
-"onboardingOrderDetailsProductsTitle" = "Items quantity";
-"onboardingOrderDetailsProductsMessage" = "Enter sold units.";
-"onboardingOrderDetailsTotalsTitle" = "Summary";
-"onboardingOrderDetailsTotalsMessage" = "Check total amount.";
-"onboardingOrderDetailsCashTitle" = "Cash";
-"onboardingOrderDetailsCashMessage" = "Enter daily cash.";
-"onboardingOrderDetailsCardTitle" = "Card";
-"onboardingOrderDetailsCardMessage" = "Enter card revenue.";
-"onboardingOrderDetailsSaveTitle" = "Save";
-"onboardingOrderDetailsSaveMessage" = "Save the daily sale.";
-
-"onboardingCostsAddTitle" = "Add expense";
-"onboardingCostsAddMessage" = "Tap plus to add an expense.";
-
-"onboardingCostDetailsDateTitle" = "Date";
-"onboardingCostDetailsDateMessage" = "Enter expense date.";
-"onboardingCostDetailsNameTitle" = "Name";
-"onboardingCostDetailsNameMessage" = "Describe the expense.";
-"onboardingCostDetailsSumTitle" = "Sum";
-"onboardingCostDetailsSumMessage" = "Enter amount in app currency.";
-"onboardingCostDetailsSaveTitle" = "Save";
-"onboardingCostDetailsSaveMessage" = "Save the expense.";
-
-"onboardingSettingsPriceListTitle" = "Goods and prices";
-"onboardingSettingsPriceListMessage" = "First add goods and prices.";
-"onboardingSettingsAddProductTitle" = "New product";
-"onboardingSettingsAddProductMessage" = "Add a product with a price.";
-"onboardingSettingsTypesTitle" = "Sale types";
-"onboardingSettingsTypesMessage" = "Create types and set the default type.";
-
-// MARK: - Product
-"products" = "Price list";
-"product" = "Product";
-"productName" = "Product Name";
-"enterProductName" = "Enter product name";
-"price" = "Price";
+// MARK: - Staff Alerts & Details
+"technicianLimitReached" = "Technician limit reached";
+"changeSub" = "Change Subscription";
+"technicianNoteGoesHere" = "Technician note goes here";
+"allOrders" = "All Orders";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
-"pleaseEnterProductName" = "Please enter product name";
-"failedToSaveProductPrice" = "Failed to save product price";
-"enterPrice" = "Enter price";
-
-// Recipe & Ingredients
-"recipe" = "Recipe";
-"ingredients" = "Ingredients";
-"addIngredient" = "Add Ingredient";
-"quantity" = "Quantity";
-"selectIngredient" = "Select Ingredient";
-"enterQuantityPerUnit" = "Enter quantity per unit (%@)";
-"add" = "Add";
-
-// App
-"appName" = "TrackMyCafe";
-
-// MARK: - Good
-"goods" = "Goods";
-
-// MARK: - Type
-"types" = "Types ";
-"type" = "Type";
-"typeHall" = "Dine‑in";
-"typeTakeaway" = "Takeaway";
-"typeDelivery" = "Delivery";
-"defaultType" = "Default type";
-"enterTypeName" = "Enter the name of the type of receipt";
-"pleaseEnterTypeName" = "Please enter the type name";
-"failedToSaveType" = "Failed to save type";
-
-// MARK: - Waiters
-"technicianEmailAlreadyExist" = "You cannot create a waiter with this email address because a user with this email address is already registered in the system.";
-"technicianNoteGoesHere" = "Technician's note goes here.";
 "resendInvite" = "Resend Invite";
 "areYouSureYouWantToDeleteThisItem" = "Are you sure you want to delete this item?";
 "somethingWentWrong" = "Something went wrong";
 
+// MARK: - Technician
+"technicianEmailAlreadyExist" = "Technician with this email already exists";
+
+// MARK: - Settings
+"theme" = "Theme";
+"restartOnboarding" = "Restart Onboarding";
+"onboardingResetTitle" = "Restart Onboarding?";
+"onboardingResetMessage" = "This will reset your onboarding progress. Do you want to continue?";
+"writeToDeveloper" = "Write to Developer";
+"general" = "General";
+"priceList" = "Price List";
+"receiptTypes" = "Receipt Types";
+"ingredients" = "Ingredients";
+"seedTestData" = "Seed Test Data";
+"enterNumberOfDays" = "Enter number of days to seed";
+"developer" = "Developer";
+"seedAction" = "Seed";
+"seedingData" = "Seeding data...";
+"transferDataTitle" = "Data Transfer";
+"transferDataDescription" = "Do you want to transfer your data?";
+"transfer" = "Transfer";
+"transferingData" = "Transferring data...";
+"authenticationFailedTitle" = "Authentication Failed";
+"authenticationFailedMessage" = "Please sign in to continue.";
+"mailNotAvailableTitle" = "Mail Not Available";
+"mailNotAvailableMessage" = "Please configure a mail account in Settings to send email.";
+"feedbackEmailSubject" = "TrackMyCafe Feedback";
+"feedbackEmailBody" = "\n\n\n---\nApp Version: %@\nDevice: %@\nOS: %@\nUser ID: %@\nEmail: %@\nRole: %@";
+"feedbackSuccessTitle" = "Feedback Sent";
+"feedbackSuccessMessage" = "Thank you for your feedback!";
+"okButton" = "OK";
+"sendFailedTitle" = "Send Failed";
+"sendFailedMessage" = "Could not send email. Please try again later.";
+"wentWrong" = "Something went wrong";
+"error" = "Error";
+"subscription" = "Subscription";
+"subscriptionDefaultHeader" = "You can change your subscription to one that is best for your cafe at any time";
+"subscriptionReachedHeader" = "Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe";
+"subscriptionExpiredHeader" = "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"";
+"purchaseRestored" = "Purchase restored";
+"subscriptionNeedSubHeader" = "You need a subscription to access this feature";
+"subscriptionOptions" = "Subscription Options";
+"currentSubscription" = "Current Subscription";
+"restorePurchases" = "Restore Purchases";
+"subscriptionFooter1" = "Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.";
+"manageSubscriptions" = "Manage Subscriptions";
+"subscriptionFooter2" = "Account will be charged for renewal within 24-hours prior to the end of the current period.";
+"termsOfUse" = "Terms of Use";
+"privacyPolicy" = "Privacy Policy";
+"hasPremiumPlan" = "You have Premium Plan";
+"successPurchase" = "Purchase successful";
+"appleIDReserved" = "This Apple ID is already linked to another account.";
+"labReserved" = "This subscription is already linked to another Cafe.";
+
+// MARK: - Purchases
+"purchases" = "Purchases";
+"newPurchase" = "New Purchase";
+"savePurchase" = "Save Purchase";
+"selectIngredient" = "Select Ingredient";
+"quantity" = "Quantity";
+"pricePerUnit" = "Price per Unit";
+"per" = "per";
+"editPurchase" = "Edit Purchase";
+"updatePurchase" = "Update Purchase";
+"pleaseSelectIngredient" = "Please select an ingredient";
+"invalidQuantity" = "Invalid quantity";
+"invalidPrice" = "Invalid price";
+
+// MARK: - Themes
+"systemThemeName" = "System";
+"lightThemeName" = "Light";
+"darkThemeName" = "Dark";
+"systemAltThemeName" = "System (Slate)";
+"lightAltThemeName" = "Light (Slate)";
+"darkAltThemeName" = "Dark (Slate)";
+"coffeeWithMilkThemeName" = "System (Latte)";
+"coffeeWithMilkLightThemeName" = "Light (Latte)";
+"coffeeWithMilkDarkThemeName" = "Dark (Latte)";
+
+// MARK: - Subscription Plans
+"subPlanNoneName" = "None";
+"subPlanNoneDescription" = "No subscription";
+"subPlanSingleName" = "Single";
+"subPlanSingleDescription" = "Single establishment";
+"subPlanMiniName" = "Mini";
+"subPlanMiniDescription" = "Up to 3 staff members";
+"subPlanPentaName" = "Penta";
+"subPlanPentaDescription" = "Up to 5 staff members";
+"subPlanMidName" = "Mid";
+"subPlanMidDescription" = "Up to 10 staff members";
+"subPlanBigName" = "Big";
+"subPlanBigDescription" = "Up to 20 staff members";
+"subPlanMaxiName" = "Maxi";
+"subPlanMaxiDescription" = "Unlimited staff";
+"subPlanPremiumName" = "Premium";
+"subPlanPremiumDescription" = "All features included";
+
+// MARK: - Order Types
+"typeHall" = "Dine-in";
+"typeTakeaway" = "Takeaway";
+"typeDelivery" = "Delivery";
+
 // MARK: - Orders
-"orders" = "Incomes";
-"allOrders" = "All Incomes";
-"order" = "Income";
+"orders" = "Orders";
+"chooseType" = "Choose type";
+"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit it?";
+
+// MARK: - Products
+"products" = "Products";
+"order" = "Order";
 "cash" = "Cash";
-"card" = "Card";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
+"money2" = "0.00";
+"money3" = "0.00";
 "totalTitle" = "Total";
-"money2" = "Money2";
-"money3" = "Money3";
-"defaultOrderType" = "Default";
-"chooseType" = "Choose type";
-"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them.";
+"defaultOrderType" = "Order";
 
-// MARK: - Income
-"income" = "Incomes";
-
-// MARK: - Sales
-"sales" = "Sales";
-"plan" = "Plan";
-
-// MARK: - Cost
-"costs" = "Expenses";
-"cost" = "Expense";
+// MARK: - Costs
 "costDate" = "Date";
-"costName" = "Expense";
-"costNamePlaceholder" = "Enter expense name";
-"costSum" = "Sum";
-"costSumPlaceholder" = "Enter expense sum";
+"costName" = "Cost Name";
+"costNamePlaceholder" = "Enter cost name";
+"costSum" = "Amount";
+"costSumPlaceholder" = "Enter amount";
+"cost" = "Cost";
 
-// MARK: - Feedback
-"feedback" = "Feedback";
-"feedbackEmailSubject" = "TrackMyCafe App Feedback";
-"feedbackEmailBody" = "Hello,\n\nI would like to share my feedback about the TrackMyCafe app:\n\n[Please write your feedback and suggestions here]\n\nApp Version: %@\nDevice: %@\nOS Version: %@\nUser ID: %@\nUser Email: %@\nUser Role: %@\n\nThank you!";
+// MARK: - Ingredients & Products
+"month" = "month";
+"productName" = "Product Name";
+"ingredientNamePlaceholder" = "Ingredient Name";
+"ingredientNameExplanation" = "Enter the name of the ingredient";
+"price" = "Price";
+"costPlaceholder" = "Cost";
+"costExplanation" = "Enter the cost per unit";
+"stockPlaceholder" = "Stock Quantity";
+"stockExplanation" = "Enter current stock quantity";
+"unitLabel" = "Unit";
+"unitExplanation" = "Select measurement unit";
+"newIngredient" = "New Ingredient";
+"unit_kg" = "kg";
+"unit_g" = "g";
+"unit_l" = "l";
+"unit_ml" = "ml";
+"unit_pcs" = "pcs";
 
-// Feedback Alerts
-"mailNotAvailableTitle" = "Mail Not Available";
-"mailNotAvailableMessage" = "Please configure a mail account in your device settings to send feedback.";
-"sendFailedTitle" = "Send Failed";
-"sendFailedMessage" = "Failed to send feedback. Please try again later.";
-"feedbackSuccessTitle" = "Thank You!";
-"feedbackSuccessMessage" = "Your feedback has been sent successfully.";
-"okButton" = "OK";
+// MARK: - Types
+"types" = "Types";
+"type" = "Type";
+"enterTypeName" = "Enter type name";
+"defaultType" = "Default Type";
+"pleaseEnterTypeName" = "Please enter type name";
+"failedToSaveType" = "Failed to save type";
+
+// MARK: - Language & Theme
+"english" = "English";
+"ukrainian" = "Ukrainian";
+"selectTheme" = "Select Theme";
+
+// MARK: - Product Details
+"enterProductName" = "Enter product name";
+"enterPrice" = "Enter price";
+"recipe" = "Recipe";
+"addIngredient" = "Add Ingredient";
+"product" = "Product";
+"noIngredients" = "No ingredients";
+"pleaseAddIngredients" = "Please add ingredients";
+"actionGoToSettings" = "Go to Settings";
+"enterQuantityPerUnit" = "Enter quantity per unit";
+"pleaseEnterProductName" = "Please enter product name";
+"failedToSaveProductPrice" = "Failed to save product price";
+
+"ingredientAlreadyExists" = "Ingredient already exists";
+"overwriteIngredientMessage" = "This ingredient is already in the recipe. Do you want to overwrite it?";
+"yes" = "Yes";
+"no" = "No";
+
+// MARK: - Image Picker
+"camera" = "Camera";
+"gallery" = "Gallery";
+"access_image_title" = "Access Denied";
+"access_image_desc" = "Please allow access to %@ in Settings";
+"onboardingOrdersAddTitle" = "Add Order";
+"onboardingOrdersAddMessage" = "Tap here to create a new order.";
+"onboardingOrderDetailsDateTitle" = "Date";
+"onboardingOrderDetailsDateMessage" = "Select the date of the order.";
+"onboardingOrderDetailsTypeTitle" = "Order Type";
+"onboardingOrderDetailsTypeMessage" = "Choose the type of order (e.g., Dine-in, Takeaway).";
+"onboardingOrderDetailsProductsTitle" = "Products";
+"onboardingOrderDetailsProductsMessage" = "Add products to the order here.";
+"onboardingOrderDetailsTotalsTitle" = "Totals";
+"onboardingOrderDetailsTotalsMessage" = "Review the total amount.";
+"onboardingOrderDetailsCashTitle" = "Cash Payment";
+"onboardingOrderDetailsCashMessage" = "Enter the amount paid in cash.";
+"onboardingOrderDetailsCardTitle" = "Card Payment";
+"onboardingOrderDetailsCardMessage" = "Enter the amount paid by card.";
+"onboardingOrderDetailsSaveTitle" = "Save Order";
+"onboardingOrderDetailsSaveMessage" = "Tap to save the order.";
+"onboardingCostsAddTitle" = "Add Cost";
+"onboardingCostsAddMessage" = "Tap here to record a new expense.";
+"onboardingCostDetailsDateTitle" = "Date";
+"onboardingCostDetailsDateMessage" = "Select the date of the expense.";
+"onboardingCostDetailsNameTitle" = "Description";
+"onboardingCostDetailsNameMessage" = "Enter a description for the cost.";
+"onboardingCostDetailsSumTitle" = "Amount";
+"onboardingCostDetailsSumMessage" = "Enter the cost amount.";
+"onboardingCostDetailsSaveTitle" = "Save Cost";
+"onboardingCostDetailsSaveMessage" = "Tap to save the expense.";
+"onboardingSettingsPriceListTitle" = "Price List";
+"onboardingSettingsPriceListMessage" = "Manage your products and prices here.";
+"onboardingSettingsAddProductTitle" = "Add Product";
+"onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
+"onboardingSettingsTypesTitle" = "Order Types";
+"onboardingSettingsTypesMessage" = "Configure different order types here.";

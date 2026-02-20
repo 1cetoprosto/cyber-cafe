@@ -22,6 +22,7 @@
 "clear" = "очистити";
 "actionNext" = "Далі";
 "actionDone" = "Готово";
+"add" = "Додати";
 
 // MARK: - Contact Information
 "phone" = "Телефон";
@@ -46,6 +47,9 @@
 "attention" = "Увага";
 "wentWrong" = "Щось пішло не так";
 "wentWrongTryAgain" = "Щось пішло не так, будь ласка, спробуйте пізніше";
+"printForWhom" = "Для кого друкувати?";
+"printForDoctor" = "Для Адміністратора";
+"printForTechnician" = "Для Офіціанта";
 
 // MARK: - Validation
 "fieldRequired" = "Поле '%@' обов'язкове";
@@ -90,243 +94,244 @@
 "choseSignInRole" = "Офіціант має декілька ролей, виберіть роль для авторизації:";
 
 // MARK: - Menu
+"home" = "Головна";
+"appName" = "TrackMyCafe";
+"income" = "Дохід";
+"costs" = "Витрати";
 "menuStaff" = "Персонал";
 "menuSettings" = "Налаштування";
+"languages" = "Мови";
 
-// MARK: - Subscription
+// MARK: - Home Dashboard
+"week" = "Тиждень";
+"monthlyProfit" = "Прибуток за місяць";
+"expensesPrefix" = "Витрати: ";
+"today" = "Сьогодні";
+"recentIncomes" = "Останні доходи";
+"recentExpenses" = "Останні витрати";
+"allArrow" = "Всі ->";
+
+// MARK: - Staff Alerts & Details
+"technicianLimitReached" = "Ліміт офіціантів досягнуто";
+"changeSub" = "Змінити підписку";
+"technicianNoteGoesHere" = "Нотатка про офіціанта";
+"allOrders" = "Всі замовлення";
+"prices" = "Ціни";
+"printPrices" = "Друк цін";
+"resendInvite" = "Надіслати запрошення знову";
+"areYouSureYouWantToDeleteThisItem" = "Ви впевнені, що хочете видалити цей елемент?";
+"somethingWentWrong" = "Щось пішло не так";
+
+// MARK: - Technician
+"technicianEmailAlreadyExist" = "Офіціант з такою поштою вже існує";
+
+// MARK: - Settings
+"theme" = "Тема";
+"restartOnboarding" = "Перезапустити навчання";
+"onboardingResetTitle" = "Перезапустити навчання?";
+"onboardingResetMessage" = "Це скине ваш прогрес навчання. Ви хочете продовжити?";
+"writeToDeveloper" = "Написати розробнику";
+"general" = "Загальні";
+"priceList" = "Прайс-лист";
+"receiptTypes" = "Типи чеків";
+"ingredients" = "Інгредієнти";
+"seedTestData" = "Заповнити тестовими даними";
+"enterNumberOfDays" = "Введіть кількість днів";
+"developer" = "Розробник";
+"seedAction" = "Заповнити";
+"seedingData" = "Заповнення даних...";
+"transferDataTitle" = "Перенесення даних";
+"transferDataDescription" = "Ви хочете перенести свої дані?";
+"transfer" = "Перенести";
+"transferingData" = "Перенесення даних...";
+"authenticationFailedTitle" = "Помилка автентифікації";
+"authenticationFailedMessage" = "Будь ласка, увійдіть, щоб продовжити.";
+"mailNotAvailableTitle" = "Пошта недоступна";
+"mailNotAvailableMessage" = "Будь ласка, налаштуйте обліковий запис пошти в Налаштуваннях, щоб надіслати лист.";
+"feedbackEmailSubject" = "TrackMyCafe Відгук";
+"feedbackEmailBody" = "\n\n\n---\nВерсія додатку: %@\nПристрій: %@\nОС: %@\nID користувача: %@\nEmail: %@\nРоль: %@";
+"feedbackSuccessTitle" = "Відгук надіслано";
+"feedbackSuccessMessage" = "Дякуємо за ваш відгук!";
+"okButton" = "OK";
+"sendFailedTitle" = "Не вдалося надіслати";
+"sendFailedMessage" = "Не вдалося надіслати лист. Спробуйте пізніше.";
+"wentWrong" = "Щось пішло не так";
+"error" = "Помилка";
 "subscription" = "Підписка";
 "subscriptionDefaultHeader" = "Ви в будь-який час можете змінити підписку на ту, яка краще підходить для вашого закладу";
 "subscriptionReachedHeader" = "Ваша поточна підписка не дозволяє додати більше персоналу у вашу лабораторію. Ви можете змінити підписку на ту яка краще підходить для вашого закладу";
 "subscriptionExpiredHeader" = "Термін дії вашої підписки закінчився. Щоб продовжити користуватися додатком потрібно купити підписку, якщо у вас вже є куплена підписка, натисність кнопку \"Відновити покупки\"";
-"subscriptionNeedSubHeader" = "Для продовження роботи з додатком купіть підписку, або якщо ви вже маєте підписку ви можете відновити її натиснувши на кнопку \"Відновити покупки\"";
-"subscriptionFooter1" = "Для отримання доступу до програми потрібна підписка. Кожен тип підписки включає 1-місячну безкоштовну пробну версію. Випробувальний термін надається лише один раз. \n\nПісля безкоштовного пробного періоду підписка автоматично поновлюється із зазначеними вище ціною та тривалістю, якщо тільки вона не буде скасована принаймні за 24 години до кінця пробного місяця. \n\nПлатіж буде стягнено з вашого облікового запису Apple ID при підтвердженні покупки. З вашого рахунку буде стягнено плату за поновлення протягом 24 годин до кінця поточного періоду. Ви можете керувати своїми підписками та скасовувати їх, перейшовши в налаштування свого облікового запису в App Store після покупки.";
-"subscriptionFooter2" = "Видалення програми автоматично не скасовує підписку.";
-"manageSubscriptions" = "Керувати підписками";
-"restorePurchases" = "Відновити покупки";
-"currentSubscription" = "Ваша поточна підписка";
+"purchaseRestored" = "Покупку відновлено";
+"subscriptionNeedSubHeader" = "Вам потрібна підписка для доступу до цієї функції";
 "subscriptionOptions" = "Варіанти підписки";
-"purchaseRestored" = "Покупки успішно відновлено";
-"appleHasntPurhcase" = "Поточний AppleID не має покупок для даного закладу";
-"appleIDReserved" = "Ви не можете купити підписку для цього закладу з поточного AppleID, тому що цей AppleID вже використано для іншого закладу";
-"labReserved" = "Ви не можете купити підписку для цього закладу з поточного AppleID, тому що ця лабораторія вже привязана до іншого AppleID";
-"successPurchase" = "Вітаємо, ви успішно купили підписку";
-"hasPremiumPlan" = "У вас Преміум підписка, вам не потрібно купувати або змінювати підписку";
-"menuSubExpired" = "Термін дії вашої підписки закінчився. Щоб продовжити користуватися додатком потрібно купити підписку";
-"menuBuySub" = "Купити підписку";
-"menuSubTech" = "Термін дії вашої підписки закінчився, звернітся до адміністратора для оновлення підписки";
-"technicianLimitReached" = "Ваша поточна підписка не дозволяє додати більше персоналу у ваше кафе. Ви можете змінити підписку:";
-"changeSub" = "Змінити";
-"month" = "Місяць";
+"currentSubscription" = "Поточна підписка";
+"restorePurchases" = "Відновити покупки";
+"subscriptionFooter1" = "Підписка автоматично поновлюється, якщо автоматичне поновлення не вимкнено принаймні за 24 години до закінчення поточного періоду.";
+"manageSubscriptions" = "Керувати підписками";
+"subscriptionFooter2" = "З рахунку буде стягнуто плату за поновлення протягом 24 годин до закінчення поточного періоду.";
 "termsOfUse" = "Умови використання";
 "privacyPolicy" = "Політика конфіденційності";
+"hasPremiumPlan" = "У вас Преміум план";
+"successPurchase" = "Покупка успішна";
+"appleIDReserved" = "Цей Apple ID вже прив'язаний до іншого облікового запису.";
+"labReserved" = "Ця підписка вже прив'язана до іншого закладу.";
 
-// MARK: - Головна/Дашборд
-"home" = "Головна";
-"today" = "Сьогодні";
-"week" = "Тиждень";
-"monthlyProfit" = "Прибуток за місяць";
-"expensesPrefix" = "Витрати: ";
-"recentIncomes" = "Останні доходи";
-"recentExpenses" = "Останні витрати";
-"allArrow" = "Всі →";
+// MARK: - Purchases
+"purchases" = "Закупки";
+"newPurchase" = "Нова закупка";
+"savePurchase" = "Зберегти закупку";
+"selectIngredient" = "Оберіть інгредієнт";
+"quantity" = "Кількість";
+"pricePerUnit" = "Ціна за одиницю";
+"per" = "за";
+"editPurchase" = "Редагувати закупку";
+"updatePurchase" = "Оновити закупку";
+"pleaseSelectIngredient" = "Будь ласка, оберіть інгредієнт";
+"invalidQuantity" = "Невірна кількість";
+"invalidPrice" = "Невірна ціна";
+
+// MARK: - Themes
+"systemThemeName" = "Системна";
+"lightThemeName" = "Світла";
+"darkThemeName" = "Темна";
+"systemAltThemeName" = "Системна (Грифель)";
+"lightAltThemeName" = "Світла (Грифель)";
+"darkAltThemeName" = "Темна (Грифель)";
+"coffeeWithMilkThemeName" = "Системна (Лате)";
+"coffeeWithMilkLightThemeName" = "Світла (Лате)";
+"coffeeWithMilkDarkThemeName" = "Темна (Лате)";
 
 // MARK: - Subscription Plans
-"subPlanNoneName" = "Без підписки";
-"subPlanSingleName" = "Одиночний";
+"subPlanNoneName" = "Відсутня";
+"subPlanNoneDescription" = "Немає підписки";
+"subPlanSingleName" = "Одиночна";
+"subPlanSingleDescription" = "Один заклад";
 "subPlanMiniName" = "Міні";
+"subPlanMiniDescription" = "До 3 співробітників";
 "subPlanPentaName" = "Пента";
-"subPlanMidName" = "Мід";
-"subPlanBigName" = "Біг";
+"subPlanPentaDescription" = "До 5 співробітників";
+"subPlanMidName" = "Середня";
+"subPlanMidDescription" = "До 10 співробітників";
+"subPlanBigName" = "Велика";
+"subPlanBigDescription" = "До 20 співробітників";
 "subPlanMaxiName" = "Максі";
+"subPlanMaxiDescription" = "Необмежена кількість";
 "subPlanPremiumName" = "Преміум";
-"subPlanNoneDescription" = "Без підписки";
-"subPlanSingleDescription" = "Для одного користувача";
-"subPlanMiniDescription" = "Маленьке кафе не більше двох чоловік персоналу";
-"subPlanPentaDescription" = "Кафе не більше п'яти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanMidDescription" = "Кафе до дванадцяти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanBigDescription" = "Кафе до двадцяти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanMaxiDescription" = "Кафе до тридцяти чоловік персоналу - включаючи адміністратора та модератора";
-"subPlanPremiumDescription" = "Немає ніяких обмежень";
+"subPlanPremiumDescription" = "Всі функції включено";
 
-// MARK: - Gender & Personal Info
-"genderMale" = "Чоловіча";
-"genderFemale" = "Жіноча";
-"genderNoSpecified" = "Не вказано";
-
-// MARK: - Print & Services
-"printForWhom" = "Друкувати для кого?";
-"printForTechnician" = "Для офіціанта";
-"printForDoctor" = "Для клієнта";
-
-// MARK: - Media Access
-"camera" = "Камера";
-"gallery" = "Галерея";
-"access_image_title" = "Доступ до %@";
-"access_image_desc" = "Будь ласка, надайте доступ до вашої %@";
-
-// MARK: - Account Management
-"delete_account_title" = "Ви впевнені що хочете видалити свій акаунт, всі ваші дані буде видалено назавжди, цю дію не можна буде відмінити?";
-"delete_account_admin" = "Ви впевнені що хочете видалити свій акаунт, всі дані про кафе та замовлення буде видалено назавжди, цю дію не можна буде відмінити?";
-"delete_account" = "Видалити акаунт";
-
-// MARK: - Theme Settings
-"general" = "Загальні";
-"selectTheme" = "Вибрати тему";
-"lightThemeName" = "Класична (Світла)";
-"darkThemeName" = "Класична (Темна)";
-"systemThemeName" = "Класична (Автоматично)";
-"systemAltThemeName" = "Сланцева (Автоматично)";
-"lightAltThemeName" = "Сланцева (Світла)";
-"darkAltThemeName" = "Сланцева (Темна)";
-"coffeeWithMilkThemeName" = "Лате (Автоматично)";
-"coffeeWithMilkLightThemeName" = "Лате (Світла)";
-"coffeeWithMilkDarkThemeName" = "Лате (Темна)";
-"theme" = "Тема";
-
-// MARK: - Settings
-"languages" = "Мови";
-"english" = "Англійська";
-"ukrainian" = "Українська";
-"transferDataTitle" = "Перенесення даних";
-"transferDataDescription" = "Перенести накопичені дані чи розпочати все спочатку?";
-"transferingData" = "Триває перенесення даних...";
-"authenticationFailedTitle" = "Помилка автентифікації";
-"authenticationFailedMessage" = "Щоб продовжити, потрібно увійти в систему";
-"developer" = "Розробник";
-"seedTestData" = "Ініціювати тестові дані";
-"priceList" = "Прайс";
-"receiptTypes" = "Типи надходжень";
-"writeToDeveloper" = "Написати розробнику";
-"enterNumberOfDays" = "Введіть кількість днів";
-"seedAction" = "Ініціювати";
-"seedingData" = "Ініціалізація даних...";
-"restartOnboarding" = "Перезапустити ознайомлення з функціями";
-"onboardingResetTitle" = "Скидання ознайомлення з функціями";
-"onboardingResetMessage" = "Ознайомлення з функціями буде показано знову.";
-
-"onboardingOrdersAddTitle" = "Створити продаж";
-"onboardingOrdersAddMessage" = "Натисніть плюс, щоб додати щоденний продаж.";
-
-"onboardingOrderDetailsDateTitle" = "Дата продажу";
-"onboardingOrderDetailsDateMessage" = "Переконайтесь, що дата правильна.";
-"onboardingOrderDetailsTypeTitle" = "Тип продажу";
-"onboardingOrderDetailsTypeMessage" = "Оберіть тип: зал/самовинос/доставка.";
-"onboardingOrderDetailsProductsTitle" = "Кількість товарів";
-"onboardingOrderDetailsProductsMessage" = "Вкажіть кількість проданих одиниць.";
-"onboardingOrderDetailsTotalsTitle" = "Підсумок";
-"onboardingOrderDetailsTotalsMessage" = "Перевірте загальну суму.";
-"onboardingOrderDetailsCashTitle" = "Готівка";
-"onboardingOrderDetailsCashMessage" = "Внесіть суму готівки за день.";
-"onboardingOrderDetailsCardTitle" = "Картка";
-"onboardingOrderDetailsCardMessage" = "Внесіть надходження на картку.";
-"onboardingOrderDetailsSaveTitle" = "Зберегти";
-"onboardingOrderDetailsSaveMessage" = "Збережіть щоденний продаж.";
-
-"onboardingCostsAddTitle" = "Додати витрату";
-"onboardingCostsAddMessage" = "Натисніть плюс, щоб додати витрату.";
-
-"onboardingCostDetailsDateTitle" = "Дата";
-"onboardingCostDetailsDateMessage" = "Вкажіть дату витрати.";
-"onboardingCostDetailsNameTitle" = "Назва";
-"onboardingCostDetailsNameMessage" = "Опишіть витрату.";
-"onboardingCostDetailsSumTitle" = "Сума";
-"onboardingCostDetailsSumMessage" = "Вкажіть суму у валюті додатку.";
-"onboardingCostDetailsSaveTitle" = "Зберегти";
-"onboardingCostDetailsSaveMessage" = "Збережіть витрату.";
-
-"onboardingSettingsPriceListTitle" = "Товари та ціни";
-"onboardingSettingsPriceListMessage" = "Спочатку додайте товари й ціни.";
-"onboardingSettingsAddProductTitle" = "Новий товар";
-"onboardingSettingsAddProductMessage" = "Додайте товар з ціною.";
-"onboardingSettingsTypesTitle" = "Типи продажу";
-"onboardingSettingsTypesMessage" = "Створіть типи та встановіть тип за замовчуванням.";
-
-// MARK: - Product
-"products" = "Прайс";
-"product" = "Продукт";
-"productName" = "Назва продукту";
-"enterProductName" = "Введіть назву продукту";
-"price" = "Ціна";
-"prices" = "Ціни";
-"printPrices" = "Друкувати ціни";
-"pleaseEnterProductName" = "Будь ласка, введіть назву продукту";
-"failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
-"enterPrice" = "Введіть ціну";
-
-// Recipe & Ingredients
-"recipe" = "Рецепт";
-"ingredients" = "Інгредієнти";
-"addIngredient" = "Додати інгредієнт";
-"quantity" = "Кількість";
-"selectIngredient" = "Оберіть інгредієнт";
-"enterQuantityPerUnit" = "Введіть кількість на одиницю (%@)";
-"add" = "Додати";
-
-// App
-"appName" = "TrackMyCafe";
-
-// MARK: - Good
-"goods" = "Товари";
-
-// MARK: - Type
-"types" = "Типи надходжень";
-"type" = "Тип надходження";
-"typeHall" = "Зал";
-"typeTakeaway" = "Самовинос";
+// MARK: - Order Types
+"typeHall" = "В закладі";
+"typeTakeaway" = "З собою";
 "typeDelivery" = "Доставка";
+
+// MARK: - Orders
+"orders" = "Замовлення";
+"chooseType" = "Оберіть тип";
+"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані за обрану дату вже існують. Відкрити та редагувати їх?";
+
+// MARK: - Products
+"products" = "Товари";
+"order" = "Замовлення";
+"cash" = "Готівка";
+"receivedInCash" = "Отримано готівкою";
+"receivedByCard" = "Отримано карткою";
+"money2" = "0.00";
+"money3" = "0.00";
+"totalTitle" = "Всього";
+"defaultOrderType" = "Замовлення";
+
+// MARK: - Costs
+"costDate" = "Дата";
+"costName" = "Назва витрати";
+"costNamePlaceholder" = "Введіть назву витрати";
+"costSum" = "Сума";
+"costSumPlaceholder" = "Введіть суму";
+"cost" = "Витрата";
+
+// MARK: - Ingredients & Products
+"month" = "місяць";
+"productName" = "Назва товару";
+"ingredientNamePlaceholder" = "Назва інгредієнта";
+"ingredientNameExplanation" = "Введіть назву інгредієнта";
+"price" = "Ціна";
+"costPlaceholder" = "Вартість";
+"costExplanation" = "Введіть вартість за одиницю";
+"stockPlaceholder" = "Кількість на складі";
+"stockExplanation" = "Введіть поточну кількість на складі";
+"unitLabel" = "Од. вим.";
+"unitExplanation" = "Оберіть одиницю виміру";
+"newIngredient" = "Новий інгредієнт";
+"unit_kg" = "кг";
+"unit_g" = "г";
+"unit_l" = "л";
+"unit_ml" = "мл";
+"unit_pcs" = "шт";
+
+// MARK: - Types
+"types" = "Типи";
+"type" = "Тип";
+"enterTypeName" = "Введіть назву типу";
 "defaultType" = "Тип за замовчуванням";
-"enterTypeName" = "Введіть назву типу надходження";
 "pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
 "failedToSaveType" = "Не вдалося зберегти тип";
 
-// MARK: - Waiters
-"technicianEmailAlreadyExist" = "Ви не можете створити офіціанта з цією електронною адресою, оскільки користувач з цією електронною адресою вже зареєстрований в системі";
-"technicianNoteGoesHere" = "Тут розміщується замітка офіціанта";
-"resendInvite" = "Надіслати запрошення повторно";
-"areYouSureYouWantToDeleteThisItem" = "Ви впевнені, що хочете видалити цей елемент?";
-"somethingWentWrong" = "Щось пішло не так";
+// MARK: - Language & Theme
+"english" = "Англійська";
+"ukrainian" = "Українська";
+"selectTheme" = "Оберіть тему";
 
-// MARK: - Orders
-"orders" = "Доходи";
-"allOrders" = "Всі доходи";
-"order" = "Дохід";
-"cash" = "Готівка";
-"card" = "Картка";
-"receivedInCash" = "Отримано готівкою";
-"receivedByCard" = "Отримано карткою";
-"totalTitle" = "Всього";
-"money2" = "Гроші2";
-"money3" = "Гроші3";
-"defaultOrderType" = "За замовчуванням";
-"chooseType" = "Виберіть тип";
-"dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані для вибраної дати вже існують. Відкрийте та відредагуйте їх";
+// MARK: - Product Details
+"enterProductName" = "Введіть назву товару";
+"enterPrice" = "Введіть ціну";
+"recipe" = "Рецепт";
+"addIngredient" = "Додати інгредієнт";
+"product" = "Товар";
+"noIngredients" = "Немає інгредієнтів";
+"pleaseAddIngredients" = "Будь ласка, додайте інгредієнти";
+"actionGoToSettings" = "Перейти до налаштувань";
+"enterQuantityPerUnit" = "Введіть кількість на одиницю";
+"pleaseEnterProductName" = "Будь ласка, введіть назву товару";
+"failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
 
-// MARK: - Income
-"income" = "Доходи";
+"ingredientAlreadyExists" = "Інгредієнт вже існує";
+"overwriteIngredientMessage" = "Цей інгредієнт вже є в рецепті. Ви хочете перезаписати його?";
+"yes" = "Так";
+"no" = "Ні";
 
-// MARK: - Sales 
-"sales" = "Продажі";
-"plan" = "План";
-
-// MARK: - Cost
-"costs" = "Витрати";
-"cost" = "Витрата";
-"costDate" = "Дата";
-"costName" = "Витрата";
-"costNamePlaceholder" = "Введіть назву витрати";
-"costSum" = "Сума";
-"costSumPlaceholder" = "Введіть суму витрати";
-
-// MARK: - Feedback
-"feedback" = "Відгук";
-"feedbackEmailSubject" = "Відгук про TrackMyCafe";
-"feedbackEmailBody" = "Привіт!\n\nЯ хотів би поділитися своїм відгуком про додаток TrackMyCafe:\n\n[Будь ласка, напишіть ваш відгук тут]\n\nВерсія додатку: %@\nПристрій: %@\nВерсія ОС: %@\nID користувача: %@\nEmail користувача: %@\nРоль користувача: %@\n\nДякую!";
-
-// Feedback Alerts
-"mailNotAvailableTitle" = "Пошта недоступна";
-"mailNotAvailableMessage" = "Будь ласка, налаштуйте поштовий акаунт в налаштуваннях пристрою для відправки відгуку.";
-"sendFailedTitle" = "Помилка відправки";
-"sendFailedMessage" = "Не вдалося відправити відгук. Спробуйте пізніше.";
-"feedbackSuccessTitle" = "Дякуємо!";
-"feedbackSuccessMessage" = "Ваш відгук успішно відправлено.";
-"okButton" = "OK";
+// MARK: - Image Picker
+"camera" = "Камера";
+"gallery" = "Галерея";
+"access_image_title" = "Доступ заборонено";
+"access_image_desc" = "Будь ласка, надайте доступ до %@ в Налаштуваннях";
+"onboardingOrdersAddTitle" = "Додати замовлення";
+"onboardingOrdersAddMessage" = "Натисніть тут, щоб створити нове замовлення.";
+"onboardingOrderDetailsDateTitle" = "Дата";
+"onboardingOrderDetailsDateMessage" = "Оберіть дату замовлення.";
+"onboardingOrderDetailsTypeTitle" = "Тип замовлення";
+"onboardingOrderDetailsTypeMessage" = "Виберіть тип замовлення (наприклад, В закладі, З собою).";
+"onboardingOrderDetailsProductsTitle" = "Товари";
+"onboardingOrderDetailsProductsMessage" = "Додайте товари до замовлення тут.";
+"onboardingOrderDetailsTotalsTitle" = "Разом";
+"onboardingOrderDetailsTotalsMessage" = "Перевірте загальну суму.";
+"onboardingOrderDetailsCashTitle" = "Оплата готівкою";
+"onboardingOrderDetailsCashMessage" = "Введіть суму, сплачену готівкою.";
+"onboardingOrderDetailsCardTitle" = "Оплата карткою";
+"onboardingOrderDetailsCardMessage" = "Введіть суму, сплачену карткою.";
+"onboardingOrderDetailsSaveTitle" = "Зберегти замовлення";
+"onboardingOrderDetailsSaveMessage" = "Натисніть, щоб зберегти замовлення.";
+"onboardingCostsAddTitle" = "Додати витрату";
+"onboardingCostsAddMessage" = "Натисніть тут, щоб записати нову витрату.";
+"onboardingCostDetailsDateTitle" = "Дата";
+"onboardingCostDetailsDateMessage" = "Оберіть дату витрати.";
+"onboardingCostDetailsNameTitle" = "Опис";
+"onboardingCostDetailsNameMessage" = "Введіть опис витрати.";
+"onboardingCostDetailsSumTitle" = "Сума";
+"onboardingCostDetailsSumMessage" = "Введіть суму витрати.";
+"onboardingCostDetailsSaveTitle" = "Зберегти витрату";
+"onboardingCostDetailsSaveMessage" = "Натисніть, щоб зберегти витрату.";
+"onboardingSettingsPriceListTitle" = "Прайс-лист";
+"onboardingSettingsPriceListMessage" = "Керуйте своїми товарами та цінами тут.";
+"onboardingSettingsAddProductTitle" = "Додати товар";
+"onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
+"onboardingSettingsTypesTitle" = "Типи замовлень";
+"onboardingSettingsTypesMessage" = "Налаштуйте різні типи замовлень тут.";
