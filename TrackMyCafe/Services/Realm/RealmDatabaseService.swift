@@ -125,7 +125,6 @@ class RealmDatabaseService: RealmDB {
                 RealmOrderModel.self,
                 RealmProductsPriceModel.self,
                 RealmTypeModel.self,
-                RealmCostModel.self,
                 RealmIngredientModel.self,
                 RealmPurchaseModel.self,
                 RealmRecipeItemModel.self,
@@ -279,31 +278,8 @@ class RealmDatabaseService: RealmDB {
     }
 
     // MARK: - Work with Costs
-
-    func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double) {
-        executeWrite {
-            model.date = date
-            model.name = name
-            model.sum = sum
-            logger.log("Updated cost with id: \(model.id, privacy: .public)")
-        }
-    }
-
-    func fetchCosts() -> [RealmCostModel] {
-        logger.log("Fetched all costs")
-        return Array(localRealm.objects(RealmCostModel.self).sorted(byKeyPath: "date"))
-    }
-
-    func fetchCost(byId id: String) -> RealmCostModel? {
-        logger.log("Fetched cost with id: \(id, privacy: .public)")
-        return fetchObjectById(ofType: RealmCostModel.self, id: id)
-    }
-
-    func fetchCostSections() -> [(date: Date, items: [RealmCostModel])] {
-        logger.log("Fetched cost sections")
-        return fetchSections(ofType: RealmCostModel.self, sortedByKeyPath: "date")
-    }
-
+    // Costs are now handled via OpexExpenseModel in Firestore. RealmCostModel is deprecated.
+    
     // MARK: - Work with Ingredients
 
     func updateIngredient(

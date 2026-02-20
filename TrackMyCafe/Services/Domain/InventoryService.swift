@@ -234,8 +234,20 @@ class InventoryService: InventoryServiceProtocol {
 
                 self?.databaseService.saveIngredient(model: ingredientToSave) { success in
                     if success {
-                        // TODO: Save Adjustment record (when DB supports it)
-                        completion(.success(()))
+                        // Save Adjustment record
+                        self?.databaseService.saveInventoryAdjustment(model: adjustment) { adjSuccess in
+                            if adjSuccess {
+                                completion(.success(()))
+                            } else {
+                                completion(
+                                    .failure(
+                                        NSError(
+                                            domain: "InventoryService", code: 500,
+                                            userInfo: [
+                                                NSLocalizedDescriptionKey: "Failed to save adjustment record"
+                                            ])))
+                            }
+                        }
                     } else {
                         completion(
                             .failure(

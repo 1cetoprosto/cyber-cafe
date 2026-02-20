@@ -9,10 +9,10 @@ import Foundation
 
 class CostListViewModel: CostListViewModelType, Loggable {
     private var selectedIndexPath: IndexPath?
-    private var sectionsCosts: [(date: Date, items: [CostModel])]?
+    private var sectionsCosts: [(date: Date, items: [OpexExpenseModel])]?
     
     func getCosts(completion: @escaping () -> ()) {
-        DomainDatabaseService.shared.fetchSectionsOfCosts { sectionsCosts in
+        DomainDatabaseService.shared.fetchSectionsOfOpexExpenses { sectionsCosts in
             self.sectionsCosts = sectionsCosts
             completion()
         }
@@ -58,7 +58,7 @@ class CostListViewModel: CostListViewModelType, Loggable {
         self.selectedIndexPath = indexPath
     }
     
-    private func getCostModel(atIndexPath indexPath: IndexPath) -> CostModel? {
+    private func getCostModel(atIndexPath indexPath: IndexPath) -> OpexExpenseModel? {
         guard let sectionsCosts = self.sectionsCosts else { return nil }
         
         return sectionsCosts[indexPath.section].items[indexPath.row]
@@ -67,7 +67,7 @@ class CostListViewModel: CostListViewModelType, Loggable {
     func deleteCostModel(atIndexPath indexPath: IndexPath) {
         guard let model = getCostModel(atIndexPath: indexPath) else { return }
         
-        DomainDatabaseService.shared.deleteCost(model: model) { success in
+        DomainDatabaseService.shared.deleteOpexExpense(model: model) { success in
             if success {
                 self.logger.notice("Costs \(model.id) deleted successfully")
             } else {

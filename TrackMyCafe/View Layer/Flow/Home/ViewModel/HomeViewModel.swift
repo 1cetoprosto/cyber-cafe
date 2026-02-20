@@ -9,7 +9,7 @@ final class HomeViewModel: HomeViewModelType {
   private(set) var dateToday: Date = Date()
 
   private(set) var lastIncome: [OrderModel] = []
-  private(set) var lastExpense: [CostModel] = []
+  private(set) var lastExpense: [OpexExpenseModel] = []
 
   @MainActor
   func loadDashboard() async {
@@ -21,8 +21,8 @@ final class HomeViewModel: HomeViewModelType {
       }
     }
 
-    let costs: [CostModel] = await withCheckedContinuation { continuation in
-      DomainDatabaseService.shared.fetchCosts { models in
+    let costs: [OpexExpenseModel] = await withCheckedContinuation { continuation in
+      DomainDatabaseService.shared.fetchOpexExpenses { models in
         continuation.resume(returning: models)
       }
     }
@@ -31,7 +31,7 @@ final class HomeViewModel: HomeViewModelType {
     computeExpenseMetrics(from: costs)
     computeLists(orders: orders, costs: costs)
   }
-
+  
   private func computeIncomeMetrics(from orders: [OrderModel]) {
     let cal = Calendar.current
     let today = Date()
@@ -43,16 +43,16 @@ final class HomeViewModel: HomeViewModelType {
     monthSum = orders.filter { $0.date >= startOfMonth }.reduce(0) { $0 + $1.sum }
   }
 
-  private func computeExpenseMetrics(from costs: [CostModel]) {
+  private func computeExpenseMetrics(from costs: [OpexExpenseModel]) {
     let cal = Calendar.current
     let today = Date()
     let startOfMonth = cal.date(from: cal.dateComponents([.year, .month], from: today)) ?? today
 
-    monthExpenses = costs.filter { $0.date >= startOfMonth }.reduce(0) { $0 + $1.sum }
+    monthExpenses = costs.filter { $0.date >= startOfMonth }.reduce(0) { $0 + $1.amount }
     monthProfit = monthSum - monthExpenses
   }
 
-  private func computeLists(orders: [OrderModel], costs: [CostModel]) {
+  private func computeLists(orders: [OrderModel], costs: [OpexExpenseModel]) {
     lastIncome = orders.sorted { $0.date > $1.date }.prefix(3).map { $0 }
     lastExpense = costs.sorted { $0.date > $1.date }.prefix(3).map { $0 }
   }

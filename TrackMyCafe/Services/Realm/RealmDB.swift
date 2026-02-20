@@ -30,10 +30,11 @@ protocol RealmDB {
     func fetchProductPrices() -> [RealmProductsPriceModel]
     func fetchProductPrice(byId id: String) -> RealmProductsPriceModel?
     
-    func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double)
-    func fetchCosts() -> [RealmCostModel]
-    func fetchCostSections() -> [(date: Date, items: [RealmCostModel])]
-    func fetchCost(byId id: String) -> RealmCostModel?
+    // Costs are now handled via OpexExpenseModel in Firestore. RealmCostModel is deprecated.
+    // func updateCost(model: RealmCostModel, date: Date, name: String, sum: Double)
+    // func fetchCosts() -> [RealmCostModel]
+    // func fetchCostSections() -> [(date: Date, items: [RealmCostModel])]
+    // func fetchCost(byId id: String) -> RealmCostModel?
     
     func updateType(model: RealmTypeModel, type: String)
     func fetchTypes() -> [RealmTypeModel]
