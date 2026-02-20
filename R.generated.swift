@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 292 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 294 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -231,6 +231,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var access_image_title: RswiftResources.StringResource { .init(key: "access_image_title", tableName: "Global", source: source, developmentValue: "Access Denied", comment: nil) }
+
+      /// en translation: Account
+      ///
+      /// Key: account
+      ///
+      /// Locales: en, uk
+      var account: RswiftResources.StringResource { .init(key: "account", tableName: "Global", source: source, developmentValue: "Account", comment: nil) }
 
       /// en translation: Done
       ///
@@ -1022,6 +1029,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Light", comment: nil) }
+
+      /// en translation: Logout
+      ///
+      /// Key: logout
+      ///
+      /// Locales: en, uk
+      var logout: RswiftResources.StringResource { .init(key: "logout", tableName: "Global", source: source, developmentValue: "Logout", comment: nil) }
 
       /// en translation: Please configure a mail account in Settings to send email.
       ///

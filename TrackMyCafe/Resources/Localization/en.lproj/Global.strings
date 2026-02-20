@@ -356,3 +356,5 @@
 "onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
 "onboardingSettingsTypesTitle" = "Order Types";
 "onboardingSettingsTypesMessage" = "Configure different order types here.";
+"logout" = "Logout";
+"account" = "Account";
