@@ -40,7 +40,7 @@ class OrderListViewController: UIViewController {
     super.viewDidLoad()
 
     view.backgroundColor = UIColor.Main.background
-    title = R.string.global.orders()
+    // title = R.string.global.orders() // Title managed by parent tab controller
 
     tableView.dataSource = self
     tableView.delegate = self

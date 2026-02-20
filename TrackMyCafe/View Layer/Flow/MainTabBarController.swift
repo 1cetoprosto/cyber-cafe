@@ -130,10 +130,10 @@ class MainTabBarController: UITabBarController {
         // Let's create a temporary Reports placeholder.
         let reportsViewController = createNavController(
             viewController: UIViewController(), // Placeholder
-            itemName: "Reports", // Localize later
+            itemName: R.string.global.reportsTitle(),
             itemImage: "chart.bar") // SystemImages.chartBar if exists, or string
         reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
-        reportsViewController.viewControllers.first?.title = "Reports"
+        reportsViewController.viewControllers.first?.title = R.string.global.reportsTitle()
         
         // Tab 5: Settings
         let settingsViewController = createNavController(

@@ -53,7 +53,7 @@ class StockListViewController: UIViewController {
     // MARK: - Setup
     
     private func setupUI() {
-        title = "Inventory"
+        // title = R.string.global.inventoryTitle() // Title managed by parent tab controller
         view.backgroundColor = UIColor.Main.background
         
         view.addSubview(tableView)
@@ -105,25 +105,25 @@ class StockListViewController: UIViewController {
     }
     
     private func showError(message: String) {
-        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        let alert = UIAlertController(title: R.string.global.error(), message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
         present(alert, animated: true)
     }
     
     private func showAdjustmentAlert(for ingredient: IngredientModel) {
         let alert = UIAlertController(
-            title: "Adjust Stock",
-            message: "Enter new quantity for \(ingredient.name)",
+            title: R.string.global.inventoryAdjustStock(),
+            message: String(format: R.string.global.inventoryEnterNewQuantity(ingredient.name), ingredient.name),
             preferredStyle: .alert
         )
         
         alert.addTextField { textField in
             textField.keyboardType = .decimalPad
             textField.text = String(format: "%.2f", ingredient.stockQuantity)
-            textField.placeholder = "Quantity"
+            textField.placeholder = R.string.global.inventoryQuantityPlaceholder()
         }
         
-        let saveAction = UIAlertAction(title: "Save", style: .default) { [weak self] _ in
+        let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) { [weak self] _ in
             guard let text = alert.textFields?.first?.text,
                   let newQuantity = Double(text.replacingOccurrences(of: ",", with: ".")) else {
                 return
@@ -131,7 +131,7 @@ class StockListViewController: UIViewController {
             self?.viewModel.updateStock(for: ingredient, newQuantity: newQuantity)
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
         
         alert.addAction(cancelAction)
         alert.addAction(saveAction)
@@ -157,7 +157,7 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let adjustAction = UIContextualAction(style: .normal, title: "Adjust") { [weak self] _, _, completion in
+        let adjustAction = UIContextualAction(style: .normal, title: R.string.global.inventoryAdjustStock()) { [weak self] _, _, completion in
             guard let self = self else { return }
             let ingredient = self.viewModel.ingredients[indexPath.row]
             self.showAdjustmentAlert(for: ingredient)
