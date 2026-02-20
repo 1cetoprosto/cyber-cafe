@@ -18,8 +18,8 @@ extension UIColor {
   }
 
   struct Button {
-    static var title: UIColor { Theme.current.secondaryText }
-    static var background: UIColor { Theme.current.secondaryBackground }
+    static var title: UIColor { Theme.current.buttonText }
+    static var background: UIColor { Theme.current.buttonBackground }
   }
 
   struct TabBar {
