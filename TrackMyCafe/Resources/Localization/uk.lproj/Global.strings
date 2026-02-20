@@ -353,6 +353,8 @@
 "onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
 "onboardingSettingsTypesTitle" = "Типи замовлень";
 "onboardingSettingsTypesMessage" = "Налаштуйте різні типи замовлень тут.";
+"logout" = "Вийти";
+"account" = "Акаунт";
 
 // MARK: - Reports
 "reportsTitle" = "Звіти";
