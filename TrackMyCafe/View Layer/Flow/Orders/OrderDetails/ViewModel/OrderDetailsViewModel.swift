@@ -110,8 +110,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     }
     
     private func createOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
-        let sumString = productsViewModel.totalSum()
-        let sum = sumString.double ?? 0.0
+        let sum = productsViewModel.getTotalAmount()
         
         let newOrder = OrderModel(
             id: id,
@@ -134,8 +133,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     }
     
     private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
-        let sumString = productsViewModel.totalSum()
-        let sum = sumString.double ?? 0.0
+        let sum = productsViewModel.getTotalAmount()
         
         DomainDatabaseService.shared.fetchOrders(forId: id) { [weak self] fetchedOrder in
             guard let self = self, let fetchedOrder = fetchedOrder else {
