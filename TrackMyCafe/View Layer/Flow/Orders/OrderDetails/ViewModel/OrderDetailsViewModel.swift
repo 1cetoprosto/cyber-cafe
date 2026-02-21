@@ -135,8 +135,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
         
-        DomainDatabaseService.shared.fetchOrders(forId: id) { [weak self] fetchedOrder in
-            guard let self = self, let fetchedOrder = fetchedOrder else {
+        DomainDatabaseService.shared.fetchOrders(forId: id) { fetchedOrder in
+            guard let fetchedOrder = fetchedOrder else {
                 completion(false)
                 return
             }

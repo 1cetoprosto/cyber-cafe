@@ -426,7 +426,7 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
         else { return UITableViewCell() }
         
         cell.viewModel = cellViewModel
-        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: UIControl.Event.valueChanged)
         return cell
     }
     
@@ -447,7 +447,7 @@ extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionView
         else { return UICollectionViewCell() }
         
         cell.viewModel = cellViewModel
-        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: UIControl.Event.valueChanged)
         return cell
     }
     
