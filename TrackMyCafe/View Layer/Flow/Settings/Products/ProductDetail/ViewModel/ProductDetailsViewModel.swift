@@ -16,6 +16,7 @@ final class ProductDetailsViewModel: ProductDetailsViewModelType, Loggable {
     var productPrice: Double { model.price }
     var currentRecipe: [RecipeItemModel] { model.recipe }
     var allIngredients: [IngredientModel] = []
+    var categoryId: String? { model.categoryId }
     
     var onRecipeChanged: (() -> Void)?
     var onIngredientsLoaded: (() -> Void)?
@@ -77,6 +78,10 @@ final class ProductDetailsViewModel: ProductDetailsViewModelType, Loggable {
         item.quantity = quantity
         model.recipe[index] = item
         onRecipeChanged?()
+    }
+    
+    func setCategoryId(_ id: String?) {
+        model.categoryId = id
     }
     
     func validate(name: String?, priceText: String?) -> Bool {

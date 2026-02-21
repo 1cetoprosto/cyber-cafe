@@ -321,7 +321,7 @@ class DomainDatabaseService: DomainDB {
                         return calendar.date(from: dateComponents)!
                     })
                 let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
-                    .sorted { $0.date < $1.date }
+                    .sorted { $0.date > $1.date }
                 completion(sections)
             case .failure(let error):
                 self.logger.error(
@@ -453,6 +453,63 @@ class DomainDatabaseService: DomainDB {
             case .failure(let error):
                 self.logger.error(
                     "Failed to productsPrice order to Firestore with error: \(error.localizedDescription)"
+                )
+                completion(false)
+            }
+        }
+    }
+
+    // MARK: - Product Categories Operations
+
+    func fetchProductCategories(completion: @escaping ([ProductCategoryModel]) -> Void) {
+        FirestoreDatabaseService.shared.read(
+            collection: FirebaseCollections.productCategories,
+            firModel: FIRProductCategoryModel.self
+        ) { result in
+            switch result {
+            case .success(let firCategories):
+                let categories = firCategories.map { ProductCategoryModel(firebaseModel: $1) }
+                completion(categories.sorted { $0.sortOrder < $1.sortOrder })
+            case .failure(let error):
+                self.logger.error(
+                    "Error fetching product categories from Firestore: \(error.localizedDescription)"
+                )
+                completion([])
+            }
+        }
+    }
+
+    func saveProductCategory(category: ProductCategoryModel, completion: @escaping (Bool) -> Void) {
+        FirestoreDatabaseService.shared.update(
+            firModel: FIRProductCategoryModel(dataModel: category),
+            collection: FirebaseCollections.productCategories,
+            documentId: category.id
+        ) { result in
+            switch result {
+            case .success:
+                self.logger.info("Product category saved to Firestore successfully")
+                completion(true)
+            case .failure(let error):
+                self.logger.error(
+                    "Failed to save product category to Firestore with error: \(error.localizedDescription)"
+                )
+                completion(false)
+            }
+        }
+    }
+
+    func deleteProductCategory(model: ProductCategoryModel, completion: @escaping (Bool) -> Void) {
+        FirestoreDatabaseService.shared.delete(
+            collection: FirebaseCollections.productCategories,
+            documentId: model.id
+        ) { result in
+            switch result {
+            case .success:
+                self.logger.info("Product category deleted in Firestore successfully")
+                completion(true)
+            case .failure(let error):
+                self.logger.error(
+                    "Failed to delete product category in Firestore with error: \(error.localizedDescription)"
                 )
                 completion(false)
             }

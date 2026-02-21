@@ -12,6 +12,7 @@ protocol ProductDetailsViewModelType: AnyObject {
     var productPrice: Double { get }
     var currentRecipe: [RecipeItemModel] { get }
     var allIngredients: [IngredientModel] { get }
+    var categoryId: String? { get }
     
     var onRecipeChanged: (() -> Void)? { get set }
     var onIngredientsLoaded: (() -> Void)? { get set }
@@ -19,6 +20,7 @@ protocol ProductDetailsViewModelType: AnyObject {
     func validate(name: String?, priceText: String?) -> Bool
     func parsedPrice(from text: String?) -> Double?
     func saveProductPrice(name: String?, price: Double?) async throws
+    func setCategoryId(_ id: String?)
     
     func fetchIngredients() async
     func hasIngredient(_ ingredient: IngredientModel) -> Bool

@@ -89,6 +89,41 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.reloadData()
     }
 
+    private func presentOrderModeSelection(
+        currentMode: OrderEntryMode,
+        completion: @escaping (OrderEntryMode) -> Void
+    ) {
+        let alert = UIAlertController(
+            title: R.string.global.orderEntryModeTitle(),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: R.string.global.orderModePerOrder(),
+                style: .default
+            ) { _ in
+                completion(.perOrder)
+            }
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: R.string.global.orderModeOpenTab(),
+                style: .default
+            ) { _ in
+                completion(.openTab)
+            }
+        )
+
+        alert.addAction(
+            UIAlertAction(title: R.string.global.cancel(), style: .cancel)
+        )
+
+        present(alert, animated: true)
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
@@ -137,13 +172,32 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.navigationController?.pushViewController(
                         IngredientListViewController(), animated: true)
                 }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.productCategories(),
+                    icon: UIImage(systemName: "square.grid.2x2"),
+                    iconBackgroundColor: .systemPurple
+                ) {
+                    self.navigationController?.pushViewController(
+                        ProductCategoriesListViewController(), animated: true)
+                }),
         ]
         models.append(
             Section(
-                title: R.string.global.settingsSectionMenuInventory(), footer: nil, option: menuOptions)
+                title: R.string.global.settingsSectionMenuInventory(), footer: nil,
+                option: menuOptions)
         )
 
         // 3. Orders
+        let currentMode = SettingsManager.shared.loadOrderEntryMode()
+        let orderModeTitle: String
+        switch currentMode {
+        case .perOrder:
+            orderModeTitle = R.string.global.orderModePerOrder()
+        case .openTab:
+            orderModeTitle = R.string.global.orderModeOpenTab()
+        }
+
         let orderOptions: [SettingsOptionType] = [
             .staticCell(
                 model: SettingsStaticOption(
@@ -153,7 +207,24 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 ) {
                     self.navigationController?.pushViewController(
                         TypesListViewController(), animated: true)
-                })
+                }),
+            .dataCell(
+                model: SettingsDataOption(
+                    title: R.string.global.orderEntryModeTitle(),
+                    icon: UIImage(systemName: "list.bullet"),
+                    iconBackgroundColor: .systemTeal,
+                    data: orderModeTitle
+                ) { dataLabel in
+                    self.presentOrderModeSelection(currentMode: currentMode) { newMode in
+                        SettingsManager.shared.saveOrderEntryMode(newMode)
+                        switch newMode {
+                        case .perOrder:
+                            dataLabel.text = R.string.global.orderModePerOrder()
+                        case .openTab:
+                            dataLabel.text = R.string.global.orderModeOpenTab()
+                        }
+                    }
+                }),
         ]
         models.append(
             Section(
@@ -217,7 +288,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]
         models.append(
             Section(
-                title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions)
+                title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions
+            )
         )
 
         #if DEBUG
@@ -258,7 +330,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     })
             ]
 
-            models.append(Section(title: R.string.global.developer(), footer: nil, option: devOptions))
+            models.append(
+                Section(title: R.string.global.developer(), footer: nil, option: devOptions))
         #endif
 
         // Add Logout button at the end
