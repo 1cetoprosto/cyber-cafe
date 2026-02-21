@@ -24,6 +24,13 @@
 "actionDone" = "Done";
 "add" = "Add";
 
+// MARK: - Settings Sections
+"settingsSectionEstablishment" = "Establishment";
+"settingsSectionMenuInventory" = "Menu & Inventory";
+"settingsSectionOrders" = "Orders";
+"settingsSectionAppearance" = "Appearance";
+"settingsSectionAppInfo" = "App Info";
+
 // MARK: - Contact Information
 "phone" = "Phone";
 "enterPhoneNumber" = "Enter phone number";
@@ -295,6 +302,7 @@
 "defaultType" = "Default Type";
 "pleaseEnterTypeName" = "Please enter type name";
 "failedToSaveType" = "Failed to save type";
+"typeDescription" = "These types are used to categorise orders, for example, in-store, takeaway or delivery.";
 
 // MARK: - Language & Theme
 "english" = "English";

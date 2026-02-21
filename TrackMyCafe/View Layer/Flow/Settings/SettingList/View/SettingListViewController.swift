@@ -13,6 +13,7 @@ import UIKit
 
 struct Section {
     let title: String
+    let footer: String?
     let option: [SettingsOptionType]
 }
 
@@ -50,9 +51,9 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 {
 
     private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(
             SettingsStaticTableViewCell.self,
@@ -111,26 +112,58 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     func configure() {
         models.removeAll()
 
-        var options = [SettingsOptionType]()
+        // 1. Establishment
+        // TODO: Profile, Subscription, Staff
+        // let establishmentOptions = [SettingsOptionType]()
+        // models.append(Section(title: R.string.global.settingsSectionEstablishment(), footer: nil, option: establishmentOptions))
 
-        //    // Language settings
-        //    options.append(
-        //      .dataCell(
-        //        model: SettingsDataOption(
-        //          title: "Language",
-        //          icon: UIImage(systemName: "globe"),
-        //          iconBackgroundColor: .systemPink,
-        //          data: SettingsManager.shared.loadLanguage()
-        //        ) { dataLabel in
-        //          self.alertLanguage(label: dataLabel) { language in
-        //            SettingsManager.shared.setAppLanguage(language)
-        //            dataLabel.text = language
-        //            self.updateInterfaceForNewTheme()
-        //          }
-        //        }))
+        // 2. Menu & Inventory
+        let menuOptions: [SettingsOptionType] = [
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.priceList(),
+                    icon: UIImage(systemName: SystemImages.cupAndSaucerFill),
+                    iconBackgroundColor: .systemBrown
+                ) {
+                    self.navigationController?.pushViewController(
+                        ProductListViewController(), animated: true)
+                }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.ingredients(),
+                    icon: UIImage(systemName: "cart"),
+                    iconBackgroundColor: .systemOrange
+                ) {
+                    self.navigationController?.pushViewController(
+                        IngredientListViewController(), animated: true)
+                }),
+        ]
+        models.append(
+            Section(
+                title: R.string.global.settingsSectionMenuInventory(), footer: nil, option: menuOptions)
+        )
 
-        // Theme settings
-        options.append(
+        // 3. Orders
+        let orderOptions: [SettingsOptionType] = [
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.receiptTypes(),
+                    icon: UIImage(systemName: SystemImages.banknoteFill),
+                    iconBackgroundColor: .systemGreen
+                ) {
+                    self.navigationController?.pushViewController(
+                        TypesListViewController(), animated: true)
+                })
+        ]
+        models.append(
+            Section(
+                title: R.string.global.settingsSectionOrders(),
+                footer: NSLocalizedString("typeDescription", tableName: "Global", comment: ""),
+                option: orderOptions)
+        )
+
+        // 4. Appearance
+        let appearanceOptions: [SettingsOptionType] = [
             .dataCell(
                 model: SettingsDataOption(
                     title: R.string.global.theme(),
@@ -144,9 +177,16 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         dataLabel.text = option.displayName
                         self.updateInterfaceForNewTheme()
                     }
-                }))
+                })
+        ]
+        models.append(
+            Section(
+                title: R.string.global.settingsSectionAppearance(), footer: nil,
+                option: appearanceOptions)
+        )
 
-        options.append(
+        // 5. App Info
+        let appInfoOptions: [SettingsOptionType] = [
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.restartOnboarding(),
@@ -165,10 +205,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
                         })
                     self.present(alert, animated: true)
-                }))
-
-        // Feedback option
-        options.append(
+                }),
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.writeToDeveloper(),
@@ -176,65 +213,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     iconBackgroundColor: .systemOrange
                 ) {
                     self.presentFeedbackEmail()
-                }))
-
-        // // Subscription management
-        // options.append(
-        //   .staticCell(
-        //     model: SettingsStaticOption(
-        //       title: "Subscription",
-        //       icon: UIImage(systemName: "creditcard.circle.fill"),
-        //       iconBackgroundColor: .systemIndigo
-        //     ) {
-        //       // Open subscription management screen
-        //       let controller = SubscriptionController.makeDefault()
-        //       self.navigationController?.pushViewController(controller, animated: true)
-        //     }))
-
-        models.append(Section(title: R.string.global.general(), option: options))
-
+                }),
+        ]
         models.append(
             Section(
-                title: R.string.global.income(),
-                option: [
-                    .staticCell(
-                        model: SettingsStaticOption(
-                            title: R.string.global.priceList(),
-                            icon: UIImage(systemName: SystemImages.cupAndSaucerFill),
-                            iconBackgroundColor: .systemBrown
-                        ) {
-                            self.navigationController?.pushViewController(
-                                ProductListViewController(), animated: true)
-                        }),
-                    .staticCell(
-                        model: SettingsStaticOption(
-                            title: R.string.global.receiptTypes(),
-                            icon: UIImage(systemName: SystemImages.banknoteFill),
-                            iconBackgroundColor: .systemGreen
-                        ) {
-                            self.navigationController?.pushViewController(
-                                TypesListViewController(), animated: true)
-                        }),
-                    .staticCell(
-                        model: SettingsStaticOption(
-                            title: R.string.global.ingredients(),
-                            icon: UIImage(systemName: "cart"),
-                            iconBackgroundColor: .systemOrange
-                        ) {
-                            self.navigationController?.pushViewController(
-                                IngredientListViewController(), animated: true)
-                        }),
-                    // .staticCell(
-                    //   model: SettingsStaticOption(
-                    //     title: "Staff",
-                    //     icon: UIImage(systemName: "person.2.fill"),
-                    //     iconBackgroundColor: .systemMint
-                    //   ) {
-                    //     self.navigationController?.pushViewController(
-                    //       StaffCategoriesController(), animated: true)
-                    //   }),
-
-                ]))
+                title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions)
+        )
 
         #if DEBUG
             let devOptions: [SettingsOptionType] = [
@@ -274,7 +258,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     })
             ]
 
-            models.append(Section(title: R.string.global.developer(), option: devOptions))
+            models.append(Section(title: R.string.global.developer(), footer: nil, option: devOptions))
         #endif
 
         // Add Logout button at the end
@@ -287,12 +271,17 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 self?.handleUserLogOut()
             }
         )
-        models.append(Section(title: R.string.global.account(), option: [logout]))
+        models.append(Section(title: R.string.global.account(), footer: nil, option: [logout]))
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
         return section.title
+    }
+
+    func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+        let section = models[section]
+        return section.footer
     }
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -526,9 +515,9 @@ extension SettingListViewController {
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
     }
