@@ -7,7 +7,16 @@
 
 import Foundation
 
+enum OrderSaveError: Error {
+    case stockValidationFailed([StockWarning])
+    case saveFailed
+    case fetchFailed
+}
+
 protocol OrderDetailsViewModelType {
+    // Properties
+    var productsViewModel: ProductListViewModel { get }
+    
     var id: String { get }
     var date: Date { get }
     var cashLabel: String { get }
@@ -21,13 +30,16 @@ protocol OrderDetailsViewModelType {
     var type: String { get }
     var isNewModel: Bool { get set }
     
+    // Methods
+    func loadProducts(completion: @escaping () -> Void)
+    func save(date: Date, type: String?, cash: String?, card: String?, ignoreStockWarning: Bool, completion: @escaping (Result<Void, OrderSaveError>) -> Void)
+    func deleteOrder(completion: @escaping () -> Void)
+    
+    // Picker Data Source
     func numberOfRowsInComponent(component: Int) -> Int
     func titleForRow(row: Int, component: Int) -> String?
-    func selectRow(atRow: Int)
+    func selectRow(atRow row: Int)
     
-    func isExist(id: String, completion: @escaping (Bool) -> Void)
-    func saveOrders(id: String, date: Date, type: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void)
-    func updateOrders(id: String, date: Date, type: String?, cash: String?, card: String?, sum: String?, completion: @escaping () -> Void)
-    
+    // Helpers
     func verifyRequiredData(completion: @escaping (Bool) -> Void)
 }

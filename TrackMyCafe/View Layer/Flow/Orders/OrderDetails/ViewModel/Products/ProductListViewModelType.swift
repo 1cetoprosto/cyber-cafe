@@ -16,6 +16,7 @@ protocol ProductListViewModelType {
     
     func setQuantity(tag: Int, quantity: Int)
     func getQuantity() -> Double
+    func getTotalAmount() -> Double
     func totalSum() -> String
     
     func saveOrder(withOrderId orderId: String, date: Date, completion: @escaping (Bool) -> Void)
