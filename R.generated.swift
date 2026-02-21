@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 300 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 304 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1429,6 +1429,27 @@ struct _R {
       /// Locales: en, uk
       var order: RswiftResources.StringResource { .init(key: "order", tableName: "Global", source: source, developmentValue: "Order", comment: nil) }
 
+      /// en translation: Order entry mode
+      ///
+      /// Key: orderEntryModeTitle
+      ///
+      /// Locales: en, uk
+      var orderEntryModeTitle: RswiftResources.StringResource { .init(key: "orderEntryModeTitle", tableName: "Global", source: source, developmentValue: "Order entry mode", comment: nil) }
+
+      /// en translation: Open tab
+      ///
+      /// Key: orderModeOpenTab
+      ///
+      /// Locales: en, uk
+      var orderModeOpenTab: RswiftResources.StringResource { .init(key: "orderModeOpenTab", tableName: "Global", source: source, developmentValue: "Open tab", comment: nil) }
+
+      /// en translation: Per order
+      ///
+      /// Key: orderModePerOrder
+      ///
+      /// Locales: en, uk
+      var orderModePerOrder: RswiftResources.StringResource { .init(key: "orderModePerOrder", tableName: "Global", source: source, developmentValue: "Per order", comment: nil) }
+
       /// en translation: Orders
       ///
       /// Key: orders
@@ -1575,6 +1596,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var product: RswiftResources.StringResource { .init(key: "product", tableName: "Global", source: source, developmentValue: "Product", comment: nil) }
+
+      /// en translation: Product categories
+      ///
+      /// Key: productCategories
+      ///
+      /// Locales: en, uk
+      var productCategories: RswiftResources.StringResource { .init(key: "productCategories", tableName: "Global", source: source, developmentValue: "Product categories", comment: nil) }
 
       /// en translation: Product Name
       ///

@@ -279,7 +279,7 @@ class RealmDatabaseService: RealmDB {
 
     // MARK: - Work with Costs
     // Costs are now handled via OpexExpenseModel in Firestore. RealmCostModel is deprecated.
-    
+
     // MARK: - Work with Ingredients
 
     func updateIngredient(

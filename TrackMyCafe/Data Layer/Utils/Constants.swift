@@ -117,6 +117,12 @@ struct UserDefaultsKeys {
     static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
     static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
     static let appleLanguages = "AppleLanguages"
+    static let orderEntryMode = "settings.orderEntryMode"
+}
+
+enum OrderEntryMode: String {
+    case perOrder
+    case openTab
 }
 
 // MARK: - Settings Database Fields
@@ -146,6 +152,7 @@ struct FirebaseCollections {
     static let opexExpenses = "opexExpenses"
     static let subscriptions = "Subscriptions"
     static let info = ".info"
+    static let productCategories = "productCategories"
 }
 
 // MARK: - Firebase Document Fields
