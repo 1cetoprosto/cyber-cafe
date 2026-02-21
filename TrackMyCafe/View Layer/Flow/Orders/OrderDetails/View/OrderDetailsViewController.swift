@@ -17,6 +17,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     private var dateChanged: Bool = false
     private var saveButtonBottomConstraint: NSLayoutConstraint!
     private var tableViewHeightConstraint: Constraint?
+    private var collectionViewHeightConstraint: Constraint?
+    private var isGridView: Bool = false
     
     // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
@@ -53,6 +55,22 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false // Disable scroll to avoid conflict with ScrollView
         return tableView
+    }()
+    
+    private lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = UIConstants.standardPadding
+        layout.minimumLineSpacing = UIConstants.standardPadding
+        
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = UIColor.Main.background
+        collectionView.register(OrderCollectionViewCell.self, forCellWithReuseIdentifier: "OrderCollectionViewCell")
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.isScrollEnabled = false // Disable scroll to avoid conflict with ScrollView
+        collectionView.isHidden = true // Initially hidden
+        return collectionView
     }()
     
     private lazy var cashInputContainer: InputContainerView = {
@@ -136,6 +154,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
         
+        // Add toggle button
+        let toggleImage = UIImage(systemName: "square.grid.2x2")
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: toggleImage, style: .plain, target: self, action: #selector(toggleViewMode))
+        
         view.addSubview(scrollView)
         view.addSubview(saveButton)
         scrollView.addSubview(mainStackView)
@@ -149,8 +171,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         // Observers
         dateInputContainer.onDateChange = { [weak self] _ in
             self?.dateChanged = true
-            // If date changes, maybe we should re-check products?
-            // For now, keeping old logic: just update sum label if needed (but sum comes from products)
             self?.updateTotalSumLabel()
         }
     }
@@ -196,7 +216,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     
     private func setupData() {
         if viewModel == nil {
-            // Create default view model for new order
             viewModel = OrderDetailsViewModel(
                 model: OrderModel(
                     id: "",
@@ -210,7 +229,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         
         guard let viewModel = viewModel else { return }
         
-        // Populate UI
         if viewModel.cash != 0 { cashInputContainer.text = viewModel.cash.decimalFormat }
         if viewModel.card != 0 { cardInputContainer.text = viewModel.card.decimalFormat }
         if viewModel.sum != 0 { orderLabel.text = viewModel.sum.currency }
@@ -222,12 +240,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         dateInputContainer.date = viewModel.date
         typeInputContainer.text = viewModel.type
         
-        // Set default type if needed
         if (typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
-            // Using a simple fetch here, could be moved to VM
-            // viewModel.fetchTypes() // This is async, need binding or callback.
-            // But VM fetches types in init. We can check later or observe.
-            // For simplicity, let's leave it reactive to user interaction or fetch once more.
             DomainDatabaseService.shared.fetchTypes { [weak self] types in
                 if let def = types.first(where: { $0.isDefault }) {
                     DispatchQueue.main.async { self?.typeInputContainer.text = def.name }
@@ -235,10 +248,11 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
             }
         }
         
-        // Load Products
         viewModel.loadProducts { [weak self] in
             self?.tableView.reloadData()
+            self?.collectionView.reloadData()
             self?.updateTableHeight()
+            self?.updateCollectionHeight()
             self?.updateTotalSumLabel()
         }
         
@@ -261,7 +275,13 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     private func updateTableHeight() {
         tableView.layoutIfNeeded()
         let height = tableView.contentSize.height
-        tableViewHeightConstraint?.constant = max(height, 50) // Minimum height
+        tableViewHeightConstraint?.constant = max(height, 50)
+    }
+    
+    private func updateCollectionHeight() {
+        collectionView.layoutIfNeeded()
+        let height = collectionView.contentSize.height
+        collectionViewHeightConstraint?.constant = max(height, 50)
     }
     
     private func updateTotalSumLabel() {
@@ -269,6 +289,25 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
     
     // MARK: - Actions
+    @objc private func toggleViewMode() {
+        isGridView.toggle()
+        
+        UIView.animate(withDuration: 0.3) {
+            self.tableView.isHidden = self.isGridView
+            self.collectionView.isHidden = !self.isGridView
+            self.mainStackView.layoutIfNeeded()
+        }
+        
+        let iconName = isGridView ? "list.bullet" : "square.grid.2x2"
+        navigationItem.rightBarButtonItem?.image = UIImage(systemName: iconName)
+        
+        if isGridView {
+            updateCollectionHeight()
+        } else {
+            updateTableHeight()
+        }
+    }
+    
     @objc func saveAction() {
         guard let viewModel = viewModel else { return }
         
@@ -330,11 +369,33 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         let stepperValue = Int(stepper.value)
         let stepperTag = Int(stepper.tag)
         
-        let indexPath = IndexPath(row: stepperTag, section: 0)
-        if let cell = tableView.cellForRow(at: indexPath) as? OrderTableViewCell {
-            cell.quantityLabel.text = String(stepperValue)
-            viewModel?.productsViewModel.setQuantity(tag: stepperTag, quantity: stepperValue)
-            updateTotalSumLabel()
+        // Update ViewModel
+        viewModel?.productsViewModel.setQuantity(tag: stepperTag, quantity: stepperValue)
+        updateTotalSumLabel()
+        
+        // Reload visible cells in both views to sync UI
+        // Ideally we should bind this, but simple reload works for now
+        // Or specific cell reload
+        
+        if isGridView {
+            // Update corresponding table cell (if needed for later)
+            // Actually reloading data might be expensive.
+            // Let's just update the visible cell if possible, or reloadData
+            // Since we are changing ONE item, let's try to update just that item in the OTHER view.
+            
+            // However, since one view is hidden, we can just reload it when we switch back.
+            // But to be safe, let's reload both for now or just the visible one.
+            // Wait, we need to update the CURRENT view's label immediately (which stepper handles mostly, but label needs update)
+            
+            let indexPath = IndexPath(item: stepperTag, section: 0)
+            if let cell = collectionView.cellForItem(at: indexPath) as? OrderCollectionViewCell {
+                cell.quantityLabel.text = String(stepperValue)
+            }
+        } else {
+            let indexPath = IndexPath(row: stepperTag, section: 0)
+            if let cell = tableView.cellForRow(at: indexPath) as? OrderTableViewCell {
+                cell.quantityLabel.text = String(stepperValue)
+            }
         }
     }
     
@@ -374,6 +435,32 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
+// MARK: - CollectionView
+extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "OrderCollectionViewCell", for: indexPath) as? OrderCollectionViewCell,
+              let cellViewModel = viewModel?.productsViewModel.cellViewModel(for: indexPath)
+        else { return UICollectionViewCell() }
+        
+        cell.viewModel = cellViewModel
+        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let padding = UIConstants.standardPadding
+        // 2 columns: (Width - padding * 3) / 2
+        // Assuming standardPadding is spacing between items and edges
+        let availableWidth = collectionView.frame.width - (padding * 3)
+        let width = availableWidth / 2
+        return CGSize(width: width, height: 140)
+    }
+}
+
 // MARK: - PickerView
 extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
     func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
@@ -410,7 +497,10 @@ extension OrderDetailsViewController {
         cardInputContainer.height(containerHeight)
         
         // TableView dynamic height
-        tableViewHeightConstraint = tableView.height(300) // Initial value
+        tableViewHeightConstraint = tableView.height(300)
+        
+        // CollectionView dynamic height
+        collectionViewHeightConstraint = collectionView.height(300)
         
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
         saveButton.height(UIConstants.buttonHeight)
@@ -425,6 +515,7 @@ extension OrderDetailsViewController {
         
         mainStackView.addArrangedSubview(dateTypeStackView)
         mainStackView.addArrangedSubview(tableView)
+        mainStackView.addArrangedSubview(collectionView) // Added CollectionView
         mainStackView.addArrangedSubview(totalStackView)
         mainStackView.addArrangedSubview(cashCardStackView)
     }
