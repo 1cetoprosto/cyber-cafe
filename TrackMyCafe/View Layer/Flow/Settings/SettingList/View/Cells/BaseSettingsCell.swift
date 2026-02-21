@@ -13,15 +13,6 @@ class BaseSettingsCell: UITableViewCell {
         return String(describing: self)
     }
     
-    let backgroundViewCell: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = 10
-        view.translatesAutoresizingMaskIntoConstraints = false
-
-        return view
-    }()
-    
     let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -50,7 +41,7 @@ class BaseSettingsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        backgroundColor = UIColor.Main.background
+        backgroundColor = UIColor.TableView.cellBackground
         accessoryType = .disclosureIndicator
         selectionStyle = .none
         
@@ -62,18 +53,9 @@ class BaseSettingsCell: UITableViewCell {
     }
     
     private func setConstraints() {
-        
-        self.addSubview(backgroundViewCell)
-        NSLayoutConstraint.activate([
-            backgroundViewCell.topAnchor.constraint(equalTo: self.topAnchor, constant: 0),
-            backgroundViewCell.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0),
-            backgroundViewCell.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0),
-            backgroundViewCell.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1)
-        ])
-        
-        backgroundViewCell.addSubview(iconContainer)
+        contentView.addSubview(iconContainer)
         iconContainer.addSubview(iconImageView)
-        backgroundViewCell.addSubview(label)
+        contentView.addSubview(label)
         
         NSLayoutConstraint.activate([
             iconContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),

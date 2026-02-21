@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 294 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 300 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1807,6 +1807,41 @@ struct _R {
       /// Locales: en, uk
       var sendFailedTitle: RswiftResources.StringResource { .init(key: "sendFailedTitle", tableName: "Global", source: source, developmentValue: "Send Failed", comment: nil) }
 
+      /// en translation: App Info
+      ///
+      /// Key: settingsSectionAppInfo
+      ///
+      /// Locales: en, uk
+      var settingsSectionAppInfo: RswiftResources.StringResource { .init(key: "settingsSectionAppInfo", tableName: "Global", source: source, developmentValue: "App Info", comment: nil) }
+
+      /// en translation: Appearance
+      ///
+      /// Key: settingsSectionAppearance
+      ///
+      /// Locales: en, uk
+      var settingsSectionAppearance: RswiftResources.StringResource { .init(key: "settingsSectionAppearance", tableName: "Global", source: source, developmentValue: "Appearance", comment: nil) }
+
+      /// en translation: Establishment
+      ///
+      /// Key: settingsSectionEstablishment
+      ///
+      /// Locales: en, uk
+      var settingsSectionEstablishment: RswiftResources.StringResource { .init(key: "settingsSectionEstablishment", tableName: "Global", source: source, developmentValue: "Establishment", comment: nil) }
+
+      /// en translation: Menu & Inventory
+      ///
+      /// Key: settingsSectionMenuInventory
+      ///
+      /// Locales: en, uk
+      var settingsSectionMenuInventory: RswiftResources.StringResource { .init(key: "settingsSectionMenuInventory", tableName: "Global", source: source, developmentValue: "Menu & Inventory", comment: nil) }
+
+      /// en translation: Orders
+      ///
+      /// Key: settingsSectionOrders
+      ///
+      /// Locales: en, uk
+      var settingsSectionOrders: RswiftResources.StringResource { .init(key: "settingsSectionOrders", tableName: "Global", source: source, developmentValue: "Orders", comment: nil) }
+
       /// en translation: Something went wrong
       ///
       /// Key: somethingWentWrong
@@ -2142,6 +2177,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var typeDelivery: RswiftResources.StringResource { .init(key: "typeDelivery", tableName: "Global", source: source, developmentValue: "Delivery", comment: nil) }
+
+      /// en translation: These types are used to categorise orders, for example, in-store, takeaway or delivery.
+      ///
+      /// Key: typeDescription
+      ///
+      /// Locales: en, uk
+      var typeDescription: RswiftResources.StringResource { .init(key: "typeDescription", tableName: "Global", source: source, developmentValue: "These types are used to categorise orders, for example, in-store, takeaway or delivery.", comment: nil) }
 
       /// en translation: Dine-in
       ///
