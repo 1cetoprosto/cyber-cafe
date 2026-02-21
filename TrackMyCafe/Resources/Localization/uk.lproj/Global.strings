@@ -24,6 +24,13 @@
 "actionDone" = "Готово";
 "add" = "Додати";
 
+// MARK: - Settings Sections
+"settingsSectionEstablishment" = "Заклад";
+"settingsSectionMenuInventory" = "Меню та Склад";
+"settingsSectionOrders" = "Замовлення";
+"settingsSectionAppearance" = "Інтерфейс";
+"settingsSectionAppInfo" = "Про додаток";
+
 // MARK: - Contact Information
 "phone" = "Телефон";
 "enterPhoneNumber" = "Введіть номер телефону";
@@ -292,6 +299,7 @@
 "defaultType" = "Тип за замовчуванням";
 "pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
 "failedToSaveType" = "Не вдалося зберегти тип";
+"typeDescription" = "Ці типи використовуються для категоризації замовлень (наприклад, В закладі, З собою, Доставка).";
 
 // MARK: - Language & Theme
 "english" = "Англійська";

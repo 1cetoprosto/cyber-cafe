@@ -27,16 +27,17 @@ These rules must be followed by AI when generating or editing code.
    - Models → `Data Layer/Models`
    - ViewModels → `View Layer/Flow/*/ViewModel`
    - Views → `View Layer/Flow`
-5. **Avoid `!` force‑unwraps and global state.**
-6. **Asynchronous code:**
+5. **Use TinyConstraints** — Always prefer `TinyConstraints` library over standard `NSLayoutConstraint` for programmatic UI layout. Do not set `translatesAutoresizingMaskIntoConstraints = false` manually when using TinyConstraints.
+6. **Avoid `!` force‑unwraps and global state.**
+7. **Asynchronous code:**
    - Keep completion handlers in existing modules.
    - Prefer async/await for **new code** (Firebase SDK ≥ 10 async/await API only).
    - No old completion closures in new code.
-7. **Use protocols for abstraction and Dependency Injection.**
-8. **Classes = Single Responsibility only.**
-9. **File size limit:** If class > 300 lines — split into multiple files following single responsibility principle.
-10. **Naming conventions:** PascalCase for classes, camelCase for methods, snake_case forbidden.
-11. **Layer separation:**
+8. **Use protocols for abstraction and Dependency Injection.**
+9. **Classes = Single Responsibility only.**
+10. **File size limit:** If class > 300 lines — split into multiple files following single responsibility principle.
+11. **Naming conventions:** PascalCase for classes, camelCase for methods, snake_case forbidden.
+12. **Layer separation:**
     - UIKit imports only in View Layer (controllers/views)
     - ViewModels must not import UIKit
     - Models must be UI-framework agnostic
