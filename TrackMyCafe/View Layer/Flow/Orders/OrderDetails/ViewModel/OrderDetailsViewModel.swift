@@ -9,9 +9,12 @@ import Foundation
 
 class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
+    // MARK: - Properties
     private var order: OrderModel
     private var types: [TypeModel] = []
     private var selectedRow: Int?
+    
+    let productsViewModel: ProductListViewModel
     
     var id: String { return order.id }
     var date: Date { return order.date }
@@ -26,67 +29,138 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     var type: String { return order.type }
     var isNewModel: Bool
     
+    // MARK: - Init
     init(model: OrderModel, isNewModel: Bool = false) {
         self.order = model
         self.isNewModel = isNewModel
+        self.productsViewModel = ProductListViewModel()
+        
         fetchTypes()
     }
     
-    func isExist(id: String, completion: @escaping (Bool) -> Void) {
-        DomainDatabaseService.shared.fetchOrders(forId: id) { order in
-            completion(order != nil)
+    // MARK: - Data Loading
+    func loadProducts(completion: @escaping () -> Void) {
+        // If new model, pass empty string to load template products, else pass real ID
+        let orderId = isNewModel ? "" : order.id
+        productsViewModel.getProducts(withIdOrder: orderId, completion: completion)
+    }
+    
+    // MARK: - Saving Logic
+    func save(
+        date: Date,
+        type: String?,
+        cash: String?,
+        card: String?,
+        ignoreStockWarning: Bool,
+        completion: @escaping (Result<Void, OrderSaveError>) -> Void
+    ) {
+        let type = type ?? ""
+        let cashValue = cash?.double ?? 0.0
+        let cardValue = card?.double ?? 0.0
+        
+        if ignoreStockWarning {
+            performSave(date: date, type: type, cash: cashValue, card: cardValue, completion: completion)
+        } else {
+            productsViewModel.validateStock { [weak self] warnings in
+                guard let self = self else { return }
+                
+                if !warnings.isEmpty {
+                    completion(.failure(.stockValidationFailed(warnings)))
+                    return
+                }
+                
+                self.performSave(date: date, type: type, cash: cashValue, card: cardValue, completion: completion)
+            }
         }
     }
     
-    func saveOrders(
-        id: String, date: Date, type: String?, cash: String?, card: String?, sum: String?,
-        completion: @escaping () -> Void
-    ) {
-        let order = OrderModel(
+    private func performSave(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Result<Void, OrderSaveError>) -> Void) {
+        // 1. Save/Update Order (Parent)
+        if self.isNewModel {
+            self.createOrder(date: date, type: type, cash: cash, card: card) { success in
+                if success {
+                    // 2. Save Products (Children)
+                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) { productsSaved in
+                        if productsSaved {
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(.saveFailed))
+                        }
+                    }
+                } else {
+                    completion(.failure(.saveFailed))
+                }
+            }
+        } else {
+            self.updateOrder(date: date, type: type, cash: cash, card: card) { success in
+                if success {
+                    // 2. Update Products (Children)
+                    self.productsViewModel.updateOrder(date: date) { productsSaved in
+                        if productsSaved {
+                            completion(.success(()))
+                        } else {
+                            completion(.failure(.saveFailed))
+                        }
+                    }
+                } else {
+                    completion(.failure(.saveFailed))
+                }
+            }
+        }
+    }
+    
+    private func createOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
+        let sumString = productsViewModel.totalSum()
+        let sum = sumString.double ?? 0.0
+        
+        let newOrder = OrderModel(
             id: id,
             date: date,
-            type: type ?? "",
-            sum: sum?.double ?? 0.0,
-            cash: cash?.double ?? 0.0,
-            card: card?.double ?? 0.0
+            type: type,
+            sum: sum,
+            cash: cash,
+            card: card
         )
         
-        DomainDatabaseService.shared.saveOrder(order: order) { [self] documentId in
+        DomainDatabaseService.shared.saveOrder(order: newOrder) { [weak self] documentId in
             guard let documentId = documentId else {
-                logger.error("Failed to save order")
+                completion(false)
                 return
             }
-            self.order.id = documentId
-            completion()
-            logger.notice("Order \(documentId) saved successfully")
+            self?.order.id = documentId
+            self?.isNewModel = false
+            completion(true)
         }
     }
     
-    func updateOrders(
-        id: String, date: Date, type: String?, cash: String?, card: String?, sum: String?,
-        completion: @escaping () -> Void
-    ) {
+    private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
+        let sumString = productsViewModel.totalSum()
+        let sum = sumString.double ?? 0.0
         
-        DomainDatabaseService.shared.fetchOrders(forId: id) { order in
-            guard let order = order else { return }
+        DomainDatabaseService.shared.fetchOrders(forId: id) { [weak self] fetchedOrder in
+            guard let self = self, let fetchedOrder = fetchedOrder else {
+                completion(false)
+                return
+            }
+            
             DomainDatabaseService.shared.updateOrders(
-                model: order,
+                model: fetchedOrder,
                 date: date,
-                type: type ?? "",
-                total: sum?.double ?? 0.0,
-                cashAmount: cash?.double ?? 0.0,
-                cardAmount: card?.double ?? 0.0)
-            completion()
+                type: type,
+                total: sum,
+                cashAmount: cash,
+                cardAmount: card
+            )
+            completion(true)
         }
     }
     
+    // MARK: - Picker Data Source
     func numberOfRowsInComponent(component: Int) -> Int {
-        //guard let types = self.types else { return 0 }
         return types.count
     }
     
     func titleForRow(row: Int, component: Int) -> String? {
-        //guard let types = self.types else { return nil }
         return types[row].name
     }
     
@@ -94,13 +168,21 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         self.selectedRow = row
     }
     
+    func getSelectedType() -> String? {
+        guard let row = selectedRow, row < types.count else { return nil }
+        return types[row].name
+    }
+    
+    // MARK: - Helpers
     func fetchTypes() {
         DomainDatabaseService.shared.fetchTypes { [weak self] types in
             self?.types = types
+            if let index = types.firstIndex(where: { $0.name == self?.order.type }) {
+                self?.selectedRow = index
+            }
         }
     }
     
-    // Check if required data exists
     func verifyRequiredData(completion: @escaping (Bool) -> Void) {
         DomainDatabaseService.shared.fetchTypes { [weak self] types in
             guard let self = self else { return }
@@ -108,6 +190,16 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             DomainDatabaseService.shared.fetchProductsPrice { productPrices in
                 completion(!types.isEmpty && !productPrices.isEmpty)
             }
+        }
+    }
+    
+    func deleteOrder(completion: @escaping () -> Void) {
+        ProductListViewModel.deleteOrder(withOrderId: id, date: date)
+        DomainDatabaseService.shared.deleteOrder(order: order) { success in
+            if success {
+                self.logger.notice("Order deleted")
+            }
+            completion()
         }
     }
 }

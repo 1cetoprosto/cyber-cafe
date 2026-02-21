@@ -75,6 +75,17 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                         userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
             return
         }
+        
+        guard !id.isEmpty else {
+            logger.error("fetchObjectById called with empty ID for collection: \(collection)")
+            completion(
+                .failure(
+                    NSError(
+                        domain: "InvalidID", code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "Document ID cannot be empty"])))
+            return
+        }
+        
         userCollection.document(id).getDocument { [self] document, error in
             if let error = error {
                 self.logger.error("Error getting document: \(error.localizedDescription)")
