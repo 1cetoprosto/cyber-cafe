@@ -10,12 +10,15 @@ import UIKit
 
 class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     
+    // MARK: - Properties
     var viewModel: OrderDetailsViewModelType?
-    var tableViewModel: ProductListViewModelType?
     var onSave: (() -> Void)?
+    
     private var dateChanged: Bool = false
     private var saveButtonBottomConstraint: NSLayoutConstraint!
+    private var tableViewHeightConstraint: Constraint?
     
+    // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
@@ -43,13 +46,12 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
-        tableView.register(
-            OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
+        tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
-        
+        tableView.isScrollEnabled = false // Disable scroll to avoid conflict with ScrollView
         return tableView
     }()
     
@@ -79,7 +81,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         label.text = "0"
         label.textColor = UIColor.Main.text
         label.applyDynamic(Typography.title3)
-        
         return label
     }()
     
@@ -104,34 +105,33 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     private lazy var saveButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(R.string.global.save(), for: .normal)
-        button.addTarget(self, action: #selector(saveAction(param:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(saveAction), for: .touchUpInside)
         return button
     }()
     
     private lazy var toolbar: UIToolbar = {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        let doneButton = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(donePicker))
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(donePicker))
         toolbar.setItems([doneButton], animated: false)
         toolbar.isUserInteractionEnabled = true
         return toolbar
     }()
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if self.isMovingFromParent {
-            guard let viewModel = viewModel else { return }
-            if viewModel.sum == 0.0 {
-                //ProductListViewModel.deleteOrder(date: viewModel.date)
-            }
-        }
-    }
-    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupUI()
+        setupData()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
+    }
+    
+    // MARK: - Setup
+    private func setupUI() {
         title = R.string.global.order()
         view.backgroundColor = UIColor.Main.background
         navigationController?.view.backgroundColor = UIColor.NavBar.background
@@ -140,6 +140,22 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         view.addSubview(saveButton)
         scrollView.addSubview(mainStackView)
         
+        setupAccessibility()
+        setupInputs()
+        setupPicker()
+        setupConstraints()
+        setupKeyboardHandling()
+        
+        // Observers
+        dateInputContainer.onDateChange = { [weak self] _ in
+            self?.dateChanged = true
+            // If date changes, maybe we should re-check products?
+            // For now, keeping old logic: just update sum label if needed (but sum comes from products)
+            self?.updateTotalSumLabel()
+        }
+    }
+    
+    private func setupAccessibility() {
         dateInputContainer.accessibilityIdentifier = "dateInput"
         typeInputContainer.accessibilityIdentifier = "typeInput"
         tableView.accessibilityIdentifier = "productsTable"
@@ -147,54 +163,40 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         cashInputContainer.accessibilityIdentifier = "cashInput"
         cardInputContainer.accessibilityIdentifier = "cardInput"
         saveButton.accessibilityIdentifier = "saveButton"
-        
+    }
+    
+    private func setupInputs() {
         cashInputContainer.setDelegate(self)
         cardInputContainer.setDelegate(self)
         cashInputContainer.enableNumericInput(maxFractionDigits: 2)
         cardInputContainer.enableNumericInput(maxFractionDigits: 2)
-        let currencySymbol =
-        RequestManager.shared.settings?.currencySymbol
-        ?? ((Locale.current.languageCode == "uk")
-            ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
+        
+        let currencySymbol = RequestManager.shared.settings?.currencySymbol
+        ?? ((Locale.current.languageCode == "uk") ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
+        
         cashInputContainer.enableCurrencySuffix(symbol: currencySymbol)
         cardInputContainer.enableCurrencySuffix(symbol: currencySymbol)
+        
         cashInputContainer.setReturnKeyType(.done)
         cardInputContainer.setReturnKeyType(.done)
         typeInputContainer.setReturnKeyType(.done)
+        
         cashInputContainer.textFieldReference?.textAlignment = .right
         cardInputContainer.textFieldReference?.textAlignment = .right
-        
+    }
+    
+    private func setupPicker() {
         let pickerView = UIPickerView()
         pickerView.delegate = self
         pickerView.dataSource = self
-        pickerView.center = view.center
         
         typeInputContainer.textFieldReference?.inputView = pickerView
         typeInputContainer.textFieldReference?.inputAccessoryView = toolbar
-        
-        setData()
-        setupConstraints()
-        setupKeyboardHandling()
-        
-        dateInputContainer.onDateChange = { [weak self] _ in
-            guard let self = self else { return }
-            self.dateChanged = true
-            self.orderLabel.text = self.tableViewModel?.totalSum()
-        }
-        
-        verifyRequiredData {
-            
-        }
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
-    }
-    
-    fileprivate func setData() {
+    private func setupData() {
         if viewModel == nil {
-            // Пошукати модель за сьогоднішній день, якщо немає створити пусту
+            // Create default view model for new order
             viewModel = OrderDetailsViewModel(
                 model: OrderModel(
                     id: "",
@@ -208,15 +210,11 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         
         guard let viewModel = viewModel else { return }
         
-        if viewModel.cash != 0 {
-            cashInputContainer.text = viewModel.cash.decimalFormat
-        }
-        if viewModel.card != 0 {
-            cardInputContainer.text = viewModel.card.decimalFormat
-        }
-        if viewModel.sum != 0 {
-            orderLabel.text = viewModel.sum.currency
-        }
+        // Populate UI
+        if viewModel.cash != 0 { cashInputContainer.text = viewModel.cash.decimalFormat }
+        if viewModel.card != 0 { cardInputContainer.text = viewModel.card.decimalFormat }
+        if viewModel.sum != 0 { orderLabel.text = viewModel.sum.currency }
+        
         cashInputContainer.configure(labelText: viewModel.cashLabel)
         cardInputContainer.configure(labelText: viewModel.cardLabel)
         totalTitleLabel.text = viewModel.orderLabel
@@ -224,128 +222,120 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         dateInputContainer.date = viewModel.date
         typeInputContainer.text = viewModel.type
         
-        if (typeInputContainer.text == nil || typeInputContainer.text == "") && viewModel.isNewModel
-        {
+        // Set default type if needed
+        if (typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
+            // Using a simple fetch here, could be moved to VM
+            // viewModel.fetchTypes() // This is async, need binding or callback.
+            // But VM fetches types in init. We can check later or observe.
+            // For simplicity, let's leave it reactive to user interaction or fetch once more.
             DomainDatabaseService.shared.fetchTypes { [weak self] types in
-                guard let self = self else { return }
                 if let def = types.first(where: { $0.isDefault }) {
-                    DispatchQueue.main.async { self.typeInputContainer.text = def.name }
+                    DispatchQueue.main.async { self?.typeInputContainer.text = def.name }
                 }
             }
         }
         
-        if tableViewModel == nil {
-            tableViewModel = ProductListViewModel()
-            tableViewModel?.getProducts(withIdOrder: viewModel.id) {
-                self.tableView.reloadData()
-            }
+        // Load Products
+        viewModel.loadProducts { [weak self] in
+            self?.tableView.reloadData()
+            self?.updateTableHeight()
+            self?.updateTotalSumLabel()
         }
+        
+        verifyRequiredData()
     }
     
-    private func verifyRequiredData(completion: @escaping () -> Void) {
-        viewModel?.verifyRequiredData { isDataAvailable in
-            if isDataAvailable {
-                completion()
-            } else {
+    private func verifyRequiredData() {
+        viewModel?.verifyRequiredData { [weak self] isDataAvailable in
+            if !isDataAvailable {
                 let alert = UIAlertController(
                     title: R.string.global.error(),
                     message: R.string.global.requiredDataIsMissingInUserSettings(),
                     preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+                self?.present(alert, animated: true)
+            }
+        }
+    }
+    
+    private func updateTableHeight() {
+        tableView.layoutIfNeeded()
+        let height = tableView.contentSize.height
+        tableViewHeightConstraint?.constant = max(height, 50) // Minimum height
+    }
+    
+    private func updateTotalSumLabel() {
+        orderLabel.text = viewModel?.productsViewModel.totalSum()
+    }
+    
+    // MARK: - Actions
+    @objc func saveAction() {
+        guard let viewModel = viewModel else { return }
+        
+        let date = dateInputContainer.date ?? Date()
+        let type = typeInputContainer.text
+        let cash = cashInputContainer.text
+        let card = cardInputContainer.text
+        
+        viewModel.save(date: date, type: type, cash: cash, card: card, ignoreStockWarning: false) { [weak self] result in
+            self?.handleSaveResult(result)
+        }
+    }
+    
+    private func handleSaveResult(_ result: Result<Void, OrderSaveError>) {
+        switch result {
+        case .success:
+            self.onSave?()
+            self.navigationController?.popToRootViewController(animated: true)
+            
+        case .failure(let error):
+            switch error {
+            case .stockValidationFailed(let warnings):
+                self.showStockWarning(warnings)
+            case .saveFailed, .fetchFailed:
+                let alert = UIAlertController(title: "Error", message: "Failed to save order", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(alert, animated: true)
             }
         }
     }
     
-    // MARK: - Method
-    @objc func saveAction(param: UIButton?) {
-        guard self.viewModel != nil else { return }
+    private func showStockWarning(_ warnings: [StockWarning]) {
+        let message = warnings.map { warning in
+            let shortage = warning.requiredQty - warning.currentStock
+            return "\(warning.ingredientName): Need \(String(format: "%.2f", shortage)) more"
+        }.joined(separator: "\n")
         
-        // Validate stock first
-        if let tableViewModel = tableViewModel {
-            tableViewModel.validateStock { [weak self] warnings in
-                guard let self = self else { return }
-                
-                if !warnings.isEmpty {
-                    // Show warning alert
-                    let message = warnings.map { warning in
-                        let shortage = warning.requiredQty - warning.currentStock
-                        return "\(warning.ingredientName): Need \(String(format: "%.2f", shortage)) more"
-                    }.joined(separator: "\n")
-                    
-                    let alert = UIAlertController(
-                        title: "Stock Warning",
-                        message: "Not enough stock for:\n" + message + "\nProceed anyway?",
-                        preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-                    alert.addAction(
-                        UIAlertAction(
-                            title: "Proceed", style: .destructive,
-                            handler: { _ in
-                                self.saveAndNavigate()
-                            }))
-                    self.present(alert, animated: true)
-                } else {
-                    self.saveAndNavigate()
-                }
-            }
-        } else {
-            saveAndNavigate()
-        }
-    }
-    
-    private func handleExistingData() {
-        if dateChanged {
-            let alert = UIAlertController(
-                title: R.string.global.warning(),
-                message: R.string.global.dataForTheSelectedDateAlreadyExistsOpenAndEditThem(),
-                preferredStyle: .alert)
-            let ok = UIAlertAction(title: R.string.global.actionOk(), style: .default)
-            alert.addAction(ok)
-            present(alert, animated: true)
-        }
-    }
-    
-    private func saveAndNavigate() {
-        
-        saveModels { [weak self] in
-            guard let self = self else { return }
+        let alert = UIAlertController(
+            title: "Stock Warning",
+            message: "Not enough stock for:\n" + message + "\nProceed anyway?",
+            preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Proceed", style: .destructive, handler: { [weak self] _ in
+            guard let self = self, let viewModel = self.viewModel else { return }
             
-            self.onSave?()
-            self.navigationController?.popToRootViewController(animated: true)
-        }
+            let date = self.dateInputContainer.date ?? Date()
+            let type = self.typeInputContainer.text
+            let cash = self.cashInputContainer.text
+            let card = self.cardInputContainer.text
+            
+            viewModel.save(date: date, type: type, cash: cash, card: card, ignoreStockWarning: true) { [weak self] result in
+                self?.handleSaveResult(result)
+            }
+        }))
+        self.present(alert, animated: true)
     }
     
-    // @objc func cancelAction(param: UIButton) {
-    //   navigationController?.popToRootViewController(animated: true)
-    // }
-    
-    // handle stepper value change action
     @objc func stepperValueChanged(_ stepper: UIStepper) {
-        
         let stepperValue = Int(stepper.value)
         let stepperTag = Int(stepper.tag)
         
         let indexPath = IndexPath(row: stepperTag, section: 0)
         if let cell = tableView.cellForRow(at: indexPath) as? OrderTableViewCell {
             cell.quantityLabel.text = String(stepperValue)
-            tableViewModel?.setQuantity(tag: stepperTag, quantity: stepperValue)
+            viewModel?.productsViewModel.setQuantity(tag: stepperTag, quantity: stepperValue)
+            updateTotalSumLabel()
         }
-        orderLabel.text = tableViewModel?.totalSum()
-    }
-    
-    @objc func datePickerChanged(_ sender: UIDatePicker) {
-        dateChanged = true
-        orderLabel.text = tableViewModel?.totalSum()
-    }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true)
-        return false
-    }
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        let current = textField.text ?? ""
-        if current == "0" || current == "0,0" || current == "0.0" { textField.text = "" }
     }
     
     @objc private func dismissKeyboard() {
@@ -356,77 +346,27 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
     }
     
-    func saveModels(completion: @escaping () -> Void) {
-        guard let viewModel = self.viewModel else { return }
-        
-        let saveTable: () -> Void = { [weak self] in
-            guard let self = self, let tableViewModel = self.tableViewModel else {
-                completion()
-                return
-            }
-            
-            let date = self.dateInputContainer.date ?? Date()
-            
-            if viewModel.isNewModel {
-                tableViewModel.saveOrder(withOrderId: viewModel.id, date: date) { _ in
-                    completion()
-                }
-            } else {
-                tableViewModel.updateOrder(date: date) { _ in
-                    completion()
-                }
-            }
-        }
-        
-        if viewModel.isNewModel {
-            viewModel.saveOrders(
-                id: "",
-                date: dateInputContainer.date ?? Date(),
-                type: typeInputContainer.text,
-                cash: cashInputContainer.text,
-                card: cardInputContainer.text,
-                sum: orderLabel.text
-            ) {
-                saveTable()
-            }
-            
-        } else {
-            viewModel.updateOrders(
-                id: viewModel.id,
-                date: dateInputContainer.date ?? Date(),
-                type: typeInputContainer.text,
-                cash: cashInputContainer.text,
-                card: cardInputContainer.text,
-                sum: orderLabel.text
-            ) {
-                saveTable()
-            }
-        }
+    // MARK: - TextField Delegate
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        let current = textField.text ?? ""
+        if current == "0" || current == "0,0" || current == "0.0" { textField.text = "" }
     }
 }
 
-// MARK: - UITableViewDelegate, UITableViewDataSource
+// MARK: - TableView
 extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let tableViewModel = tableViewModel else { return 0 }
-        return tableViewModel.numberOfRowInSection(for: section)  //ordersProductsArray.count
+        return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell =
-        tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.orderCell, for: indexPath)
-        as? OrderTableViewCell
-        
-        guard let tableViewCell = cell,
-              let tableViewModel = tableViewModel
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.orderCell, for: indexPath) as? OrderTableViewCell,
+              let cellViewModel = viewModel?.productsViewModel.cellViewModel(for: indexPath)
         else { return UITableViewCell() }
         
-        let cellViewModel = tableViewModel.cellViewModel(for: indexPath)
-        tableViewCell.viewModel = cellViewModel
-        tableViewCell.productStepper.addTarget(
-            self, action: #selector(self.stepperValueChanged(_:)), for: .valueChanged)
-        
-        return tableViewCell
+        cell.viewModel = cellViewModel
+        cell.productStepper.addTarget(self, action: #selector(stepperValueChanged(_:)), for: .valueChanged)
+        return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -434,49 +374,22 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
     }
 }
 
-// MARK: - UIPickerViewDataSource, UIPickerViewDelegate
+// MARK: - PickerView
 extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelegate {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 1
-    }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int { 1 }
     
-    // Sets the number of rows in the picker view
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        guard let viewModel = viewModel else { return 0 }
-        return viewModel.numberOfRowsInComponent(component: component)
+        return viewModel?.numberOfRowsInComponent(component: component) ?? 0
     }
     
-    // This function sets the text of the picker view to the content of the "salutations" array
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
-    -> String?
-    {
-        guard let viewModel = viewModel else { return nil }
-        return viewModel.titleForRow(row: row, component: component)
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return viewModel?.titleForRow(row: row, component: component)
     }
     
-    // When user selects an option, this function will set the text of the text field to reflect
-    // the selected option.
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard let viewModel = viewModel else { return }
-        //viewModel.setType(row: row, component: component)
-        guard let type = viewModel.titleForRow(row: row, component: component) else { return }
+        guard let type = viewModel?.titleForRow(row: row, component: component) else { return }
         typeInputContainer.text = type
         view.endEditing(true)
-        
-        //        if type != "Sunday service" {
-        //            //ProductListViewModel.deleteOrder(date: viewModel.date)
-        //            tableViewModel = ProductListViewModel()
-        //                self.tableView.reloadData()
-        //        }
-        //        if type == "Sunday service" {
-        //            if tableViewModel == nil {
-        //                tableViewModel = ProductListViewModel()
-        //                tableViewModel?.getProducts(withIdOrder: viewModel.id) {
-        //                    self.tableView.reloadData()
-        //                }
-        //            }
-        //        }
-        //        self.tableView.reloadData()
     }
 }
 
@@ -486,83 +399,50 @@ extension OrderDetailsViewController {
         scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
         scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
         
-        mainStackView.edgesToSuperview(
-            insets: .init(
-                top: UIConstants.largeSpacing,
-                left: UIConstants.standardPadding,
-                bottom: UIConstants.largeSpacing,
-                right: UIConstants.standardPadding
-            )
-        )
+        mainStackView.edgesToSuperview(insets: .init(top: UIConstants.largeSpacing, left: UIConstants.standardPadding, bottom: UIConstants.largeSpacing, right: UIConstants.standardPadding))
         mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
         
-        let containerHeight =
-        UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+        let containerHeight = UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+        
         dateInputContainer.height(containerHeight)
         typeInputContainer.height(containerHeight)
         cashInputContainer.height(containerHeight)
         cardInputContainer.height(containerHeight)
-        tableView.height(300)
+        
+        // TableView dynamic height
+        tableViewHeightConstraint = tableView.height(300) // Initial value
         
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
         saveButton.height(UIConstants.buttonHeight)
-        saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
-            equalTo: view.keyboardLayoutGuide.topAnchor,
-            constant: -UIConstants.standardPadding
-        )
+        saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -UIConstants.standardPadding)
         saveButtonBottomConstraint.isActive = true
         
-        let cashCardStackView = UIStackView(
-            arrangedSubviews: [cashInputContainer, cardInputContainer],
-            axis: .horizontal,
-            spacing: UIConstants.standardPadding,
-            distribution: .fillEqually
-        )
-        // let moneyStackView = UIStackView(
-        //   arrangedSubviews: [cashCardStackView, orderLabel],
-        //   axis: .horizontal,
-        //   spacing: UIConstants.standardPadding,
-        //   distribution: .fillEqually
-        // )
+        let cashCardStackView = UIStackView(arrangedSubviews: [cashInputContainer, cardInputContainer], axis: .horizontal, spacing: UIConstants.standardPadding, distribution: .fillEqually)
         
-        let dateTypeStackView = UIStackView(
-            arrangedSubviews: [dateInputContainer, typeInputContainer],
-            axis: .horizontal,
-            spacing: UIConstants.standardPadding,
-            distribution: .fillEqually
-        )
+        let dateTypeStackView = UIStackView(arrangedSubviews: [dateInputContainer, typeInputContainer], axis: .horizontal, spacing: UIConstants.standardPadding, distribution: .fillEqually)
+        
+        let totalStackView = UIStackView(arrangedSubviews: [totalTitleLabel, orderLabel], axis: .horizontal, spacing: UIConstants.smallSpacing, distribution: .fill)
+        
         mainStackView.addArrangedSubview(dateTypeStackView)
         mainStackView.addArrangedSubview(tableView)
-        let totalStackView = UIStackView(
-            arrangedSubviews: [totalTitleLabel, orderLabel],
-            axis: .horizontal,
-            spacing: UIConstants.smallSpacing,
-            distribution: .fill
-        )
         mainStackView.addArrangedSubview(totalStackView)
         mainStackView.addArrangedSubview(cashCardStackView)
     }
-}
-
-extension OrderDetailsViewController {
+    
     private func setupKeyboardHandling() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
+        
         if let cashTF = cashInputContainer.textFieldReference { addDoneButtonToTextField(cashTF) }
         if let cardTF = cardInputContainer.textFieldReference { addDoneButtonToTextField(cardTF) }
     }
+    
     private func addDoneButtonToTextField(_ textField: UITextField) {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        let flexSpace = UIBarButtonItem(
-            barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(
-            title: R.string.global.actionOk(),
-            style: .done,
-            target: self,
-            action: #selector(dismissKeyboard)
-        )
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(title: R.string.global.actionOk(), style: .done, target: self, action: #selector(dismissKeyboard))
         toolbar.items = [flexSpace, doneButton]
         textField.inputAccessoryView = toolbar
     }
