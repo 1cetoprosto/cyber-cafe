@@ -12,12 +12,14 @@ struct FIRProductsPriceModel: Codable {
   @DocumentID var id: String?
   var name: String = ""
   var price: Double = 0.0
+  var categoryId: String?
   var recipe: [FIRRecipeItemModel] = []
 
   init(dataModel: ProductsPriceModel) {
     self.id = dataModel.id
     self.name = dataModel.name
     self.price = dataModel.price
+    self.categoryId = dataModel.categoryId
     self.recipe = dataModel.recipe.map { FIRRecipeItemModel(dataModel: $0) }
   }
 }

@@ -40,9 +40,19 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
     // MARK: - Data Loading
     func loadProducts(completion: @escaping () -> Void) {
-        // If new model, pass empty string to load template products, else pass real ID
-        let orderId = isNewModel ? "" : order.id
-        productsViewModel.getProducts(withIdOrder: orderId, completion: completion)
+        let mode = SettingsManager.shared.loadOrderEntryMode()
+        switch mode {
+        case .perOrder:
+            if isNewModel {
+                productsViewModel.clearProducts()
+                completion()
+            } else {
+                productsViewModel.getProducts(withIdOrder: order.id, completion: completion)
+            }
+        case .openTab:
+            let orderId = isNewModel ? "" : order.id
+            productsViewModel.getProducts(withIdOrder: orderId, completion: completion)
+        }
     }
     
     // MARK: - Saving Logic
@@ -135,8 +145,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
         
-        DomainDatabaseService.shared.fetchOrders(forId: id) { [weak self] fetchedOrder in
-            guard let self = self, let fetchedOrder = fetchedOrder else {
+        DomainDatabaseService.shared.fetchOrders(forId: id) { fetchedOrder in
+            guard let fetchedOrder = fetchedOrder else {
                 completion(false)
                 return
             }

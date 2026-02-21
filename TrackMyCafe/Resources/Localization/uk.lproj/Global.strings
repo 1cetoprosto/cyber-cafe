@@ -240,6 +240,10 @@
 // MARK: - Products
 "products" = "Товари";
 "order" = "Замовлення";
+"productCategories" = "Категорії товарів";
+"orderEntryModeTitle" = "Режим введення замовлень";
+"orderModePerOrder" = "Класична схема";
+"orderModeOpenTab" = "Donate-кафе (одне замовлення)";
 "cash" = "Готівка";
 "receivedInCash" = "Отримано готівкою";
 "receivedByCard" = "Отримано карткою";

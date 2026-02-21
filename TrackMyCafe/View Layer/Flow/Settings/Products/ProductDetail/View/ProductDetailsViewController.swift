@@ -38,6 +38,20 @@ class ProductDetailsViewController: UIViewController {
         return container
     }()
 
+    private lazy var categoryInputContainer: InputContainerView = {
+        let container = InputContainerView(
+            labelText: R.string.global.productCategories(),
+            inputType: .text(keyboardType: .default),
+            isEditable: true,
+            placeholder: R.string.global.productCategories(),
+            isSelection: true
+        )
+        let tap = UITapGestureRecognizer(target: self, action: #selector(categoryTapped))
+        container.addGestureRecognizer(tap)
+        container.isUserInteractionEnabled = true
+        return container
+    }()
+
     private lazy var priceInputContainer: InputContainerView = {
         let container = InputContainerView(
             labelText: R.string.global.price(),
@@ -86,6 +100,7 @@ class ProductDetailsViewController: UIViewController {
     }()
 
     private let viewModel: ProductDetailsViewModelType
+    private var categories: [ProductCategoryModel] = []
 
     init(viewModel: ProductDetailsViewModelType) {
         self.viewModel = viewModel
@@ -138,6 +153,7 @@ class ProductDetailsViewController: UIViewController {
         // Add containers to stack
         mainStackView.addArrangedSubview(nameInputContainer)
         mainStackView.addArrangedSubview(priceInputContainer)
+        mainStackView.addArrangedSubview(categoryInputContainer)
 
         // Add recipe section
         mainStackView.addArrangedSubview(recipeTitleLabel)
@@ -184,6 +200,7 @@ class ProductDetailsViewController: UIViewController {
             UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
         nameInputContainer.height(containerHeight)
         priceInputContainer.height(containerHeight)
+        categoryInputContainer.height(containerHeight)
         addIngredientButton.height(UIConstants.buttonHeight)
 
         recipeTableViewHeightConstraint = recipeTableView.heightAnchor.constraint(equalToConstant: 0)
@@ -214,6 +231,25 @@ class ProductDetailsViewController: UIViewController {
         Task {
             await viewModel.fetchIngredients()
         }
+
+        DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
+            DispatchQueue.main.async {
+                self?.categories = categories.sorted { $0.sortOrder < $1.sortOrder }
+                self?.updateCategorySelection()
+            }
+        }
+    }
+
+    private func updateCategorySelection() {
+        guard
+            let id = viewModel.categoryId,
+            let category = categories.first(where: { $0.id == id })
+        else {
+            categoryInputContainer.text = nil
+            return
+        }
+
+        categoryInputContainer.text = category.name
     }
 
     private func setupKeyboardHandling() {
@@ -242,6 +278,40 @@ class ProductDetailsViewController: UIViewController {
     }
 
     // MARK: - Actions
+    @objc private func categoryTapped() {
+        guard !categories.isEmpty else { return }
+
+        let alert = UIAlertController(
+            title: R.string.global.productCategories(),
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+
+        for category in categories {
+            alert.addAction(
+                UIAlertAction(title: category.name, style: .default) { [weak self] _ in
+                    self?.viewModel.setCategoryId(category.id)
+                    self?.categoryInputContainer.text = category.name
+                }
+            )
+        }
+
+        alert.addAction(
+            UIAlertAction(
+                title: R.string.global.cancel(),
+                style: .cancel,
+                handler: nil
+            )
+        )
+
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = categoryInputContainer
+            popover.sourceRect = categoryInputContainer.bounds
+        }
+
+        present(alert, animated: true, completion: nil)
+    }
+
     @objc func addIngredientAction() {
         let ingredients = viewModel.allIngredients
 
@@ -356,17 +426,18 @@ class ProductDetailsViewController: UIViewController {
             guard let self = self else { return }
             do {
                 try await self.viewModel.saveProductPrice(name: nameText, price: parsedPrice)
-                await MainActor.run {
+                _ = await MainActor.run {
                     self.navigationController?.popViewController(animated: true)
                 }
             } catch {
-                await MainActor.run {
+                _ = await MainActor.run {
                     PopupFactory.showPopup(
-                        title: R.string.global.error(), description: R.string.global.failedToSaveProductPrice()
+                        title: R.string.global.error(),
+                        description: R.string.global.failedToSaveProductPrice()
                     ) {}
                 }
             }
-            await MainActor.run {
+            _ = await MainActor.run {
                 self.saveButton.isEnabled = true
             }
         }

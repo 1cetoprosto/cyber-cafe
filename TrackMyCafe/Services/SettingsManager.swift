@@ -16,6 +16,7 @@ class SettingsManager {
   private let languageKey = UserDefaultsKeys.language
   private let themeKey = UserDefaultsKeys.theme
   private let onlineKey = UserDefaultsKeys.online
+  private let orderEntryModeKey = UserDefaultsKeys.orderEntryMode
 
   func saveLanguage(_ language: String) {
     UserDefaults.standard.set(language, forKey: UserDefaultsKeys.language)
@@ -43,6 +44,18 @@ class SettingsManager {
       // Fallback to current selection's display name
       let option = ThemeOption.allCases.first(where: { $0.selection.appearance == Theme.currentSelection.appearance && $0.selection.palette == Theme.currentSelection.palette })
       return option?.displayName ?? Theme.currentThemeStyle.themeName
+  }
+
+  func saveOrderEntryMode(_ mode: OrderEntryMode) {
+    UserDefaults.standard.set(mode.rawValue, forKey: orderEntryModeKey)
+  }
+
+  func loadOrderEntryMode() -> OrderEntryMode {
+    guard let raw = UserDefaults.standard.string(forKey: orderEntryModeKey),
+          let mode = OrderEntryMode(rawValue: raw) else {
+      return .openTab
+    }
+    return mode
   }
 
   // func saveOnline(_ isOn: Bool) {
