@@ -101,6 +101,44 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         }
         return totalSum
     }
+
+    func clearProducts() {
+        products.removeAll()
+    }
+    
+    func addProduct(from priceModel: ProductsPriceModel, completion: @escaping () -> Void) {
+        if let index = products.firstIndex(where: { $0.productId == priceModel.id }) {
+            let existing = products[index]
+            let newQuantity = existing.quantity + 1
+            products[index].quantity = newQuantity
+            products[index].sum = Double(newQuantity) * existing.price
+            products[index].costSum = Double(newQuantity) * existing.costPrice
+            completion()
+            return
+        }
+        
+        costingService.calculateProductCost(productId: priceModel.id) { [weak self] cost in
+            guard let self = self else { return }
+            
+            let product = ProductOfOrderModel(
+                id: "",
+                productId: priceModel.id,
+                orderId: "",
+                date: Date(),
+                name: priceModel.name,
+                quantity: 1,
+                price: priceModel.price,
+                sum: priceModel.price,
+                costPrice: cost,
+                costSum: cost
+            )
+            
+            DispatchQueue.main.async {
+                self.products.append(product)
+                completion()
+            }
+        }
+    }
     
     func totalSum() -> String {
         return getTotalAmount().currency

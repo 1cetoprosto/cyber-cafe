@@ -240,6 +240,10 @@
 // MARK: - Products
 "products" = "Products";
 "order" = "Order";
+"productCategories" = "Product categories";
+"orderEntryModeTitle" = "Order entry mode";
+"orderModePerOrder" = "Per order";
+"orderModeOpenTab" = "Open tab";
 "cash" = "Cash";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
