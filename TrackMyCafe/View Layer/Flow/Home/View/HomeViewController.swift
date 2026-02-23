@@ -75,7 +75,9 @@ final class HomeViewController: UIViewController {
       week: viewModel.weekSum,
       month: viewModel.monthSum,
       expenses: viewModel.monthExpenses,
-      profit: viewModel.monthProfit
+      profit: viewModel.monthProfit,
+      cash: viewModel.cashBalance,
+      card: viewModel.cardBalance
     )
     setTableHeaderSized()
     tableView.reloadData()

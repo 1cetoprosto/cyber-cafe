@@ -4,6 +4,7 @@ import UIKit
 final class HomeHeaderView: UIView {
     var onAddIncome: (() -> Void)?
     var onAddExpense: (() -> Void)?
+    var onPeriodChanged: ((Int) -> Void)?
 
     private let titleLabel: UILabel = {
         let l = UILabel()
@@ -34,6 +35,7 @@ final class HomeHeaderView: UIView {
         isEditable: false
     )
     private let profitCard = ProfitCard()
+    private let balanceCard = BalanceCard()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -46,7 +48,14 @@ final class HomeHeaderView: UIView {
     }
 
     func configure(
-        date: Date, today: Double, week: Double, month: Double, expenses: Double, profit: Double
+        date: Date,
+        today: Double,
+        week: Double,
+        month: Double,
+        expenses: Double,
+        profit: Double,
+        cash: Double,
+        card: Double
     ) {
         dateLabel.text = DateFormatter.appFullDate.string(from: date)
 
@@ -54,6 +63,10 @@ final class HomeHeaderView: UIView {
         weekContainer.text = NumberFormatter.currencyInteger.string(week)
         monthContainer.text = NumberFormatter.currencyInteger.string(month)
         profitCard.configure(expenses: expenses, profit: profit)
+        balanceCard.configure(
+            cash: NumberFormatter.currencyInteger.string(cash),
+            card: NumberFormatter.currencyInteger.string(card)
+        )
     }
 
     private func setupUI() {
@@ -94,9 +107,9 @@ final class HomeHeaderView: UIView {
         miniStack.spacing = UIConstants.standardPadding
         miniStack.distribution = UIStackView.Distribution.fillEqually
 
-        let contentStack = UIStackView(arrangedSubviews: [
-            headerStack, actionsStack, todayCard, miniStack, profitCard,
-        ])
+        let contentStack = UIStackView(
+            arrangedSubviews: [headerStack, actionsStack, todayCard, miniStack, balanceCard, profitCard]
+        )
         contentStack.axis = NSLayoutConstraint.Axis.vertical
         contentStack.spacing = UIConstants.largeSpacing
 
@@ -244,3 +257,68 @@ private final class TodayCardView: UIView {
 }
 
 // MARK: - Localization helper
+
+private final class BalanceCard: UIView {
+    private let iconCash = UIImageView()
+    private let iconCard = UIImageView()
+    private let cashLabel = UILabel()
+    private let cashValue = UILabel()
+    private let cardLabel = UILabel()
+    private let cardValue = UILabel()
+
+    init() {
+        super.init(frame: .zero)
+        backgroundColor = UIColor.TableView.cellBackground
+        layer.cornerRadius = UIConstants.extraLargeCornerRadius
+
+        iconCash.image = UIImage(systemName: SystemImages.banknoteFill)
+        iconCash.tintColor = UIColor.systemGreen
+        iconCash.contentMode = .scaleAspectFit
+        iconCard.image = UIImage(systemName: SystemImages.creditCardCircleFill)
+        iconCard.tintColor = UIColor.systemBlue
+        iconCard.contentMode = .scaleAspectFit
+
+        cashLabel.applyDynamic(Typography.footnote)
+        cashLabel.textColor = UIColor.Main.text.alpha(0.7)
+        cashLabel.text = R.string.global.receivedInCash()
+        cardLabel.applyDynamic(Typography.footnote)
+        cardLabel.textColor = UIColor.Main.text.alpha(0.7)
+        cardLabel.text = R.string.global.receivedByCard()
+
+        cashValue.applyDynamic(Typography.title3DemiBold)
+        cashValue.textColor = UIColor.Main.text
+        cardValue.applyDynamic(Typography.title3DemiBold)
+        cardValue.textColor = UIColor.Main.text
+
+        let cashRow = UIStackView(arrangedSubviews: [iconCash, cashLabel, UIView(), cashValue])
+        cashRow.axis = .horizontal
+        cashRow.spacing = UIConstants.smallSpacing
+        iconCash.size(CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
+
+        let cardRow = UIStackView(arrangedSubviews: [iconCard, cardLabel, UIView(), cardValue])
+        cardRow.axis = .horizontal
+        cardRow.spacing = UIConstants.smallSpacing
+        iconCard.size(CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
+
+        let stack = UIStackView(arrangedSubviews: [cashRow, cardRow])
+        stack.axis = .vertical
+        stack.spacing = UIConstants.standardSpacing
+
+        addSubview(stack)
+        stack.edgesToSuperview(
+            insets: .init(
+                top: UIConstants.standardPadding,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.standardPadding,
+                right: UIConstants.standardPadding
+            )
+        )
+    }
+
+    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+
+    func configure(cash: String, card: String) {
+        cashValue.text = cash
+        cardValue.text = card
+    }
+}
