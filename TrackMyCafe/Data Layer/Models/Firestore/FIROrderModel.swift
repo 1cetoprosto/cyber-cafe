@@ -9,21 +9,23 @@ import FirebaseFirestoreSwift
 import Foundation
 
 struct FIROrderModel: Codable {
-  @DocumentID var id: String?
-  var date = Date()
-  var type: String = R.string.global.defaultOrderType()
-  var sum: Double = 0.0
-  var cash: Double = 0.0
-  var card: Double = 0.0
+    @DocumentID var id: String?
+    var date = Date()
+    var type: String = R.string.global.defaultOrderType()
+    var sum: Double = 0.0
+    var cash: Double = 0.0
+    var card: Double = 0.0
+    var totalCost: Double?
 
-  init(dataModel: OrderModel) {
-    self.id = dataModel.id
-    self.date = dataModel.date
-    self.type = dataModel.type
-    self.sum = dataModel.sum
-    self.cash = dataModel.cash
-    self.card = dataModel.card
-  }
+    init(dataModel: OrderModel) {
+        self.id = dataModel.id
+        self.date = dataModel.date
+        self.type = dataModel.type
+        self.sum = dataModel.sum
+        self.cash = dataModel.cash
+        self.card = dataModel.card
+        self.totalCost = dataModel.totalCost
+    }
 
 }
 
