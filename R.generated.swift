@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 304 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 310 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -449,6 +449,13 @@ struct _R {
       /// Locales: en, uk
       var clear: RswiftResources.StringResource { .init(key: "clear", tableName: "Global", source: source, developmentValue: "clear", comment: nil) }
 
+      /// en translation: Clear Filters
+      ///
+      /// Key: clearFilters
+      ///
+      /// Locales: en, uk
+      var clearFilters: RswiftResources.StringResource { .init(key: "clearFilters", tableName: "Global", source: source, developmentValue: "Clear Filters", comment: nil) }
+
       /// en translation: Dark (Latte)
       ///
       /// Key: coffeeWithMilkDarkThemeName
@@ -602,6 +609,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var dataForTheSelectedDateAlreadyExistsOpenAndEditThem: RswiftResources.StringResource { .init(key: "dataForTheSelectedDateAlreadyExistsOpenAndEditThem", tableName: "Global", source: source, developmentValue: "Data for the selected date already exists. Open and edit them?", comment: nil) }
+
+      /// en translation: From
+      ///
+      /// Key: dateFrom
+      ///
+      /// Locales: en, uk
+      var dateFrom: RswiftResources.StringResource { .init(key: "dateFrom", tableName: "Global", source: source, developmentValue: "From", comment: nil) }
+
+      /// en translation: To
+      ///
+      /// Key: dateTo
+      ///
+      /// Locales: en, uk
+      var dateTo: RswiftResources.StringResource { .init(key: "dateTo", tableName: "Global", source: source, developmentValue: "To", comment: nil) }
 
       /// en translation: Order
       ///
@@ -819,6 +840,27 @@ struct _R {
       ///
       /// Locales: en, uk
       var fillAllFields: RswiftResources.StringResource { .init(key: "fillAllFields", tableName: "Global", source: source, developmentValue: "Please fill in all fields", comment: nil) }
+
+      /// en translation: Filter by Date
+      ///
+      /// Key: filterByDate
+      ///
+      /// Locales: en, uk
+      var filterByDate: RswiftResources.StringResource { .init(key: "filterByDate", tableName: "Global", source: source, developmentValue: "Filter by Date", comment: nil) }
+
+      /// en translation: Filter by Ingredient
+      ///
+      /// Key: filterByIngredient
+      ///
+      /// Locales: en, uk
+      var filterByIngredient: RswiftResources.StringResource { .init(key: "filterByIngredient", tableName: "Global", source: source, developmentValue: "Filter by Ingredient", comment: nil) }
+
+      /// en translation: Filters
+      ///
+      /// Key: filtersTitle
+      ///
+      /// Locales: en, uk
+      var filtersTitle: RswiftResources.StringResource { .init(key: "filtersTitle", tableName: "Global", source: source, developmentValue: "Filters", comment: nil) }
 
       /// en translation: First name
       ///

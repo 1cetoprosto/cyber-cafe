@@ -270,7 +270,13 @@
 "costsSegmentInventory" = "Inventory";
 "costsSegmentCosts" = "Costs";
 "costsTabTitle" = "Costs & Inventory";
+"filtersTitle" = "Filters";
+"filterByDate" = "Filter by Date";
+"filterByIngredient" = "Filter by Ingredient";
+"clearFilters" = "Clear Filters";
 "costDate" = "Date";
+"dateFrom" = "From";
+"dateTo" = "To";
 "costName" = "Cost Name";
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Amount";
