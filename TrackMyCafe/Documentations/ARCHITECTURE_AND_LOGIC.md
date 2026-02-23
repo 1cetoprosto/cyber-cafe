@@ -60,15 +60,8 @@ struct PurchaseModel: Identifiable, Codable {
 struct OpexExpenseModel: Identifiable, Codable {
     let id: String
     let date: Date
-    let categoryId: String   // Зв'язок з категорією витрат (OpexCategory)
     let amount: Double       // Сума витрати
     let note: String?        // Коментар
-}
-
-struct OpexCategoryModel: Identifiable, Codable {
-    let id: String
-    let name: String         // Назва (Оренда, Інтернет...)
-    let iconName: String?    // Для UI
 }
 ```
 
@@ -176,7 +169,7 @@ struct InventoryAdjustmentModel {
      - **Залишки**: перелік інгредієнтів з `stockQty`, `avgCost`, бейджі попереджень.
      - **Закупівлі**: журнал `PurchaseModel` з фільтрами за датою/інгредієнтом.
      - **Інвентаризація**: масове коригування залишків з причинами (`InventoryAdjustmentModel`).
-   - Витрати (Opex): список витрат та форма додавання (категорія, дата, сума, примітка).
+  - Витрати (Opex): список витрат та форма додавання (дата, сума, примітка).
 
 4. **Звіти (Reports Hub, з версії 1.1.0+)**
    - P&L (Sales − COGS − Opex = Net Profit).
@@ -198,7 +191,7 @@ struct InventoryAdjustmentModel {
 
 ### 3.3. Витрати (Opex)
 - Список постійних витрат (оренда, зарплата, комунальні).
-- Форма додавання з категорією та датою.
+- Форма додавання з датою, сумою та приміткою.
 - Миттєвий вплив на Net Profit та дашборд.
 
 ### 3.4. Продаж (POS)
