@@ -28,8 +28,13 @@ protocol DomainDB {
 
     // Asynchronous methods for updating and retrieving sales data
     func updateOrders(
-        model: OrderModel, date: Date, type: String, total: Double, cashAmount: Double,
-        cardAmount: Double)
+        model: OrderModel,
+        date: Date,
+        type: String,
+        total: Double,
+        cashAmount: Double,
+        cardAmount: Double,
+        totalCost: Double)
     func fetchOrders(completion: @escaping ([OrderModel]) -> Void)
     func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void)
     func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void)
