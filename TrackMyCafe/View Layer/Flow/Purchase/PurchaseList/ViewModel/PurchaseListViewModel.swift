@@ -14,12 +14,21 @@ protocol PurchaseListViewModelType {
     func numberOfRowInSection(for section: Int) -> Int
     func cellViewModel(for indexPath: IndexPath) -> PurchaseListItemViewModelType?
     func purchase(at indexPath: IndexPath) -> PurchaseModel
+    func availableIngredients() -> [(id: String, name: String)]
+    func applyFilter(
+        dateRange: ClosedRange<Date>?,
+        ingredientId: String?,
+        completion: @escaping () -> Void
+    )
 }
 
 class PurchaseListViewModel: PurchaseListViewModelType {
+    private var allPurchases: [PurchaseModel] = []
     private var sectionsPurchases: [(date: Date, items: [PurchaseModel])] = []
     private var ingredientsCache: [String: String] = [:]  // id: name
     private let dbService: DomainDB
+    private var currentDateRange: ClosedRange<Date>?
+    private var currentIngredientId: String?
 
     init(dbService: DomainDB = DomainDatabaseService.shared) {
         self.dbService = dbService
@@ -32,7 +41,8 @@ class PurchaseListViewModel: PurchaseListViewModelType {
 
             // 2. Fetch Purchases
             self?.dbService.fetchPurchases { [weak self] purchases in
-                self?.groupPurchasesByDate(purchases)
+                self?.allPurchases = purchases
+                self?.applyCurrentFilters()
                 completion()
             }
         }
@@ -72,7 +82,40 @@ class PurchaseListViewModel: PurchaseListViewModelType {
         return PurchaseListItemViewModel(purchase: purchase, ingredientName: ingredientName)
     }
 
+    func availableIngredients() -> [(id: String, name: String)] {
+        let ids = Set(allPurchases.map { $0.ingredientId })
+        let items = ids.map { (id: $0, name: ingredientsCache[$0] ?? $0) }
+        return items.sorted(by: { left, right in
+            left.name.localizedCaseInsensitiveCompare(right.name) == .orderedAscending
+        })
+    }
+
     func purchase(at indexPath: IndexPath) -> PurchaseModel {
         return sectionsPurchases[indexPath.section].items[indexPath.row]
+    }
+
+    func applyFilter(
+        dateRange: ClosedRange<Date>?,
+        ingredientId: String?,
+        completion: @escaping () -> Void
+    ) {
+        currentDateRange = dateRange
+        currentIngredientId = ingredientId
+        applyCurrentFilters()
+        completion()
+    }
+
+    private func applyCurrentFilters() {
+        var filtered = allPurchases
+
+        if let range = currentDateRange {
+            filtered = filtered.filter { range.contains($0.date) }
+        }
+
+        if let ingredientId = currentIngredientId, !ingredientId.isEmpty {
+            filtered = filtered.filter { $0.ingredientId == ingredientId }
+        }
+
+        groupPurchasesByDate(filtered)
     }
 }
