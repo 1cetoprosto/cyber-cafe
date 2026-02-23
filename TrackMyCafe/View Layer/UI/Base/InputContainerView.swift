@@ -196,6 +196,7 @@ final class InputContainerView: UIView {
     if let placeholder = initialPlaceholder, case .text = inputType {
       setPlaceholder(placeholder)
     }
+    updateEditableState()
   }
 
   private func setupInputElement() {
@@ -231,6 +232,7 @@ final class InputContainerView: UIView {
       switchControl.isOn = isOn
       setupSwitchConstraints()
     }
+    updateEditableState()
   }
 
   private func setupTargets() {
