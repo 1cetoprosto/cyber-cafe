@@ -7,6 +7,8 @@ final class HomeViewModel: HomeViewModelType {
   private(set) var monthExpenses: Double = 0
   private(set) var monthProfit: Double = 0
   private(set) var dateToday: Date = Date()
+  private(set) var cashBalance: Double = 0
+  private(set) var cardBalance: Double = 0
 
   private(set) var lastIncome: [OrderModel] = []
   private(set) var lastExpense: [OpexExpenseModel] = []
@@ -29,6 +31,7 @@ final class HomeViewModel: HomeViewModelType {
 
     computeIncomeMetrics(from: orders)
     computeExpenseMetrics(from: costs)
+    computeBalances(from: orders)
     computeLists(orders: orders, costs: costs)
   }
   
@@ -52,9 +55,13 @@ final class HomeViewModel: HomeViewModelType {
     monthProfit = monthSum - monthExpenses
   }
 
+  private func computeBalances(from orders: [OrderModel]) {
+    cashBalance = orders.reduce(0) { $0 + $1.cash }
+    cardBalance = orders.reduce(0) { $0 + $1.card }
+  }
+
   private func computeLists(orders: [OrderModel], costs: [OpexExpenseModel]) {
     lastIncome = orders.sorted { $0.date > $1.date }.prefix(3).map { $0 }
     lastExpense = costs.sorted { $0.date > $1.date }.prefix(3).map { $0 }
   }
 }
-
