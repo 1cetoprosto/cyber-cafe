@@ -111,8 +111,10 @@
 
 // MARK: - Home Dashboard
 "week" = "Week";
-"monthlyProfit" = "Monthly Profit";
+"monthlyProfit" = "Profit for %@";
 "expensesPrefix" = "Expenses: ";
+"incomeFor" = "Income for %@";
+"expensesFor" = "Expenses for %@";
 "today" = "Today";
 "recentIncomes" = "Recent Incomes";
 "recentExpenses" = "Recent Expenses";

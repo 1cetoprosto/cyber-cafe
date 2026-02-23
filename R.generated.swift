@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 314 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 316 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -771,6 +771,13 @@ struct _R {
       /// Locales: en, uk
       var error: RswiftResources.StringResource { .init(key: "error", tableName: "Global", source: source, developmentValue: "Error", comment: nil) }
 
+      /// en translation: Expenses for %@
+      ///
+      /// Key: expensesFor
+      ///
+      /// Locales: en, uk
+      var expensesFor: RswiftResources.StringResource1<String> { .init(key: "expensesFor", tableName: "Global", source: source, developmentValue: "Expenses for %@", comment: nil) }
+
       /// en translation: Expenses: 
       ///
       /// Key: expensesPrefix
@@ -910,6 +917,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var income: RswiftResources.StringResource { .init(key: "income", tableName: "Global", source: source, developmentValue: "Income", comment: nil) }
+
+      /// en translation: Income for %@
+      ///
+      /// Key: incomeFor
+      ///
+      /// Locales: en, uk
+      var incomeFor: RswiftResources.StringResource1<String> { .init(key: "incomeFor", tableName: "Global", source: source, developmentValue: "Income for %@", comment: nil) }
 
       /// en translation: Ingredient already exists
       ///
@@ -1170,12 +1184,12 @@ struct _R {
       /// Locales: en, uk
       var month: RswiftResources.StringResource { .init(key: "month", tableName: "Global", source: source, developmentValue: "month", comment: nil) }
 
-      /// en translation: Monthly Profit
+      /// en translation: Profit for %@
       ///
       /// Key: monthlyProfit
       ///
       /// Locales: en, uk
-      var monthlyProfit: RswiftResources.StringResource { .init(key: "monthlyProfit", tableName: "Global", source: source, developmentValue: "Monthly Profit", comment: nil) }
+      var monthlyProfit: RswiftResources.StringResource1<String> { .init(key: "monthlyProfit", tableName: "Global", source: source, developmentValue: "Profit for %@", comment: nil) }
 
       /// en translation: Name
       ///
