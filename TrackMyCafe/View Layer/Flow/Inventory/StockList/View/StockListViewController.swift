@@ -121,31 +121,47 @@ class StockListViewController: UIViewController {
         let alert = UIAlertController(
             title: R.string.global.inventoryAdjustStock(),
             message: String(
-                format: R.string.global.inventoryEnterNewQuantity(ingredient.name), ingredient.name),
+                format: R.string.global.inventoryEnterDelta(ingredient.name), ingredient.name),
             preferredStyle: .alert
         )
-
+        
         alert.addTextField { textField in
-            textField.keyboardType = .decimalPad
-            textField.text = String(format: "%.2f", ingredient.stockQuantity)
-            textField.placeholder = R.string.global.inventoryQuantityPlaceholder()
+            textField.keyboardType = .numbersAndPunctuation
+            textField.placeholder = R.string.global.inventoryDeltaPlaceholder()
         }
-
+        
+        alert.addTextField { textField in
+            textField.keyboardType = .default
+            textField.placeholder = R.string.global.inventoryReasonPlaceholder()
+        }
+        
         let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) {
             [weak self] _ in
-            guard let text = alert.textFields?.first?.text,
-                let newQuantity = Double(text.replacingOccurrences(of: ",", with: "."))
-            else {
+            guard let self = self else { return }
+            let deltaText = alert.textFields?.first?.text ?? ""
+            let reasonText = (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
+            
+            let normalizedDeltaText = deltaText.replacingOccurrences(of: ",", with: ".")
+            guard let delta = Double(normalizedDeltaText), delta != 0 else {
+                self.showError(message: R.string.global.invalidQuantity())
                 return
             }
-            self?.viewModel.updateStock(for: ingredient, newQuantity: newQuantity)
+            
+            let trimmedReason = reasonText.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedReason.isEmpty else {
+                let field = R.string.global.inventoryReason()
+                self.showError(message: R.string.global.fieldRequired(field))
+                return
+            }
+            
+            self.viewModel.applyAdjustment(for: ingredient, delta: delta, reason: trimmedReason)
         }
-
+        
         let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-
+        
         alert.addAction(cancelAction)
         alert.addAction(saveAction)
-
+        
         present(alert, animated: true)
     }
 }

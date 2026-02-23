@@ -261,6 +261,10 @@
 "inventoryAdjustStock" = "Коригувати залишок";
 "inventoryEnterNewQuantity" = "Введіть нову кількість для %@";
 "inventoryQuantityPlaceholder" = "Кількість";
+"inventoryEnterDelta" = "Введіть дельту для %@";
+"inventoryDeltaPlaceholder" = "Дельта (±)";
+"inventoryReason" = "Причина";
+"inventoryReasonPlaceholder" = "Причина коригування";
 "inventoryAvgPrice" = "Сер.: %.2f грн";
 "inventorySumValue" = "Сума: %.2f грн";
 "inventoryLowStock" = "Мало товару";
