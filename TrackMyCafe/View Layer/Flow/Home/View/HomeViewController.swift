@@ -4,6 +4,7 @@ import UIKit
 final class HomeViewController: UIViewController {
   private let viewModel: HomeViewModelType = HomeViewModel()
   private var lastHeaderWidth: CGFloat = 0
+  private var currentPeriod: DashboardPeriod = .month
 
   private let tableView: UITableView = {
     let tv = UITableView(frame: .zero, style: .plain)
@@ -29,6 +30,9 @@ final class HomeViewController: UIViewController {
 
     headerView.onAddIncome = { [weak self] in self?.openAddIncome() }
     headerView.onAddExpense = { [weak self] in self?.openAddExpense() }
+    headerView.onPeriodChanged = { [weak self] idx in
+        self?.applyPeriodChange(index: idx)
+    }
 
     view.addSubview(tableView)
     tableView.edgesToSuperview(
@@ -40,6 +44,11 @@ final class HomeViewController: UIViewController {
       )
     )
 
+    Task { await loadData() }
+  }
+  
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
     Task { await loadData() }
   }
 
@@ -69,16 +78,7 @@ final class HomeViewController: UIViewController {
   @MainActor
   private func loadData() async {
     await viewModel.loadDashboard()
-    headerView.configure(
-      date: viewModel.dateToday,
-      today: viewModel.todaySum,
-      week: viewModel.weekSum,
-      month: viewModel.monthSum,
-      expenses: viewModel.monthExpenses,
-      profit: viewModel.monthProfit,
-      cash: viewModel.cashBalance,
-      card: viewModel.cardBalance
-    )
+    configureHeader(for: currentPeriod)
     setTableHeaderSized()
     tableView.reloadData()
   }
@@ -95,12 +95,48 @@ final class HomeViewController: UIViewController {
     )
     let vm = CostDetailsViewModel(cost: empty, dataService: DomainCostDataService())
     let vc = CostDetailsListViewController(viewModel: vm)
+    vc.onSave = { [weak self] in self?.reloadAfterAction() }
     vc.modalPresentationStyle = .fullScreen
     navigationController?.pushViewController(vc, animated: true)
   }
 
   private func reloadAfterAction() {
     Task { await loadData() }
+  }
+  
+  private func applyPeriodChange(index: Int) {
+    let period: DashboardPeriod
+    switch index {
+    case 0: period = .day
+    case 1: period = .week
+    default: period = .month
+    }
+    currentPeriod = period
+    viewModel.setPeriod(period)
+    configureHeader(for: period)
+    setTableHeaderSized()
+    tableView.reloadData()
+  }
+  
+  private func configureHeader(for period: DashboardPeriod) {
+    let sales: Double
+    switch period {
+    case .day:
+      sales = viewModel.todaySum
+    case .week:
+      sales = viewModel.weekSum
+    case .month:
+      sales = viewModel.monthSum
+    }
+    headerView.configure(
+      date: viewModel.dateToday,
+      period: period,
+      sales: sales,
+      expenses: viewModel.monthExpenses,
+      profit: viewModel.monthProfit,
+      cash: viewModel.cashBalance,
+      card: viewModel.cardBalance
+    )
   }
 }
 
