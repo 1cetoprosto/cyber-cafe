@@ -48,7 +48,11 @@ end
 
 files = [
   'TrackMyCafe/Data Layer/Models/Firestore/FIRInventoryAdjustmentModel.swift',
-  'TrackMyCafe/Data Layer/Models/Firestore/FIROpexExpenseModel.swift'
+  'TrackMyCafe/Data Layer/Models/Firestore/FIROpexExpenseModel.swift',
+  'TrackMyCafe/Services/Domain/Aggregation/DashboardPeriod.swift',
+  'TrackMyCafe/Services/Domain/Aggregation/OpexAggregationService.swift',
+  'TrackMyCafe/Services/Domain/Aggregation/IncomeAggregationService.swift',
+  'TrackMyCafe/Services/Domain/Aggregation/FinanceAggregationService.swift'
 ]
 
 files.each do |file|
