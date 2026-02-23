@@ -9,12 +9,13 @@ import Foundation
 import RealmSwift
 
 class RealmOrderModel: Object, DateContainable {
-    @Persisted var id: String// = ""
+    @Persisted var id: String
     @Persisted var date: Date = Date()
-    @Persisted var type: String// = "Sunday"
-    @Persisted var sum: Double// = 0.0
-    @Persisted var cash: Double// = 0.0
-    @Persisted var card: Double// = 0.0
+    @Persisted var type: String
+    @Persisted var sum: Double
+    @Persisted var cash: Double
+    @Persisted var card: Double
+    @Persisted var totalCost: Double
     
     convenience init(dataModel: OrderModel) {
         self.init()
@@ -24,5 +25,6 @@ class RealmOrderModel: Object, DateContainable {
         self.sum = dataModel.sum
         self.cash = dataModel.cash
         self.card = dataModel.card
+        self.totalCost = dataModel.totalCost
     }
 }
