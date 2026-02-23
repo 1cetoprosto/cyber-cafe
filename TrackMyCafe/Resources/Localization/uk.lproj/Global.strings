@@ -270,7 +270,13 @@
 "costsSegmentInventory" = "Склад";
 "costsSegmentCosts" = "Витрати";
 "costsTabTitle" = "Витрати та Склад";
+"filtersTitle" = "Фільтри";
+"filterByDate" = "Фільтр за датою";
+"filterByIngredient" = "Фільтр за інгредієнтом";
+"clearFilters" = "Скинути фільтри";
 "costDate" = "Дата";
+"dateFrom" = "З";
+"dateTo" = "По";
 "costName" = "Назва витрати";
 "costNamePlaceholder" = "Введіть назву витрати";
 "costSum" = "Сума";
