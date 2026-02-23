@@ -1,67 +1,91 @@
 import Foundation
 
 final class HomeViewModel: HomeViewModelType {
-  private(set) var todaySum: Double = 0
-  private(set) var weekSum: Double = 0
-  private(set) var monthSum: Double = 0
-  private(set) var monthExpenses: Double = 0
-  private(set) var monthProfit: Double = 0
-  private(set) var dateToday: Date = Date()
-  private(set) var cashBalance: Double = 0
-  private(set) var cardBalance: Double = 0
+    private let incomeService: IncomeAggregationServiceProtocol
+    private let opexService: OpexAggregationServiceProtocol
+    private let financeService: FinanceAggregationServiceProtocol
+    
+    private var currentPeriod: DashboardPeriod = .month
+    private var allOrders: [OrderModel] = []
+    private var allExpenses: [OpexExpenseModel] = []
+    
+    private(set) var todaySum: Double = 0
+    private(set) var weekSum: Double = 0
+    private(set) var monthSum: Double = 0
+    private(set) var monthExpenses: Double = 0
+    private(set) var monthProfit: Double = 0
+    private(set) var dateToday: Date = Date()
+    private(set) var cashBalance: Double = 0
+    private(set) var cardBalance: Double = 0
 
-  private(set) var lastIncome: [OrderModel] = []
-  private(set) var lastExpense: [OpexExpenseModel] = []
-
-  @MainActor
-  func loadDashboard() async {
-    dateToday = Date()
-
-    let orders: [OrderModel] = await withCheckedContinuation { continuation in
-      DomainDatabaseService.shared.fetchOrders { models in
-        continuation.resume(returning: models)
-      }
+    private(set) var lastIncome: [OrderModel] = []
+    private(set) var lastExpense: [OpexExpenseModel] = []
+    
+    init(
+        incomeService: IncomeAggregationServiceProtocol = IncomeAggregationService(),
+        opexService: OpexAggregationServiceProtocol = OpexAggregationService(),
+        financeService: FinanceAggregationServiceProtocol = FinanceAggregationService()
+    ) {
+        self.incomeService = incomeService
+        self.opexService = opexService
+        self.financeService = financeService
     }
 
-    let costs: [OpexExpenseModel] = await withCheckedContinuation { continuation in
-      DomainDatabaseService.shared.fetchOpexExpenses { models in
-        continuation.resume(returning: models)
-      }
+    @MainActor
+    func loadDashboard() async {
+        dateToday = Date()
+
+        let orders: [OrderModel] = await withCheckedContinuation { continuation in
+            DomainDatabaseService.shared.fetchOrders { models in
+                continuation.resume(returning: models)
+            }
+        }
+
+        let costs: [OpexExpenseModel] = await withCheckedContinuation { continuation in
+            DomainDatabaseService.shared.fetchOpexExpenses { models in
+                continuation.resume(returning: models)
+            }
+        }
+        
+        allOrders = orders
+        allExpenses = costs
+        
+        recomputeForCurrentData()
     }
 
-    computeIncomeMetrics(from: orders)
-    computeExpenseMetrics(from: costs)
-    computeBalances(from: orders)
-    computeLists(orders: orders, costs: costs)
-  }
-  
-  private func computeIncomeMetrics(from orders: [OrderModel]) {
-    let cal = Calendar.current
-    let today = Date()
-    let startOfWeek = cal.date(from: cal.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)) ?? today
-    let startOfMonth = cal.date(from: cal.dateComponents([.year, .month], from: today)) ?? today
+    func setPeriod(_ period: DashboardPeriod) {
+        currentPeriod = period
+        recomputeForCurrentData()
+    }
 
-    todaySum = orders.filter { cal.isDate($0.date, inSameDayAs: today) }.reduce(0) { $0 + $1.sum }
-    weekSum = orders.filter { $0.date >= startOfWeek }.reduce(0) { $0 + $1.sum }
-    monthSum = orders.filter { $0.date >= startOfMonth }.reduce(0) { $0 + $1.sum }
-  }
+    func recomputeForCurrentData() {
+        let refDate = Date()
+        let todayIncome = incomeService.summarize(orders: allOrders, period: .day, referenceDate: refDate)
+        let weekIncome = incomeService.summarize(orders: allOrders, period: .week, referenceDate: refDate)
+        let monthIncome = incomeService.summarize(orders: allOrders, period: .month, referenceDate: refDate)
+        let periodIncome: IncomeSummary
+        switch currentPeriod {
+        case .day:
+            periodIncome = todayIncome
+        case .week:
+            periodIncome = weekIncome
+        case .month:
+            periodIncome = monthIncome
+        }
+        
+        todaySum = todayIncome.sales
+        weekSum = weekIncome.sales
+        monthSum = monthIncome.sales
+        
+        let expenses = opexService.summarize(expenses: allExpenses, period: currentPeriod, referenceDate: refDate)
+        monthExpenses = expenses.total
+        monthProfit = financeService.computeNetProfit(sales: periodIncome.sales, opex: expenses.total)
+        
+        cashBalance = periodIncome.cash
+        cardBalance = periodIncome.card
+        
+        lastIncome = periodIncome.last
+        lastExpense = expenses.last
+    }
 
-  private func computeExpenseMetrics(from costs: [OpexExpenseModel]) {
-    let cal = Calendar.current
-    let today = Date()
-    let startOfMonth = cal.date(from: cal.dateComponents([.year, .month], from: today)) ?? today
-
-    monthExpenses = costs.filter { $0.date >= startOfMonth }.reduce(0) { $0 + $1.amount }
-    monthProfit = monthSum - monthExpenses
-  }
-
-  private func computeBalances(from orders: [OrderModel]) {
-    cashBalance = orders.reduce(0) { $0 + $1.cash }
-    cardBalance = orders.reduce(0) { $0 + $1.card }
-  }
-
-  private func computeLists(orders: [OrderModel], costs: [OpexExpenseModel]) {
-    lastIncome = orders.sorted { $0.date > $1.date }.prefix(3).map { $0 }
-    lastExpense = costs.sorted { $0.date > $1.date }.prefix(3).map { $0 }
-  }
 }

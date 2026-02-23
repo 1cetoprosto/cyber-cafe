@@ -12,6 +12,7 @@
 		06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
 		11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
+		1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
 		1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
@@ -19,6 +20,7 @@
 		1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
 		2062336CEFB66EE59F9C22D2 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		2714C430B247DF2FB04F039A /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
+		272F2C8EF8403B652C8D1B8B /* DashboardPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8322C84341922937218E47A /* DashboardPeriod.swift */; };
 		290BC38D0FC7339835D90AD3 /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		2CE263E0E30F498DF06D8515 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
@@ -30,25 +32,31 @@
 		3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		3F2453C445B3640596D717FF /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
 		41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
+		4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		59C05FDE199AFA314FF13092 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
+		5A84FE6B34B56E0E69C8E6E6 /* DashboardPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8322C84341922937218E47A /* DashboardPeriod.swift */; };
 		60515BB5E807E37BB705E174 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
+		616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
 		61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
 		6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
+		70E997F9A553EC01784428B5 /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
 		76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */; };
 		772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
+		77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
 		7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
 		8022698E009A355D97397BAA /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
 		8085320D6FEC24703DD60FA6 /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */; };
 		8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
+		8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
@@ -73,9 +81,12 @@
 		BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
 		BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
+		C121AFC3DBBF2DAB688C832F /* DashboardPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8322C84341922937218E47A /* DashboardPeriod.swift */; };
 		C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
+		C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
 		CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */; };
+		D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		DCEDBEB2BBF150953BA5FC1F /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		E18E1ABFBDE7419B635C321F /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
@@ -555,6 +566,7 @@
 		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
+		F3DA99BDDC0433656561976A /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
 		F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
 		F3DB41B72EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
@@ -643,12 +655,15 @@
 		06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewController.swift; sourceTree = "<group>"; };
 		0BD579A062148876F7E9DAEE /* Pods-TrackMyCafe Beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.debug.xcconfig"; sourceTree = "<group>"; };
 		176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexCategoryModel.swift; sourceTree = "<group>"; };
+		27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IncomeAggregationService.swift; sourceTree = "<group>"; };
+		287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexAggregationService.swift; sourceTree = "<group>"; };
 		2E9A0E08923E359F5819A334 /* Pods-TrackMyCafe Beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.release.xcconfig"; sourceTree = "<group>"; };
 		3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewController.swift; sourceTree = "<group>"; };
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
 		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRInventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
+		5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinanceAggregationService.swift; sourceTree = "<group>"; };
 		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
 		60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockItemCell.swift; sourceTree = "<group>"; };
 		625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModelType.swift; sourceTree = "<group>"; };
@@ -669,6 +684,7 @@
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
 		D5FB0242092853861442A8F6 /* StockListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
 		D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
+		D8322C84341922937218E47A /* DashboardPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardPeriod.swift; sourceTree = "<group>"; };
 		DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewModel.swift; sourceTree = "<group>"; };
 		E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModel.swift; sourceTree = "<group>"; };
 		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
@@ -1031,6 +1047,17 @@
 				625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		5863D6B846DB79E9B0997CDA /* Aggregation */ = {
+			isa = PBXGroup;
+			children = (
+				D8322C84341922937218E47A /* DashboardPeriod.swift */,
+				287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */,
+				27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */,
+				5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */,
+			);
+			path = Aggregation;
 			sourceTree = "<group>";
 		};
 		5AD82DC5B0F57136DCC4D6FE /* ViewModel */ = {
@@ -1991,6 +2018,7 @@
 				F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */,
 				B162B8F1542975346D60E96C /* InventoryService.swift */,
 				72B5E49A3B9441A9E185BBF2 /* CostingService.swift */,
+				5863D6B846DB79E9B0997CDA /* Aggregation */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -2757,6 +2785,10 @@
 				7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */,
 				9327316B3511B41DCA377F2A /* FIRInventoryAdjustmentModel.swift in Sources */,
 				06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */,
+				5A84FE6B34B56E0E69C8E6E6 /* DashboardPeriod.swift in Sources */,
+				70E997F9A553EC01784428B5 /* OpexAggregationService.swift in Sources */,
+				D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */,
+				616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2941,6 +2973,10 @@
 				A4F5E2DF01331DAF58FE6170 /* FIRPurchaseModel.swift in Sources */,
 				58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */,
 				772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */,
+				C121AFC3DBBF2DAB688C832F /* DashboardPeriod.swift in Sources */,
+				F3DA99BDDC0433656561976A /* OpexAggregationService.swift in Sources */,
+				8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */,
+				C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3125,6 +3161,10 @@
 				AD123069E8110835BA7FDD0D /* FIRPurchaseModel.swift in Sources */,
 				41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */,
 				4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */,
+				272F2C8EF8403B652C8D1B8B /* DashboardPeriod.swift in Sources */,
+				1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */,
+				4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */,
+				77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
