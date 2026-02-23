@@ -261,6 +261,10 @@
 "inventoryAdjustStock" = "Adjust Stock";
 "inventoryEnterNewQuantity" = "Enter new quantity for %@";
 "inventoryQuantityPlaceholder" = "Quantity";
+"inventoryEnterDelta" = "Enter delta for %@";
+"inventoryDeltaPlaceholder" = "Delta (±)";
+"inventoryReason" = "Reason";
+"inventoryReasonPlaceholder" = "Adjustment reason";
 "inventoryAvgPrice" = "Avg: %.2f UAH";
 "inventorySumValue" = "Sum: %.2f UAH";
 "inventoryLowStock" = "Low Stock";

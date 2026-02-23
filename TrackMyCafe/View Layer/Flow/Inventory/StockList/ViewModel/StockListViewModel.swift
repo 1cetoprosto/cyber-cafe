@@ -15,7 +15,7 @@ protocol StockListViewModelProtocol {
     var ingredients: [IngredientModel] { get }
     
     func fetchStock()
-    func updateStock(for ingredient: IngredientModel, newQuantity: Double)
+    func applyAdjustment(for ingredient: IngredientModel, delta: Double, reason: String)
 }
 
 final class StockListViewModel: StockListViewModelProtocol {
@@ -65,14 +65,13 @@ final class StockListViewModel: StockListViewModelProtocol {
         }
     }
     
-    func updateStock(for ingredient: IngredientModel, newQuantity: Double) {
-        let delta = newQuantity - ingredient.stockQuantity
+    func applyAdjustment(for ingredient: IngredientModel, delta: Double, reason: String) {
         guard delta != 0 else { return }
         
         let adjustment = InventoryAdjustmentModel(
             ingredientId: ingredient.id,
             quantityDelta: delta,
-            reason: "Manual Inventory Check"
+            reason: reason
         )
         
         isLoading?(true)
