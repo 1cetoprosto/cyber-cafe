@@ -264,8 +264,13 @@ class DomainDatabaseService: DomainDB {
     // MARK: - Orders Operations
 
     func updateOrders(
-        model: OrderModel, date: Date, type: String, total: Double, cashAmount: Double,
-        cardAmount: Double
+        model: OrderModel,
+        date: Date,
+        type: String,
+        total: Double,
+        cashAmount: Double,
+        cardAmount: Double,
+        totalCost: Double
     ) {
         var updatedModel = FIROrderModel(dataModel: model)
         updatedModel.date = date
@@ -273,6 +278,7 @@ class DomainDatabaseService: DomainDB {
         updatedModel.sum = total
         updatedModel.cash = cashAmount
         updatedModel.card = cardAmount
+        updatedModel.totalCost = totalCost
         FirestoreDatabaseService.shared.update(
             firModel: updatedModel, collection: FirebaseCollections.orders, documentId: model.id
         ) { result in
