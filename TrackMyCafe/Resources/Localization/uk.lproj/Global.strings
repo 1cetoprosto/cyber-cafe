@@ -111,8 +111,10 @@
 
 // MARK: - Home Dashboard
 "week" = "Тиждень";
-"monthlyProfit" = "Прибуток за місяць";
+"monthlyProfit" = "Прибуток за %@";
 "expensesPrefix" = "Витрати: ";
+"incomeFor" = "Дохід за %@";
+"expensesFor" = "Витрати за %@";
 "today" = "Сьогодні";
 "recentIncomes" = "Останні доходи";
 "recentExpenses" = "Останні витрати";
