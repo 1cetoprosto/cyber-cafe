@@ -214,7 +214,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 310 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 314 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -974,6 +974,20 @@ struct _R {
       /// Locales: en, uk
       var inventoryAvgPrice: RswiftResources.StringResource1<Double> { .init(key: "inventoryAvgPrice", tableName: "Global", source: source, developmentValue: "Avg: %.2f UAH", comment: nil) }
 
+      /// en translation: Delta (±)
+      ///
+      /// Key: inventoryDeltaPlaceholder
+      ///
+      /// Locales: en, uk
+      var inventoryDeltaPlaceholder: RswiftResources.StringResource { .init(key: "inventoryDeltaPlaceholder", tableName: "Global", source: source, developmentValue: "Delta (±)", comment: nil) }
+
+      /// en translation: Enter delta for %@
+      ///
+      /// Key: inventoryEnterDelta
+      ///
+      /// Locales: en, uk
+      var inventoryEnterDelta: RswiftResources.StringResource1<String> { .init(key: "inventoryEnterDelta", tableName: "Global", source: source, developmentValue: "Enter delta for %@", comment: nil) }
+
       /// en translation: Enter new quantity for %@
       ///
       /// Key: inventoryEnterNewQuantity
@@ -994,6 +1008,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var inventoryQuantityPlaceholder: RswiftResources.StringResource { .init(key: "inventoryQuantityPlaceholder", tableName: "Global", source: source, developmentValue: "Quantity", comment: nil) }
+
+      /// en translation: Reason
+      ///
+      /// Key: inventoryReason
+      ///
+      /// Locales: en, uk
+      var inventoryReason: RswiftResources.StringResource { .init(key: "inventoryReason", tableName: "Global", source: source, developmentValue: "Reason", comment: nil) }
+
+      /// en translation: Adjustment reason
+      ///
+      /// Key: inventoryReasonPlaceholder
+      ///
+      /// Locales: en, uk
+      var inventoryReasonPlaceholder: RswiftResources.StringResource { .init(key: "inventoryReasonPlaceholder", tableName: "Global", source: source, developmentValue: "Adjustment reason", comment: nil) }
 
       /// en translation: Audit
       ///
