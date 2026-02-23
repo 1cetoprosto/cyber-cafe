@@ -14,6 +14,7 @@ final class CostDetailsListViewController: UIViewController {
   // MARK: - Properties
   private let viewModel: CostDetailsViewModelType
   private var saveButtonBottomConstraint: NSLayoutConstraint!
+  var onSave: (() -> Void)?
 
   // MARK: - UI Elements
 
@@ -230,6 +231,7 @@ final class CostDetailsListViewController: UIViewController {
           costSum: sum
         )
         await MainActor.run {
+          self.onSave?()
           self.navigationController?.popViewController(animated: true)
         }
       } catch {
