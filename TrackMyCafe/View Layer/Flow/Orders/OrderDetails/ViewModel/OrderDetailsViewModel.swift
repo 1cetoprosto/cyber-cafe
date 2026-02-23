@@ -121,6 +121,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
     private func createOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
+        let totalCost = productsViewModel.getTotalCostAmount()
         
         let newOrder = OrderModel(
             id: id,
@@ -128,7 +129,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             type: type,
             sum: sum,
             cash: cash,
-            card: card
+            card: card,
+            totalCost: totalCost
         )
         
         DomainDatabaseService.shared.saveOrder(order: newOrder) { [weak self] documentId in
@@ -144,6 +146,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
     private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
+        let totalCost = productsViewModel.getTotalCostAmount()
         
         DomainDatabaseService.shared.fetchOrders(forId: id) { fetchedOrder in
             guard let fetchedOrder = fetchedOrder else {
@@ -157,7 +160,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 type: type,
                 total: sum,
                 cashAmount: cash,
-                cardAmount: card
+                cardAmount: card,
+                totalCost: totalCost
             )
             completion(true)
         }
