@@ -77,6 +77,7 @@
 		B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		B5B7A6795D15E8B29F771777 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
 		B5DB7B6A930451C341851FAE /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
+		B71E408CD218D0EB3E005D62 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
@@ -92,6 +93,7 @@
 		E18E1ABFBDE7419B635C321F /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
 		E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		E50180A38BAE4BBB1AB7473E /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
+		E7E294F239D1CF0AEEF3BBF1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		EC45ACC3713979B621CC2EF6 /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
 		EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		F07FA7D16A86021102274D6B /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
@@ -646,6 +648,7 @@
 		F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */; };
 		F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */; };
 		F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52F2EEF300900C24082 /* Kingfisher */; };
+		F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -662,6 +665,7 @@
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
 		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
 		47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRInventoryAdjustmentModel.swift; sourceTree = "<group>"; };
+		545E70A7E30CD0843FF894F8 /* InfoPlist.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
 		5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinanceAggregationService.swift; sourceTree = "<group>"; };
 		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
@@ -686,6 +690,7 @@
 		D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
 		D8322C84341922937218E47A /* DashboardPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardPeriod.swift; sourceTree = "<group>"; };
 		DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewModel.swift; sourceTree = "<group>"; };
+		E567E902F1262269FAB4A454 /* InfoPlist.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModel.swift; sourceTree = "<group>"; };
 		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
@@ -869,11 +874,61 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
-		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
-		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F324E60A2F486E99003A7469 /* Selection */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		F3299A932F35065600EA6532 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = ProductCategories;
+			sourceTree = "<group>";
+		};
+		F362781C2EE5508D00A69CFE /* Home */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1362,6 +1417,7 @@
 			children = (
 				F3410E7F2BDD2B540007157B /* Auth.strings */,
 				F3410E942BDD300D0007157B /* Global.strings */,
+				64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -2313,6 +2369,7 @@
 				F31D5882291224190047EB44 /* Screenshot1.png in Resources */,
 				F3BF4C6E28265F400036B433 /* TypeOfDonationModel.png in Resources */,
 				F39A52FE27311FDE00C8F2D3 /* Assets.xcassets in Resources */,
+				B71E408CD218D0EB3E005D62 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2334,6 +2391,7 @@
 				F3B33A282C0B22FE0073F19A /* Screenshot1.png in Resources */,
 				F3B33A292C0B22FE0073F19A /* TypeOfDonationModel.png in Resources */,
 				F3B33A2A2C0B22FE0073F19A /* Assets.xcassets in Resources */,
+				F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2355,6 +2413,7 @@
 				F3B33AC72C0B23450073F19A /* Screenshot1.png in Resources */,
 				F3B33AC82C0B23450073F19A /* TypeOfDonationModel.png in Resources */,
 				F3B33AC92C0B23450073F19A /* Assets.xcassets in Resources */,
+				E7E294F239D1CF0AEEF3BBF1 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3171,6 +3230,15 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
+		64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E567E902F1262269FAB4A454 /* InfoPlist.strings */,
+				545E70A7E30CD0843FF894F8 /* InfoPlist.strings */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		F3410E7F2BDD2B540007157B /* Auth.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
