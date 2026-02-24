@@ -75,6 +75,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.menuSettings()
+        navigationController?.navigationBar.prefersLargeTitles = false
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -233,7 +234,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         )
 
         // 5. App Info
-        let appInfoOptions: [SettingsOptionType] = [
+        var appInfoOptions: [SettingsOptionType] = [
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.restartOnboarding(),
@@ -262,6 +263,21 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.presentFeedbackEmail()
                 }),
         ]
+
+        if DemoDataManager.shared.isDemoDataPresent {
+            appInfoOptions.append(
+                .staticCell(
+                    model: SettingsStaticOption(
+                        title: R.string.global.deleteDemoData(),
+                        icon: UIImage(systemName: "trash"),
+                        iconBackgroundColor: .systemRed
+                    ) {
+                        self.confirmDeleteDemoData()
+                    }
+                )
+            )
+        }
+
         models.append(
             Section(
                 title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions
@@ -554,6 +570,33 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 title: R.string.global.okButton(),
                 style: .default
             ))
+        present(alert, animated: true)
+    }
+
+    private func confirmDeleteDemoData() {
+        let alert = UIAlertController(
+            title: R.string.global.deleteDemoDataTitle(),
+            message: R.string.global.deleteDemoDataMessage(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+                SVProgressHUD.show(
+                    withStatus: R.string.global.deleting())
+                DemoDataManager.shared.deleteDemoData { success in
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        if success {
+                            self.configure()
+                            self.tableView.reloadData()
+                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                        } else {
+                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                        }
+                    }
+                }
+            })
         present(alert, animated: true)
     }
 }

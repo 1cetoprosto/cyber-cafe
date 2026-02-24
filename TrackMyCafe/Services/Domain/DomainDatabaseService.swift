@@ -756,6 +756,22 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
+    // MARK: - Generic Delete Operation
+    func delete(collection: String, documentId: String, completion: @escaping (Bool) -> Void) {
+        FirestoreDatabaseService.shared.delete(collection: collection, documentId: documentId) {
+            result in
+            switch result {
+            case .success:
+                self.logger.info("Document \(documentId) deleted from \(collection) successfully")
+                completion(true)
+            case .failure(let error):
+                self.logger.error(
+                    "Failed to delete document \(documentId) from \(collection): \(error)")
+                completion(false)
+            }
+        }
+    }
+
     // MARK: - general Operations
 
     var orderIdMap: [String: String] = [:]
@@ -767,15 +783,29 @@ class DomainDatabaseService: DomainDB {
     @MainActor
     func seedTestData(forDays days: Int) async {
         await cleanDatabase()
+        var manifest: DemoDataManifest? = nil
+        await seedDemoData(days: days, manifest: &manifest)
+    }
 
+    @MainActor
+    func seedUserDemoData() async {
+        // Clear old manifest if exists before starting new seeding
+        DemoDataManager.shared.clearManifest()
+
+        var manifest: DemoDataManifest? = nil  // We don't use this local manifest anymore for persistence, but keep signature
+        await seedDemoData(days: 14, manifest: &manifest)
+    }
+
+    @MainActor
+    private func seedDemoData(days: Int, manifest: inout DemoDataManifest?) async {
         // Wait a bit to ensure Firestore processes deletions
         try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
 
         let isUkrainian = Locale.current.languageCode == "uk"
 
-        let types = await seedTypes()
-        var products = await seedProducts(isUkrainian: isUkrainian)
-        var ingredients = await seedIngredients(isUkrainian: isUkrainian)
+        let types = await seedTypes(manifest: &manifest)
+        var products = await seedProducts(isUkrainian: isUkrainian, manifest: &manifest)
+        var ingredients = await seedIngredients(isUkrainian: isUkrainian, manifest: &manifest)
 
         await assignRecipes(to: &products, ingredients: ingredients, isUkrainian: isUkrainian)
 
@@ -784,7 +814,8 @@ class DomainDatabaseService: DomainDB {
             products: products,
             ingredients: &ingredients,
             types: types,
-            isUkrainian: isUkrainian
+            isUkrainian: isUkrainian,
+            manifest: &manifest
         )
     }
 }
@@ -800,7 +831,7 @@ extension DomainDatabaseService {
         }
     }
 
-    fileprivate func seedTypes() async -> [TypeModel] {
+    fileprivate func seedTypes(manifest: inout DemoDataManifest?) async -> [TypeModel] {
         let typeHall = R.string.global.typeHall()
         let typeTakeaway = R.string.global.typeTakeaway()
         let typeDelivery = R.string.global.typeDelivery()
@@ -811,6 +842,7 @@ extension DomainDatabaseService {
         ]
 
         for t in types {
+            DemoDataManager.shared.addTypeId(t.id)
             await withCheckedContinuation { continuation in
                 self.saveType(model: t) { success in
                     if !success { self.logger.error("Failed to seed type: \(t.name)") }
@@ -821,7 +853,9 @@ extension DomainDatabaseService {
         return types
     }
 
-    fileprivate func seedProducts(isUkrainian: Bool) async -> [ProductsPriceModel] {
+    fileprivate func seedProducts(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
+        -> [ProductsPriceModel]
+    {
         let catalog: [(uk: String, en: String, price: Double)] = [
             ("Еспресо", "Espresso", 8),
             ("Еспресо з молоком", "Espresso with milk", 10),
@@ -846,6 +880,7 @@ extension DomainDatabaseService {
         }
 
         for p in products {
+            DemoDataManager.shared.addProductId(p.id)
             await withCheckedContinuation { continuation in
                 self.saveProductsPrice(productPrice: p) { success in
                     if !success { self.logger.error("Failed to seed product: \(p.name)") }
@@ -856,7 +891,9 @@ extension DomainDatabaseService {
         return products
     }
 
-    fileprivate func seedIngredients(isUkrainian: Bool) async -> [IngredientModel] {
+    fileprivate func seedIngredients(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
+        -> [IngredientModel]
+    {
         let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] =
             [
                 ("Молоко", "Milk", .l, 35.0),
@@ -879,6 +916,7 @@ extension DomainDatabaseService {
                 unit: item.unit
             )
             createdIngredients.append(ingredient)
+            DemoDataManager.shared.addIngredientId(ingredient.id)
 
             await withCheckedContinuation { continuation in
                 self.saveIngredient(model: ingredient) { success in
@@ -979,21 +1017,26 @@ extension DomainDatabaseService {
         products: [ProductsPriceModel],
         ingredients: inout [IngredientModel],
         types: [TypeModel],
-        isUkrainian: Bool
+        isUkrainian: Bool,
+        manifest: inout DemoDataManifest?
     ) async {
         let calendar = Calendar.current
         for i in 0..<max(1, days) {
             guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
 
-            await processPurchases(date: date, ingredients: &ingredients)
+            await processPurchases(date: date, ingredients: &ingredients, manifest: &manifest)
             await processInventoryAdjustments(
-                date: date, ingredients: &ingredients, isUkrainian: isUkrainian)
+                date: date, ingredients: &ingredients, isUkrainian: isUkrainian, manifest: &manifest
+            )
             await processOrders(
-                date: date, dayIndex: i, products: products, types: types, isUkrainian: isUkrainian)
+                date: date, dayIndex: i, products: products, types: types, isUkrainian: isUkrainian,
+                manifest: &manifest)
         }
     }
 
-    fileprivate func processPurchases(date: Date, ingredients: inout [IngredientModel]) async {
+    fileprivate func processPurchases(
+        date: Date, ingredients: inout [IngredientModel], manifest: inout DemoDataManifest?
+    ) async {
         if !ingredients.isEmpty && Int.random(in: 0...100) < 30 {
             let purchaseCount = Int.random(in: 1...3)
             for _ in 0..<purchaseCount {
@@ -1006,6 +1049,7 @@ extension DomainDatabaseService {
                         id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
                         quantity: qty, price: price, supplierId: nil
                     )
+                    DemoDataManager.shared.addPurchaseId(purchase.id)
 
                     // Update stock and avg cost
                     let oldTotalValue =
@@ -1045,7 +1089,8 @@ extension DomainDatabaseService {
     }
 
     fileprivate func processInventoryAdjustments(
-        date: Date, ingredients: inout [IngredientModel], isUkrainian: Bool
+        date: Date, ingredients: inout [IngredientModel], isUkrainian: Bool,
+        manifest: inout DemoDataManifest?
     ) async {
         if !ingredients.isEmpty && Int.random(in: 0...100) < 10 {
             if let randomIngredient = ingredients.randomElement() {
@@ -1053,6 +1098,7 @@ extension DomainDatabaseService {
                     id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
                     quantityDelta: -1.0, reason: isUkrainian ? "Списання (псування)" : "Spoilage"
                 )
+                DemoDataManager.shared.addInventoryAdjustmentId(adjustment.id)
 
                 await withCheckedContinuation { continuation in
                     self.saveInventoryAdjustment(model: adjustment) { success in
@@ -1081,7 +1127,7 @@ extension DomainDatabaseService {
 
     fileprivate func processOrders(
         date: Date, dayIndex: Int, products: [ProductsPriceModel], types: [TypeModel],
-        isUkrainian: Bool
+        isUkrainian: Bool, manifest: inout DemoDataManifest?
     ) async {
         let typeCount = (dayIndex % 3) + 1
         var rotated = types
@@ -1115,6 +1161,7 @@ extension DomainDatabaseService {
                 id: orderId, date: date, type: type.name, sum: total,
                 cash: cash, card: card
             )
+            DemoDataManager.shared.addOrderId(orderId)
 
             let savedOrderId: String? = await withCheckedContinuation { continuation in
                 self.saveOrder(order: order) { id in
@@ -1126,6 +1173,7 @@ extension DomainDatabaseService {
             let targetOrderId = savedOrderId ?? orderId
             for var item in orderItems {
                 item.orderId = targetOrderId
+                DemoDataManager.shared.addOrderItemId(item.id)
                 await withCheckedContinuation { continuation in
                     self.saveProduct(order: item) { success in
                         if !success { self.logger.error("Failed to seed order item") }
@@ -1141,12 +1189,13 @@ extension DomainDatabaseService {
             await processExpenses(
                 date: date, dayIndex: dayIndex,
                 loopIndex: dayTypes.firstIndex(where: { $0.id == type.id }) ?? 0,
-                count: dayTypes.count, isUkrainian: isUkrainian)
+                count: dayTypes.count, isUkrainian: isUkrainian, manifest: &manifest)
         }
     }
 
     fileprivate func processExpenses(
-        date: Date, dayIndex: Int, loopIndex: Int, count: Int, isUkrainian: Bool
+        date: Date, dayIndex: Int, loopIndex: Int, count: Int, isUkrainian: Bool,
+        manifest: inout DemoDataManifest?
     ) async {
         let costCatalog: [(uk: String, en: String, base: Double)] = [
             ("Оренда", "Rent", 1200),
@@ -1173,6 +1222,7 @@ extension DomainDatabaseService {
                 id: UUID().uuidString, date: date, categoryId: isUkrainian ? "Загальні" : "General",
                 amount: amount, note: name
             )
+            DemoDataManager.shared.addExpenseId(opex.id)
 
             await withCheckedContinuation { continuation in
                 self.saveOpexExpense(model: opex) { success in

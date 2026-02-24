@@ -5,6 +5,18 @@ final class HomeHeaderView: UIView {
     var onAddIncome: (() -> Void)?
     var onAddExpense: (() -> Void)?
     var onPeriodChanged: ((Int) -> Void)?
+    var onDeleteDemoData: (() -> Void)?
+
+    private let deleteDemoDataButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle(R.string.global.deleteDemoData(), for: .normal)
+        button.backgroundColor = .systemRed
+        button.setTitleColor(.white, for: .normal)
+        button.layer.cornerRadius = 12
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.isHidden = true
+        return button
+    }()
 
     private let titleLabel: UILabel = {
         let l = UILabel()
@@ -61,8 +73,12 @@ final class HomeHeaderView: UIView {
         expenses: Double,
         profit: Double,
         cash: Double,
-        card: Double
+        card: Double,
+        showDeleteDemoData: Bool = false
     ) {
+        deleteDemoDataButton.isHidden = !showDeleteDemoData
+        deleteDemoDataButton.addTarget(self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
+
         dateLabel.text = DateFormatter.appFullDate.string(from: date)
         periodControl.selectedSegmentIndex = period.rawValue
 
@@ -135,9 +151,11 @@ final class HomeHeaderView: UIView {
         kpiRow1.addArrangedSubview(expensesCard)
         kpiRow1.addArrangedSubview(profitCard)
 
+        deleteDemoDataButton.height(UIConstants.buttonHeight)
+        
         let contentStack = UIStackView(
             arrangedSubviews: [
-                headerStack, actionsStack, periodControl, kpiRow1, kpiRow2, balanceCard,
+                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2, balanceCard,
             ]
         )
         contentStack.axis = NSLayoutConstraint.Axis.vertical
@@ -163,6 +181,7 @@ final class HomeHeaderView: UIView {
     @objc private func incomeTap() { onAddIncome?() }
     @objc private func expenseTap() { onAddExpense?() }
     @objc private func periodChanged() { onPeriodChanged?(periodControl.selectedSegmentIndex) }
+    @objc private func deleteDemoDataTap() { onDeleteDemoData?() }
 }
 
 // MARK: - Small UI Components
