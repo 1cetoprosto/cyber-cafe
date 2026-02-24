@@ -157,6 +157,7 @@ class MainTabBarController: UITabBarController {
         itemName: String,
         itemImage: String
     ) -> UINavigationController {
+        viewController.title = itemName
         let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
         item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
         item.imageInsets = .zero
