@@ -20,16 +20,26 @@ class SettingsDataTableViewCell: BaseSettingsCell {
   }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-    super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-    contentView.addSubview(dataLabel)
+        contentView.addSubview(dataLabel)
 
-    NSLayoutConstraint.activate([
-      dataLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-      dataLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -35),
-      dataLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 150),
-    ])
-  }
+        // Deactivate the trailing constraint from BaseSettingsCell to prevent overlap
+        if let existingConstraint = contentView.constraints.first(where: {
+            ($0.firstItem as? UILabel) == label && $0.firstAttribute == .trailing
+        }) {
+            existingConstraint.isActive = false
+        }
+
+        NSLayoutConstraint.activate([
+            dataLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            dataLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -35),
+            dataLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 150),
+            
+            // Constrain label to stop before dataLabel
+            label.trailingAnchor.constraint(equalTo: dataLabel.leadingAnchor, constant: -10)
+        ])
+    }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
