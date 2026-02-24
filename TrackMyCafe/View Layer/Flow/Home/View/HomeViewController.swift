@@ -1,4 +1,5 @@
 import TinyConstraints
+import SVProgressHUD
 import UIKit
 
 final class HomeViewController: UIViewController {
@@ -33,6 +34,9 @@ final class HomeViewController: UIViewController {
     headerView.onPeriodChanged = { [weak self] idx in
         self?.applyPeriodChange(index: idx)
     }
+    headerView.onDeleteDemoData = { [weak self] in
+        self?.confirmDeleteDemoData()
+    }
 
     view.addSubview(tableView)
     tableView.edgesToSuperview(
@@ -45,11 +49,23 @@ final class HomeViewController: UIViewController {
     )
 
     Task { await loadData() }
+    
+    NotificationCenter.default.addObserver(self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"), object: nil)
+  }
+  
+  @objc private func dataDidUpdate() {
+      Task { await loadData() }
   }
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.setNavigationBarHidden(true, animated: animated)
     Task { await loadData() }
+  }
+
+  override func viewWillDisappear(_ animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.setNavigationBarHidden(false, animated: animated)
   }
 
   override func viewDidLayoutSubviews() {
@@ -104,7 +120,32 @@ final class HomeViewController: UIViewController {
     Task { await loadData() }
   }
   
-  private func applyPeriodChange(index: Int) {
+  private func confirmDeleteDemoData() {
+        let alert = UIAlertController(
+            title: R.string.global.deleteDemoDataTitle(),
+            message: R.string.global.deleteDemoDataMessage(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+                SVProgressHUD.show(withStatus: R.string.global.deleting())
+                DemoDataManager.shared.deleteDemoData { success in
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        if success {
+                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                            self.reloadAfterAction()
+                        } else {
+                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                        }
+                    }
+                }
+            })
+        present(alert, animated: true)
+    }
+
+    private func applyPeriodChange(index: Int) {
     let period: DashboardPeriod
     switch index {
     case 0: period = .day
@@ -135,7 +176,8 @@ final class HomeViewController: UIViewController {
       expenses: viewModel.monthExpenses,
       profit: viewModel.monthProfit,
       cash: viewModel.cashBalance,
-      card: viewModel.cardBalance
+      card: viewModel.cardBalance,
+      showDeleteDemoData: DemoDataManager.shared.isDemoDataPresent
     )
   }
 }

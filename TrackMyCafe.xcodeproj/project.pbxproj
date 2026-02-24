@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 56;
+	objectVersion = 71;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -568,6 +568,9 @@
 		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
+		F3D97EB82F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
+		F3D97EB92F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
+		F3D97EBA2F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
 		F3DA99BDDC0433656561976A /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
 		F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */; };
@@ -843,6 +846,7 @@
 		F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodsPriceModel.png; sourceTree = "<group>"; };
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
+		F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDataManager.swift; sourceTree = "<group>"; };
 		F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextInputFilter.swift; sourceTree = "<group>"; };
 		F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+NumericInput.swift"; sourceTree = "<group>"; };
 		F3DD2196277AEF76001570D3 /* RealmProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmProductsPriceModel.swift; sourceTree = "<group>"; };
@@ -874,61 +878,11 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F324E60A2F486E99003A7469 /* Selection */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		F3299A932F35065600EA6532 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = ProductCategories;
-			sourceTree = "<group>";
-		};
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
+		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2068,6 +2022,7 @@
 			isa = PBXGroup;
 			children = (
 				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
+				F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */,
 				F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */,
 				F3E358022BF22B76005050CB /* DomainDB.swift */,
 				F36217C02EBF006C00965886 /* DomainCostDataService.swift */,
@@ -2472,9 +2427,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2489,9 +2448,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2639,9 +2602,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2741,6 +2708,7 @@
 				F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F316A2F3273803CE0083E830 /* ProductListViewController.swift in Sources */,
 				F3410EB22BDD408B0007157B /* Settings.swift in Sources */,
+				F3D97EB82F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
@@ -2929,6 +2897,7 @@
 				F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B339E62C0B22FE0073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60E2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F3D97EB92F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
@@ -3117,6 +3086,7 @@
 				F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B33A852C0B23450073F19A /* SettingsDataTableViewCell.swift in Sources */,
 				F3F6A60F2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
+				F3D97EBA2F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,

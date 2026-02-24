@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 318 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 325 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -648,6 +648,48 @@ struct _R {
       ///
       /// Locales: en, uk
       var delete: RswiftResources.StringResource { .init(key: "delete", tableName: "Global", source: source, developmentValue: "Delete", comment: nil) }
+
+      /// en translation: Delete Demo Data
+      ///
+      /// Key: deleteDemoData
+      ///
+      /// Locales: en, uk
+      var deleteDemoData: RswiftResources.StringResource { .init(key: "deleteDemoData", tableName: "Global", source: source, developmentValue: "Delete Demo Data", comment: nil) }
+
+      /// en translation: This will remove all demo data but keep your personal entries.
+      ///
+      /// Key: deleteDemoDataMessage
+      ///
+      /// Locales: en, uk
+      var deleteDemoDataMessage: RswiftResources.StringResource { .init(key: "deleteDemoDataMessage", tableName: "Global", source: source, developmentValue: "This will remove all demo data but keep your personal entries.", comment: nil) }
+
+      /// en translation: Delete Demo Data?
+      ///
+      /// Key: deleteDemoDataTitle
+      ///
+      /// Locales: en, uk
+      var deleteDemoDataTitle: RswiftResources.StringResource { .init(key: "deleteDemoDataTitle", tableName: "Global", source: source, developmentValue: "Delete Demo Data?", comment: nil) }
+
+      /// en translation: Deleting...
+      ///
+      /// Key: deleting
+      ///
+      /// Locales: en, uk
+      var deleting: RswiftResources.StringResource { .init(key: "deleting", tableName: "Global", source: source, developmentValue: "Deleting...", comment: nil) }
+
+      /// en translation: Would you like to fill the app with demo data to see how it works?
+      ///
+      /// Key: demoDataMessage
+      ///
+      /// Locales: en, uk
+      var demoDataMessage: RswiftResources.StringResource { .init(key: "demoDataMessage", tableName: "Global", source: source, developmentValue: "Would you like to fill the app with demo data to see how it works?", comment: nil) }
+
+      /// en translation: Demo Data
+      ///
+      /// Key: demoDataTitle
+      ///
+      /// Locales: en, uk
+      var demoDataTitle: RswiftResources.StringResource { .init(key: "demoDataTitle", tableName: "Global", source: source, developmentValue: "Demo Data", comment: nil) }
 
       /// en translation: Developer
       ///
@@ -1628,6 +1670,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var pleaseSelectIngredient: RswiftResources.StringResource { .init(key: "pleaseSelectIngredient", tableName: "Global", source: source, developmentValue: "Please select an ingredient", comment: nil) }
+
+      /// en translation: Preparing Demo Data...
+      ///
+      /// Key: preparingDemoData
+      ///
+      /// Locales: en, uk
+      var preparingDemoData: RswiftResources.StringResource { .init(key: "preparingDemoData", tableName: "Global", source: source, developmentValue: "Preparing Demo Data...", comment: nil) }
 
       /// en translation: Price
       ///

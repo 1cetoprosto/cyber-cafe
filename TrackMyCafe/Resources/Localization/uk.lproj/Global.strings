@@ -385,3 +385,12 @@
 
 // MARK: - Reports
 "reportsTitle" = "Звіти";
+
+// MARK: - Demo Data
+"preparingDemoData" = "Підготовка демо-даних...";
+"deleteDemoData" = "Видалити демо-дані";
+"deleteDemoDataTitle" = "Видалити демо-дані?";
+"deleteDemoDataMessage" = "Це видалить усі демо-записи, але збереже ваші особисті дані.";
+"deleting" = "Видалення...";
+"demoDataTitle" = "Демо-дані";
+"demoDataMessage" = "Бажаєте заповнити додаток демо-даними для ознайомлення?";

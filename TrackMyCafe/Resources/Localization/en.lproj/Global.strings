@@ -385,3 +385,12 @@
 "onboardingSettingsTypesMessage" = "Configure different order types here.";
 "logout" = "Logout";
 "account" = "Account";
+
+// MARK: - Demo Data
+"preparingDemoData" = "Preparing Demo Data...";
+"deleteDemoData" = "Delete Demo Data";
+"deleteDemoDataTitle" = "Delete Demo Data?";
+"deleteDemoDataMessage" = "This will remove all demo data but keep your personal entries.";
+"deleting" = "Deleting...";
+"demoDataTitle" = "Demo Data";
+"demoDataMessage" = "Would you like to fill the app with demo data to see how it works?";
