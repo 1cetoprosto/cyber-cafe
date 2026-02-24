@@ -990,7 +990,6 @@ extension DomainDatabaseService {
                 date: date, ingredients: &ingredients, isUkrainian: isUkrainian)
             await processOrders(
                 date: date, dayIndex: i, products: products, types: types, isUkrainian: isUkrainian)
-            await processExpenses(date: date, dayIndex: i, isUkrainian: isUkrainian)
         }
     }
 
