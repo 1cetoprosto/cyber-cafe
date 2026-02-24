@@ -141,7 +141,7 @@
 "onboardingResetMessage" = "Це скине ваш прогрес навчання. Ви хочете продовжити?";
 "writeToDeveloper" = "Написати розробнику";
 "general" = "Загальні";
-"priceList" = "Прайс-лист";
+"priceList" = "Каталог товарів";
 "receiptTypes" = "Типи чеків";
 "ingredients" = "Інгредієнти";
 "seedTestData" = "Заповнити тестовими даними";
@@ -245,7 +245,10 @@
 "productCategories" = "Категорії товарів";
 "orderEntryModeTitle" = "Режим введення замовлень";
 "orderModePerOrder" = "Класична схема";
-"orderModeOpenTab" = "Donate-кафе (одне замовлення)";
+"orderModeOpenTab" = "Спрощена схема (Donate-кафе)";
+"orderModePerOrderDescription" = "Кожен клієнт — окремий чек. Товари додаються з Каталогу. Рекомендовано для великого асортименту.";
+"orderModeOpenTabDescription" = "Всі продажі в одному чеку за день. Товари вже в списку, змінюйте кількість (+/-). Рекомендовано для малого асортименту.";
+"priceList" = "Каталог товарів";
 "cash" = "Готівка";
 "receivedInCash" = "Отримано готівкою";
 "receivedByCard" = "Отримано карткою";
@@ -371,7 +374,7 @@
 "onboardingCostDetailsSumMessage" = "Введіть суму витрати.";
 "onboardingCostDetailsSaveTitle" = "Зберегти витрату";
 "onboardingCostDetailsSaveMessage" = "Натисніть, щоб зберегти витрату.";
-"onboardingSettingsPriceListTitle" = "Прайс-лист";
+"onboardingSettingsPriceListTitle" = "Каталог товарів";
 "onboardingSettingsPriceListMessage" = "Керуйте своїми товарами та цінами тут.";
 "onboardingSettingsAddProductTitle" = "Додати товар";
 "onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
