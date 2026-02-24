@@ -141,7 +141,7 @@
 "onboardingResetMessage" = "This will reset your onboarding progress. Do you want to continue?";
 "writeToDeveloper" = "Write to Developer";
 "general" = "General";
-"priceList" = "Price List";
+"priceList" = "Product Catalog";
 "receiptTypes" = "Receipt Types";
 "ingredients" = "Ingredients";
 "seedTestData" = "Seed Test Data";
@@ -244,8 +244,11 @@
 "order" = "Order";
 "productCategories" = "Product categories";
 "orderEntryModeTitle" = "Order entry mode";
-"orderModePerOrder" = "Per order";
-"orderModeOpenTab" = "Open tab";
+"orderModePerOrder" = "Classic Mode";
+"orderModeOpenTab" = "Simplified Mode (Donate-Cafe)";
+"orderModePerOrderDescription" = "Each customer is a separate check. Items added from Catalog. Recommended for large assortment.";
+"orderModeOpenTabDescription" = "All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.";
+"priceList" = "Product Catalog";
 "cash" = "Cash";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
@@ -374,7 +377,7 @@
 "onboardingCostDetailsSumMessage" = "Enter the cost amount.";
 "onboardingCostDetailsSaveTitle" = "Save Cost";
 "onboardingCostDetailsSaveMessage" = "Tap to save the expense.";
-"onboardingSettingsPriceListTitle" = "Price List";
+"onboardingSettingsPriceListTitle" = "Product Catalog";
 "onboardingSettingsPriceListMessage" = "Manage your products and prices here.";
 "onboardingSettingsAddProductTitle" = "Add Product";
 "onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
