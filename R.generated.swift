@@ -46,19 +46,23 @@ struct _R {
     let developmentRegion = "en"
   }
 
-  /// This `_R.string` struct is generated, and contains static references to 2 localization tables.
+  /// This `_R.string` struct is generated, and contains static references to 3 localization tables.
   struct string {
     let bundle: Foundation.Bundle
     let preferredLanguages: [String]?
     let locale: Locale?
     var auth: auth { .init(source: .init(bundle: bundle, tableName: "Auth", preferredLanguages: preferredLanguages, locale: locale)) }
     var global: global { .init(source: .init(bundle: bundle, tableName: "Global", preferredLanguages: preferredLanguages, locale: locale)) }
+    var infoPlist: infoPlist { .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale)) }
 
     func auth(preferredLanguages: [String]) -> auth {
       .init(source: .init(bundle: bundle, tableName: "Auth", preferredLanguages: preferredLanguages, locale: locale))
     }
     func global(preferredLanguages: [String]) -> global {
       .init(source: .init(bundle: bundle, tableName: "Global", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func infoPlist(preferredLanguages: [String]) -> infoPlist {
+      .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale))
     }
 
 
@@ -2429,6 +2433,32 @@ struct _R {
       ///
       /// Locales: en, uk
       var yes: RswiftResources.StringResource { .init(key: "yes", tableName: "Global", source: source, developmentValue: "Yes", comment: nil) }
+    }
+
+    /// This `_R.string.infoPlist` struct is generated, and contains static references to 3 localization keys.
+    struct infoPlist {
+      let source: RswiftResources.StringResource.Source
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: CFBundleDisplayName
+      ///
+      /// Locales: en, uk
+      var cfBundleDisplayName: RswiftResources.StringResource { .init(key: "CFBundleDisplayName", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe", comment: nil) }
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: CFBundleName
+      ///
+      /// Locales: en, uk
+      var cfBundleName: RswiftResources.StringResource { .init(key: "CFBundleName", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe", comment: nil) }
+
+      /// en translation: TrackMyCafe uses Face ID for secure login.
+      ///
+      /// Key: NSFaceIDUsageDescription
+      ///
+      /// Locales: en, uk
+      var nsFaceIDUsageDescription: RswiftResources.StringResource { .init(key: "NSFaceIDUsageDescription", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe uses Face ID for secure login.", comment: nil) }
     }
   }
 
