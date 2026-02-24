@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 71;
+	objectVersion = 56;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -11,6 +11,7 @@
 		053B057E633F68A37D8C6489 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
 		06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
+		0E980A2C21B9CC72F4516FAC /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
 		11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
@@ -35,6 +36,7 @@
 		4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
+		552467AE60F8B2EDD9769D5F /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
 		563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		59C05FDE199AFA314FF13092 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
@@ -43,6 +45,7 @@
 		616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
 		61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
+		66D52AFA3785F04F868BEBFE /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
 		68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
 		6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
@@ -169,7 +172,6 @@
 		F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
 		F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
 		F3410E5D2BDD00C20007157B /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInController.swift */; };
-		F3410E5E2BDD00C20007157B /* AnimatedTextInputStyleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E522BDD00C20007157B /* AnimatedTextInputStyleLogin.swift */; };
 		F3410E5F2BDD00C20007157B /* RememberMeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E532BDD00C20007157B /* RememberMeButton.swift */; };
 		F3410E602BDD00C20007157B /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpController.swift */; };
 		F3410E612BDD00C20007157B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E582BDD00C20007157B /* AuthManager.swift */; };
@@ -354,7 +356,6 @@
 		F3B339CD2C0B22FE0073F19A /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */; };
 		F3B339CE2C0B22FE0073F19A /* FirestoreDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */; };
 		F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */; };
-		F3B339D02C0B22FE0073F19A /* AnimatedTextInputStyleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E522BDD00C20007157B /* AnimatedTextInputStyleLogin.swift */; };
 		F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8E2BDD2E770007157B /* Types+Extension.swift */; };
 		F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
@@ -471,7 +472,6 @@
 		F3B33A6C2C0B23450073F19A /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */; };
 		F3B33A6D2C0B23450073F19A /* FirestoreDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */; };
 		F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFB27526241004B9AF6 /* LanguageViewController.swift */; };
-		F3B33A6F2C0B23450073F19A /* AnimatedTextInputStyleLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E522BDD00C20007157B /* AnimatedTextInputStyleLogin.swift */; };
 		F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8E2BDD2E770007157B /* Types+Extension.swift */; };
 		F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
@@ -681,6 +681,7 @@
 		8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.release.xcconfig"; sourceTree = "<group>"; };
 		933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AD7023830D52366E592DF97 /* PaddedTextField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewModel.swift; sourceTree = "<group>"; };
 		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
 		B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIROpexExpenseModel.swift; sourceTree = "<group>"; };
@@ -734,7 +735,6 @@
 		F3410E4C2BDD00C20007157B /* ForgotPassController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPassController.swift; sourceTree = "<group>"; };
 		F3410E4E2BDD00C20007157B /* SetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordController.swift; sourceTree = "<group>"; };
 		F3410E502BDD00C20007157B /* SignInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInController.swift; sourceTree = "<group>"; };
-		F3410E522BDD00C20007157B /* AnimatedTextInputStyleLogin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimatedTextInputStyleLogin.swift; sourceTree = "<group>"; };
 		F3410E532BDD00C20007157B /* RememberMeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RememberMeButton.swift; sourceTree = "<group>"; };
 		F3410E562BDD00C20007157B /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		F3410E582BDD00C20007157B /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -1354,7 +1354,6 @@
 		F3410E542BDD00C20007157B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E522BDD00C20007157B /* AnimatedTextInputStyleLogin.swift */,
 				F3410E532BDD00C20007157B /* RememberMeButton.swift */,
 			);
 			path = View;
@@ -1469,6 +1468,7 @@
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
+				9AD7023830D52366E592DF97 /* PaddedTextField.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2472,13 +2472,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2493,13 +2489,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2647,13 +2639,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2726,7 +2714,6 @@
 				F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */,
 				F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
-				F3410E5E2BDD00C20007157B /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */,
 				F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */,
 				F385B41D2C1D902A00973CAA /* ModeratorListController.swift in Sources */,
@@ -2848,6 +2835,7 @@
 				70E997F9A553EC01784428B5 /* OpexAggregationService.swift in Sources */,
 				D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */,
 				616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */,
+				0E980A2C21B9CC72F4516FAC /* PaddedTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2913,7 +2901,6 @@
 				F3F6A6382C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */,
 				F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */,
-				F3B339D02C0B22FE0073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3F6A63C2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
 				F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */,
 				F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */,
@@ -3036,6 +3023,7 @@
 				F3DA99BDDC0433656561976A /* OpexAggregationService.swift in Sources */,
 				8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */,
 				C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */,
+				66D52AFA3785F04F868BEBFE /* PaddedTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3101,7 +3089,6 @@
 				F3F6A6392C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */,
 				F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */,
-				F3B33A6F2C0B23450073F19A /* AnimatedTextInputStyleLogin.swift in Sources */,
 				F3F6A63D2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
 				F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */,
 				F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */,
@@ -3224,6 +3211,7 @@
 				1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */,
 				4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */,
 				77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */,
+				552467AE60F8B2EDD9769D5F /* PaddedTextField.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3393,7 +3381,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3426,7 +3414,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3458,7 +3446,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3488,7 +3476,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3517,7 +3505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3547,7 +3535,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 24;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;

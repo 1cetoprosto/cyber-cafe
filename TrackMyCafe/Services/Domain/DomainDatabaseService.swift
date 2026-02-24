@@ -766,16 +766,41 @@ class DomainDatabaseService: DomainDB {
 
     @MainActor
     func seedTestData(forDays days: Int) async {
-        // Step 1: Delete all data
+        await cleanDatabase()
+
+        // Wait a bit to ensure Firestore processes deletions
+        try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
+
+        let isUkrainian = Locale.current.languageCode == "uk"
+
+        let types = await seedTypes()
+        var products = await seedProducts(isUkrainian: isUkrainian)
+        var ingredients = await seedIngredients(isUkrainian: isUkrainian)
+
+        await assignRecipes(to: &products, ingredients: ingredients, isUkrainian: isUkrainian)
+
+        await generateDailyActivity(
+            days: days,
+            products: products,
+            ingredients: &ingredients,
+            types: types,
+            isUkrainian: isUkrainian
+        )
+    }
+}
+
+// MARK: - Seeding Helpers
+extension DomainDatabaseService {
+
+    fileprivate func cleanDatabase() async {
         await withCheckedContinuation { continuation in
             self.deleteActiveDatabaseData { _ in
                 continuation.resume()
             }
         }
+    }
 
-        // Wait a bit to ensure Firestore processes deletions
-        try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
-
+    fileprivate func seedTypes() async -> [TypeModel] {
         let typeHall = R.string.global.typeHall()
         let typeTakeaway = R.string.global.typeTakeaway()
         let typeDelivery = R.string.global.typeDelivery()
@@ -793,8 +818,10 @@ class DomainDatabaseService: DomainDB {
                 }
             }
         }
+        return types
+    }
 
-        let isUkrainian = Locale.current.languageCode == "uk"
+    fileprivate func seedProducts(isUkrainian: Bool) async -> [ProductsPriceModel] {
         let catalog: [(uk: String, en: String, price: Double)] = [
             ("Еспресо", "Espresso", 8),
             ("Еспресо з молоком", "Espresso with milk", 10),
@@ -826,8 +853,10 @@ class DomainDatabaseService: DomainDB {
                 }
             }
         }
+        return products
+    }
 
-        // Ingredients
+    fileprivate func seedIngredients(isUkrainian: Bool) async -> [IngredientModel] {
         let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] =
             [
                 ("Молоко", "Milk", .l, 35.0),
@@ -858,22 +887,26 @@ class DomainDatabaseService: DomainDB {
                 }
             }
         }
+        return createdIngredients
+    }
 
-        // Assign recipes to products
-        for var product in products {
+    fileprivate func assignRecipes(
+        to products: inout [ProductsPriceModel], ingredients: [IngredientModel], isUkrainian: Bool
+    ) async {
+        for i in 0..<products.count {
+            var product = products[i]
             var recipe: [RecipeItemModel] = []
 
-            // Helper to find ingredient by EN/UK name
             func findIngredient(_ key: String) -> IngredientModel? {
-                return createdIngredients.first { $0.name.lowercased().contains(key.lowercased()) }
+                return ingredients.first { $0.name.lowercased().contains(key.lowercased()) }
             }
 
             let pName = product.name.lowercased()
 
-            // Coffee base (Espresso, Americano, Latte, Cappuccino, Irish)
+            // Coffee base
             if pName.contains("espresso") || pName.contains("еспресо")
-                || pName.contains("americano")
-                || pName.contains("американо") || pName.contains("latte") || pName.contains("лате")
+                || pName.contains("americano") || pName.contains("американо")
+                || pName.contains("latte") || pName.contains("лате")
                 || pName.contains("cappuccino") || pName.contains("капучіно")
                 || pName.contains("irish") || pName.contains("айріш")
             {
@@ -887,12 +920,11 @@ class DomainDatabaseService: DomainDB {
                     recipe.append(
                         RecipeItemModel(
                             id: UUID().uuidString, ingredientId: water.id,
-                            ingredientName: water.name,
-                            quantity: 0.05, unit: .l))
+                            ingredientName: water.name, quantity: 0.05, unit: .l))
                 }
             }
 
-            // Milk based (Latte, Cappuccino, Cocoa, Hot Chocolate)
+            // Milk based
             if pName.contains("latte") || pName.contains("лате") || pName.contains("cappuccino")
                 || pName.contains("капучіно") || pName.contains("cocoa") || pName.contains("какао")
                 || pName.contains("chocolate") || pName.contains("шоколад")
@@ -906,7 +938,7 @@ class DomainDatabaseService: DomainDB {
                 }
             }
 
-            // Sugar (Optional logic, let's assume some drinks have sugar by default or just add to recipe)
+            // Sugar
             if pName.contains("cocoa") || pName.contains("какао") || pName.contains("chocolate")
                 || pName.contains("шоколад")
             {
@@ -914,8 +946,7 @@ class DomainDatabaseService: DomainDB {
                     recipe.append(
                         RecipeItemModel(
                             id: UUID().uuidString, ingredientId: sugar.id,
-                            ingredientName: sugar.name,
-                            quantity: 0.01, unit: .kg))
+                            ingredientName: sugar.name, quantity: 0.01, unit: .kg))
                 }
             }
 
@@ -929,6 +960,8 @@ class DomainDatabaseService: DomainDB {
 
             if !recipe.isEmpty {
                 product.recipe = recipe
+                products[i] = product  // Update in array
+
                 await withCheckedContinuation { continuation in
                     self.saveProductsPrice(productPrice: product) { success in
                         if !success {
@@ -939,200 +972,70 @@ class DomainDatabaseService: DomainDB {
                 }
             }
         }
+    }
 
+    fileprivate func generateDailyActivity(
+        days: Int,
+        products: [ProductsPriceModel],
+        ingredients: inout [IngredientModel],
+        types: [TypeModel],
+        isUkrainian: Bool
+    ) async {
         let calendar = Calendar.current
         for i in 0..<max(1, days) {
             guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
 
-            // Generate Purchases (30% chance per day)
-            if !createdIngredients.isEmpty && Int.random(in: 0...100) < 30 {
-                let purchaseCount = Int.random(in: 1...3)
-                for _ in 0..<purchaseCount {
-                    if var randomIngredient = createdIngredients.randomElement() {
-                        let qty = Double(Int.random(in: 5...50))
-                        let priceVariation = Double.random(in: 0.9...1.1)
-                        let price = (randomIngredient.averageCost * priceVariation).round(to: 2)
+            await processPurchases(date: date, ingredients: &ingredients)
+            await processInventoryAdjustments(
+                date: date, ingredients: &ingredients, isUkrainian: isUkrainian)
+            await processOrders(
+                date: date, dayIndex: i, products: products, types: types, isUkrainian: isUkrainian)
+        }
+    }
 
-                        let purchase = PurchaseModel(
-                            id: UUID().uuidString,
-                            date: date,
-                            ingredientId: randomIngredient.id,
-                            quantity: qty,
-                            price: price,
-                            supplierId: nil
-                        )
+    fileprivate func processPurchases(date: Date, ingredients: inout [IngredientModel]) async {
+        if !ingredients.isEmpty && Int.random(in: 0...100) < 30 {
+            let purchaseCount = Int.random(in: 1...3)
+            for _ in 0..<purchaseCount {
+                if var randomIngredient = ingredients.randomElement() {
+                    let qty = Double(Int.random(in: 5...50))
+                    let priceVariation = Double.random(in: 0.9...1.1)
+                    let price = (randomIngredient.averageCost * priceVariation).round(to: 2)
 
-                        // Update stock and avg cost
-                        let oldTotalValue =
-                            randomIngredient.stockQuantity * randomIngredient.averageCost
-                        let newPurchaseValue = qty * price
-                        let newTotalQuantity = randomIngredient.stockQuantity + qty
-                        let newAverageCost =
-                            newTotalQuantity > 0
-                            ? (oldTotalValue + newPurchaseValue) / newTotalQuantity : price
-
-                        randomIngredient.stockQuantity = newTotalQuantity
-                        randomIngredient.averageCost = newAverageCost
-
-                        // Update local array
-                        if let index = createdIngredients.firstIndex(where: {
-                            $0.id == randomIngredient.id
-                        }) {
-                            createdIngredients[index] = randomIngredient
-                        }
-
-                        // Save Purchase
-                        await withCheckedContinuation { continuation in
-                            self.savePurchase(model: purchase) { success in
-                                if !success { self.logger.error("Failed to seed purchase") }
-                                continuation.resume()
-                            }
-                        }
-
-                        // Save Updated Ingredient
-                        await withCheckedContinuation { continuation in
-                            self.saveIngredient(model: randomIngredient) { success in
-                                if !success {
-                                    self.logger.error("Failed to update ingredient after purchase")
-                                }
-                                continuation.resume()
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Generate Inventory Adjustments (10% chance per day)
-            if !createdIngredients.isEmpty && Int.random(in: 0...100) < 10 {
-                if let randomIngredient = createdIngredients.randomElement() {
-                    let adjustment = InventoryAdjustmentModel(
-                        id: UUID().uuidString,
-                        date: date,
-                        ingredientId: randomIngredient.id,
-                        quantityDelta: -1.0,
-                        reason: isUkrainian ? "Списання (псування)" : "Spoilage"
+                    let purchase = PurchaseModel(
+                        id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
+                        quantity: qty, price: price, supplierId: nil
                     )
 
+                    // Update stock and avg cost
+                    let oldTotalValue =
+                        randomIngredient.stockQuantity * randomIngredient.averageCost
+                    let newPurchaseValue = qty * price
+                    let newTotalQuantity = randomIngredient.stockQuantity + qty
+                    let newAverageCost =
+                        newTotalQuantity > 0
+                        ? (oldTotalValue + newPurchaseValue) / newTotalQuantity : price
+
+                    randomIngredient.stockQuantity = newTotalQuantity
+                    randomIngredient.averageCost = newAverageCost
+
+                    // Update local array
+                    if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
+                        ingredients[index] = randomIngredient
+                    }
+
                     await withCheckedContinuation { continuation in
-                        self.saveInventoryAdjustment(model: adjustment) { success in
-                            if !success { self.logger.error("Failed to seed inventory adjustment") }
+                        self.savePurchase(model: purchase) { success in
+                            if !success { self.logger.error("Failed to seed purchase") }
                             continuation.resume()
                         }
                     }
 
-                    // Update ingredient stock
-                    if let index = createdIngredients.firstIndex(where: {
-                        $0.id == randomIngredient.id
-                    }) {
-                        var ing = createdIngredients[index]
-                        ing.stockQuantity -= 1.0
-                        createdIngredients[index] = ing
-                        await withCheckedContinuation { continuation in
-                            self.saveIngredient(model: ing) { success in
-                                if !success {
-                                    self.logger.error(
-                                        "Failed to update ingredient after adjustment")
-                                }
-                                continuation.resume()
+                    await withCheckedContinuation { continuation in
+                        self.saveIngredient(model: randomIngredient) { success in
+                            if !success {
+                                self.logger.error("Failed to update ingredient after purchase")
                             }
-                        }
-                    }
-                }
-            }
-
-            let typeCount = (i % 3) + 1
-            var rotated = types
-            let shift = i % max(1, rotated.count)
-            if shift > 0 {
-                rotated = Array(rotated[shift...]) + Array(rotated[..<shift])
-            }
-            let dayTypes = Array(rotated.prefix(typeCount))
-
-            for type in dayTypes {
-                let orderId = UUID().uuidString
-                let itemCount = 3 + (i % 3)  // 3..5 items per order
-                let chosen = Array(products.shuffled().prefix(itemCount))
-                var orderItems = [ProductOfOrderModel]()
-
-                for (idx, base) in chosen.enumerated() {
-                    let qty = 1 + ((i + idx) % 4)  // 1..4 units per item
-                    let sum = Double(qty) * base.price
-                    orderItems.append(
-                        ProductOfOrderModel(
-                            id: UUID().uuidString,
-                            orderId: orderId,
-                            date: date,
-                            name: base.name,
-                            quantity: qty,
-                            price: base.price,
-                            sum: sum
-                        )
-                    )
-                }
-
-                let total = orderItems.reduce(0) { $0 + $1.sum }
-                let cash = total * 0.6
-                let card = total - cash
-
-                let order = OrderModel(
-                    id: orderId,
-                    date: date,
-                    type: type.name,
-                    sum: total,
-                    cash: cash,
-                    card: card
-                )
-
-                let savedOrderId: String? = await withCheckedContinuation { continuation in
-                    self.saveOrder(order: order) { id in
-                        if id == nil { self.logger.error("Failed to seed order: \(order.id)") }
-                        continuation.resume(returning: id)
-                    }
-                }
-
-                let targetOrderId = savedOrderId ?? orderId
-                for var item in orderItems {
-                    item.orderId = targetOrderId
-                    await withCheckedContinuation { continuation in
-                        self.saveProduct(order: item) { success in
-                            if !success { self.logger.error("Failed to seed order item") }
-                            continuation.resume()
-                        }
-                    }
-                }
-
-                let costCatalog: [(uk: String, en: String, base: Double)] = [
-                    ("Оренда", "Rent", 1200),
-                    ("Комунальні послуги", "Utilities", 300),
-                    ("Електроенергія", "Electricity", 400),
-                    ("Вода (офіс)", "Water (office)", 60),
-                    ("Інтернет", "Internet", 25),
-                    ("Заробітна плата", "Salary", 800),
-                    ("Податки", "Taxes", 350),
-                    ("Маркетинг", "Marketing", 200),
-                    ("Пакування", "Packaging", 70),
-                    ("Прибирання", "Cleaning", 50),
-                    ("Обслуговування обладнання", "Equipment maintenance", 150),
-                ]
-
-                let costCount = 2 + ((i + dayTypes.count) % 3)
-                for j in 0..<costCount {
-                    let entry = costCatalog[(i + j) % costCatalog.count]
-                    let name = isUkrainian ? entry.uk : entry.en
-                    let variance = Double(((i * 17) + (j * 11)) % 120)
-                    let amount = (entry.base + variance).rounded(.toNearestOrAwayFromZero)
-
-                    // Save as OpexExpense
-                    let opex = OpexExpenseModel(
-                        id: UUID().uuidString,
-                        date: date,
-                        categoryId: isUkrainian ? "Загальні" : "General",
-                        amount: amount,
-                        note: name
-                    )
-                    await withCheckedContinuation { continuation in
-                        self.saveOpexExpense(model: opex) { success in
-                            if !success { self.logger.error("Failed to seed expense: \(name)") }
                             continuation.resume()
                         }
                     }
@@ -1141,7 +1044,145 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func transferCollectionToFIR<RealmModel, DomainModel, FIRModel>(
+    fileprivate func processInventoryAdjustments(
+        date: Date, ingredients: inout [IngredientModel], isUkrainian: Bool
+    ) async {
+        if !ingredients.isEmpty && Int.random(in: 0...100) < 10 {
+            if let randomIngredient = ingredients.randomElement() {
+                let adjustment = InventoryAdjustmentModel(
+                    id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
+                    quantityDelta: -1.0, reason: isUkrainian ? "Списання (псування)" : "Spoilage"
+                )
+
+                await withCheckedContinuation { continuation in
+                    self.saveInventoryAdjustment(model: adjustment) { success in
+                        if !success { self.logger.error("Failed to seed inventory adjustment") }
+                        continuation.resume()
+                    }
+                }
+
+                if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
+                    var ing = ingredients[index]
+                    ing.stockQuantity -= 1.0
+                    ingredients[index] = ing
+
+                    await withCheckedContinuation { continuation in
+                        self.saveIngredient(model: ing) { success in
+                            if !success {
+                                self.logger.error("Failed to update ingredient after adjustment")
+                            }
+                            continuation.resume()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fileprivate func processOrders(
+        date: Date, dayIndex: Int, products: [ProductsPriceModel], types: [TypeModel],
+        isUkrainian: Bool
+    ) async {
+        let typeCount = (dayIndex % 3) + 1
+        var rotated = types
+        let shift = dayIndex % max(1, rotated.count)
+        if shift > 0 {
+            rotated = Array(rotated[shift...]) + Array(rotated[..<shift])
+        }
+        let dayTypes = Array(rotated.prefix(typeCount))
+
+        for type in dayTypes {
+            let orderId = UUID().uuidString
+            let itemCount = 3 + (dayIndex % 3)
+            let chosen = Array(products.shuffled().prefix(itemCount))
+            var orderItems = [ProductOfOrderModel]()
+
+            for (idx, base) in chosen.enumerated() {
+                let qty = 1 + ((dayIndex + idx) % 4)
+                let sum = Double(qty) * base.price
+                orderItems.append(
+                    ProductOfOrderModel(
+                        id: UUID().uuidString, orderId: orderId, date: date,
+                        name: base.name, quantity: qty, price: base.price, sum: sum
+                    ))
+            }
+
+            let total = orderItems.reduce(0) { $0 + $1.sum }
+            let cash = total * 0.6
+            let card = total - cash
+
+            let order = OrderModel(
+                id: orderId, date: date, type: type.name, sum: total,
+                cash: cash, card: card
+            )
+
+            let savedOrderId: String? = await withCheckedContinuation { continuation in
+                self.saveOrder(order: order) { id in
+                    if id == nil { self.logger.error("Failed to seed order: \(order.id)") }
+                    continuation.resume(returning: id)
+                }
+            }
+
+            let targetOrderId = savedOrderId ?? orderId
+            for var item in orderItems {
+                item.orderId = targetOrderId
+                await withCheckedContinuation { continuation in
+                    self.saveProduct(order: item) { success in
+                        if !success { self.logger.error("Failed to seed order item") }
+                        continuation.resume()
+                    }
+                }
+            }
+
+            // Opex expenses linked to orders/types logic? No, just daily expenses but calculated here in original code
+            // Actually, in original code, expenses loop was inside dayTypes loop.
+            // Let's verify logic. Original: `for type in dayTypes { ... process orders ... process expenses }`
+            // So for EACH type iteration, it generated expenses.
+            await processExpenses(
+                date: date, dayIndex: dayIndex,
+                loopIndex: dayTypes.firstIndex(where: { $0.id == type.id }) ?? 0,
+                count: dayTypes.count, isUkrainian: isUkrainian)
+        }
+    }
+
+    fileprivate func processExpenses(
+        date: Date, dayIndex: Int, loopIndex: Int, count: Int, isUkrainian: Bool
+    ) async {
+        let costCatalog: [(uk: String, en: String, base: Double)] = [
+            ("Оренда", "Rent", 1200),
+            ("Комунальні послуги", "Utilities", 300),
+            ("Електроенергія", "Electricity", 400),
+            ("Вода (офіс)", "Water (office)", 60),
+            ("Інтернет", "Internet", 25),
+            ("Заробітна плата", "Salary", 800),
+            ("Податки", "Taxes", 350),
+            ("Маркетинг", "Marketing", 200),
+            ("Пакування", "Packaging", 70),
+            ("Прибирання", "Cleaning", 50),
+            ("Обслуговування обладнання", "Equipment maintenance", 150),
+        ]
+
+        let costCount = 2 + ((dayIndex + count) % 3)
+        for j in 0..<costCount {
+            let entry = costCatalog[(dayIndex + j) % costCatalog.count]
+            let name = isUkrainian ? entry.uk : entry.en
+            let variance = Double(((dayIndex * 17) + (j * 11)) % 120)
+            let amount = (entry.base + variance).rounded(.toNearestOrAwayFromZero)
+
+            let opex = OpexExpenseModel(
+                id: UUID().uuidString, date: date, categoryId: isUkrainian ? "Загальні" : "General",
+                amount: amount, note: name
+            )
+
+            await withCheckedContinuation { continuation in
+                self.saveOpexExpense(model: opex) { success in
+                    if !success { self.logger.error("Failed to seed expense: \(name)") }
+                    continuation.resume()
+                }
+            }
+        }
+    }
+    fileprivate func transferCollectionToFIR<RealmModel, DomainModel, FIRModel>(
         collection: String, realmModelType: RealmModel.Type,
         domainModelInit: @escaping (RealmModel) -> DomainModel,
         firModelInit: @escaping (DomainModel) -> FIRModel, completion: @escaping () -> Void

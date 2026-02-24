@@ -93,35 +93,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         currentMode: OrderEntryMode,
         completion: @escaping (OrderEntryMode) -> Void
     ) {
-        let alert = UIAlertController(
-            title: R.string.global.orderEntryModeTitle(),
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.orderModePerOrder(),
-                style: .default
-            ) { _ in
-                completion(.perOrder)
-            }
-        )
-
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.orderModeOpenTab(),
-                style: .default
-            ) { _ in
-                completion(.openTab)
-            }
-        )
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-        )
-
-        present(alert, animated: true)
+        PopupFactory.showOrderModePopup {
+            completion(.perOrder)
+        } selectOpenTab: {
+            completion(.openTab)
+        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -199,15 +175,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         }
 
         let orderOptions: [SettingsOptionType] = [
-            .staticCell(
-                model: SettingsStaticOption(
-                    title: R.string.global.receiptTypes(),
-                    icon: UIImage(systemName: SystemImages.banknoteFill),
-                    iconBackgroundColor: .systemGreen
-                ) {
-                    self.navigationController?.pushViewController(
-                        TypesListViewController(), animated: true)
-                }),
             .dataCell(
                 model: SettingsDataOption(
                     title: R.string.global.orderEntryModeTitle(),
@@ -224,6 +191,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             dataLabel.text = R.string.global.orderModeOpenTab()
                         }
                     }
+                }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.receiptTypes(),
+                    icon: UIImage(systemName: SystemImages.banknoteFill),
+                    iconBackgroundColor: .systemGreen
+                ) {
+                    self.navigationController?.pushViewController(
+                        TypesListViewController(), animated: true)
                 }),
         ]
         models.append(
@@ -469,11 +445,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     private func handleUserLogOut(shouldReload: Bool = true, completion: (() -> Void)? = nil) {
         UserSession.logOut()
 
-        DispatchQueue.main.async { [weak self] in
-            if shouldReload {
-                self?.configure()
-                self?.tableView.reloadData()
-            }
+        DispatchQueue.main.async {
+            let signInController = SignInController()
+            let navigationController = UINavigationController(rootViewController: signInController)
+            navigationController.setNavigationBarHidden(true, animated: false)
+            SceneDelegate.shared.set(root: navigationController)
+
             completion?()
         }
     }

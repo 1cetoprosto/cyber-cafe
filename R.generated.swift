@@ -46,19 +46,23 @@ struct _R {
     let developmentRegion = "en"
   }
 
-  /// This `_R.string` struct is generated, and contains static references to 2 localization tables.
+  /// This `_R.string` struct is generated, and contains static references to 3 localization tables.
   struct string {
     let bundle: Foundation.Bundle
     let preferredLanguages: [String]?
     let locale: Locale?
     var auth: auth { .init(source: .init(bundle: bundle, tableName: "Auth", preferredLanguages: preferredLanguages, locale: locale)) }
     var global: global { .init(source: .init(bundle: bundle, tableName: "Global", preferredLanguages: preferredLanguages, locale: locale)) }
+    var infoPlist: infoPlist { .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale)) }
 
     func auth(preferredLanguages: [String]) -> auth {
       .init(source: .init(bundle: bundle, tableName: "Auth", preferredLanguages: preferredLanguages, locale: locale))
     }
     func global(preferredLanguages: [String]) -> global {
       .init(source: .init(bundle: bundle, tableName: "Global", preferredLanguages: preferredLanguages, locale: locale))
+    }
+    func infoPlist(preferredLanguages: [String]) -> infoPlist {
+      .init(source: .init(bundle: bundle, tableName: "InfoPlist", preferredLanguages: preferredLanguages, locale: locale))
     }
 
 
@@ -214,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 316 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 318 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1485,12 +1489,12 @@ struct _R {
       /// Locales: en, uk
       var onboardingSettingsPriceListMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListMessage", tableName: "Global", source: source, developmentValue: "Manage your products and prices here.", comment: nil) }
 
-      /// en translation: Price List
+      /// en translation: Product Catalog
       ///
       /// Key: onboardingSettingsPriceListTitle
       ///
       /// Locales: en, uk
-      var onboardingSettingsPriceListTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListTitle", tableName: "Global", source: source, developmentValue: "Price List", comment: nil) }
+      var onboardingSettingsPriceListTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListTitle", tableName: "Global", source: source, developmentValue: "Product Catalog", comment: nil) }
 
       /// en translation: Configure different order types here.
       ///
@@ -1520,19 +1524,33 @@ struct _R {
       /// Locales: en, uk
       var orderEntryModeTitle: RswiftResources.StringResource { .init(key: "orderEntryModeTitle", tableName: "Global", source: source, developmentValue: "Order entry mode", comment: nil) }
 
-      /// en translation: Open tab
+      /// en translation: Simplified Mode (Donate-Cafe)
       ///
       /// Key: orderModeOpenTab
       ///
       /// Locales: en, uk
-      var orderModeOpenTab: RswiftResources.StringResource { .init(key: "orderModeOpenTab", tableName: "Global", source: source, developmentValue: "Open tab", comment: nil) }
+      var orderModeOpenTab: RswiftResources.StringResource { .init(key: "orderModeOpenTab", tableName: "Global", source: source, developmentValue: "Simplified Mode (Donate-Cafe)", comment: nil) }
 
-      /// en translation: Per order
+      /// en translation: All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.
+      ///
+      /// Key: orderModeOpenTabDescription
+      ///
+      /// Locales: en, uk
+      var orderModeOpenTabDescription: RswiftResources.StringResource { .init(key: "orderModeOpenTabDescription", tableName: "Global", source: source, developmentValue: "All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.", comment: nil) }
+
+      /// en translation: Classic Mode
       ///
       /// Key: orderModePerOrder
       ///
       /// Locales: en, uk
-      var orderModePerOrder: RswiftResources.StringResource { .init(key: "orderModePerOrder", tableName: "Global", source: source, developmentValue: "Per order", comment: nil) }
+      var orderModePerOrder: RswiftResources.StringResource { .init(key: "orderModePerOrder", tableName: "Global", source: source, developmentValue: "Classic Mode", comment: nil) }
+
+      /// en translation: Each customer is a separate check. Items added from Catalog. Recommended for large assortment.
+      ///
+      /// Key: orderModePerOrderDescription
+      ///
+      /// Locales: en, uk
+      var orderModePerOrderDescription: RswiftResources.StringResource { .init(key: "orderModePerOrderDescription", tableName: "Global", source: source, developmentValue: "Each customer is a separate check. Items added from Catalog. Recommended for large assortment.", comment: nil) }
 
       /// en translation: Orders
       ///
@@ -1618,12 +1636,12 @@ struct _R {
       /// Locales: en, uk
       var price: RswiftResources.StringResource { .init(key: "price", tableName: "Global", source: source, developmentValue: "Price", comment: nil) }
 
-      /// en translation: Price List
+      /// en translation: Product Catalog
       ///
       /// Key: priceList
       ///
       /// Locales: en, uk
-      var priceList: RswiftResources.StringResource { .init(key: "priceList", tableName: "Global", source: source, developmentValue: "Price List", comment: nil) }
+      var priceList: RswiftResources.StringResource { .init(key: "priceList", tableName: "Global", source: source, developmentValue: "Product Catalog", comment: nil) }
 
       /// en translation: Price per Unit
       ///
@@ -2429,6 +2447,32 @@ struct _R {
       ///
       /// Locales: en, uk
       var yes: RswiftResources.StringResource { .init(key: "yes", tableName: "Global", source: source, developmentValue: "Yes", comment: nil) }
+    }
+
+    /// This `_R.string.infoPlist` struct is generated, and contains static references to 3 localization keys.
+    struct infoPlist {
+      let source: RswiftResources.StringResource.Source
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: CFBundleDisplayName
+      ///
+      /// Locales: en, uk
+      var cfBundleDisplayName: RswiftResources.StringResource { .init(key: "CFBundleDisplayName", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe", comment: nil) }
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: CFBundleName
+      ///
+      /// Locales: en, uk
+      var cfBundleName: RswiftResources.StringResource { .init(key: "CFBundleName", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe", comment: nil) }
+
+      /// en translation: TrackMyCafe uses Face ID for secure login.
+      ///
+      /// Key: NSFaceIDUsageDescription
+      ///
+      /// Locales: en, uk
+      var nsFaceIDUsageDescription: RswiftResources.StringResource { .init(key: "NSFaceIDUsageDescription", tableName: "InfoPlist", source: source, developmentValue: "TrackMyCafe uses Face ID for secure login.", comment: nil) }
     }
   }
 

@@ -16,9 +16,19 @@ final class SettingsSwitchTableViewCell: BaseSettingsCell {
         accessoryType = .none
         self.addSubview(switchView)
         
+        // Deactivate the trailing constraint from BaseSettingsCell to prevent overlap
+        if let existingConstraint = contentView.constraints.first(where: {
+            ($0.firstItem as? UILabel) == label && $0.firstAttribute == .trailing
+        }) {
+            existingConstraint.isActive = false
+        }
+        
         NSLayoutConstraint.activate([
             switchView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            switchView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
+            switchView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15),
+            
+            // Constrain label to stop before switchView
+            label.trailingAnchor.constraint(equalTo: switchView.leadingAnchor, constant: -10)
         ])
     }
     

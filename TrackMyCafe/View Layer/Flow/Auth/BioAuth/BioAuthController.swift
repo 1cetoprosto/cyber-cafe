@@ -116,7 +116,7 @@ class BioAuthController: UIViewController {
         } else {
             UserSession.current.enableBioAuth(false)
         }
-        let controller = MainNavigationController(rootViewController: MainTabBarController()) //MenuController()
+        let controller = MainTabBarController() //MenuController()
         //AppDelegate.shared.set(root: controller)
         SceneDelegate.shared.set(root: controller)
     }
