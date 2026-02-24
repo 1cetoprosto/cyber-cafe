@@ -6,7 +6,6 @@ target 'TrackMyCafe Beta' do
   use_frameworks!
 
   # Pods for TrackMyCafe Beta
-	pod 'AnimatedTextInput'
 	pod 'R.swift'
 
 end
@@ -16,7 +15,6 @@ target 'TrackMyCafe Dev' do
   use_frameworks!
 
   # Pods for TrackMyCafe Dev
-	pod 'AnimatedTextInput'
 	pod 'R.swift'
 
 end
@@ -26,7 +24,6 @@ target 'TrackMyCafe Prod' do
   use_frameworks!
 
   # Pods for TrackMyCafe Prod
-	pod 'AnimatedTextInput'
 	pod 'R.swift'
 
 end

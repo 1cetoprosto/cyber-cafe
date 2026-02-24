@@ -6,36 +6,64 @@
 //  Copyright © 2021 DTLab. All rights reserved.
 //
 
-import UIKit
-import LocalAuthentication
-import AnimatedTextInput
 import FirebaseAuth
+import LocalAuthentication
 import SVProgressHUD
+import UIKit
 
 class SetPasswordController: UIViewController {
-    
-    private lazy var passwordField: AnimatedTextInput = {
-        let field = AnimatedTextInput()
-        field.style = AnimatedTextInputStyleLogin()
-        field.type = .password(toggleable: true)
-        field.placeHolderText = R.string.auth.setPasswordPlaceholder()
+
+    private lazy var passwordField: UITextField = {
+        let field = PaddedTextField()
+        field.isSecureTextEntry = true
+        field.placeholder = R.string.auth.setPasswordPlaceholder()
         field.returnKeyType = .done
-        field.inputAccessoryView = nil
         field.delegate = self
+        field.height(50)
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye"), for: .normal)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .selected)
+        button.tintColor = UIColor.lightGray
+        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        button.addTarget(self, action: #selector(togglePasswordVisibility(_:)), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+
         return field
     }()
-    
-    private lazy var repasswordField: AnimatedTextInput = {
-        let field = AnimatedTextInput()
-        field.style = AnimatedTextInputStyleLogin()
-        field.type = .password(toggleable: true)
-        field.placeHolderText = R.string.auth.setPasswordRePlaceholder()
+
+    private lazy var repasswordField: UITextField = {
+        let field = PaddedTextField()
+        field.isSecureTextEntry = true
+        field.placeholder = R.string.auth.setPasswordRePlaceholder()
         field.returnKeyType = .done
-        field.inputAccessoryView = nil
         field.delegate = self
+        field.height(50)
+
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(systemName: "eye"), for: .normal)
+        button.setImage(UIImage(systemName: "eye.slash"), for: .selected)
+        button.tintColor = UIColor.lightGray
+        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        button.addTarget(self, action: #selector(togglePasswordVisibility(_:)), for: .touchUpInside)
+        field.rightView = button
+        field.rightViewMode = .always
+
         return field
     }()
-    
+
+    @objc private func togglePasswordVisibility(_ sender: UIButton) {
+        sender.isSelected.toggle()
+        if sender == passwordField.rightView {
+            passwordField.isSecureTextEntry = !sender.isSelected
+        } else if sender == repasswordField.rightView {
+            repasswordField.isSecureTextEntry = !sender.isSelected
+        }
+    }
+
     private lazy var saveButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(R.string.auth.signIn(), for: .normal)
@@ -43,53 +71,53 @@ class SetPasswordController: UIViewController {
         button.addTarget(self, action: #selector(savePasswordAction(_:)), for: .touchUpInside)
         return button
     }()
-    
+
     private let context: LAContext?
-    
+
     init(_ context: LAContext?) {
         self.context = context
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
     }
-    
+
     private func setupLayout() {
         view.backgroundColor = UIColor.Main.background
-        
+
         let scrollView = UIScrollView()
         scrollView.contentInsetAdjustmentBehavior = .never
         scrollView.showsVerticalScrollIndicator = false
         view.addSubview(scrollView)
         scrollView.edgesToSuperview(usingSafeArea: true)
-        
+
         let imageView = UIImageView(image: R.image.setPassword()?.tint(color: UIColor.NavBar.text))
         imageView.size(CGSize(width: 120, height: 120))
         let titleLabel = UILabel()
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.text = R.string.auth.setPasswordTitle()
-        
+
         let contentStack = UIStackView.VStack([
             imageView.wrapH(),
             titleLabel,
             passwordField,
             repasswordField,
-            saveButton
+            saveButton,
         ])
         contentStack.setCustomSpacing(24, after: imageView.superview!)
         contentStack.setCustomSpacing(32, after: titleLabel)
         contentStack.setCustomSpacing(24, after: passwordField)
         contentStack.setCustomSpacing(32, after: repasswordField)
-        
+
         scrollView.addSubview(contentStack)
-        
+
         contentStack.centerInSuperview()
         contentStack.topToSuperview(relation: .equalOrGreater)
         contentStack.bottomToSuperview(relation: .equalOrLess)
@@ -102,60 +130,65 @@ class SetPasswordController: UIViewController {
             contentStack.centerXToSuperview()
         }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         passwordField.becomeFirstResponder()
     }
-    
+
     // MARK: - Actions
     @objc private func savePasswordAction(_ sender: UIButton) {
         guard let password = passwordField.text?.nilIfEmpty else {
-            passwordField.show(error: R.string.auth.setPasswordEnterPassword())
+            showAlert(R.string.global.error(), body: R.string.auth.setPasswordEnterPassword())
             return
         }
         guard password.count >= 6 else {
-            passwordField.show(error: R.string.auth.setPasswordValidLength())
+            showAlert(R.string.global.error(), body: R.string.auth.setPasswordValidLength())
             return
         }
         guard let repassword = repasswordField.text?.nilIfEmpty else {
-            repasswordField.show(error: R.string.auth.setPasswordReEnterPassword())
+            showAlert(R.string.global.error(), body: R.string.auth.setPasswordReEnterPassword())
             return
         }
         guard password == repassword else {
-            repasswordField.show(error: R.string.auth.setPasswordEqualPasswords())
+            showAlert(R.string.global.error(), body: R.string.auth.setPasswordEqualPasswords())
             return
         }
         sender.isEnabled = false
-        
+
         view.endEditing(true)
         SVProgressHUD.show()
-        Auth.auth().currentUser?.updatePassword(to: password, completion: {[weak self] (error) in
-            SVProgressHUD.dismiss()
-            self?.saveButton.isEnabled = error != nil
-            if let _ = error {
-                self?.showAlert(R.string.global.error(), body: R.string.global.wentWrongTryAgain())
-            } else {
-                if let bioContext = self?.context {
-                    self?.navigationController?.pushViewController(BioAuthController(bioContext), animated: true)
+        Auth.auth().currentUser?.updatePassword(
+            to: password,
+            completion: { [weak self] (error) in
+                SVProgressHUD.dismiss()
+                self?.saveButton.isEnabled = error != nil
+                if error != nil {
+                    self?.showAlert(
+                        R.string.global.error(), body: R.string.global.wentWrongTryAgain())
                 } else {
-                    let controller = MainNavigationController(rootViewController: MainTabBarController())
-                    //AppDelegate.shared.set(root: controller)
-                    SceneDelegate.shared.set(root: controller)
+                    if let bioContext = self?.context {
+                        self?.navigationController?.pushViewController(
+                            BioAuthController(bioContext), animated: true)
+                    } else {
+                        let controller = MainTabBarController()
+                        //AppDelegate.shared.set(root: controller)
+                        SceneDelegate.shared.set(root: controller)
+                    }
                 }
-            }
-        })
+            })
     }
 }
 
-extension SetPasswordController: AnimatedTextInputDelegate {
-    
-    func animatedTextInputDidChange(animatedTextInput: AnimatedTextInput) {
-        saveButton.isEnabled = passwordField.text?.nilIfEmpty != nil && repasswordField.text?.nilIfEmpty != nil
+extension SetPasswordController: UITextFieldDelegate {
+
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        saveButton.isEnabled =
+            passwordField.text?.nilIfEmpty != nil && repasswordField.text?.nilIfEmpty != nil
     }
-    
-    func animatedTextInputShouldReturn(animatedTextInput: AnimatedTextInput) -> Bool {
-        if animatedTextInput == passwordField {
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == passwordField {
             repasswordField.becomeFirstResponder()
         } else {
             savePasswordAction(saveButton)
