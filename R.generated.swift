@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 326 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 332 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -389,6 +389,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var authenticationFailedTitle: RswiftResources.StringResource { .init(key: "authenticationFailedTitle", tableName: "Global", source: source, developmentValue: "Authentication Failed", comment: nil) }
+
+      /// en translation: Authentication Required
+      ///
+      /// Key: authenticationRequired
+      ///
+      /// Locales: en, uk
+      var authenticationRequired: RswiftResources.StringResource { .init(key: "authenticationRequired", tableName: "Global", source: source, developmentValue: "Authentication Required", comment: nil) }
 
       /// en translation: Back
       ///
@@ -648,6 +655,34 @@ struct _R {
       ///
       /// Locales: en, uk
       var delete: RswiftResources.StringResource { .init(key: "delete", tableName: "Global", source: source, developmentValue: "Delete", comment: nil) }
+
+      /// en translation: Delete Account
+      ///
+      /// Key: deleteAccount
+      ///
+      /// Locales: en, uk
+      var deleteAccount: RswiftResources.StringResource { .init(key: "deleteAccount", tableName: "Global", source: source, developmentValue: "Delete Account", comment: nil) }
+
+      /// en translation: Deleting your account is permanent and cannot be undone. All your data will be erased.
+      ///
+      /// Key: deleteAccountFooter
+      ///
+      /// Locales: en, uk
+      var deleteAccountFooter: RswiftResources.StringResource { .init(key: "deleteAccountFooter", tableName: "Global", source: source, developmentValue: "Deleting your account is permanent and cannot be undone. All your data will be erased.", comment: nil) }
+
+      /// en translation: Are you sure you want to delete your account? This action cannot be undone.
+      ///
+      /// Key: deleteAccountMessage
+      ///
+      /// Locales: en, uk
+      var deleteAccountMessage: RswiftResources.StringResource { .init(key: "deleteAccountMessage", tableName: "Global", source: source, developmentValue: "Are you sure you want to delete your account? This action cannot be undone.", comment: nil) }
+
+      /// en translation: Delete Account?
+      ///
+      /// Key: deleteAccountTitle
+      ///
+      /// Locales: en, uk
+      var deleteAccountTitle: RswiftResources.StringResource { .init(key: "deleteAccountTitle", tableName: "Global", source: source, developmentValue: "Delete Account?", comment: nil) }
 
       /// en translation: Delete Demo Data
       ///
@@ -1789,6 +1824,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var quantity: RswiftResources.StringResource { .init(key: "quantity", tableName: "Global", source: source, developmentValue: "Quantity", comment: nil) }
+
+      /// en translation: For security reasons, please log in again to delete your account.
+      ///
+      /// Key: reauthMessage
+      ///
+      /// Locales: en, uk
+      var reauthMessage: RswiftResources.StringResource { .init(key: "reauthMessage", tableName: "Global", source: source, developmentValue: "For security reasons, please log in again to delete your account.", comment: nil) }
 
       /// en translation: Receipt Types
       ///
