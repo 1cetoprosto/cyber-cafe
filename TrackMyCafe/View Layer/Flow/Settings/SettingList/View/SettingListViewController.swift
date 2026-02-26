@@ -10,6 +10,7 @@ import MessageUI
 import RealmSwift
 import SVProgressHUD
 import UIKit
+import SafariServices
 
 struct Section {
     let title: String
@@ -253,6 +254,24 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
                         })
                     self.present(alert, animated: true)
+                }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: NSLocalizedString("privacyPolicy", tableName: "Global", comment: ""),
+                    icon: UIImage(systemName: "hand.raised.fill"),
+                    iconBackgroundColor: .systemGray
+                ) { [weak self] in
+                    guard let self = self else { return }
+                    self.openSafari(url: self.getLegalUrl(type: .privacy))
+                }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: NSLocalizedString("termsOfService", tableName: "Global", comment: ""),
+                    icon: UIImage(systemName: "doc.text.fill"),
+                    iconBackgroundColor: .systemGray
+                ) { [weak self] in
+                    guard let self = self else { return }
+                    self.openSafari(url: self.getLegalUrl(type: .terms))
                 }),
             .staticCell(
                 model: SettingsStaticOption(
@@ -598,6 +617,36 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             })
         present(alert, animated: true)
+    }
+
+    // MARK: - Safari
+    private func openSafari(url: String) {
+        guard let url = URL(string: url) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        safariVC.modalPresentationStyle = .pageSheet
+        present(safariVC, animated: true)
+    }
+
+    // MARK: - Legal URLs
+    private enum LegalDocType {
+        case privacy
+        case terms
+    }
+
+    private func getLegalUrl(type: LegalDocType) -> String {
+        // Check if the current language is Ukrainian
+        let isUkrainian = Locale.current.languageCode == "uk"
+
+        switch type {
+        case .privacy:
+            return isUkrainian
+                ? "https://leokvit.notion.site/313f9211d4378065b441d8876d169bec?source=copy_link" // TODO: Replace with actual UA link
+                : "https://leokvit.notion.site/Privacy-Policy-313f9211d437808aaf71cd2390e4671d?source=copy_link"
+        case .terms:
+            return isUkrainian
+                ? "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link" // TODO: Replace with actual UA link
+                : "https://leokvit.notion.site/Terms-of-Service-313f9211d4378018b630fe6d2bfbbe09?source=copy_link"
+        }
     }
 }
 
