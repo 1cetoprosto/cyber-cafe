@@ -281,6 +281,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 ) {
                     self.presentFeedbackEmail()
                 }),
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.deleteAccount(),
+                    icon: UIImage(systemName: "trash.fill"),
+                    iconBackgroundColor: .systemRed
+                ) {
+                    self.showDeleteAccountConfirmation()
+                }),
         ]
 
         if DemoDataManager.shared.isDemoDataPresent {
