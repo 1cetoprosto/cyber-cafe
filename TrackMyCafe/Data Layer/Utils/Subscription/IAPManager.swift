@@ -41,7 +41,7 @@ class IAPManager: NSObject, Loggable {
     // MARK: - Public properties
     var currentSubscription: SubscriptionType {
         guard let subscription = RequestManager.shared.subscription else { return .none }
-        if subscription.premiumPlan { return .premium }
+        if subscription.premiumPlan { return .proMonthly }
         guard subscription.isActive, let productId = subscription.productId else { return .none }
         return SubscriptionType(rawValue: productId) ?? .none
     }
