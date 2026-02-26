@@ -142,6 +142,17 @@
 "writeToDeveloper" = "Write to Developer";
 "general" = "General";
 "priceList" = "Product Catalog";
+
+// MARK: - Account Deletion
+"deleteAccount" = "Delete Account";
+"account" = "Account";
+"deleteAccountFooter" = "Deleting your account is permanent and cannot be undone. All your data will be erased.";
+"deleteAccountTitle" = "Delete Account?";
+"deleteAccountMessage" = "Are you sure you want to delete your account? This action cannot be undone.";
+"deleting" = "Deleting...";
+"authenticationRequired" = "Authentication Required";
+"reauthMessage" = "For security reasons, please log in again to delete your account.";
+
 "receiptTypes" = "Receipt Types";
 "ingredients" = "Ingredients";
 "seedTestData" = "Seed Test Data";

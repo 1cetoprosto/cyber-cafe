@@ -33,6 +33,7 @@
 		3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		3F2453C445B3640596D717FF /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
 		41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
+		41E971F257A830E4ACC7257D /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
@@ -60,6 +61,7 @@
 		8085320D6FEC24703DD60FA6 /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */; };
 		8105DEE93A100D479952119C /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
+		856C77E55B7076912583B40B /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
@@ -652,6 +654,7 @@
 		F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */; };
 		F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52F2EEF300900C24082 /* Kingfisher */; };
 		F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
+		FB42220CC9DA241188396827 /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -688,6 +691,7 @@
 		A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewModel.swift; sourceTree = "<group>"; };
 		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
 		B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIROpexExpenseModel.swift; sourceTree = "<group>"; };
+		BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "SettingListViewController+Extension.swift"; sourceTree = "<group>"; };
 		C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostsTabViewController.swift; sourceTree = "<group>"; };
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
 		D5FB0242092853861442A8F6 /* StockListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
@@ -878,11 +882,61 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
-		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
-		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F324E60A2F486E99003A7469 /* Selection */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		F3299A932F35065600EA6532 /* Cells */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = ProductCategories;
+			sourceTree = "<group>";
+		};
+		F362781C2EE5508D00A69CFE /* Home */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1595,6 +1649,7 @@
 			children = (
 				F3821C7827EA0187006D40FC /* Cells */,
 				F39A5338273252B800C8F2D3 /* SettingListViewController.swift */,
+				BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2804,6 +2859,7 @@
 				D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */,
 				616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */,
 				0E980A2C21B9CC72F4516FAC /* PaddedTextField.swift in Sources */,
+				FB42220CC9DA241188396827 /* SettingListViewController+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2993,6 +3049,7 @@
 				8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */,
 				C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */,
 				66D52AFA3785F04F868BEBFE /* PaddedTextField.swift in Sources */,
+				856C77E55B7076912583B40B /* SettingListViewController+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3182,6 +3239,7 @@
 				4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */,
 				77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */,
 				552467AE60F8B2EDD9769D5F /* PaddedTextField.swift in Sources */,
+				41E971F257A830E4ACC7257D /* SettingListViewController+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

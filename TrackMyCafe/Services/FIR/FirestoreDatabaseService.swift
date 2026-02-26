@@ -12,14 +12,14 @@ import FirebaseFirestoreSwift
 import os.log
 
 class FirestoreDatabaseService: FirestoreDB, Loggable {
-    
+
     @Published var errorMessage: String?
-    
+
     private let db = Firestore.firestore()
     static let shared = FirestoreDatabaseService()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!, category: "FirestoreDatabaseService")
-    
+
     // MARK: - Lifecycle
     private init() {
         let settings = FirestoreSettings()
@@ -27,9 +27,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         settings.cacheSettings = PersistentCacheSettings()
         db.settings = settings
     }
-    
+
     // MARK: - User-specific Operations
-    
+
     private func getUserCollection(collection: String) -> CollectionReference? {
         guard let userId = Auth.auth().currentUser?.uid else {
             logger.error("No authenticated user found")
@@ -38,9 +38,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         return db.collection(FirebaseCollections.users).document(userId).collection(
             collection)
     }
-    
+
     // MARK: - Generic CRUD Operations
-    
+
     func create<T: Encodable>(
         firModel: T, collection: String, completion: @escaping (Result<String, Error>) -> Void
     ) {
@@ -63,7 +63,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             completion(.failure(error))
         }
     }
-    
+
     func fetchObjectById<T: Decodable>(
         ofType: T.Type, collection: String, id: String, completion: @escaping (Result<T, Error>) -> Void
     ) {
@@ -75,7 +75,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                         userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
             return
         }
-        
+
         guard !id.isEmpty else {
             logger.error("fetchObjectById called with empty ID for collection: \(collection)")
             completion(
@@ -85,7 +85,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                         userInfo: [NSLocalizedDescriptionKey: "Document ID cannot be empty"])))
             return
         }
-        
+
         userCollection.document(id).getDocument { [self] document, error in
             if let error = error {
                 self.logger.error("Error getting document: \(error.localizedDescription)")
@@ -108,7 +108,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func read<T: Decodable>(
         collection: String, firModel: T.Type,
         completion: @escaping (Result<[(documentId: String, T)], Error>) -> Void
@@ -121,7 +121,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                         userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
             return
         }
-        
+
         userCollection.getDocuments { [self] querySnapshot, error in
             if let error = error {
                 self.logger.error("Error getting documents: \(error.localizedDescription)")
@@ -144,7 +144,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func update<T: Encodable>(
         firModel: T, collection: String, documentId: String,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -166,7 +166,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             completion(.failure(error))
         }
     }
-    
+
     func delete(
         collection: String, documentId: String, completion: @escaping (Result<Void, Error>) -> Void
     ) {
@@ -188,9 +188,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     // MARK: - CRUD Operations for Products
-    
+
     func createProduct(
         product: FIRProductsPriceModel, completion: @escaping (Result<Bool, Error>) -> Void
     ) {
@@ -203,7 +203,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func readProducts(
         completion: @escaping (Result<[(documentId: String, FIRProductsPriceModel)], Error>) -> Void
     ) {
@@ -211,9 +211,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             collection: FirebaseCollections.productsPrice, firModel: FIRProductsPriceModel.self,
             completion: completion)
     }
-    
+
     // MARK: - CRUD Operations for Types
-    
+
     func createType(type: FIRTypeModel, completion: @escaping (Result<Bool, Error>) -> Void) {
         create(firModel: type, collection: FirebaseCollections.types) { result in
             switch result {
@@ -224,7 +224,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func readTypes(
         completion: @escaping (Result<[(documentId: String, FIRTypeModel)], Error>) -> Void
     ) {
@@ -232,11 +232,11 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             collection: FirebaseCollections.types, firModel: FIRTypeModel.self,
             completion: completion)
     }
-    
+
     // MARK: - CRUD Operations for Costs (Deprecated, handled via OpexExpenseModel)
-    
+
     // MARK: - CRUD Operations for Orders
-    
+
     func createOrdersOfProducts(
         order: FIRProductModel, completion: @escaping (Result<Bool, Error>) -> Void
     ) {
@@ -249,7 +249,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func readOrdersOfProducts(
         completion: @escaping (Result<[(documentId: String, FIRProductModel)], Error>) -> Void
     ) {
@@ -257,14 +257,14 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self,
             completion: completion)
     }
-    
+
     // MARK: - CRUD Operations for Orders
-    
+
     func createOrder(order: FIROrderModel, completion: @escaping (Result<String, Error>) -> Void) {
         create(
             firModel: order, collection: FirebaseCollections.orders, completion: completion)
     }
-    
+
     func readOrder(
         completion: @escaping (Result<[(documentId: String, FIROrderModel)], Error>) -> Void
     ) {
@@ -272,33 +272,33 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             collection: FirebaseCollections.orders, firModel: FIROrderModel.self,
             completion: completion)
     }
-    
+
     // MARK: - Delete All Data
-    
+
     private func deleteCollection(collection: String, batchSize: Int = 400, completion: @escaping (Error?) -> Void) {
         guard let userCollection = getUserCollection(collection: collection) else {
             completion(nil)
             return
         }
-        
+
         userCollection.limit(to: batchSize).getDocuments { [weak self] querySnapshot, error in
             guard let self = self else { return }
-            
+
             if let error = error {
                 completion(error)
                 return
             }
-            
+
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
                 completion(nil)
                 return
             }
-            
+
             let batch = self.db.batch()
             for document in documents {
                 batch.deleteDocument(document.reference)
             }
-            
+
             batch.commit { error in
                 if let error = error {
                     completion(error)
@@ -308,24 +308,29 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
         }
     }
-    
+
     func deleteAllData(completion: @escaping (Bool) -> Void) {
         let collections = [
-            FirebaseCollections.productsPrice, FirebaseCollections.types,
+            FirebaseCollections.productsPrice,
+            FirebaseCollections.types,
             FirebaseCollections.orders,
             FirebaseCollections.productOfOrders,
             FirebaseCollections.inventoryAdjustments,
             FirebaseCollections.opexExpenses,
             FirebaseCollections.ingredients,
-            FirebaseCollections.purchases
+            FirebaseCollections.purchases,
+            FirebaseCollections.productCategories,
+            FirebaseCollections.costs,
+            FirebaseCollections.technicians,
+            FirebaseCollections.admins
         ]
         let dispatchGroup = DispatchGroup()
         var overallSuccess = true
-        
+
         for collection in collections {
             dispatchGroup.enter()
             self.logger.info("dispatchGroup.enter \(collection)")
-            
+
             deleteCollection(collection: collection) { [weak self] error in
                 if let error = error {
                     self?.logger.error(
@@ -338,13 +343,59 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 dispatchGroup.leave()
             }
         }
-        
+
         dispatchGroup.notify(queue: .main) {
             self.logger.info("All data deleted successfully from Firestore")
             completion(overallSuccess)
         }
     }
-    
+
+    func deleteUserAndRoles(completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else {
+            completion(.failure(NSError(domain: "NoUser", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            return
+        }
+
+        deleteAllData { [weak self] success in
+            guard let self = self else { return }
+            if !success {
+                completion(.failure(NSError(domain: "DeleteDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to delete user data"])))
+                return
+            }
+
+            // Delete roles
+            self.deleteRoles(userId: userId) { error in
+                if let error = error {
+                    completion(.failure(error))
+                    return
+                }
+
+                // Delete user document
+                self.db.collection(FirebaseCollections.users).document(userId).delete { error in
+                    if let error = error {
+                        completion(.failure(error))
+                    } else {
+                        completion(.success(()))
+                    }
+                }
+            }
+        }
+    }
+
+    private func deleteRoles(userId: String, completion: @escaping (Error?) -> Void) {
+        db.collection(FirebaseCollections.roles).whereField(FirebaseFields.userRef, isEqualTo: userId).getDocuments { [weak self] snapshot, error in
+            guard let self = self else { completion(error); return }
+            if let error = error { completion(error); return }
+
+            let batch = self.db.batch()
+            snapshot?.documents.forEach { batch.deleteDocument($0.reference) }
+
+            batch.commit { error in
+                completion(error)
+            }
+        }
+    }
+
     static func getRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
         //db.collection("roles")
@@ -363,7 +414,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 completion(roles)
             }
     }
-    
+
     static func getTechRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
         //db.collection("roles")
@@ -383,7 +434,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 completion(roles)
             }
     }
-    
+
     func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
         guard let key = key else {
             completion(false)
@@ -402,7 +453,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 completion(document?.exists ?? false)
             }
     }
-    
+
     func createNewCafe(
         _ id: String, _ email: String, _ completion: @escaping (RoleConfig?, Bool) -> Void
     ) {
@@ -413,27 +464,27 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             completion(nil, false)
             return
         }
-        
+
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
             completion(nil, false)
             return
         }
-        
+
         // Створення даних ролі
         let roleKey = db.collection(FirebaseCollections.roles).document().documentID
         let role = RoleConfig(
             ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator,
             onlineVersion: true)
-        
+
         let roles = [role]  // Створюємо масив з однією роллю
-        
+
         // Використання транзакції для одночасного створення документів у колекціях `users` та `roles`
         let batch = db.batch()
-        
+
         let userRef = db.collection(FirebaseCollections.users).document(userKey)
         batch.setData(userData, forDocument: userRef)
-        
+
         // Додавання ролей до колекції `roles`
         roles.forEach { role in
             let roleRef = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
@@ -443,34 +494,34 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             roleData[FirebaseFields.userRef] = userKey
             batch.setData(roleData, forDocument: roleRef)
         }
-        
+
         // Коміт транзакції
         batch.commit { error in
             completion(role, error == nil)
         }
     }
-    
+
     func createNewUser(
         _ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Bool) -> Void
     ) {
         // Створення унікального ідентифікатора для користувача
         let userKey = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users)
             .document().documentID
-        
+
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
             completion(false)
             return
         }
-        
+
         // Використання транзакції для одночасного створення документів у колекціях `users` та `roles`
         let batch = FirestoreDatabaseService.shared.db.batch()
-        
+
         // Додавання користувача до колекції `users`
         let userRef = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users).document(
             userKey)
         batch.setData(userData, forDocument: userRef)
-        
+
         // Додавання ролей до колекції `roles`
         roles.forEach { role in
             let roleRef = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
@@ -480,15 +531,15 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             roleData[FirebaseFields.userRef] = userKey
             batch.setData(roleData, forDocument: roleRef)
         }
-        
+
         // Коміт транзакції
         batch.commit { error in
             completion(error == nil)
         }
     }
-    
+
     private func userData(_ userKey: String, _ id: String, _ email: String) -> [String: Any]? {
-        
+
         var userValue: [String: Any] = [
             FirebaseFields.uid: id,
             FirebaseFields.firebaseRef: userKey,
@@ -504,43 +555,43 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             FirebaseFields.avatarUrl: "",
             FirebaseFields.avatarThumbnailUrl: "",
         ]
-        
+
         let isUkrainian = Locale.current.languageCode == "uk"
         let defaultCurrencyName = isUkrainian ? DefaultValues.currencyName : DefaultValues.dollarName
         let defaultCurrencySymbol = isUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol
         userValue["Settings"] = Settings(
             currencyName: defaultCurrencyName, currencySymbol: defaultCurrencySymbol
         ).forDatabase()
-        
+
         return userValue
     }
-    
+
     static func updateAdmin(_ item: Admin, completion: @escaping (Bool) -> Void) {
         let db = Firestore.firestore()
         let adminRef = db.collection(FirebaseCollections.admins).document(item.firebaseRef)  // assuming `item.firebaseRef` is the document ID
-        
+
         adminRef.updateData(item.forDatabase()) { error in
             completion(error == nil)
         }
     }
-    
+
     static func deleteTechnician(_ item: Technician, completion: @escaping (Bool) -> Void) {
         getTechRoles(item.email.trimmed.lowercased()) { (roles) in
             let batch = Firestore.firestore().batch()
-            
+
             roles?.forEach { role in
                 let roleRef = Firestore.firestore().collection(FirebaseCollections.roles).document(
                     role.firebaseRef)
                 batch.deleteDocument(roleRef)
             }
-            
+
             let userRef = Firestore.firestore().collection(FirebaseCollections.users)
                 .document(UserSession.current.masterUserRef)
                 .collection(item.ref.rawValue)
                 .document(item.firebaseRef)
-            
+
             batch.updateData([FirebaseFields.enabled: false], forDocument: userRef)
-            
+
             batch.commit { error in
                 completion(error == nil)
             }

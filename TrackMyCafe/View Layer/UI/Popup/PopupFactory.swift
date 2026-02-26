@@ -266,6 +266,75 @@ class PopupFactory {
         let contentView = EKAlertMessageView(with: alertMessage)
         SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
     }
+
+    static func showDestructivePopup(
+        title: String, description: String, buttonTitle: String, buttonAction: @escaping () -> Void
+    ) {
+        let kHighlightColor = EKColor(rgb: 0x424242)
+
+        let title = EKProperty.LabelContent(
+            text: title,
+            style: .init(
+                font: .systemFont(ofSize: 17, weight: .medium),
+                color: EKColor(UIColor.label),
+                alignment: .center
+            )
+        )
+
+        let text = description
+        let description = EKProperty.LabelContent(
+            text: text,
+            style: .init(
+                font: .systemFont(ofSize: 14),
+                color: EKColor(UIColor.secondaryLabel),
+                alignment: .center
+            )
+        )
+
+        let simpleMessage = EKSimpleMessage(title: title, description: description)
+
+        let buttonFont = UIFont.systemFont(ofSize: 16, weight: .medium)
+
+        let destructiveButtonLabelStyle = EKProperty.LabelStyle(
+            font: buttonFont,
+            color: EKColor(.systemRed)
+        )
+        let cancelButtonLabelStyle = EKProperty.LabelStyle(
+            font: buttonFont,
+            color: EKColor(.systemBlue)
+        )
+
+        let actionButton = EKProperty.ButtonContent(
+            label: EKProperty.LabelContent(text: buttonTitle, style: destructiveButtonLabelStyle),
+            backgroundColor: .clear,
+            highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
+        ) {
+            buttonAction()
+            SwiftEntryKit.dismiss()
+        }
+
+        let closeButton = EKProperty.ButtonContent(
+            label: EKProperty.LabelContent(
+                text: R.string.global.cancel(), style: cancelButtonLabelStyle),
+            backgroundColor: .clear,
+            highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
+        ) {
+            SwiftEntryKit.dismiss()
+        }
+
+        let buttonsBarContent = EKProperty.ButtonBarContent(
+            with: [closeButton, actionButton],
+            separatorColor: EKColor(red: 230, green: 230, blue: 230),
+            horizontalDistributionThreshold: 2,
+            expandAnimatedly: false
+        )
+        let alertMessage = EKAlertMessage(
+            simpleMessage: simpleMessage,
+            buttonBarContent: buttonsBarContent
+        )
+        let contentView = EKAlertMessageView(with: alertMessage)
+        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
+    }
 }
 
 private class OrderModePopupView: UIView {

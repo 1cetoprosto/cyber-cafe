@@ -83,18 +83,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
     window = UIWindow(windowScene: windowScene)
 
-    let isValidSession = UserSession.current.restore()
-    // Always check for online session
-    if !isValidSession || Auth.auth().currentUser == nil {
-        // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
-        let signInController = SignInController()
-        let navigationController = UINavigationController(rootViewController: signInController)
-        navigationController.setNavigationBarHidden(true, animated: false)
-        window?.rootViewController = navigationController
-    } else {
-        // Якщо сесія дійсна, переходимо на головний екран додатку
-        window?.rootViewController = MainTabBarController()
-    }
+    start()
 
     window?.makeKeyAndVisible()
 
@@ -107,6 +96,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     #if canImport(Instructions)
       OnboardingManager.shared.configure(driver: InstructionsDriver())
     #endif
+  }
+
+  func start() {
+    let isValidSession = UserSession.current.restore()
+    // Always check for online session
+    if !isValidSession || Auth.auth().currentUser == nil {
+        // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
+        let signInController = SignInController()
+        let navigationController = UINavigationController(rootViewController: signInController)
+        navigationController.setNavigationBarHidden(true, animated: false)
+        window?.rootViewController = navigationController
+    } else {
+        // Якщо сесія дійсна, переходимо на головний екран додатку
+        window?.rootViewController = MainTabBarController()
+    }
   }
 
   func set(root controller: UIViewController) {
