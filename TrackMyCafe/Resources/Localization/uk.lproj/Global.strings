@@ -142,6 +142,17 @@
 "writeToDeveloper" = "Написати розробнику";
 "general" = "Загальні";
 "priceList" = "Каталог товарів";
+
+// MARK: - Account Deletion
+"deleteAccount" = "Видалити акаунт";
+"account" = "Акаунт";
+"deleteAccountFooter" = "Видалення вашого акаунту є незворотнім і не може бути скасоване. Всі ваші дані будуть стерті.";
+"deleteAccountTitle" = "Видалити акаунт?";
+"deleteAccountMessage" = "Ви впевнені, що хочете видалити свій акаунт? Цю дію неможливо скасувати.";
+"deleting" = "Видалення...";
+"authenticationRequired" = "Потрібна автентифікація";
+"reauthMessage" = "З міркувань безпеки, будь ласка, увійдіть знову, щоб видалити свій акаунт.";
+
 "receiptTypes" = "Типи чеків";
 "ingredients" = "Інгредієнти";
 "seedTestData" = "Заповнити тестовими даними";
