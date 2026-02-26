@@ -394,3 +394,7 @@
 "deleting" = "Видалення...";
 "demoDataTitle" = "Демо-дані";
 "demoDataMessage" = "Бажаєте заповнити додаток демо-даними для ознайомлення?";
+
+// MARK: - Legal
+"privacyPolicy" = "Політика конфіденційності";
+"termsOfService" = "Умови використання";

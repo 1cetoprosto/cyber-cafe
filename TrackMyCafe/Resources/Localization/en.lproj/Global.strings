@@ -394,3 +394,7 @@
 "deleting" = "Deleting...";
 "demoDataTitle" = "Demo Data";
 "demoDataMessage" = "Would you like to fill the app with demo data to see how it works?";
+
+// MARK: - Legal
+"privacyPolicy" = "Privacy Policy";
+"termsOfService" = "Terms of Service";
