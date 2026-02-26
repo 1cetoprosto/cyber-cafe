@@ -175,12 +175,12 @@ class MainTabBarController: UITabBarController {
         // but since Purchases are now in Tab 3, we can leave Tab 4 for Reports later.
         // For MVP 2.0 structure, let's keep 5 tabs if possible, or 4.
         // Let's create a temporary Reports placeholder.
-        let reportsViewController = createNavController(
-            viewController: UIViewController(),  // Placeholder
-            itemName: R.string.global.reportsTitle(),
-            itemImage: "chart.bar")  // SystemImages.chartBar if exists, or string
-        reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
-        reportsViewController.viewControllers.first?.title = R.string.global.reportsTitle()
+//        let reportsViewController = createNavController(
+//            viewController: UIViewController(),  // Placeholder
+//            itemName: R.string.global.reportsTitle(),
+//            itemImage: "chart.bar")  // SystemImages.chartBar if exists, or string
+//        reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
+//        reportsViewController.viewControllers.first?.title = R.string.global.reportsTitle()
 
         // Tab 5: Settings
         let settingsViewController = createNavController(
@@ -194,7 +194,7 @@ class MainTabBarController: UITabBarController {
             homeViewController,
             ordersViewController,
             costsTabViewController,
-            reportsViewController,
+            // reportsViewController,
             settingsViewController,
         ]
     }
