@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 332 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 320 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -2105,62 +2105,6 @@ struct _R {
       /// Locales: en, uk
       var stockPlaceholder: RswiftResources.StringResource { .init(key: "stockPlaceholder", tableName: "Global", source: source, developmentValue: "Stock Quantity", comment: nil) }
 
-      /// en translation: Up to 20 staff members
-      ///
-      /// Key: subPlanBigDescription
-      ///
-      /// Locales: en, uk
-      var subPlanBigDescription: RswiftResources.StringResource { .init(key: "subPlanBigDescription", tableName: "Global", source: source, developmentValue: "Up to 20 staff members", comment: nil) }
-
-      /// en translation: Big
-      ///
-      /// Key: subPlanBigName
-      ///
-      /// Locales: en, uk
-      var subPlanBigName: RswiftResources.StringResource { .init(key: "subPlanBigName", tableName: "Global", source: source, developmentValue: "Big", comment: nil) }
-
-      /// en translation: Unlimited staff
-      ///
-      /// Key: subPlanMaxiDescription
-      ///
-      /// Locales: en, uk
-      var subPlanMaxiDescription: RswiftResources.StringResource { .init(key: "subPlanMaxiDescription", tableName: "Global", source: source, developmentValue: "Unlimited staff", comment: nil) }
-
-      /// en translation: Maxi
-      ///
-      /// Key: subPlanMaxiName
-      ///
-      /// Locales: en, uk
-      var subPlanMaxiName: RswiftResources.StringResource { .init(key: "subPlanMaxiName", tableName: "Global", source: source, developmentValue: "Maxi", comment: nil) }
-
-      /// en translation: Up to 10 staff members
-      ///
-      /// Key: subPlanMidDescription
-      ///
-      /// Locales: en, uk
-      var subPlanMidDescription: RswiftResources.StringResource { .init(key: "subPlanMidDescription", tableName: "Global", source: source, developmentValue: "Up to 10 staff members", comment: nil) }
-
-      /// en translation: Mid
-      ///
-      /// Key: subPlanMidName
-      ///
-      /// Locales: en, uk
-      var subPlanMidName: RswiftResources.StringResource { .init(key: "subPlanMidName", tableName: "Global", source: source, developmentValue: "Mid", comment: nil) }
-
-      /// en translation: Up to 3 staff members
-      ///
-      /// Key: subPlanMiniDescription
-      ///
-      /// Locales: en, uk
-      var subPlanMiniDescription: RswiftResources.StringResource { .init(key: "subPlanMiniDescription", tableName: "Global", source: source, developmentValue: "Up to 3 staff members", comment: nil) }
-
-      /// en translation: Mini
-      ///
-      /// Key: subPlanMiniName
-      ///
-      /// Locales: en, uk
-      var subPlanMiniName: RswiftResources.StringResource { .init(key: "subPlanMiniName", tableName: "Global", source: source, developmentValue: "Mini", comment: nil) }
-
       /// en translation: No subscription
       ///
       /// Key: subPlanNoneDescription
@@ -2175,47 +2119,19 @@ struct _R {
       /// Locales: en, uk
       var subPlanNoneName: RswiftResources.StringResource { .init(key: "subPlanNoneName", tableName: "Global", source: source, developmentValue: "None", comment: nil) }
 
-      /// en translation: Up to 5 staff members
+      /// en translation: Full access to all features
       ///
-      /// Key: subPlanPentaDescription
+      /// Key: subPlanProMonthlyDescription
       ///
       /// Locales: en, uk
-      var subPlanPentaDescription: RswiftResources.StringResource { .init(key: "subPlanPentaDescription", tableName: "Global", source: source, developmentValue: "Up to 5 staff members", comment: nil) }
+      var subPlanProMonthlyDescription: RswiftResources.StringResource { .init(key: "subPlanProMonthlyDescription", tableName: "Global", source: source, developmentValue: "Full access to all features", comment: nil) }
 
-      /// en translation: Penta
+      /// en translation: PRO Monthly
       ///
-      /// Key: subPlanPentaName
-      ///
-      /// Locales: en, uk
-      var subPlanPentaName: RswiftResources.StringResource { .init(key: "subPlanPentaName", tableName: "Global", source: source, developmentValue: "Penta", comment: nil) }
-
-      /// en translation: All features included
-      ///
-      /// Key: subPlanPremiumDescription
+      /// Key: subPlanProMonthlyName
       ///
       /// Locales: en, uk
-      var subPlanPremiumDescription: RswiftResources.StringResource { .init(key: "subPlanPremiumDescription", tableName: "Global", source: source, developmentValue: "All features included", comment: nil) }
-
-      /// en translation: Premium
-      ///
-      /// Key: subPlanPremiumName
-      ///
-      /// Locales: en, uk
-      var subPlanPremiumName: RswiftResources.StringResource { .init(key: "subPlanPremiumName", tableName: "Global", source: source, developmentValue: "Premium", comment: nil) }
-
-      /// en translation: Single establishment
-      ///
-      /// Key: subPlanSingleDescription
-      ///
-      /// Locales: en, uk
-      var subPlanSingleDescription: RswiftResources.StringResource { .init(key: "subPlanSingleDescription", tableName: "Global", source: source, developmentValue: "Single establishment", comment: nil) }
-
-      /// en translation: Single
-      ///
-      /// Key: subPlanSingleName
-      ///
-      /// Locales: en, uk
-      var subPlanSingleName: RswiftResources.StringResource { .init(key: "subPlanSingleName", tableName: "Global", source: source, developmentValue: "Single", comment: nil) }
+      var subPlanProMonthlyName: RswiftResources.StringResource { .init(key: "subPlanProMonthlyName", tableName: "Global", source: source, developmentValue: "PRO Monthly", comment: nil) }
 
       /// en translation: Subscription
       ///

@@ -224,20 +224,8 @@
 // MARK: - Subscription Plans
 "subPlanNoneName" = "None";
 "subPlanNoneDescription" = "No subscription";
-"subPlanSingleName" = "Single";
-"subPlanSingleDescription" = "Single establishment";
-"subPlanMiniName" = "Mini";
-"subPlanMiniDescription" = "Up to 3 staff members";
-"subPlanPentaName" = "Penta";
-"subPlanPentaDescription" = "Up to 5 staff members";
-"subPlanMidName" = "Mid";
-"subPlanMidDescription" = "Up to 10 staff members";
-"subPlanBigName" = "Big";
-"subPlanBigDescription" = "Up to 20 staff members";
-"subPlanMaxiName" = "Maxi";
-"subPlanMaxiDescription" = "Unlimited staff";
-"subPlanPremiumName" = "Premium";
-"subPlanPremiumDescription" = "All features included";
+"subPlanProMonthlyName" = "PRO Monthly";
+"subPlanProMonthlyDescription" = "Full access to all features";
 
 // MARK: - Order Types
 "typeHall" = "Dine-in";

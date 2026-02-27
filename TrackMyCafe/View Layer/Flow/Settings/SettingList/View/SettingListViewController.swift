@@ -126,9 +126,20 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         models.removeAll()
 
         // 1. Establishment
-        // TODO: Profile, Subscription, Staff
-        // let establishmentOptions = [SettingsOptionType]()
-        // models.append(Section(title: R.string.global.settingsSectionEstablishment(), footer: nil, option: establishmentOptions))
+        var establishmentOptions = [SettingsOptionType]()
+        establishmentOptions.append(
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.subscription(),
+                    icon: UIImage(systemName: SystemImages.creditCardCircleFill),
+                    iconBackgroundColor: .systemBlue
+                ) {
+                    let controller = SubscriptionController.makeDefault()
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            )
+        )
+        models.append(Section(title: R.string.global.settingsSectionEstablishment(), footer: nil, option: establishmentOptions))
 
         // 2. Menu & Inventory
         let menuOptions: [SettingsOptionType] = [
