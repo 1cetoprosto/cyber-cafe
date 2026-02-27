@@ -194,7 +194,29 @@
 "hasPremiumPlan" = "You have Premium Plan";
 "successPurchase" = "Purchase successful";
 "appleIDReserved" = "This Apple ID is already linked to another account.";
-"labReserved" = "This subscription is already linked to another Cafe.";
+"labReserved" = "This subscription is already linked to another lab.";
+
+"subscriptionBannerTitle" = "TrackMyCafe";
+"subscriptionBannerDescription" = "Control expenses and income, track sales, and get a complete financial picture of your business.";
+"subscriptionBannerAction" = "Try for Free";
+
+"subscriptionSubtitle" = "Unlock full potential";
+"subscriptionFeature1" = "Quick expense tracking in two clicks";
+"subscriptionFeature2" = "Automatic ingredient write-off";
+"subscriptionFeature3" = "Flexible income categories (dine-in, delivery, etc.)";
+"subscriptionFeature4" = "Full financial statistics";
+"subscriptionFeature5" = "Convenient interface: business at a glance";
+
+"trialBadgeText" = "%d days FREE";
+"subscribeButtonFormat" = "Activate for %@/mo";
+"tryButtonFormat" = "%d days free, then %@/mo";
+
+"tryButtonTitle" = "%d days free";
+"subscribeButtonTitle" = "Subscribe for %@/mo";
+"trialTermsText" = "Then %@/mo. Auto-renewable.";
+"noTrialTermsText" = "Cancel anytime.";
+"activatePro" = "Activate PRO";
+"loading" = "Loading...";
 
 // MARK: - Purchases
 "purchases" = "Purchases";

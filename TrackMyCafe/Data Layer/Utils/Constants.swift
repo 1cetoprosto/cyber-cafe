@@ -23,6 +23,11 @@ struct Config {
     static let androidVersion = "62"
 }
 
+struct Links {
+    static let termsOfService = "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link"
+    static let privacyPolicy = "https://leokvit.notion.site/Privacy-Policy-8e03f5636033475795267873620f326e?source=copy_link"
+}
+
 // notifications
 extension Notification.Name {
     static let adminInfoReload = Notification.Name("adminInfoReloadNotification")
