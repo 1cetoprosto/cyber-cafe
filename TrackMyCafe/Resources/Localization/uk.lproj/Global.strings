@@ -224,20 +224,8 @@
 // MARK: - Subscription Plans
 "subPlanNoneName" = "Відсутня";
 "subPlanNoneDescription" = "Немає підписки";
-"subPlanSingleName" = "Одиночна";
-"subPlanSingleDescription" = "Один заклад";
-"subPlanMiniName" = "Міні";
-"subPlanMiniDescription" = "До 3 співробітників";
-"subPlanPentaName" = "Пента";
-"subPlanPentaDescription" = "До 5 співробітників";
-"subPlanMidName" = "Середня";
-"subPlanMidDescription" = "До 10 співробітників";
-"subPlanBigName" = "Велика";
-"subPlanBigDescription" = "До 20 співробітників";
-"subPlanMaxiName" = "Максі";
-"subPlanMaxiDescription" = "Необмежена кількість";
-"subPlanPremiumName" = "Преміум";
-"subPlanPremiumDescription" = "Всі функції включено";
+"subPlanProMonthlyName" = "PRO Місячний";
+"subPlanProMonthlyDescription" = "Повний доступ до всіх функцій";
 
 // MARK: - Order Types
 "typeHall" = "В закладі";
