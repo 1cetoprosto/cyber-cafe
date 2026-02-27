@@ -196,6 +196,28 @@
 "appleIDReserved" = "Цей Apple ID вже прив'язаний до іншого облікового запису.";
 "labReserved" = "Ця підписка вже прив'язана до іншого закладу.";
 
+"subscriptionBannerTitle" = "TrackMyCafe";
+"subscriptionBannerDescription" = "Контролюйте витрати та доходи, ведіть облік продажів та отримайте повну фінансову картину вашого бізнесу.";
+"subscriptionBannerAction" = "Спробувати безплатно";
+
+"subscriptionSubtitle" = "Відкрий повний потенціал";
+"subscriptionFeature1" = "Швидкий облік витрат у два кліки";
+"subscriptionFeature2" = "Автоматичне списання інгредієнтів";
+"subscriptionFeature3" = "Гнучкі категорії доходів (зал, доставка, інше)";
+"subscriptionFeature4" = "Повна фінансова статистика";
+"subscriptionFeature5" = "Зручний інтерфейс: бізнес як на долоні";
+
+"trialBadgeText" = "%d днів БЕЗПЛАТНО";
+"subscribeButtonFormat" = "Активувати за %@/міс";
+"tryButtonFormat" = "%d днів безплатно, потім %@/міс";
+
+"tryButtonTitle" = "%d днів безплатно";
+"subscribeButtonTitle" = "Підписатися за %@/міс";
+"trialTermsText" = "Потім %@/міс. Автоматичне подовження.";
+"noTrialTermsText" = "Скасувати можна в будь-який час.";
+"activatePro" = "Активувати PRO";
+"loading" = "Завантаження...";
+
 // MARK: - Purchases
 "purchases" = "Закупки";
 "newPurchase" = "Нова закупка";
