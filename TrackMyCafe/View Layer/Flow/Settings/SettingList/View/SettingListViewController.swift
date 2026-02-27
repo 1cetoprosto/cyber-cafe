@@ -11,6 +11,7 @@ import RealmSwift
 import SVProgressHUD
 import UIKit
 import SafariServices
+import StoreKit
 
 struct Section {
     let title: String
@@ -50,6 +51,7 @@ struct SettingsDataOption {
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
     MFMailComposeViewControllerDelegate, Loggable
 {
+    private let subscriptionBanner = SubscriptionBannerView()
 
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
@@ -74,6 +76,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        subscriptionBanner.delegate = self
+        subscriptionBanner.onInfoLoaded = { [weak self] in
+            self?.updateTableHeaderHeight()
+        }
+
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.menuSettings()
         navigationController?.navigationBar.prefersLargeTitles = false
@@ -88,6 +95,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         super.viewWillAppear(animated)
 
         configure()
+        updateBannerVisibility()
         tableView.reloadData()
     }
 
@@ -119,6 +127,35 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             view.backgroundColor = UIColor.Main.background
             tableView.backgroundColor = UIColor.Main.background
             tableView.reloadData()
+        }
+    }
+
+    private func updateBannerVisibility() {
+        let isPremium = IAPManager.shared.isPremiumPlan == true
+        logger.debug("Subscription status isPremium: \(isPremium)")
+
+        if isPremium {
+            tableView.tableHeaderView = nil
+        } else {
+            tableView.tableHeaderView = subscriptionBanner
+            updateTableHeaderHeight()
+        }
+    }
+
+    private func updateTableHeaderHeight() {
+        guard let header = tableView.tableHeaderView else { return }
+
+        // Use the simple standard way for table header resizing
+        let width = tableView.bounds.width
+        let size = header.systemLayoutSizeFitting(
+            CGSize(width: width, height: UIView.layoutFittingCompressedSize.height),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+
+        if header.frame.height != size.height {
+            header.frame.size.height = size.height
+            tableView.tableHeaderView = header
         }
     }
 
@@ -681,5 +718,29 @@ extension SettingListViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
+    }
+}
+
+// MARK: - SubscriptionBannerViewDelegate
+extension SettingListViewController: SubscriptionBannerViewDelegate {
+    func didTapTryFree() {
+        let controller = SubscriptionController.makeDefault()
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+    func didTapPurchase(product: SKProduct) {
+        SVProgressHUD.show(withStatus: R.string.global.loading())
+        IAPManager.shared.purchaseProduct(product) { [weak self] success, error in
+            DispatchQueue.main.async {
+                SVProgressHUD.dismiss()
+                if success {
+                    self?.updateBannerVisibility()
+                    self?.tableView.reloadData()
+                    SVProgressHUD.showSuccess(withStatus: R.string.global.success())
+                } else if let error = error {
+                    SVProgressHUD.showError(withStatus: error)
+                }
+            }
+        }
     }
 }

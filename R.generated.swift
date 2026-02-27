@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 320 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 338 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -270,6 +270,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var actionOk: RswiftResources.StringResource { .init(key: "actionOk", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
+
+      /// en translation: Activate PRO
+      ///
+      /// Key: activatePro
+      ///
+      /// Locales: en, uk
+      var activatePro: RswiftResources.StringResource { .init(key: "activatePro", tableName: "Global", source: source, developmentValue: "Activate PRO", comment: nil) }
 
       /// en translation: Add
       ///
@@ -1160,12 +1167,12 @@ struct _R {
       /// Locales: en, uk
       var isAllowCalculationForAdministrator: RswiftResources.StringResource { .init(key: "isAllowCalculationForAdministrator", tableName: "Global", source: source, developmentValue: "Provide access", comment: nil) }
 
-      /// en translation: This subscription is already linked to another Cafe.
+      /// en translation: This subscription is already linked to another lab.
       ///
       /// Key: labReserved
       ///
       /// Locales: en, uk
-      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "This subscription is already linked to another Cafe.", comment: nil) }
+      var labReserved: RswiftResources.StringResource { .init(key: "labReserved", tableName: "Global", source: source, developmentValue: "This subscription is already linked to another lab.", comment: nil) }
 
       /// en translation: Languages
       ///
@@ -1194,6 +1201,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var lightThemeName: RswiftResources.StringResource { .init(key: "lightThemeName", tableName: "Global", source: source, developmentValue: "Light", comment: nil) }
+
+      /// en translation: Loading...
+      ///
+      /// Key: loading
+      ///
+      /// Locales: en, uk
+      var loading: RswiftResources.StringResource { .init(key: "loading", tableName: "Global", source: source, developmentValue: "Loading...", comment: nil) }
 
       /// en translation: Logout
       ///
@@ -1334,6 +1348,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var noSpecified: RswiftResources.StringResource { .init(key: "noSpecified", tableName: "Global", source: source, developmentValue: "Not specified", comment: nil) }
+
+      /// en translation: Cancel anytime.
+      ///
+      /// Key: noTrialTermsText
+      ///
+      /// Locales: en, uk
+      var noTrialTermsText: RswiftResources.StringResource { .init(key: "noTrialTermsText", tableName: "Global", source: source, developmentValue: "Cancel anytime.", comment: nil) }
 
       /// en translation: Note
       ///
@@ -2133,12 +2154,47 @@ struct _R {
       /// Locales: en, uk
       var subPlanProMonthlyName: RswiftResources.StringResource { .init(key: "subPlanProMonthlyName", tableName: "Global", source: source, developmentValue: "PRO Monthly", comment: nil) }
 
+      /// en translation: Activate for %@/mo
+      ///
+      /// Key: subscribeButtonFormat
+      ///
+      /// Locales: en, uk
+      var subscribeButtonFormat: RswiftResources.StringResource1<String> { .init(key: "subscribeButtonFormat", tableName: "Global", source: source, developmentValue: "Activate for %@/mo", comment: nil) }
+
+      /// en translation: Subscribe for %@/mo
+      ///
+      /// Key: subscribeButtonTitle
+      ///
+      /// Locales: en, uk
+      var subscribeButtonTitle: RswiftResources.StringResource1<String> { .init(key: "subscribeButtonTitle", tableName: "Global", source: source, developmentValue: "Subscribe for %@/mo", comment: nil) }
+
       /// en translation: Subscription
       ///
       /// Key: subscription
       ///
       /// Locales: en, uk
       var subscription: RswiftResources.StringResource { .init(key: "subscription", tableName: "Global", source: source, developmentValue: "Subscription", comment: nil) }
+
+      /// en translation: Try for Free
+      ///
+      /// Key: subscriptionBannerAction
+      ///
+      /// Locales: en, uk
+      var subscriptionBannerAction: RswiftResources.StringResource { .init(key: "subscriptionBannerAction", tableName: "Global", source: source, developmentValue: "Try for Free", comment: nil) }
+
+      /// en translation: Control expenses and income, track sales, and get a complete financial picture of your business.
+      ///
+      /// Key: subscriptionBannerDescription
+      ///
+      /// Locales: en, uk
+      var subscriptionBannerDescription: RswiftResources.StringResource { .init(key: "subscriptionBannerDescription", tableName: "Global", source: source, developmentValue: "Control expenses and income, track sales, and get a complete financial picture of your business.", comment: nil) }
+
+      /// en translation: TrackMyCafe
+      ///
+      /// Key: subscriptionBannerTitle
+      ///
+      /// Locales: en, uk
+      var subscriptionBannerTitle: RswiftResources.StringResource { .init(key: "subscriptionBannerTitle", tableName: "Global", source: source, developmentValue: "TrackMyCafe", comment: nil) }
 
       /// en translation: You can change your subscription to one that is best for your cafe at any time
       ///
@@ -2153,6 +2209,41 @@ struct _R {
       ///
       /// Locales: en, uk
       var subscriptionExpiredHeader: RswiftResources.StringResource { .init(key: "subscriptionExpiredHeader", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"", comment: nil) }
+
+      /// en translation: Quick expense tracking in two clicks
+      ///
+      /// Key: subscriptionFeature1
+      ///
+      /// Locales: en, uk
+      var subscriptionFeature1: RswiftResources.StringResource { .init(key: "subscriptionFeature1", tableName: "Global", source: source, developmentValue: "Quick expense tracking in two clicks", comment: nil) }
+
+      /// en translation: Automatic ingredient write-off
+      ///
+      /// Key: subscriptionFeature2
+      ///
+      /// Locales: en, uk
+      var subscriptionFeature2: RswiftResources.StringResource { .init(key: "subscriptionFeature2", tableName: "Global", source: source, developmentValue: "Automatic ingredient write-off", comment: nil) }
+
+      /// en translation: Flexible income categories (dine-in, delivery, etc.)
+      ///
+      /// Key: subscriptionFeature3
+      ///
+      /// Locales: en, uk
+      var subscriptionFeature3: RswiftResources.StringResource { .init(key: "subscriptionFeature3", tableName: "Global", source: source, developmentValue: "Flexible income categories (dine-in, delivery, etc.)", comment: nil) }
+
+      /// en translation: Full financial statistics
+      ///
+      /// Key: subscriptionFeature4
+      ///
+      /// Locales: en, uk
+      var subscriptionFeature4: RswiftResources.StringResource { .init(key: "subscriptionFeature4", tableName: "Global", source: source, developmentValue: "Full financial statistics", comment: nil) }
+
+      /// en translation: Convenient interface: business at a glance
+      ///
+      /// Key: subscriptionFeature5
+      ///
+      /// Locales: en, uk
+      var subscriptionFeature5: RswiftResources.StringResource { .init(key: "subscriptionFeature5", tableName: "Global", source: source, developmentValue: "Convenient interface: business at a glance", comment: nil) }
 
       /// en translation: Subscription automatically renews unless auto-renew is turned off at least 24-hours before the end of the current period.
       ///
@@ -2188,6 +2279,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var subscriptionReachedHeader: RswiftResources.StringResource { .init(key: "subscriptionReachedHeader", tableName: "Global", source: source, developmentValue: "Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe", comment: nil) }
+
+      /// en translation: Unlock full potential
+      ///
+      /// Key: subscriptionSubtitle
+      ///
+      /// Locales: en, uk
+      var subscriptionSubtitle: RswiftResources.StringResource { .init(key: "subscriptionSubtitle", tableName: "Global", source: source, developmentValue: "Unlock full potential", comment: nil) }
 
       /// en translation: Success
       ///
@@ -2307,6 +2405,34 @@ struct _R {
       ///
       /// Locales: en, uk
       var transferingData: RswiftResources.StringResource { .init(key: "transferingData", tableName: "Global", source: source, developmentValue: "Transferring data...", comment: nil) }
+
+      /// en translation: %d days FREE
+      ///
+      /// Key: trialBadgeText
+      ///
+      /// Locales: en, uk
+      var trialBadgeText: RswiftResources.StringResource1<Int> { .init(key: "trialBadgeText", tableName: "Global", source: source, developmentValue: "%d days FREE", comment: nil) }
+
+      /// en translation: Then %@/mo. Auto-renewable.
+      ///
+      /// Key: trialTermsText
+      ///
+      /// Locales: en, uk
+      var trialTermsText: RswiftResources.StringResource1<String> { .init(key: "trialTermsText", tableName: "Global", source: source, developmentValue: "Then %@/mo. Auto-renewable.", comment: nil) }
+
+      /// en translation: %d days free, then %@/mo
+      ///
+      /// Key: tryButtonFormat
+      ///
+      /// Locales: en, uk
+      var tryButtonFormat: RswiftResources.StringResource2<Int, String> { .init(key: "tryButtonFormat", tableName: "Global", source: source, developmentValue: "%d days free, then %@/mo", comment: nil) }
+
+      /// en translation: %d days free
+      ///
+      /// Key: tryButtonTitle
+      ///
+      /// Locales: en, uk
+      var tryButtonTitle: RswiftResources.StringResource1<Int> { .init(key: "tryButtonTitle", tableName: "Global", source: source, developmentValue: "%d days free", comment: nil) }
 
       /// en translation: Type
       ///
@@ -2689,7 +2815,7 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 10 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 11 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -2719,6 +2845,9 @@ struct _R {
 
     /// Resource file `Screenshot1.png`.
     var screenshot1Png: RswiftResources.FileResource { .init(name: "Screenshot1", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
+
+    /// Resource file `TrackMyCafe1.storekit`.
+    var trackMyCafe1Storekit: RswiftResources.FileResource { .init(name: "TrackMyCafe1", pathExtension: "storekit", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `TypeOfDonationModel.png`.
     var typeOfDonationModelPng: RswiftResources.FileResource { .init(name: "TypeOfDonationModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }

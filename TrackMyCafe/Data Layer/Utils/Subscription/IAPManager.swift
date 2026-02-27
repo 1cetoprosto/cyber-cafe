@@ -54,6 +54,7 @@ class IAPManager: NSObject, Loggable {
     
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
+        logger.debug("Updating subscription info. Premium: \(subscription.premiumPlan), Next Payment: \(String(describing: subscription.nextPaymentDate))")
         nextPaymentDate = subscription.nextPaymentDate
         isPremiumPlan = subscription.premiumPlan
     }
@@ -178,5 +179,12 @@ class IAPManager: NSObject, Loggable {
                                             originTransactionId: originTransactionId,
                                             paymentDate: purchaseDate,
                                             nextPaymentDate: expireDate)
+    }
+
+    // MARK: - Debug
+    func debugResetSubscription() {
+        logger.debug("DEBUG: Resetting subscription status")
+        isPremiumPlan = false
+        nextPaymentDate = nil
     }
 }
