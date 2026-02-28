@@ -45,7 +45,8 @@ final class HomeViewController: UIViewController, ProGated {
                 left: UIConstants.standardSpacing,
                 bottom: 0,
                 right: UIConstants.standardSpacing
-            )
+            ),
+            usingSafeArea: true
         )
         
         Task { await loadData() }

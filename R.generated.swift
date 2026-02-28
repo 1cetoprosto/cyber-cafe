@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 344 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 346 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -697,6 +697,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var deleteAccountTitle: RswiftResources.StringResource { .init(key: "deleteAccountTitle", tableName: "Global", source: source, developmentValue: "Delete Account?", comment: nil) }
+
+      /// en translation: Delete All Data
+      ///
+      /// Key: deleteAllData
+      ///
+      /// Locales: en, uk
+      var deleteAllData: RswiftResources.StringResource { .init(key: "deleteAllData", tableName: "Global", source: source, developmentValue: "Delete All Data", comment: nil) }
+
+      /// en translation: This will permanently delete ALL your data (products, orders, etc). This action cannot be undone.
+      ///
+      /// Key: deleteAllDataMessage
+      ///
+      /// Locales: en, uk
+      var deleteAllDataMessage: RswiftResources.StringResource { .init(key: "deleteAllDataMessage", tableName: "Global", source: source, developmentValue: "This will permanently delete ALL your data (products, orders, etc). This action cannot be undone.", comment: nil) }
 
       /// en translation: Delete Demo Data
       ///
