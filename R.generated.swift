@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 339 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 344 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -2182,6 +2182,13 @@ struct _R {
       /// Locales: en, uk
       var subscription: RswiftResources.StringResource { .init(key: "subscription", tableName: "Global", source: source, developmentValue: "Subscription", comment: nil) }
 
+      /// en translation: You are a PRO member
+      ///
+      /// Key: subscriptionActiveSubtitle
+      ///
+      /// Locales: en, uk
+      var subscriptionActiveSubtitle: RswiftResources.StringResource { .init(key: "subscriptionActiveSubtitle", tableName: "Global", source: source, developmentValue: "You are a PRO member", comment: nil) }
+
       /// en translation: Try for Free
       ///
       /// Key: subscriptionBannerAction
@@ -2203,6 +2210,13 @@ struct _R {
       /// Locales: en, uk
       var subscriptionBannerTitle: RswiftResources.StringResource { .init(key: "subscriptionBannerTitle", tableName: "Global", source: source, developmentValue: "TrackMyCafe", comment: nil) }
 
+      /// en translation: Continue in Read-Only Mode
+      ///
+      /// Key: subscriptionContinueReadOnly
+      ///
+      /// Locales: en, uk
+      var subscriptionContinueReadOnly: RswiftResources.StringResource { .init(key: "subscriptionContinueReadOnly", tableName: "Global", source: source, developmentValue: "Continue in Read-Only Mode", comment: nil) }
+
       /// en translation: You can change your subscription to one that is best for your cafe at any time
       ///
       /// Key: subscriptionDefaultHeader
@@ -2216,6 +2230,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var subscriptionExpiredHeader: RswiftResources.StringResource { .init(key: "subscriptionExpiredHeader", tableName: "Global", source: source, developmentValue: "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"", comment: nil) }
+
+      /// en translation: Subscription expired on
+      ///
+      /// Key: subscriptionExpiredSubtitle
+      ///
+      /// Locales: en, uk
+      var subscriptionExpiredSubtitle: RswiftResources.StringResource { .init(key: "subscriptionExpiredSubtitle", tableName: "Global", source: source, developmentValue: "Subscription expired on", comment: nil) }
 
       /// en translation: Quick expense tracking in two clicks
       ///
@@ -2266,6 +2287,13 @@ struct _R {
       /// Locales: en, uk
       var subscriptionFooter2: RswiftResources.StringResource { .init(key: "subscriptionFooter2", tableName: "Global", source: source, developmentValue: "Account will be charged for renewal within 24-hours prior to the end of the current period.", comment: nil) }
 
+      /// en translation: Manage Subscription
+      ///
+      /// Key: subscriptionManage
+      ///
+      /// Locales: en, uk
+      var subscriptionManage: RswiftResources.StringResource { .init(key: "subscriptionManage", tableName: "Global", source: source, developmentValue: "Manage Subscription", comment: nil) }
+
       /// en translation: You need a subscription to access this feature
       ///
       /// Key: subscriptionNeedSubHeader
@@ -2293,6 +2321,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var subscriptionSubtitle: RswiftResources.StringResource { .init(key: "subscriptionSubtitle", tableName: "Global", source: source, developmentValue: "Unlock full potential", comment: nil) }
+
+      /// en translation: Valid until
+      ///
+      /// Key: subscriptionValidUntil
+      ///
+      /// Locales: en, uk
+      var subscriptionValidUntil: RswiftResources.StringResource { .init(key: "subscriptionValidUntil", tableName: "Global", source: source, developmentValue: "Valid until", comment: nil) }
 
       /// en translation: Success
       ///
