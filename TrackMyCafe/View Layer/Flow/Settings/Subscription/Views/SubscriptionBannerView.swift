@@ -174,7 +174,7 @@ final class SubscriptionBannerView: UIView {
 
             guard let products = products, !products.isEmpty else {
                 DispatchQueue.main.async {
-                    self.actionButton.setTitle(R.string.global.activatePro(), for: .normal)
+                    self.actionButton.setTitle(R.string.global.subscriptionBannerAction(), for: .normal)
                     self.actionButton.isEnabled = true
                 }
                 return

@@ -357,7 +357,8 @@ class SubscriptionController: UIViewController, Loggable {
 
             guard let products = products, !products.isEmpty else {
                 DispatchQueue.main.async {
-                    self.actionButton.setTitle(R.string.global.activatePro(), for: .normal)
+                    // Use generic "Try for Free" instead of "Activate PRO" to match user expectations better when loading fails
+                    self.actionButton.setTitle(R.string.global.subscriptionBannerAction(), for: .normal)
                     self.actionButton.isEnabled = true
                 }
                 return
@@ -464,7 +465,11 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     @objc private func purchaseAction() {
-        guard let product = selectedProduct else { return }
+        guard let product = selectedProduct else {
+            // Retry fetching if products failed to load
+            fetchProducts()
+            return
+        }
 
         // Existing Purchase Logic
         RequestManager.shared.getSubscriptionInfo { [weak self] (subscription) in
