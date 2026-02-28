@@ -387,15 +387,15 @@ class SubscriptionController: UIViewController, Loggable {
             setupInactiveSubscriptionUI()
         }
     }
-    
+
     private func setupInactiveSubscriptionUI() {
         featuresContainer.isHidden = false
         termsLabel.isHidden = false
-        
+
         if let expireDate = IAPManager.shared.nextPaymentDate, expireDate < Date() {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
-            let expiredText = NSLocalizedString("subscription_expired_subtitle", value: "Subscription expired on", comment: "")
+            let expiredText = R.string.global.subscriptionExpiredSubtitle()
             subtitleLabel.text = "\(expiredText) \(formatter.string(from: expireDate))"
             subtitleLabel.textColor = .systemRed
         } else {
@@ -411,14 +411,14 @@ class SubscriptionController: UIViewController, Loggable {
         skipButton.isHidden = true
 
         // Update Header
-        let activeTitle = NSLocalizedString("subscription_active_subtitle", value: "You are a PRO member", comment: "")
+        let activeTitle = R.string.global.subscriptionActiveSubtitle()
         var subtitleText = activeTitle
 
         if let nextPayment = IAPManager.shared.nextPaymentDate {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             let dateStr = formatter.string(from: nextPayment)
-            let validUntil = NSLocalizedString("valid_until", value: "Valid until", comment: "")
+            let validUntil = R.string.global.subscriptionValidUntil()
             subtitleText += "\n\(validUntil): \(dateStr)"
         }
 
@@ -426,7 +426,7 @@ class SubscriptionController: UIViewController, Loggable {
         subtitleLabel.numberOfLines = 0
 
         // Update Action Button
-        let manageTitle = NSLocalizedString("manage_subscription", value: "Manage Subscription", comment: "")
+        let manageTitle = R.string.global.subscriptionManage()
         actionButton.setTitle(manageTitle, for: .normal)
         actionButton.isEnabled = true
         actionButton.backgroundColor = UIColor.Button.background
@@ -444,9 +444,12 @@ class SubscriptionController: UIViewController, Loggable {
         updateProductUI()
     }
 
-    // MARK: - Public Methods
+    // MARK: - Read-Only Mode
     func enableReadOnlyMode() {
+        // Show skip button only in read-only mode (onboarding/paywall flow)
         skipButton.isHidden = false
+        skipButton.setTitle(R.string.global.subscriptionContinueReadOnly(), for: .normal)
+        skipButton.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
     }
 
     // MARK: - Actions

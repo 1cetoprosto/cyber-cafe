@@ -420,3 +420,10 @@
 // MARK: - Legal
 "privacyPolicy" = "Privacy Policy";
 "termsOfService" = "Terms of Service";
+
+// MARK: - Subscription Status
+"subscriptionActiveSubtitle" = "You are a PRO member";
+"subscriptionExpiredSubtitle" = "Subscription expired on";
+"subscriptionValidUntil" = "Valid until";
+"subscriptionManage" = "Manage Subscription";
+"subscriptionContinueReadOnly" = "Continue in Read-Only Mode";
