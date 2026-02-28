@@ -123,6 +123,8 @@ struct UserDefaultsKeys {
     static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
     static let appleLanguages = "AppleLanguages"
     static let orderEntryMode = "settings.orderEntryMode"
+    static let hasSeenOnboarding = "hasSeenOnboarding"
+    static let pendingSubscriptionSync = "pendingSubscriptionSync"
 }
 
 enum OrderEntryMode: String {
