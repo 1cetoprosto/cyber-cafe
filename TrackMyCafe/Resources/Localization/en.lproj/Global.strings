@@ -191,7 +191,7 @@
 "subscriptionFooter2" = "Account will be charged for renewal within 24-hours prior to the end of the current period.";
 "termsOfUse" = "Terms of Use";
 "privacyPolicy" = "Privacy Policy";
-"hasPremiumPlan" = "You have Premium Plan";
+"hasProPlan" = "You have PRO Plan";
 "successPurchase" = "Purchase successful";
 "appleIDReserved" = "This Apple ID is already linked to another account.";
 "labReserved" = "This subscription is already linked to another lab.";
@@ -413,6 +413,8 @@
 "deleteDemoData" = "Delete Demo Data";
 "deleteDemoDataTitle" = "Delete Demo Data?";
 "deleteDemoDataMessage" = "This will remove all demo data but keep your personal entries.";
+"deleteAllData" = "Delete All Data";
+"deleteAllDataMessage" = "This will permanently delete ALL your data (products, orders, etc). This action cannot be undone.";
 "deleting" = "Deleting...";
 "demoDataTitle" = "Demo Data";
 "demoDataMessage" = "Would you like to fill the app with demo data to see how it works?";
@@ -420,3 +422,10 @@
 // MARK: - Legal
 "privacyPolicy" = "Privacy Policy";
 "termsOfService" = "Terms of Service";
+
+// MARK: - Subscription Status
+"subscriptionActiveSubtitle" = "You are a PRO member";
+"subscriptionExpiredSubtitle" = "Subscription expired on";
+"subscriptionValidUntil" = "Valid until";
+"subscriptionManage" = "Manage Subscription";
+"subscriptionContinueReadOnly" = "Continue in Read-Only Mode";

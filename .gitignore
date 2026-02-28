@@ -105,3 +105,6 @@ iOSInjectionProject/
 # Common merge/editor artifacts
 *.orig
 *.rej
+
+# Environment Variables
+.env

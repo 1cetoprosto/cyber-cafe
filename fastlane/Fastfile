@@ -1,152 +1,77 @@
 default_platform(:ios)
-ENV["FASTLANE_TEAM_ID"] = ENV["TEAM_ID"] if ENV["TEAM_ID"] && !ENV["TEAM_ID"].empty?
-ENV["FASTLANE_ITC_TEAM_ID"] = ENV["ITC_TEAM_ID"] if ENV["ITC_TEAM_ID"] && !ENV["ITC_TEAM_ID"].empty?
 
-platform :ios do 
+# Load .env file manually to ensure environment variables are set
+require 'dotenv'
+Dotenv.load('../.env')
 
-    lane :dev do
-        ensure_git_status_clean unless ENV["ALLOW_DIRTY"] == "1"
-        increment_build_number
-        commit_version_bump(force: true)
+platform :ios do
 
-        build_app(
-            workspace: "TrackMyCafe.xcworkspace",
-            scheme: "TrackMyCafe Dev",
-            export_method: "app-store",
-            export_options: {
-                provisioningProfiles: {
-                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
-                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
-                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
-                }
-            }
-        )
-        changelog = File.read("changelog.txt")
-        key_id = ENV["ASC_KEY_ID"]
-        issuer_id = ENV["ASC_ISSUER_ID"]
-        key_path = ENV["ASC_KEY_PATH"]
-        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
-            api_key = app_store_connect_api_key(
-                key_id: key_id,
-                issuer_id: issuer_id,
-                key_filepath: key_path
-            )
-            upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        else
-            upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        end
-    end
+  # ---------------------------------------------------------------------------
+  # Shared Logic
+  # ---------------------------------------------------------------------------
 
-    lane :beta do
-        ensure_git_status_clean
-        increment_build_number
-        commit_version_bump
+  def build_and_distribute(scheme:, bundle_id:)
+    # 1. Ensure git status is clean before building
+    ensure_git_status_clean
 
-        build_app(
-            workspace: "TrackMyCafe.xcworkspace",
-            scheme: "TrackMyCafe Beta",
-            export_method: "app-store",
-            export_options: {
-                provisioningProfiles: {
-                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
-                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
-                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
-                }
-            }
-        )
+    # 2. Increment build number for ALL targets
+    # (Requires agvtool enabled in Xcode project settings)
+    increment_build_number(xcodeproj: "TrackMyCafe.xcodeproj")
 
-        changelog = File.read("changelog.txt")
-        key_id = ENV["ASC_KEY_ID"]
-        issuer_id = ENV["ASC_ISSUER_ID"]
-        key_path = ENV["ASC_KEY_PATH"]
-        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
-            api_key = app_store_connect_api_key(
-                key_id: key_id,
-                issuer_id: issuer_id,
-                key_filepath: key_path
-            )
-            upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        else
-            upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        end
+    # 3. Commit the version bump (so the repo is clean for next run if build fails)
+    commit_version_bump(
+      xcodeproj: "TrackMyCafe.xcodeproj",
+      message: "chore: Bump build number [skip ci]", # [skip ci] prevents loop if you have CI
+      force: true
+    )
 
-    end
-    
-    lane :prod do
-        ensure_git_status_clean
+    # 4. Build the app
+    build_app(
+      workspace: "TrackMyCafe.xcworkspace",
+      scheme: scheme,
+      clean: true,
+      export_method: "app-store",
+      # Allow Xcode to update provisioning profiles if needed (Automatic Signing)
+      xcargs: "-allowProvisioningUpdates"
+    )
 
-        build_app(
-            workspace: "TrackMyCafe.xcworkspace",
-            scheme: "TrackMyCafe Prod",
-            export_method: "app-store",
-            export_options: {
-                provisioningProfiles: {
-                    "ICSOFT.TrackMyCafe.dev" => ENV["PP_DEV"],
-                    "ICSOFT.TrackMyCafe.beta" => ENV["PP_BETA"],
-                    "ICSOFT.TrackMyCafe" => ENV["PP_PROD"]
-                }
-            }
-        )
+    # 4. Upload to TestFlight and add to "External Testers" group
+    upload_to_testflight(
+      app_identifier: bundle_id,
+      skip_waiting_for_build_processing: false, # Wait for processing so we can add external testers
+      distribute_external: true,               # Enable external testing
+      groups: ["External Testers"],            # Auto-add this group
+      changelog: "Updated build"               # Fallback changelog if none provided
+    )
+  end
 
-        changelog = File.read("changelog.txt")
-        key_id = ENV["ASC_KEY_ID"]
-        issuer_id = ENV["ASC_ISSUER_ID"]
-        key_path = ENV["ASC_KEY_PATH"]
-        if key_id && !key_id.empty? && issuer_id && !issuer_id.empty? && key_path && !key_path.empty?
-            api_key = app_store_connect_api_key(
-                key_id: key_id,
-                issuer_id: issuer_id,
-                key_filepath: key_path
-            )
-            upload_to_testflight(api_key: api_key,
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        else
-            upload_to_testflight(username: ENV["FASTLANE_USER"],
-                                    team_id: ENV["FASTLANE_ITC_TEAM_ID"],
-                                    changelog: changelog,
-                                    submit_beta_review: true)
-        end
+  # ---------------------------------------------------------------------------
+  # Public Lanes
+  # ---------------------------------------------------------------------------
 
-    end
+  desc "Deploy PROD to TestFlight (Scheme: TrackMyCafe Prod)"
+  lane :prod do
+    build_and_distribute(
+      scheme: "TrackMyCafe Prod",
+      bundle_id: "ICSOFT.TrackMyCafe"
+    )
+  end
 
-    lane :profiles do
-        UI.message("Downloading App Store provisioning profiles for all TrackMyCafe bundles")
-        sigh(
-            app_identifier: "ICSOFT.TrackMyCafe.dev",
-            username: ENV["FASTLANE_USER"],
-            team_id: ENV["FASTLANE_TEAM_ID"],
-            provisioning_name: ENV["PP_DEV"],
-            readonly: true
-        )
-        sigh(
-            app_identifier: "ICSOFT.TrackMyCafe.beta",
-            username: ENV["FASTLANE_USER"],
-            team_id: ENV["FASTLANE_TEAM_ID"],
-            provisioning_name: ENV["PP_BETA"],
-            readonly: true
-        )
-        sigh(
-            app_identifier: "ICSOFT.TrackMyCafe",
-            username: ENV["FASTLANE_USER"],
-            team_id: ENV["FASTLANE_TEAM_ID"],
-            provisioning_name: ENV["PP_PROD"],
-            readonly: true
-        )
-        UI.success("Provisioning profiles downloaded and installed")
-    end
+  desc "Deploy BETA to TestFlight (Scheme: TrackMyCafe Beta)"
+  lane :beta do
+    build_and_distribute(
+      scheme: "TrackMyCafe Beta",
+      bundle_id: "ICSOFT.TrackMyCafe.beta"
+    )
+  end
+
+  desc "Deploy DEV to TestFlight (Scheme: TrackMyCafe Dev)"
+  lane :dev do
+    # Note: Ensure "ICSOFT.TrackMyCafe.dev" exists in App Store Connect
+    build_and_distribute(
+      scheme: "TrackMyCafe Dev",
+      bundle_id: "ICSOFT.TrackMyCafe.dev"
+    )
+  end
 
 end

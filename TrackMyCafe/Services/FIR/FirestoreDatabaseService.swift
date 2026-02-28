@@ -455,19 +455,21 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     func createNewCafe(
-        _ id: String, _ email: String, _ completion: @escaping (RoleConfig?, Bool) -> Void
+        _ id: String, _ email: String, _ completion: @escaping (Result<RoleConfig, Error>) -> Void
     ) {
         // Створення унікального ідентифікатора для користувача
         //let userKey = db.collection("users").document().documentID
         guard let userKey = Auth.auth().currentUser?.uid else {
-            logger.error("No authenticated user found")
-            completion(nil, false)
+            let error = NSError(domain: "Auth", code: 401, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])
+            logger.error("\(error.localizedDescription)")
+            completion(.failure(error))
             return
         }
 
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
-            completion(nil, false)
+            let error = NSError(domain: "UserData", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
+            completion(.failure(error))
             return
         }
 
@@ -497,12 +499,16 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         // Коміт транзакції
         batch.commit { error in
-            completion(role, error == nil)
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(role))
+            }
         }
     }
 
     func createNewUser(
-        _ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Bool) -> Void
+        _ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Result<Void, Error>) -> Void
     ) {
         // Створення унікального ідентифікатора для користувача
         let userKey = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users)
@@ -510,7 +516,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
-            completion(false)
+            let error = NSError(domain: "UserData", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
+            completion(.failure(error))
             return
         }
 
@@ -534,7 +541,11 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         // Коміт транзакції
         batch.commit { error in
-            completion(error == nil)
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
         }
     }
 

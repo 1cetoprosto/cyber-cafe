@@ -1,0 +1,8 @@
+app_identifier("ICSOFT.TrackMyCafe") # The bundle identifier of your app
+apple_id("1cetoprosto@gmail.com") # Your Apple ID email address
+
+# Developer Portal Team ID (Found in Developer Portal -> Membership)
+team_id("Q9843C43NA")
+
+# App Store Connect Team ID (Usually the same for individuals, different for orgs)
+itc_team_id("128170660")

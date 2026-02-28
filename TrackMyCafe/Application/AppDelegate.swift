@@ -26,7 +26,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         configureFirebase()
         configureSVProgressHUD()
-        setupAppearance()
+        // setupAppearance() moved to SceneDelegate to avoid CoreUI errors
         
         // Complete any pending IAP transactions
         IAPManager.shared.completeTransactions()

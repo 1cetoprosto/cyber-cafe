@@ -131,10 +131,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func updateBannerVisibility() {
-        let isPremium = IAPManager.shared.isPremiumPlan == true
-        logger.debug("Subscription status isPremium: \(isPremium)")
+        let isPro = IAPManager.shared.isProPlan == true
+        logger.debug("Subscription status isPro: \(isPro)")
 
-        if isPremium {
+        if isPro {
             tableView.tableHeaderView = nil
         } else {
             tableView.tableHeaderView = subscriptionBanner
@@ -352,6 +352,18 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 )
             )
         }
+
+        appInfoOptions.append(
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.deleteAllData(),
+                    icon: UIImage(systemName: "trash.slash"),
+                    iconBackgroundColor: .systemRed
+                ) {
+                    self.confirmDeleteAllData()
+                }
+            )
+        )
 
         models.append(
             Section(
@@ -666,6 +678,34 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             self.configure()
                             self.tableView.reloadData()
                             SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                        } else {
+                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                        }
+                    }
+                }
+            })
+        present(alert, animated: true)
+    }
+
+    private func confirmDeleteAllData() {
+        let alert = UIAlertController(
+            title: R.string.global.deleteAllData(),
+            message: R.string.global.deleteAllDataMessage(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+                SVProgressHUD.show(withStatus: R.string.global.deleting())
+                DomainDatabaseService.shared.deleteActiveDatabaseData { success in
+                    DispatchQueue.main.async {
+                        SVProgressHUD.dismiss()
+                        if success {
+                            self.configure()
+                            self.tableView.reloadData()
+                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                            NotificationCenter.default.post(
+                                name: NSNotification.Name("DataDidUpdate"), object: nil)
                         } else {
                             SVProgressHUD.showError(withStatus: R.string.global.error())
                         }

@@ -11,15 +11,30 @@ enum SubscriptionType: String, CaseIterable {
     case none
     case proMonthly
 
+    private static let productionID = "icsoft.trackmycafe.pro.monthly"
+    private static let betaID = "icsoft.trackmycafe.beta.pro.monthly"
+
     init?(rawValue: String) {
-        guard let type = SubscriptionType.allCases.first(where: { $0.rawValue == rawValue }) else { return nil }
-        self = type
+        if rawValue == SubscriptionType.productionID || rawValue == SubscriptionType.betaID {
+            self = .proMonthly
+            return
+        }
+        if rawValue == "none" {
+            self = .none
+            return
+        }
+        return nil
     }
 
     var rawValue: String {
         switch self {
             case .none: return "none"
-            case .proMonthly: return "icsoft.trackmycafe.pro.monthly"
+            case .proMonthly:
+                // Check if we are running the Beta app
+                if let bundleID = Bundle.main.bundleIdentifier, bundleID.lowercased().contains(".beta") {
+                    return SubscriptionType.betaID
+                }
+                return SubscriptionType.productionID
         }
     }
 
