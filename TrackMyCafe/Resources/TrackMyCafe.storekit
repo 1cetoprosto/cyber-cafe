@@ -1,4 +1,14 @@
 {
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
   "identifier" : "E9C85923",
   "nonRenewingSubscriptions" : [
 
@@ -7,7 +17,53 @@
 
   ],
   "settings" : {
-
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_locale" : "uk",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "UKR",
+    "_storeKitErrors" : [
+      {
+        "enabled" : false,
+        "name" : "Load Products"
+      },
+      {
+        "enabled" : false,
+        "name" : "Purchase"
+      },
+      {
+        "enabled" : false,
+        "name" : "Verification"
+      },
+      {
+        "enabled" : false,
+        "name" : "App Store Sync"
+      },
+      {
+        "enabled" : false,
+        "name" : "Subscription Status"
+      },
+      {
+        "enabled" : false,
+        "name" : "App Transaction"
+      },
+      {
+        "enabled" : false,
+        "name" : "Manage Subscriptions Sheet"
+      },
+      {
+        "enabled" : false,
+        "name" : "Refund Request Sheet"
+      },
+      {
+        "enabled" : false,
+        "name" : "Offer Code Redeem Sheet"
+      }
+    ],
+    "_timeRate" : 0
   },
   "subscriptionGroups" : [
     {
@@ -24,7 +80,7 @@
           "codeOffers" : [
 
           ],
-          "displayPrice" : "4.99",
+          "displayPrice" : "2.99",
           "familyShareable" : false,
           "groupNumber" : 1,
           "internalID" : "66778899",
@@ -36,26 +92,29 @@
           "localizations" : [
             {
               "description" : "Unlock all features",
-              "displayName" : "Monthly Premium",
+              "displayName" : "Monthly PRO",
               "locale" : "en_US"
             },
             {
               "description" : "Відкрий всі можливості",
-              "displayName" : "Місячний Преміум",
-              "locale" : "uk_UA"
+              "displayName" : "Місячний PRO",
+              "locale" : "uk"
             }
           ],
           "productID" : "icsoft.trackmycafe.pro.monthly",
           "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly Premium",
+          "referenceName" : "Monthly PRO",
           "subscriptionGroupID" : "2B196307",
-          "type" : "RecurringSubscription"
+          "type" : "RecurringSubscription",
+          "winbackOffers" : [
+
+          ]
         }
       ]
     }
   ],
   "version" : {
-    "major" : 3,
+    "major" : 4,
     "minor" : 0
   }
 }

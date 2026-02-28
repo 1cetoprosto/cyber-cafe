@@ -28,6 +28,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         configureSVProgressHUD()
         setupAppearance()
         
+        // Complete any pending IAP transactions
+        IAPManager.shared.completeTransactions()
+        
         return true
     }
     

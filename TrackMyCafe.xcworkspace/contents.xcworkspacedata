@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:TrackMyCafe/Resources/TrackMyCafe.storekit">
+   </FileRef>
+   <FileRef
       location = "group:TrackMyCafe.xcodeproj">
    </FileRef>
    <FileRef
