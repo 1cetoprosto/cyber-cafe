@@ -15,13 +15,13 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios dev
+### ios prod
 
 ```sh
-[bundle exec] fastlane ios dev
+[bundle exec] fastlane ios prod
 ```
 
-
+Deploy PROD to TestFlight (Scheme: TrackMyCafe Prod)
 
 ### ios beta
 
@@ -29,23 +29,15 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane ios beta
 ```
 
+Deploy BETA to TestFlight (Scheme: TrackMyCafe Beta)
 
-
-### ios prod
-
-```sh
-[bundle exec] fastlane ios prod
-```
-
-
-
-### ios profiles
+### ios dev
 
 ```sh
-[bundle exec] fastlane ios profiles
+[bundle exec] fastlane ios dev
 ```
 
-
+Deploy DEV to TestFlight (Scheme: TrackMyCafe Dev)
 
 ----
 

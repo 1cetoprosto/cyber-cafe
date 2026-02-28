@@ -11,10 +11,11 @@ import TinyConstraints
 import UIKit
 import SafariServices
 
-class SubscriptionController: UIViewController {
+class SubscriptionController: UIViewController, Loggable {
 
     // MARK: - Properties
     var onSubscriptionSuccess: (() -> Void)?
+    var onSkip: (() -> Void)?
     private var products = [SKProduct]()
     private var selectedProduct: SKProduct?
 
@@ -50,7 +51,6 @@ class SubscriptionController: UIViewController {
         let label = UILabel()
         label.text = "TrackMyCafe" // "PRO" will be a separate tag
         label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.textColor = UIColor.Main.text
         label.textAlignment = .center
         return label
     }()
@@ -71,7 +71,6 @@ class SubscriptionController: UIViewController {
         let label = UILabel()
         label.text = R.string.global.subscriptionSubtitle()
         label.font = .systemFont(ofSize: 17, weight: .medium)
-        label.textColor = UIColor.Main.secondaryText // Using secondary text color (brown/gray)
         label.textAlignment = .center
         return label
     }()
@@ -79,7 +78,6 @@ class SubscriptionController: UIViewController {
     // Features
     private let featuresContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
         return view
@@ -109,10 +107,21 @@ class SubscriptionController: UIViewController {
         return button
     }()
 
+    private lazy var skipButton: UIButton = {
+        let button = UIButton(type: .system)
+        // Localized string for "Continue in Read-Only Mode"
+        // If localization key doesn't exist, fallback to English text
+        let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "Button title to skip paywall and enter read-only mode")
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+
     private let termsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -137,7 +146,15 @@ class SubscriptionController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
-        fetchProducts()
+
+        let isPro = IAPManager.shared.isProPlan == true
+        logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
+
+        if isPro {
+            setupActiveSubscriptionUI()
+        } else {
+            fetchProducts()
+        }
 
         NotificationCenter.default.addObserver(
             self, selector: #selector(updateUI), name: .subscriptionInfoReload, object: nil)
@@ -146,6 +163,12 @@ class SubscriptionController: UIViewController {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
+        titleLabel.textColor = UIColor.Main.text
+        subtitleLabel.textColor = UIColor.Main.secondaryText
+        featuresContainer.backgroundColor = UIColor.TableView.cellBackground
+        skipButton.setTitleColor(UIColor.Main.secondaryText, for: .normal)
+        termsLabel.textColor = UIColor.Main.secondaryText
+
         title = ""
 
         // ScrollView
@@ -191,6 +214,7 @@ class SubscriptionController: UIViewController {
         // Price labels removed, info moved to button
 
         mainStackView.addArrangedSubview(actionButton)
+        mainStackView.addArrangedSubview(skipButton)
         mainStackView.addArrangedSubview(termsLabel)
         mainStackView.addArrangedSubview(footerStackView)
 
@@ -202,6 +226,7 @@ class SubscriptionController: UIViewController {
         mainStackView.setCustomSpacing(8, after: trialBadge)
 
         mainStackView.setCustomSpacing(10, after: actionButton)
+        mainStackView.setCustomSpacing(10, after: skipButton)
     }
 
     private func setupFeatures() {
@@ -332,7 +357,8 @@ class SubscriptionController: UIViewController {
 
             guard let products = products, !products.isEmpty else {
                 DispatchQueue.main.async {
-                    self.actionButton.setTitle(R.string.global.activatePro(), for: .normal)
+                    // Use generic "Try for Free" instead of "Activate PRO" to match user expectations better when loading fails
+                    self.actionButton.setTitle(R.string.global.subscriptionBannerAction(), for: .normal)
                     self.actionButton.isEnabled = true
                 }
                 return
@@ -357,10 +383,62 @@ class SubscriptionController: UIViewController {
         termsLabel.text = displayInfo.termsText
 
         // Update styling if user is already premium
-        if IAPManager.shared.isPremiumPlan == true {
-            actionButton.setTitle(R.string.global.activated(), for: .normal)
-            actionButton.isEnabled = false
-            actionButton.backgroundColor = .systemGray
+        if IAPManager.shared.isProPlan == true {
+            setupActiveSubscriptionUI()
+        } else {
+            setupInactiveSubscriptionUI()
+        }
+    }
+
+    private func setupInactiveSubscriptionUI() {
+        featuresContainer.isHidden = false
+        termsLabel.isHidden = false
+
+        if let expireDate = IAPManager.shared.nextPaymentDate, expireDate < Date() {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            let expiredText = R.string.global.subscriptionExpiredSubtitle()
+            subtitleLabel.text = "\(expiredText) \(formatter.string(from: expireDate))"
+            subtitleLabel.textColor = .systemRed
+        } else {
+            subtitleLabel.text = R.string.global.subscriptionSubtitle()
+            subtitleLabel.textColor = UIColor.Main.secondaryText
+        }
+    }
+
+    private func setupActiveSubscriptionUI() {
+        logger.debug("setupActiveSubscriptionUI called")
+        featuresContainer.isHidden = true
+        termsLabel.isHidden = true
+        skipButton.isHidden = true
+
+        // Update Header
+        let activeTitle = R.string.global.subscriptionActiveSubtitle()
+        var subtitleText = activeTitle
+
+        if let nextPayment = IAPManager.shared.nextPaymentDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            let dateStr = formatter.string(from: nextPayment)
+            let validUntil = R.string.global.subscriptionValidUntil()
+            subtitleText += "\n\(validUntil): \(dateStr)"
+        }
+
+        subtitleLabel.text = subtitleText
+        subtitleLabel.numberOfLines = 0
+
+        // Update Action Button
+        let manageTitle = R.string.global.subscriptionManage()
+        actionButton.setTitle(manageTitle, for: .normal)
+        actionButton.isEnabled = true
+        actionButton.backgroundColor = UIColor.Button.background
+        actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+    }
+
+    @objc private func manageSubscriptionAction() {
+        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 
@@ -368,15 +446,35 @@ class SubscriptionController: UIViewController {
         updateProductUI()
     }
 
+    // MARK: - Read-Only Mode
+    func enableReadOnlyMode() {
+        // Show skip button only in read-only mode (onboarding/paywall flow)
+        skipButton.isHidden = false
+        skipButton.setTitle(R.string.global.subscriptionContinueReadOnly(), for: .normal)
+        skipButton.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
+    }
+
     // MARK: - Actions
 
+    @objc private func skipAction() {
+        if let onSkip = onSkip {
+            onSkip()
+        } else {
+            dismiss(animated: true)
+        }
+    }
+
     @objc private func purchaseAction() {
-        guard let product = selectedProduct else { return }
+        guard let product = selectedProduct else {
+            // Retry fetching if products failed to load
+            fetchProducts()
+            return
+        }
 
         // Existing Purchase Logic
         RequestManager.shared.getSubscriptionInfo { [weak self] (subscription) in
-            if subscription.premiumPlan {
-                self?.showAlert(nil, body: R.string.global.hasPremiumPlan())
+            if subscription.proPlan {
+                self?.showAlert(nil, body: R.string.global.hasProPlan())
                 return
             }
             self?.purchaseProduct(product)

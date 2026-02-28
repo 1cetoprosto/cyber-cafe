@@ -15,7 +15,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     var onSave: (() -> Void)?
 
     private var dateChanged: Bool = false
-    private var saveButtonBottomConstraint: NSLayoutConstraint!
+    private var saveButtonBottomConstraint: Constraint?
     private var tableViewHeightConstraint: Constraint?
     private var collectionViewHeightConstraint: Constraint?
     private var isGridView: Bool = false
@@ -55,6 +55,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false  // Disable scroll to avoid conflict with ScrollView
+        tableView.accessibilityIdentifier = "productsTable"
         return tableView
     }()
 
@@ -545,7 +546,7 @@ extension OrderDetailsViewController {
         mainStackView.edgesToSuperview(
             insets: .init(
                 top: UIConstants.largeSpacing, left: UIConstants.standardPadding,
-                bottom: UIConstants.largeSpacing, right: UIConstants.standardPadding))
+                bottom: UIConstants.largeSpacing + 20, right: UIConstants.standardPadding))
         mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
 
         let containerHeight =
@@ -564,9 +565,13 @@ extension OrderDetailsViewController {
 
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
         saveButton.height(UIConstants.buttonHeight)
+
+        // Pin to Safe Area Bottom initially
+        // saveButtonBottomConstraint = saveButton.bottomToSuperview(offset: -UIConstants.standardPadding, usingSafeArea: true)
+
         saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
             equalTo: view.keyboardLayoutGuide.topAnchor, constant: -UIConstants.standardPadding)
-        saveButtonBottomConstraint.isActive = true
+        saveButtonBottomConstraint?.isActive = true
 
         let cashCardStackView = UIStackView(
             arrangedSubviews: [cashInputContainer, cardInputContainer], axis: .horizontal,
@@ -594,6 +599,34 @@ extension OrderDetailsViewController {
 
         if let cashTF = cashInputContainer.textFieldReference { addDoneButtonToTextField(cashTF) }
         if let cardTF = cardInputContainer.textFieldReference { addDoneButtonToTextField(cardTF) }
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        // guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else { return }
+
+        // Adjust for Safe Area if needed, but usually we just want to sit on top of keyboard
+        // The simple approach: offset = -(keyboardHeight - safeAreaBottom + padding)
+        // Or simpler: pin to bottom of view with offset -keyboardHeight - padding
+
+        // let bottomPadding = view.safeAreaInsets.bottom
+        // let offset = -(keyboardSize.height - bottomPadding + UIConstants.standardPadding)
+
+        // saveButtonBottomConstraint?.constant = offset
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
+    }
+
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        // saveButtonBottomConstraint?.constant = -UIConstants.standardPadding
+
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+        }
     }
 
     private func addDoneButtonToTextField(_ textField: UITextField) {

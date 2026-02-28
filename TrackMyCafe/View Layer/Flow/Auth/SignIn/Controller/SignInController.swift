@@ -233,10 +233,10 @@ class SignInController: UIViewController {
             SVProgressHUD.show(show)
         case .error(let error):
             showAlert(R.string.global.error(), body: error?.localizedDescription)
-        case .retry(let cancel, let retry):
+        case .retry(let error, let cancel, let retry):
             let alertVC = UIAlertController(
                 title: R.string.global.error(),
-                message: R.string.global.wentWrong(),
+                message: error ?? R.string.global.wentWrong(),
                 preferredStyle: .alert)
 
             alertVC.addAction(
@@ -365,41 +365,19 @@ class SignInController: UIViewController {
     // MARK: - Actions
     @objc private func loginAction(_ sender: UIButton) {
 
-        #if DEV
-            guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
-                let configDict = NSDictionary(contentsOfFile: path),
-                let firebaseConfig = configDict["FirebaseDev"] as? [String: String],
-                let email = firebaseConfig["Email"],
-                let password = firebaseConfig["Password"]
-            else {
-                fatalError("Error reading Firebase configuration")
+        #if DEBUG
+            if Bundle.main.bundleIdentifier == "ICSOFT.TrackMyCafe.dev" {
+                guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
+                    let configDict = NSDictionary(contentsOfFile: path),
+                    let firebaseConfig = configDict["FirebaseDev"] as? [String: String],
+                    let email = firebaseConfig["Email"],
+                    let password = firebaseConfig["Password"]
+                else {
+                    fatalError("Error reading Firebase configuration")
+                }
+                emailField.text = email
+                passwordField.text = password
             }
-            emailField.text = email
-            passwordField.text = password
-        #elseif BETA
-            //        guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
-            //              let configDict = NSDictionary(contentsOfFile: path),
-            //              let firebaseConfig = configDict["FirebaseBeta"] as? [String: String],
-            //              let email = firebaseConfig["Email"],
-            //              let password = firebaseConfig["Password"] else {
-            //            fatalError("Error reading Firebase configuration")
-            //        }
-            //
-            //        emailField.text = email
-            //        passwordField.text = password
-        #elseif PROD
-
-        #else
-            guard let path = Bundle.main.path(forResource: "Config", ofType: "plist"),
-                let configDict = NSDictionary(contentsOfFile: path),
-                let firebaseConfig = configDict["FirebaseDev"] as? [String: String],
-                let email = firebaseConfig["Email"],
-                let password = firebaseConfig["Password"]
-            else {
-                fatalError("Error reading Firebase configuration")
-            }
-            emailField.text = email
-            passwordField.text = password
         #endif
 
         guard validateFields() else { return }

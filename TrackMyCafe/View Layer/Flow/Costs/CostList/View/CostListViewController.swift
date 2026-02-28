@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CostListViewController: UIViewController {
+class CostListViewController: UIViewController, Loggable, ProGated {
   private var viewModel: CostListViewModelType?
 
   let tableView: UITableView = {
@@ -60,6 +60,8 @@ class CostListViewController: UIViewController {
 
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
+    guard checkProOrShowPaywall() else { return }
+
     let vm = CostDetailsViewModel(
       cost: OpexExpenseModel(
         id: "", date: Date(), categoryId: "General", amount: 0.0, note: ""
@@ -132,13 +134,22 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
   ) -> UISwipeActionsConfiguration? {
     guard let viewModel = viewModel else { return nil }
+
     let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
-      _, _, _ in
+      [weak self] _, _, completion in
+      guard let self = self else { return }
+
+      if !self.checkProOrShowPaywall() {
+          completion(false)
+          return
+      }
+
       viewModel.deleteCostModel(atIndexPath: indexPath)
 
       viewModel.getCosts { [weak self] in
         self?.tableView.reloadData()
       }
+      completion(true)
     }
 
     return UISwipeActionsConfiguration(actions: [deleteAction])
