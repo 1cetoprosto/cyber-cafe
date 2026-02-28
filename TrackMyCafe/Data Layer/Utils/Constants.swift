@@ -125,6 +125,7 @@ struct UserDefaultsKeys {
     static let orderEntryMode = "settings.orderEntryMode"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
+    static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
 }
 

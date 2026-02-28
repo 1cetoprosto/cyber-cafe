@@ -164,7 +164,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
       // MARK: - Helper Methods
     
     private func checkFreshInstall() {
-        let key = "hasRunBefore"
+        let key = UserDefaultsKeys.hasRunBefore
         let hasRunBefore = UserDefaults.standard.bool(forKey: key)
         
         if !hasRunBefore {
