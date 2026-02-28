@@ -14,6 +14,7 @@ import SafariServices
 class SubscriptionController: UIViewController {
 
     // MARK: - Properties
+    var onSubscriptionSuccess: (() -> Void)?
     private var products = [SKProduct]()
     private var selectedProduct: SKProduct?
 
@@ -310,7 +311,8 @@ class SubscriptionController: UIViewController {
         contentView.edges(to: scrollView)
         contentView.widthToSuperview()
 
-        mainStackView.edgesToSuperview(insets: .init(top: 20, left: 20, bottom: 40, right: 20))
+        // Increased top inset from 20 to 60 to avoid overlap with Dynamic Island/Notch
+        mainStackView.edgesToSuperview(insets: .init(top: 60, left: 20, bottom: 40, right: 20))
 
         headerImageView.size(CGSize(width: 80, height: 80))
         actionButton.height(50)
@@ -337,17 +339,7 @@ class SubscriptionController: UIViewController {
             }
 
             self.products = products
-
-            // Assuming we want to show the monthly subscription as primary or the one with trial
-            // Logic: Pick the one that matches current subscription type or default to first
-            // Usually we want to show the "Pro Monthly" or similar.
-
-            // Let's try to find a monthly product first
-            if let monthly = products.first(where: { $0.productIdentifier.contains("month") }) {
-                self.selectedProduct = monthly
-            } else {
-                self.selectedProduct = products.first
-            }
+            self.selectedProduct = SubscriptionPresenter.shared.findBestProduct(in: products)
 
             self.updateProductUI()
         }
@@ -358,48 +350,15 @@ class SubscriptionController: UIViewController {
 
         actionButton.isEnabled = true
 
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.locale = product.priceLocale
-        let priceString = formatter.string(from: product.price) ?? "\(product.price)"
+        let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(for: product)
 
-        // Check for Introductory Price (Trial)
-        if let introPrice = product.introductoryPrice,
-           introPrice.paymentMode == .freeTrial {
-
-            // Trial Logic
-            let days = introPrice.subscriptionPeriod.numberOfUnits
-            let periodUnit = introPrice.subscriptionPeriod.unit
-            var daysCount = 7 // Default
-
-            if periodUnit == .day { daysCount = days }
-            else if periodUnit == .week { daysCount = days * 7 }
-            else if periodUnit == .month { daysCount = days * 30 }
-            else if periodUnit == .year { daysCount = days * 365 }
-
-            // Hide badge as the button text already contains "14 days free" info
-            trialBadge.isHidden = true
-
-            // Format: "14 днів безплатно"
-            actionButton.setTitle(R.string.global.tryButtonTitle(daysCount), for: .normal)
-
-            // Text below: "Потім 199 грн/міс. Автоматичне подовження."
-            termsLabel.text = R.string.global.trialTermsText(priceString)
-
-        } else {
-            // Regular Price
-            trialBadge.isHidden = true
-
-            // Format: "Підписатися за 199 грн/міс"
-            actionButton.setTitle(R.string.global.subscribeButtonTitle(priceString), for: .normal)
-
-            // Text below: "Скасувати можна в будь-який час."
-            termsLabel.text = R.string.global.noTrialTermsText()
-        }
+        trialBadge.isHidden = true // Always hidden as per new design
+        actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
+        termsLabel.text = displayInfo.termsText
 
         // Update styling if user is already premium
         if IAPManager.shared.isPremiumPlan == true {
-            actionButton.setTitle("Вже активовано", for: .normal)
+            actionButton.setTitle(R.string.global.activated(), for: .normal)
             actionButton.isEnabled = false
             actionButton.backgroundColor = .systemGray
         }
@@ -430,7 +389,12 @@ class SubscriptionController: UIViewController {
                 self?.showAlert(
                     R.string.global.success(),
                     body: R.string.global.successPurchase())
-                self?.dismiss(animated: true)
+
+                if let onSuccess = self?.onSubscriptionSuccess {
+                    onSuccess()
+                } else {
+                    self?.dismiss(animated: true)
+                }
             } else {
                 self?.showAlert(
                     R.string.global.error(),
@@ -460,6 +424,7 @@ class SubscriptionController: UIViewController {
                             IAPManager.shared.updateSubscriptionInfo(receipt)
                             self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
                             self.updateUI()
+                            self.onSubscriptionSuccess?()
                         }
                     }
                 } else {
@@ -476,7 +441,7 @@ class SubscriptionController: UIViewController {
     }
 
     @objc private func openPrivacy() {
-         guard let url = URL(string: "https://leokvit.notion.site/Privacy-Policy-313f9211d4378065b441d8876d169bec?source=copy_link") else { return }
+         guard let url = URL(string: Links.privacyPolicy) else { return }
          let safariVC = SFSafariViewController(url: url)
          present(safariVC, animated: true)
     }

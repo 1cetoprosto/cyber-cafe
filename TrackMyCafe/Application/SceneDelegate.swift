@@ -99,34 +99,60 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
   }
 
   func start() {
-    let isValidSession = UserSession.current.restore()
-    // Always check for online session
-    if !isValidSession || Auth.auth().currentUser == nil {
-        // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
-        let signInController = SignInController()
-        let navigationController = UINavigationController(rootViewController: signInController)
-        navigationController.setNavigationBarHidden(true, animated: false)
-        window?.rootViewController = navigationController
-    } else {
-        // Якщо сесія дійсна, переходимо на головний екран додатку
-        window?.rootViewController = MainTabBarController()
+        // 1. Check Onboarding
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        if !hasSeenOnboarding {
+            let onboardingVC = OnboardingViewController()
+            onboardingVC.delegate = self
+            window?.rootViewController = onboardingVC
+            return
+        }
+
+        // 2. Check Subscription
+        let isPremium = IAPManager.shared.isPremiumPlan
+        // If nil (loading), we might want to wait, but for now assuming false if not confirmed true
+        if isPremium != true {
+             let paywallVC = SubscriptionController.makeDefault()
+             paywallVC.onSubscriptionSuccess = { [weak self] in
+                 self?.start()
+             }
+             window?.rootViewController = paywallVC
+             return
+        }
+
+        let isValidSession = UserSession.current.restore()
+        // Always check for online session
+        if !isValidSession || Auth.auth().currentUser == nil {
+            // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
+            let signInController = SignInController()
+            let navigationController = UINavigationController(rootViewController: signInController)
+            navigationController.setNavigationBarHidden(true, animated: false)
+            window?.rootViewController = navigationController
+        } else {
+            // Якщо сесія дійсна, переходимо на головний екран додатку
+            window?.rootViewController = MainTabBarController()
+        }
     }
-  }
 
-  func set(root controller: UIViewController) {
-    let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
-    controller.view.addSubview(overlayView)
-    window?.rootViewController = controller
+    func set(root controller: UIViewController) {
+        let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
+        controller.view.addSubview(overlayView)
+        window?.rootViewController = controller
 
-    UIView.animate(
-      withDuration: 0.4, delay: 0, options: .transitionCrossDissolve,
-      animations: {
-        overlayView.alpha = 0
-      },
-      completion: { finished in
-        overlayView.removeFromSuperview()
-      })
-  }
+        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
+            overlayView.alpha = 0
+        }, completion: { finished in
+            overlayView.removeFromSuperview()
+        })
+    }
+}
+
+// MARK: - OnboardingViewControllerDelegate
+extension SceneDelegate: OnboardingViewControllerDelegate {
+    func didFinishOnboarding() {
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
+        start()
+    }
 }
 
 extension SceneDelegate {
