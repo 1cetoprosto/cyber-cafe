@@ -2,7 +2,7 @@ import TinyConstraints
 import SVProgressHUD
 import UIKit
 
-final class HomeViewController: UIViewController, PremiumGated {
+final class HomeViewController: UIViewController, ProGated {
   private let viewModel: HomeViewModelType = HomeViewModel()
   private var lastHeaderWidth: CGFloat = 0
   private var currentPeriod: DashboardPeriod = .month
@@ -100,14 +100,14 @@ final class HomeViewController: UIViewController, PremiumGated {
   }
 
   private func openAddIncome() {
-    guard checkPremiumOrShowPaywall() else { return }
+    guard checkProOrShowPaywall() else { return }
     let vc = OrderDetailsViewController()
     vc.onSave = { [weak self] in self?.reloadAfterAction() }
     navigationController?.pushViewController(vc, animated: true)
   }
 
   private func openAddExpense() {
-    guard checkPremiumOrShowPaywall() else { return }
+    guard checkProOrShowPaywall() else { return }
     let empty = OpexExpenseModel(
       id: "", date: Date(), categoryId: "General", amount: 0, note: ""
     )

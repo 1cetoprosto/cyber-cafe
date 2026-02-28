@@ -1,16 +1,21 @@
+//
+//  PremiumGated.swift (Should be renamed to ProGated.swift)
+//  TrackMyCafe
+//
+
 import UIKit
 
-protocol PremiumGated: UIViewController {
-    /// Checks if the user has a premium plan. If not, presents the paywall.
-    /// - Returns: `true` if the user is premium, `false` otherwise.
-    func checkPremiumOrShowPaywall() -> Bool
+protocol ProGated: UIViewController {
+    /// Checks if the user has a pro plan. If not, presents the paywall.
+    /// - Returns: `true` if the user is pro, `false` otherwise.
+    func checkProOrShowPaywall() -> Bool
 }
 
-extension PremiumGated {
+extension ProGated {
     @discardableResult
-    func checkPremiumOrShowPaywall() -> Bool {
-        let isPremium = IAPManager.shared.isPremiumPlan == true
-        if !isPremium {
+    func checkProOrShowPaywall() -> Bool {
+        let isPro = IAPManager.shared.isProPlan == true
+        if !isPro {
             let controller = SubscriptionController.makeDefault()
             // Ensure we present on the top-most controller
             if let presented = presentedViewController {

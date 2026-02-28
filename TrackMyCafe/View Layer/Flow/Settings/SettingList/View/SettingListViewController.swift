@@ -131,10 +131,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func updateBannerVisibility() {
-        let isPremium = IAPManager.shared.isPremiumPlan == true
-        logger.debug("Subscription status isPremium: \(isPremium)")
+        let isPro = IAPManager.shared.isProPlan == true
+        logger.debug("Subscription status isPro: \(isPro)")
 
-        if isPremium {
+        if isPro {
             tableView.tableHeaderView = nil
         } else {
             tableView.tableHeaderView = subscriptionBanner

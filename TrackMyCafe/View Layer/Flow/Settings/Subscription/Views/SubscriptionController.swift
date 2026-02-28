@@ -152,7 +152,7 @@ class SubscriptionController: UIViewController {
         setupUI()
         setupConstraints()
 
-        if IAPManager.shared.isPremiumPlan == true {
+        if IAPManager.shared.isProPlan == true {
             setupActiveSubscriptionUI()
         } else {
             fetchProducts()
@@ -378,7 +378,7 @@ class SubscriptionController: UIViewController {
         termsLabel.text = displayInfo.termsText
 
         // Update styling if user is already premium
-        if IAPManager.shared.isPremiumPlan == true {
+        if IAPManager.shared.isProPlan == true {
             setupActiveSubscriptionUI()
         }
     }
@@ -442,8 +442,8 @@ class SubscriptionController: UIViewController {
 
         // Existing Purchase Logic
         RequestManager.shared.getSubscriptionInfo { [weak self] (subscription) in
-            if subscription.premiumPlan {
-                self?.showAlert(nil, body: R.string.global.hasPremiumPlan())
+            if subscription.proPlan {
+                self?.showAlert(nil, body: R.string.global.hasProPlan())
                 return
             }
             self?.purchaseProduct(product)

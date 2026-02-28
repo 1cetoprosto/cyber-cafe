@@ -10,7 +10,7 @@ import RealmSwift
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
-    
+
     static var shared: SceneDelegate {
         guard let scene = UIApplication.shared.connectedScenes.first,
               let delegate = scene.delegate as? SceneDelegate
@@ -19,15 +19,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         }
         return delegate
     }
-    
+
     var window: UIWindow?
-    
+
     // MARK: Migration
     // Функція для налаштування Realm з міграцією
     func configureRealm() {
         // Визначте версію схеми як константу
         let currentSchemaVersion: UInt64 = 3
-        
+
         // Визначте блок міграції
         let migrationBlock: MigrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < currentSchemaVersion {
@@ -37,7 +37,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
                         oldObject, newObject in
                         newObject!["orderId"] = ""  // Initial value for a new property
                     }
-                    
+
                     // Заповнення поля orderId відповідними значеннями з RealmOrderModel
                     migration.enumerateObjects(ofType: RealmOrderModel.className()) { oldObject, newObject in
                         if let orderId = oldObject!["id"] as? String,
@@ -59,52 +59,58 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
                 }
             }
         }
-        
+
         // Налаштуйте Realm з новою версією схеми та блоком міграції
         let config = Realm.Configuration(
             schemaVersion: currentSchemaVersion,
             migrationBlock: migrationBlock
         )
-        
+
         // Встановіть конфігурацію Realm за замовчуванням
         Realm.Configuration.defaultConfiguration = config
     }
-    
+
     // MARK: Scene Lifecycle
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-        
+
         // configureRealm() - No longer needed
-        
+
         guard let windowScene = (scene as? UIWindowScene) else { return }
     logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
-    
+
     // Check for fresh install
     checkFreshInstall()
-    
+
     window = UIWindow(windowScene: windowScene)
 
+    #if DEBUG
+    // Reset subscription state for testing
+    // IAPManager.shared.debugResetSubscription()
+    // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+    #endif
+
     start()
-        
+
         window?.makeKeyAndVisible()
-        
+
         // Apply saved theme on app launch
         Theme.applyCurrentTheme()
-        
+
         // Debug Logging of App State
         logAppState()
-        
+
         seedDefaultIncomeTypesIfNeeded()
-        
+
         buildDefaultOnboardingRegistry()
 #if canImport(Instructions)
         OnboardingManager.shared.configure(driver: InstructionsDriver())
 #endif
     }
-    
+
     func start() {
         // 1. Check Onboarding (DISABLED for now - user request)
         // let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
@@ -116,11 +122,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // }
         // Set onboarding as seen implicitly to avoid showing it later if re-enabled
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
-        
+
         // 2. Check Subscription
         let isPremium = IAPManager.shared.isPremiumPlan == true
         let hasSeenPaywall = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenInitialPaywall)
-        
+
         if !isPremium && !hasSeenPaywall {
             let paywallVC = SubscriptionController.makeDefault()
             paywallVC.enableReadOnlyMode()
@@ -134,7 +140,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             window?.rootViewController = paywallVC
             return
         }
-        
+
         let isValidSession = UserSession.current.restore()
         // Always check for online session
         if !isValidSession || Auth.auth().currentUser == nil {
@@ -148,25 +154,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             window?.rootViewController = MainTabBarController()
         }
     }
-    
+
     func set(root controller: UIViewController) {
         let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
         controller.view.addSubview(overlayView)
         window?.rootViewController = controller
-        
+
         UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
             overlayView.alpha = 0
         }, completion: { finished in
             overlayView.removeFromSuperview()
         })
     }
-    
+
       // MARK: - Helper Methods
-    
+
     private func checkFreshInstall() {
         let key = UserDefaultsKeys.hasRunBefore
         let hasRunBefore = UserDefaults.standard.bool(forKey: key)
-        
+
         if !hasRunBefore {
             // This is a fresh install (or data cleared).
             // Firebase Auth persists in Keychain, so we must sign out manually to prevent auto-login.
@@ -176,10 +182,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             } catch {
                 logger.error("Failed to sign out on fresh install: \(error)")
             }
-            
+
             // Also clear demo data manifest if any (though UserDefaults should be empty)
             DemoDataManager.shared.clearManifest()
-            
+
             // Mark as run
             UserDefaults.standard.set(true, forKey: key)
             UserDefaults.standard.synchronize()
@@ -187,16 +193,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
 
     // MARK: - Debug Helper
-    private func logAppState() {
-        let isPremium = IAPManager.shared.isPremiumPlan == true
-        let nextPayment = IAPManager.shared.nextPaymentDate
-        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
-        let theme = SettingsManager.shared.loadTheme()
-        let orderMode = SettingsManager.shared.loadOrderEntryMode()
-        let hasDemoData = DemoDataManager.shared.isDemoDataPresent
-        
-        var logMessage = "\n================ APP STATE ================\n"
-      logMessage += "💎 Pro Plan: \(isPremium ? "✅ YES" : "❌ NO")\n"
+  private func logAppState() {
+      let isPro = IAPManager.shared.isProPlan == true
+      let nextPayment = IAPManager.shared.nextPaymentDate
+      let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+      let theme = SettingsManager.shared.loadTheme()
+      let orderMode = SettingsManager.shared.loadOrderEntryMode()
+      let hasDemoData = DemoDataManager.shared.isDemoDataPresent
+
+      var logMessage = "\n================ APP STATE ================\n"
+      logMessage += "💎 Pro Plan: \(isPro ? "✅ YES" : "❌ NO")\n"
       if let date = nextPayment {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
@@ -209,7 +215,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         logMessage += "🎨 Theme: \(theme)\n"
         logMessage += "📝 Order Mode: \(orderMode == .perOrder ? "Per Order" : "Open Tab")\n"
         logMessage += "===========================================\n"
-        
+
         logger.info(logMessage)
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 import TinyConstraints
 
-class OrderListViewController: UIViewController, Loggable, PremiumGated {
+class OrderListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: OrderListViewModelType?
 
     let tableView: UITableView = {
@@ -58,7 +58,7 @@ class OrderListViewController: UIViewController, Loggable, PremiumGated {
 
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        guard checkPremiumOrShowPaywall() else { return }
+        guard checkProOrShowPaywall() else { return }
 
         let orderVC = OrderDetailsViewController()
         navigationController?.pushViewController(orderVC, animated: true)
@@ -129,7 +129,7 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
             [weak self] _, _, completion in
             guard let self = self else { return }
 
-            if !self.checkPremiumOrShowPaywall() {
+            if !self.checkProOrShowPaywall() {
                 completion(false) // Cancel deletion visual
                 // Ideally, we should reload row to close swipe, but completion(false) might be enough
                 return

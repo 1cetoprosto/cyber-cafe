@@ -120,7 +120,7 @@ struct UserDefaultsKeys {
     static let paletteStyle = "kPaletteStyle"
     static let firstLaunch = "kFirstLaunch"
     static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
-    static let subscriptionIsPremiumPlan = "kUserSubscriptionIsPremiumPlan"
+    static let subscriptionIsProPlan = "kUserSubscriptionIsPremiumPlan" // Keeping key for backward compatibility
     static let appleLanguages = "AppleLanguages"
     static let orderEntryMode = "settings.orderEntryMode"
     static let hasSeenOnboarding = "hasSeenOnboarding"
