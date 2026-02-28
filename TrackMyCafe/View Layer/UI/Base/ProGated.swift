@@ -1,5 +1,5 @@
 //
-//  PremiumGated.swift (Should be renamed to ProGated.swift)
+//  ProGated.swift (Should be renamed to ProGated.swift)
 //  TrackMyCafe
 //
 

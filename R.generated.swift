@@ -992,12 +992,12 @@ struct _R {
       /// Locales: en, uk
       var general: RswiftResources.StringResource { .init(key: "general", tableName: "Global", source: source, developmentValue: "General", comment: nil) }
 
-      /// en translation: You have Premium Plan
+      /// en translation: You have PRO Plan
       ///
-      /// Key: hasPremiumPlan
+      /// Key: hasProPlan
       ///
       /// Locales: en, uk
-      var hasPremiumPlan: RswiftResources.StringResource { .init(key: "hasPremiumPlan", tableName: "Global", source: source, developmentValue: "You have Premium Plan", comment: nil) }
+      var hasProPlan: RswiftResources.StringResource { .init(key: "hasProPlan", tableName: "Global", source: source, developmentValue: "You have PRO Plan", comment: nil) }
 
       /// en translation: Home
       ///
