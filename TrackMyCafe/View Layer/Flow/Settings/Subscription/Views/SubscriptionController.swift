@@ -147,7 +147,7 @@ class SubscriptionController: UIViewController, Loggable {
         setupUI()
         setupConstraints()
 
-        let isPro = IAPManager.shared.isProPlan == true
+        let isPro = false //IAPManager.shared.isProPlan == true
         logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
 
         if isPro {
@@ -382,7 +382,8 @@ class SubscriptionController: UIViewController, Loggable {
         termsLabel.text = displayInfo.termsText
 
         // Update styling if user is already premium
-        if IAPManager.shared.isProPlan == true {
+        let isPro = false//IAPManager.shared.isProPlan == true
+        if isPro {
             setupActiveSubscriptionUI()
         } else {
             setupInactiveSubscriptionUI()

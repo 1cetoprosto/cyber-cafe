@@ -129,10 +129,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
         // 2. Check Subscription
-        let isPremium = IAPManager.shared.isProPlan == true
+        let isPro = false// IAPManager.shared.isProPlan == true
         let hasSeenPaywall = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenInitialPaywall)
 
-        if !isPremium && !hasSeenPaywall {
+        if !isPro && !hasSeenPaywall {
             let paywallVC = SubscriptionController.makeDefault()
             paywallVC.enableReadOnlyMode()
             paywallVC.onSubscriptionSuccess = { [weak self] in
@@ -225,7 +225,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
     // MARK: - Debug Helper
     private func logAppState() {
-        let isPro = IAPManager.shared.isProPlan == true
+        let isPro =  false//IAPManager.shared.isProPlan == true
         let nextPayment = IAPManager.shared.nextPaymentDate
         let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
         let theme = SettingsManager.shared.loadTheme()
