@@ -180,49 +180,16 @@ final class SubscriptionBannerView: UIView {
                 return
             }
 
-            // Try to find monthly subscription
-            var selectedProduct: SKProduct?
-            if let monthly = products.first(where: { $0.productIdentifier.contains("month") }) {
-                selectedProduct = monthly
-            } else {
-                selectedProduct = products.first
-            }
-
-            guard let product = selectedProduct else { return }
-            self.product = product
-
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .currency
-            formatter.locale = product.priceLocale
-            let priceString = formatter.string(from: product.price) ?? "\(product.price)"
+            self.product = SubscriptionPresenter.shared.findBestProduct(in: products)
+            guard let product = self.product else { return }
 
             DispatchQueue.main.async {
                 self.actionButton.isEnabled = true
-
-                // Check for Introductory Price (Trial)
-                if let introPrice = product.introductoryPrice,
-                   introPrice.paymentMode == .freeTrial {
-
-                    var daysCount = 0
-                    let days = introPrice.subscriptionPeriod.numberOfUnits
-                    let periodUnit = introPrice.subscriptionPeriod.unit
-
-                    if periodUnit == .day { daysCount = days }
-                    else if periodUnit == .week { daysCount = days * 7 }
-                    else if periodUnit == .month { daysCount = days * 30 }
-                    else if periodUnit == .year { daysCount = days * 365 }
-
-                    // "14 днів безплатно"
-                    self.actionButton.setTitle(R.string.global.tryButtonTitle(daysCount), for: .normal)
-                    // "Потім 199 грн/міс. Автоматичне подовження."
-                    self.termsLabel.text = R.string.global.trialTermsText(priceString)
-                } else {
-                    // "Підписатися за 199 грн/міс"
-                    self.actionButton.setTitle(R.string.global.subscribeButtonTitle(priceString), for: .normal)
-
-                    // "Скасувати можна в будь-який час."
-                    self.termsLabel.text = R.string.global.noTrialTermsText()
-                }
+                
+                let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(for: product)
+                
+                self.actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
+                self.termsLabel.text = displayInfo.termsText
 
                 // Notify parent to update layout
                 self.onInfoLoaded?()

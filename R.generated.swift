@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 338 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 339 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -277,6 +277,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var activatePro: RswiftResources.StringResource { .init(key: "activatePro", tableName: "Global", source: source, developmentValue: "Activate PRO", comment: nil) }
+
+      /// en translation: Activated
+      ///
+      /// Key: activated
+      ///
+      /// Locales: en, uk
+      var activated: RswiftResources.StringResource { .init(key: "activated", tableName: "Global", source: source, developmentValue: "Activated", comment: nil) }
 
       /// en translation: Add
       ///
@@ -2427,12 +2434,12 @@ struct _R {
       /// Locales: en, uk
       var tryButtonFormat: RswiftResources.StringResource2<Int, String> { .init(key: "tryButtonFormat", tableName: "Global", source: source, developmentValue: "%d days free, then %@/mo", comment: nil) }
 
-      /// en translation: %d days free
+      /// en translation: Try %d days for free
       ///
       /// Key: tryButtonTitle
       ///
       /// Locales: en, uk
-      var tryButtonTitle: RswiftResources.StringResource1<Int> { .init(key: "tryButtonTitle", tableName: "Global", source: source, developmentValue: "%d days free", comment: nil) }
+      var tryButtonTitle: RswiftResources.StringResource1<Int> { .init(key: "tryButtonTitle", tableName: "Global", source: source, developmentValue: "Try %d days for free", comment: nil) }
 
       /// en translation: Type
       ///
@@ -2846,8 +2853,8 @@ struct _R {
     /// Resource file `Screenshot1.png`.
     var screenshot1Png: RswiftResources.FileResource { .init(name: "Screenshot1", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
 
-    /// Resource file `TrackMyCafe1.storekit`.
-    var trackMyCafe1Storekit: RswiftResources.FileResource { .init(name: "TrackMyCafe1", pathExtension: "storekit", bundle: bundle, locale: LocaleReference.none) }
+    /// Resource file `TrackMyCafe.storekit`.
+    var trackMyCafeStorekit: RswiftResources.FileResource { .init(name: "TrackMyCafe", pathExtension: "storekit", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `TypeOfDonationModel.png`.
     var typeOfDonationModelPng: RswiftResources.FileResource { .init(name: "TypeOfDonationModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }

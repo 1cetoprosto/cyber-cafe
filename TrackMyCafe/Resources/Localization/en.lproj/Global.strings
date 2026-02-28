@@ -211,12 +211,13 @@
 "subscribeButtonFormat" = "Activate for %@/mo";
 "tryButtonFormat" = "%d days free, then %@/mo";
 
-"tryButtonTitle" = "%d days free";
+"tryButtonTitle" = "Try %d days for free";
 "subscribeButtonTitle" = "Subscribe for %@/mo";
 "trialTermsText" = "Then %@/mo. Auto-renewable.";
 "noTrialTermsText" = "Cancel anytime.";
 "activatePro" = "Activate PRO";
 "loading" = "Loading...";
+"activated" = "Activated";
 
 // MARK: - Purchases
 "purchases" = "Purchases";

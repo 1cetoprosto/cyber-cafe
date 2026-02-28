@@ -198,7 +198,7 @@
 
 "subscriptionBannerTitle" = "TrackMyCafe";
 "subscriptionBannerDescription" = "Контролюйте витрати та доходи, ведіть облік продажів та отримайте повну фінансову картину вашого бізнесу.";
-"subscriptionBannerAction" = "Спробувати безплатно";
+"subscriptionBannerAction" = "Спробувати безкоштовно";
 
 "subscriptionSubtitle" = "Відкрий повний потенціал";
 "subscriptionFeature1" = "Швидкий облік витрат у два кліки";
@@ -207,16 +207,17 @@
 "subscriptionFeature4" = "Повна фінансова статистика";
 "subscriptionFeature5" = "Зручний інтерфейс: бізнес як на долоні";
 
-"trialBadgeText" = "%d днів БЕЗПЛАТНО";
+"trialBadgeText" = "%d днів безкоштовно";
 "subscribeButtonFormat" = "Активувати за %@/міс";
-"tryButtonFormat" = "%d днів безплатно, потім %@/міс";
+"tryButtonFormat" = "%d днів безкоштовно, потім %@/міс";
 
-"tryButtonTitle" = "%d днів безплатно";
+"tryButtonTitle" = "Спробувати %d днів безкоштовно";
 "subscribeButtonTitle" = "Підписатися за %@/міс";
 "trialTermsText" = "Потім %@/міс. Автоматичне подовження.";
 "noTrialTermsText" = "Скасувати можна в будь-який час.";
 "activatePro" = "Активувати PRO";
 "loading" = "Завантаження...";
+"activated" = "Активовано";
 
 // MARK: - Purchases
 "purchases" = "Закупки";
