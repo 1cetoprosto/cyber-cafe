@@ -1,11 +1,11 @@
 default_platform(:ios)
 
 platform :ios do
-  
+
   # ---------------------------------------------------------------------------
   # Shared Logic
   # ---------------------------------------------------------------------------
-  
+
   def build_and_distribute(scheme:, bundle_id:)
     # 1. Ensure git status is clean before building
     ensure_git_status_clean
@@ -13,7 +13,7 @@ platform :ios do
     # 2. Increment build number for ALL targets
     # (Requires agvtool enabled in Xcode project settings)
     increment_build_number(xcodeproj: "TrackMyCafe.xcodeproj")
-    
+
     # 3. Commit the version bump (so the repo is clean for next run if build fails)
     commit_version_bump(
       xcodeproj: "TrackMyCafe.xcodeproj",
@@ -26,7 +26,9 @@ platform :ios do
       workspace: "TrackMyCafe.xcworkspace",
       scheme: scheme,
       clean: true,
-      export_method: "app-store"
+      export_method: "app-store",
+      # Allow Xcode to update provisioning profiles if needed (Automatic Signing)
+      xcargs: "-allowProvisioningUpdates"
     )
 
     # 4. Upload to TestFlight and add to "External Testers" group
@@ -45,7 +47,7 @@ platform :ios do
   desc "Deploy PROD to TestFlight (Scheme: TrackMyCafe Prod)"
   lane :prod do
     build_and_distribute(
-      scheme: "TrackMyCafe Prod", 
+      scheme: "TrackMyCafe Prod",
       bundle_id: "ICSOFT.TrackMyCafe"
     )
   end
@@ -53,7 +55,7 @@ platform :ios do
   desc "Deploy BETA to TestFlight (Scheme: TrackMyCafe Beta)"
   lane :beta do
     build_and_distribute(
-      scheme: "TrackMyCafe Beta", 
+      scheme: "TrackMyCafe Beta",
       bundle_id: "ICSOFT.TrackMyCafe.beta"
     )
   end
@@ -62,9 +64,9 @@ platform :ios do
   lane :dev do
     # Note: Ensure "ICSOFT.TrackMyCafe.dev" exists in App Store Connect
     build_and_distribute(
-      scheme: "TrackMyCafe Dev", 
+      scheme: "TrackMyCafe Dev",
       bundle_id: "ICSOFT.TrackMyCafe.dev"
     )
   end
-  
+
 end
