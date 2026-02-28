@@ -117,10 +117,10 @@ class SignUpController: UIViewController {
             SVProgressHUD.show(show)
         case .error(let error):
             showAlert(R.string.global.error(), body: error?.localizedDescription)
-        case .retry(let cancel, let retry):
+        case .retry(let error, let cancel, let retry):
             let alertVC = UIAlertController(
                 title: R.string.global.error(),
-                message: R.string.global.wentWrong(),
+                message: error ?? R.string.global.wentWrong(),
                 preferredStyle: .alert)
 
             alertVC.addAction(
