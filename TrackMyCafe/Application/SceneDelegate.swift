@@ -83,12 +83,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
     window = UIWindow(windowScene: windowScene)
 
-    #if DEBUG
-    // Reset subscription state for testing
-    // IAPManager.shared.debugResetSubscription()
-    // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
-    #endif
-
     start()
 
     window?.makeKeyAndVisible()
