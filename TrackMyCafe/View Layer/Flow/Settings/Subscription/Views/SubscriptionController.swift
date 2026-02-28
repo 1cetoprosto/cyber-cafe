@@ -374,9 +374,42 @@ class SubscriptionController: UIViewController {
 
         // Update styling if user is already premium
         if IAPManager.shared.isPremiumPlan == true {
-            actionButton.setTitle(R.string.global.activated(), for: .normal)
-            actionButton.isEnabled = false
-            actionButton.backgroundColor = .systemGray
+            setupActiveSubscriptionUI()
+        }
+    }
+
+    private func setupActiveSubscriptionUI() {
+        featuresContainer.isHidden = true
+        termsLabel.isHidden = true
+        skipButton.isHidden = true
+
+        // Update Header
+        let activeTitle = NSLocalizedString("subscription_active_subtitle", value: "You are a PRO member", comment: "")
+        var subtitleText = activeTitle
+
+        if let nextPayment = IAPManager.shared.nextPaymentDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            let dateStr = formatter.string(from: nextPayment)
+            let validUntil = NSLocalizedString("valid_until", value: "Valid until", comment: "")
+            subtitleText += "\n\(validUntil): \(dateStr)"
+        }
+
+        subtitleLabel.text = subtitleText
+        subtitleLabel.numberOfLines = 0
+
+        // Update Action Button
+        let manageTitle = NSLocalizedString("manage_subscription", value: "Manage Subscription", comment: "")
+        actionButton.setTitle(manageTitle, for: .normal)
+        actionButton.isEnabled = true
+        actionButton.backgroundColor = .systemBlue // Use systemBlue as UIColor.Main.button is not available
+        actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+    }
+
+    @objc private func manageSubscriptionAction() {
+        if let url = URL(string: "https://apps.apple.com/account/subscriptions") {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 
