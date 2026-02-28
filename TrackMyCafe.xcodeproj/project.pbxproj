@@ -588,9 +588,9 @@
 		F3D8DB722F529A4800898100 /* TrackMyCafe.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */; };
 		F3D8DB732F529A4800898100 /* TrackMyCafe.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */; };
 		F3D8DB742F529A4800898100 /* TrackMyCafe.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */; };
-		F3D8DC0F2F52C83000898100 /* PremiumGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* PremiumGated.swift */; };
-		F3D8DC102F52C83000898100 /* PremiumGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* PremiumGated.swift */; };
-		F3D8DC112F52C83000898100 /* PremiumGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* PremiumGated.swift */; };
+		F3D8DC0F2F52C83000898100 /* ProGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* ProGated.swift */; };
+		F3D8DC102F52C83000898100 /* ProGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* ProGated.swift */; };
+		F3D8DC112F52C83000898100 /* ProGated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D8DC0E2F52C83000898100 /* ProGated.swift */; };
 		F3D97EB82F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
 		F3D97EB92F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
 		F3D97EBA2F4DF7D8006270AF /* DemoDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */; };
@@ -877,7 +877,7 @@
 		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = TrackMyCafe.storekit; sourceTree = "<group>"; };
-		F3D8DC0E2F52C83000898100 /* PremiumGated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PremiumGated.swift; sourceTree = "<group>"; };
+		F3D8DC0E2F52C83000898100 /* ProGated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProGated.swift; sourceTree = "<group>"; };
 		F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoDataManager.swift; sourceTree = "<group>"; };
 		F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NumericTextInputFilter.swift; sourceTree = "<group>"; };
 		F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+NumericInput.swift"; sourceTree = "<group>"; };
@@ -1483,7 +1483,7 @@
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
 				9AD7023830D52366E592DF97 /* PaddedTextField.swift */,
-				F3D8DC0E2F52C83000898100 /* PremiumGated.swift */,
+				F3D8DC0E2F52C83000898100 /* ProGated.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -2810,7 +2810,7 @@
 				F3410EA42BDD3C8E0007157B /* UserSession.swift in Sources */,
 				F3410E602BDD00C20007157B /* SignUpController.swift in Sources */,
 				F3988AED27EB19C300215976 /* CostDetailsViewModel.swift in Sources */,
-				F3D8DC112F52C83000898100 /* PremiumGated.swift in Sources */,
+				F3D8DC112F52C83000898100 /* ProGated.swift in Sources */,
 				F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */,
 				F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */,
 				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
@@ -3006,7 +3006,7 @@
 				F3B339FA2C0B22FE0073F19A /* UserSession.swift in Sources */,
 				F39D78552C2034E30003B556 /* Log.swift in Sources */,
 				F3B339FB2C0B22FE0073F19A /* SignUpController.swift in Sources */,
-				F3D8DC0F2F52C83000898100 /* PremiumGated.swift in Sources */,
+				F3D8DC0F2F52C83000898100 /* ProGated.swift in Sources */,
 				F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B339FD2C0B22FE0073F19A /* FIRTypeModel.swift in Sources */,
 				F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
@@ -3202,7 +3202,7 @@
 				F3B33A992C0B23450073F19A /* UserSession.swift in Sources */,
 				F39D78562C2034E30003B556 /* Log.swift in Sources */,
 				F3B33A9A2C0B23450073F19A /* SignUpController.swift in Sources */,
-				F3D8DC102F52C83000898100 /* PremiumGated.swift in Sources */,
+				F3D8DC102F52C83000898100 /* ProGated.swift in Sources */,
 				F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B33A9C2C0B23450073F19A /* FIRTypeModel.swift in Sources */,
 				F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,

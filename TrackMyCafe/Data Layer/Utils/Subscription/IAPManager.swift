@@ -100,7 +100,7 @@ class IAPManager: NSObject, Loggable {
     // MARK: - Debug
     func debugResetSubscription() {
         logger.debug("DEBUG: Resetting subscription status")
-        isPremiumPlan = false
+        isProPlan = false
         nextPaymentDate = nil
     }
 

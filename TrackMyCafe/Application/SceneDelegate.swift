@@ -124,7 +124,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
         // 2. Check Subscription
-        let isPremium = IAPManager.shared.isPremiumPlan == true
+        let isPremium = IAPManager.shared.isProPlan == true
         let hasSeenPaywall = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenInitialPaywall)
 
         if !isPremium && !hasSeenPaywall {
