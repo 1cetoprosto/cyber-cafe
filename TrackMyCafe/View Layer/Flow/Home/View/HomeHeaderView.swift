@@ -21,7 +21,6 @@ final class HomeHeaderView: UIView {
     private let titleLabel: UILabel = {
         let l = UILabel()
         l.applyDynamic(Typography.title2DemiBold)
-        l.textColor = UIColor.Main.text
         l.text = R.string.global.appName()
         return l
     }()
@@ -29,7 +28,6 @@ final class HomeHeaderView: UIView {
     private let dateLabel: UILabel = {
         let l = UILabel()
         l.applyDynamic(Typography.footnote)
-        l.textColor = UIColor.Main.text.alpha(0.7)
         return l
     }()
 
@@ -109,6 +107,8 @@ final class HomeHeaderView: UIView {
 
     private func setupUI() {
         backgroundColor = UIColor.Main.background
+        titleLabel.textColor = UIColor.Main.text
+        dateLabel.textColor = UIColor.Main.text.alpha(0.7)
 
         let headerStack = UIStackView(arrangedSubviews: [titleLabel, dateLabel])
         headerStack.axis = .vertical
@@ -126,7 +126,7 @@ final class HomeHeaderView: UIView {
         expenseButton.setTitle("+ " + R.string.global.cost(), for: .normal)
         expenseButton.setTitleColor(UIColor.Main.text, for: .normal)
         expenseButton.layer.borderWidth = UIConstants.standardBorderWidth
-        expenseButton.layer.borderColor = UIColor.Main.text.alpha(0.15).cgColor
+        // Moved borderColor setup to traitCollectionDidChange
         expenseButton.backgroundColor = UIColor.Main.background
         if #available(iOS 11.0, *) {
             expenseButton.titleLabel?.adjustsFontForContentSizeCategory = true
@@ -152,7 +152,7 @@ final class HomeHeaderView: UIView {
         kpiRow1.addArrangedSubview(profitCard)
 
         deleteDemoDataButton.height(UIConstants.buttonHeight)
-        
+
         let contentStack = UIStackView(
             arrangedSubviews: [
                 deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2, balanceCard,
@@ -168,20 +168,32 @@ final class HomeHeaderView: UIView {
                 left: 0,
                 bottom: UIConstants.largeSpacing,
                 right: 0
-            )
+            ),
+            priority: .defaultHigh
         )
-
-        let containerHeight =
-            UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
-        summaryCard.height(containerHeight)
-        expensesCard.height(containerHeight)
-        profitCard.height(containerHeight)
     }
 
     @objc private func incomeTap() { onAddIncome?() }
     @objc private func expenseTap() { onAddExpense?() }
     @objc private func periodChanged() { onPeriodChanged?(periodControl.selectedSegmentIndex) }
     @objc private func deleteDemoDataTap() { onDeleteDemoData?() }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if #available(iOS 13.0, *) {
+            if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                updateExpenseButtonBorder()
+            }
+        }
+    }
+
+    private func updateExpenseButtonBorder() {
+        if #available(iOS 13.0, *) {
+            expenseButton.layer.borderColor = UIColor.Main.text.resolvedColor(with: traitCollection).alpha(0.15).cgColor
+        } else {
+            expenseButton.layer.borderColor = UIColor.Main.text.alpha(0.15).cgColor
+        }
+    }
 }
 
 // MARK: - Small UI Components
@@ -217,8 +229,7 @@ private final class ProfitCard: UIView {
         badgeView.addSubview(iconView)
         iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
         iconView.centerInSuperview()
-        badgeView.width(UIConstants.badgeSize)
-        badgeView.height(UIConstants.badgeSize)
+        badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
         let vStack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
         vStack.axis = .vertical
@@ -297,8 +308,7 @@ private final class TodayCardView: UIView {
         iconBadge.addSubview(iconView)
         iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
         iconView.centerInSuperview()
-        iconBadge.width(UIConstants.badgeSize)
-        iconBadge.height(UIConstants.badgeSize)
+        iconBadge.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
         let header = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
         header.axis = .vertical
@@ -307,6 +317,7 @@ private final class TodayCardView: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
+        stack.alignment = .center
 
         addSubview(stack)
         stack.edgesToSuperview(
@@ -359,6 +370,7 @@ private final class SimpleKpiCard: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
+        stack.alignment = .center
 
         addSubview(stack)
         stack.edgesToSuperview(
@@ -378,58 +390,35 @@ private final class SimpleKpiCard: UIView {
 extension HomeHeaderView {
     override func layoutSubviews() {
         super.layoutSubviews()
+        // Ensure color is set initially if not already
+        if expenseButton.layer.borderColor == nil {
+            updateExpenseButtonBorder()
+        }
+
         let width = bounds.width
         let spacing = UIConstants.standardPadding
         let cardWidth = (width - 2 * spacing) / 3
         let shouldBeThree = cardWidth >= 140
         if shouldBeThree != isThreeInRow {
             isThreeInRow = shouldBeThree
+
+            // Clear existing views
+            kpiRow1.arrangedSubviews.forEach {
+                kpiRow1.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+            kpiRow2.arrangedSubviews.forEach {
+                kpiRow2.removeArrangedSubview($0)
+                $0.removeFromSuperview()
+            }
+
             if shouldBeThree {
-                kpiRow2.arrangedSubviews.forEach {
-                    kpiRow2.removeArrangedSubview($0)
-                    $0.removeFromSuperview()
-                }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
-                kpiRow1.arrangedSubviews.forEach { _ in }
                 kpiRow1.addArrangedSubview(summaryCard)
                 kpiRow1.addArrangedSubview(expensesCard)
                 kpiRow1.addArrangedSubview(profitCard)
             } else {
-                kpiRow1.arrangedSubviews.forEach {
-                    kpiRow1.removeArrangedSubview($0)
-                    $0.removeFromSuperview()
-                }
                 kpiRow1.addArrangedSubview(summaryCard)
                 kpiRow1.addArrangedSubview(expensesCard)
-                kpiRow2.arrangedSubviews.forEach {
-                    kpiRow2.removeArrangedSubview($0)
-                    $0.removeFromSuperview()
-                }
                 kpiRow2.addArrangedSubview(profitCard)
             }
         }
