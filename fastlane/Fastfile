@@ -13,8 +13,15 @@ platform :ios do
     # 2. Increment build number for ALL targets
     # (Requires agvtool enabled in Xcode project settings)
     increment_build_number(xcodeproj: "TrackMyCafe.xcodeproj")
+    
+    # 3. Commit the version bump (so the repo is clean for next run if build fails)
+    commit_version_bump(
+      xcodeproj: "TrackMyCafe.xcodeproj",
+      message: "chore: Bump build number [skip ci]", # [skip ci] prevents loop if you have CI
+      force: true
+    )
 
-    # 3. Build the app
+    # 4. Build the app
     build_app(
       workspace: "TrackMyCafe.xcworkspace",
       scheme: scheme,
