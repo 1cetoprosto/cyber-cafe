@@ -213,16 +213,30 @@ class Theme {
     }
 
     private static func applySystemAppearance(_ appearance: AppearanceStyle) {
-        DispatchQueue.main.async {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                let window = windowScene.windows.first
-            {
-                switch appearance {
-                case .light: window.overrideUserInterfaceStyle = .light
-                case .dark: window.overrideUserInterfaceStyle = .dark
-                case .system: window.overrideUserInterfaceStyle = .unspecified
+        // Remove DispatchQueue.main.async to apply immediately if on main thread
+        // Apply to all connected scenes
+        for scene in UIApplication.shared.connectedScenes {
+            if let windowScene = scene as? UIWindowScene {
+                windowScene.windows.forEach { window in
+                    apply(to: window, appearance: appearance)
                 }
             }
+        }
+    }
+
+    static func apply(to window: UIWindow, appearance: AppearanceStyle? = nil) {
+        let styleToApply = appearance ?? currentSelection.appearance
+        let targetStyle: UIUserInterfaceStyle
+
+        switch styleToApply {
+        case .light: targetStyle = .light
+        case .dark: targetStyle = .dark
+        case .system: targetStyle = .unspecified
+        }
+
+        // Only set if different to avoid CoreUI noise
+        if window.overrideUserInterfaceStyle != targetStyle {
+            window.overrideUserInterfaceStyle = targetStyle
         }
     }
 
@@ -240,23 +254,15 @@ class Theme {
     // Method for automatic system theme following
     static func followSystemTheme() {
         if currentSelection.appearance == .system {
-            let detectedTheme = detectSystemTheme()
-            applySystemTheme(detectedTheme)
+            // Apply .unspecified to let the system handle appearance
+            applySystemAppearance(.system)
         }
     }
 
     // Apply current theme on app launch
     static func applyCurrentTheme() {
         let appearance = currentSelection.appearance
-        switch appearance {
-        case .system:
-            let detectedTheme = detectSystemTheme()
-            applySystemTheme(detectedTheme)
-        case .light:
-            applySystemAppearance(.light)
-        case .dark:
-            applySystemAppearance(.dark)
-        }
+        applySystemAppearance(appearance)
     }
 }
 

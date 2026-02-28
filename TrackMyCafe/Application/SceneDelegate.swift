@@ -87,6 +87,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
     window = UIWindow(windowScene: windowScene)
 
+    // Set a dummy root view controller to make window key and visible
+    window?.rootViewController = UIViewController()
+    window?.makeKeyAndVisible()
+
+    // Apply saved theme immediately
+    Theme.apply(to: window!)
+
+    // Configure global UI appearance after window is ready
+    setupAppearance()
+
     #if DEBUG
     // Reset subscription state for testing
     // IAPManager.shared.debugResetSubscription()
@@ -94,11 +104,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     #endif
 
     start()
-
-        window?.makeKeyAndVisible()
-
-        // Apply saved theme on app launch
-        Theme.applyCurrentTheme()
 
         // Debug Logging of App State
         logAppState()
@@ -192,18 +197,44 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         }
     }
 
-    // MARK: - Debug Helper
-  private func logAppState() {
-      let isPro = IAPManager.shared.isProPlan == true
-      let nextPayment = IAPManager.shared.nextPaymentDate
-      let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
-      let theme = SettingsManager.shared.loadTheme()
-      let orderMode = SettingsManager.shared.loadOrderEntryMode()
-      let hasDemoData = DemoDataManager.shared.isDemoDataPresent
+    // MARK: - Appearance Setup
 
-      var logMessage = "\n================ APP STATE ================\n"
-      logMessage += "💎 Pro Plan: \(isPro ? "✅ YES" : "❌ NO")\n"
-      if let date = nextPayment {
+    private func setupAppearance() {
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            navBarAppearance.backgroundColor = UIColor.NavBar.background
+            let appearance = UINavigationBar.appearance(whenContainedInInstancesOf: [MainNavigationController.self])
+            appearance.standardAppearance = navBarAppearance
+            appearance.compactAppearance = navBarAppearance
+            appearance.scrollEdgeAppearance = navBarAppearance
+            // appearance.prefersLargeTitles = false // Not available on proxy
+        } else {
+            UINavigationBar.appearance().barTintColor = UIColor.NavBar.text
+            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            UINavigationBar.appearance().isTranslucent = false
+        }
+
+        UINavigationBar.appearance().tintColor = UIColor.NavBar.text
+
+        if #available(iOS 13.4, *) {
+            UIDatePicker.appearance().preferredDatePickerStyle = .wheels
+        }
+    }
+    // MARK: - Debug Helper
+    private func logAppState() {
+        let isPro = IAPManager.shared.isProPlan == true
+        let nextPayment = IAPManager.shared.nextPaymentDate
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        let theme = SettingsManager.shared.loadTheme()
+        let orderMode = SettingsManager.shared.loadOrderEntryMode()
+        let hasDemoData = DemoDataManager.shared.isDemoDataPresent
+
+        var logMessage = "\n================ APP STATE ================\n"
+        logMessage += "💎 Pro Plan: \(isPro ? "✅ YES" : "❌ NO")\n"
+        if let date = nextPayment {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             logMessage += "📅 Next Payment: \(formatter.string(from: date))\n"
