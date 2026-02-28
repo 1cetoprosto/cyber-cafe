@@ -1,5 +1,9 @@
 default_platform(:ios)
 
+# Load .env file manually to ensure environment variables are set
+require 'dotenv'
+Dotenv.load('../.env')
+
 platform :ios do
 
   # ---------------------------------------------------------------------------
