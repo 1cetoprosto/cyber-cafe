@@ -38,9 +38,10 @@ platform :ios do
     # 4. Upload to TestFlight and add to "External Testers" group
     upload_to_testflight(
       app_identifier: bundle_id,
-      skip_waiting_for_build_processing: true, # Don't wait for processing
+      skip_waiting_for_build_processing: false, # Wait for processing so we can add external testers
       distribute_external: true,               # Enable external testing
-      groups: ["External Testers"]             # Auto-add this group
+      groups: ["External Testers"],            # Auto-add this group
+      changelog: "Updated build"               # Fallback changelog if none provided
     )
   end
 
