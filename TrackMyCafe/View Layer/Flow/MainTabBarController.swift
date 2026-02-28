@@ -11,6 +11,8 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
     
+    private var hasAlreadyCheckedSession = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -25,21 +27,24 @@ class MainTabBarController: UITabBarController {
     }
     
     private func checkAndSeedDemoDataIfNeeded() {
-        guard let userId = Auth.auth().currentUser?.uid else { return }
-        let hasCheckedDemoDataKey = "hasCheckedDemoData_\(userId)"
+        guard !hasAlreadyCheckedSession else { return }
+        hasAlreadyCheckedSession = true
         
-        let hasCheckedDemoData = UserDefaults.standard.bool(forKey: hasCheckedDemoDataKey)
-        guard !hasCheckedDemoData else { return }
+        guard Auth.auth().currentUser?.uid != nil else { return }
         
-        // Mark as checked so we don't check again on subsequent launches
-        UserDefaults.standard.set(true, forKey: hasCheckedDemoDataKey)
+        // Always check if DB is empty on launch.
+        // If empty -> AUTOMATICALLY seed demo data (as requested).
         
-        // Check if DB is empty (simple check: if no products, likely empty)
         DomainDatabaseService.shared.fetchProductsPrice { [weak self] products in
             guard products.isEmpty else { return }
             
-            DispatchQueue.main.async {
-                self?.seedDemoData()
+            // Also check ingredients to be sure
+            DomainDatabaseService.shared.fetchIngredients { ingredients in
+                guard ingredients.isEmpty else { return }
+                
+                DispatchQueue.main.async {
+                    self?.seedDemoData()
+                }
             }
         }
     }

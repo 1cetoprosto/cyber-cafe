@@ -413,6 +413,8 @@
 "deleteDemoData" = "Delete Demo Data";
 "deleteDemoDataTitle" = "Delete Demo Data?";
 "deleteDemoDataMessage" = "This will remove all demo data but keep your personal entries.";
+"deleteAllData" = "Delete All Data";
+"deleteAllDataMessage" = "This will permanently delete ALL your data (products, orders, etc). This action cannot be undone.";
 "deleting" = "Deleting...";
 "demoDataTitle" = "Demo Data";
 "demoDataMessage" = "Would you like to fill the app with demo data to see how it works?";

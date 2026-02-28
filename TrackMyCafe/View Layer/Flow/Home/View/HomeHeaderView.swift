@@ -168,8 +168,7 @@ final class HomeHeaderView: UIView {
                 left: 0,
                 bottom: UIConstants.largeSpacing,
                 right: 0
-            ),
-            priority: .defaultHigh
+            )
         )
     }
 
