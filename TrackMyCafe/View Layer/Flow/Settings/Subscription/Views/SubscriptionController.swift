@@ -147,7 +147,7 @@ class SubscriptionController: UIViewController, Loggable {
         setupUI()
         setupConstraints()
 
-        let isPro = false //IAPManager.shared.isProPlan == true
+        let isPro = IAPManager.shared.isProPlan == true
         logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
 
         if isPro {
@@ -168,7 +168,7 @@ class SubscriptionController: UIViewController, Loggable {
         featuresContainer.backgroundColor = UIColor.TableView.cellBackground
         skipButton.setTitleColor(UIColor.Main.secondaryText, for: .normal)
         termsLabel.textColor = UIColor.Main.secondaryText
-        
+
         title = ""
 
         // ScrollView
@@ -382,8 +382,7 @@ class SubscriptionController: UIViewController, Loggable {
         termsLabel.text = displayInfo.termsText
 
         // Update styling if user is already premium
-        let isPro = false//IAPManager.shared.isProPlan == true
-        if isPro {
+        if IAPManager.shared.isProPlan == true {
             setupActiveSubscriptionUI()
         } else {
             setupInactiveSubscriptionUI()
