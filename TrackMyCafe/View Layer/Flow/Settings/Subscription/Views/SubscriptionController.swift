@@ -151,7 +151,12 @@ class SubscriptionController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
-        fetchProducts()
+
+        if IAPManager.shared.isPremiumPlan == true {
+            setupActiveSubscriptionUI()
+        } else {
+            fetchProducts()
+        }
 
         NotificationCenter.default.addObserver(
             self, selector: #selector(updateUI), name: .subscriptionInfoReload, object: nil)
@@ -402,7 +407,7 @@ class SubscriptionController: UIViewController {
         let manageTitle = NSLocalizedString("manage_subscription", value: "Manage Subscription", comment: "")
         actionButton.setTitle(manageTitle, for: .normal)
         actionButton.isEnabled = true
-        actionButton.backgroundColor = .systemBlue // Use systemBlue as UIColor.Main.button is not available
+        actionButton.backgroundColor = UIColor.Button.background
         actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
         actionButton.addTarget(self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
     }

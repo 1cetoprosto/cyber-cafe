@@ -90,6 +90,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     // Apply saved theme on app launch
     Theme.applyCurrentTheme()
 
+    // Debug Logging of App State
+    logAppState()
+
     seedDefaultIncomeTypesIfNeeded()
 
     buildDefaultOnboardingRegistry()
@@ -153,6 +156,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             overlayView.removeFromSuperview()
         })
     }
+
+  // MARK: - Debug Helper
+  private func logAppState() {
+      let isPremium = IAPManager.shared.isPremiumPlan == true
+      let nextPayment = IAPManager.shared.nextPaymentDate
+      let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+      let theme = SettingsManager.shared.loadTheme()
+      let orderMode = SettingsManager.shared.loadOrderEntryMode()
+      let hasDemoData = DemoDataManager.shared.isDemoDataPresent
+
+      var logMessage = "\n================ APP STATE ================\n"
+      logMessage += "💎 Premium Plan: \(isPremium ? "✅ YES" : "❌ NO")\n"
+      if let date = nextPayment {
+          let formatter = DateFormatter()
+          formatter.dateStyle = .medium
+          logMessage += "📅 Next Payment: \(formatter.string(from: date))\n"
+      } else {
+          logMessage += "📅 Next Payment: N/A\n"
+      }
+      logMessage += "🎓 Onboarding Seen: \(hasSeenOnboarding ? "YES" : "NO")\n"
+      logMessage += "📊 Demo Data Present: \(hasDemoData ? "YES" : "NO")\n"
+      logMessage += "🎨 Theme: \(theme)\n"
+      logMessage += "📝 Order Mode: \(orderMode == .perOrder ? "Per Order" : "Open Tab")\n"
+      logMessage += "===========================================\n"
+
+      logger.info(logMessage)
+  }
 }
 
 // MARK: - OnboardingViewControllerDelegate
