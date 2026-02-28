@@ -51,7 +51,6 @@ class SubscriptionController: UIViewController, Loggable {
         let label = UILabel()
         label.text = "TrackMyCafe" // "PRO" will be a separate tag
         label.font = .systemFont(ofSize: 28, weight: .bold)
-        label.textColor = UIColor.Main.text
         label.textAlignment = .center
         return label
     }()
@@ -72,7 +71,6 @@ class SubscriptionController: UIViewController, Loggable {
         let label = UILabel()
         label.text = R.string.global.subscriptionSubtitle()
         label.font = .systemFont(ofSize: 17, weight: .medium)
-        label.textColor = UIColor.Main.secondaryText // Using secondary text color (brown/gray)
         label.textAlignment = .center
         return label
     }()
@@ -80,7 +78,6 @@ class SubscriptionController: UIViewController, Loggable {
     // Features
     private let featuresContainer: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = 20
         view.clipsToBounds = true
         return view
@@ -117,7 +114,6 @@ class SubscriptionController: UIViewController, Loggable {
         let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "Button title to skip paywall and enter read-only mode")
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
-        button.setTitleColor(UIColor.Main.secondaryText, for: .normal)
         button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
         button.isHidden = true
         return button
@@ -126,7 +122,6 @@ class SubscriptionController: UIViewController, Loggable {
     private let termsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
-        label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .center
         label.numberOfLines = 0
         return label
@@ -168,6 +163,12 @@ class SubscriptionController: UIViewController, Loggable {
     // MARK: - Setup UI
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
+        titleLabel.textColor = UIColor.Main.text
+        subtitleLabel.textColor = UIColor.Main.secondaryText
+        featuresContainer.backgroundColor = UIColor.TableView.cellBackground
+        skipButton.setTitleColor(UIColor.Main.secondaryText, for: .normal)
+        termsLabel.textColor = UIColor.Main.secondaryText
+        
         title = ""
 
         // ScrollView
