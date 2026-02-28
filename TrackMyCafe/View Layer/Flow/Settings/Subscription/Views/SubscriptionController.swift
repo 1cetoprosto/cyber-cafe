@@ -383,6 +383,24 @@ class SubscriptionController: UIViewController, Loggable {
         // Update styling if user is already premium
         if IAPManager.shared.isProPlan == true {
             setupActiveSubscriptionUI()
+        } else {
+            setupInactiveSubscriptionUI()
+        }
+    }
+    
+    private func setupInactiveSubscriptionUI() {
+        featuresContainer.isHidden = false
+        termsLabel.isHidden = false
+        
+        if let expireDate = IAPManager.shared.nextPaymentDate, expireDate < Date() {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            let expiredText = NSLocalizedString("subscription_expired_subtitle", value: "Subscription expired on", comment: "")
+            subtitleLabel.text = "\(expiredText) \(formatter.string(from: expireDate))"
+            subtitleLabel.textColor = .systemRed
+        } else {
+            subtitleLabel.text = R.string.global.subscriptionSubtitle()
+            subtitleLabel.textColor = UIColor.Main.secondaryText
         }
     }
 
