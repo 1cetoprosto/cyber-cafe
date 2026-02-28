@@ -196,8 +196,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         let hasDemoData = DemoDataManager.shared.isDemoDataPresent
         
         var logMessage = "\n================ APP STATE ================\n"
-        logMessage += "💎 Premium Plan: \(isPremium ? "✅ YES" : "❌ NO")\n"
-        if let date = nextPayment {
+      logMessage += "💎 Pro Plan: \(isPremium ? "✅ YES" : "❌ NO")\n"
+      if let date = nextPayment {
             let formatter = DateFormatter()
             formatter.dateStyle = .medium
             logMessage += "📅 Next Payment: \(formatter.string(from: date))\n"
