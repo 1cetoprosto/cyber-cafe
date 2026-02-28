@@ -15,6 +15,7 @@ class SubscriptionController: UIViewController {
 
     // MARK: - Properties
     var onSubscriptionSuccess: (() -> Void)?
+    var onSkip: (() -> Void)?
     private var products = [SKProduct]()
     private var selectedProduct: SKProduct?
 
@@ -109,6 +110,19 @@ class SubscriptionController: UIViewController {
         return button
     }()
 
+    private lazy var skipButton: UIButton = {
+        let button = UIButton(type: .system)
+        // Localized string for "Continue in Read-Only Mode"
+        // If localization key doesn't exist, fallback to English text
+        let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "Button title to skip paywall and enter read-only mode")
+        button.setTitle(title, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        button.setTitleColor(UIColor.Main.secondaryText, for: .normal)
+        button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+
     private let termsLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .regular)
@@ -191,6 +205,7 @@ class SubscriptionController: UIViewController {
         // Price labels removed, info moved to button
 
         mainStackView.addArrangedSubview(actionButton)
+        mainStackView.addArrangedSubview(skipButton)
         mainStackView.addArrangedSubview(termsLabel)
         mainStackView.addArrangedSubview(footerStackView)
 
@@ -202,6 +217,7 @@ class SubscriptionController: UIViewController {
         mainStackView.setCustomSpacing(8, after: trialBadge)
 
         mainStackView.setCustomSpacing(10, after: actionButton)
+        mainStackView.setCustomSpacing(10, after: skipButton)
     }
 
     private func setupFeatures() {
@@ -368,7 +384,20 @@ class SubscriptionController: UIViewController {
         updateProductUI()
     }
 
+    // MARK: - Public Methods
+    func enableReadOnlyMode() {
+        skipButton.isHidden = false
+    }
+
     // MARK: - Actions
+
+    @objc private func skipAction() {
+        if let onSkip = onSkip {
+            onSkip()
+        } else {
+            dismiss(animated: true)
+        }
+    }
 
     @objc private func purchaseAction() {
         guard let product = selectedProduct else { return }

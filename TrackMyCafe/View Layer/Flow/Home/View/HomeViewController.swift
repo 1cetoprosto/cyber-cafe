@@ -2,7 +2,7 @@ import TinyConstraints
 import SVProgressHUD
 import UIKit
 
-final class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController, PremiumGated {
   private let viewModel: HomeViewModelType = HomeViewModel()
   private var lastHeaderWidth: CGFloat = 0
   private var currentPeriod: DashboardPeriod = .month
@@ -49,14 +49,14 @@ final class HomeViewController: UIViewController {
     )
 
     Task { await loadData() }
-    
+
     NotificationCenter.default.addObserver(self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"), object: nil)
   }
-  
+
   @objc private func dataDidUpdate() {
       Task { await loadData() }
   }
-  
+
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
     navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -100,12 +100,14 @@ final class HomeViewController: UIViewController {
   }
 
   private func openAddIncome() {
+    guard checkPremiumOrShowPaywall() else { return }
     let vc = OrderDetailsViewController()
     vc.onSave = { [weak self] in self?.reloadAfterAction() }
     navigationController?.pushViewController(vc, animated: true)
   }
 
   private func openAddExpense() {
+    guard checkPremiumOrShowPaywall() else { return }
     let empty = OpexExpenseModel(
       id: "", date: Date(), categoryId: "General", amount: 0, note: ""
     )
@@ -119,7 +121,7 @@ final class HomeViewController: UIViewController {
   private func reloadAfterAction() {
     Task { await loadData() }
   }
-  
+
   private func confirmDeleteDemoData() {
         let alert = UIAlertController(
             title: R.string.global.deleteDemoDataTitle(),
@@ -158,7 +160,7 @@ final class HomeViewController: UIViewController {
     setTableHeaderSized()
     tableView.reloadData()
   }
-  
+
   private func configureHeader(for period: DashboardPeriod) {
     let sales: Double
     switch period {
@@ -230,7 +232,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     @objc private func openCostList() {
         navigationController?.pushViewController(CostListViewController(), animated: true)
     }
-    
+
     private func makeSectionHeader(title: String, action: Selector) -> UIView {
         let container = UIView()
         container.backgroundColor = UIColor.Main.background

@@ -8,7 +8,7 @@
 import TinyConstraints
 import UIKit
 
-class PurchaseListViewController: UIViewController {
+class PurchaseListViewController: UIViewController, PremiumGated {
     
     private let viewModel: PurchaseListViewModelType
     
@@ -93,6 +93,8 @@ class PurchaseListViewController: UIViewController {
     
     // MARK: - Actions
     @objc private func addButtonTapped() {
+        guard checkPremiumOrShowPaywall() else { return }
+        
         let createVM = CreatePurchaseViewModel()
         let createVC = CreatePurchaseViewController(viewModel: createVM)
         navigationController?.pushViewController(createVC, animated: true)
