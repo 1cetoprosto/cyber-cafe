@@ -54,9 +54,10 @@ class IAPManager: NSObject, Loggable {
 
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
-        logger.debug("Updating subscription info. Pro: \(subscription.proPlan), Next Payment: \(String(describing: subscription.nextPaymentDate))")
+        let isActive = subscription.isActive
+        logger.debug("IAPManager: Updating subscription info from RequestManager. Pro: \(subscription.proPlan), Active by Date: \(isActive), Next Payment: \(String(describing: subscription.nextPaymentDate))")
         nextPaymentDate = subscription.nextPaymentDate
-        isProPlan = subscription.proPlan
+        isProPlan = subscription.proPlan || isActive
     }
 
     func getProducts(_ completion: (([SKProduct]?) -> Void)?) {
