@@ -11,7 +11,7 @@ import TinyConstraints
 import UIKit
 import SafariServices
 
-class SubscriptionController: UIViewController {
+class SubscriptionController: UIViewController, Loggable {
 
     // MARK: - Properties
     var onSubscriptionSuccess: (() -> Void)?
@@ -152,7 +152,10 @@ class SubscriptionController: UIViewController {
         setupUI()
         setupConstraints()
 
-        if IAPManager.shared.isProPlan == true {
+        let isPro = IAPManager.shared.isProPlan == true
+        logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
+
+        if isPro {
             setupActiveSubscriptionUI()
         } else {
             fetchProducts()
@@ -384,6 +387,7 @@ class SubscriptionController: UIViewController {
     }
 
     private func setupActiveSubscriptionUI() {
+        logger.debug("setupActiveSubscriptionUI called")
         featuresContainer.isHidden = true
         termsLabel.isHidden = true
         skipButton.isHidden = true
