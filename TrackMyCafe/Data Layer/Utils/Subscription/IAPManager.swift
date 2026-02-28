@@ -35,30 +35,30 @@ extension Date {
 }
 
 class IAPManager: NSObject, Loggable {
-    
+
     static let shared = IAPManager()
-    
+
     // MARK: - Public properties
     var currentSubscription: SubscriptionType {
         guard let subscription = RequestManager.shared.subscription else { return .none }
-        if subscription.premiumPlan { return .proMonthly }
+        if subscription.proPlan { return .proMonthly }
         guard subscription.isActive, let productId = subscription.productId else { return .none }
         return SubscriptionType(rawValue: productId) ?? .none
     }
-    
+
     @AppDefaults<Date>(key: UserDefaultsKeys.subscriptionNextPaymentDate)
     var nextPaymentDate: Date?
-    
-    @AppDefaults<Bool>(key: UserDefaultsKeys.subscriptionIsPremiumPlan)
-    var isPremiumPlan: Bool?
-    
+
+    @AppDefaults<Bool>(key: UserDefaultsKeys.subscriptionIsProPlan)
+    var isProPlan: Bool?
+
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
-        logger.debug("Updating subscription info. Premium: \(subscription.premiumPlan), Next Payment: \(String(describing: subscription.nextPaymentDate))")
+        logger.debug("Updating subscription info. Pro: \(subscription.proPlan), Next Payment: \(String(describing: subscription.nextPaymentDate))")
         nextPaymentDate = subscription.nextPaymentDate
-        isPremiumPlan = subscription.premiumPlan
+        isProPlan = subscription.proPlan
     }
-    
+
     func getProducts(_ completion: (([SKProduct]?) -> Void)?) {
         guard SwiftyStoreKit.canMakePayments else {
             completion?(nil);
@@ -69,7 +69,7 @@ class IAPManager: NSObject, Loggable {
             completion?(products)
         }
     }
-    
+
     func purchaseProduct(_ product: SKProduct, completion: ((Bool, String?) -> Void)? = nil) {
         guard SwiftyStoreKit.canMakePayments else {
             completion?(false, nil);
@@ -96,25 +96,25 @@ class IAPManager: NSObject, Loggable {
             }
         }
     }
-    
+
     // MARK: - Debug
     func debugResetSubscription() {
         logger.debug("DEBUG: Resetting subscription status")
         isPremiumPlan = false
         nextPaymentDate = nil
     }
-    
+
     func restorePurchases(_ completion: (() -> Void)? = nil) {
         guard SwiftyStoreKit.canMakePayments else {
             completion?()
             return
         }
-        
+
         SwiftyStoreKit.restorePurchases { _ in
             completion?()
         }
     }
-    
+
     func completeTransactions() {
         SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
             for purchase in purchases {
@@ -132,12 +132,12 @@ class IAPManager: NSObject, Loggable {
             }
         }
     }
-    
+
     // MARK: - Debug Mock
     struct MockIAPReceiptAdapter: IAPReceiptAdapterProtocol {
         let productId: String
         let transactionId: String
-        
+
         var lastAutorenewProductId: String? { productId }
         var lastAutorenewTransactionId: String? { transactionId }
         var lastAutorenewOriginTransactionId: String? { transactionId }
@@ -148,16 +148,16 @@ class IAPManager: NSObject, Loggable {
         }
         var hasSubscriptionPurchases: Bool { true }
         var originalPurchaseDate: Date? { Date() }
-        
+
         var hasActiveAutorenewSubscription: Bool { true }
-        
+
         func hasPurchaseWithTransactionId(_ transactionId: String) -> Bool {
             return transactionId == self.transactionId
         }
     }
-    
+
     func verifySubscription(_ completion: ((IAPReceiptAdapterProtocol?) -> Void)? = nil) {
-        
+
         // Debug: Try local validation first to see if receipt exists
         if let receiptUrl = Bundle.main.appStoreReceiptURL,
            let _ = try? Data(contentsOf: receiptUrl) {
@@ -165,7 +165,7 @@ class IAPManager: NSObject, Loggable {
         } else {
             self.logger.error("Receipt NOT found locally.")
         }
-        
+
         // Special handling for Xcode StoreKit Testing (local environment)
         // If we are running in DEBUG and using StoreKit Config, the receipt is signed by a local certificate,
         // which fails remote validation on Apple's servers (both Production and Sandbox) with 21002.
@@ -179,7 +179,7 @@ class IAPManager: NSObject, Loggable {
                     // In local testing, we might need to trust the local certificate or just assume success if data exists
                     // Since we can't easily parse the receipt path easily, we'll try to parse it
                     // Or just mocking success for development flow if we are sure it's Xcode environment
-                    
+
                     // For now, let's try the remote validation first, and if it fails with 21002 in DEBUG,
                     // we assume it's a local StoreKit receipt and proceed manually.
                     break
@@ -189,7 +189,7 @@ class IAPManager: NSObject, Loggable {
             }
         }
 #endif
-        
+
         // Use Apple Validator for production/sandbox (handles switching automatically if needed in logic below)
         let appleValidator = AppleReceiptValidator(service: .production, sharedSecret: kSharedSecret)
         SwiftyStoreKit.verifyReceipt(using: appleValidator, forceRefresh: false) { (result) in
@@ -200,13 +200,13 @@ class IAPManager: NSObject, Loggable {
                 completion?(receiptAdapter)
             case .error(let error):
                 self.logger.error("Verify receipt failed (Production): \(error)")
-                
+
                 // Fallback to Sandbox if Production fails
                 // 21007: Receipt is from TestFlight/Sandbox but sent to Production
                 // 21002: Receipt data is malformed (often happens in Simulator/TestFlight environments when mixed)
                 let errorCode = (error as NSError).code
                 self.logger.debug("Error code: \(errorCode)")
-                
+
                 // In DEBUG mode with Xcode StoreKit Config, remote validation ALWAYS fails with 21002.
                 // We should treat this as a "Success" for local development if we can confirm the purchase happened.
 #if DEBUG
@@ -224,7 +224,7 @@ class IAPManager: NSObject, Loggable {
                 if !isMalformedData {
                     isMalformedData = "\(error)".contains("21002")
                 }
-                
+
                 if isMalformedData {
                     self.logger.error("Received 21002 in DEBUG. Assuming Xcode StoreKit local receipt. Bypassing remote validation.")
                     // We need to return a dummy adapter or fetch local receipt info
@@ -236,7 +236,7 @@ class IAPManager: NSObject, Loggable {
                             // Try to verify locally if possible, or just return success
                             // Using a mock adapter or local adapter if certificate is available
                             // For this fix, we will try to use the Local Validator if available, otherwise mock it.
-                            
+
                             // Attempting Local Validation
                             do {
                                 self.logger.debug("Trying InAppReceipt.localReceipt()...")
@@ -248,26 +248,26 @@ class IAPManager: NSObject, Loggable {
                                 completion?(receiptAdapter)
                             } catch {
                                 self.logger.error("Local validation failed with error: \(error)")
-                                
+
                                 // Very last resort for Xcode StoreKit Config:
                                 // If we can't parse the receipt but we know we bought it (because we are here),
                                 // we can try to fetch the active transactions directly from SwiftyStoreKit
                                 // This is not "validation" per se, but verification of entitlement.
                                 self.logger.debug("Attempting to verify entitlement via active transactions...")
-                                
+
                                 // Use SwiftyStoreKit to find the transaction for the product we likely purchased
                                 // Or just iterate over all restored transactions?
                                 // We can't access payment queue easily here synchronously.
-                                
+
                                 // Fallback: Just assume the default monthly product was purchased in DEBUG.
                                 // This is a "Developer Bypass" to allow testing the app flow.
                                 // Replace "com.example.monthly" with your actual Product ID if possible, or make it dynamic.
                                 // Ideally, we should fetch the product ID from somewhere, but verifySubscription is generic.
-                                
+
                                 // Let's assume the first available product ID from our known list, or hardcode one for testing.
                                 let mockProductId = SubscriptionType.proMonthly.rawValue // "pro.monthly" or whatever your ID is
                                 let mockTransactionId = "debug_transaction_\(Int(Date().timeIntervalSince1970))"
-                                
+
                                 self.logger.error("Using MOCK Receipt Adapter for DEBUG mode. Product: \(mockProductId)")
                                 let mockAdapter = MockIAPReceiptAdapter(productId: mockProductId, transactionId: mockTransactionId)
                                 completion?(mockAdapter)
@@ -280,7 +280,7 @@ class IAPManager: NSObject, Loggable {
                     return
                 }
 #endif
-                
+
                 if errorCode == 21007 || errorCode == 21002 {
                     self.logger.debug("Falling back to Sandbox verification (Error code: \(errorCode))...")
                     let sandboxValidator = AppleReceiptValidator(service: .sandbox, sharedSecret: kSharedSecret)
@@ -302,7 +302,7 @@ class IAPManager: NSObject, Loggable {
             }
         }
     }
-    
+
     func updateSubscriptionInfo(_ receipt: IAPReceiptAdapterProtocol) {
         self.logger.debug("Updating subscription info with receipt...")
 

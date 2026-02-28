@@ -340,9 +340,9 @@ class RequestManager: NSObject {
         } else {
             // User not logged in, save locally to UserDefaults for later sync
             UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingSubscriptionSync)
-            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.subscriptionIsPremiumPlan)
+            UserDefaults.standard.set(true, forKey: UserDefaultsKeys.subscriptionIsProPlan)
             // Also update IAPManager state directly so UI reflects changes immediately
-            IAPManager.shared.isPremiumPlan = true
+            IAPManager.shared.isProPlan = true
             IAPManager.shared.nextPaymentDate = nextPaymentDate
             
             NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)

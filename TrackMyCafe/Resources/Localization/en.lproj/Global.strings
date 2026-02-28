@@ -191,7 +191,7 @@
 "subscriptionFooter2" = "Account will be charged for renewal within 24-hours prior to the end of the current period.";
 "termsOfUse" = "Terms of Use";
 "privacyPolicy" = "Privacy Policy";
-"hasPremiumPlan" = "You have Premium Plan";
+"hasProPlan" = "You have PRO Plan";
 "successPurchase" = "Purchase successful";
 "appleIDReserved" = "This Apple ID is already linked to another account.";
 "labReserved" = "This subscription is already linked to another lab.";

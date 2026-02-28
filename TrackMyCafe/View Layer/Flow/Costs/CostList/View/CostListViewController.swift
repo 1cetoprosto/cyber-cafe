@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CostListViewController: UIViewController, Loggable, PremiumGated {
+class CostListViewController: UIViewController, Loggable, ProGated {
   private var viewModel: CostListViewModelType?
 
   let tableView: UITableView = {
@@ -60,7 +60,7 @@ class CostListViewController: UIViewController, Loggable, PremiumGated {
 
   // MARK: - Method
   @objc func performAdd(param: UIBarButtonItem) {
-    guard checkPremiumOrShowPaywall() else { return }
+    guard checkProOrShowPaywall() else { return }
 
     let vm = CostDetailsViewModel(
       cost: OpexExpenseModel(
@@ -139,7 +139,7 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
       [weak self] _, _, completion in
       guard let self = self else { return }
 
-      if !self.checkPremiumOrShowPaywall() {
+      if !self.checkProOrShowPaywall() {
           completion(false)
           return
       }

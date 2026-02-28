@@ -8,7 +8,7 @@
 import TinyConstraints
 import UIKit
 
-class StockListViewController: UIViewController, PremiumGated {
+class StockListViewController: UIViewController, ProGated {
 
     // MARK: - Properties
 
@@ -124,44 +124,44 @@ class StockListViewController: UIViewController, PremiumGated {
                 format: R.string.global.inventoryEnterDelta(ingredient.name), ingredient.name),
             preferredStyle: .alert
         )
-        
+
         alert.addTextField { textField in
             textField.keyboardType = .numbersAndPunctuation
             textField.placeholder = R.string.global.inventoryDeltaPlaceholder()
         }
-        
+
         alert.addTextField { textField in
             textField.keyboardType = .default
             textField.placeholder = R.string.global.inventoryReasonPlaceholder()
         }
-        
+
         let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) {
             [weak self] _ in
             guard let self = self else { return }
             let deltaText = alert.textFields?.first?.text ?? ""
             let reasonText = (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
-            
+
             let normalizedDeltaText = deltaText.replacingOccurrences(of: ",", with: ".")
             guard let delta = Double(normalizedDeltaText), delta != 0 else {
                 self.showError(message: R.string.global.invalidQuantity())
                 return
             }
-            
+
             let trimmedReason = reasonText.trimmingCharacters(in: .whitespacesAndNewlines)
             guard !trimmedReason.isEmpty else {
                 let field = R.string.global.inventoryReason()
                 self.showError(message: R.string.global.fieldRequired(field))
                 return
             }
-            
+
             self.viewModel.applyAdjustment(for: ingredient, delta: delta, reason: trimmedReason)
         }
-        
+
         let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-        
+
         alert.addAction(cancelAction)
         alert.addAction(saveAction)
-        
+
         present(alert, animated: true)
     }
 }
@@ -192,12 +192,12 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
             style: .normal, title: R.string.global.inventoryAdjustStock()
         ) { [weak self] _, _, completion in
             guard let self = self else { return }
-            
-            if !self.checkPremiumOrShowPaywall() {
+
+            if !self.checkProOrShowPaywall() {
                 completion(false)
                 return
             }
-            
+
             let ingredient = self.viewModel.ingredients[indexPath.row]
             self.showAdjustmentAlert(for: ingredient)
             completion(true)
@@ -209,9 +209,9 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        
-        guard checkPremiumOrShowPaywall() else { return }
-        
+
+        guard checkProOrShowPaywall() else { return }
+
         let ingredient = viewModel.ingredients[indexPath.row]
         showAdjustmentAlert(for: ingredient)
     }
