@@ -52,9 +52,6 @@ final class InstructionsDriver: NSObject, CoachMarksDriver, CoachMarksController
         }
 
         var coachMark = coachMarksController.helper.makeCoachMark(for: view)
-
-        // Removed forced orientation for productsTable as auto-scroll handles visibility
-
         return coachMark
     }
 
