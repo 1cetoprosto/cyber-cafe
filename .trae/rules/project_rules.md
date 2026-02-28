@@ -1,14 +1,10 @@
-# TrackMyCafe Rules (Swift/UIKit)
-- Platform: iOS 15+, Universal (iPhone/iPad).
-- Tech: Swift 5, UIKit (Programmatic only, NO Storyboard/SwiftUI), MVVM.
-- DB/Auth: Firebase (Firestore, Auth, Storage) v10+, KeychainAccess.
-- Layout: Use TinyConstraints library (no manual).
-- Architecture: Strict MVVM. Models (Data Layer), ViewModels (View Layer/Flow, NO UIKit imports), Views (View Layer/Flow). Use Protocols for DI.
-- Async: Use async/await for new code. No force-unwraps (!).
-- Standards: Apple Swift API Guidelines. PascalCase for classes, camelCase for methods.
-- Limits: Class > 300 lines must be split. No print(), use Logger/OSLog.
-- AI Behavior: English for code/commits, Ukrainian for explanations.
-- Format: Plan -> Action -> Validation. Code in ```swift blocks.
-- Commits: Conventional (feat/fix/refactor(scope): message).
-- PRs: Use template from .github/pull_request_template.md for descriptions.
-- Restrictions: No SwiftUI, no Combine, no CoreData. Never modify .pbxproj manually
+# TrackMyCafe (iOS/Swift)
+- Platform: iOS 15+, Universal.
+- UI: UIKit ONLY (Programmatic, TinyConstraints). NO SwiftUI/Storyboard.
+- Architecture: Strict MVVM. ViewModels: NO UIKit imports, use Protocols for DI.
+- Stack: Firebase v10+ (Auth, Firestore, Storage), Realm v10+, KeychainAccess.
+- Async: Use async/await only. No force-unwraps (!).
+- Logging: OSLog/Logger only. No print().
+- Files: No manual .pbxproj/Info.plist edits.
+- Commits: English, Conventional (feat/fix/refactor).
+- PRs: Use .github/pull_request_template.md.
