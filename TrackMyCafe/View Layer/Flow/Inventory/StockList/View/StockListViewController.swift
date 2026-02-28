@@ -8,7 +8,7 @@
 import TinyConstraints
 import UIKit
 
-class StockListViewController: UIViewController {
+class StockListViewController: UIViewController, PremiumGated {
 
     // MARK: - Properties
 
@@ -192,6 +192,12 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
             style: .normal, title: R.string.global.inventoryAdjustStock()
         ) { [weak self] _, _, completion in
             guard let self = self else { return }
+            
+            if !self.checkPremiumOrShowPaywall() {
+                completion(false)
+                return
+            }
+            
             let ingredient = self.viewModel.ingredients[indexPath.row]
             self.showAdjustmentAlert(for: ingredient)
             completion(true)
@@ -203,6 +209,9 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        guard checkPremiumOrShowPaywall() else { return }
+        
         let ingredient = viewModel.ingredients[indexPath.row]
         showAdjustmentAlert(for: ingredient)
     }

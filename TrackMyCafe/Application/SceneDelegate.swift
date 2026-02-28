@@ -83,6 +83,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
     window = UIWindow(windowScene: windowScene)
 
+    #if DEBUG
+    // Reset subscription state for testing
+    // IAPManager.shared.debugResetSubscription()
+    // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+    #endif
+
     start()
 
     window?.makeKeyAndVisible()
@@ -99,25 +105,33 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
   }
 
   func start() {
-        // 1. Check Onboarding
-        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
-        if !hasSeenOnboarding {
-            let onboardingVC = OnboardingViewController()
-            onboardingVC.delegate = self
-            window?.rootViewController = onboardingVC
-            return
-        }
+        // 1. Check Onboarding (DISABLED for now - user request)
+        // let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        // if !hasSeenOnboarding {
+        //    let onboardingVC = OnboardingViewController()
+        //    onboardingVC.delegate = self
+        //    window?.rootViewController = onboardingVC
+        //    return
+        // }
+        // Set onboarding as seen implicitly to avoid showing it later if re-enabled
+        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
         // 2. Check Subscription
-        let isPremium = IAPManager.shared.isPremiumPlan
-        // If nil (loading), we might want to wait, but for now assuming false if not confirmed true
-        if isPremium != true {
-             let paywallVC = SubscriptionController.makeDefault()
-             paywallVC.onSubscriptionSuccess = { [weak self] in
-                 self?.start()
-             }
-             window?.rootViewController = paywallVC
-             return
+        let isPremium = IAPManager.shared.isPremiumPlan == true
+        let hasSeenPaywall = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+
+        if !isPremium && !hasSeenPaywall {
+            let paywallVC = SubscriptionController.makeDefault()
+            paywallVC.enableReadOnlyMode()
+            paywallVC.onSubscriptionSuccess = { [weak self] in
+                self?.start()
+            }
+            paywallVC.onSkip = { [weak self] in
+                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+                self?.start()
+            }
+            window?.rootViewController = paywallVC
+            return
         }
 
         let isValidSession = UserSession.current.restore()
