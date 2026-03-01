@@ -169,8 +169,8 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 order.date = date
 
                 group.enter()
-                DomainDatabaseService.shared.saveProduct(order: order) { success in
-                    if success {
+                DomainDatabaseService.shared.saveProduct(order: order) { id in
+                    if id != nil {
                         self.logger.notice("Order \(order.id) saved successfully")
                     } else {
                         self.logger.error("Failed to save order \(order.id)")
