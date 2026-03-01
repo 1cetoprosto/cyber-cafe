@@ -23,7 +23,7 @@ protocol DomainDB {
 
     // Order Products (ProductOfOrder)
     func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void)
-    func saveProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void)
+    func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void)
     func deleteProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void)
 
     // Asynchronous methods for updating and retrieving sales data
@@ -51,7 +51,7 @@ protocol DomainDB {
     func updateOpexExpense(model: OpexExpenseModel)
     func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void)
     func fetchSectionsOfOpexExpenses(completion: @escaping ([(date: Date, items: [OpexExpenseModel])]) -> Void)
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
+    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void)
     func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
 
     // Asynchronous methods for updating and retrieving data on income types
