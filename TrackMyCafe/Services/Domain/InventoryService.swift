@@ -235,8 +235,8 @@ class InventoryService: InventoryServiceProtocol {
                 self?.databaseService.saveIngredient(model: ingredientToSave) { success in
                     if success {
                         // Save Adjustment record
-                        self?.databaseService.saveInventoryAdjustment(model: adjustment) { adjSuccess in
-                            if adjSuccess {
+                        self?.databaseService.saveInventoryAdjustment(model: adjustment) { adjId in
+                            if adjId != nil {
                                 completion(.success(()))
                             } else {
                                 completion(

@@ -225,20 +225,20 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func saveProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void) {
+    func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void) {
         FirestoreDatabaseService.shared.create(
             firModel: FIRProductModel(dataModel: order),
             collection: FirebaseCollections.productOfOrders
         ) { result in
             switch result {
-            case .success:
-                self.logger.info("Order product saved to Firestore successfully")
-                completion(true)
+            case .success(let id):
+                self.logger.info("Order product saved to Firestore successfully with ID: \(id)")
+                completion(id)
             case .failure(let error):
                 self.logger.error(
                     "Failed to save order product to Firestore with error: \(error.localizedDescription)"
                 )
-                completion(false)
+                completion(nil)
             }
         }
     }
@@ -621,20 +621,20 @@ class DomainDatabaseService: DomainDB {
     // MARK: - Inventory Adjustment Operations
 
     func saveInventoryAdjustment(
-        model: InventoryAdjustmentModel, completion: @escaping (Bool) -> Void
+        model: InventoryAdjustmentModel, completion: @escaping (String?) -> Void
     ) {
         let firModel = FIRInventoryAdjustmentModel(dataModel: model)
         FirestoreDatabaseService.shared.create(
             firModel: firModel, collection: FirebaseCollections.inventoryAdjustments
         ) { result in
             switch result {
-            case .success:
+            case .success(let id):
                 self.logger.info("Inventory adjustment saved to Firestore successfully")
-                completion(true)
+                completion(id)
             case .failure(let error):
                 self.logger.error(
                     "Failed to save inventory adjustment: \(error.localizedDescription)")
-                completion(false)
+                completion(nil)
             }
         }
     }
@@ -662,18 +662,18 @@ class DomainDatabaseService: DomainDB {
 
     // MARK: - Opex Operations
 
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
+    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void) {
         let firModel = FIROpexExpenseModel(dataModel: model)
         FirestoreDatabaseService.shared.create(
             firModel: firModel, collection: FirebaseCollections.opexExpenses
         ) { result in
             switch result {
-            case .success:
-                self.logger.info("Opex expense saved to Firestore successfully")
-                completion(true)
+            case .success(let id):
+                self.logger.info("Opex expense saved to Firestore successfully with ID: \(id)")
+                completion(id)
             case .failure(let error):
                 self.logger.error("Failed to save opex expense: \(error.localizedDescription)")
-                completion(false)
+                completion(nil)
             }
         }
     }
@@ -748,6 +748,8 @@ class DomainDatabaseService: DomainDB {
         FirestoreDatabaseService.shared.deleteAllData { success in
             if success {
                 self.logger.log("All data deleted successfully from Firestore database")
+                // Also clear demo data manifest if it exists
+                DemoDataManager.shared.clearManifest()
                 completion(true)
             } else {
                 self.logger.log("Failed to delete data from Firestore database")
@@ -817,6 +819,9 @@ class DomainDatabaseService: DomainDB {
             isUkrainian: isUkrainian,
             manifest: &manifest
         )
+
+        // Save manifest to UserDefaults once after all generation is complete
+        DemoDataManager.shared.saveCurrentManifest()
     }
 }
 
@@ -1098,11 +1103,15 @@ extension DomainDatabaseService {
                     id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
                     quantityDelta: -1.0, reason: isUkrainian ? "Списання (псування)" : "Spoilage"
                 )
-                DemoDataManager.shared.addInventoryAdjustmentId(adjustment.id)
+                // Note: We don't add adjustment.id here, we wait for the real ID from Firestore
 
                 await withCheckedContinuation { continuation in
-                    self.saveInventoryAdjustment(model: adjustment) { success in
-                        if !success { self.logger.error("Failed to seed inventory adjustment") }
+                    self.saveInventoryAdjustment(model: adjustment) { id in
+                        if let savedId = id {
+                            DemoDataManager.shared.addInventoryAdjustmentId(savedId)
+                        } else {
+                            self.logger.error("Failed to seed inventory adjustment")
+                        }
                         continuation.resume()
                     }
                 }
@@ -1161,7 +1170,8 @@ extension DomainDatabaseService {
                 id: orderId, date: date, type: type.name, sum: total,
                 cash: cash, card: card
             )
-            DemoDataManager.shared.addOrderId(orderId)
+            // Note: We don't add orderId to DemoDataManager here because saveOrder will generate a new ID
+            // We will add the actual saved ID later
 
             let savedOrderId: String? = await withCheckedContinuation { continuation in
                 self.saveOrder(order: order) { id in
@@ -1170,13 +1180,22 @@ extension DomainDatabaseService {
                 }
             }
 
+            if let savedId = savedOrderId {
+                DemoDataManager.shared.addOrderId(savedId)
+            }
+
             let targetOrderId = savedOrderId ?? orderId
             for var item in orderItems {
                 item.orderId = targetOrderId
-                DemoDataManager.shared.addOrderItemId(item.id)
+                // Note: We don't add item.id here, we wait for the real ID from Firestore
+
                 await withCheckedContinuation { continuation in
-                    self.saveProduct(order: item) { success in
-                        if !success { self.logger.error("Failed to seed order item") }
+                    self.saveProduct(order: item) { id in
+                        if let savedId = id {
+                            DemoDataManager.shared.addOrderItemId(savedId)
+                        } else {
+                            self.logger.error("Failed to seed order item")
+                        }
                         continuation.resume()
                     }
                 }
@@ -1222,11 +1241,15 @@ extension DomainDatabaseService {
                 id: UUID().uuidString, date: date, categoryId: isUkrainian ? "Загальні" : "General",
                 amount: amount, note: name
             )
-            DemoDataManager.shared.addExpenseId(opex.id)
+            // Note: We don't add opex.id here, we wait for the real ID from Firestore
 
             await withCheckedContinuation { continuation in
-                self.saveOpexExpense(model: opex) { success in
-                    if !success { self.logger.error("Failed to seed expense: \(name)") }
+                self.saveOpexExpense(model: opex) { id in
+                    if let savedId = id {
+                        DemoDataManager.shared.addExpenseId(savedId)
+                    } else {
+                        self.logger.error("Failed to seed expense: \(name)")
+                    }
                     continuation.resume()
                 }
             }

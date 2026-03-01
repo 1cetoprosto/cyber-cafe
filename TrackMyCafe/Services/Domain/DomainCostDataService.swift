@@ -20,8 +20,8 @@ final class DomainCostDataService: CostDataServiceProtocol {
   @MainActor
   func saveCost(_ cost: OpexExpenseModel) async throws {
     try await withCheckedThrowingContinuation { continuation in
-      DomainDatabaseService.shared.saveOpexExpense(model: cost) { success in
-        if success {
+      DomainDatabaseService.shared.saveOpexExpense(model: cost) { id in
+        if id != nil {
           continuation.resume()
         } else {
           continuation.resume(throwing: DomainCostError.saveFailed)

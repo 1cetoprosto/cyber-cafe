@@ -189,6 +189,47 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
+    func deleteDocuments(collection: String, ids: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+        guard let userCollection = getUserCollection(collection: collection) else {
+            completion(.failure(NSError(domain: "NoUser", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            return
+        }
+
+        if ids.isEmpty {
+            completion(.success(()))
+            return
+        }
+
+        let batchSize = 500
+        let chunks = ids.chunked(into: batchSize)
+        let group = DispatchGroup()
+        var lastError: Error?
+
+        for chunk in chunks {
+            group.enter()
+            let batch = db.batch()
+            for id in chunk {
+                let ref = userCollection.document(id)
+                batch.deleteDocument(ref)
+            }
+            batch.commit { error in
+                if let error = error {
+                    self.logger.error("Error batch deleting in \(collection): \(error.localizedDescription)")
+                    lastError = error
+                }
+                group.leave()
+            }
+        }
+
+        group.notify(queue: .main) {
+            if let error = lastError {
+                completion(.failure(error))
+            } else {
+                completion(.success(()))
+            }
+        }
+    }
+
     // MARK: - CRUD Operations for Products
 
     func createProduct(
@@ -606,6 +647,14 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             batch.commit { error in
                 completion(error == nil)
             }
+        }
+    }
+}
+
+extension Array {
+    func chunked(into size: Int) -> [[Element]] {
+        return stride(from: 0, to: count, by: size).map {
+            Array(self[$0 ..< Swift.min($0 + size, count)])
         }
     }
 }
