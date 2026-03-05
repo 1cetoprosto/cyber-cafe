@@ -1101,9 +1101,9 @@ extension DomainDatabaseService {
             if let randomIngredient = ingredients.randomElement() {
                 let adjustment = InventoryAdjustmentModel(
                     id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
-                    quantityDelta: -1.0, reason: isUkrainian ? "Списання (псування)" : "Spoilage"
+                    quantityDelta: -1.0, reason: R.string.global.reasonSpoilage()
                 )
-                // Note: We don't add adjustment.id here, we wait for the real ID from Firestore
+                //* Note: We don't add adjustment.id here, we wait for the real ID from Firestore
 
                 await withCheckedContinuation { continuation in
                     self.saveInventoryAdjustment(model: adjustment) { id in
@@ -1238,7 +1238,7 @@ extension DomainDatabaseService {
             let amount = (entry.base + variance).rounded(.toNearestOrAwayFromZero)
 
             let opex = OpexExpenseModel(
-                id: UUID().uuidString, date: date, categoryId: isUkrainian ? "Загальні" : "General",
+                id: UUID().uuidString, date: date, categoryId: R.string.global.categoryGeneral(),
                 amount: amount, note: name
             )
             // Note: We don't add opex.id here, we wait for the real ID from Firestore
