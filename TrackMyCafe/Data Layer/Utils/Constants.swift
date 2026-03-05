@@ -251,14 +251,14 @@ struct FileExtensions {
 
 // MARK: - Default Values
 struct DefaultValues {
-    static let currencyName = "Гривня"
+    static var currencyName: String { R.string.global.currencyHryvnia() }
     static let currencySymbol = "₴"
     static let defaultLanguage = "English"
     static let defaultOrderType = "Default"
     static let unknownVersion = "Unknown"
     static let unknownUser = "Unknown"
     static let adminFirstName = "Admin"
-    static let dollarName = "Dollar"
+    static var dollarName: String { R.string.global.currencyDollar() }
     static let dollarSymbol = "$"
     static let trueString = "true"
     static let falseString = "false"

@@ -49,7 +49,7 @@ class SubscriptionController: UIViewController, Loggable {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "TrackMyCafe" // "PRO" will be a separate tag
+        label.text = R.string.global.appName() // "PRO" will be a separate tag
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textAlignment = .center
         return label
