@@ -142,6 +142,11 @@
 "writeToDeveloper" = "Написати розробнику";
 "general" = "Загальні";
 "priceList" = "Каталог товарів";
+"currencyHryvnia" = "Гривня";
+"currencyDollar" = "Долар";
+"reasonSpoilage" = "Списання (псування)";
+"categoryGeneral" = "Загальні";
+"proTag" = "PRO";
 
 // MARK: - Account Deletion
 "deleteAccount" = "Видалити акаунт";

@@ -142,6 +142,11 @@
 "writeToDeveloper" = "Write to Developer";
 "general" = "General";
 "priceList" = "Product Catalog";
+"currencyHryvnia" = "Hryvnia";
+"currencyDollar" = "Dollar";
+"reasonSpoilage" = "Spoilage";
+"categoryGeneral" = "General";
+"proTag" = "PRO";
 
 // MARK: - Account Deletion
 "deleteAccount" = "Delete Account";
