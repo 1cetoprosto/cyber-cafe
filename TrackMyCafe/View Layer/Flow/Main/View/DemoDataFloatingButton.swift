@@ -30,11 +30,13 @@ final class DemoDataFloatingButton: UIButton {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+        startGlowAnimation()
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setupUI()
+        startGlowAnimation()
     }
 
     private func setupUI() {
@@ -50,10 +52,12 @@ final class DemoDataFloatingButton: UIButton {
         }
         
         layer.cornerRadius = 24 // Pill shape
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 0.2
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 8
+        
+        // Neon Glow Effect
+        layer.shadowColor = UIColor.systemRed.cgColor
+        layer.shadowOpacity = 0.8
+        layer.shadowOffset = .zero
+        layer.shadowRadius = 10
         
         // Horizontal Stack
         let stackView = UIStackView(arrangedSubviews: [iconImageView, titleLabelView])
@@ -70,6 +74,25 @@ final class DemoDataFloatingButton: UIButton {
         width(200, relation: .equalOrGreater) // Minimum width
         stackView.leadingToSuperview(offset: 20)
         stackView.trailingToSuperview(offset: 20)
+    }
+    
+    private func startGlowAnimation() {
+        let animation = CABasicAnimation(keyPath: "shadowRadius")
+        animation.fromValue = 5
+        animation.toValue = 15
+        animation.duration = 1.0
+        animation.autoreverses = true
+        animation.repeatCount = .infinity
+        
+        let opacityAnimation = CABasicAnimation(keyPath: "shadowOpacity")
+        opacityAnimation.fromValue = 0.5
+        opacityAnimation.toValue = 1.0
+        opacityAnimation.duration = 1.0
+        opacityAnimation.autoreverses = true
+        opacityAnimation.repeatCount = .infinity
+        
+        layer.add(animation, forKey: "glowRadius")
+        layer.add(opacityAnimation, forKey: "glowOpacity")
     }
     
     // Add touch feedback animation

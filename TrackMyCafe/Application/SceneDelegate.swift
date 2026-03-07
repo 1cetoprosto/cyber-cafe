@@ -99,8 +99,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
     #if DEBUG
     // Reset subscription state for testing
-    // IAPManager.shared.debugResetSubscription()
-    // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+    IAPManager.shared.debugResetSubscription()
+    UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
     #endif
 
     start()
