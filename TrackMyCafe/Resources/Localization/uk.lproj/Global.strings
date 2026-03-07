@@ -319,6 +319,9 @@
 "costSumPlaceholder" = "Введіть суму";
 "cost" = "Витрата";
 
+// MARK: - Reports
+"reportsTitle" = "Звіти";
+
 // MARK: - Ingredients & Products
 "month" = "місяць";
 "productName" = "Назва товару";
@@ -410,9 +413,6 @@
 "logout" = "Вийти";
 "account" = "Акаунт";
 
-// MARK: - Reports
-"reportsTitle" = "Звіти";
-
 // MARK: - Demo Data
 "preparingDemoData" = "Підготовка демо-даних...";
 "deleteDemoData" = "Видалити демо-дані";
@@ -434,3 +434,14 @@
 "subscriptionValidUntil" = "Дійсна до";
 "subscriptionManage" = "Керувати підпискою";
 "subscriptionContinueReadOnly" = "Продовжити в режимі перегляду";
+
+// MARK: - Onboarding Slides
+"onboardingSlide1Title" = "Облік витрат";
+"onboardingSlide1Desc" = "Легко записуйте та категоризуйте щоденні витрати для контролю бюджету.";
+"onboardingSlide2Title" = "Керування доходами";
+"onboardingSlide2Desc" = "Слідкуйте за всіма джерелами доходу в одному місці для кращого планування.";
+"onboardingSlide3Title" = "Детальна аналітика";
+"onboardingSlide3Desc" = "Візуалізуйте фінансові дані за допомогою зрозумілих графіків та звітів.";
+"onboardingSlide4Title" = "Хмарна синхронізація";
+"onboardingSlide4Desc" = "Створіть акаунт, щоб безпечно зберігати дані в хмарі та мати доступ з будь-якого пристрою.";
+"onboardingGetStarted" = "Почати";

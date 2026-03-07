@@ -117,18 +117,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
 
     func start() {
-        // 1. Check Onboarding (DISABLED for now - user request)
-        // let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
-        // if !hasSeenOnboarding {
-        //    let onboardingVC = OnboardingViewController()
-        //    onboardingVC.delegate = self
-        //    window?.rootViewController = onboardingVC
-        //    return
-        // }
+        // 1. Check Onboarding
+        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        if !hasSeenOnboarding {
+            let onboardingVC = OnboardingViewController()
+            onboardingVC.delegate = self
+            window?.rootViewController = onboardingVC
+            return
+        }
         // Set onboarding as seen implicitly to avoid showing it later if re-enabled
-        UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
+        // UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
-        // 2. Check Subscription
+        // 2. Check Subscription (Moved to inside app via ProGated)
+        /*
         let isPro = IAPManager.shared.isProPlan == true
         let hasSeenPaywall = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenInitialPaywall)
 
@@ -145,6 +146,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             window?.rootViewController = paywallVC
             return
         }
+        */
 
         let isValidSession = UserSession.current.restore()
         // Always check for online session
@@ -251,11 +253,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
 }
 
-// MARK: - OnboardingViewControllerDelegate
+    // MARK: - OnboardingViewControllerDelegate
 extension SceneDelegate: OnboardingViewControllerDelegate {
     func didFinishOnboarding() {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
-        start()
+
+        // Show SignUpController directly after onboarding
+        let signUpController = SignUpController()
+        let navigationController = UINavigationController(rootViewController: signUpController)
+        navigationController.setNavigationBarHidden(true, animated: false)
+
+        set(root: navigationController)
     }
 }
 

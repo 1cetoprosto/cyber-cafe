@@ -38,7 +38,7 @@ final class OnboardingViewController: UIViewController {
         let pc = UIPageControl()
         pc.numberOfPages = viewModel.slides.count
         pc.currentPage = 0
-        pc.currentPageIndicatorTintColor = UIColor.Main.text
+        pc.currentPageIndicatorTintColor = UIColor.Button.background
         pc.pageIndicatorTintColor = UIColor.Main.secondaryText
         pc.isUserInteractionEnabled = false
         return pc
@@ -46,11 +46,11 @@ final class OnboardingViewController: UIViewController {
 
     private lazy var nextButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Next", for: .normal)
+        button.setTitle(R.string.global.actionNext(), for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = UIColor.Main.text
-        button.setTitleColor(UIColor.Main.background, for: .normal)
-        button.layer.cornerRadius = 12
+        button.backgroundColor = UIColor.Button.background
+        button.setTitleColor(UIColor.Button.title, for: .normal)
+        button.layer.cornerRadius = UIConstants.largeCornerRadius
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -93,7 +93,7 @@ final class OnboardingViewController: UIViewController {
     }
 
     private func updateButtonTitle() {
-        let title = (currentPage == viewModel.slides.count - 1) ? "Get Started" : "Next"
+        let title = (currentPage == viewModel.slides.count - 1) ? R.string.global.onboardingGetStarted() : R.string.global.actionNext()
         nextButton.setTitle(title, for: .normal)
     }
 

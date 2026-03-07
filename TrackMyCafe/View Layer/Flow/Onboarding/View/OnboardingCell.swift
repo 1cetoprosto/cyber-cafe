@@ -10,7 +10,7 @@ final class OnboardingCell: UICollectionViewCell {
     private let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.tintColor = UIColor.Main.text
+        iv.tintColor = UIColor.Button.background
         return iv
     }()
 

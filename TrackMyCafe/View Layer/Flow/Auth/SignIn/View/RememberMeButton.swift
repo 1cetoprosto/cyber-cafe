@@ -13,7 +13,7 @@ class RememberMeButton: UIControl {
 
     var isCheck = false {
         didSet {
-            checkImageView.image = isCheck ? R.image.icon_checkmark() : nil
+            checkImageView.image = isCheck ? R.image.icon_checkmark()?.withRenderingMode(.alwaysTemplate) : nil
         }
     }
 
@@ -29,7 +29,7 @@ class RememberMeButton: UIControl {
 
     private lazy var checkImageView: UIImageView = {
         let view = UIImageView()
-        view.tintColor = UIColor.TabBar.tint
+        view.tintColor = UIColor.Main.text
         view.contentMode = .scaleAspectFit
         view.isUserInteractionEnabled = false
         return view
@@ -76,19 +76,19 @@ class RememberMeButton: UIControl {
             }
         }
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         if boxView.layer.borderColor == nil {
             updateBorder()
         }
     }
-    
+
     private func updateBorder() {
         if #available(iOS 13.0, *) {
-            boxView.layer.borderColor = UIColor.TabBar.tint.resolvedColor(with: traitCollection).cgColor
+            boxView.layer.borderColor = UIColor.Main.text.resolvedColor(with: traitCollection).cgColor
         } else {
-            boxView.layer.borderColor = UIColor.TabBar.tint.cgColor
+            boxView.layer.borderColor = UIColor.Main.text.cgColor
         }
     }
 
