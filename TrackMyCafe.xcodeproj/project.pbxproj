@@ -129,6 +129,9 @@
 		F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F316A2FF2738FD710083E830 /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FE2738FD710083E830 /* OrderDetailsViewController.swift */; };
 		F316A301273901410083E830 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A300273901410083E830 /* OrderTableViewCell.swift */; };
+		F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
+		F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
+		F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
 		F31BD829284DF42800B8FD3B /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F31BD82B284DF90200B8FD3B /* FIRProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */; };
 		F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
@@ -911,72 +914,12 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F319FE8B2F5C459D00F8D0A4 /* View */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F324E60A2F486E99003A7469 /* Selection */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		F3299A932F35065600EA6532 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = ProductCategories;
-			sourceTree = "<group>";
-		};
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
+		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
+		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1134,7 +1077,6 @@
 			children = (
 				06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */,
 			);
-			name = View;
 			path = View;
 			sourceTree = "<group>";
 		};
@@ -1227,7 +1169,6 @@
 			children = (
 				39CFE909B3AE35DD1A4D6932 /* View */,
 			);
-			name = Main;
 			path = Main;
 			sourceTree = "<group>";
 		};
@@ -2853,6 +2794,7 @@
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
+				F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
 				F3F6A6372C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3E358032BF22B76005050CB /* DomainDB.swift in Sources */,
@@ -3049,6 +2991,7 @@
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B339E32C0B22FE0073F19A /* Settings.swift in Sources */,
 				F3B339E42C0B22FE0073F19A /* CostListViewController.swift in Sources */,
 				F3B339E52C0B22FE0073F19A /* TypesListViewController.swift in Sources */,
@@ -3245,6 +3188,7 @@
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B33A822C0B23450073F19A /* Settings.swift in Sources */,
 				F3B33A832C0B23450073F19A /* CostListViewController.swift in Sources */,
 				F3B33A842C0B23450073F19A /* TypesListViewController.swift in Sources */,
