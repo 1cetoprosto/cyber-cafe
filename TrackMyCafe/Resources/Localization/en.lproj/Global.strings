@@ -434,3 +434,14 @@
 "subscriptionValidUntil" = "Valid until";
 "subscriptionManage" = "Manage Subscription";
 "subscriptionContinueReadOnly" = "Continue in Read-Only Mode";
+
+// MARK: - Onboarding Slides
+"onboardingSlide1Title" = "Expenses Tracking";
+"onboardingSlide1Desc" = "Easily log and categorize your daily expenses to keep track of your spending.";
+"onboardingSlide2Title" = "Income Management";
+"onboardingSlide2Desc" = "Monitor all your income streams in one place for better financial planning.";
+"onboardingSlide3Title" = "Detailed Analytics";
+"onboardingSlide3Desc" = "Visualize your financial data with comprehensive charts and reports.";
+"onboardingSlide4Title" = "Cloud Sync & Backup";
+"onboardingSlide4Desc" = "Create an account to securely save your data in the cloud and access it from any device.";
+"onboardingGetStarted" = "Get Started";

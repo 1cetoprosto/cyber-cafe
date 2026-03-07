@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 351 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 360 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1482,6 +1482,13 @@ struct _R {
       /// Locales: en, uk
       var onboardingCostsAddTitle: RswiftResources.StringResource { .init(key: "onboardingCostsAddTitle", tableName: "Global", source: source, developmentValue: "Add Cost", comment: nil) }
 
+      /// en translation: Get Started
+      ///
+      /// Key: onboardingGetStarted
+      ///
+      /// Locales: en, uk
+      var onboardingGetStarted: RswiftResources.StringResource { .init(key: "onboardingGetStarted", tableName: "Global", source: source, developmentValue: "Get Started", comment: nil) }
+
       /// en translation: Enter the amount paid by card.
       ///
       /// Key: onboardingOrderDetailsCardMessage
@@ -1649,6 +1656,62 @@ struct _R {
       ///
       /// Locales: en, uk
       var onboardingSettingsTypesTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsTypesTitle", tableName: "Global", source: source, developmentValue: "Order Types", comment: nil) }
+
+      /// en translation: Easily log and categorize your daily expenses to keep track of your spending.
+      ///
+      /// Key: onboardingSlide1Desc
+      ///
+      /// Locales: en, uk
+      var onboardingSlide1Desc: RswiftResources.StringResource { .init(key: "onboardingSlide1Desc", tableName: "Global", source: source, developmentValue: "Easily log and categorize your daily expenses to keep track of your spending.", comment: nil) }
+
+      /// en translation: Expenses Tracking
+      ///
+      /// Key: onboardingSlide1Title
+      ///
+      /// Locales: en, uk
+      var onboardingSlide1Title: RswiftResources.StringResource { .init(key: "onboardingSlide1Title", tableName: "Global", source: source, developmentValue: "Expenses Tracking", comment: nil) }
+
+      /// en translation: Monitor all your income streams in one place for better financial planning.
+      ///
+      /// Key: onboardingSlide2Desc
+      ///
+      /// Locales: en, uk
+      var onboardingSlide2Desc: RswiftResources.StringResource { .init(key: "onboardingSlide2Desc", tableName: "Global", source: source, developmentValue: "Monitor all your income streams in one place for better financial planning.", comment: nil) }
+
+      /// en translation: Income Management
+      ///
+      /// Key: onboardingSlide2Title
+      ///
+      /// Locales: en, uk
+      var onboardingSlide2Title: RswiftResources.StringResource { .init(key: "onboardingSlide2Title", tableName: "Global", source: source, developmentValue: "Income Management", comment: nil) }
+
+      /// en translation: Visualize your financial data with comprehensive charts and reports.
+      ///
+      /// Key: onboardingSlide3Desc
+      ///
+      /// Locales: en, uk
+      var onboardingSlide3Desc: RswiftResources.StringResource { .init(key: "onboardingSlide3Desc", tableName: "Global", source: source, developmentValue: "Visualize your financial data with comprehensive charts and reports.", comment: nil) }
+
+      /// en translation: Detailed Analytics
+      ///
+      /// Key: onboardingSlide3Title
+      ///
+      /// Locales: en, uk
+      var onboardingSlide3Title: RswiftResources.StringResource { .init(key: "onboardingSlide3Title", tableName: "Global", source: source, developmentValue: "Detailed Analytics", comment: nil) }
+
+      /// en translation: Create an account to securely save your data in the cloud and access it from any device.
+      ///
+      /// Key: onboardingSlide4Desc
+      ///
+      /// Locales: en, uk
+      var onboardingSlide4Desc: RswiftResources.StringResource { .init(key: "onboardingSlide4Desc", tableName: "Global", source: source, developmentValue: "Create an account to securely save your data in the cloud and access it from any device.", comment: nil) }
+
+      /// en translation: Cloud Sync & Backup
+      ///
+      /// Key: onboardingSlide4Title
+      ///
+      /// Locales: en, uk
+      var onboardingSlide4Title: RswiftResources.StringResource { .init(key: "onboardingSlide4Title", tableName: "Global", source: source, developmentValue: "Cloud Sync & Backup", comment: nil) }
 
       /// en translation: Order
       ///

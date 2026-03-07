@@ -12,13 +12,7 @@ import UIKit
 
 class SignUpController: UIViewController {
 
-    private lazy var logoView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        view.image = R.image.appLogo()
-        view.size(CGSize(width: 115, height: 115))
-        return view
-    }()
+    private lazy var logoView = AuthLogoView()
 
     private lazy var emailField: UITextField = {
         let field = PaddedTextField()

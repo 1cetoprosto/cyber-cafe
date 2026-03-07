@@ -129,6 +129,9 @@
 		F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F316A2FF2738FD710083E830 /* OrderDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FE2738FD710083E830 /* OrderDetailsViewController.swift */; };
 		F316A301273901410083E830 /* OrderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A300273901410083E830 /* OrderTableViewCell.swift */; };
+		F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
+		F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
+		F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */; };
 		F31BD829284DF42800B8FD3B /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F31BD82B284DF90200B8FD3B /* FIRProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */; };
 		F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
@@ -682,6 +685,7 @@
 /* Begin PBXFileReference section */
 		0114E19D1BB57BDB678925E3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexExpenseModel.swift; sourceTree = "<group>"; };
+		06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoDataFloatingButton.swift; sourceTree = "<group>"; };
 		06D59AF2F0AA53F1BA973F5E /* Pods-TrackMyCafe Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewController.swift; sourceTree = "<group>"; };
 		0BD579A062148876F7E9DAEE /* Pods-TrackMyCafe Beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.debug.xcconfig"; sourceTree = "<group>"; };
@@ -910,6 +914,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
 		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
 		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
@@ -1067,6 +1072,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		39CFE909B3AE35DD1A4D6932 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		3F95D5B9278D04E7105F5B38 /* Inventory */ = {
 			isa = PBXGroup;
 			children = (
@@ -1149,6 +1162,14 @@
 				5AD82DC5B0F57136DCC4D6FE /* ViewModel */,
 			);
 			path = StockList;
+			sourceTree = "<group>";
+		};
+		CEF67D7D8826132CCB206087 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				39CFE909B3AE35DD1A4D6932 /* View */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		DACDFC834DF7BC15991ADCAF /* View */ = {
@@ -1397,6 +1418,7 @@
 				F3410E4F2BDD00C20007157B /* SetPass */,
 				F3410E552BDD00C20007157B /* SignIn */,
 				F3410E572BDD00C20007157B /* SignUp */,
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F3410E582BDD00C20007157B /* AuthManager.swift */,
 			);
 			path = Auth;
@@ -1462,6 +1484,7 @@
 				E1540B5694647F275E9A01A4 /* Purchase */,
 				3F95D5B9278D04E7105F5B38 /* Inventory */,
 				43C4EB5CC8FF1B35F4736E61 /* Onboarding */,
+				CEF67D7D8826132CCB206087 /* Main */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -2196,6 +2219,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
@@ -2243,6 +2267,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
@@ -2290,6 +2315,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
@@ -2768,6 +2794,7 @@
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
+				F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
 				F3F6A6372C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3E358032BF22B76005050CB /* DomainDB.swift in Sources */,
@@ -2964,6 +2991,7 @@
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B339E32C0B22FE0073F19A /* Settings.swift in Sources */,
 				F3B339E42C0B22FE0073F19A /* CostListViewController.swift in Sources */,
 				F3B339E52C0B22FE0073F19A /* TypesListViewController.swift in Sources */,
@@ -3160,6 +3188,7 @@
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B33A822C0B23450073F19A /* Settings.swift in Sources */,
 				F3B33A832C0B23450073F19A /* CostListViewController.swift in Sources */,
 				F3B33A842C0B23450073F19A /* TypesListViewController.swift in Sources */,
