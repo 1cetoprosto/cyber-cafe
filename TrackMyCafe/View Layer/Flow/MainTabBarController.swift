@@ -13,17 +13,74 @@ class MainTabBarController: UITabBarController {
     
     private var hasAlreadyCheckedSession = false
     
+    private lazy var demoDataButton: DemoDataFloatingButton = {
+        let button = DemoDataFloatingButton()
+        button.addTarget(self, action: #selector(handleDemoDataDelete), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupTabBar()
         applyTabBarAppearance()
         navigationController?.view.backgroundColor = UIColor.NavBar.background
+        
+        setupDemoDataButton()
+        setupNotifications()
+    }
+    
+    private func setupDemoDataButton() {
+        view.addSubview(demoDataButton)
+        demoDataButton.bottomToTop(of: tabBar, offset: -24)
+        demoDataButton.centerXToSuperview()
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: .demoDataDidDelete, object: nil)
+        // Listen for data updates (e.g. after seeding)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: NSNotification.Name("DataDidUpdate"), object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkAndSeedDemoDataIfNeeded()
+        updateDemoDataButtonVisibility()
+    }
+    
+    @objc private func updateDemoDataButtonVisibility() {
+        // Run on main thread to be safe
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let hasData = DemoDataManager.shared.isDemoDataPresent
+            self.demoDataButton.isHidden = !hasData
+            if hasData {
+                self.view.bringSubviewToFront(self.demoDataButton)
+            }
+        }
+    }
+    
+    @objc private func handleDemoDataDelete() {
+        let alert = UIAlertController(
+            title: R.string.global.deleteDemoDataTitle(),
+            message: R.string.global.deleteDemoDataMessage(),
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+        alert.addAction(UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+            SVProgressHUD.show()
+            DemoDataManager.shared.deleteDemoData { success in
+                SVProgressHUD.dismiss()
+                if success {
+                    SVProgressHUD.showSuccess(withStatus: R.string.global.success())
+                    // Button visibility will be updated via notification
+                } else {
+                    SVProgressHUD.showError(withStatus: R.string.global.error())
+                }
+            }
+        })
+        present(alert, animated: true)
     }
     
     private func checkAndSeedDemoDataIfNeeded() {
