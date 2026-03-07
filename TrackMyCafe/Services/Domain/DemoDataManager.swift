@@ -161,6 +161,7 @@ final class DemoDataManager: Loggable {
 
             clearManifest()
             await MainActor.run {
+                NotificationCenter.default.post(name: .demoDataDidDelete, object: nil)
                 completion(true)
             }
         }
