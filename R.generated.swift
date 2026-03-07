@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 346 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 351 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -439,6 +439,13 @@ struct _R {
       /// Locales: en, uk
       var cash: RswiftResources.StringResource { .init(key: "cash", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
 
+      /// en translation: General
+      ///
+      /// Key: categoryGeneral
+      ///
+      /// Locales: en, uk
+      var categoryGeneral: RswiftResources.StringResource { .init(key: "categoryGeneral", tableName: "Global", source: source, developmentValue: "General", comment: nil) }
+
       /// en translation: Change Subscription
       ///
       /// Key: changeSub
@@ -606,6 +613,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var costsTitle: RswiftResources.StringResource { .init(key: "costsTitle", tableName: "Global", source: source, developmentValue: "Costs", comment: nil) }
+
+      /// en translation: Dollar
+      ///
+      /// Key: currencyDollar
+      ///
+      /// Locales: en, uk
+      var currencyDollar: RswiftResources.StringResource { .init(key: "currencyDollar", tableName: "Global", source: source, developmentValue: "Dollar", comment: nil) }
+
+      /// en translation: Hryvnia
+      ///
+      /// Key: currencyHryvnia
+      ///
+      /// Locales: en, uk
+      var currencyHryvnia: RswiftResources.StringResource { .init(key: "currencyHryvnia", tableName: "Global", source: source, developmentValue: "Hryvnia", comment: nil) }
 
       /// en translation: Current Subscription
       ///
@@ -1818,6 +1839,13 @@ struct _R {
       /// Locales: en, uk
       var privacyPolicy: RswiftResources.StringResource { .init(key: "privacyPolicy", tableName: "Global", source: source, developmentValue: "Privacy Policy", comment: nil) }
 
+      /// en translation: PRO
+      ///
+      /// Key: proTag
+      ///
+      /// Locales: en, uk
+      var proTag: RswiftResources.StringResource { .init(key: "proTag", tableName: "Global", source: source, developmentValue: "PRO", comment: nil) }
+
       /// en translation: Product
       ///
       /// Key: product
@@ -1866,6 +1894,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var quantity: RswiftResources.StringResource { .init(key: "quantity", tableName: "Global", source: source, developmentValue: "Quantity", comment: nil) }
+
+      /// en translation: Spoilage
+      ///
+      /// Key: reasonSpoilage
+      ///
+      /// Locales: en, uk
+      var reasonSpoilage: RswiftResources.StringResource { .init(key: "reasonSpoilage", tableName: "Global", source: source, developmentValue: "Spoilage", comment: nil) }
 
       /// en translation: For security reasons, please log in again to delete your account.
       ///
