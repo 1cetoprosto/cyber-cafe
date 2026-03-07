@@ -13,24 +13,24 @@ protocol OnboardingViewModelType {
 final class OnboardingViewModel: OnboardingViewModelType {
     let slides: [OnboardingSlide] = [
         OnboardingSlide(
-            title: "Expenses Tracking",
-            description: "Easily log and categorize your daily expenses to keep track of your spending.",
+            title: R.string.global.onboardingSlide1Title(),
+            description: R.string.global.onboardingSlide1Desc(),
             imageName: "cart.fill"
         ),
         OnboardingSlide(
-            title: "Income Management",
-            description: "Monitor all your income streams in one place for better financial planning.",
+            title: R.string.global.onboardingSlide2Title(),
+            description: R.string.global.onboardingSlide2Desc(),
             imageName: "creditcard.fill"
         ),
         OnboardingSlide(
-            title: "Detailed Analytics",
-            description: "Visualize your financial data with comprehensive charts and reports.",
+            title: R.string.global.onboardingSlide3Title(),
+            description: R.string.global.onboardingSlide3Desc(),
             imageName: "chart.bar.xaxis"
         ),
         OnboardingSlide(
-            title: "Multi-Currency Support",
-            description: "Manage finances in multiple currencies seamlessly within the app.",
-            imageName: "banknote.fill"
+            title: R.string.global.onboardingSlide4Title(),
+            description: R.string.global.onboardingSlide4Desc(),
+            imageName: "icloud.and.arrow.up.fill"
         )
     ]
 }

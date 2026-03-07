@@ -910,6 +910,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
 		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
 		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
@@ -1397,6 +1398,7 @@
 				F3410E4F2BDD00C20007157B /* SetPass */,
 				F3410E552BDD00C20007157B /* SignIn */,
 				F3410E572BDD00C20007157B /* SignUp */,
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F3410E582BDD00C20007157B /* AuthManager.swift */,
 			);
 			path = Auth;
@@ -2196,6 +2198,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
@@ -2243,6 +2246,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
@@ -2290,6 +2294,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				F319FE8B2F5C459D00F8D0A4 /* View */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F3299A932F35065600EA6532 /* Cells */,
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,

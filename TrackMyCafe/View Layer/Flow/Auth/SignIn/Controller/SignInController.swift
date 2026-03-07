@@ -16,16 +16,7 @@ class SignInController: UIViewController {
 
     var completionHandler: ((Bool) -> Void)?
 
-    private lazy var logoView: UIImageView = {
-        let view = UIImageView()
-        view.contentMode = .scaleAspectFit
-        view.image = R.image.appLogo()
-        view.size(CGSize(width: 115, height: 115))
-        view.isUserInteractionEnabled = true
-        view.layer.cornerRadius = 24
-        view.clipsToBounds = true
-        return view
-    }()
+    private lazy var logoView = AuthLogoView()
 
     private lazy var emailField: UITextField = {
         let field = PaddedTextField()
@@ -142,6 +133,10 @@ class SignInController: UIViewController {
             emailField.text = UserSession.current.userEmail
             rememberButton.isCheck = true
         }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
     }
 
     override func viewWillAppear(_ animated: Bool) {
