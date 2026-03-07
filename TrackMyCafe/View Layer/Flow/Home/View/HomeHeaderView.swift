@@ -74,7 +74,8 @@ final class HomeHeaderView: UIView {
         card: Double,
         showDeleteDemoData: Bool = false
     ) {
-        deleteDemoDataButton.isHidden = !showDeleteDemoData
+        // Redundant delete button hidden as per request (replaced by floating button)
+        deleteDemoDataButton.isHidden = true // !showDeleteDemoData
         deleteDemoDataButton.addTarget(self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
 
         dateLabel.text = DateFormatter.appFullDate.string(from: date)

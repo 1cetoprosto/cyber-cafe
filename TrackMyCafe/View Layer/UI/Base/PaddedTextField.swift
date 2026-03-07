@@ -24,6 +24,8 @@ class PaddedTextField: UITextField {
     private func setup() {
         layer.cornerRadius = 10
         backgroundColor = UIColor.TableView.cellBackground
+        textColor = UIColor.Main.text
+        tintColor = UIColor.Button.background // Cursor color
     }
     
     override func textRect(forBounds bounds: CGRect) -> CGRect {

@@ -36,6 +36,7 @@ extension Notification.Name {
     static let subscriptionInfoReload = Notification.Name("subscriptionInfoReload")
     static let ordersInfoReload = Notification.Name("ordersInfoReloadNotification")
     static let logsInfoReload = Notification.Name("logsInfoReload")
+    static let demoDataDidDelete = Notification.Name("demoDataDidDelete")
 }
 
 // Firebase refs
