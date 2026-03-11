@@ -10,45 +10,45 @@ import SVProgressHUD
 import UIKit
 
 class MainTabBarController: UITabBarController {
-    
+
     private var hasAlreadyCheckedSession = false
-    
+
     private lazy var demoDataButton: DemoDataFloatingButton = {
         let button = DemoDataFloatingButton()
         button.addTarget(self, action: #selector(handleDemoDataDelete), for: .touchUpInside)
         button.isHidden = true
         return button
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupTabBar()
         applyTabBarAppearance()
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-        
+
         setupDemoDataButton()
         setupNotifications()
     }
-    
+
     private func setupDemoDataButton() {
         view.addSubview(demoDataButton)
-        demoDataButton.bottomToTop(of: tabBar, offset: -24)
+        demoDataButton.bottomToSuperview(offset: -24, usingSafeArea: true)
         demoDataButton.centerXToSuperview()
     }
-    
+
     private func setupNotifications() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: .demoDataDidDelete, object: nil)
         // Listen for data updates (e.g. after seeding)
         NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: NSNotification.Name("DataDidUpdate"), object: nil)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         checkAndSeedDemoDataIfNeeded()
         updateDemoDataButtonVisibility()
     }
-    
+
     @objc private func updateDemoDataButtonVisibility() {
         // Run on main thread to be safe
         DispatchQueue.main.async { [weak self] in
@@ -60,7 +60,7 @@ class MainTabBarController: UITabBarController {
             }
         }
     }
-    
+
     @objc private func handleDemoDataDelete() {
         let alert = UIAlertController(
             title: R.string.global.deleteDemoDataTitle(),
@@ -82,30 +82,30 @@ class MainTabBarController: UITabBarController {
         })
         present(alert, animated: true)
     }
-    
+
     private func checkAndSeedDemoDataIfNeeded() {
         guard !hasAlreadyCheckedSession else { return }
         hasAlreadyCheckedSession = true
-        
+
         guard Auth.auth().currentUser?.uid != nil else { return }
-        
+
         // Always check if DB is empty on launch.
         // If empty -> AUTOMATICALLY seed demo data (as requested).
-        
+
         DomainDatabaseService.shared.fetchProductsPrice { [weak self] products in
             guard products.isEmpty else { return }
-            
+
             // Also check ingredients to be sure
             DomainDatabaseService.shared.fetchIngredients { ingredients in
                 guard ingredients.isEmpty else { return }
-                
+
                 DispatchQueue.main.async {
                     self?.seedDemoData()
                 }
             }
         }
     }
-    
+
     private func seedDemoData() {
         SVProgressHUD.show(
             withStatus: R.string.global.preparingDemoData())
@@ -117,7 +117,7 @@ class MainTabBarController: UITabBarController {
                 // Notify other controllers to reload data
                 NotificationCenter.default.post(
                     name: NSNotification.Name("DataDidUpdate"), object: nil)
-                
+
                 // If the current selected view controller responds to reloading, we might want to trigger it manually
                 // But NotificationCenter should handle it if observers are set up.
                 // Since this happens on first launch, viewControllers might already be loaded.
@@ -125,24 +125,24 @@ class MainTabBarController: UITabBarController {
             }
         }
     }
-    
+
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        
+
         // Handle system theme changes only if user has selected system appearance
         if Theme.currentSelection.appearance == .system {
             Theme.followSystemTheme()
-            
+
             // Update UI colors for current interface
             updateInterfaceColors()
         }
     }
-    
+
     private func updateInterfaceColors() {
         // Update tab bar colors
         applyTabBarAppearance()
         navigationController?.view.backgroundColor = UIColor.NavBar.background
-        
+
         // Update all child navigation controllers
         viewControllers?.forEach { viewController in
             if let navController = viewController as? UINavigationController {
@@ -150,19 +150,19 @@ class MainTabBarController: UITabBarController {
             }
         }
     }
-    
+
     // Configure UITabBarAppearance to ensure good contrast for selected/unselected icons
     private func applyTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = Theme.current.primaryBackground
-        
+
         // Unified selected/unselected icon colors across palettes
         let selectedColor: UIColor = Theme.current.tabBarTint
-        
+
         // Unselected color sourced from theme for consistency across palettes
         let unselectedColor = Theme.current.tabBarUnselectedTint
-        
+
         // Apply to stacked layout
         let stacked = appearance.stackedLayoutAppearance
         stacked.selected.iconColor = selectedColor
@@ -175,7 +175,7 @@ class MainTabBarController: UITabBarController {
             .foregroundColor: unselectedColor,
             .font: Typography.footnote,
         ]
-        
+
         // Apply to inline layout
         let inline = appearance.inlineLayoutAppearance
         inline.selected.iconColor = selectedColor
@@ -188,7 +188,7 @@ class MainTabBarController: UITabBarController {
             .foregroundColor: unselectedColor,
             .font: Typography.footnote,
         ]
-        
+
         // Apply to compact inline layout
         let compact = appearance.compactInlineLayoutAppearance
         compact.selected.iconColor = selectedColor
@@ -201,36 +201,36 @@ class MainTabBarController: UITabBarController {
             .foregroundColor: unselectedColor,
             .font: Typography.footnote,
         ]
-        
+
         tabBar.standardAppearance = appearance
         if #available(iOS 15.0, *) {
             tabBar.scrollEdgeAppearance = appearance
         }
-        
+
         // Keep legacy properties in sync (used by some UIKit APIs)
         tabBar.tintColor = selectedColor
         tabBar.unselectedItemTintColor = unselectedColor
     }
-    
+
     func setupTabBar() {
         // Tab 1: Home (Dashboard)
         let homeViewController = createNavController(
             viewController: HomeViewController(),
             itemName: R.string.global.home(),
             itemImage: SystemImages.home)
-        
+
         // Tab 2: Income (Orders)
         let ordersViewController = createNavController(
             viewController: OrderListViewController(),
             itemName: R.string.global.income(),  // Or "Orders" / "POS"
             itemImage: SystemImages.mug)
-        
+
         // Tab 3: Costs & Inventory (New Container)
         let costsTabViewController = createNavController(
             viewController: CostsTabViewController(),
             itemName: R.string.global.costs(),  // Should ideally be "Costs & Inventory"
             itemImage: SystemImages.bag)
-        
+
         // Tab 4: Reports (Placeholder for now, using existing logic or empty)
         // For now, let's skip Reports tab creation until implemented, or use a placeholder
         // Using PurchaseListViewController as a temporary placeholder if needed,
@@ -243,13 +243,13 @@ class MainTabBarController: UITabBarController {
         //            itemImage: "chart.bar")  // SystemImages.chartBar if exists, or string
         //        reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
         //        reportsViewController.viewControllers.first?.title = R.string.global.reportsTitle()
-        
+
         // Tab 5: Settings
         let settingsViewController = createNavController(
             viewController: SettingListViewController(),
             itemName: R.string.global.menuSettings(),
             itemImage: SystemImages.gearshape)
-        
+
         // Update: Removed separate Purchases tab (now in Tab 3)
         // Added Reports placeholder
         viewControllers = [
@@ -260,7 +260,7 @@ class MainTabBarController: UITabBarController {
             settingsViewController,
         ]
     }
-    
+
     func createNavController(
         viewController: UIViewController,
         itemName: String,
@@ -270,11 +270,11 @@ class MainTabBarController: UITabBarController {
         let item = UITabBarItem(title: itemName, image: UIImage(systemName: itemImage), tag: 0)
         item.titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
         item.imageInsets = .zero
-        
+
         let navController = UINavigationController(rootViewController: viewController)
         navController.tabBarItem = item
         navController.view.backgroundColor = UIColor.NavBar.background
-        
+
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
         navAppearance.backgroundColor = UIColor.NavBar.background
@@ -286,7 +286,7 @@ class MainTabBarController: UITabBarController {
             .foregroundColor: UIColor.NavBar.text,
             .font: Typography.title2DemiBold,
         ]
-        
+
         let buttonAppearance = UIBarButtonItemAppearance()
         buttonAppearance.normal.titleTextAttributes = [
             .foregroundColor: UIColor.NavBar.text,
@@ -299,14 +299,14 @@ class MainTabBarController: UITabBarController {
         navAppearance.buttonAppearance = buttonAppearance
         navAppearance.doneButtonAppearance = buttonAppearance
         navAppearance.backButtonAppearance = buttonAppearance
-        
+
         navController.navigationBar.standardAppearance = navAppearance
         if #available(iOS 15.0, *) {
             navController.navigationBar.scrollEdgeAppearance = navAppearance
         }
         navController.navigationBar.prefersLargeTitles = true
-        
+
         return navController
     }
-    
+
 }
