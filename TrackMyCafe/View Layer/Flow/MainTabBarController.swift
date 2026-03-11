@@ -12,6 +12,8 @@ import UIKit
 class MainTabBarController: UITabBarController {
 
     private var hasAlreadyCheckedSession = false
+    private var demoDataButtonSafeAreaBottomConstraint: NSLayoutConstraint?
+    private var demoDataButtonTabBarTopConstraint: NSLayoutConstraint?
 
     private lazy var demoDataButton: DemoDataFloatingButton = {
         let button = DemoDataFloatingButton()
@@ -31,10 +33,30 @@ class MainTabBarController: UITabBarController {
         setupNotifications()
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if demoDataButtonTabBarTopConstraint?.isActive == true { return }
+        guard tabBar.superview != nil else { return }
+
+        demoDataButtonSafeAreaBottomConstraint?.isActive = false
+        demoDataButtonTabBarTopConstraint?.isActive = true
+    }
+
     private func setupDemoDataButton() {
         view.addSubview(demoDataButton)
-        demoDataButton.bottomToSuperview(offset: -24, usingSafeArea: true)
         demoDataButton.centerXToSuperview()
+
+        demoDataButtonSafeAreaBottomConstraint = demoDataButton.bottomAnchor.constraint(
+            equalTo: view.safeAreaLayoutGuide.bottomAnchor,
+            constant: -24
+        )
+        demoDataButtonSafeAreaBottomConstraint?.isActive = true
+
+        demoDataButtonTabBarTopConstraint = demoDataButton.bottomAnchor.constraint(
+            equalTo: tabBar.topAnchor,
+            constant: -12
+        )
     }
 
     private func setupNotifications() {
