@@ -16,15 +16,42 @@ extension ProGated {
     func checkProOrShowPaywall() -> Bool {
         let isPro = IAPManager.shared.isProPlan == true
         if !isPro {
-            let controller = SubscriptionController.makeDefault()
-            // Ensure we present on the top-most controller
-            if let presented = presentedViewController {
-                presented.present(controller, animated: true)
-            } else {
-                present(controller, animated: true)
-            }
+            presentPaywall(onSuccess: nil)
             return false
         }
         return true
+    }
+
+    @discardableResult
+    func checkProOrShowPaywall(onSuccess: @escaping () -> Void) -> Bool {
+        let isPro = IAPManager.shared.isProPlan == true
+        if isPro {
+            onSuccess()
+            return true
+        }
+
+        presentPaywall(onSuccess: onSuccess)
+        return false
+    }
+
+    private func presentPaywall(onSuccess: (() -> Void)?) {
+        let controller = SubscriptionController.makeDefault()
+        controller.onSubscriptionSuccess = { [weak controller] in
+            DispatchQueue.main.async {
+                if let controller {
+                    controller.dismiss(animated: true) {
+                        onSuccess?()
+                    }
+                } else {
+                    onSuccess?()
+                }
+            }
+        }
+
+        if let presented = presentedViewController {
+            presented.present(controller, animated: true)
+        } else {
+            present(controller, animated: true)
+        }
     }
 }

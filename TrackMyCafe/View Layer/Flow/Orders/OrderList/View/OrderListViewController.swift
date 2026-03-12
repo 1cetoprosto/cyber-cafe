@@ -26,6 +26,7 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
         button.accessibilityIdentifier = "navBarAddOrder"
         return button
@@ -58,16 +59,19 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
 
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
-        guard checkProOrShowPaywall() else { return }
-
-        let orderVC = OrderDetailsViewController()
-        navigationController?.pushViewController(orderVC, animated: true)
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let orderVC = OrderDetailsViewController()
+            self.navigationController?.pushViewController(orderVC, animated: true)
+        }
     }
 
     private func fetchOrdersData() {
         viewModel = OrderListViewModel()
         viewModel?.getOrders { [weak self] in
-            self?.tableView.reloadData()
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
         }
     }
 }
@@ -158,6 +162,9 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 extension OrderListViewController {
     func setConstraints() {
         view.addSubview(tableView)
-        tableView.edgesToSuperview(insets: .init(top: 10, left: 10, bottom: 0, right: 10))
+        tableView.edgesToSuperview(
+            insets: .init(top: 10, left: 10, bottom: 0, right: 10),
+            usingSafeArea: true
+        )
     }
 }
