@@ -390,7 +390,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         let cash = cashInputContainer.text
         let card = cardInputContainer.text
 
-        viewModel.save(date: date, type: type, cash: cash, card: card, ignoreStockWarning: false) {
+        viewModel.save(date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false) {
             [weak self] result in
             self?.handleSaveResult(result)
         }
@@ -438,7 +438,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                     let card = self.cardInputContainer.text
 
                     viewModel.save(
-                        date: date, type: type, cash: cash, card: card, ignoreStockWarning: true
+                        date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: true
                     ) { [weak self] result in
                         self?.handleSaveResult(result)
                     }

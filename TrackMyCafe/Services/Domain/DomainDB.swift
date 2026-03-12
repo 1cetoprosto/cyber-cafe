@@ -34,7 +34,8 @@ protocol DomainDB {
         total: Double,
         cashAmount: Double,
         cardAmount: Double,
-        totalCost: Double)
+        totalCost: Double,
+        note: String?)
     func fetchOrders(completion: @escaping ([OrderModel]) -> Void)
     func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void)
     func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void)

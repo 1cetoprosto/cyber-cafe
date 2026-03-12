@@ -18,7 +18,7 @@ class RealmDatabaseService: RealmDB {
 
     private init() {
         var config = Realm.Configuration()
-        config.schemaVersion = 4
+        config.schemaVersion = 5
         config.migrationBlock = { migration, oldSchemaVersion in
             if oldSchemaVersion < 1 {
                 // Міграція з версії 0 до 1 (якщо є)
@@ -42,6 +42,9 @@ class RealmDatabaseService: RealmDB {
             if oldSchemaVersion < 4 {
                 // Realm automatically handles adding new properties (recipe in RealmProductsPriceModel)
                 // and new object types (RealmIngredientModel, RealmRecipeItemModel)
+            }
+            if oldSchemaVersion < 5 {
+                // Realm automatically handles adding optional properties (note in RealmOrderModel)
             }
         }
 

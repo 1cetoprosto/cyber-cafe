@@ -27,7 +27,7 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(performAdd), for: .touchUpInside)
         button.accessibilityIdentifier = "navBarAddOrder"
         return button
     }()
@@ -58,11 +58,29 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     }
 
     // MARK: - Method
-    @objc func performAdd(param: UIBarButtonItem) {
+    @objc private func performAdd() {
         checkProOrShowPaywall { [weak self] in
             guard let self else { return }
-            let orderVC = OrderDetailsViewController()
-            self.navigationController?.pushViewController(orderVC, animated: true)
+            let mode = SettingsManager.shared.loadOrderEntryMode()
+            if UIDevice.isIpad, traitCollection.horizontalSizeClass == .regular, mode == .perOrder {
+                let split = OrderSplitContainerViewController()
+                split.hidesBottomBarWhenPushed = true
+                if let nav = self.navigationController {
+                    nav.pushViewController(split, animated: true)
+                } else {
+                    split.modalPresentationStyle = .fullScreen
+                    self.present(split, animated: true)
+                }
+            } else {
+                let orderVC = OrderDetailsViewController()
+                if let nav = self.navigationController {
+                    nav.pushViewController(orderVC, animated: true)
+                } else {
+                    let nav = UINavigationController(rootViewController: orderVC)
+                    nav.modalPresentationStyle = .fullScreen
+                    self.present(nav, animated: true)
+                }
+            }
         }
     }
 
@@ -129,8 +147,7 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> UISwipeActionsConfiguration? {
         guard let viewModel = viewModel else { return nil }
 
-        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
-            [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, completion in
             guard let self = self else { return }
 
             if !self.checkProOrShowPaywall() {
