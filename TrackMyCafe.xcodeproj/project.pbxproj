@@ -232,11 +232,8 @@
 		F34BC9BD2F62F4D3000476B5 /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */; };
 		F34BC9BE2F62F4D3000476B5 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */; };
 		F34BC9BF2F62F4D3000476B5 /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */; };
-		F34BC9C22F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C12F63455E000476B5 /* SubscriptionLinkButton.swift */; };
 		F34BC9C32F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
-		F34BC9C42F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C12F63455E000476B5 /* SubscriptionLinkButton.swift */; };
 		F34BC9C52F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
-		F34BC9C62F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C12F63455E000476B5 /* SubscriptionLinkButton.swift */; };
 		F34BC9C72F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
 		F3583B9F2BE8D4680079441F /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
 		F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
@@ -821,7 +818,6 @@
 		F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCell.swift; sourceTree = "<group>"; };
 		F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListTableViewCell.swift; sourceTree = "<group>"; };
-		F34BC9C12F63455E000476B5 /* SubscriptionLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLinkButton.swift; sourceTree = "<group>"; };
 		F3583B9E2BE8D4680079441F /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		F35E91A12F49C20D0050EB4A /* OrderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1527,7 +1523,6 @@
 				F324E60A2F486E99003A7469 /* Selection */,
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */,
-				F34BC9C12F63455E000476B5 /* SubscriptionLinkButton.swift */,
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
@@ -2826,7 +2821,6 @@
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
-				F34BC9C42F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */,
 				F34BC9C52F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
@@ -3029,7 +3023,6 @@
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
-				F34BC9C22F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */,
 				F34BC9C32F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B339E32C0B22FE0073F19A /* Settings.swift in Sources */,
@@ -3232,7 +3225,6 @@
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
-				F34BC9C62F63455E000476B5 /* SubscriptionLinkButton.swift in Sources */,
 				F34BC9C72F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B33A822C0B23450073F19A /* Settings.swift in Sources */,
