@@ -17,6 +17,7 @@ class CostListViewController: UIViewController, Loggable, ProGated {
             CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
+        tableView.rowHeight = 44
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -110,11 +111,8 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
         return tableViewCell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         let detailViewModel = viewModel.viewModelForSelectedRow()

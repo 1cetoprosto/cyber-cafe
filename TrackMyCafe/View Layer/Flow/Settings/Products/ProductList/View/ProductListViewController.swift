@@ -18,6 +18,7 @@ class ProductListViewController: UIViewController, Loggable {
         let tableView = UITableView()
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
+        tableView.rowHeight = 44
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -95,11 +96,8 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         let model = productsPrice[indexPath.row]
         
         let vm = ProductDetailsViewModel(model: model, dataService: DomainProductPriceDataService())
