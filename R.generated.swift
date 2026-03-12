@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 360 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 361 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -340,6 +340,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var adminPrivilege: RswiftResources.StringResource { .init(key: "adminPrivilege", tableName: "Global", source: source, developmentValue: "Has administrator responsibilities", comment: nil) }
+
+      /// en translation: All
+      ///
+      /// Key: all
+      ///
+      /// Locales: en, uk
+      var all: RswiftResources.StringResource { .init(key: "all", tableName: "Global", source: source, developmentValue: "All", comment: nil) }
 
       /// en translation: All ->
       ///
