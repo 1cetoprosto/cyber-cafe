@@ -27,6 +27,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     var card: Double { return order.card }
     var sum: Double { return order.sum }
     var type: String { return order.type }
+    var note: String { return order.note ?? "" }
     var isNewModel: Bool
     
     // MARK: - Init
@@ -61,15 +62,17 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         type: String?,
         cash: String?,
         card: String?,
+        note: String?,
         ignoreStockWarning: Bool,
         completion: @escaping (Result<Void, OrderSaveError>) -> Void
     ) {
         let type = type ?? ""
         let cashValue = cash?.double ?? 0.0
         let cardValue = card?.double ?? 0.0
+        let note = note?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
         
         if ignoreStockWarning {
-            performSave(date: date, type: type, cash: cashValue, card: cardValue, completion: completion)
+            performSave(date: date, type: type, cash: cashValue, card: cardValue, note: note, completion: completion)
         } else {
             productsViewModel.validateStock { [weak self] warnings in
                 guard let self = self else { return }
@@ -79,15 +82,15 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                     return
                 }
                 
-                self.performSave(date: date, type: type, cash: cashValue, card: cardValue, completion: completion)
+                self.performSave(date: date, type: type, cash: cashValue, card: cardValue, note: note, completion: completion)
             }
         }
     }
     
-    private func performSave(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Result<Void, OrderSaveError>) -> Void) {
+    private func performSave(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Result<Void, OrderSaveError>) -> Void) {
         // 1. Save/Update Order (Parent)
         if self.isNewModel {
-            self.createOrder(date: date, type: type, cash: cash, card: card) { success in
+            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
                 if success {
                     // 2. Save Products (Children)
                     self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) { productsSaved in
@@ -102,7 +105,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 }
             }
         } else {
-            self.updateOrder(date: date, type: type, cash: cash, card: card) { success in
+            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
                 if success {
                     // 2. Update Products (Children)
                     self.productsViewModel.updateOrder(date: date) { productsSaved in
@@ -119,7 +122,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         }
     }
     
-    private func createOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
+    private func createOrder(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
         
@@ -130,7 +133,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             sum: sum,
             cash: cash,
             card: card,
-            totalCost: totalCost
+            totalCost: totalCost,
+            note: note
         )
         
         DomainDatabaseService.shared.saveOrder(order: newOrder) { [weak self] documentId in
@@ -144,7 +148,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         }
     }
     
-    private func updateOrder(date: Date, type: String, cash: Double, card: Double, completion: @escaping (Bool) -> Void) {
+    private func updateOrder(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
         
@@ -161,7 +165,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 total: sum,
                 cashAmount: cash,
                 cardAmount: card,
-                totalCost: totalCost
+                totalCost: totalCost,
+                note: note
             )
             completion(true)
         }
