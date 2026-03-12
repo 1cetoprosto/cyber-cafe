@@ -23,6 +23,7 @@
 "actionNext" = "Далі";
 "actionDone" = "Готово";
 "add" = "Додати";
+"all" = "Всі";
 
 // MARK: - Settings Sections
 "settingsSectionEstablishment" = "Заклад";

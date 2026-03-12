@@ -23,6 +23,7 @@
 "actionNext" = "Next";
 "actionDone" = "Done";
 "add" = "Add";
+"all" = "All";
 
 // MARK: - Settings Sections
 "settingsSectionEstablishment" = "Establishment";
