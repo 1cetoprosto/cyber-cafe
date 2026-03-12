@@ -8,39 +8,20 @@
 import TinyConstraints
 import UIKit
 
-class TypeTableViewCell: UITableViewCell {
-
-    let typeLabel: UILabel = {
-        let label = UILabel()
-        label.text = ""
-        label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
-
-        return label
-    }()
+final class TypeTableViewCell: BaseListTableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        self.backgroundColor = UIColor.TableView.cellBackground
-        selectionStyle = .none
-
-        setConstraints()
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
+        selectionStyle = .default
+        accessoryType = .disclosureIndicator
+        textLabel?.applyDynamic(Typography.body)
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        return nil
     }
 
     func configure(type: TypeModel, indexPath: IndexPath) {
-        typeLabel.text = type.name
-    }
-
-    func setConstraints() {
-        contentView.addSubview(typeLabel)
-
-        typeLabel.centerYToSuperview()
-        typeLabel.leadingToSuperview(offset: 15)
-        typeLabel.trailingToSuperview(offset: 15)
+        textLabel?.text = type.name
     }
 }

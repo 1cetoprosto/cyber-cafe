@@ -16,6 +16,7 @@ class RealmOrderModel: Object, DateContainable {
     @Persisted var cash: Double
     @Persisted var card: Double
     @Persisted var totalCost: Double
+    @Persisted var note: String?
     
     convenience init(dataModel: OrderModel) {
         self.init()
@@ -26,5 +27,6 @@ class RealmOrderModel: Object, DateContainable {
         self.cash = dataModel.cash
         self.card = dataModel.card
         self.totalCost = dataModel.totalCost
+        self.note = dataModel.note
     }
 }

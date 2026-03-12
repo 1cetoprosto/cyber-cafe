@@ -16,6 +16,7 @@ struct FIROrderModel: Codable {
     var cash: Double = 0.0
     var card: Double = 0.0
     var totalCost: Double?
+    var note: String?
 
     init(dataModel: OrderModel) {
         self.id = dataModel.id
@@ -25,6 +26,7 @@ struct FIROrderModel: Codable {
         self.cash = dataModel.cash
         self.card = dataModel.card
         self.totalCost = dataModel.totalCost
+        self.note = dataModel.note
     }
 
 }

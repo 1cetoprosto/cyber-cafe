@@ -7,12 +7,19 @@
 
 import Foundation
 
+enum ProductListChange {
+    case fullReload
+    case productUpdated(productId: String)
+}
+
 class ProductListViewModel: ProductListViewModelType, Loggable {
 
     private var selectedIndexPath: IndexPath?
     private var products = [ProductOfOrderModel]()
     private let costingService: CostingServiceProtocol
     private let inventoryService: InventoryServiceProtocol
+
+    var onChange: ((ProductListChange) -> Void)?
 
     init(
         costingService: CostingServiceProtocol = CostingService.shared,
@@ -36,8 +43,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
                     for productPrice in productsPrice {
                         group.enter()
-                        self.costingService.calculateProductCost(productId: productPrice.id) {
-                            cost in
+                        self.costingService.calculateProductCost(productId: productPrice.id) { cost in
                             let product = ProductOfOrderModel(
                                 id: "",
                                 productId: productPrice.id,
@@ -59,12 +65,16 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
                     group.notify(queue: .main) {
                         self.products = newProducts.sorted { $0.name < $1.name }
+                        self.onChange?(.fullReload)
                         completion()
                     }
                 }
             } else {
-                self.products = products
-                completion()
+                DispatchQueue.main.async {
+                    self.products = products
+                    self.onChange?(.fullReload)
+                    completion()
+                }
             }
         }
     }
@@ -83,9 +93,17 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     func setQuantity(tag: Int, quantity: Int) {
+        guard products.indices.contains(tag) else { return }
+        let wasActive = products[tag].quantity > 0
         products[tag].quantity = quantity
         products[tag].sum = Double(quantity) * products[tag].price
         products[tag].costSum = Double(quantity) * products[tag].costPrice
+        let isActive = quantity > 0
+        if wasActive != isActive {
+            onChange?(.fullReload)
+        } else {
+            onChange?(.productUpdated(productId: products[tag].productId))
+        }
     }
 
     func getQuantity() -> Double {
@@ -122,6 +140,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             products[index].quantity = newQuantity
             products[index].sum = Double(newQuantity) * existing.price
             products[index].costSum = Double(newQuantity) * existing.costPrice
+            onChange?(.productUpdated(productId: priceModel.id))
             completion()
             return
         }
@@ -144,9 +163,24 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
             DispatchQueue.main.async {
                 self.products.append(product)
+                self.products.sort { $0.name < $1.name }
+                self.onChange?(.fullReload)
                 completion()
             }
         }
+    }
+
+    func activeProductIds() -> [String] {
+        products.filter { $0.quantity > 0 }.map(\.productId)
+    }
+
+    func index(forProductId productId: String) -> Int? {
+        products.firstIndex(where: { $0.productId == productId })
+    }
+
+    func quantity(forProductId productId: String) -> Int? {
+        guard let index = index(forProductId: productId) else { return nil }
+        return products[index].quantity
     }
 
     func totalSum() -> String {

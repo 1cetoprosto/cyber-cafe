@@ -12,12 +12,12 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: OrderListViewModelType?
 
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
         tableView.register(
             OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
+        tableView.separatorColor = UIColor.TableView.separator
         // tableView.translatesAutoresizingMaskIntoConstraints = false // Not needed with TinyConstraints
 
         return tableView
@@ -27,7 +27,7 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(performAdd), for: .touchUpInside)
         button.accessibilityIdentifier = "navBarAddOrder"
         return button
     }()
@@ -58,11 +58,29 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     }
 
     // MARK: - Method
-    @objc func performAdd(param: UIBarButtonItem) {
+    @objc private func performAdd() {
         checkProOrShowPaywall { [weak self] in
             guard let self else { return }
-            let orderVC = OrderDetailsViewController()
-            self.navigationController?.pushViewController(orderVC, animated: true)
+            let mode = SettingsManager.shared.loadOrderEntryMode()
+            if UIDevice.isIpad, traitCollection.horizontalSizeClass == .regular, mode == .perOrder {
+                let split = OrderSplitContainerViewController()
+                split.hidesBottomBarWhenPushed = true
+                if let nav = self.navigationController {
+                    nav.pushViewController(split, animated: true)
+                } else {
+                    split.modalPresentationStyle = .fullScreen
+                    self.present(split, animated: true)
+                }
+            } else {
+                let orderVC = OrderDetailsViewController()
+                if let nav = self.navigationController {
+                    nav.pushViewController(orderVC, animated: true)
+                } else {
+                    let nav = UINavigationController(rootViewController: orderVC)
+                    nav.modalPresentationStyle = .fullScreen
+                    self.present(nav, animated: true)
+                }
+            }
         }
     }
 
@@ -107,11 +125,8 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return tableViewCell
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         var detailViewModel = viewModel.viewModelForSelectedRow()
@@ -129,8 +144,7 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> UISwipeActionsConfiguration? {
         guard let viewModel = viewModel else { return nil }
 
-        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
-            [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, completion in
             guard let self = self else { return }
 
             if !self.checkProOrShowPaywall() {
@@ -150,21 +164,12 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.font = Typography.footnote
-        header.textLabel?.textColor = UIColor.Main.text
-        if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
-    }
 }
 
 // MARK: Constraints
 extension OrderListViewController {
     func setConstraints() {
         view.addSubview(tableView)
-        tableView.edgesToSuperview(
-            insets: .init(top: 10, left: 10, bottom: 0, right: 10),
-            usingSafeArea: true
-        )
+        tableView.edgesToSuperview(usingSafeArea: true)
     }
 }
