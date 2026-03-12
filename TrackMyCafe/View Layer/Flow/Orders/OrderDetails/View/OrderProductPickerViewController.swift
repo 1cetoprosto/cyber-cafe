@@ -95,7 +95,6 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     }
 
     private func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProductCell")
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -148,7 +147,6 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
             productsCollectionView.isHidden = true
         }
     }
-
 
     private func loadData() {
         DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
@@ -300,7 +298,6 @@ extension OrderProductPickerViewController: UICollectionViewDelegate, UICollecti
             }
         }
     }
-
 }
 
 extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDelegate {
@@ -312,16 +309,16 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "ProductCell",
-            for: indexPath
-        )
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: "ProductCell")
+            ?? UITableViewCell(style: .value1, reuseIdentifier: "ProductCell")
 
         let product = filteredProducts[indexPath.row]
         cell.textLabel?.text = product.name
         cell.detailTextLabel?.text = product.price.currency
         cell.backgroundColor = UIColor.Main.background
         cell.textLabel?.textColor = UIColor.Main.text
+        cell.detailTextLabel?.textColor = UIColor.Main.text
         return cell
     }
 
