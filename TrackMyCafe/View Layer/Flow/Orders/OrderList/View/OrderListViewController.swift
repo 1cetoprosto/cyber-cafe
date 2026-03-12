@@ -12,12 +12,12 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: OrderListViewModelType?
 
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
 
         tableView.register(
             OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
+        tableView.separatorColor = UIColor.TableView.separator
         // tableView.translatesAutoresizingMaskIntoConstraints = false // Not needed with TinyConstraints
 
         return tableView
@@ -125,11 +125,8 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return tableViewCell
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         var detailViewModel = viewModel.viewModelForSelectedRow()
@@ -167,21 +164,12 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.font = Typography.footnote
-        header.textLabel?.textColor = UIColor.Main.text
-        if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
-    }
 }
 
 // MARK: Constraints
 extension OrderListViewController {
     func setConstraints() {
         view.addSubview(tableView)
-        tableView.edgesToSuperview(
-            insets: .init(top: 10, left: 10, bottom: 0, right: 10),
-            usingSafeArea: true
-        )
+        tableView.edgesToSuperview(usingSafeArea: true)
     }
 }
