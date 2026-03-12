@@ -35,12 +35,10 @@ platform :ios do
       xcargs: "-allowProvisioningUpdates"
     )
 
-    # 4. Upload to TestFlight and add to "External Testers" group
+    # 4. Upload to TestFlight
     upload_to_testflight(
       app_identifier: bundle_id,
-      skip_waiting_for_build_processing: false, # Wait for processing so we can add external testers
-      distribute_external: true,               # Enable external testing
-      groups: ["External Testers"],            # Auto-add this group
+      skip_waiting_for_build_processing: false,
       changelog: "Updated build"               # Fallback changelog if none provided
     )
   end
