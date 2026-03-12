@@ -9,7 +9,7 @@ import FirebaseAuth
 import SVProgressHUD
 import UIKit
 
-class MainTabBarController: UITabBarController {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINavigationControllerDelegate {
 
     private var hasAlreadyCheckedSession = false
     private var demoDataButtonSafeAreaBottomConstraint: NSLayoutConstraint?
@@ -25,6 +25,7 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        delegate = self
         setupTabBar()
         applyTabBarAppearance()
         navigationController?.view.backgroundColor = UIColor.NavBar.background
@@ -76,11 +77,18 @@ class MainTabBarController: UITabBarController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let hasData = DemoDataManager.shared.isDemoDataPresent
-            self.demoDataButton.isHidden = !hasData
-            if hasData {
+            let shouldShow = hasData && self.shouldShowDemoDataButtonInCurrentContext()
+            self.demoDataButton.isHidden = !shouldShow
+            if shouldShow {
                 self.view.bringSubviewToFront(self.demoDataButton)
             }
         }
+    }
+
+    private func shouldShowDemoDataButtonInCurrentContext() -> Bool {
+        if presentedViewController != nil { return false }
+        guard let nav = selectedViewController as? UINavigationController else { return true }
+        return nav.viewControllers.count <= 1
     }
 
     @objc private func handleDemoDataDelete() {
@@ -296,6 +304,7 @@ class MainTabBarController: UITabBarController {
         let navController = UINavigationController(rootViewController: viewController)
         navController.tabBarItem = item
         navController.view.backgroundColor = UIColor.NavBar.background
+        navController.delegate = self
 
         let navAppearance = UINavigationBarAppearance()
         navAppearance.configureWithOpaqueBackground()
@@ -331,4 +340,14 @@ class MainTabBarController: UITabBarController {
         return navController
     }
 
+}
+
+extension MainTabBarController {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        updateDemoDataButtonVisibility()
+    }
+
+    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+        updateDemoDataButtonVisibility()
+    }
 }

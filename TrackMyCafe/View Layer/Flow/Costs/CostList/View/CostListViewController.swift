@@ -8,152 +8,156 @@
 import UIKit
 
 class CostListViewController: UIViewController, Loggable, ProGated {
-  private var viewModel: CostListViewModelType?
-
-  let tableView: UITableView = {
-    let tableView = UITableView()
-
-    tableView.register(
-      CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
-    tableView.backgroundColor = UIColor.Main.background
-    tableView.separatorStyle = .none
-    tableView.translatesAutoresizingMaskIntoConstraints = false
-
-    return tableView
-  }()
-
-  private lazy var addButton: UIButton = {
-    let button = UIButton(type: .system)
-    button.setImage(UIImage(systemName: "plus"), for: .normal)
-    button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
-    button.accessibilityIdentifier = "navBarAddCost"
-    return button
-  }()
-
-  override func viewWillAppear(_ animated: Bool) {
-    super.viewWillAppear(animated)
-
-    viewModel = CostListViewModel()
-    viewModel?.getCosts { [weak self] in
-      self?.tableView.reloadData()
+    private var viewModel: CostListViewModelType?
+    
+    let tableView: UITableView = {
+        let tableView = UITableView()
+        
+        tableView.register(
+            CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        return tableView
+    }()
+    
+    private lazy var addButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+    button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
+        button.accessibilityIdentifier = "navBarAddCost"
+        return button
+    }()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        viewModel = CostListViewModel()
+        viewModel?.getCosts { [weak self] in
+      DispatchQueue.main.async {
+        self?.tableView.reloadData()
+      }
+        }
     }
-  }
-
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
-    view.backgroundColor = UIColor.Main.background
-    title = R.string.global.costs()
-
-    tableView.dataSource = self
-    tableView.delegate = self
-
-    navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
-    setConstraints()
-
-  }
-
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    OnboardingManager.shared.startIfNeeded(for: .costs, on: self)
-  }
-
-  // MARK: - Method
-  @objc func performAdd(param: UIBarButtonItem) {
-    guard checkProOrShowPaywall() else { return }
-
-    let vm = CostDetailsViewModel(
-      cost: OpexExpenseModel(
-        id: "", date: Date(), categoryId: "General", amount: 0.0, note: ""
-      ),
-      dataService: DomainCostDataService()
-    )
-    let costVC = CostDetailsListViewController(viewModel: vm)
-    navigationController?.pushViewController(costVC, animated: true)
-  }
-
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.Main.background
+        title = R.string.global.costs()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
+        setConstraints()
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        OnboardingManager.shared.startIfNeeded(for: .costs, on: self)
+    }
+    
+    // MARK: - Method
+    @objc func performAdd(param: UIBarButtonItem) {
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let vm = CostDetailsViewModel(
+                cost: OpexExpenseModel(
+                    id: "", date: Date(), categoryId: "General", amount: 0.0, note: ""
+                ),
+                dataService: DomainCostDataService()
+            )
+            let costVC = CostDetailsListViewController(viewModel: vm)
+            self.navigationController?.pushViewController(costVC, animated: true)
+        }
+    }
+    
 }
 
 // MARK: - UITableViewDelegate, UITableViewDataSource
 extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
-
-  func numberOfSections(in tableView: UITableView) -> Int {
-    return viewModel?.numberOfSections() ?? 0
-  }
-
-  func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-    return viewModel?.titleForHeaderInSection(for: section)
-  }
-
-  func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return viewModel?.numberOfRowInSection(for: section) ?? 0
-  }
-
-  func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell =
-      tableView.dequeueReusableCell(
-        withIdentifier: CostsTableViewCell.identifier,
-        for: indexPath) as? CostsTableViewCell
-
-    guard let tableViewCell = cell,
-      let viewModel = viewModel
-    else { return UITableViewCell() }
-
-    let cellViewModel = viewModel.cellViewModel(for: indexPath)
-
-    tableViewCell.viewModel = cellViewModel
-
-    return tableViewCell
-  }
-
-  func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-    return 50
-  }
-
-  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    guard let viewModel = viewModel else { return }
-    viewModel.selectRow(atIndexPath: indexPath)
-    let detailViewModel = viewModel.viewModelForSelectedRow()
-
-    guard let vm = detailViewModel else { return }
-    let costVC = CostDetailsListViewController(viewModel: vm)
-    self.navigationController?.pushViewController(costVC, animated: true)
-  }
-
-  func tableView(
-    _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
-  ) {
-    guard let header = view as? UITableViewHeaderFooterView else { return }
-    header.textLabel?.font = Typography.footnote
-    header.textLabel?.textColor = UIColor.Main.text
-    if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
-  }
-
-  func tableView(
-    _ tableView: UITableView,
-    trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
-  ) -> UISwipeActionsConfiguration? {
-    guard let viewModel = viewModel else { return nil }
-
-    let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
-      [weak self] _, _, completion in
-      guard let self = self else { return }
-
-      if !self.checkProOrShowPaywall() {
-          completion(false)
-          return
-      }
-
-      viewModel.deleteCostModel(atIndexPath: indexPath)
-
-      viewModel.getCosts { [weak self] in
-        self?.tableView.reloadData()
-      }
-      completion(true)
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel?.numberOfSections() ?? 0
     }
-
-    return UISwipeActionsConfiguration(actions: [deleteAction])
-  }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel?.titleForHeaderInSection(for: section)
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel?.numberOfRowInSection(for: section) ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell =
+        tableView.dequeueReusableCell(
+            withIdentifier: CostsTableViewCell.identifier,
+            for: indexPath) as? CostsTableViewCell
+        
+        guard let tableViewCell = cell,
+              let viewModel = viewModel
+        else { return UITableViewCell() }
+        
+        let cellViewModel = viewModel.cellViewModel(for: indexPath)
+        
+        tableViewCell.viewModel = cellViewModel
+        
+        return tableViewCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 50
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let viewModel = viewModel else { return }
+        viewModel.selectRow(atIndexPath: indexPath)
+        let detailViewModel = viewModel.viewModelForSelectedRow()
+        
+        guard let vm = detailViewModel else { return }
+        let costVC = CostDetailsListViewController(viewModel: vm)
+        self.navigationController?.pushViewController(costVC, animated: true)
+    }
+    
+    func tableView(
+        _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
+    ) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.font = Typography.footnote
+        header.textLabel?.textColor = UIColor.Main.text
+        if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        guard let viewModel = viewModel else { return nil }
+        
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
+            [weak self] _, _, completion in
+            guard let self = self else { return }
+            
+            if !self.checkProOrShowPaywall() {
+                completion(false)
+                return
+            }
+            
+            viewModel.deleteCostModel(atIndexPath: indexPath)
+            
+            viewModel.getCosts { [weak self] in
+                self?.tableView.reloadData()
+            }
+            completion(true)
+        }
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
 }
 
 // // MARK: - CostDetailsListViewControllerDelegate
@@ -170,15 +174,11 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
 
 // MARK: setConstraints
 extension CostListViewController {
-  func setConstraints() {
-
+    func setConstraints() {
     view.addSubview(tableView)
-
-    NSLayoutConstraint.activate([
-      tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-      tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-      tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-      tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-    ])
-  }
+    tableView.edgesToSuperview(
+      insets: .init(top: 10, left: 10, bottom: 0, right: 10),
+      usingSafeArea: true
+    )
+    }
 }

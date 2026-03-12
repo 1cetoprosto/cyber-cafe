@@ -526,9 +526,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func restartApp() {
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-            let window = windowScene.windows.first
-        else {
+        guard let window = UIApplication.shared.activeKeyWindow else {
             return
         }
 

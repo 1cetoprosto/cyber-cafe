@@ -95,8 +95,7 @@ extension ImagePicker {
                     title: R.string.global.cancel(),
                     style: .cancel,
                     handler: { _ in completion(false) }))
-            UIApplication.shared.delegate?.window??.rootViewController?.present(
-                alertVC, animated: true, completion: nil)
+            UIViewController.topMostViewController()?.present(alertVC, animated: true, completion: nil)
         }
     }
 

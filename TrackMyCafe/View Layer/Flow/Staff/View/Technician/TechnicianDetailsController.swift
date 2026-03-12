@@ -398,8 +398,7 @@ func showAlert(_ title: String, body: String) {
   let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
   alertController.addAction(
     UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
-  UIApplication.shared.keyWindow?.rootViewController?.present(
-    alertController, animated: true, completion: nil)
+  UIViewController.topMostViewController()?.present(alertController, animated: true, completion: nil)
 }
 
 func showWarning(body: String, buttonTitle: String, action: @escaping () -> Void) {
@@ -413,6 +412,5 @@ func showWarning(body: String, buttonTitle: String, action: @escaping () -> Void
       handler: { _ in
         action()
       }))
-  UIApplication.shared.keyWindow?.rootViewController?.present(
-    alertController, animated: true, completion: nil)
+  UIViewController.topMostViewController()?.present(alertController, animated: true, completion: nil)
 }

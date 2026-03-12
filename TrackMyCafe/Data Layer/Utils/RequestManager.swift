@@ -266,9 +266,7 @@ class RequestManager: NSObject {
                    nextPaymentDate < Date()
                 {
                     let controller = SubscriptionController.makeExpired()
-                    if let topVC = UIApplication.shared.keyWindow?.rootViewController {
-                        topVC.present(controller, animated: true)
-                    }
+                    UIViewController.topMostViewController()?.present(controller, animated: true)
                 }
                 
                 NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
