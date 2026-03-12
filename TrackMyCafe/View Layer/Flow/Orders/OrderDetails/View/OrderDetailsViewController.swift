@@ -19,6 +19,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     private var tableViewHeightConstraint: Constraint?
     private var collectionViewHeightConstraint: Constraint?
     private var isGridView: Bool = false
+    private var maxContentWidthConstraint: NSLayoutConstraint?
+    private var lastGridLayoutWidth: CGFloat = 0
 
     // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
@@ -152,6 +154,41 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isPadGridEnabled {
+            let width = collectionView.bounds.width
+            if width > 0, abs(width - lastGridLayoutWidth) > 1 {
+                lastGridLayoutWidth = width
+                collectionView.collectionViewLayout.invalidateLayout()
+                updateCollectionHeight()
+            }
+        }
+    }
+
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        let shouldUseGrid = isPadGridEnabled
+        if isGridView != shouldUseGrid {
+            isGridView = shouldUseGrid
+            tableView.isHidden = isGridView
+            collectionView.isHidden = !isGridView
+        }
+
+        maxContentWidthConstraint?.constant = maxContentWidth
+        view.setNeedsLayout()
+    }
+
+    private var isPadGridEnabled: Bool {
+        UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .regular
+    }
+
+    private var maxContentWidth: CGFloat {
+        isPadGridEnabled ? 1000 : 560
+    }
+
     private let orderEntryMode: OrderEntryMode = SettingsManager.shared.loadOrderEntryMode()
 
     // MARK: - Setup
@@ -167,8 +204,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                 target: self,
                 action: #selector(addProductTapped)
             )
-            tableView.isHidden = false
-            collectionView.isHidden = true
+            isGridView = isPadGridEnabled
+            tableView.isHidden = isGridView
+            collectionView.isHidden = !isGridView
         case .openTab:
             break
         }
@@ -266,11 +304,13 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         }
 
         viewModel.loadProducts { [weak self] in
-            self?.tableView.reloadData()
-            self?.collectionView.reloadData()
-            self?.updateTableHeight()
-            self?.updateCollectionHeight()
-            self?.updateTotalSumLabel()
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+                self?.collectionView.reloadData()
+                self?.updateTableHeight()
+                self?.updateCollectionHeight()
+                self?.updateTotalSumLabel()
+            }
         }
 
         verifyRequiredData()
@@ -315,7 +355,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         picker.onProductSelected = { [weak self] in
             guard let self = self else { return }
             self.tableView.reloadData()
+            self.collectionView.reloadData()
             self.updateTableHeight()
+            self.updateCollectionHeight()
             self.updateTotalSumLabel()
         }
         navigationController?.pushViewController(picker, animated: true)
@@ -508,11 +550,23 @@ extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionView
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let padding = UIConstants.standardPadding
-        // 2 columns: (Width - padding * 3) / 2
-        // Assuming standardPadding is spacing between items and edges
-        let availableWidth = collectionView.frame.width - (padding * 3)
-        let width = availableWidth / 2
-        return CGSize(width: width, height: 140)
+        let availableWidth = collectionView.bounds.width
+
+        if availableWidth <= 0 {
+            return CGSize(width: 100, height: 140)
+        }
+
+        if isPadGridEnabled {
+            let minItemWidth: CGFloat = 240
+            let columns = max(2, Int((availableWidth + padding) / (minItemWidth + padding)))
+            let totalSpacing = padding * CGFloat(columns - 1)
+            let width = floor((availableWidth - totalSpacing) / CGFloat(columns))
+            return CGSize(width: width, height: 140)
+        } else {
+            let available = availableWidth - (padding * 3)
+            let width = available / 2
+            return CGSize(width: width, height: 140)
+        }
     }
 }
 
@@ -543,11 +597,37 @@ extension OrderDetailsViewController {
         scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
         scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
-        mainStackView.edgesToSuperview(
-            insets: .init(
-                top: UIConstants.largeSpacing, left: UIConstants.standardPadding,
-                bottom: UIConstants.largeSpacing + 20, right: UIConstants.standardPadding))
-        mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
+        let horizontalInset = UIConstants.standardPadding
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        let fillWidth = mainStackView.widthAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.widthAnchor,
+            constant: -2 * horizontalInset
+        )
+        fillWidth.priority = .defaultHigh
+        let maxWidth = mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: maxContentWidth)
+        maxWidth.priority = .required
+        maxContentWidthConstraint = maxWidth
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.topAnchor,
+                constant: UIConstants.largeSpacing
+            ),
+            mainStackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                constant: -(UIConstants.largeSpacing + 20)
+            ),
+            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+                constant: horizontalInset
+            ),
+            mainStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -horizontalInset
+            ),
+            fillWidth,
+            maxWidth,
+        ])
 
         let containerHeight =
             UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding

@@ -209,10 +209,10 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-
-        guard checkProOrShowPaywall() else { return }
-
-        let ingredient = viewModel.ingredients[indexPath.row]
-        showAdjustmentAlert(for: ingredient)
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let ingredient = self.viewModel.ingredients[indexPath.row]
+            self.showAdjustmentAlert(for: ingredient)
+        }
     }
 }

@@ -108,22 +108,26 @@ final class HomeViewController: UIViewController, ProGated {
     }
     
     private func openAddIncome() {
-        guard checkProOrShowPaywall() else { return }
-        let vc = OrderDetailsViewController()
-        vc.onSave = { [weak self] in self?.reloadAfterAction() }
-        navigationController?.pushViewController(vc, animated: true)
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let vc = OrderDetailsViewController()
+            vc.onSave = { [weak self] in self?.reloadAfterAction() }
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func openAddExpense() {
-        guard checkProOrShowPaywall() else { return }
-        let empty = OpexExpenseModel(
-            id: "", date: Date(), categoryId: "General", amount: 0, note: ""
-        )
-        let vm = CostDetailsViewModel(cost: empty, dataService: DomainCostDataService())
-        let vc = CostDetailsListViewController(viewModel: vm)
-        vc.onSave = { [weak self] in self?.reloadAfterAction() }
-        vc.modalPresentationStyle = .fullScreen
-        navigationController?.pushViewController(vc, animated: true)
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let empty = OpexExpenseModel(
+                id: "", date: Date(), categoryId: "General", amount: 0, note: ""
+            )
+            let vm = CostDetailsViewModel(cost: empty, dataService: DomainCostDataService())
+            let vc = CostDetailsListViewController(viewModel: vm)
+            vc.onSave = { [weak self] in self?.reloadAfterAction() }
+            vc.modalPresentationStyle = .fullScreen
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func reloadAfterAction() {

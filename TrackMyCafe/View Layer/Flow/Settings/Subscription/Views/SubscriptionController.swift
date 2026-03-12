@@ -484,19 +484,29 @@ class SubscriptionController: UIViewController, Loggable {
     private func purchaseProduct(_ product: SKProduct) {
         IAPManager.shared.purchaseProduct(product) { [weak self] success, error in
             if success {
-                self?.showAlert(
-                    R.string.global.success(),
-                    body: R.string.global.successPurchase())
-
-                if let onSuccess = self?.onSubscriptionSuccess {
-                    onSuccess()
-                } else {
-                    self?.dismiss(animated: true)
+                DispatchQueue.main.async {
+                    if let onSuccess = self?.onSubscriptionSuccess {
+                        onSuccess()
+                        return
+                    }
+                    
+                    if self?.presentingViewController != nil {
+                        self?.dismiss(animated: true)
+                        return
+                    }
+                    
+                    self?.showAlert(
+                        R.string.global.success(),
+                        body: R.string.global.successPurchase()
+                    )
                 }
             } else {
-                self?.showAlert(
-                    R.string.global.error(),
-                    body: error ?? R.string.global.wentWrongTryAgain())
+                DispatchQueue.main.async {
+                    self?.showAlert(
+                        R.string.global.error(),
+                        body: error ?? R.string.global.wentWrongTryAgain()
+                    )
+                }
             }
         }
     }
@@ -520,13 +530,36 @@ class SubscriptionController: UIViewController, Loggable {
                     RequestManager.shared.isSubscriptionPurchaseLinkedToAccount(originTransactionId) { (status) in
                         if status == .linkedCurrent || status == .notLinked {
                             IAPManager.shared.updateSubscriptionInfo(receipt)
-                            self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
-                            self.updateUI()
-                            self.onSubscriptionSuccess?()
+                            DispatchQueue.main.async {
+                                if let onSuccess = self.onSubscriptionSuccess {
+                                    onSuccess()
+                                    return
+                                }
+                                
+                                if self.presentingViewController != nil {
+                                    self.dismiss(animated: true)
+                                    return
+                                }
+                                
+                                self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
+                                self.updateUI()
+                            }
                         }
                     }
                 } else {
-                    self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
+                    DispatchQueue.main.async {
+                        if let onSuccess = self.onSubscriptionSuccess {
+                            onSuccess()
+                            return
+                        }
+                        
+                        if self.presentingViewController != nil {
+                            self.dismiss(animated: true)
+                            return
+                        }
+                        
+                        self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
+                    }
                 }
             }
         }

@@ -25,6 +25,7 @@ class PurchaseListViewController: UIViewController, ProGated {
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -32,6 +33,7 @@ class PurchaseListViewController: UIViewController, ProGated {
     private lazy var filterButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "line.3.horizontal.decrease.circle"), for: .normal)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         button.addTarget(self, action: #selector(filterButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -93,11 +95,12 @@ class PurchaseListViewController: UIViewController, ProGated {
 
     // MARK: - Actions
     @objc private func addButtonTapped() {
-        guard checkProOrShowPaywall() else { return }
-
-        let createVM = CreatePurchaseViewModel()
-        let createVC = CreatePurchaseViewController(viewModel: createVM)
-        navigationController?.pushViewController(createVC, animated: true)
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let createVM = CreatePurchaseViewModel()
+            let createVC = CreatePurchaseViewController(viewModel: createVM)
+            self.navigationController?.pushViewController(createVC, animated: true)
+        }
     }
 
     @objc private func filterButtonTapped() {
@@ -140,6 +143,12 @@ class PurchaseListViewController: UIViewController, ProGated {
         alert.addAction(ingredientFilterAction)
         alert.addAction(clearFiltersAction)
         alert.addAction(cancelAction)
+
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = filterButton
+            popover.sourceRect = filterButton.bounds
+            popover.permittedArrowDirections = .any
+        }
 
         present(alert, animated: true)
     }
@@ -186,6 +195,11 @@ class PurchaseListViewController: UIViewController, ProGated {
             )
             alert.addAction(cancelAction)
             DispatchQueue.main.async {
+                if let popover = alert.popoverPresentationController {
+                    popover.sourceView = self.filterButton
+                    popover.sourceRect = self.filterButton.bounds
+                    popover.permittedArrowDirections = .any
+                }
                 self.present(alert, animated: true)
             }
         }

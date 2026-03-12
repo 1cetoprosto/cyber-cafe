@@ -64,6 +64,9 @@ class IngredientListViewController: UIViewController {
     
     @objc private func addIngredientAction() {
         let createVC = CreateIngredientViewController(viewModel: viewModel)
+        if UIDevice.isIpad {
+            createVC.modalPresentationStyle = .formSheet
+        }
         present(createVC, animated: true)
     }
 }
@@ -92,6 +95,9 @@ extension IngredientListViewController: UITableViewDataSource, UITableViewDelega
         tableView.deselectRow(at: indexPath, animated: true)
         let ingredient = viewModel.ingredients[indexPath.row]
         let createVC = CreateIngredientViewController(viewModel: viewModel, ingredient: ingredient)
+        if UIDevice.isIpad {
+            createVC.modalPresentationStyle = .formSheet
+        }
         present(createVC, animated: true)
     }
     
