@@ -11,12 +11,13 @@ class CostListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: CostListViewModelType?
     
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         
         tableView.register(
             CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = UIColor.TableView.separator
         tableView.rowHeight = 44
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -173,10 +174,7 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: setConstraints
 extension CostListViewController {
     func setConstraints() {
-    view.addSubview(tableView)
-    tableView.edgesToSuperview(
-      insets: .init(top: 10, left: 10, bottom: 0, right: 10),
-      usingSafeArea: true
-    )
+        view.addSubview(tableView)
+        tableView.edgesToSuperview(usingSafeArea: true)
     }
 }
