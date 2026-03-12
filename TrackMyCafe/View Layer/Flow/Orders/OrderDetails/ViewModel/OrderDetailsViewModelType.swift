@@ -28,11 +28,12 @@ protocol OrderDetailsViewModelType {
     var card: Double { get }
     var sum: Double { get }
     var type: String { get }
+    var note: String { get }
     var isNewModel: Bool { get set }
     
     // Methods
     func loadProducts(completion: @escaping () -> Void)
-    func save(date: Date, type: String?, cash: String?, card: String?, ignoreStockWarning: Bool, completion: @escaping (Result<Void, OrderSaveError>) -> Void)
+    func save(date: Date, type: String?, cash: String?, card: String?, note: String?, ignoreStockWarning: Bool, completion: @escaping (Result<Void, OrderSaveError>) -> Void)
     func deleteOrder(completion: @escaping () -> Void)
     
     // Picker Data Source

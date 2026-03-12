@@ -6,7 +6,7 @@ final class HomeViewController: UIViewController, ProGated {
     private let viewModel: HomeViewModelType = HomeViewModel()
     private var lastHeaderWidth: CGFloat = 0
     private var currentPeriod: DashboardPeriod = .month
-    
+
     private let tableView: UITableView = {
         let tv = UITableView(frame: .zero, style: .plain)
         tv.backgroundColor = UIColor.Main.background
@@ -15,20 +15,20 @@ final class HomeViewController: UIViewController, ProGated {
             TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.identifier)
         return tv
     }()
-    
+
     private lazy var headerView = HomeHeaderView()
     private let headerContainer = UIView()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.home()
         navigationItem.largeTitleDisplayMode = .never
         navigationController?.navigationBar.prefersLargeTitles = false
-        
+
         tableView.dataSource = self
         tableView.delegate = self
-        
+
         headerView.onAddIncome = { [weak self] in self?.openAddIncome() }
         headerView.onAddExpense = { [weak self] in self?.openAddExpense() }
         headerView.onPeriodChanged = { [weak self] idx in
@@ -37,7 +37,7 @@ final class HomeViewController: UIViewController, ProGated {
         headerView.onDeleteDemoData = { [weak self] in
             self?.confirmDeleteDemoData()
         }
-        
+
         view.addSubview(tableView)
         tableView.edgesToSuperview(
             insets: .init(
@@ -48,27 +48,27 @@ final class HomeViewController: UIViewController, ProGated {
             ),
             usingSafeArea: true
         )
-        
+
         Task { await loadData() }
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"), object: nil)
     }
-    
+
     @objc private func dataDidUpdate() {
         Task { await loadData() }
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         Task { await loadData() }
     }
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let width = tableView.bounds.width
@@ -77,18 +77,18 @@ final class HomeViewController: UIViewController, ProGated {
             lastHeaderWidth = width
         }
     }
-    
+
     private func setTableHeaderSized() {
         let width = tableView.bounds.width
         guard width > 0 else { return }
-        
+
         headerContainer.backgroundColor = UIColor.Main.background
         if headerView.superview !== headerContainer {
             headerContainer.addSubview(headerView)
             headerView.edgesToSuperview()
         }
         headerContainer.layoutIfNeeded()
-        
+
         let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
         let height = headerContainer.systemLayoutSizeFitting(
             targetSize,
@@ -98,7 +98,7 @@ final class HomeViewController: UIViewController, ProGated {
         headerContainer.frame = CGRect(x: 0, y: 0, width: width, height: height)
         tableView.tableHeaderView = headerContainer
     }
-    
+
     @MainActor
     private func loadData() async {
         await viewModel.loadDashboard()
@@ -106,16 +106,35 @@ final class HomeViewController: UIViewController, ProGated {
         setTableHeaderSized()
         tableView.reloadData()
     }
-    
+
     private func openAddIncome() {
         checkProOrShowPaywall { [weak self] in
             guard let self else { return }
-            let vc = OrderDetailsViewController()
-            vc.onSave = { [weak self] in self?.reloadAfterAction() }
-            self.navigationController?.pushViewController(vc, animated: true)
+            let mode = SettingsManager.shared.loadOrderEntryMode()
+            if UIDevice.isIpad, traitCollection.horizontalSizeClass == .regular, mode == .perOrder {
+                let split = OrderSplitContainerViewController()
+                split.onSave = { [weak self] in self?.reloadAfterAction() }
+                split.hidesBottomBarWhenPushed = true
+                if let nav = self.navigationController {
+                    nav.pushViewController(split, animated: true)
+                } else {
+                    split.modalPresentationStyle = .fullScreen
+                    self.present(split, animated: true)
+                }
+            } else {
+                let vc = OrderDetailsViewController()
+                vc.onSave = { [weak self] in self?.reloadAfterAction() }
+                if let nav = self.navigationController {
+                    nav.pushViewController(vc, animated: true)
+                } else {
+                    let nav = UINavigationController(rootViewController: vc)
+                    nav.modalPresentationStyle = .fullScreen
+                    self.present(nav, animated: true)
+                }
+            }
         }
     }
-    
+
     private func openAddExpense() {
         checkProOrShowPaywall { [weak self] in
             guard let self else { return }
@@ -129,11 +148,11 @@ final class HomeViewController: UIViewController, ProGated {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
+
     private func reloadAfterAction() {
         Task { await loadData() }
     }
-    
+
     private func confirmDeleteDemoData() {
         let alert = UIAlertController(
             title: R.string.global.deleteDemoDataTitle(),
@@ -158,7 +177,7 @@ final class HomeViewController: UIViewController, ProGated {
             })
         present(alert, animated: true)
     }
-    
+
     private func applyPeriodChange(index: Int) {
         let period: DashboardPeriod
         switch index {
@@ -172,7 +191,7 @@ final class HomeViewController: UIViewController, ProGated {
         setTableHeaderSized()
         tableView.reloadData()
     }
-    
+
     private func configureHeader(for period: DashboardPeriod) {
         let sales: Double
         switch period {
@@ -198,22 +217,22 @@ final class HomeViewController: UIViewController, ProGated {
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int { 2 }
-    
+
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let titleText =
         section == 0 ? R.string.global.recentIncomes() : R.string.global.recentExpenses()
         let action = section == 0 ? #selector(openIncomeList) : #selector(openCostList)
         return makeSectionHeader(title: titleText, action: action)
     }
-    
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         UIConstants.tableSectionHeaderHeight
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         section == 0 ? viewModel.lastIncome.count : viewModel.lastExpense.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard
             let cell = tableView.dequeueReusableCell(
@@ -229,7 +248,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 0 {
             navigationController?.pushViewController(OrderListViewController(), animated: true)
@@ -237,14 +256,14 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
             navigationController?.pushViewController(CostListViewController(), animated: true)
         }
     }
-    
+
     @objc private func openIncomeList() {
         navigationController?.pushViewController(OrderListViewController(), animated: true)
     }
     @objc private func openCostList() {
         navigationController?.pushViewController(CostListViewController(), animated: true)
     }
-    
+
     private func makeSectionHeader(title: String, action: Selector) -> UIView {
         let container = UIView()
         container.backgroundColor = UIColor.Main.background

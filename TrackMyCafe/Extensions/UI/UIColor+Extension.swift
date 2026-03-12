@@ -29,6 +29,8 @@ extension UIColor {
   struct TableView {
     static var cellBackground: UIColor { Theme.current.cellBackground }
     static var cellLabel: UIColor { Theme.current.primaryText }
+    static var separator: UIColor { Theme.current.primaryText.withAlphaComponent(0.12) }
+    static var cellSelectionBackground: UIColor { Theme.current.tabBarTint.withAlphaComponent(0.12) }
   }
 
   struct NavBar {

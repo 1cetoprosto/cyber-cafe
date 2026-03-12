@@ -1,23 +1,32 @@
+import Foundation
 import TinyConstraints
 import UIKit
 
 final class OrderProductPickerViewController: UIViewController, Loggable {
+    enum SelectionBehavior {
+        case popOnSelect
+        case stayOnSelect
+    }
+
+    private enum CategoryConstants {
+        static let allId = "__all__"
+    }
+
     private let productsViewModel: ProductListViewModel
+    private let selectionBehavior: SelectionBehavior
 
     var onProductSelected: (() -> Void)?
-
-    private enum CategoryIdentifiers {
-        static let allCategoryId = "__all__"
-    }
-
-    private enum CellIdentifiers {
-        static let productGridCell = "ProductGridCell"
-    }
 
     private var categories: [ProductCategoryModel] = []
     private var allProducts: [ProductsPriceModel] = []
     private var filteredProducts: [ProductsPriceModel] = []
     private var selectedCategoryId: String?
+
+    private var displayedCategories: [ProductCategoryModel] {
+        let allTitle = NSLocalizedString("all", tableName: "Global", comment: "")
+        let allCategory = ProductCategoryModel(id: CategoryConstants.allId, name: allTitle, sortOrder: -1)
+        return [allCategory] + categories
+    }
 
     private let categoriesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -26,7 +35,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         layout.minimumLineSpacing = UIConstants.standardPadding
 
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = true
         collectionView.backgroundColor = UIColor.Main.background
         return collectionView
     }()
@@ -45,8 +54,12 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         return collectionView
     }()
 
-    init(productsViewModel: ProductListViewModel) {
+    init(
+        productsViewModel: ProductListViewModel,
+        selectionBehavior: SelectionBehavior = .popOnSelect
+    ) {
         self.productsViewModel = productsViewModel
+        self.selectionBehavior = selectionBehavior
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -67,6 +80,11 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         loadData()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        categoriesCollectionView.flashScrollIndicators()
+    }
+
     private func setupCollectionView() {
         categoriesCollectionView.register(
             CategoryCell.self,
@@ -77,7 +95,6 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     }
 
     private func setupTableView() {
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "ProductCell")
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -85,7 +102,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     private func setupProductsCollectionView() {
         productsCollectionView.register(
             ProductGridCell.self,
-            forCellWithReuseIdentifier: CellIdentifiers.productGridCell
+            forCellWithReuseIdentifier: ProductGridCell.reuseIdentifier
         )
         productsCollectionView.delegate = self
         productsCollectionView.dataSource = self
@@ -134,12 +151,10 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     private func loadData() {
         DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
             DispatchQueue.main.async {
-                let allCategory = ProductCategoryModel(
-                    id: CategoryIdentifiers.allCategoryId,
-                    name: R.string.global.all(),
-                    sortOrder: -1
-                )
-                self?.categories = [allCategory] + categories
+                self?.categories = categories.sorted {
+                    if $0.sortOrder != $1.sortOrder { return $0.sortOrder < $1.sortOrder }
+                    return $0.name < $1.name
+                }
                 self?.categoriesCollectionView.reloadData()
             }
         }
@@ -158,6 +173,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         } else {
             filteredProducts = allProducts
         }
+        categoriesCollectionView.reloadData()
         if UIDevice.isIpad {
             productsCollectionView.reloadData()
         } else {
@@ -199,11 +215,11 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     }
 }
 
-extension OrderProductPickerViewController: UICollectionViewDelegate,
-    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension OrderProductPickerViewController: UICollectionViewDelegate, UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView === categoriesCollectionView {
-            return categories.count
+            return displayedCategories.count
         }
         if collectionView === productsCollectionView {
             return filteredProducts.count
@@ -223,21 +239,23 @@ extension OrderProductPickerViewController: UICollectionViewDelegate,
                 ) as? CategoryCell
             else { return UICollectionViewCell() }
 
-            let category = categories[indexPath.item]
-            cell.configure(with: category.name)
+            let category = displayedCategories[indexPath.item]
+            let isSelected = (category.id == CategoryConstants.allId)
+                ? (selectedCategoryId == nil)
+                : (category.id == selectedCategoryId)
+            cell.configure(title: category.name, isSelected: isSelected)
             return cell
         }
 
         guard
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CellIdentifiers.productGridCell,
+                withReuseIdentifier: ProductGridCell.reuseIdentifier,
                 for: indexPath
             ) as? ProductGridCell
         else { return UICollectionViewCell() }
 
         let product = filteredProducts[indexPath.item]
         cell.configure(title: product.name, price: product.price.currency)
-
         return cell
     }
 
@@ -249,10 +267,10 @@ extension OrderProductPickerViewController: UICollectionViewDelegate,
         guard collectionView === categoriesCollectionView else {
             return CGSize(width: 1, height: 1)
         }
-
-        let name = categories[indexPath.item].name as NSString
-        let width = name.size(withAttributes: [.font: Typography.body]).width
-        return CGSize(width: width + 24, height: 40)
+        let name = displayedCategories[indexPath.item].name as NSString
+        let measured = name.size(withAttributes: [.font: Typography.bodyBold]).width
+        let width = max(56, ceil(measured) + 36)
+        return CGSize(width: width, height: 44)
     }
 
     func collectionView(
@@ -260,21 +278,24 @@ extension OrderProductPickerViewController: UICollectionViewDelegate,
         didSelectItemAt indexPath: IndexPath
     ) {
         if collectionView === categoriesCollectionView {
-            let category = categories[indexPath.item]
-            selectedCategoryId =
-                category.id == CategoryIdentifiers.allCategoryId
-                ? nil
-                : category.id
+            let category = displayedCategories[indexPath.item]
+            if category.id == CategoryConstants.allId {
+                selectedCategoryId = nil
+            } else {
+                selectedCategoryId = (selectedCategoryId == category.id) ? nil : category.id
+            }
             applyFilter()
             return
         }
 
         collectionView.deselectItem(at: indexPath, animated: true)
-
         let priceModel = filteredProducts[indexPath.item]
         productsViewModel.addProduct(from: priceModel) { [weak self] in
-            self?.onProductSelected?()
-            self?.navigationController?.popViewController(animated: true)
+            guard let self else { return }
+            self.onProductSelected?()
+            if self.selectionBehavior == .popOnSelect {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }
@@ -288,16 +309,16 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "ProductCell",
-            for: indexPath
-        )
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: "ProductCell")
+            ?? UITableViewCell(style: .value1, reuseIdentifier: "ProductCell")
 
         let product = filteredProducts[indexPath.row]
         cell.textLabel?.text = product.name
         cell.detailTextLabel?.text = product.price.currency
         cell.backgroundColor = UIColor.Main.background
         cell.textLabel?.textColor = UIColor.Main.text
+        cell.detailTextLabel?.textColor = UIColor.Main.text
         return cell
     }
 
@@ -306,92 +327,11 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
 
         let priceModel = filteredProducts[indexPath.row]
         productsViewModel.addProduct(from: priceModel) { [weak self] in
-            self?.onProductSelected?()
-            self?.navigationController?.popViewController(animated: true)
-        }
-    }
-}
-
-private final class CategoryCell: UICollectionViewCell {
-    static let reuseIdentifier = "CategoryCell"
-
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textAlignment = .center
-        label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
-        return label
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        contentView.backgroundColor = UIColor.Main.secondaryBackground
-        contentView.layer.cornerRadius = 12
-
-        contentView.addSubview(titleLabel)
-        titleLabel.edgesToSuperview(insets: .horizontal(8))
-        titleLabel.centerYToSuperview()
-    }
-
-    required init?(coder: NSCoder) {
-        return nil
-    }
-
-    func configure(with title: String) {
-        titleLabel.text = title
-    }
-}
-
-private final class ProductGridCell: UICollectionViewCell {
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.Main.text
-        label.numberOfLines = 2
-        label.applyDynamic(Typography.bodyMedium)
-        return label
-    }()
-
-    private let priceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor.Main.text
-        label.textAlignment = .right
-        label.applyDynamic(Typography.body)
-        return label
-    }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-
-        contentView.backgroundColor = UIColor.white
-        contentView.layer.cornerRadius = 12
-        contentView.clipsToBounds = true
-
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(priceLabel)
-
-        titleLabel.topToSuperview(offset: 10)
-        titleLabel.leftToSuperview(offset: 12)
-        titleLabel.rightToSuperview(offset: -12)
-
-        priceLabel.topToBottom(of: titleLabel, offset: 8, relation: .equalOrLess)
-        priceLabel.leftToSuperview(offset: 12)
-        priceLabel.rightToSuperview(offset: -12)
-        priceLabel.bottomToSuperview(offset: -10)
-    }
-
-    required init?(coder: NSCoder) {
-        return nil
-    }
-
-    func configure(title: String, price: String) {
-        titleLabel.text = title
-        priceLabel.text = price
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            contentView.alpha = isHighlighted ? 0.7 : 1.0
+            guard let self else { return }
+            self.onProductSelected?()
+            if self.selectionBehavior == .popOnSelect {
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 }

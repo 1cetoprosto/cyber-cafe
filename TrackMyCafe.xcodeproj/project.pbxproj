@@ -220,6 +220,21 @@
 		F3410EB72BDD44370007157B /* PopupFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EB62BDD44370007157B /* PopupFactory.swift */; };
 		F3410EBA2BDD45AA0007157B /* UIDevice+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EB92BDD45AA0007157B /* UIDevice+Extension.swift */; };
 		F3410EBC2BDD66590007157B /* RequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EBB2BDD66590007157B /* RequestManager.swift */; };
+		F34BC9B22F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */; };
+		F34BC9B32F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */; };
+		F34BC9B42F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */; };
+		F34BC9B52F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */; };
+		F34BC9B62F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */; };
+		F34BC9B72F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */; };
+		F34BC9BA2F62F4D3000476B5 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */; };
+		F34BC9BB2F62F4D3000476B5 /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */; };
+		F34BC9BC2F62F4D3000476B5 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */; };
+		F34BC9BD2F62F4D3000476B5 /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */; };
+		F34BC9BE2F62F4D3000476B5 /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */; };
+		F34BC9BF2F62F4D3000476B5 /* ProductGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */; };
+		F34BC9C32F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
+		F34BC9C52F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
+		F34BC9C72F63455E000476B5 /* BaseListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */; };
 		F3583B9F2BE8D4680079441F /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
 		F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
 		F35E91A22F49C20D0050EB4A /* OrderCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F35E91A12F49C20D0050EB4A /* OrderCollectionViewCell.swift */; };
@@ -798,6 +813,11 @@
 		F3410EB62BDD44370007157B /* PopupFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupFactory.swift; sourceTree = "<group>"; };
 		F3410EB92BDD45AA0007157B /* UIDevice+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extension.swift"; sourceTree = "<group>"; };
 		F3410EBB2BDD66590007157B /* RequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestManager.swift; sourceTree = "<group>"; };
+		F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderReceiptPadViewController.swift; sourceTree = "<group>"; };
+		F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSplitContainerViewController.swift; sourceTree = "<group>"; };
+		F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
+		F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductGridCell.swift; sourceTree = "<group>"; };
+		F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseListTableViewCell.swift; sourceTree = "<group>"; };
 		F3583B9E2BE8D4680079441F /* Config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Config.plist; sourceTree = "<group>"; };
 		F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+Extension.swift"; sourceTree = "<group>"; };
 		F35E91A12F49C20D0050EB4A /* OrderCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -1502,6 +1522,7 @@
 			children = (
 				F324E60A2F486E99003A7469 /* Selection */,
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
+				F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */,
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
@@ -1568,6 +1589,8 @@
 		F3821C6027E9FC21006D40FC /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */,
+				F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */,
 				F35E91B22F49DB9B0050EB4A /* OrderProductPickerViewController.swift */,
 				F3821C6227E9FC62006D40FC /* Cells */,
 				F316A2FE2738FD710083E830 /* OrderDetailsViewController.swift */,
@@ -1589,6 +1612,8 @@
 			isa = PBXGroup;
 			children = (
 				F316A300273901410083E830 /* OrderTableViewCell.swift */,
+				F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */,
+				F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */,
 				F35E91A12F49C20D0050EB4A /* OrderCollectionViewCell.swift */,
 			);
 			path = Cells;
@@ -2778,6 +2803,8 @@
 				F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */,
 				F385B41D2C1D902A00973CAA /* ModeratorListController.swift in Sources */,
 				F3E357F72BEFF2AB005050CB /* OrderModel.swift in Sources */,
+				F34BC9B62F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
+				F34BC9B72F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3410E6D2BDD24710007157B /* UIColor.swift in Sources */,
 				F3410E6B2BDD23E60007157B /* Constants.swift in Sources */,
 				F385B40A2C1D78BF00973CAA /* PersonListModelProtocol.swift in Sources */,
@@ -2794,6 +2821,7 @@
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
+				F34BC9C52F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC62F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
 				F3F6A6372C327B83000961C8 /* AdminDetailsController.swift in Sources */,
@@ -2832,6 +2860,8 @@
 				F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3988AF127EB310900215976 /* CostListItemViewModel.swift in Sources */,
 				F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */,
+				F34BC9BC2F62F4D3000476B5 /* CategoryCell.swift in Sources */,
+				F34BC9BD2F62F4D3000476B5 /* ProductGridCell.swift in Sources */,
 				F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */,
 				F3158C482763437200136861 /* RealmProductModel.swift in Sources */,
 				F3410EA42BDD3C8E0007157B /* UserSession.swift in Sources */,
@@ -2975,6 +3005,8 @@
 				F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */,
 				F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */,
 				F3B339D42C0B22FE0073F19A /* UIColor.swift in Sources */,
+				F34BC9B22F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
+				F34BC9B32F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3B339D52C0B22FE0073F19A /* Constants.swift in Sources */,
 				F3B339D62C0B22FE0073F19A /* CostListViewModelType.swift in Sources */,
 				F3B339D72C0B22FE0073F19A /* SVProgressHUD+Extension.swift in Sources */,
@@ -2991,6 +3023,7 @@
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F34BC9C32F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC72F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B339E32C0B22FE0073F19A /* Settings.swift in Sources */,
 				F3B339E42C0B22FE0073F19A /* CostListViewController.swift in Sources */,
@@ -3029,6 +3062,8 @@
 				F32B52D12F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B339F62C0B22FE0073F19A /* CostListItemViewModel.swift in Sources */,
 				F3B339F72C0B22FE0073F19A /* DomainDatabaseService.swift in Sources */,
+				F34BC9BE2F62F4D3000476B5 /* CategoryCell.swift in Sources */,
+				F34BC9BF2F62F4D3000476B5 /* ProductGridCell.swift in Sources */,
 				F3B339F82C0B22FE0073F19A /* ProductListItemViewModelType.swift in Sources */,
 				F3B339F92C0B22FE0073F19A /* RealmProductModel.swift in Sources */,
 				F3B339FA2C0B22FE0073F19A /* UserSession.swift in Sources */,
@@ -3172,6 +3207,8 @@
 				F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */,
 				F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */,
 				F3B33A732C0B23450073F19A /* UIColor.swift in Sources */,
+				F34BC9B42F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
+				F34BC9B52F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3B33A742C0B23450073F19A /* Constants.swift in Sources */,
 				F3B33A752C0B23450073F19A /* CostListViewModelType.swift in Sources */,
 				F3B33A762C0B23450073F19A /* SVProgressHUD+Extension.swift in Sources */,
@@ -3188,6 +3225,7 @@
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
+				F34BC9C72F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
 				F319FEC82F5C4E6300F8D0A4 /* DemoDataFloatingButton.swift in Sources */,
 				F3B33A822C0B23450073F19A /* Settings.swift in Sources */,
 				F3B33A832C0B23450073F19A /* CostListViewController.swift in Sources */,
@@ -3226,6 +3264,8 @@
 				F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B33A952C0B23450073F19A /* CostListItemViewModel.swift in Sources */,
 				F3B33A962C0B23450073F19A /* DomainDatabaseService.swift in Sources */,
+				F34BC9BA2F62F4D3000476B5 /* CategoryCell.swift in Sources */,
+				F34BC9BB2F62F4D3000476B5 /* ProductGridCell.swift in Sources */,
 				F3B33A972C0B23450073F19A /* ProductListItemViewModelType.swift in Sources */,
 				F3B33A982C0B23450073F19A /* RealmProductModel.swift in Sources */,
 				F3B33A992C0B23450073F19A /* UserSession.swift in Sources */,
@@ -3468,7 +3508,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3502,7 +3542,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3535,7 +3575,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3566,7 +3606,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3596,7 +3636,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3627,7 +3667,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 38;
+				CURRENT_PROJECT_VERSION = 39;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;

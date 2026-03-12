@@ -15,6 +15,7 @@ struct OrderModel {
     var cash: Double
     var card: Double
     var totalCost: Double
+    var note: String?
 
     init(
         id: String,
@@ -23,7 +24,8 @@ struct OrderModel {
         sum: Double,
         cash: Double,
         card: Double,
-        totalCost: Double = 0.0
+        totalCost: Double = 0.0,
+        note: String? = nil
     ) {
         self.id = id
         self.date = date
@@ -32,6 +34,7 @@ struct OrderModel {
         self.cash = cash
         self.card = card
         self.totalCost = totalCost
+        self.note = note
     }
 
     init(realmModel: RealmOrderModel) {
@@ -42,6 +45,7 @@ struct OrderModel {
         self.cash = realmModel.cash
         self.card = realmModel.card
         self.totalCost = realmModel.totalCost
+        self.note = realmModel.note
     }
 
     init(firebaseModel: FIROrderModel) {
@@ -52,6 +56,7 @@ struct OrderModel {
         self.cash = firebaseModel.cash
         self.card = firebaseModel.card
         self.totalCost = firebaseModel.totalCost ?? 0.0
+        self.note = firebaseModel.note
     }
 
     init?(_ data: [String: Any]) {
@@ -63,5 +68,6 @@ struct OrderModel {
         self.cash = data["cash"] as? Double ?? 0.0
         self.card = data["card"] as? Double ?? 0.0
         self.totalCost = data["totalCost"] as? Double ?? 0.0
+        self.note = (data["note"] as? String)?.nilIfEmpty
     }
 }

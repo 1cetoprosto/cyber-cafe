@@ -11,12 +11,14 @@ class CostListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: CostListViewModelType?
     
     let tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
         
         tableView.register(
             CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
+        tableView.separatorColor = UIColor.TableView.separator
+        tableView.rowHeight = 44
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -110,11 +112,8 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
         return tableViewCell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         guard let viewModel = viewModel else { return }
         viewModel.selectRow(atIndexPath: indexPath)
         let detailViewModel = viewModel.viewModelForSelectedRow()
@@ -175,10 +174,7 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: setConstraints
 extension CostListViewController {
     func setConstraints() {
-    view.addSubview(tableView)
-    tableView.edgesToSuperview(
-      insets: .init(top: 10, left: 10, bottom: 0, right: 10),
-      usingSafeArea: true
-    )
+        view.addSubview(tableView)
+        tableView.edgesToSuperview(usingSafeArea: true)
     }
 }
