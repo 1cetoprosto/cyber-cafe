@@ -174,26 +174,67 @@ final class CreateIngredientViewController: UIViewController {
         scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
         scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
         
-        mainStackView.edgesToSuperview(insets: .uniform(UIConstants.standardPadding))
-        mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
+        let horizontalInset = UIConstants.standardPadding
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        let fillWidth = mainStackView.widthAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.widthAnchor,
+            constant: -2 * horizontalInset
+        )
+        fillWidth.priority = .defaultHigh
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.topAnchor,
+                constant: UIConstants.standardPadding
+            ),
+            mainStackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                constant: -UIConstants.standardPadding
+            ),
+            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+                constant: horizontalInset
+            ),
+            mainStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -horizontalInset
+            ),
+            fillWidth,
+            mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 560),
+        ])
         
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
         saveButton.height(UIConstants.buttonHeight)
         saveButtonBottomConstraint = saveButton.bottomAnchor.constraint(
-            equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -UIConstants.standardPadding)
+            equalTo: view.keyboardLayoutGuide.topAnchor,
+            constant: -UIConstants.standardPadding
+        )
         saveButtonBottomConstraint.isActive = true
     }
     
     private func setupKeyboardHandling() {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
         view.addGestureRecognizer(tapGesture)
+        addDoneButtonToTextField(costInputContainer.textFieldReference)
+        addDoneButtonToTextField(stockInputContainer.textFieldReference)
+    }
+    
+    private func addDoneButtonToTextField(_ textField: UITextField?) {
+        guard let textField else { return }
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
         
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification,
-            object: nil)
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification,
-            object: nil)
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(
+            title: R.string.global.actionOk(),
+            style: .done,
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+        
+        toolbar.items = [flexSpace, doneButton]
+        textField.inputAccessoryView = toolbar
     }
     
     // MARK: - Actions
@@ -239,19 +280,5 @@ final class CreateIngredientViewController: UIViewController {
     
     @objc private func dismissKeyboard() {
         view.endEditing(true)
-    }
-    
-    @objc private func keyboardWillShow(notification: NSNotification) {
-        if let keyboardSize =
-            (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
-        {
-            saveButtonBottomConstraint.constant = -keyboardSize.height - UIConstants.standardPadding
-            view.layoutIfNeeded()
-        }
-    }
-    
-    @objc private func keyboardWillHide(notification: NSNotification) {
-        saveButtonBottomConstraint.constant = -UIConstants.standardPadding
-        view.layoutIfNeeded()
     }
 }

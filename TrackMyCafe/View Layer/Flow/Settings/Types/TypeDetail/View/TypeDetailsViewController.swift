@@ -115,15 +115,34 @@ final class TypeDetailsViewController: UIViewController {
     scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
     // Main StackView constraints
-    mainStackView.edgesToSuperview(
-      insets: .init(
-        top: UIConstants.largeSpacing,
-        left: UIConstants.standardPadding,
-        bottom: UIConstants.largeSpacing,
-        right: UIConstants.standardPadding
-      )
+    let horizontalInset = UIConstants.standardPadding
+    mainStackView.translatesAutoresizingMaskIntoConstraints = false
+    let fillWidth = mainStackView.widthAnchor.constraint(
+      equalTo: scrollView.frameLayoutGuide.widthAnchor,
+      constant: -2 * horizontalInset
     )
-    mainStackView.width(to: scrollView, offset: -2 * UIConstants.standardPadding)
+    fillWidth.priority = .defaultHigh
+    NSLayoutConstraint.activate([
+      mainStackView.topAnchor.constraint(
+        equalTo: scrollView.contentLayoutGuide.topAnchor,
+        constant: UIConstants.largeSpacing
+      ),
+      mainStackView.bottomAnchor.constraint(
+        equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+        constant: -UIConstants.largeSpacing
+      ),
+      mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+      mainStackView.leadingAnchor.constraint(
+        greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+        constant: horizontalInset
+      ),
+      mainStackView.trailingAnchor.constraint(
+        lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+        constant: -horizontalInset
+      ),
+      fillWidth,
+      mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 560),
+    ])
 
     // Single input container height
     let containerHeight =
