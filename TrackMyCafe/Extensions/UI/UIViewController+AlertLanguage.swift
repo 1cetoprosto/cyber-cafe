@@ -37,6 +37,12 @@ extension UIViewController {
     alert.addAction(ukrainian)
     alert.addAction(cansel)
 
+    if let popover = alert.popoverPresentationController {
+      popover.sourceView = label
+      popover.sourceRect = label.bounds
+      popover.permittedArrowDirections = .any
+    }
+
     present(alert, animated: true)
 
   }
@@ -55,6 +61,12 @@ extension UIViewController {
 
     let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
     alert.addAction(cancelAction)
+
+    if let popover = alert.popoverPresentationController {
+      popover.sourceView = label
+      popover.sourceRect = label.bounds
+      popover.permittedArrowDirections = .any
+    }
 
     present(alert, animated: true)
   }

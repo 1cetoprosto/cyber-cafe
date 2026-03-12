@@ -57,5 +57,40 @@ extension UIViewController {
         
         present(alertVC, animated: true, completion: nil)
     }
+    
+    static func topMostViewController(base: UIViewController? = UIApplication.shared.activeKeyWindow?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topMostViewController(base: nav.visibleViewController)
+        }
+        
+        if let tab = base as? UITabBarController {
+            return topMostViewController(base: tab.selectedViewController)
+        }
+        
+        if let split = base as? UISplitViewController {
+            return topMostViewController(base: split.viewControllers.last)
+        }
+        
+        if let presented = base?.presentedViewController {
+            return topMostViewController(base: presented)
+        }
+        
+        return base
+    }
 }
 
+extension UIApplication {
+    var activeKeyWindow: UIWindow? {
+        let scenes = connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .filter { $0.activationState == .foregroundActive || $0.activationState == .foregroundInactive }
+        
+        for scene in scenes {
+            if let keyWindow = scene.windows.first(where: { $0.isKeyWindow }) {
+                return keyWindow
+            }
+        }
+        
+        return scenes.first?.windows.first
+    }
+}
