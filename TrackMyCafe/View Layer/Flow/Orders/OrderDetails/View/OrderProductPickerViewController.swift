@@ -6,6 +6,14 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 
     var onProductSelected: (() -> Void)?
 
+    private enum CategoryIdentifiers {
+        static let allCategoryId = "__all__"
+    }
+
+    private enum CellIdentifiers {
+        static let productGridCell = "ProductGridCell"
+    }
+
     private var categories: [ProductCategoryModel] = []
     private var allProducts: [ProductsPriceModel] = []
     private var filteredProducts: [ProductsPriceModel] = []
@@ -30,6 +38,13 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         return tableView
     }()
 
+    private lazy var productsCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeProductsLayout())
+        collectionView.backgroundColor = UIColor.Main.background
+        collectionView.alwaysBounceVertical = true
+        return collectionView
+    }()
+
     init(productsViewModel: ProductListViewModel) {
         self.productsViewModel = productsViewModel
         super.init(nibName: nil, bundle: nil)
@@ -47,6 +62,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 
         setupCollectionView()
         setupTableView()
+        setupProductsCollectionView()
         setupLayout()
         loadData()
     }
@@ -66,9 +82,19 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         tableView.dataSource = self
     }
 
+    private func setupProductsCollectionView() {
+        productsCollectionView.register(
+            ProductGridCell.self,
+            forCellWithReuseIdentifier: CellIdentifiers.productGridCell
+        )
+        productsCollectionView.delegate = self
+        productsCollectionView.dataSource = self
+    }
+
     private func setupLayout() {
         view.addSubview(categoriesCollectionView)
         view.addSubview(tableView)
+        view.addSubview(productsCollectionView)
 
         categoriesCollectionView.topToSuperview(
             offset: UIConstants.standardPadding,
@@ -89,12 +115,31 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         tableView.leftToSuperview()
         tableView.rightToSuperview()
         tableView.bottomToSuperview(usingSafeArea: true)
+
+        productsCollectionView.topToBottom(
+            of: categoriesCollectionView,
+            offset: UIConstants.standardPadding
+        )
+        productsCollectionView.leftToSuperview()
+        productsCollectionView.rightToSuperview()
+        productsCollectionView.bottomToSuperview(usingSafeArea: true)
+
+        if UIDevice.isIpad {
+            tableView.isHidden = true
+        } else {
+            productsCollectionView.isHidden = true
+        }
     }
 
     private func loadData() {
         DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
             DispatchQueue.main.async {
-                self?.categories = categories
+                let allCategory = ProductCategoryModel(
+                    id: CategoryIdentifiers.allCategoryId,
+                    name: R.string.global.all(),
+                    sortOrder: -1
+                )
+                self?.categories = [allCategory] + categories
                 self?.categoriesCollectionView.reloadData()
             }
         }
@@ -113,32 +158,86 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         } else {
             filteredProducts = allProducts
         }
-        tableView.reloadData()
+        if UIDevice.isIpad {
+            productsCollectionView.reloadData()
+        } else {
+            tableView.reloadData()
+        }
+    }
+
+    private func makeProductsLayout() -> UICollectionViewLayout {
+        let spacing = UIConstants.standardPadding
+        let minItemWidth: CGFloat = 220
+
+        return UICollectionViewCompositionalLayout { _, environment in
+            let contentWidth = environment.container.effectiveContentSize.width
+            let columns = max(2, Int((contentWidth + spacing) / (minItemWidth + spacing)))
+
+            let itemSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .fractionalHeight(1.0)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: itemSize)
+
+            let groupSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1.0),
+                heightDimension: .absolute(84)
+            )
+            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
+            group.interItemSpacing = .fixed(spacing)
+
+            let section = NSCollectionLayoutSection(group: group)
+            section.contentInsets = NSDirectionalEdgeInsets(
+                top: 0,
+                leading: spacing,
+                bottom: spacing,
+                trailing: spacing
+            )
+            section.interGroupSpacing = spacing
+            return section
+        }
     }
 }
 
 extension OrderProductPickerViewController: UICollectionViewDelegate,
-    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
-{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int
-    {
-        return categories.count
+    UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if collectionView === categoriesCollectionView {
+            return categories.count
+        }
+        if collectionView === productsCollectionView {
+            return filteredProducts.count
+        }
+        return 0
     }
 
     func collectionView(
         _ collectionView: UICollectionView,
         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
+        if collectionView === categoriesCollectionView {
+            guard
+                let cell = collectionView.dequeueReusableCell(
+                    withReuseIdentifier: CategoryCell.reuseIdentifier,
+                    for: indexPath
+                ) as? CategoryCell
+            else { return UICollectionViewCell() }
+
+            let category = categories[indexPath.item]
+            cell.configure(with: category.name)
+            return cell
+        }
+
         guard
             let cell = collectionView.dequeueReusableCell(
-                withReuseIdentifier: CategoryCell.reuseIdentifier,
+                withReuseIdentifier: CellIdentifiers.productGridCell,
                 for: indexPath
-            ) as? CategoryCell
+            ) as? ProductGridCell
         else { return UICollectionViewCell() }
 
-        let category = categories[indexPath.item]
-        cell.configure(with: category.name)
+        let product = filteredProducts[indexPath.item]
+        cell.configure(title: product.name, price: product.price.currency)
+
         return cell
     }
 
@@ -147,6 +246,10 @@ extension OrderProductPickerViewController: UICollectionViewDelegate,
         layout collectionViewLayout: UICollectionViewLayout,
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
+        guard collectionView === categoriesCollectionView else {
+            return CGSize(width: 1, height: 1)
+        }
+
         let name = categories[indexPath.item].name as NSString
         let width = name.size(withAttributes: [.font: Typography.body]).width
         return CGSize(width: width + 24, height: 40)
@@ -156,9 +259,23 @@ extension OrderProductPickerViewController: UICollectionViewDelegate,
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let category = categories[indexPath.item]
-        selectedCategoryId = category.id
-        applyFilter()
+        if collectionView === categoriesCollectionView {
+            let category = categories[indexPath.item]
+            selectedCategoryId =
+                category.id == CategoryIdentifiers.allCategoryId
+                ? nil
+                : category.id
+            applyFilter()
+            return
+        }
+
+        collectionView.deselectItem(at: indexPath, animated: true)
+
+        let priceModel = filteredProducts[indexPath.item]
+        productsViewModel.addProduct(from: priceModel) { [weak self] in
+            self?.onProductSelected?()
+            self?.navigationController?.popViewController(animated: true)
+        }
     }
 }
 
@@ -223,5 +340,58 @@ private final class CategoryCell: UICollectionViewCell {
 
     func configure(with title: String) {
         titleLabel.text = title
+    }
+}
+
+private final class ProductGridCell: UICollectionViewCell {
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.Main.text
+        label.numberOfLines = 2
+        label.applyDynamic(Typography.bodyMedium)
+        return label
+    }()
+
+    private let priceLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.Main.text
+        label.textAlignment = .right
+        label.applyDynamic(Typography.body)
+        return label
+    }()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        contentView.backgroundColor = UIColor.white
+        contentView.layer.cornerRadius = 12
+        contentView.clipsToBounds = true
+
+        contentView.addSubview(titleLabel)
+        contentView.addSubview(priceLabel)
+
+        titleLabel.topToSuperview(offset: 10)
+        titleLabel.leftToSuperview(offset: 12)
+        titleLabel.rightToSuperview(offset: -12)
+
+        priceLabel.topToBottom(of: titleLabel, offset: 8, relation: .equalOrLess)
+        priceLabel.leftToSuperview(offset: 12)
+        priceLabel.rightToSuperview(offset: -12)
+        priceLabel.bottomToSuperview(offset: -10)
+    }
+
+    required init?(coder: NSCoder) {
+        return nil
+    }
+
+    func configure(title: String, price: String) {
+        titleLabel.text = title
+        priceLabel.text = price
+    }
+
+    override var isHighlighted: Bool {
+        didSet {
+            contentView.alpha = isHighlighted ? 0.7 : 1.0
+        }
     }
 }

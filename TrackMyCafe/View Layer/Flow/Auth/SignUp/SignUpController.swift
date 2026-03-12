@@ -147,10 +147,7 @@ class SignUpController: UIViewController {
             if canUseBio && authError == nil {
                 navigationController?.pushViewController(BioAuthController(context), animated: true)
             } else {
-                let controller = MainNavigationController(
-                    rootViewController: MainTabBarController())
-                //AppDelegate.shared.set(root: controller)
-                SceneDelegate.shared.set(root: controller)
+                SceneDelegate.shared.set(root: MainTabBarController())
             }
         default:
             break
