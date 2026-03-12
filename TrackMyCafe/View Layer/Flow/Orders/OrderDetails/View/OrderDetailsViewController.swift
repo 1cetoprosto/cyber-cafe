@@ -115,6 +115,31 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         return label
     }()
 
+    private let changeTitleLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.textColor = UIColor.Main.text
+        label.applyDynamic(Typography.body)
+        return label
+    }()
+
+    private let changeValueLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .right
+        label.textColor = UIColor.Main.text
+        label.applyDynamic(Typography.body)
+        return label
+    }()
+
+    private lazy var changeStackView: UIStackView = {
+        UIStackView(
+            arrangedSubviews: [changeTitleLabel, changeValueLabel],
+            axis: .horizontal,
+            spacing: UIConstants.smallSpacing,
+            distribution: .fill
+        )
+    }()
+
     private lazy var typeInputContainer: InputContainerView = {
         let container = InputContainerView(
             labelText: R.string.global.type(),
@@ -258,6 +283,13 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
         cashInputContainer.textFieldReference?.textAlignment = .right
         cardInputContainer.textFieldReference?.textAlignment = .right
+
+        cashInputContainer.onTextChange = { [weak self] _ in
+            self?.updateChangeLabel()
+        }
+        cardInputContainer.onTextChange = { [weak self] _ in
+            self?.updateChangeLabel()
+        }
     }
 
     private func setupPicker() {
@@ -292,8 +324,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         cardInputContainer.configure(labelText: viewModel.cardLabel)
         totalTitleLabel.text = viewModel.orderLabel
         totalTitleLabel.isHidden = false
+        changeTitleLabel.text = R.string.global.changeDue()
         dateInputContainer.date = viewModel.date
         typeInputContainer.text = viewModel.type
+        updateChangeLabel()
 
         if (typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
             DomainDatabaseService.shared.fetchTypes { [weak self] types in
@@ -310,6 +344,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                 self?.updateTableHeight()
                 self?.updateCollectionHeight()
                 self?.updateTotalSumLabel()
+                self?.updateChangeLabel()
             }
         }
 
@@ -343,6 +378,23 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
     private func updateTotalSumLabel() {
         orderLabel.text = viewModel?.productsViewModel.totalSum()
+        updateChangeLabel()
+    }
+
+    private func updateChangeLabel() {
+        let total = viewModel?.productsViewModel.getTotalAmount() ?? 0
+        let cash = cashInputContainer.text?.doubleOrZero ?? 0
+        let card = cardInputContainer.text?.doubleOrZero ?? 0
+
+        let dueAfterCard = max(0, total - card)
+        let change = max(0, cash - dueAfterCard)
+
+        let hasCashInput =
+            !(cashInputContainer.text?
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+                .isEmpty ?? true)
+        changeStackView.isHidden = !hasCashInput
+        changeValueLabel.text = change.currency
     }
 
     // MARK: - Actions
@@ -670,6 +722,7 @@ extension OrderDetailsViewController {
         mainStackView.addArrangedSubview(collectionView)  // Added CollectionView
         mainStackView.addArrangedSubview(totalStackView)
         mainStackView.addArrangedSubview(cashCardStackView)
+        mainStackView.addArrangedSubview(changeStackView)
     }
 
     private func setupKeyboardHandling() {

@@ -280,6 +280,7 @@
 "cash" = "Cash";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
+"changeDue" = "Change";
 "money2" = "0.00";
 "money3" = "0.00";
 "totalTitle" = "Total";

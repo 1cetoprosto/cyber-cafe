@@ -280,6 +280,7 @@
 "cash" = "Готівка";
 "receivedInCash" = "Отримано готівкою";
 "receivedByCard" = "Отримано карткою";
+"changeDue" = "Решта";
 "money2" = "0.00";
 "money3" = "0.00";
 "totalTitle" = "Всього";
