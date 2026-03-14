@@ -30,10 +30,8 @@ class BaseSettingsCell: UITableViewCell {
         return imageView
     }()
     
-    let label: UILabel = {
-        let label = UILabel()
-        label.numberOfLines = 1
-        label.applyDynamic(Typography.body)
+    let label: AppLabel = {
+        let label = AppLabel(style: .body)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
