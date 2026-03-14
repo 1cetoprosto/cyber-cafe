@@ -299,7 +299,7 @@
 "inventoryDeltaPlaceholder" = "Delta (±)";
 "inventoryReason" = "Reason";
 "inventoryReasonPlaceholder" = "Adjustment reason";
-"inventoryAvgPrice" = "Avg: %.2f UAH";
+"inventoryAvgPrice" = "Avg price: %.2f UAH";
 "inventorySumValue" = "Sum: %.2f UAH";
 "inventoryLowStock" = "Low Stock";
 

@@ -19,6 +19,8 @@ class PurchaseListViewController: UIViewController, ProGated {
             PurchaseTableViewCell.self, forCellReuseIdentifier: PurchaseTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .singleLine
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 72
         return tableView
     }()
 
@@ -247,33 +249,33 @@ private final class DateRangePickerViewController: UIViewController {
     private var startDate: Date = Date()
     private var endDate: Date = Date()
     private let modeControl: UISegmentedControl = {
-        let c = UISegmentedControl(items: [R.string.global.dateFrom(), R.string.global.dateTo()])
-        c.selectedSegmentIndex = 0
-        return c
+        let control = UISegmentedControl(items: [R.string.global.dateFrom(), R.string.global.dateTo()])
+        control.selectedSegmentIndex = 0
+        return control
     }()
     private let picker: UIDatePicker = {
-        let p = UIDatePicker()
-        p.datePickerMode = .date
-        p.preferredDatePickerStyle = .wheels
-        return p
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        return datePicker
     }()
     private let applyButton: UIButton = {
-        let b = DefaultButton()
-        b.setTitle(R.string.global.actionOk(), for: .normal)
-        return b
+        let button = DefaultButton()
+        button.setTitle(R.string.global.actionOk(), for: .normal)
+        return button
     }()
     private let cancelButton: UIButton = {
-        let b = DefaultButton()
-        b.setTitle(R.string.global.cancel(), for: .normal)
-        return b
+        let button = DefaultButton()
+        button.setTitle(R.string.global.cancel(), for: .normal)
+        return button
     }()
     private let titleLabel: UILabel = {
-        let l = UILabel()
-        l.textAlignment = .center
-        l.textColor = UIColor.Main.text
-        l.applyDynamic(Typography.title3DemiBold)
-        l.text = R.string.global.filterByDate()
-        return l
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = UIColor.Main.text
+        label.applyDynamic(Typography.title3DemiBold)
+        label.text = R.string.global.filterByDate()
+        return label
     }()
 
     override func viewDidLoad() {
@@ -381,7 +383,13 @@ extension PurchaseListViewController: UITableViewDelegate {
         navigationController?.pushViewController(createVC, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
+    func tableView(
+        _ tableView: UITableView,
+        willDisplayHeaderView view: UIView,
+        forSection section: Int
+    ) {
+        guard let header = view as? UITableViewHeaderFooterView else { return }
+        header.textLabel?.applyDynamic(Typography.title3)
+        header.textLabel?.textColor = UIColor.Main.text.alpha(0.55)
     }
 }

@@ -13,25 +13,25 @@ class RecipeItemTableViewCell: UITableViewCell {
     let backgroundViewCell: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = 10
+        view.layer.cornerRadius = UIConstants.largeCornerRadius
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
-    let nameLabel: UILabel = {
-        let label = UILabel()
+    let nameLabel: AppLabel = {
+        let label = AppLabel(style: .body)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
-    let quantityLabel: UILabel = {
-        let label = UILabel()
+    let quantityLabel: AppLabel = {
+        let label = AppLabel(style: .bodyValue)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
         label.textAlignment = .right
-        label.applyDynamic(Typography.body)
         return label
     }()
 
@@ -56,36 +56,32 @@ class RecipeItemTableViewCell: UITableViewCell {
     // MARK: - Constraints
     private func setupConstraints() {
         contentView.addSubview(backgroundViewCell)
-        backgroundViewCell.addSubview(nameLabel)
-        backgroundViewCell.addSubview(quantityLabel)
+        let rowStackView = UIStackView(arrangedSubviews: [nameLabel, quantityLabel])
+        rowStackView.axis = .horizontal
+        rowStackView.alignment = .center
+        rowStackView.distribution = .fill
+        rowStackView.spacing = UIConstants.standardSpacing
+        rowStackView.translatesAutoresizingMaskIntoConstraints = false
 
-        // Background View (Card)
-        // Matching ProductPriceTableViewCell: top 0, bottom -1 (for small gap), leading/trailing 0
-        // But since we want "card" look, maybe we want some vertical spacing if the screenshot implies it.
-        // ProductPriceTableViewCell uses:
-        // top: 0, leading: 0, trailing: 0, bottom: -1
-        // Let's stick to that to be "the same".
+        nameLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        nameLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        quantityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        quantityLabel.setContentHuggingPriority(.required, for: .horizontal)
+
+        backgroundViewCell.addSubview(rowStackView)
 
         NSLayoutConstraint.activate([
-            backgroundViewCell.topAnchor.constraint(equalTo: contentView.topAnchor),
+            backgroundViewCell.topAnchor.constraint(equalTo: contentView.topAnchor, constant: UIConstants.smallSpacing),
             backgroundViewCell.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             backgroundViewCell.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            backgroundViewCell.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -1),
+            backgroundViewCell.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -UIConstants.smallSpacing),
         ])
 
-        // Name Label
         NSLayoutConstraint.activate([
-            nameLabel.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            nameLabel.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: 15),
-        ])
-
-        // Quantity Label
-        NSLayoutConstraint.activate([
-            quantityLabel.centerYAnchor.constraint(equalTo: backgroundViewCell.centerYAnchor),
-            quantityLabel.trailingAnchor.constraint(
-                equalTo: backgroundViewCell.trailingAnchor, constant: -15),
-            quantityLabel.leadingAnchor.constraint(
-                greaterThanOrEqualTo: nameLabel.trailingAnchor, constant: 10),
+            rowStackView.topAnchor.constraint(equalTo: backgroundViewCell.topAnchor, constant: UIConstants.mediumSpacing),
+            rowStackView.leadingAnchor.constraint(equalTo: backgroundViewCell.leadingAnchor, constant: UIConstants.standardPadding),
+            rowStackView.trailingAnchor.constraint(equalTo: backgroundViewCell.trailingAnchor, constant: -UIConstants.standardPadding),
+            rowStackView.bottomAnchor.constraint(equalTo: backgroundViewCell.bottomAnchor, constant: -UIConstants.mediumSpacing),
         ])
     }
 }

@@ -19,7 +19,8 @@ class StockListViewController: UIViewController, ProGated {
         tableView.register(StockItemCell.self, forCellReuseIdentifier: "StockItemCell")
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 60
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 80
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -135,9 +136,8 @@ class StockListViewController: UIViewController, ProGated {
             textField.placeholder = R.string.global.inventoryReasonPlaceholder()
         }
 
-        let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) {
-            [weak self] _ in
-            guard let self = self else { return }
+        let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) { [weak self] _ in
+            guard let self else { return }
             let deltaText = alert.textFields?.first?.text ?? ""
             let reasonText = (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
 

@@ -4,11 +4,10 @@ import UIKit
 final class CategoryCell: UICollectionViewCell {
     static let reuseIdentifier = "CategoryCell"
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: AppLabel = {
+        let label = AppLabel(style: .body)
         label.textAlignment = .center
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
         return label
     }()
 
@@ -48,7 +47,7 @@ final class CategoryCell: UICollectionViewCell {
 
     private func updateAppearance(isSelected: Bool) {
         contentView.backgroundColor = isSelected ? UIColor.TabBar.tint.alpha(0.18) : UIColor.TableView.cellBackground
-        titleLabel.applyDynamic(isSelected ? Typography.bodyBold : Typography.body)
+        titleLabel.apply(isSelected ? .bodyBold : .body)
         contentView.layer.shadowOpacity = isSelected ? 0.08 : 0
         accessibilityTraits = isSelected ? [.button, .selected] : [.button]
     }
