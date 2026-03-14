@@ -5,6 +5,8 @@
 - Stack: Firebase v10+ (Auth, Firestore, Storage), Realm v10+, KeychainAccess.
 - Async: Use async/await only. No force-unwraps (!).
 - Logging: OSLog/Logger only. No print().
+- Reviews: Do not include diffs in assistant responses unless explicitly requested.
+- Layout (Dynamic Type): Avoid fixed heights for text; allow multiline (0/2 lines) for titles/descriptions; use auto-shrink (adjustsFontSizeToFitWidth + minimumScaleFactor) for numeric amounts where wrapping is undesired; set hugging/compression priorities intentionally; prefer scroll when content can overflow on small screens or Accessibility text sizes.
 - Files: No manual .pbxproj/Info.plist edits.
 - Commits: English, Conventional (feat/fix/refactor).
 - PRs: Use .github/pull_request_template.md.

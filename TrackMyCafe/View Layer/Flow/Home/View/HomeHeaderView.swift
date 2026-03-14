@@ -202,10 +202,10 @@ final class HomeHeaderView: UIView {
 private final class ProfitCard: UIView {
     private let iconView = UIImageView()
     private let badgeView = UIView()
-    private let titleLabel = UILabel()
-    private let valueLabel = UILabel()
+    private let titleLabel = AppLabel(style: .kpiTitle)
+    private let valueLabel = AppLabel(style: .kpiValue)
     private let divider = UIView()
-    private let footerLabel = UILabel()
+    private let footerLabel = AppLabel(style: .kpiFooter)
 
     init() {
         super.init(frame: .zero)
@@ -217,14 +217,11 @@ private final class ProfitCard: UIView {
         iconView.image = UIImage(systemName: "arrow.down.right")
         iconView.tintColor = UIColor.systemPink
         iconView.contentMode = .scaleAspectFit
-        titleLabel.applyDynamic(Typography.footnote)
-        titleLabel.textColor = UIColor.Main.text.alpha(0.7)
-        valueLabel.applyDynamic(Typography.title2DemiBold)
+        titleLabel.apply(.kpiTitle)
+        valueLabel.apply(.kpiValue)
         valueLabel.textColor = UIColor.systemRed
-        valueLabel.adjustsFontSizeToFitWidth = false
         divider.backgroundColor = UIColor.Main.text.alpha(0.1)
-        footerLabel.applyDynamic(Typography.footnote)
-        footerLabel.textColor = UIColor.Main.text.alpha(0.7)
+        footerLabel.apply(.kpiFooter)
 
         badgeView.addSubview(iconView)
         iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
@@ -238,6 +235,7 @@ private final class ProfitCard: UIView {
         let hStack = UIStackView(arrangedSubviews: [badgeView, vStack])
         hStack.axis = .horizontal
         hStack.spacing = UIConstants.smallSpacing
+        hStack.alignment = .center
 
         //    let header = UIStackView(arrangedSubviews: [badgeView, titleLabel])
         //    header.axis = .horizontal
@@ -284,8 +282,8 @@ private final class ProfitCard: UIView {
 private final class TodayCardView: UIView {
     private let iconView = UIImageView()
     private let iconBadge = UIView()
-    private let titleLabel = UILabel()
-    private let valueLabel = UILabel()
+    private let titleLabel = AppLabel(style: .kpiTitle)
+    private let valueLabel = AppLabel(style: .kpiValue)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -297,13 +295,10 @@ private final class TodayCardView: UIView {
         iconView.image = UIImage(systemName: "arrow.up.right")
         iconView.tintColor = UIColor.systemGreen
         iconView.contentMode = .scaleAspectFit
-        titleLabel.applyDynamic(Typography.footnote)
-        titleLabel.textColor = UIColor.Main.text.alpha(0.7)
+        titleLabel.apply(.kpiTitle)
         titleLabel.text = R.string.global.today()
-        valueLabel.applyDynamic(Typography.title2DemiBold)
+        valueLabel.apply(.kpiValue)
         valueLabel.textColor = UIColor.Main.text
-        valueLabel.adjustsFontSizeToFitWidth = true
-        valueLabel.minimumScaleFactor = 0.7
 
         iconBadge.addSubview(iconView)
         iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
@@ -338,8 +333,8 @@ private final class TodayCardView: UIView {
 private final class SimpleKpiCard: UIView {
     private let iconView = UIImageView()
     private let iconBadge = UIView()
-    private let titleLabel = UILabel()
-    private let valueLabel = UILabel()
+    private let titleLabel = AppLabel(style: .kpiTitle)
+    private let valueLabel = AppLabel(style: .kpiValue)
 
     init(iconSystemName: String, tint: UIColor, iconTint: UIColor) {
         super.init(frame: .zero)
@@ -351,12 +346,8 @@ private final class SimpleKpiCard: UIView {
         iconView.image = UIImage(systemName: iconSystemName)
         iconView.tintColor = iconTint
         iconView.contentMode = .scaleAspectFit
-        titleLabel.applyDynamic(Typography.footnote)
-        titleLabel.textColor = UIColor.Main.text.alpha(0.7)
-        valueLabel.applyDynamic(Typography.title2DemiBold)
-        valueLabel.textColor = UIColor.Main.text
-        valueLabel.adjustsFontSizeToFitWidth = true
-        valueLabel.minimumScaleFactor = 0.7
+        titleLabel.apply(.kpiTitle)
+        valueLabel.apply(.kpiValue)
 
         iconBadge.addSubview(iconView)
         iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
@@ -430,10 +421,10 @@ extension HomeHeaderView {
 private final class BalanceCard: UIView {
     private let iconCash = UIImageView()
     private let iconCard = UIImageView()
-    private let cashLabel = UILabel()
-    private let cashValue = UILabel()
-    private let cardLabel = UILabel()
-    private let cardValue = UILabel()
+    private let cashLabel = AppLabel(style: .balanceTitle)
+    private let cashValue = AppLabel(style: .balanceValue)
+    private let cardLabel = AppLabel(style: .balanceTitle)
+    private let cardValue = AppLabel(style: .balanceValue)
 
     init() {
         super.init(frame: .zero)
@@ -447,29 +438,29 @@ private final class BalanceCard: UIView {
         iconCard.tintColor = UIColor.systemBlue
         iconCard.contentMode = .scaleAspectFit
 
-        cashLabel.applyDynamic(Typography.footnote)
-        cashLabel.textColor = UIColor.Main.text.alpha(0.7)
+        cashLabel.apply(.balanceTitle)
         cashLabel.text = R.string.global.receivedInCash()
-        cardLabel.applyDynamic(Typography.footnote)
-        cardLabel.textColor = UIColor.Main.text.alpha(0.7)
+        cardLabel.apply(.balanceTitle)
         cardLabel.text = R.string.global.receivedByCard()
 
-        cashValue.applyDynamic(Typography.title3DemiBold)
-        cashValue.textColor = UIColor.Main.text
-        cardValue.applyDynamic(Typography.title3DemiBold)
-        cardValue.textColor = UIColor.Main.text
+        cashValue.apply(.balanceValue)
+        cardValue.apply(.balanceValue)
 
         let cashRow = UIStackView(arrangedSubviews: [iconCash, cashLabel, UIView(), cashValue])
         cashRow.axis = .horizontal
         cashRow.spacing = UIConstants.smallSpacing
         iconCash.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
+        cashLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        cashValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let cardRow = UIStackView(arrangedSubviews: [iconCard, cardLabel, UIView(), cardValue])
         cardRow.axis = .horizontal
         cardRow.spacing = UIConstants.smallSpacing
         iconCard.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
+        cardLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        cardValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let stack = UIStackView(arrangedSubviews: [cashRow, cardRow])
         stack.axis = .vertical
