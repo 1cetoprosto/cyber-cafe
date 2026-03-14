@@ -258,9 +258,8 @@ extension SceneDelegate: OnboardingViewControllerDelegate {
     func didFinishOnboarding() {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
-        // Show SignUpController directly after onboarding
-        let signUpController = SignUpController()
-        let navigationController = UINavigationController(rootViewController: signUpController)
+        let signInController = SignInController()
+        let navigationController = UINavigationController(rootViewController: signInController)
         navigationController.setNavigationBarHidden(true, animated: false)
 
         set(root: navigationController)
