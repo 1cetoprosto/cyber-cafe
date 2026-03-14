@@ -9,7 +9,7 @@ import UIKit
 import TinyConstraints
 
 class PurchaseTableViewCell: UITableViewCell {
-    
+
     // MARK: - UI Elements
     private let nameLabel: AppLabel = {
         let label = AppLabel(style: .bodyMedium)
@@ -18,14 +18,14 @@ class PurchaseTableViewCell: UITableViewCell {
         label.lineBreakMode = .byWordWrapping
         return label
     }()
-    
+
     private let detailsLabel: AppLabel = {
         let label = AppLabel(style: .footnoteValue)
         label.textColor = UIColor.Main.text.alpha(0.75)
         label.textAlignment = .right
         return label
     }()
-    
+
     private let totalLabel: AppLabel = {
         let label = AppLabel(style: .bodyBoldValue)
         label.textColor = UIColor.Main.text
@@ -34,27 +34,24 @@ class PurchaseTableViewCell: UITableViewCell {
     }()
 
     private let containerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = UIConstants.largeCornerRadius
-        return view
+        UIView()
     }()
-    
+
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupView()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     // MARK: - Setup
     private func setupView() {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
-        
+
         let leftStack = UIStackView(arrangedSubviews: [nameLabel])
         leftStack.axis = .vertical
         leftStack.spacing = UIConstants.smallSpacing
@@ -78,17 +75,17 @@ class PurchaseTableViewCell: UITableViewCell {
         contentView.addSubview(containerView)
         containerView.addSubview(rootStack)
 
-        containerView.edgesToSuperview(insets: .vertical(UIConstants.smallSpacing))
+        containerView.edgesToSuperview()
         rootStack.edgesToSuperview(
             insets: .init(
-                top: UIConstants.mediumSpacing,
+                top: UIConstants.standardSpacing,
                 left: UIConstants.standardPadding,
-                bottom: UIConstants.mediumSpacing,
+                bottom: UIConstants.standardSpacing,
                 right: UIConstants.standardPadding
             )
         )
     }
-    
+
     // MARK: - Configuration
     func configure(with viewModel: PurchaseListItemViewModelType) {
         nameLabel.text = viewModel.name
