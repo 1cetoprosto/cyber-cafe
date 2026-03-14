@@ -11,27 +11,33 @@ import TinyConstraints
 class PurchaseTableViewCell: UITableViewCell {
     
     // MARK: - UI Elements
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+    private let nameLabel: AppLabel = {
+        let label = AppLabel(style: .bodyMedium)
         label.textColor = UIColor.Main.text
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
     
-    private let detailsLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = UIColor.Main.text
+    private let detailsLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteValue)
+        label.textColor = UIColor.Main.text.alpha(0.75)
         label.textAlignment = .right
         return label
     }()
     
-    private let totalLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+    private let totalLabel: AppLabel = {
+        let label = AppLabel(style: .bodyBoldValue)
         label.textColor = UIColor.Main.text
         label.textAlignment = .right
         return label
+    }()
+
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.TableView.cellBackground
+        view.layer.cornerRadius = UIConstants.largeCornerRadius
+        return view
     }()
     
     // MARK: - Init
@@ -49,24 +55,38 @@ class PurchaseTableViewCell: UITableViewCell {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         
-        contentView.addSubview(nameLabel)
-        contentView.addSubview(detailsLabel)
-        contentView.addSubview(totalLabel)
-        
-        setupConstraints()
-    }
-    
-    private func setupConstraints() {
-        nameLabel.centerYToSuperview()
-        nameLabel.leadingToSuperview(offset: 16)
-        nameLabel.trailing(to: detailsLabel, offset: -10, relation: .equalOrLess)
-        
-        totalLabel.topToSuperview(offset: 10)
-        totalLabel.trailingToSuperview(offset: 16)
-        
-        detailsLabel.topToBottom(of: totalLabel, offset: 4)
-        detailsLabel.trailingToSuperview(offset: 16)
-        detailsLabel.bottomToSuperview(offset: -10)
+        let leftStack = UIStackView(arrangedSubviews: [nameLabel])
+        leftStack.axis = .vertical
+        leftStack.spacing = UIConstants.smallSpacing
+
+        let rightStack = UIStackView(arrangedSubviews: [totalLabel, detailsLabel])
+        rightStack.axis = .vertical
+        rightStack.spacing = UIConstants.smallSpacing
+        rightStack.alignment = .trailing
+
+        rightStack.setContentHuggingPriority(.required, for: .horizontal)
+        rightStack.setContentCompressionResistancePriority(.required, for: .horizontal)
+        leftStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        leftStack.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        let rootStack = UIStackView(arrangedSubviews: [leftStack, rightStack])
+        rootStack.axis = .horizontal
+        rootStack.alignment = .top
+        rootStack.distribution = .fill
+        rootStack.spacing = UIConstants.standardSpacing
+
+        contentView.addSubview(containerView)
+        containerView.addSubview(rootStack)
+
+        containerView.edgesToSuperview(insets: .vertical(UIConstants.smallSpacing))
+        rootStack.edgesToSuperview(
+            insets: .init(
+                top: UIConstants.mediumSpacing,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.mediumSpacing,
+                right: UIConstants.standardPadding
+            )
+        )
     }
     
     // MARK: - Configuration
