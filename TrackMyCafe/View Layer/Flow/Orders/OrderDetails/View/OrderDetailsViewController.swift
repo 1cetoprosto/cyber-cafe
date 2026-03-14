@@ -98,36 +98,40 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         return container
     }()
 
-    private let orderLabel: UILabel = {
-        let label = UILabel()
+    private let orderLabel: AppLabel = {
+        let label = AppLabel(style: .title3Value)
         label.textAlignment = .right
         label.text = "0"
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.title3)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
     }()
 
-    private let totalTitleLabel: UILabel = {
-        let label = UILabel()
+    private let totalTitleLabel: AppLabel = {
+        let label = AppLabel(style: .title3)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.title3)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
 
-    private let changeTitleLabel: UILabel = {
-        let label = UILabel()
+    private let changeTitleLabel: AppLabel = {
+        let label = AppLabel(style: .body)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
 
-    private let changeValueLabel: UILabel = {
-        let label = UILabel()
+    private let changeValueLabel: AppLabel = {
+        let label = AppLabel(style: .bodyValue)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
     }()
 
@@ -442,8 +446,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         let cash = cashInputContainer.text
         let card = cardInputContainer.text
 
-        viewModel.save(date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false) {
-            [weak self] result in
+        viewModel.save(date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false) { [weak self] result in
             self?.handleSaveResult(result)
         }
     }
@@ -573,17 +576,12 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
 // MARK: - CollectionView
 extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout
-{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int
-    {
+    UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
-        -> UICollectionViewCell
-    {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "OrderCollectionViewCell", for: indexPath)
@@ -630,9 +628,7 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
         return viewModel?.numberOfRowsInComponent(component: component) ?? 0
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
-        -> String?
-    {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return viewModel?.titleForRow(row: row, component: component)
     }
 

@@ -14,21 +14,17 @@ final class OnboardingCell: UICollectionViewCell {
         return iv
     }()
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
+    private let titleLabel: AppLabel = {
+        let label = AppLabel(style: .largeTitle)
         label.textColor = UIColor.Main.text
         label.textAlignment = .center
-        label.numberOfLines = 0
         return label
     }()
 
-    private let descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+    private let descriptionLabel: AppLabel = {
+        let label = AppLabel(style: .bodyMultiline)
         label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .center
-        label.numberOfLines = 0
         return label
     }()
 
