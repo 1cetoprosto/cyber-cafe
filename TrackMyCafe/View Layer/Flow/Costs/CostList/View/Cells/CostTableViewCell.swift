@@ -25,6 +25,9 @@ final class CostsTableViewCell: BaseListTableViewCell {
             guard let viewModel else { return }
             textLabel?.applyDynamic(Typography.body)
             detailTextLabel?.applyDynamic(Typography.body)
+            detailTextLabel?.adjustsFontSizeToFitWidth = true
+            detailTextLabel?.minimumScaleFactor = 0.7
+            detailTextLabel?.lineBreakMode = .byTruncatingTail
             textLabel?.text = viewModel.costName
             detailTextLabel?.text = viewModel.costSum
         }
