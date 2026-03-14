@@ -52,10 +52,25 @@ final class HomeViewController: UIViewController, ProGated {
         Task { await loadData() }
 
         NotificationCenter.default.addObserver(self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"), object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(contentSizeCategoryDidChange),
+            name: UIContentSizeCategory.didChangeNotification,
+            object: nil
+        )
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     @objc private func dataDidUpdate() {
         Task { await loadData() }
+    }
+
+    @objc private func contentSizeCategoryDidChange() {
+        setTableHeaderSized()
+        tableView.reloadData()
     }
 
     override func viewWillAppear(_ animated: Bool) {

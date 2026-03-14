@@ -198,12 +198,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
         stacked.selected.iconColor = selectedColor
         stacked.selected.titleTextAttributes = [
             .foregroundColor: selectedColor,
-            .font: Typography.footnote,
         ]
         stacked.normal.iconColor = unselectedColor
         stacked.normal.titleTextAttributes = [
             .foregroundColor: unselectedColor,
-            .font: Typography.footnote,
         ]
 
         // Apply to inline layout
@@ -211,12 +209,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
         inline.selected.iconColor = selectedColor
         inline.selected.titleTextAttributes = [
             .foregroundColor: selectedColor,
-            .font: Typography.footnote,
         ]
         inline.normal.iconColor = unselectedColor
         inline.normal.titleTextAttributes = [
             .foregroundColor: unselectedColor,
-            .font: Typography.footnote,
         ]
 
         // Apply to compact inline layout
@@ -224,12 +220,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
         compact.selected.iconColor = selectedColor
         compact.selected.titleTextAttributes = [
             .foregroundColor: selectedColor,
-            .font: Typography.footnote,
         ]
         compact.normal.iconColor = unselectedColor
         compact.normal.titleTextAttributes = [
             .foregroundColor: unselectedColor,
-            .font: Typography.footnote,
         ]
 
         tabBar.standardAppearance = appearance
