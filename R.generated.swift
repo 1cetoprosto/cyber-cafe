@@ -1125,12 +1125,12 @@ struct _R {
       /// Locales: en, uk
       var inventoryAuditComingSoon: RswiftResources.StringResource { .init(key: "inventoryAuditComingSoon", tableName: "Global", source: source, developmentValue: "Inventory Audit (Coming Soon)", comment: nil) }
 
-      /// en translation: Avg: %.2f UAH
+      /// en translation: Avg price: %.2f UAH
       ///
       /// Key: inventoryAvgPrice
       ///
       /// Locales: en, uk
-      var inventoryAvgPrice: RswiftResources.StringResource1<Double> { .init(key: "inventoryAvgPrice", tableName: "Global", source: source, developmentValue: "Avg: %.2f UAH", comment: nil) }
+      var inventoryAvgPrice: RswiftResources.StringResource1<Double> { .init(key: "inventoryAvgPrice", tableName: "Global", source: source, developmentValue: "Avg price: %.2f UAH", comment: nil) }
 
       /// en translation: Delta (±)
       ///
