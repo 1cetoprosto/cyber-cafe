@@ -299,7 +299,7 @@
 "inventoryDeltaPlaceholder" = "Дельта (±)";
 "inventoryReason" = "Причина";
 "inventoryReasonPlaceholder" = "Причина коригування";
-"inventoryAvgPrice" = "Сер.: %.2f грн";
+"inventoryAvgPrice" = "Сер. ціна: %.2f грн";
 "inventorySumValue" = "Сума: %.2f грн";
 "inventoryLowStock" = "Мало товару";
 

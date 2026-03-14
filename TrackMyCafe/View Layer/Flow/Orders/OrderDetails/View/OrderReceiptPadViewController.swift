@@ -7,21 +7,15 @@ private struct OrderReceiptItem: Hashable {
 }
 
 private final class OrderCompactFieldView: UIControl {
-    private let titleLabel: UILabel = {
-        let label = UILabel()
+    private let titleLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteLight)
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.footnoteLight)
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
         return label
     }()
 
-    private let valueLabel: UILabel = {
-        let label = UILabel()
+    private let valueLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteValue)
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.footnote)
-        label.numberOfLines = 1
-        label.lineBreakMode = .byTruncatingTail
         return label
     }()
 
@@ -109,36 +103,40 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         )
     }()
 
-    private let orderLabel: UILabel = {
-        let label = UILabel()
+    private let orderLabel: AppLabel = {
+        let label = AppLabel(style: .title3Value)
         label.textAlignment = .right
         label.text = "0"
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.title3)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
     }()
 
-    private let totalTitleLabel: UILabel = {
-        let label = UILabel()
+    private let totalTitleLabel: AppLabel = {
+        let label = AppLabel(style: .title3)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.title3)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
 
-    private let changeTitleLabel: UILabel = {
-        let label = UILabel()
+    private let changeTitleLabel: AppLabel = {
+        let label = AppLabel(style: .body)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.setContentCompressionResistancePriority(.required, for: .horizontal)
+        label.setContentHuggingPriority(.required, for: .horizontal)
         return label
     }()
 
-    private let changeValueLabel: UILabel = {
-        let label = UILabel()
+    private let changeValueLabel: AppLabel = {
+        let label = AppLabel(style: .bodyValue)
         label.textAlignment = .right
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentHuggingPriority(.defaultLow, for: .horizontal)
         return label
     }()
 

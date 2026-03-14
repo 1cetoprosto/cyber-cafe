@@ -14,31 +14,29 @@ class StockItemCell: UITableViewCell {
 
     private let containerView = UIView()
 
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
+    private let nameLabel: AppLabel = {
+        let label = AppLabel(style: .bodyMedium)
         label.textColor = UIColor.Main.text
+        label.numberOfLines = 2
+        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
-    private let unitLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+    private let unitLabel: AppLabel = {
+        let label = AppLabel(style: .footnote)
         label.textColor = UIColor.Main.secondaryText
         return label
     }()
 
-    private let quantityLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .bold)
+    private let quantityLabel: AppLabel = {
+        let label = AppLabel(style: .bodyBoldValue)
         label.textColor = UIColor.Main.text
         label.textAlignment = .right
         return label
     }()
 
-    private let costLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 14, weight: .regular)
+    private let costLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteValue)
         label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .right
         return label
@@ -62,28 +60,37 @@ class StockItemCell: UITableViewCell {
         selectionStyle = .none
 
         contentView.addSubview(containerView)
-        containerView.edgesToSuperview(insets: .uniform(8))
+        containerView.edgesToSuperview()
 
         let infoStack = UIStackView(arrangedSubviews: [nameLabel, unitLabel])
         infoStack.axis = .vertical
-        infoStack.spacing = 4
+        infoStack.spacing = UIConstants.smallSpacing
 
         let valueStack = UIStackView(arrangedSubviews: [quantityLabel, costLabel])
         valueStack.axis = .vertical
-        valueStack.spacing = 4
+        valueStack.spacing = UIConstants.smallSpacing
         valueStack.alignment = .trailing
+        valueStack.setContentHuggingPriority(.required, for: .horizontal)
+        valueStack.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        containerView.addSubview(infoStack)
-        containerView.addSubview(valueStack)
+        let rootStack = UIStackView(arrangedSubviews: [infoStack, valueStack])
+        rootStack.axis = .horizontal
+        rootStack.alignment = .top
+        rootStack.distribution = .fill
+        rootStack.spacing = UIConstants.standardSpacing
 
-        infoStack.leadingToSuperview()
-        infoStack.centerYToSuperview()
+        containerView.addSubview(rootStack)
+        rootStack.edgesToSuperview(
+            insets: .init(
+                top: UIConstants.standardSpacing,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.standardSpacing,
+                right: UIConstants.standardPadding
+            )
+        )
 
-        valueStack.trailingToSuperview()
-        valueStack.centerYToSuperview()
-
-        infoStack.trailingToLeading(of: valueStack, offset: -8, relation: .equalOrLess)
-        valueStack.width(min: 80)  // Ensure enough space for values
+        infoStack.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        infoStack.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
 
     // MARK: - Configuration

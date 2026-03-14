@@ -9,15 +9,13 @@ import UIKit
 
 class SettingsDataTableViewCell: BaseSettingsCell {
 
-  let dataLabel: UILabel = {
-    let label = UILabel()
-    label.numberOfLines = 1
-    label.textAlignment = .right
-    label.textColor = UIColor.TableView.cellLabel
-    label.applyDynamic(Typography.footnote)
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
+    let dataLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteValue)
+        label.textAlignment = .right
+        label.textColor = UIColor.TableView.cellLabel
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

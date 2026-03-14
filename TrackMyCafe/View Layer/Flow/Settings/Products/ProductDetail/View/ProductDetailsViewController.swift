@@ -76,6 +76,8 @@ class ProductDetailsViewController: UIViewController {
         tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView.isScrollEnabled = false
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 56
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(RecipeItemTableViewCell.self, forCellReuseIdentifier: "RecipeCell")
@@ -344,8 +346,7 @@ class ProductDetailsViewController: UIViewController {
             alert.addAction(
                 UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
             alert.addAction(
-                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) {
-                    [weak self] _ in
+                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) { [weak self] _ in
                     self?.navigationController?.popToRootViewController(animated: true)
                 })
 
@@ -391,9 +392,8 @@ class ProductDetailsViewController: UIViewController {
         alert.addAction(
             UIAlertAction(
                 title: R.string.global.add(), style: .default
-            ) {
-                [weak self] _ in
-                guard let self = self else { return }
+            ) { [weak self] _ in
+                guard let self else { return }
                 guard let text = alert.textFields?.first?.text,
                     let quantity = Double(text.replacingOccurrences(of: ",", with: "."))
                 else { return }
@@ -500,8 +500,7 @@ extension ProductDetailsViewController: UITextFieldDelegate {
         // Check if it's the alert text field. Since we don't have a direct reference to the alert text field here easily without storing it,
         // we can check if it is NOT one of our known properties.
         if textField == nameInputContainer.textFieldReference
-            || textField == priceInputContainer.textFieldReference
-        {
+            || textField == priceInputContainer.textFieldReference {
             return true
         }
 
@@ -541,10 +540,6 @@ extension ProductDetailsViewController: UITableViewDataSource, UITableViewDelega
         cell.configure(item: item)
 
         return cell
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
     }
 
     func tableView(
