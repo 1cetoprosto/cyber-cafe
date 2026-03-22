@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir *)",
+      "Bash(cat *)",
+      "Bash(git add docs/ *)",
+      "Bash(git commit *)",
+      "Bash(git push origin *)",
+      "Bash(curl *)",
+      "Bash(git add .vscode/ *)"
+    ]
+  }
+}

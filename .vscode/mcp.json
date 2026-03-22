@@ -1,0 +1,27 @@
+{
+  "servers": {
+    "sequentialthinking": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp/sequentialthinking"]
+    },
+    "memory": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "-v", "/Users/SergeyZhuravel/mcp-data/data", "mcp/memory"]
+    },
+    "fetch": {
+      "type": "stdio",
+      "command": "docker",
+      "args": ["run", "-i", "--rm", "mcp/fetch"]
+    },
+    "Figma": {
+      "type": "sse",
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "Context7": {
+      "type": "sse",
+      "url": "https://mcp.context7.com/mcp"
+    }
+  }
+}
