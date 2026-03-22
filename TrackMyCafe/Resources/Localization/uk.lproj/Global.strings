@@ -447,3 +447,8 @@
 "onboardingSlide4Title" = "Хмарна синхронізація";
 "onboardingSlide4Desc" = "Створіть акаунт, щоб безпечно зберігати дані в хмарі та мати доступ з будь-якого пристрою.";
 "onboardingGetStarted" = "Почати";
+
+// MARK: - Sorting
+"sortBy" = "Сортувати за";
+"nameAZ" = "Назвою (А-Я)";
+"nameZA" = "Назвою (Я-А)";
