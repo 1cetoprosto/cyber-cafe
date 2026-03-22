@@ -113,6 +113,7 @@ final class OrderListViewController: UIViewController { }
 ❌ НЕ змінювати Firebase на інший бекенд
 ❌ НЕ використовувати force unwrap (`!`)
 ❌ НЕ змінювати мінімальну версію iOS (залишити 15.0)
+❌ НЕ додавати та НЕ змінювати файл `R.generated.swift` — це генерується автоматично при збірці в Xcode, власник додасть потрібні рядки самостійно
 
 ## Preferred Patterns
 

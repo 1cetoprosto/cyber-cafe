@@ -7,7 +7,13 @@
       "Bash(git commit *)",
       "Bash(git push origin *)",
       "Bash(curl *)",
-      "Bash(git add .vscode/ *)"
+      "Bash(git add .vscode/ *)",
+      "Bash(git commit *)",
+      "Bash(gh issue create *)",
+      "Bash(git checkout *)",
+      "Bash(git commit *)",
+      "Bash(git push *)",
+      "Bash(gh pr create *)"
     ]
   }
 }
