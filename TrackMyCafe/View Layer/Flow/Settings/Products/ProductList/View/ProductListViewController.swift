@@ -8,11 +8,18 @@
 import RealmSwift
 import UIKit
 
+enum ProductSortOrder: String {
+    case none = "none"
+    case nameAscending = "name_asc"
+    case nameDescending = "name_desc"
+}
+
 class ProductListViewController: UIViewController, Loggable {
-    
+
     //let localRealm = try! Realm()
     //var productsArray: Results<RealmProductsPriceModel>!
     var productsPrice = [ProductsPriceModel]()
+    private var currentSortOrder: ProductSortOrder = .none
     
     let tableView: UITableView = {
         let tableView = UITableView()
@@ -31,6 +38,14 @@ class ProductListViewController: UIViewController, Loggable {
         button.accessibilityIdentifier = "navBarAddProduct"
         return button
     }()
+
+    private lazy var sortButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "arrow.up.arrow.down"), for: .normal)
+        button.addTarget(self, action: #selector(showSortOptions), for: .touchUpInside)
+        button.accessibilityIdentifier = "navBarSortProduct"
+        return button
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -39,25 +54,92 @@ class ProductListViewController: UIViewController, Loggable {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.products()
-        
+
         tableView.register(ProductPriceTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.productsCell)
         tableView.dataSource = self
         tableView.delegate = self
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
-        
+
+        let addBarButton = UIBarButtonItem(customView: addButton)
+        let sortBarButton = UIBarButtonItem(customView: sortButton)
+        navigationItem.rightBarButtonItems = [addBarButton, sortBarButton]
+
+        loadSavedSortOrder()
         setConstraints()
-        
+
     }
     
     func configure() {
         DomainDatabaseService.shared.fetchProductsPrice { productsPrice in
             self.productsPrice = productsPrice
+            self.applySort()
             self.tableView.reloadData()
         }
+    }
+
+    private func loadSavedSortOrder() {
+        if let savedOrder = UserDefaults.standard.string(forKey: "productSortOrder"),
+           let order = ProductSortOrder(rawValue: savedOrder) {
+            currentSortOrder = order
+        }
+    }
+
+    private func saveSortOrder() {
+        UserDefaults.standard.set(currentSortOrder.rawValue, forKey: "productSortOrder")
+    }
+
+    private func applySort() {
+        switch currentSortOrder {
+        case .nameAscending:
+            productsPrice.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        case .nameDescending:
+            productsPrice.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending }
+        case .none:
+            break
+        }
+    }
+
+    private func updateSortIcon() {
+        let iconName: String
+        switch currentSortOrder {
+        case .nameAscending:
+            iconName = "arrow.up"
+        case .nameDescending:
+            iconName = "arrow.down"
+        case .none:
+            iconName = "arrow.up.arrow.down"
+        }
+        sortButton.setImage(UIImage(systemName: iconName), for: .normal)
+    }
+
+    @objc private func showSortOptions() {
+        let alert = UIAlertController(title: R.string.global.sortBy(), message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(UIAlertAction(title: R.string.global.nameAZ(), style: .default) { [weak self] _ in
+            self?.currentSortOrder = .nameAscending
+            self?.saveSortOrder()
+            self?.applySort()
+            self?.updateSortIcon()
+            self?.tableView.reloadData()
+        })
+
+        alert.addAction(UIAlertAction(title: R.string.global.nameZA(), style: .default) { [weak self] _ in
+            self?.currentSortOrder = .nameDescending
+            self?.saveSortOrder()
+            self?.applySort()
+            self?.updateSortIcon()
+            self?.tableView.reloadData()
+        })
+
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+
+        if let popover = alert.popoverPresentationController {
+            popover.barButtonItem = navigationItem.rightBarButtonItems?.last
+        }
+
+        present(alert, animated: true)
     }
     
     func setConstraints() {
