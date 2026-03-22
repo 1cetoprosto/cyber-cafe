@@ -1,0 +1,1105 @@
+openapi: 3.0.3
+info:
+  title: TrackMyCafe API
+  description: |
+    API для додатку TrackMyCafe - обліку доходів та витрат в кафе.
+    
+    Базується на Firebase Firestore. Доступ до даних здійснюється через Firebase SDK.
+    Дані ізольовані за користувачем - кожен користувач має доступ лише до своїх колекцій.
+  version: 1.0.0
+  contact:
+    name: TrackMyCafe Support
+
+servers:
+  - url: https://firestore.googleapis.com/v1/projects/{projectId}/databases/(default)/documents
+    description: Firebase Firestore REST API
+    variables:
+      projectId:
+        default: trackmycafe-prod
+        description: Firebase Project ID
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+tags:
+  - name: Authentication
+    description: Авторизація та управління сесіями
+  - name: Orders
+    description: Управління замовленнями
+  - name: Products
+    description: Управління продуктами та меню
+  - name: Ingredients
+    description: Управління інгредієнтами
+  - name: Purchases
+    description: Управління закупівлями
+  - name: Expenses
+    description: Управління витратами
+  - name: Inventory
+    description: Управління інвентарем
+  - name: Types
+    description: Управління типами надходжень
+  - name: Categories
+    description: Управління категоріями продуктів
+  - name: Users
+    description: Управління користувачами та ролями
+
+paths:
+  # Orders
+  /users/{userId}/orders:
+    get:
+      summary: Отримати список замовлень
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список замовлень
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Order'
+    post:
+      summary: Створити нове замовлення
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '201':
+          description: Замовлення створено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+
+  /users/{userId}/orders/{orderId}:
+    get:
+      summary: Отримати замовлення за ID
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Замовлення знайдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+    put:
+      summary: Оновити замовлення
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderInput'
+      responses:
+        '200':
+          description: Замовлення оновлено
+    delete:
+      summary: Видалити замовлення
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: orderId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Замовлення видалено
+
+  # Products
+  /users/{userId}/productsPrice:
+    get:
+      summary: Отримати список продуктів (меню)
+      tags: [Products]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список продуктів
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+    post:
+      summary: Створити новий продукт
+      tags: [Products]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '201':
+          description: Продукт створено
+
+  /users/{userId}/productsPrice/{productId}:
+    get:
+      summary: Отримати продукт за ID
+      tags: [Products]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Продукт знайдено
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+    put:
+      summary: Оновити продукт
+      tags: [Products]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductInput'
+      responses:
+        '200':
+          description: Продукт оновлено
+    delete:
+      summary: Видалити продукт
+      tags: [Products]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: productId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Продукт видалено
+
+  # Ingredients
+  /users/{userId}/ingredients:
+    get:
+      summary: Отримати список інгредієнтів
+      tags: [Ingredients]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список інгредієнтів
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Ingredient'
+    post:
+      summary: Створити новий інгредієнт
+      tags: [Ingredients]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+      responses:
+        '201':
+          description: Інгредієнт створено
+
+  /users/{userId}/ingredients/{ingredientId}:
+    get:
+      summary: Отримати інгредієнт за ID
+      tags: [Ingredients]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ingredientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Інгредієнт знайдено
+    put:
+      summary: Оновити інгредієнт
+      tags: [Ingredients]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ingredientId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IngredientInput'
+      responses:
+        '200':
+          description: Інгредієнт оновлено
+    delete:
+      summary: Видалити інгредієнт
+      tags: [Ingredients]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: ingredientId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Інгредієнт видалено
+
+  # Purchases
+  /users/{userId}/purchases:
+    get:
+      summary: Отримати список закупівель
+      tags: [Purchases]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список закупівель
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Purchase'
+    post:
+      summary: Створити нову закупівлю
+      tags: [Purchases]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PurchaseInput'
+      responses:
+        '201':
+          description: Закупівлю створено
+
+  # Opex Expenses
+  /users/{userId}/opexExpenses:
+    get:
+      summary: Отримати список операційних витрат
+      tags: [Expenses]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список витрат
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/OpexExpense'
+    post:
+      summary: Створити нову витрату
+      tags: [Expenses]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpexExpenseInput'
+      responses:
+        '201':
+          description: Витрату створено
+
+  # Inventory Adjustments
+  /users/{userId}/inventoryAdjustments:
+    get:
+      summary: Отримати список коригувань інвентарю
+      tags: [Inventory]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список коригувань
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InventoryAdjustment'
+    post:
+      summary: Створити коригування інвентарю
+      tags: [Inventory]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InventoryAdjustmentInput'
+      responses:
+        '201':
+          description: Коригування створено
+
+  # Types (Income Types)
+  /users/{userId}/types:
+    get:
+      summary: Отримати список типів надходжень
+      tags: [Types]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список типів
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Type'
+    post:
+      summary: Створити новий тип
+      tags: [Types]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TypeInput'
+      responses:
+        '201':
+          description: Тип створено
+
+  # Product Categories
+  /users/{userId}/productCategories:
+    get:
+      summary: Отримати список категорій продуктів
+      tags: [Categories]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список категорій
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductCategory'
+    post:
+      summary: Створити нову категорію
+      tags: [Categories]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCategoryInput'
+      responses:
+        '201':
+          description: Категорію створено
+
+  # Product of Orders (Order Items)
+  /users/{userId}/productOfOrders:
+    get:
+      summary: Отримати список продуктів у замовленнях
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список продуктів замовлень
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ProductOfOrder'
+    post:
+      summary: Додати продукт до замовлення
+      tags: [Orders]
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductOfOrderInput'
+      responses:
+        '201':
+          description: Продукт додано
+
+  # Users & Roles
+  /users:
+    get:
+      summary: Отримати список користувачів (admin only)
+      tags: [Users]
+      responses:
+        '200':
+          description: Список користувачів
+    post:
+      summary: Створити нового користувача
+      tags: [Users]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: Користувача створено
+
+  /roles:
+    get:
+      summary: Отримати ролі користувача
+      tags: [Users]
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Список ролей
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  documents:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Role'
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Firebase ID Token
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Firebase API Key
+
+  schemas:
+    # Order schemas
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier
+        date:
+          type: string
+          format: date-time
+          description: Order date
+        type:
+          type: string
+          description: Income type
+        sum:
+          type: number
+          format: double
+          description: Total amount
+        cash:
+          type: number
+          format: double
+          description: Cash payment amount
+        card:
+          type: number
+          format: double
+          description: Card payment amount
+        totalCost:
+          type: number
+          format: double
+          description: Total cost of goods
+        note:
+          type: string
+          nullable: true
+          description: Optional note
+      required: [id, date, type, sum, cash, card]
+
+    OrderInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        type:
+          type: string
+        sum:
+          type: number
+          format: double
+        cash:
+          type: number
+          format: double
+        card:
+          type: number
+          format: double
+        totalCost:
+          type: number
+          format: double
+        note:
+          type: string
+          nullable: true
+      required: [date, type, sum, cash, card]
+
+    # Product schemas
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Product name
+        price:
+          type: number
+          format: double
+          description: Product price
+        categoryId:
+          type: string
+          nullable: true
+          description: Category reference
+        recipe:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeItem'
+          description: Recipe ingredients
+      required: [id, name, price]
+
+    ProductInput:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+        categoryId:
+          type: string
+          nullable: true
+        recipe:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecipeItemInput'
+      required: [name, price]
+
+    RecipeItem:
+      type: object
+      properties:
+        id:
+          type: string
+        ingredientId:
+          type: string
+        ingredientName:
+          type: string
+        quantity:
+          type: number
+          format: double
+        unit:
+          type: string
+          enum: [g, kg, ml, l, pcs]
+      required: [id, ingredientId, ingredientName, quantity, unit]
+
+    RecipeItemInput:
+      type: object
+      properties:
+        ingredientId:
+          type: string
+        ingredientName:
+          type: string
+        quantity:
+          type: number
+          format: double
+        unit:
+          type: string
+          enum: [g, kg, ml, l, pcs]
+      required: [ingredientId, ingredientName, quantity, unit]
+
+    # Ingredient schemas
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        averageCost:
+          type: number
+          format: double
+          description: Average cost per unit
+        stockQuantity:
+          type: number
+          format: double
+          description: Current stock quantity
+        unit:
+          type: string
+          enum: [g, kg, ml, l, pcs]
+      required: [id, name, averageCost, stockQuantity, unit]
+
+    IngredientInput:
+      type: object
+      properties:
+        name:
+          type: string
+        averageCost:
+          type: number
+          format: double
+        stockQuantity:
+          type: number
+          format: double
+        unit:
+          type: string
+          enum: [g, kg, ml, l, pcs]
+      required: [name, averageCost, stockQuantity, unit]
+
+    # Purchase schemas
+    Purchase:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        ingredientId:
+          type: string
+          description: Reference to ingredient
+        quantity:
+          type: number
+          format: double
+        price:
+          type: number
+          format: double
+          description: Total purchase price
+        supplierId:
+          type: string
+          nullable: true
+      required: [id, date, ingredientId, quantity, price]
+
+    PurchaseInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        ingredientId:
+          type: string
+        quantity:
+          type: number
+          format: double
+        price:
+          type: number
+          format: double
+        supplierId:
+          type: string
+          nullable: true
+      required: [date, ingredientId, quantity, price]
+
+    # Opex Expense schemas
+    OpexExpense:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        categoryId:
+          type: string
+          description: Expense category
+        amount:
+          type: number
+          format: double
+        note:
+          type: string
+          nullable: true
+      required: [id, date, categoryId, amount]
+
+    OpexExpenseInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        categoryId:
+          type: string
+        amount:
+          type: number
+          format: double
+        note:
+          type: string
+          nullable: true
+      required: [date, categoryId, amount]
+
+    # Inventory Adjustment schemas
+    InventoryAdjustment:
+      type: object
+      properties:
+        id:
+          type: string
+        date:
+          type: string
+          format: date-time
+        ingredientId:
+          type: string
+        quantityDelta:
+          type: number
+          format: double
+          description: Positive or negative adjustment
+        reason:
+          type: string
+          nullable: true
+      required: [id, date, ingredientId, quantityDelta]
+
+    InventoryAdjustmentInput:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date-time
+        ingredientId:
+          type: string
+        quantityDelta:
+          type: number
+          format: double
+        reason:
+          type: string
+          nullable: true
+      required: [date, ingredientId, quantityDelta]
+
+    # Type schemas
+    Type:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+          description: Type name (e.g., "Cash", "Card")
+        isDefault:
+          type: boolean
+          description: Whether this is the default type
+      required: [id, name, isDefault]
+
+    TypeInput:
+      type: object
+      properties:
+        name:
+          type: string
+        isDefault:
+          type: boolean
+      required: [name]
+
+    # Product Category schemas
+    ProductCategory:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        sortOrder:
+          type: integer
+          description: Display order
+      required: [id, name, sortOrder]
+
+    ProductCategoryInput:
+      type: object
+      properties:
+        name:
+          type: string
+        sortOrder:
+          type: integer
+      required: [name]
+
+    # Product of Order schemas
+    ProductOfOrder:
+      type: object
+      properties:
+        id:
+          type: string
+        productId:
+          type: string
+          nullable: true
+        orderId:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: double
+        amount:
+          type: number
+          format: double
+          description: Total amount (quantity * price)
+        costPrice:
+          type: number
+          format: double
+        costSum:
+          type: number
+          format: double
+      required: [id, date, name, quantity, price, amount]
+
+    ProductOfOrderInput:
+      type: object
+      properties:
+        productId:
+          type: string
+          nullable: true
+        orderId:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+        name:
+          type: string
+        quantity:
+          type: integer
+        price:
+          type: number
+          format: double
+        costPrice:
+          type: number
+          format: double
+        costSum:
+          type: number
+          format: double
+      required: [date, name, quantity, price]
+
+    # User schemas
+    UserInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 6
+        firstName:
+          type: string
+        lastName:
+          type: string
+      required: [email, password]
+
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [admin, technician, owner]
+        userRef:
+          type: string
+        dataRef:
+          type: string
+      required: [id, email, role]
+
+    # Error schemas
+    Error:
+      type: object
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
+        details:
+          type: string
+      required: [code, message]

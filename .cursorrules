@@ -1,0 +1,479 @@
+# TrackMyCafe Cursor Rules
+# Цей файл визначає правила для AI-асистентів (Cursor, Copilot, інших)
+# При генерації або редагуванні коду обов'язково дотримуйтеся цих правил
+
+## Загальні принципи
+
+- **Мова коду**: англійська (коментарі, назви, логи)
+- **Мова пояснень**: українська (для власника проєкту)
+- **Архітектура**: MVVM з чітким розділенням відповідальності
+- **UI фреймворк**: ТІЛЬКИ UIKit, програмна верстка (NO Storyboard, NO SwiftUI)
+- **Мінімальна версія iOS**: 15.0
+
+## Структура проєкту (НЕ ЗМІНЮВАТИ)
+
+```
+TrackMyCafe/
+├── Application/              # AppDelegate, SceneDelegate
+│   ├── AppDelegate.swift
+│   └── SceneDelegate.swift
+├── Configuration/            # Конфігурації середовищ
+│   ├── Config.plist
+│   ├── TrackMyCafe Dev/
+│   ├── TrackMyCafe Beta/
+│   └── TrackMyCafe Prod/
+├── Data Layer/               # Моделі та утиліти
+│   ├── Models/
+│   │   ├── Domain/           # Domain моделі (OrderModel, ProductModel...)
+│   │   ├── Firestore/        # Firebase DTO (FIROrderModel...)
+│   │   └── Realm/            # Realm моделі (історично)
+│   ├── Service/              # StorageService
+│   └── Utils/                # Constants, Extensions, RequestManager
+├── Services/                 # Бізнес-логіка
+│   ├── Domain/               # DomainDatabaseService, DomainDB protocol
+│   ├── FIR/                  # FirestoreDatabaseService, FirestoreDB protocol
+│   └── Realm/                # Realm сервіси (історично)
+├── View Layer/               # UI шар
+│   ├── Flow/                 # Екрани та флоу
+│   │   └── {Feature}/         # Наприклад: Orders, Settings, Costs
+│   │       ├── View/         # ViewControllers (UIKit)
+│   │       ├── ViewModel/    # ViewModels + ViewModelType protocols
+│   │       └── Model/        # Feature-specific models (якщо потрібно)
+│   └── UI/                   # Універсальні UI компоненти
+│       ├── Base/             # Базові класи
+│       ├── Theme/            # Теми, кольори
+│       ├── Popup/            # Попапи
+│       └── UIKitFactory.swift
+├── Extensions/               # Swift extensions
+├── Utilities/                # Допоміжні утиліти
+└── Resources/                # Assets, Localizable.strings
+```
+
+## Наймінг (ОБОВ'ЯЗКОВО ДОТРИМУВАТИ)
+
+### Файли
+
+| Тип | Приклад |
+|------|-----------|
+| ViewController | `OrderListViewController.swift` |
+| ViewModel | `OrderListViewModel.swift` |
+| ViewModel Protocol | `OrderListViewModelType.swift` |
+| Cell ViewModel | `OrderListItemViewModel.swift` |
+| Cell ViewModel Protocol | `OrderListItemViewModelType.swift` |
+| UITableViewCell | `OrdersTableViewCell.swift` |
+| Domain Model | `OrderModel.swift` |
+| Firestore Model | `FIROrderModel.swift` |
+| Realm Model | `RealmOrderModel.swift` |
+
+### Класи та структури
+
+```swift
+// PascalCase для типів
+struct OrderModel { }
+class OrderListViewModel { }
+protocol OrderListViewModelType { }
+enum OrderStatus { case pending, completed }
+
+// camelCase для змінних та функцій
+let orderCount = 0
+func fetchOrders() { }
+func saveOrder(order: OrderModel) { }
+
+// Суфікс ViewModel для ViewModel
+class OrderListViewModel: OrderListViewModelType { }
+
+// Суфікс Type для протоколів ViewModel
+protocol OrderListViewModelType { }
+
+// final для класів, які не успадковуються
+final class OrderListViewController: UIViewController { }
+```
+
+## Що МОЖНА робити
+
+✅ Додавати нові ViewControllers у `View Layer/Flow/{Feature}/View/`
+✅ Додавати нові ViewModels з протоколами `*ViewModelType`
+✅ Додавати Domain моделі у `Data Layer/Models/Domain/`
+✅ Додавати Firestore моделі у `Data Layer/Models/Firestore/`
+✅ Розширювати `DomainDB` протокол новими методами
+✅ Додавати методи до `DomainDatabaseService`
+✅ Використовувати `async/await` для нового асинхронного коду
+✅ Додавати Extensions у `Extensions/`
+✅ Додавати константи у `Data Layer/Utils/Constants.swift`
+
+## Що НЕ МОЖНА робити (ЗАБОРОНЕНО)
+
+❌ НЕ використовувати Storyboard або XIB
+❌ НЕ використовувати SwiftUI для нових екранів
+❌ НЕ змінювати структуру папок проєкту
+❌ НЕ переміщувати існуючі файли між папками
+❌ НЕ видаляти Realm моделі/сервіси (історична спадщина)
+❌ НЕ змінювати існуючі протоколи без згоди з власником
+❌ НЕ додавати нові бібліотеки (CocoaPods/SPM) без згоди
+❌ НЕ змінювати Firebase на інший бекенд
+❌ НЕ використовувати force unwrap (`!`)
+❌ НЕ змінювати мінімальну версію iOS (залишити 15.0)
+
+## Preferred Patterns
+
+### 1. MVVM з Протоколами
+
+```swift
+// Завжди створюйте протокол для ViewModel
+protocol OrderListViewModelType {
+    func getOrders(completion: @escaping () -> Void)
+    func numberOfSections() -> Int
+    func cellViewModel(for indexPath: IndexPath) -> OrderListItemViewModelType?
+}
+
+// Реалізуйте протокол
+class OrderListViewModel: OrderListViewModelType {
+    // implementation
+}
+
+// Використовуйте тип протоколу у ViewController
+class OrderListViewController: UIViewController {
+    private var viewModel: OrderListViewModelType?
+}
+```
+
+### 2. Repository Pattern
+
+```swift
+// Все звернення до бази даних через DomainDatabaseService
+DomainDatabaseService.shared.fetchOrders { orders in
+    // обробка
+}
+
+// НЕ звертатись напряму до FirestoreDatabaseService із ViewController
+```
+
+### 3. Dependency Injection (Singleton)
+
+```swift
+// Правильно
+class DomainDatabaseService: DomainDB {
+    static let shared = DomainDatabaseService()
+    private init() {}
+}
+
+// Використання
+let service = DomainDatabaseService.shared
+```
+
+### 4. UI Компоненти
+
+```swift
+// Програмна верстка з TinyConstraints
+final class OrderListViewController: UIViewController {
+    
+    let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
+        tableView.backgroundColor = UIColor.Main.background
+        return tableView
+    }()
+    
+    private func setConstraints() {
+        tableView.edgesToSuperview()
+    }
+}
+```
+
+### 5. Обробка Помилок
+
+```swift
+// З логуванням
+FirestoreDatabaseService.shared.read(...) { [weak self] result in
+    switch result {
+    case .success(let data):
+        completion(data)
+    case .failure(let error):
+        self?.logger.error("Error: \(error.localizedDescription)")
+        completion([])
+    }
+}
+```
+
+### 6. Асинхронний Код
+
+```swift
+// Для нового коду віддавайте перевагу async/await
+func fetchOrders() async throws -> [OrderModel] {
+    try await withCheckedThrowingContinuation { continuation in
+        fetchOrders { orders in
+            continuation.resume(returning: orders)
+        }
+    }
+}
+```
+
+## Вимоги до PR (Pull Requests)
+
+### Розмір змін
+
+- **Маленькі дифи**: один PR = одна фіча/багфікс/рефакторинг
+- **Максимальний розмір**: до 400 рядків змін (краще менше)
+- **Не мішайте**: багфікси та фічі в різних PR
+
+### Тестування
+
+- **Критичні зміни** — обов'язкові тести:
+  - Зміни у обчисленні вартості/собівартості
+  - Зміни у збереженні даних
+  - Зміни у авторизації
+- **Рекомендовано**: юніт-тести для ViewModels
+
+### Commit Messages
+
+```
+feat: add order filtering by date
+fix: resolve crash on empty order list
+refactor: extract validation logic from OrderViewModel
+docs: update API documentation
+test: add tests for OrderListViewModel
+chore: update CocoaPods dependencies
+```
+
+### Code Review Checklist
+
+- [ ] Код компілюється без попереждень
+- [ ] Немає force unwrap (`!`)
+- [ ] Всі замикання використовують `[weak self]`
+- [ ] Назви відповідають конвенції
+- [ ] Є коментарі `// MARK:` для розділів
+- [ ] Новий код відповідає існуючому стилю
+
+## Firebase Обмеження
+
+### Дозволені сервіси
+
+✅ Firebase Auth — автентифікація
+✅ Firebase Firestore — база даних
+✅ Firebase Storage — зберігання файлів
+
+### Заборонені сервіси
+
+❌ Firebase Analytics (без згоди)
+❌ Firebase Crashlytics (без згоди)
+❌ Firebase Remote Config (без згоди)
+❌ Firebase Cloud Messaging (без згоди)
+
+## Кольори та Теми
+
+### Використання
+
+```swift
+// Завжди використовуйте обгорнуті кольори
+view.backgroundColor = UIColor.Main.background
+button.tintColor = UIColor.Button.primary
+tableView.separatorColor = UIColor.TableView.separator
+
+// НЕ хардкодьте
+view.backgroundColor = .white // ПОГАНО
+```
+
+## Локалізація
+
+### Ресурси
+
+- Всі рядки в `Localizable.strings`
+- Використання через R.swift: `R.string.global.orders()`
+- Не хардкодьте рядки в коді
+
+## Приклади коду
+
+### Правильний ViewController
+
+```swift
+//
+//  OrderListViewController.swift
+//  TrackMyCafe
+//
+//  Created by Ім'я on 22.03.2025.
+//
+
+import UIKit
+import TinyConstraints
+
+// MARK: - OrderListViewController
+
+final class OrderListViewController: UIViewController, Loggable, ProGated {
+    
+    // MARK: - Properties
+    
+    private var viewModel: OrderListViewModelType?
+    
+    // MARK: - UI Components
+    
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.register(
+            OrdersTableViewCell.self, 
+            forCellReuseIdentifier: OrdersTableViewCell.identifier
+        )
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorColor = UIColor.TableView.separator
+        return tableView
+    }()
+    
+    private lazy var addButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.addTarget(self, action: #selector(performAdd), for: .touchUpInside)
+        button.accessibilityIdentifier = "navBarAddOrder"
+        return button
+    }()
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupUI()
+        setConstraints()
+        bindViewModel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        fetchData()
+    }
+    
+    // MARK: - Setup
+    
+    private func setupUI() {
+        view.backgroundColor = UIColor.Main.background
+        view.addSubview(tableView)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
+    }
+    
+    private func setConstraints() {
+        tableView.edgesToSuperview()
+    }
+    
+    private func bindViewModel() {
+        viewModel = OrderListViewModel()
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    // MARK: - Actions
+    
+    @objc private func performAdd() {
+        checkProOrShowPaywall { [weak self] in
+            self?.navigateToOrderDetails()
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    private func fetchData() {
+        viewModel?.getOrders { [weak self] in
+            self?.tableView.reloadData()
+        }
+    }
+    
+    private func navigateToOrderDetails() {
+        let orderVC = OrderDetailsViewController()
+        navigationController?.pushViewController(orderVC, animated: true)
+    }
+}
+
+// MARK: - UITableViewDataSource
+
+extension OrderListViewController: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        viewModel?.numberOfSections() ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        viewModel?.numberOfRowInSection(for: section) ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // implementation
+    }
+}
+
+// MARK: - UITableViewDelegate
+
+extension OrderListViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // implementation
+    }
+}
+```
+
+### Правильний ViewModel
+
+```swift
+//
+//  OrderListViewModel.swift
+//  TrackMyCafe
+//
+//  Created by Ім'я on 22.03.2025.
+//
+
+import Foundation
+import os.log
+
+// MARK: - OrderListViewModel
+
+final class OrderListViewModel: OrderListViewModelType, Loggable {
+    
+    // MARK: - Properties
+    
+    private var sectionsOrders: [(date: Date, items: [OrderModel])]?
+    private var selectedIndexPath: IndexPath?
+    
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!, 
+        category: "OrderListViewModel"
+    )
+    
+    // MARK: - OrderListViewModelType
+    
+    func getOrders(completion: @escaping () -> Void) {
+        DomainDatabaseService.shared.fetchSectionsOfOrders { [weak self] sections in
+            self?.sectionsOrders = sections
+            completion()
+        }
+    }
+    
+    func numberOfSections() -> Int {
+        sectionsOrders?.count ?? 0
+    }
+    
+    func numberOfRowInSection(for section: Int) -> Int {
+        sectionsOrders?[section].items.count ?? 0
+    }
+    
+    func cellViewModel(for indexPath: IndexPath) -> OrderListItemViewModelType? {
+        guard let order = sectionsOrders?[indexPath.section].items[indexPath.row] else {
+            return nil
+        }
+        return OrderListItemViewModel(model: order)
+    }
+    
+    func selectRow(atIndexPath indexPath: IndexPath) {
+        selectedIndexPath = indexPath
+    }
+}
+```
+
+## Створення Нового Фічі (Step-by-Step)
+
+1. **Створити папку**: `View Layer/Flow/{FeatureName}/`
+2. **Створити підпапки**: `View/`, `ViewModel/`
+3. **Створити протокол**: `{Feature}ViewModelType.swift`
+4. **Створити ViewModel**: `{Feature}ViewModel.swift`
+5. **Створити ViewController**: `{Feature}ViewController.swift`
+6. **Додати до DomainDB** (якщо потрібно): нові методи
+7. **Реалізувати в DomainDatabaseService**
+8. **Додати тести** (якщо критично)
+
+## Контакти
+
+- **Власник**: Leonid Kvit
+- **Проєкт**: TrackMyCafe / Cyber-coffe
+- **Репозиторій**: https://github.com/leokvit/cyber-coffe
