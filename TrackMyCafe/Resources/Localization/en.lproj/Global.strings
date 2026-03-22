@@ -447,3 +447,8 @@
 "onboardingSlide4Title" = "Cloud Sync & Backup";
 "onboardingSlide4Desc" = "Create an account to securely save your data in the cloud and access it from any device.";
 "onboardingGetStarted" = "Get Started";
+
+// MARK: - Sorting
+"sortBy" = "Sort by";
+"nameAZ" = "Name (A-Z)";
+"nameZA" = "Name (Z-A)";
