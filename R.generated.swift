@@ -218,7 +218,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 368 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 365 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -2245,20 +2245,6 @@ struct _R {
       /// Locales: en, uk
       var sortBy: RswiftResources.StringResource { .init(key: "sortBy", tableName: "Global", source: source, developmentValue: "Sort by", comment: nil) }
 
-      /// en translation: Name (A-Z)
-      ///
-      /// Key: nameAZ
-      ///
-      /// Locales: en, uk
-      var nameAZ: RswiftResources.StringResource { .init(key: "nameAZ", tableName: "Global", source: source, developmentValue: "Name (A-Z)", comment: nil) }
-
-      /// en translation: Name (Z-A)
-      ///
-      /// Key: nameZA
-      ///
-      /// Locales: en, uk
-      var nameZA: RswiftResources.StringResource { .init(key: "nameZA", tableName: "Global", source: source, developmentValue: "Name (Z-A)", comment: nil) }
-
       /// en translation: Senior waiters
       ///
       /// Key: staff_sectionSeniorWaiter
@@ -2377,8 +2363,6 @@ struct _R {
       ///
       /// Locales: en, uk
       var subscriptionContinueReadOnly: RswiftResources.StringResource { .init(key: "subscriptionContinueReadOnly", tableName: "Global", source: source, developmentValue: "Continue in Read-Only Mode", comment: nil) }
-
-
 
       /// en translation: You can change your subscription to one that is best for your cafe at any time
       ///
