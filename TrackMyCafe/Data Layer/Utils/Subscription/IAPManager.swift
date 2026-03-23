@@ -55,9 +55,17 @@ class IAPManager: NSObject, Loggable {
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
         let isActive = subscription.isActive
-        logger.debug("IAPManager: Updating subscription info from RequestManager. Pro: \(subscription.proPlan), Active by Date: \(isActive), Next Payment: \(String(describing: subscription.nextPaymentDate))")
+        let hasActiveSubscription = subscription.hasIOSSub
+        logger.debug("IAPManager: Updating subscription info from RequestManager. Pro: \(subscription.proPlan), Active by Date: \(isActive), Has iOS Sub: \(hasActiveSubscription), Next Payment: \(String(describing: subscription.nextPaymentDate))")
         nextPaymentDate = subscription.nextPaymentDate
-        isProPlan = subscription.proPlan || isActive
+        let newProStatus = subscription.proPlan || (hasActiveSubscription && isActive)
+        if newProStatus {
+            isProPlan = true
+        } else if isProPlan == true {
+            logger.debug("IAPManager: Firebase says not pro, but local state is pro. Keeping local state until receipt verification.")
+        } else {
+            isProPlan = false
+        }
     }
 
     func getProducts(_ completion: (([SKProduct]?) -> Void)?) {
@@ -78,7 +86,7 @@ class IAPManager: NSObject, Loggable {
         }
         SwiftyStoreKit.purchaseProduct(product, quantity: 1, atomically: true) { (result) in
             switch result {
-            case .success(let purchaseDetails):
+            case .success:
                 // Verify subscription even if atomically is true, just to get the receipt
                 self.verifySubscription { receipt in
                     if let receipt = receipt {
@@ -176,7 +184,7 @@ class IAPManager: NSObject, Loggable {
             // Fallback to local validation for Xcode testing
             SwiftyStoreKit.fetchReceipt(forceRefresh: false) { (result) in
                 switch result {
-                case .success(let receiptData):
+                case .success(_):
                     // In local testing, we might need to trust the local certificate or just assume success if data exists
                     // Since we can't easily parse the receipt path easily, we'll try to parse it
                     // Or just mocking success for development flow if we are sure it's Xcode environment
@@ -198,6 +206,8 @@ class IAPManager: NSObject, Loggable {
             case .success(let receipt):
                 self.logger.debug("Verify success (Production)")
                 let receiptAdapter = IAPReceiptAdapterAppleValidation(receipt)
+                self.isProPlan = receiptAdapter.hasActiveAutorenewSubscription
+                self.updateSubscriptionInfo(receiptAdapter)
                 completion?(receiptAdapter)
             case .error(let error):
                 self.logger.error("Verify receipt failed (Production): \(error)")
@@ -217,7 +227,7 @@ class IAPManager: NSObject, Loggable {
                 // 3. String contains "21002" (last resort)
                 var isMalformedData = errorCode == 21002
                 if !isMalformedData {
-                    if case .receiptInvalid(let receipt, _) = error as? ReceiptError,
+                    if case .receiptInvalid(let receipt, _) = error,
                        let status = receipt["status"] as? Int, status == 21002 {
                         isMalformedData = true
                     }
@@ -233,7 +243,7 @@ class IAPManager: NSObject, Loggable {
                     // we will try to fetch the receipt locally and assume it's valid for now.
                     SwiftyStoreKit.fetchReceipt(forceRefresh: false) { fetchResult in
                         switch fetchResult {
-                        case .success(let receiptData):
+                        case .success(_):
                             // Try to verify locally if possible, or just return success
                             // Using a mock adapter or local adapter if certificate is available
                             // For this fix, we will try to use the Local Validator if available, otherwise mock it.
@@ -246,6 +256,8 @@ class IAPManager: NSObject, Loggable {
                                 let receipt = try InAppReceipt.localReceipt()
                                 self.logger.debug("Local receipt parsed successfully!")
                                 let receiptAdapter = IAPReceiptAdapterLocalValidation(receipt)
+                                // Update subscription status immediately
+                                self.updateSubscriptionInfo(receiptAdapter)
                                 completion?(receiptAdapter)
                             } catch {
                                 self.logger.error("Local validation failed with error: \(error)")
@@ -271,6 +283,8 @@ class IAPManager: NSObject, Loggable {
 
                                 self.logger.error("Using MOCK Receipt Adapter for DEBUG mode. Product: \(mockProductId)")
                                 let mockAdapter = MockIAPReceiptAdapter(productId: mockProductId, transactionId: mockTransactionId)
+                                // Update subscription status immediately
+                                self.updateSubscriptionInfo(mockAdapter)
                                 completion?(mockAdapter)
                             }
                         case .error(let err):
@@ -291,6 +305,8 @@ class IAPManager: NSObject, Loggable {
                         case .success(let receipt):
                             self.logger.debug("Verify success (Sandbox)")
                             let receiptAdapter = IAPReceiptAdapterAppleValidation(receipt)
+                            // Update subscription status immediately
+                            self.updateSubscriptionInfo(receiptAdapter)
                             completion?(receiptAdapter)
                         case .error(let sandboxError):
                             self.logger.error("Sandbox verify failed: \(sandboxError)")
@@ -306,6 +322,14 @@ class IAPManager: NSObject, Loggable {
 
     func updateSubscriptionInfo(_ receipt: IAPReceiptAdapterProtocol) {
         self.logger.debug("Updating subscription info with receipt...")
+
+        // Even if we can't extract all info, we should still update the pro status if there's an active subscription
+        if receipt.hasActiveAutorenewSubscription {
+            self.logger.debug("User has active auto-renewable subscription")
+            // Update local state immediately
+            IAPManager.shared.isProPlan = true
+            NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+        }
 
         guard let productId = receipt.lastAutorenewProductId,
               let transactionId = receipt.lastAutorenewTransactionId,
