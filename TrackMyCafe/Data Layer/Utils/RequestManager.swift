@@ -87,7 +87,14 @@ class RequestManager: NSObject {
             self.listenToAdmin {
                 // Обробка після завантаження даних адміністратора
                 NotificationCenter.default.post(name: .adminInfoReload, object: nil)
-                
+
+            }
+
+            IAPManager.shared.verifySubscription { receipt in
+                if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
+                    IAPManager.shared.isProPlan = true
+                    NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+                }
             }
         } else {
             //db.removeAllObservers()
@@ -263,7 +270,7 @@ class RequestManager: NSObject {
                 // Checking for subscription expiration
                 if let subscription = self.subscription,
                    let nextPaymentDate = subscription.nextPaymentDate,
-                   nextPaymentDate < Date()
+                   nextPaymentDate < Date.subCheckDate()
                 {
                     let controller = SubscriptionController.makeExpired()
                     UIViewController.topMostViewController()?.present(controller, animated: true)
@@ -327,6 +334,7 @@ class RequestManager: NSObject {
             "iosOriginTransactionId": originTransactionId.isEmpty ? transactionId : originTransactionId,
             "paymentDate": paymentDate.timeIntervalSince1970,
             "nextPaymentDate": nextPaymentDate.timeIntervalSince1970,
+            "premiumPlan": true,
         ]
         if let subscriptionId = SubscriptionType(rawValue: productId)?.subscriptionId {
             data["subscriptionId"] = subscriptionId
@@ -335,6 +343,10 @@ class RequestManager: NSObject {
         if let ref = mainRef {
             ref.collection(Refs.subscription.rawValue).document(UserSession.current.dataRef).setData(data)
             Firestore.firestore().collection(FirebaseCollections.subscriptions).document(UserSession.current.dataRef).setData(data)
+            // Also update IAPManager state directly so UI reflects changes immediately
+            IAPManager.shared.isProPlan = true
+            IAPManager.shared.nextPaymentDate = nextPaymentDate
+            NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
         } else {
             // User not logged in, save locally to UserDefaults for later sync
             UserDefaults.standard.set(data, forKey: UserDefaultsKeys.pendingSubscriptionSync)
@@ -342,7 +354,7 @@ class RequestManager: NSObject {
             // Also update IAPManager state directly so UI reflects changes immediately
             IAPManager.shared.isProPlan = true
             IAPManager.shared.nextPaymentDate = nextPaymentDate
-            
+
             NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
         }
     }
