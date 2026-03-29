@@ -142,17 +142,20 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
         let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, completion in
             guard let self else { return }
 
-            if !self.checkProOrShowPaywall() {
-                completion(false)
-                return
-            }
+            self.checkProOrShowPaywall(
+                onSuccess: { [weak self] in
+                    guard let self else { return }
+                    viewModel.deleteCostModel(atIndexPath: indexPath)
 
-            viewModel.deleteCostModel(atIndexPath: indexPath)
-
-            viewModel.getCosts { [weak self] in
-                self?.tableView.reloadData()
-            }
-            completion(true)
+                    viewModel.getCosts { [weak self] in
+                        self?.tableView.reloadData()
+                    }
+                    completion(true)
+                },
+                onDenied: {
+                    completion(false)
+                }
+            )
         }
 
         return UISwipeActionsConfiguration(actions: [deleteAction])

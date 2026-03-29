@@ -96,6 +96,10 @@ class RequestManager: NSObject {
                     NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
                 }
             }
+
+            Task {
+                _ = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            }
         } else {
             //db.removeAllObservers()
         }
