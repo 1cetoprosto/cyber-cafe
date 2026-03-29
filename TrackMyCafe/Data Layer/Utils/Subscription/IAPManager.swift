@@ -52,6 +52,128 @@ class IAPManager: NSObject, Loggable {
     @AppDefaults<Bool>(key: UserDefaultsKeys.subscriptionIsProPlan)
     var isProPlan: Bool?
 
+    func refreshProStatusUsingStoreKit2() async -> Bool {
+        let now = Date.subCheckDate()
+        var bestTransaction: StoreKit.Transaction?
+
+        for await entitlement in StoreKit.Transaction.currentEntitlements {
+            guard case .verified(let transaction) = entitlement else { continue }
+            guard SubscriptionType(rawValue: transaction.productID) != nil else { continue }
+            guard transaction.revocationDate == nil else { continue }
+            if transaction.isUpgraded { continue }
+
+            guard let expirationDate = transaction.expirationDate, expirationDate > now else { continue }
+
+            if let best = bestTransaction {
+                let bestExpiration = best.expirationDate ?? .distantPast
+                if expirationDate > bestExpiration {
+                    bestTransaction = transaction
+                }
+            } else {
+                bestTransaction = transaction
+            }
+        }
+
+        if let transaction = bestTransaction, let expirationDate = transaction.expirationDate, expirationDate > now {
+            logger.debug("StoreKit2: Active entitlement found. Product: \(transaction.productID), Exp: \(expirationDate)")
+            await MainActor.run {
+                self.isProPlan = true
+                self.nextPaymentDate = expirationDate
+                NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+            }
+            updateSubscriptionInfoFromStoreKit2(transaction)
+            return true
+        }
+
+        logger.debug("StoreKit2: No active entitlements found.")
+        await MainActor.run {
+            self.isProPlan = false
+        }
+        return false
+    }
+
+    func hasAnySubscriptionPurchaseUsingStoreKit2() async -> Bool {
+        for productId in SubscriptionType.allProductsSet {
+            do {
+                guard let result = try await StoreKit.Transaction.latest(for: productId) else { continue }
+                guard case .verified(let transaction) = result else { continue }
+                guard transaction.revocationDate == nil else { continue }
+                return true
+            } catch {
+                logger.error("StoreKit2: latest(for:) failed for \(productId): \(error)")
+            }
+        }
+        return false
+    }
+
+    private enum PurchaseHistoryStatus {
+        case hasHistory
+        case noHistory
+        case unknown
+    }
+
+    private func purchaseHistoryStatusUsingStoreKit2() async -> PurchaseHistoryStatus {
+        var didEncounterError = false
+
+        for productId in SubscriptionType.allProductsSet {
+            do {
+                guard let result = try await StoreKit.Transaction.latest(for: productId) else { continue }
+                guard case .verified(let transaction) = result else { continue }
+                guard transaction.revocationDate == nil else { continue }
+                return .hasHistory
+            } catch {
+                didEncounterError = true
+                logger.error("StoreKit2: latest(for:) failed for \(productId): \(error)")
+            }
+        }
+
+        return didEncounterError ? .unknown : .noHistory
+    }
+
+    func isEligibleForTrialUsingBestEffort() async -> Bool {
+        switch await purchaseHistoryStatusUsingStoreKit2() {
+        case .hasHistory:
+            return false
+        case .noHistory:
+            return true
+        case .unknown:
+            break
+        }
+
+        let receipt = await fetchReceiptAdapter()
+        if let receipt, receipt.hasSubscriptionPurchases {
+            return false
+        }
+        if receipt != nil {
+            return true
+        }
+        return false
+    }
+
+    private func fetchReceiptAdapter() async -> IAPReceiptAdapterProtocol? {
+        await withCheckedContinuation { continuation in
+            verifySubscription { receipt in
+                continuation.resume(returning: receipt)
+            }
+        }
+    }
+
+    private func updateSubscriptionInfoFromStoreKit2(_ transaction: StoreKit.Transaction) {
+        guard let expirationDate = transaction.expirationDate else { return }
+        let productId = transaction.productID
+        let transactionId = String(transaction.id)
+        let originTransactionId = String(transaction.originalID)
+        let purchaseDate = transaction.purchaseDate
+
+        RequestManager.shared.updateSubInfo(
+            productId,
+            transactionId: transactionId,
+            originTransactionId: originTransactionId,
+            paymentDate: purchaseDate,
+            nextPaymentDate: expirationDate
+        )
+    }
+
     // MARK: - Public methods
     func updateInfo(_ subscription: Subscription) {
         let isActive = subscription.isActive

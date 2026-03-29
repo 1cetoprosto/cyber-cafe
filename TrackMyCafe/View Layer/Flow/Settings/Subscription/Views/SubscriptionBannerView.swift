@@ -19,6 +19,7 @@ final class SubscriptionBannerView: UIView {
     weak var delegate: SubscriptionBannerViewDelegate?
     var onInfoLoaded: (() -> Void)?
     private var product: SKProduct?
+    private var isEligibleForTrial = false
 
     // MARK: - UI Elements
 
@@ -185,14 +186,44 @@ final class SubscriptionBannerView: UIView {
 
             DispatchQueue.main.async {
                 self.actionButton.isEnabled = true
-                
-                let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(for: product)
-                
+
+                let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(
+                    for: product,
+                    isEligibleForTrial: self.isEligibleForTrial
+                )
+
                 self.actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
                 self.termsLabel.text = displayInfo.termsText
 
                 // Notify parent to update layout
                 self.onInfoLoaded?()
+            }
+
+            Task { [weak self] in
+                guard let self else { return }
+                let hasKnownHistory: Bool = {
+                    if IAPManager.shared.nextPaymentDate != nil { return true }
+                    guard let subscription = RequestManager.shared.subscription else { return false }
+                    if subscription.nextPaymentDate != nil { return true }
+                    if (subscription.transactionId ?? subscription.originTransactionId) != nil { return true }
+                    return false
+                }()
+
+                if hasKnownHistory {
+                    return
+                }
+                let eligible = await IAPManager.shared.isEligibleForTrialUsingBestEffort()
+                await MainActor.run {
+                    self.isEligibleForTrial = eligible
+
+                    let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(
+                        for: product,
+                        isEligibleForTrial: eligible
+                    )
+                    self.actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
+                    self.termsLabel.text = displayInfo.termsText
+                    self.onInfoLoaded?()
+                }
             }
         }
     }

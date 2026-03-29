@@ -18,6 +18,7 @@ class SubscriptionController: UIViewController, Loggable {
     var onSkip: (() -> Void)?
     private var products = [SKProduct]()
     private var selectedProduct: SKProduct?
+    private var isEligibleForTrial = false
 
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
@@ -138,31 +139,25 @@ class SubscriptionController: UIViewController, Loggable {
         setupUI()
         setupConstraints()
 
-        let isPro = IAPManager.shared.isProPlan == true
-        logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(updateUI), name: .subscriptionInfoReload, object: nil)
 
-        IAPManager.shared.verifySubscription { [weak self] receipt in
-            if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
-                IAPManager.shared.isProPlan = true
-                NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
-                DispatchQueue.main.async {
-                    if let onSuccess = self?.onSubscriptionSuccess {
+        Task { [weak self] in
+            guard let self else { return }
+            let isPro = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            await MainActor.run {
+                self.logger.debug("SubscriptionController refreshed isPro: \(isPro)")
+                if isPro {
+                    if let onSuccess = self.onSubscriptionSuccess {
                         onSuccess()
                         return
                     }
-                    self?.setupActiveSubscriptionUI()
+                    self.setupActiveSubscriptionUI()
+                } else {
+                    self.fetchProducts()
                 }
             }
         }
-
-        if isPro {
-            setupActiveSubscriptionUI()
-        } else {
-            fetchProducts()
-        }
-
-        NotificationCenter.default.addObserver(
-            self, selector: #selector(updateUI), name: .subscriptionInfoReload, object: nil)
     }
 
     // MARK: - Setup UI
@@ -348,7 +343,32 @@ class SubscriptionController: UIViewController, Loggable {
 
             self.products = products
             self.selectedProduct = SubscriptionPresenter.shared.findBestProduct(in: products)
-            self.updateProductUI()
+
+            Task { [weak self] in
+                guard let self else { return }
+                let hasKnownHistory: Bool = {
+                    if IAPManager.shared.nextPaymentDate != nil { return true }
+                    guard let subscription = RequestManager.shared.subscription else { return false }
+                    if subscription.nextPaymentDate != nil { return true }
+                    if (subscription.transactionId ?? subscription.originTransactionId) != nil { return true }
+                    return false
+                }()
+
+                await MainActor.run {
+                    self.isEligibleForTrial = false
+                    self.updateProductUI()
+                }
+
+                if hasKnownHistory {
+                    return
+                }
+
+                let eligible = await IAPManager.shared.isEligibleForTrialUsingBestEffort()
+                await MainActor.run {
+                    self.isEligibleForTrial = eligible
+                    self.updateProductUI()
+                }
+            }
         }
     }
 
@@ -357,9 +377,12 @@ class SubscriptionController: UIViewController, Loggable {
 
         actionButton.isEnabled = true
 
-        let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(for: product)
+        let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(
+            for: product,
+            isEligibleForTrial: isEligibleForTrial
+        )
 
-        trialBadge.isHidden = true
+        trialBadge.isHidden = !displayInfo.isTrial
         actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
         termsLabel.text = displayInfo.termsText
 
