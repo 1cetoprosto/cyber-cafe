@@ -193,14 +193,17 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
         ) { [weak self] _, _, completion in
             guard let self = self else { return }
 
-            if !self.checkProOrShowPaywall() {
-                completion(false)
-                return
-            }
-
-            let ingredient = self.viewModel.ingredients[indexPath.row]
-            self.showAdjustmentAlert(for: ingredient)
-            completion(true)
+            self.checkProOrShowPaywall(
+                onSuccess: { [weak self] in
+                    guard let self else { return }
+                    let ingredient = self.viewModel.ingredients[indexPath.row]
+                    self.showAdjustmentAlert(for: ingredient)
+                    completion(true)
+                },
+                onDenied: {
+                    completion(false)
+                }
+            )
         }
         adjustAction.backgroundColor = .systemBlue
 
