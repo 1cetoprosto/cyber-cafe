@@ -1,9 +1,9 @@
-/* 
+/*
   Auth.strings
   Cyber-coffe
 
   Created by Леонід Квіт on 27.04.2024.
-  
+
 */
 
 "rememberMe" = "Remember me";
@@ -24,6 +24,7 @@
 "enableBioAuth" = "Enable %@";
 
 "sentAuthEmail" = "We sent you an email with authorization link";
+"sentResetEmail" = "If an account exists for this email, we'll send password reset instructions. Please also check Spam/Promotions.";
 
 "setPassword.Title" = "Please enter new password";
 "setPassword.Placeholder" = "New password";

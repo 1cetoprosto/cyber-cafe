@@ -98,6 +98,20 @@ class AuthModel {
             }
         }
     }
+    
+    func sendPasswordReset(_ email: String) {
+        send(.loading(true))
+        auth.sendPasswordReset(withEmail: email) { [weak self] error in
+            self?.send(.loading(false))
+            if let error {
+                self?.send(.alert(R.string.global.error(), error.localizedDescription, nil))
+            } else {
+                self?.send(.alert(Bundle.displayName, R.string.auth.sentResetEmail(), {
+                    self?.send(.success(false))
+                }))
+            }
+        }
+    }
 
     func signInWithLink(_ link: String) {
         if let email = AuthModel.sentLinkEmail {
