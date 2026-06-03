@@ -14,23 +14,34 @@ protocol ProGated: UIViewController {
 extension ProGated {
     @discardableResult
     func checkProOrShowPaywall() -> Bool {
-        let isPro = IAPManager.shared.isProPlan == true
-        if !isPro {
-            presentPaywall(onSuccess: nil)
-            return false
-        }
-        return true
+        checkProOrShowPaywall(onSuccess: {}, onDenied: {})
     }
 
     @discardableResult
     func checkProOrShowPaywall(onSuccess: @escaping () -> Void) -> Bool {
+        checkProOrShowPaywall(onSuccess: onSuccess, onDenied: {})
+    }
+
+    @discardableResult
+    func checkProOrShowPaywall(onSuccess: @escaping () -> Void, onDenied: @escaping () -> Void) -> Bool {
         let isPro = IAPManager.shared.isProPlan == true
         if isPro {
             onSuccess()
             return true
         }
 
-        presentPaywall(onSuccess: onSuccess)
+        Task { [weak self] in
+            guard let self else { return }
+            let refreshedIsPro = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            await MainActor.run {
+                if refreshedIsPro {
+                    onSuccess()
+                } else {
+                    onDenied()
+                    self.presentPaywall(onSuccess: onSuccess)
+                }
+            }
+        }
         return false
     }
 

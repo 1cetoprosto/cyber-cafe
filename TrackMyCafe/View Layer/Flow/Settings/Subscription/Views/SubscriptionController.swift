@@ -18,20 +18,19 @@ class SubscriptionController: UIViewController, Loggable {
     var onSkip: (() -> Void)?
     private var products = [SKProduct]()
     private var selectedProduct: SKProduct?
+    private var isEligibleForTrial = false
 
     // MARK: - UI Elements
     private let scrollView = UIScrollView()
     private let contentView = UIView()
     private let mainStackView = UIStackView()
 
-    // Header
     private let headerImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.layer.cornerRadius = 20 // Rounded corners like app icon
+        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
 
-        // Try to fetch App Icon from Bundle Info.plist
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
@@ -39,7 +38,6 @@ class SubscriptionController: UIViewController, Loggable {
             imageView.image = UIImage(named: lastIcon)
         }
 
-        // Fallback to crown if AppIcon is not accessible
         if imageView.image == nil {
             imageView.image = UIImage(systemName: "crown.fill")
             imageView.tintColor = .systemOrange
@@ -49,7 +47,7 @@ class SubscriptionController: UIViewController, Loggable {
 
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = R.string.global.appName() // "PRO" will be a separate tag
+        label.text = R.string.global.appName()
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textAlignment = .center
         return label
@@ -75,7 +73,6 @@ class SubscriptionController: UIViewController, Loggable {
         return label
     }()
 
-    // Features
     private let featuresContainer: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 20
@@ -85,7 +82,6 @@ class SubscriptionController: UIViewController, Loggable {
 
     private let featuresStackView = UIStackView()
 
-    // Pricing Info
     private let trialBadge: UILabel = {
         let label = UILabel()
         label.text = R.string.global.trialBadgeText(14)
@@ -99,7 +95,6 @@ class SubscriptionController: UIViewController, Loggable {
         return label
     }()
 
-    // Action Button
     private lazy var actionButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(R.string.global.loading(), for: .normal)
@@ -109,9 +104,7 @@ class SubscriptionController: UIViewController, Loggable {
 
     private lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
-        // Localized string for "Continue in Read-Only Mode"
-        // If localization key doesn't exist, fallback to English text
-        let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "Button title to skip paywall and enter read-only mode")
+        let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "")
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
@@ -127,12 +120,10 @@ class SubscriptionController: UIViewController, Loggable {
         return label
     }()
 
-    // Footer
     private let footerStackView = UIStackView()
 
     // MARK: - Init
 
-    // We keep this factory method for compatibility but ignore the header text as we use custom UI
     init(_ text: String) {
         super.init(nibName: nil, bundle: nil)
     }
@@ -142,25 +133,35 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupConstraints()
 
-        let isPro = IAPManager.shared.isProPlan == true
-        logger.debug("SubscriptionController viewDidLoad. isPro: \(isPro)")
-
-        if isPro {
-            setupActiveSubscriptionUI()
-        } else {
-            fetchProducts()
-        }
-
         NotificationCenter.default.addObserver(
             self, selector: #selector(updateUI), name: .subscriptionInfoReload, object: nil)
+
+        Task { [weak self] in
+            guard let self else { return }
+            let isPro = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            await MainActor.run {
+                self.logger.debug("SubscriptionController refreshed isPro: \(isPro)")
+                if isPro {
+                    if let onSuccess = self.onSubscriptionSuccess {
+                        onSuccess()
+                        return
+                    }
+                    self.setupActiveSubscriptionUI()
+                } else {
+                    self.fetchProducts()
+                }
+            }
+        }
     }
 
     // MARK: - Setup UI
+
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
         titleLabel.textColor = UIColor.Main.text
@@ -171,17 +172,14 @@ class SubscriptionController: UIViewController, Loggable {
 
         title = ""
 
-        // ScrollView
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
 
-        // Main Stack
         contentView.addSubview(mainStackView)
         mainStackView.axis = .vertical
         mainStackView.spacing = 24
         mainStackView.alignment = .fill
 
-        // Header
         let titleStack = UIStackView(arrangedSubviews: [titleLabel, proTagLabel])
         titleStack.axis = .horizontal
         titleStack.spacing = 8
@@ -195,36 +193,24 @@ class SubscriptionController: UIViewController, Loggable {
         headerStack.spacing = 8
         headerStack.alignment = .center
 
-        // Features
         setupFeatures()
 
-        // Add Features Stack to Container with Insets
         featuresContainer.addSubview(featuresStackView)
         featuresStackView.edgesToSuperview(insets: .init(top: 16, left: 16, bottom: 16, right: 16))
 
-        // Footer Links
         setupFooterLinks()
 
-        // Add to Main Stack
         mainStackView.addArrangedSubview(headerStack)
         mainStackView.addArrangedSubview(featuresContainer)
-
-        // Pricing Section
         mainStackView.addArrangedSubview(trialBadge)
-        // Price labels removed, info moved to button
-
         mainStackView.addArrangedSubview(actionButton)
         mainStackView.addArrangedSubview(skipButton)
         mainStackView.addArrangedSubview(termsLabel)
         mainStackView.addArrangedSubview(footerStackView)
 
-        // Spacing
         mainStackView.setCustomSpacing(40, after: headerStack)
         mainStackView.setCustomSpacing(30, after: featuresContainer)
-
-        // Adjust spacing around pricing info
         mainStackView.setCustomSpacing(8, after: trialBadge)
-
         mainStackView.setCustomSpacing(10, after: actionButton)
         mainStackView.setCustomSpacing(10, after: skipButton)
     }
@@ -247,10 +233,9 @@ class SubscriptionController: UIViewController, Loggable {
             row.spacing = 12
             row.alignment = .center
 
-            // Custom checkmark icon (circle with check)
             let iconContainer = UIView()
             iconContainer.backgroundColor = .systemOrange
-            iconContainer.layer.cornerRadius = 10 // 20x20 circle
+            iconContainer.layer.cornerRadius = 10
             iconContainer.clipsToBounds = true
 
             let icon = UIImageView(image: UIImage(systemName: "checkmark"))
@@ -276,22 +261,16 @@ class SubscriptionController: UIViewController, Loggable {
 
             featuresStackView.addArrangedSubview(row)
 
-            // Add separator if not last item
             if index < features.count - 1 {
                 let separator = UIView()
-                separator.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3) // Standard separator color
+                separator.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
                 separator.height(0.5)
                 featuresStackView.addArrangedSubview(separator)
-
-                // Optional: add leading inset for separator to align with text
-                // separator.leadingToSuperview(offset: 48)
-                // But full width separator inside the card looks clean too
             }
         }
     }
 
     private func setupFooterLinks() {
-        // Change to vertical stack for better readability
         footerStackView.axis = .vertical
         footerStackView.spacing = 8
         footerStackView.alignment = .center
@@ -336,7 +315,6 @@ class SubscriptionController: UIViewController, Loggable {
         contentView.edges(to: scrollView)
         contentView.widthToSuperview()
 
-        // Increased top inset from 20 to 60 to avoid overlap with Dynamic Island/Notch
         mainStackView.edgesToSuperview(insets: .init(top: 60, left: 20, bottom: 40, right: 20))
 
         headerImageView.size(CGSize(width: 80, height: 80))
@@ -357,7 +335,6 @@ class SubscriptionController: UIViewController, Loggable {
 
             guard let products = products, !products.isEmpty else {
                 DispatchQueue.main.async {
-                    // Use generic "Try for Free" instead of "Activate PRO" to match user expectations better when loading fails
                     self.actionButton.setTitle(R.string.global.subscriptionBannerAction(), for: .normal)
                     self.actionButton.isEnabled = true
                 }
@@ -367,7 +344,31 @@ class SubscriptionController: UIViewController, Loggable {
             self.products = products
             self.selectedProduct = SubscriptionPresenter.shared.findBestProduct(in: products)
 
-            self.updateProductUI()
+            Task { [weak self] in
+                guard let self else { return }
+                let hasKnownHistory: Bool = {
+                    if IAPManager.shared.nextPaymentDate != nil { return true }
+                    guard let subscription = RequestManager.shared.subscription else { return false }
+                    if subscription.nextPaymentDate != nil { return true }
+                    if (subscription.transactionId ?? subscription.originTransactionId) != nil { return true }
+                    return false
+                }()
+
+                await MainActor.run {
+                    self.isEligibleForTrial = false
+                    self.updateProductUI()
+                }
+
+                if hasKnownHistory {
+                    return
+                }
+
+                let eligible = await IAPManager.shared.isEligibleForTrialUsingBestEffort()
+                await MainActor.run {
+                    self.isEligibleForTrial = eligible
+                    self.updateProductUI()
+                }
+            }
         }
     }
 
@@ -376,13 +377,15 @@ class SubscriptionController: UIViewController, Loggable {
 
         actionButton.isEnabled = true
 
-        let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(for: product)
+        let displayInfo = SubscriptionPresenter.shared.getDisplayInfo(
+            for: product,
+            isEligibleForTrial: isEligibleForTrial
+        )
 
-        trialBadge.isHidden = true // Always hidden as per new design
+        trialBadge.isHidden = !displayInfo.isTrial
         actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
         termsLabel.text = displayInfo.termsText
 
-        // Update styling if user is already premium
         if IAPManager.shared.isProPlan == true {
             setupActiveSubscriptionUI()
         } else {
@@ -412,7 +415,6 @@ class SubscriptionController: UIViewController, Loggable {
         termsLabel.isHidden = true
         skipButton.isHidden = true
 
-        // Update Header
         let activeTitle = R.string.global.subscriptionActiveSubtitle()
         var subtitleText = activeTitle
 
@@ -427,9 +429,7 @@ class SubscriptionController: UIViewController, Loggable {
         subtitleLabel.text = subtitleText
         subtitleLabel.numberOfLines = 0
 
-        // Update Action Button
-        let manageTitle = R.string.global.subscriptionManage()
-        actionButton.setTitle(manageTitle, for: .normal)
+        actionButton.setTitle(R.string.global.subscriptionManage(), for: .normal)
         actionButton.isEnabled = true
         actionButton.backgroundColor = UIColor.Button.background
         actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
@@ -447,8 +447,8 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     // MARK: - Read-Only Mode
+
     func enableReadOnlyMode() {
-        // Show skip button only in read-only mode (onboarding/paywall flow)
         skipButton.isHidden = false
         skipButton.setTitle(R.string.global.subscriptionContinueReadOnly(), for: .normal)
         skipButton.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
@@ -466,15 +466,15 @@ class SubscriptionController: UIViewController, Loggable {
 
     @objc private func purchaseAction() {
         guard let product = selectedProduct else {
-            // Retry fetching if products failed to load
             fetchProducts()
             return
         }
 
-        // Existing Purchase Logic
         RequestManager.shared.getSubscriptionInfo { [weak self] (subscription) in
             if subscription.proPlan {
-                self?.showAlert(nil, body: R.string.global.hasProPlan())
+                DispatchQueue.main.async {
+                    self?.showAlert(nil, body: R.string.global.hasProPlan())
+                }
                 return
             }
             self?.purchaseProduct(product)
@@ -482,30 +482,41 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     private func purchaseProduct(_ product: SKProduct) {
-        IAPManager.shared.purchaseProduct(product) { [weak self] success, error in
-            if success {
+        IAPManager.shared.verifySubscription { [weak self] receipt in
+            guard let self = self else { return }
+
+            if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
                 DispatchQueue.main.async {
-                    if let onSuccess = self?.onSubscriptionSuccess {
-                        onSuccess()
-                        return
-                    }
-                    
-                    if self?.presentingViewController != nil {
-                        self?.dismiss(animated: true)
-                        return
-                    }
-                    
-                    self?.showAlert(
-                        R.string.global.success(),
-                        body: R.string.global.successPurchase()
-                    )
+                    self.showAlert(nil, body: R.string.global.hasProPlan())
                 }
-            } else {
-                DispatchQueue.main.async {
-                    self?.showAlert(
-                        R.string.global.error(),
-                        body: error ?? R.string.global.wentWrongTryAgain()
-                    )
+                return
+            }
+
+            IAPManager.shared.purchaseProduct(product) { [weak self] success, error in
+                if success {
+                    DispatchQueue.main.async {
+                        if let onSuccess = self?.onSubscriptionSuccess {
+                            onSuccess()
+                            return
+                        }
+
+                        if self?.presentingViewController != nil {
+                            self?.dismiss(animated: true)
+                            return
+                        }
+
+                        self?.showAlert(
+                            R.string.global.success(),
+                            body: R.string.global.successPurchase()
+                        )
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self?.showAlert(
+                            R.string.global.error(),
+                            body: error ?? R.string.global.wentWrongTryAgain()
+                        )
+                    }
                 }
             }
         }
@@ -516,14 +527,15 @@ class SubscriptionController: UIViewController, Loggable {
             IAPManager.shared.verifySubscription { (receipt) in
                 guard let self = self else { return }
                 guard let receipt = receipt else {
-                    self.showAlert(
-                        R.string.global.error(),
-                        body: R.string.global.wentWrongTryAgain())
+                    DispatchQueue.main.async {
+                        self.showAlert(
+                            R.string.global.error(),
+                            body: R.string.global.wentWrongTryAgain())
+                    }
                     return
                 }
 
                 if receipt.hasSubscriptionPurchases {
-                     // Reuse existing logic from original controller
                     guard let originTransactionId = receipt.lastAutorenewOriginTransactionId else {
                         return
                     }
@@ -535,12 +547,12 @@ class SubscriptionController: UIViewController, Loggable {
                                     onSuccess()
                                     return
                                 }
-                                
+
                                 if self.presentingViewController != nil {
                                     self.dismiss(animated: true)
                                     return
                                 }
-                                
+
                                 self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
                                 self.updateUI()
                             }
@@ -552,12 +564,12 @@ class SubscriptionController: UIViewController, Loggable {
                             onSuccess()
                             return
                         }
-                        
+
                         if self.presentingViewController != nil {
                             self.dismiss(animated: true)
                             return
                         }
-                        
+
                         self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
                     }
                 }
@@ -572,9 +584,9 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     @objc private func openPrivacy() {
-         guard let url = URL(string: Links.privacyPolicy) else { return }
-         let safariVC = SFSafariViewController(url: url)
-         present(safariVC, animated: true)
+        guard let url = URL(string: Links.privacyPolicy) else { return }
+        let safariVC = SFSafariViewController(url: url)
+        present(safariVC, animated: true)
     }
 }
 
