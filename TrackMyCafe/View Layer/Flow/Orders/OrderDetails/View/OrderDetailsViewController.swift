@@ -56,6 +56,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.directionalLayoutMargins = .zero
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.insetsContentViewsToSafeArea = false
         tableView.isScrollEnabled = false  // Disable scroll to avoid conflict with ScrollView
         tableView.accessibilityIdentifier = "productsTable"
         return tableView
