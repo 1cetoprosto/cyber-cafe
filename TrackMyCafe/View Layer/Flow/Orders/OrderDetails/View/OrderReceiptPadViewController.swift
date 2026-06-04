@@ -231,6 +231,15 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         view.addSubview(tableView)
         tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
         tableView.delegate = self
+        tableView.preservesSuperviewLayoutMargins = true
+        tableView.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 0,
+            leading: UIConstants.standardPadding,
+            bottom: 0,
+            trailing: UIConstants.standardPadding
+        )
+        tableView.cellLayoutMarginsFollowReadableWidth = false
+        tableView.insetsContentViewsToSafeArea = false
 
         configureDataSource()
     }
