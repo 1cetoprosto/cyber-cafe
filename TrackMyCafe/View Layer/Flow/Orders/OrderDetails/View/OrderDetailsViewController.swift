@@ -178,6 +178,15 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         setupData()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+        collectionView.reloadData()
+        updateTableHeight()
+        updateCollectionHeight()
+        updateTotalSumLabel()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
@@ -211,7 +220,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
 
     private var isPadGridEnabled: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad && traitCollection.horizontalSizeClass == .regular
+        UIDevice.current.userInterfaceIdiom == .pad
+            && traitCollection.horizontalSizeClass == .regular
     }
 
     private var maxContentWidth: CGFloat {
@@ -395,8 +405,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
         let hasCashInput =
             !(cashInputContainer.text?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .isEmpty ?? true)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
         changeStackView.isHidden = !hasCashInput
         changeValueLabel.text = change.currency
     }
@@ -404,6 +414,16 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     @objc private func addProductTapped() {
         guard let viewModel = viewModel else { return }
+
+        if SettingsManager.shared.loadChooseCategoryFirstProductSelection() {
+            let categoriesVC = OrderCategoryFirstPickerViewController(
+                productsViewModel: viewModel.productsViewModel
+            )
+            let nav = UINavigationController(rootViewController: categoriesVC)
+            nav.modalPresentationStyle = UIDevice.isIpad ? .formSheet : .fullScreen
+            present(nav, animated: true)
+            return
+        }
 
         let picker = OrderProductPickerViewController(
             productsViewModel: viewModel.productsViewModel
@@ -446,7 +466,9 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         let cash = cashInputContainer.text
         let card = cardInputContainer.text
 
-        viewModel.save(date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false) { [weak self] result in
+        viewModel.save(
+            date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false
+        ) { [weak self] result in
             self?.handleSaveResult(result)
         }
     }
@@ -493,7 +515,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                     let card = self.cardInputContainer.text
 
                     viewModel.save(
-                        date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: true
+                        date: date, type: type, cash: cash, card: card, note: nil,
+                        ignoreStockWarning: true
                     ) { [weak self] result in
                         self?.handleSaveResult(result)
                     }
@@ -576,12 +599,17 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
 // MARK: - CollectionView
 extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+        -> Int
+    {
         return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+        -> UICollectionViewCell
+    {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "OrderCollectionViewCell", for: indexPath)
@@ -628,7 +656,9 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
         return viewModel?.numberOfRowsInComponent(component: component) ?? 0
     }
 
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
+        -> String?
+    {
         return viewModel?.titleForRow(row: row, component: component)
     }
 
@@ -651,31 +681,52 @@ extension OrderDetailsViewController {
             equalTo: scrollView.frameLayoutGuide.widthAnchor,
             constant: -2 * horizontalInset
         )
-        fillWidth.priority = .defaultHigh
-        let maxWidth = mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: maxContentWidth)
+        fillWidth.priority = isPadGridEnabled ? .defaultHigh : .required
+        let maxWidth = mainStackView.widthAnchor.constraint(
+            lessThanOrEqualToConstant: maxContentWidth)
         maxWidth.priority = .required
         maxContentWidthConstraint = maxWidth
-        NSLayoutConstraint.activate([
-            mainStackView.topAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.topAnchor,
-                constant: UIConstants.largeSpacing
-            ),
-            mainStackView.bottomAnchor.constraint(
-                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
-                constant: -(UIConstants.largeSpacing + 20)
-            ),
-            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
-            mainStackView.leadingAnchor.constraint(
-                greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
-                constant: horizontalInset
-            ),
-            mainStackView.trailingAnchor.constraint(
-                lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
-                constant: -horizontalInset
-            ),
-            fillWidth,
-            maxWidth,
-        ])
+        let top = mainStackView.topAnchor.constraint(
+            equalTo: scrollView.contentLayoutGuide.topAnchor,
+            constant: UIConstants.largeSpacing
+        )
+        let bottom = mainStackView.bottomAnchor.constraint(
+            equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+            constant: -(UIConstants.largeSpacing + 20)
+        )
+
+        if isPadGridEnabled {
+            NSLayoutConstraint.activate([
+                top,
+                bottom,
+                mainStackView.centerXAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+                mainStackView.leadingAnchor.constraint(
+                    greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+                    constant: horizontalInset
+                ),
+                mainStackView.trailingAnchor.constraint(
+                    lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+                    constant: -horizontalInset
+                ),
+                fillWidth,
+                maxWidth,
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                top,
+                bottom,
+                mainStackView.leadingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.leadingAnchor,
+                    constant: horizontalInset
+                ),
+                mainStackView.trailingAnchor.constraint(
+                    equalTo: scrollView.frameLayoutGuide.trailingAnchor,
+                    constant: -horizontalInset
+                ),
+                maxWidth,
+            ])
+        }
 
         let containerHeight =
             UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
@@ -729,8 +780,12 @@ extension OrderDetailsViewController {
         if let cashTF = cashInputContainer.textFieldReference { addDoneButtonToTextField(cashTF) }
         if let cardTF = cardInputContainer.textFieldReference { addDoneButtonToTextField(cardTF) }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 
     @objc private func keyboardWillShow(notification: NSNotification) {
