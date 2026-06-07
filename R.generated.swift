@@ -66,7 +66,7 @@ struct _R {
     }
 
 
-    /// This `_R.string.auth` struct is generated, and contains static references to 21 localization keys.
+    /// This `_R.string.auth` struct is generated, and contains static references to 22 localization keys.
     struct auth {
       let source: RswiftResources.StringResource.Source
 
@@ -139,6 +139,13 @@ struct _R {
       ///
       /// Locales: uk, en
       var sentAuthEmail: RswiftResources.StringResource { .init(key: "sentAuthEmail", tableName: "Auth", source: source, developmentValue: "We sent you an email with authorization link", comment: nil) }
+
+      /// en translation: If an account exists for this email, we'll send password reset instructions. Please also check Spam/Promotions.
+      ///
+      /// Key: sentResetEmail
+      ///
+      /// Locales: uk, en
+      var sentResetEmail: RswiftResources.StringResource { .init(key: "sentResetEmail", tableName: "Auth", source: source, developmentValue: "If an account exists for this email, we'll send password reset instructions. Please also check Spam/Promotions.", comment: nil) }
 
       /// en translation: Enter password
       ///

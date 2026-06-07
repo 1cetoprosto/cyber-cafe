@@ -147,18 +147,20 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
         let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, completion in
             guard let self = self else { return }
 
-            if !self.checkProOrShowPaywall() {
-                completion(false) // Cancel deletion visual
-                // Ideally, we should reload row to close swipe, but completion(false) might be enough
-                return
-            }
+            self.checkProOrShowPaywall(
+                onSuccess: { [weak self] in
+                    guard let self else { return }
+                    viewModel.deleteOrderModel(atIndexPath: indexPath)
 
-            viewModel.deleteOrderModel(atIndexPath: indexPath)
-
-            viewModel.getOrders { [weak self] in
-                self?.tableView.reloadData()
-            }
-            completion(true)
+                    viewModel.getOrders { [weak self] in
+                        self?.tableView.reloadData()
+                    }
+                    completion(true)
+                },
+                onDenied: {
+                    completion(false)
+                }
+            )
         }
 
         return UISwipeActionsConfiguration(actions: [deleteAction])

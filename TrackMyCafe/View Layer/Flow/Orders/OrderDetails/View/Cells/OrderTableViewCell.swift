@@ -14,6 +14,7 @@ class OrderTableViewCell: UITableViewCell {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = 10
+        view.translatesAutoresizingMaskIntoConstraints = false
 
         return view
     }()
@@ -21,12 +22,14 @@ class OrderTableViewCell: UITableViewCell {
     private let separatorView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.separator
+        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
 
     let productLabel: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
         label.applyDynamic(Typography.body)
         label.numberOfLines = 1
@@ -38,6 +41,7 @@ class OrderTableViewCell: UITableViewCell {
     let quantityLabel: UILabel = {
         let label = UILabel()
         label.text = ""
+        label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
         label.applyDynamic(Typography.body)
 
@@ -46,6 +50,7 @@ class OrderTableViewCell: UITableViewCell {
 
     let productStepper: UIStepper = {
         let stepper = UIStepper()
+        stepper.translatesAutoresizingMaskIntoConstraints = false
 
         return stepper
     }()
@@ -54,6 +59,10 @@ class OrderTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         self.backgroundColor = UIColor.Main.background
+        directionalLayoutMargins = .zero
+        contentView.directionalLayoutMargins = .zero
+        preservesSuperviewLayoutMargins = true
+        contentView.preservesSuperviewLayoutMargins = true
         setConstraints()
     }
 
