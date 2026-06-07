@@ -2,7 +2,13 @@ default_platform(:ios)
 
 # Load .env file manually to ensure environment variables are set
 require 'dotenv'
-Dotenv.load('../.env')
+dotenv_paths = [
+  File.join(__dir__, '.env.ios'),
+  File.join(__dir__, '.env.secret'),
+  File.expand_path(File.join(__dir__, '..', '.env'))
+].select { |path| File.exist?(path) }
+
+Dotenv.load(*dotenv_paths) unless dotenv_paths.empty?
 
 platform :ios do
 
