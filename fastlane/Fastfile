@@ -58,13 +58,20 @@ platform :ios do
     )
 
     # 4. Upload to TestFlight and add to "External Testers" group
-    upload_to_testflight(
+    distribute_external = ENV.fetch("FASTLANE_DISTRIBUTE_EXTERNAL", "false").to_s.downcase == "true"
+
+    upload_options = {
       app_identifier: bundle_id,
-      skip_waiting_for_build_processing: false, # Wait for processing so we can add external testers
-      distribute_external: true,               # Enable external testing
-      groups: ["External Testers"],            # Auto-add this group
-      changelog: "Updated build"               # Fallback changelog if none provided
-    )
+      skip_waiting_for_build_processing: false,
+      distribute_external: distribute_external,
+      changelog: "Updated build"
+    }
+
+    if distribute_external
+      upload_options[:groups] = ["External Testers"]
+    end
+
+    upload_to_testflight(upload_options)
   end
 
   # ---------------------------------------------------------------------------
