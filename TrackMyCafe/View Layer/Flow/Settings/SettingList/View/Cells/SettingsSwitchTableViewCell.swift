@@ -14,7 +14,7 @@ final class SettingsSwitchTableViewCell: BaseSettingsCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         accessoryType = .none
-        self.addSubview(switchView)
+        contentView.addSubview(switchView)
         
         // Deactivate the trailing constraint from BaseSettingsCell to prevent overlap
         if let existingConstraint = contentView.constraints.first(where: {
@@ -41,10 +41,18 @@ final class SettingsSwitchTableViewCell: BaseSettingsCell {
         iconImageView.image = option.icon
         iconContainer.backgroundColor = option.iconBackgroundColor
         switchView.isOn = option.isOn
+        handler = option.handler
+        switchView.removeTarget(nil, action: nil, for: .valueChanged)
         switchView.addTarget(self, action: #selector(switchChanged), for: .valueChanged)
     }
     
     private var handler: ((Bool) -> Void)?
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        handler = nil
+        switchView.removeTarget(nil, action: nil, for: .valueChanged)
+    }
     
     @objc private func switchChanged(_ sender: UISwitch) {
         handler?(sender.isOn)

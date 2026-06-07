@@ -1,5 +1,4 @@
 import Foundation
-import TinyConstraints
 import UIKit
 
 final class OrderSplitContainerViewController: UIViewController {
@@ -32,61 +31,80 @@ final class OrderSplitContainerViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         navigationItem.largeTitleDisplayMode = .never
 
-        let catalog = OrderProductPickerViewController(
-            productsViewModel: viewModel.productsViewModel,
-            selectionBehavior: .stayOnSelect
-        )
-        catalog.title = R.string.global.priceList()
+        let isCategoryFirstEnabled = SettingsManager.shared
+            .loadChooseCategoryFirstProductSelection()
+
+        let pickerRoot: UIViewController
+        if isCategoryFirstEnabled {
+            let categories = OrderCategoryFirstPickerViewController(
+                productsViewModel: viewModel.productsViewModel
+            )
+            categories.title = NSLocalizedString(
+                "orderPicker_allProducts", tableName: "Global", comment: "")
+            pickerRoot = categories
+        } else {
+            let catalog = OrderProductPickerViewController(
+                productsViewModel: viewModel.productsViewModel,
+                selectionBehavior: .stayOnSelect
+            )
+            catalog.title = R.string.global.priceList()
+            pickerRoot = catalog
+        }
 
         let receipt = OrderReceiptPadViewController(viewModel: viewModel)
         receipt.onSave = onSave
         receipt.title = R.string.global.order()
 
-        let primaryNav = UINavigationController(rootViewController: catalog)
-        let secondaryNav = UINavigationController(rootViewController: receipt)
+        let pickerNav = UINavigationController(rootViewController: pickerRoot)
+        let receiptNav = UINavigationController(rootViewController: receipt)
+
+        let leftNav = isCategoryFirstEnabled ? receiptNav : pickerNav
+        let rightNav = isCategoryFirstEnabled ? pickerNav : receiptNav
 
         let divider = UIView()
         divider.backgroundColor = UIColor.separator
 
-        addChild(primaryNav)
-        addChild(secondaryNav)
-        view.addSubview(primaryNav.view)
+        addChild(leftNav)
+        addChild(rightNav)
+        view.addSubview(leftNav.view)
         view.addSubview(divider)
-        view.addSubview(secondaryNav.view)
-        primaryNav.didMove(toParent: self)
-        secondaryNav.didMove(toParent: self)
+        view.addSubview(rightNav.view)
+        leftNav.didMove(toParent: self)
+        rightNav.didMove(toParent: self)
 
-        primaryNav.view.translatesAutoresizingMaskIntoConstraints = false
-        secondaryNav.view.translatesAutoresizingMaskIntoConstraints = false
+        leftNav.view.translatesAutoresizingMaskIntoConstraints = false
+        rightNav.view.translatesAutoresizingMaskIntoConstraints = false
         divider.translatesAutoresizingMaskIntoConstraints = false
 
         let safe = view.safeAreaLayoutGuide
-        let preferredFraction: CGFloat = 0.70
+        let preferredFraction: CGFloat = isCategoryFirstEnabled ? 0.35 : 0.70
+        let minLeftWidth: CGFloat = isCategoryFirstEnabled ? 360 : 520
+        let maxLeftWidth: CGFloat = isCategoryFirstEnabled ? 560 : 920
 
-        let preferredWidth = primaryNav.view.widthAnchor.constraint(
+        let preferredWidth = leftNav.view.widthAnchor.constraint(
             equalTo: safe.widthAnchor,
             multiplier: preferredFraction
         )
         preferredWidth.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
-            primaryNav.view.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
-            primaryNav.view.topAnchor.constraint(equalTo: safe.topAnchor),
-            primaryNav.view.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            leftNav.view.leadingAnchor.constraint(equalTo: safe.leadingAnchor),
+            leftNav.view.topAnchor.constraint(equalTo: safe.topAnchor),
+            leftNav.view.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
 
-            divider.leadingAnchor.constraint(equalTo: primaryNav.view.trailingAnchor),
+            divider.leadingAnchor.constraint(equalTo: leftNav.view.trailingAnchor),
             divider.topAnchor.constraint(equalTo: safe.topAnchor),
             divider.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
             divider.widthAnchor.constraint(equalToConstant: 1),
 
-            secondaryNav.view.leadingAnchor.constraint(equalTo: divider.trailingAnchor),
-            secondaryNav.view.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
-            secondaryNav.view.topAnchor.constraint(equalTo: safe.topAnchor),
-            secondaryNav.view.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
+            rightNav.view.leadingAnchor.constraint(equalTo: divider.trailingAnchor),
+            rightNav.view.trailingAnchor.constraint(equalTo: safe.trailingAnchor),
+            rightNav.view.topAnchor.constraint(equalTo: safe.topAnchor),
+            rightNav.view.bottomAnchor.constraint(equalTo: safe.bottomAnchor),
 
             preferredWidth,
-            primaryNav.view.widthAnchor.constraint(greaterThanOrEqualToConstant: 520),
-            primaryNav.view.widthAnchor.constraint(lessThanOrEqualToConstant: 920),
+            leftNav.view.widthAnchor.constraint(greaterThanOrEqualToConstant: minLeftWidth),
+            leftNav.view.widthAnchor.constraint(lessThanOrEqualToConstant: maxLeftWidth),
         ])
     }
 }

@@ -24,8 +24,10 @@ struct Config {
 }
 
 struct Links {
-    static let termsOfService = "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link"
-    static let privacyPolicy = "https://leokvit.notion.site/Privacy-Policy-8e03f5636033475795267873620f326e?source=copy_link"
+    static let termsOfService =
+        "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link"
+    static let privacyPolicy =
+        "https://leokvit.notion.site/Privacy-Policy-8e03f5636033475795267873620f326e?source=copy_link"
 }
 
 // notifications
@@ -37,6 +39,7 @@ extension Notification.Name {
     static let ordersInfoReload = Notification.Name("ordersInfoReloadNotification")
     static let logsInfoReload = Notification.Name("logsInfoReload")
     static let demoDataDidDelete = Notification.Name("demoDataDidDelete")
+    static let productListDidChange = Notification.Name("productListDidChange")
 }
 
 // Firebase refs
@@ -121,9 +124,10 @@ struct UserDefaultsKeys {
     static let paletteStyle = "kPaletteStyle"
     static let firstLaunch = "kFirstLaunch"
     static let subscriptionNextPaymentDate = "kUserSubscriptionNextPaymentDate"
-    static let subscriptionIsProPlan = "kUserSubscriptionIsPremiumPlan" // Keeping key for backward compatibility
+    static let subscriptionIsProPlan = "kUserSubscriptionIsPremiumPlan"  // Keeping key for backward compatibility
     static let appleLanguages = "AppleLanguages"
     static let orderEntryMode = "settings.orderEntryMode"
+    static let chooseCategoryFirstProductSelection = "settings.chooseCategoryFirstProductSelection"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
     static let hasRunBefore = "hasRunBefore"
