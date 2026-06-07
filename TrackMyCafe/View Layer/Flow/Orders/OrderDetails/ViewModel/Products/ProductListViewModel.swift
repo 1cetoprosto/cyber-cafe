@@ -21,6 +21,22 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
     var onChange: ((ProductListChange) -> Void)?
 
+    private func emitChange(_ change: ProductListChange) {
+        onChange?(change)
+        var userInfo: [AnyHashable: Any] = [:]
+        switch change {
+        case .fullReload:
+            userInfo["fullReload"] = true
+        case .productUpdated(let productId):
+            userInfo["productId"] = productId
+        }
+        NotificationCenter.default.post(
+            name: .productListDidChange,
+            object: self,
+            userInfo: userInfo
+        )
+    }
+
     init(
         costingService: CostingServiceProtocol = CostingService.shared,
         inventoryService: InventoryServiceProtocol = InventoryService.shared
@@ -65,14 +81,14 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
                     group.notify(queue: .main) {
                         self.products = newProducts.sorted { $0.name < $1.name }
-                        self.onChange?(.fullReload)
+                        self.emitChange(.fullReload)
                         completion()
                     }
                 }
             } else {
                 DispatchQueue.main.async {
                     self.products = products
-                    self.onChange?(.fullReload)
+                    self.emitChange(.fullReload)
                     completion()
                 }
             }
@@ -100,9 +116,9 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         products[tag].costSum = Double(quantity) * products[tag].costPrice
         let isActive = quantity > 0
         if wasActive != isActive {
-            onChange?(.fullReload)
+            emitChange(.fullReload)
         } else {
-            onChange?(.productUpdated(productId: products[tag].productId))
+            emitChange(.productUpdated(productId: products[tag].productId))
         }
     }
 
@@ -140,7 +156,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             products[index].quantity = newQuantity
             products[index].sum = Double(newQuantity) * existing.price
             products[index].costSum = Double(newQuantity) * existing.costPrice
-            onChange?(.productUpdated(productId: priceModel.id))
+            emitChange(.productUpdated(productId: priceModel.id))
             completion()
             return
         }
@@ -164,7 +180,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             DispatchQueue.main.async {
                 self.products.append(product)
                 self.products.sort { $0.name < $1.name }
-                self.onChange?(.fullReload)
+                self.emitChange(.fullReload)
                 completion()
             }
         }

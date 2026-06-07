@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 365 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 371 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1790,6 +1790,41 @@ struct _R {
       /// Locales: en, uk
       var orderModePerOrderDescription: RswiftResources.StringResource { .init(key: "orderModePerOrderDescription", tableName: "Global", source: source, developmentValue: "Each customer is a separate check. Items added from Catalog. Recommended for large assortment.", comment: nil) }
 
+      /// en translation: All products
+      ///
+      /// Key: orderPicker_allProducts
+      ///
+      /// Locales: en, uk
+      var orderPicker_allProducts: RswiftResources.StringResource { .init(key: "orderPicker_allProducts", tableName: "Global", source: source, developmentValue: "All products", comment: nil) }
+
+      /// en translation: No categories
+      ///
+      /// Key: orderPicker_emptyCategories
+      ///
+      /// Locales: en, uk
+      var orderPicker_emptyCategories: RswiftResources.StringResource { .init(key: "orderPicker_emptyCategories", tableName: "Global", source: source, developmentValue: "No categories", comment: nil) }
+
+      /// en translation: No products
+      ///
+      /// Key: orderPicker_emptyProducts
+      ///
+      /// Locales: en, uk
+      var orderPicker_emptyProducts: RswiftResources.StringResource { .init(key: "orderPicker_emptyProducts", tableName: "Global", source: source, developmentValue: "No products", comment: nil) }
+
+      /// en translation: No results
+      ///
+      /// Key: orderPicker_noResults
+      ///
+      /// Locales: en, uk
+      var orderPicker_noResults: RswiftResources.StringResource { .init(key: "orderPicker_noResults", tableName: "Global", source: source, developmentValue: "No results", comment: nil) }
+
+      /// en translation: Return to order
+      ///
+      /// Key: orderPicker_returnToOrder
+      ///
+      /// Locales: en, uk
+      var orderPicker_returnToOrder: RswiftResources.StringResource { .init(key: "orderPicker_returnToOrder", tableName: "Global", source: source, developmentValue: "Return to order", comment: nil) }
+
       /// en translation: Orders
       ///
       /// Key: orders
@@ -2237,6 +2272,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var settingsSectionOrders: RswiftResources.StringResource { .init(key: "settingsSectionOrders", tableName: "Global", source: source, developmentValue: "Orders", comment: nil) }
+
+      /// en translation: Choose category first
+      ///
+      /// Key: settings_chooseCategoryFirst
+      ///
+      /// Locales: en, uk
+      var settings_chooseCategoryFirst: RswiftResources.StringResource { .init(key: "settings_chooseCategoryFirst", tableName: "Global", source: source, developmentValue: "Choose category first", comment: nil) }
 
       /// en translation: Something went wrong
       ///

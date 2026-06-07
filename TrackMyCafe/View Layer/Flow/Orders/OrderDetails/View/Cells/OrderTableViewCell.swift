@@ -5,6 +5,7 @@
 //  Created by Леонід Квіт on 08.11.2021.
 //
 
+import TinyConstraints
 import UIKit
 
 class OrderTableViewCell: UITableViewCell {
@@ -82,48 +83,29 @@ class OrderTableViewCell: UITableViewCell {
     func setConstraints() {
 
         contentView.addSubview(backgroundViewCell)
-        NSLayoutConstraint.activate([
-            backgroundViewCell.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            backgroundViewCell.leadingAnchor.constraint(
-                equalTo: contentView.layoutMarginsGuide.leadingAnchor),
-            backgroundViewCell.trailingAnchor.constraint(
-                equalTo: contentView.layoutMarginsGuide.trailingAnchor),
-            backgroundViewCell.bottomAnchor.constraint(
-                equalTo: contentView.bottomAnchor, constant: -1),
-        ])
+        backgroundViewCell.topToSuperview(offset: 0)
+        backgroundViewCell.leftToSuperview(offset: 0)
+        backgroundViewCell.rightToSuperview(offset: 0)
+        backgroundViewCell.bottomToSuperview(offset: -1)
 
         contentView.addSubview(productLabel)
-        NSLayoutConstraint.activate([
-            productLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            productLabel.leadingAnchor.constraint(
-                equalTo: backgroundViewCell.leadingAnchor, constant: 12),
-        ])
+        productLabel.centerYToSuperview()
+        productLabel.leftToSuperview(offset: 12, usingSafeArea: false)
 
         contentView.addSubview(productStepper)
-        NSLayoutConstraint.activate([
-            productStepper.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            productStepper.trailingAnchor.constraint(
-                equalTo: backgroundViewCell.trailingAnchor, constant: -12),
-        ])
+        productStepper.centerYToSuperview()
+        productStepper.rightToSuperview(offset: -12, usingSafeArea: false)
 
         contentView.addSubview(quantityLabel)
-        NSLayoutConstraint.activate([
-            quantityLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            quantityLabel.trailingAnchor.constraint(
-                equalTo: productStepper.leadingAnchor, constant: -12),
-            productLabel.trailingAnchor.constraint(
-                lessThanOrEqualTo: quantityLabel.leadingAnchor, constant: -8),
-        ])
+        quantityLabel.centerYToSuperview()
+        quantityLabel.rightToLeft(of: productStepper, offset: -12)
+        productLabel.rightToLeft(of: quantityLabel, offset: -8, relation: .equalOrLess)
 
         backgroundViewCell.addSubview(separatorView)
-        NSLayoutConstraint.activate([
-            separatorView.leadingAnchor.constraint(
-                equalTo: backgroundViewCell.leadingAnchor, constant: 12),
-            separatorView.trailingAnchor.constraint(
-                equalTo: backgroundViewCell.trailingAnchor, constant: -12),
-            separatorView.bottomAnchor.constraint(equalTo: backgroundViewCell.bottomAnchor),
-            separatorView.heightAnchor.constraint(equalToConstant: 1 / UIScreen.main.scale),
-        ])
+        separatorView.leftToSuperview(offset: 12)
+        separatorView.rightToSuperview(offset: -12)
+        separatorView.bottomToSuperview()
+        separatorView.height(1 / UIScreen.main.scale)
 
         productLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         quantityLabel.setContentCompressionResistancePriority(.required, for: .horizontal)

@@ -17,6 +17,7 @@ class SettingsManager {
   private let themeKey = UserDefaultsKeys.theme
   private let onlineKey = UserDefaultsKeys.online
   private let orderEntryModeKey = UserDefaultsKeys.orderEntryMode
+  private let chooseCategoryFirstProductSelectionKey = UserDefaultsKeys.chooseCategoryFirstProductSelection
 
   func saveLanguage(_ language: String) {
     UserDefaults.standard.set(language, forKey: UserDefaultsKeys.language)
@@ -56,6 +57,14 @@ class SettingsManager {
       return .openTab
     }
     return mode
+  }
+
+  func saveChooseCategoryFirstProductSelection(_ isOn: Bool) {
+    UserDefaults.standard.set(isOn, forKey: chooseCategoryFirstProductSelectionKey)
+  }
+
+  func loadChooseCategoryFirstProductSelection() -> Bool {
+    UserDefaults.standard.bool(forKey: chooseCategoryFirstProductSelectionKey)
   }
 
   // func saveOnline(_ isOn: Bool) {

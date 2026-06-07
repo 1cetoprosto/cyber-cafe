@@ -437,6 +437,14 @@
 "subscriptionManage" = "Manage Subscription";
 "subscriptionContinueReadOnly" = "Continue in Read-Only Mode";
 
+// MARK: - Orders Picker
+"settings_chooseCategoryFirst" = "Choose category first";
+"orderPicker_allProducts" = "All products";
+"orderPicker_returnToOrder" = "Return to order";
+"orderPicker_emptyCategories" = "No categories";
+"orderPicker_emptyProducts" = "No products";
+"orderPicker_noResults" = "No results";
+
 // MARK: - Onboarding Slides
 "onboardingSlide1Title" = "Expenses Tracking";
 "onboardingSlide1Desc" = "Easily log and categorize your daily expenses to keep track of your spending.";

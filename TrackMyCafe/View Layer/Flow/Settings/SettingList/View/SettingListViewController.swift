@@ -49,10 +49,10 @@ struct SettingsDataOption {
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
-    MFMailComposeViewControllerDelegate, Loggable
+                                 MFMailComposeViewControllerDelegate, Loggable
 {
     private let subscriptionBanner = SubscriptionBannerView()
-
+    
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = UIColor.Main.background
@@ -67,38 +67,38 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         tableView.register(
             SettingsDataTableViewCell.self,
             forCellReuseIdentifier: SettingsDataTableViewCell.identifier)
-
+        
         return tableView
     }()
-
+    
     var models = [Section]()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         subscriptionBanner.delegate = self
         subscriptionBanner.onInfoLoaded = { [weak self] in
             self?.updateTableHeaderHeight()
         }
-
+        
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.menuSettings()
         navigationController?.navigationBar.prefersLargeTitles = false
-
+        
         tableView.delegate = self
         tableView.dataSource = self
-
+        
         setConstraints()
     }
-
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        
         configure()
         updateBannerVisibility()
         tableView.reloadData()
     }
-
+    
     private func presentOrderModeSelection(
         currentMode: OrderEntryMode,
         completion: @escaping (OrderEntryMode) -> Void
@@ -109,31 +109,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             completion(.openTab)
         }
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
         OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
     }
-
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
+        
         // Handle system theme changes only if user has selected system appearance
         if Theme.currentSelection.appearance == .system {
             Theme.followSystemTheme()
-
+            
             // Update UI colors
             view.backgroundColor = UIColor.Main.background
             tableView.backgroundColor = UIColor.Main.background
             tableView.reloadData()
         }
     }
-
+    
     private func updateBannerVisibility() {
         let isPro = IAPManager.shared.isProPlan == true
         logger.debug("Subscription status isPro: \(isPro)")
-
+        
         if isPro {
             tableView.tableHeaderView = nil
         } else {
@@ -141,10 +141,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             updateTableHeaderHeight()
         }
     }
-
+    
     private func updateTableHeaderHeight() {
         guard let header = tableView.tableHeaderView else { return }
-
+        
         // Use the simple standard way for table header resizing
         let width = tableView.bounds.width
         let size = header.systemLayoutSizeFitting(
@@ -152,16 +152,16 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             withHorizontalFittingPriority: .required,
             verticalFittingPriority: .fittingSizeLevel
         )
-
+        
         if header.frame.height != size.height {
             header.frame.size.height = size.height
             tableView.tableHeaderView = header
         }
     }
-
+    
     func configure() {
         models.removeAll()
-
+        
         // 1. Establishment
         var establishmentOptions = [SettingsOptionType]()
         establishmentOptions.append(
@@ -177,7 +177,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             )
         )
         models.append(Section(title: R.string.global.settingsSectionEstablishment(), footer: nil, option: establishmentOptions))
-
+        
         // 2. Menu & Inventory
         let menuOptions: [SettingsOptionType] = [
             .staticCell(
@@ -213,7 +213,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 title: R.string.global.settingsSectionMenuInventory(), footer: nil,
                 option: menuOptions)
         )
-
+        
         // 3. Orders
         let currentMode = SettingsManager.shared.loadOrderEntryMode()
         let orderModeTitle: String
@@ -223,7 +223,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         case .openTab:
             orderModeTitle = R.string.global.orderModeOpenTab()
         }
-
+        
         let orderOptions: [SettingsOptionType] = [
             .dataCell(
                 model: SettingsDataOption(
@@ -242,6 +242,19 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         }
                     }
                 }),
+            .switchCell(
+                model: SettingsSwitchOption(
+                    title: NSLocalizedString(
+                        "settings_chooseCategoryFirst",
+                        tableName: "Global",
+                        comment: ""
+                    ),
+                    icon: UIImage(systemName: "square.grid.2x2"),
+                    iconBackgroundColor: .systemIndigo,
+                    isOn: SettingsManager.shared.loadChooseCategoryFirstProductSelection()
+                ) { isOn in
+                    SettingsManager.shared.saveChooseCategoryFirstProductSelection(isOn)
+                }),
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.receiptTypes(),
@@ -258,7 +271,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 footer: NSLocalizedString("typeDescription", tableName: "Global", comment: ""),
                 option: orderOptions)
         )
-
+        
         // 4. Appearance
         let appearanceOptions: [SettingsOptionType] = [
             .dataCell(
@@ -281,7 +294,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 title: R.string.global.settingsSectionAppearance(), footer: nil,
                 option: appearanceOptions)
         )
-
+        
         // 5. App Info
         var appInfoOptions: [SettingsOptionType] = [
             .staticCell(
@@ -338,7 +351,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.showDeleteAccountConfirmation()
                 }),
         ]
-
+        
         if DemoDataManager.shared.isDemoDataPresent {
             appInfoOptions.append(
                 .staticCell(
@@ -352,7 +365,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 )
             )
         }
-
+        
         appInfoOptions.append(
             .staticCell(
                 model: SettingsStaticOption(
@@ -364,55 +377,55 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             )
         )
-
+        
         models.append(
             Section(
                 title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions
             )
         )
-
-        #if DEBUG
-            let devOptions: [SettingsOptionType] = [
-                .staticCell(
-                    model: SettingsStaticOption(
+        
+#if DEBUG
+        let devOptions: [SettingsOptionType] = [
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.seedTestData(),
+                    icon: UIImage(systemName: SystemImages.gearshape),
+                    iconBackgroundColor: .systemPurple
+                ) {
+                    let alert = UIAlertController(
                         title: R.string.global.seedTestData(),
-                        icon: UIImage(systemName: SystemImages.gearshape),
-                        iconBackgroundColor: .systemPurple
-                    ) {
-                        let alert = UIAlertController(
-                            title: R.string.global.seedTestData(),
-                            message: R.string.global.enterNumberOfDays(),
-                            preferredStyle: .alert
-                        )
-                        alert.addTextField { tf in
-                            tf.keyboardType = .numberPad
-                            tf.text = "14"
-                        }
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
-                                _ in
-                                let daysText = alert.textFields?.first?.text ?? "14"
-                                let days = Int(daysText) ?? 14
-                                SVProgressHUD.show(withStatus: R.string.global.seedingData())
-                                Task {
-                                    await DomainDatabaseService.shared.seedTestData(forDays: days)
-                                    await MainActor.run {
-                                        SVProgressHUD.dismiss()
-                                        SVProgressHUD.showSuccess(withStatus: "Done")
-                                        self.tableView.reloadData()
-                                    }
+                        message: R.string.global.enterNumberOfDays(),
+                        preferredStyle: .alert
+                    )
+                    alert.addTextField { tf in
+                        tf.keyboardType = .numberPad
+                        tf.text = "14"
+                    }
+                    alert.addAction(
+                        UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+                    alert.addAction(
+                        UIAlertAction(title: R.string.global.seedAction(), style: .default) {
+                            _ in
+                            let daysText = alert.textFields?.first?.text ?? "14"
+                            let days = Int(daysText) ?? 14
+                            SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                            Task {
+                                await DomainDatabaseService.shared.seedTestData(forDays: days)
+                                await MainActor.run {
+                                    SVProgressHUD.dismiss()
+                                    SVProgressHUD.showSuccess(withStatus: "Done")
+                                    self.tableView.reloadData()
                                 }
-                            })
-                        self.present(alert, animated: true)
-                    })
-            ]
-
-            models.append(
-                Section(title: R.string.global.developer(), footer: nil, option: devOptions))
-        #endif
-
+                            }
+                        })
+                    self.present(alert, animated: true)
+                })
+        ]
+        
+        models.append(
+            Section(title: R.string.global.developer(), footer: nil, option: devOptions))
+#endif
+        
         // Add Logout button at the end
         let logout = SettingsOptionType.staticCell(
             model: SettingsStaticOption(
@@ -425,28 +438,28 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         )
         models.append(Section(title: R.string.global.account(), footer: nil, option: [logout]))
     }
-
+    
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
         return section.title
     }
-
+    
     func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         let section = models[section]
         return section.footer
     }
-
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return models.count
     }
-
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return models[section].option.count
     }
-
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let model = models[indexPath.section].option[indexPath.row]
-
+        
         switch model.self {
         case .staticCell(let model):
             guard
@@ -485,15 +498,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             return cell
         }
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let type = models[indexPath.section].option[indexPath.row]
-
+        
         switch type.self {
         case .staticCell(let model):
             model.handler()
@@ -504,7 +517,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             model.handler(cell.dataLabel)
         }
     }
-
+    
     func tableView(
         _ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int
     ) {
@@ -513,28 +526,28 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         header.textLabel?.textColor = UIColor.Main.text
         if #available(iOS 11.0, *) { header.textLabel?.adjustsFontForContentSizeCategory = true }
     }
-
+    
     func switchToDarkTheme(isOn: Bool) {
         logger.debug("Tap to switchDarkTheme isOn: \(isOn)")
     }
-
+    
     func updateInterfaceForNewTheme() {
         // Update the UI after changing the theme
         configure()
         tableView.reloadData()
         self.restartApp()
     }
-
+    
     private func restartApp() {
         guard let window = UIApplication.shared.activeKeyWindow else {
             return
         }
-
+        
         // Ensure the bundle is updated for the new language
         UserDefaults.standard.synchronize()
-
+        
         let rootViewController = MainTabBarController()
-
+        
         // Use animation for a ‘restart’
         UIView.transition(
             with: window, duration: 0.5, options: .transitionCrossDissolve,
@@ -542,20 +555,20 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 window.rootViewController = rootViewController
             })
     }
-
+    
     private func handleUserLogOut(shouldReload: Bool = true, completion: (() -> Void)? = nil) {
         UserSession.logOut()
-
+        
         DispatchQueue.main.async {
             let signInController = SignInController()
             let navigationController = UINavigationController(rootViewController: signInController)
             navigationController.setNavigationBarHidden(true, animated: false)
             SceneDelegate.shared.set(root: navigationController)
-
+            
             completion?()
         }
     }
-
+    
     func authenticateUser(completion: @escaping (Bool) -> Void) {
         if Auth.auth().currentUser == nil {
             // User is not authenticated, present the sign-in screen
@@ -581,13 +594,13 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             completion(true)
         }
     }
-
+    
     private func showErrorAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
         present(alert, animated: true)
     }
-
+    
     // MARK: - Feedback Email
     private func presentFeedbackEmail() {
         guard MFMailComposeViewController.canSendMail() else {
@@ -597,31 +610,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             )
             return
         }
-
+        
         let mailComposer = MFMailComposeViewController()
         mailComposer.mailComposeDelegate = self
         mailComposer.setToRecipients([supportEmail])
         mailComposer.setSubject(R.string.global.feedbackEmailSubject())
-
+        
         // Get app version, device model, and OS version
         let appVersion =
-            Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
-            ?? DefaultValues.unknownVersion
+        Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
+        ?? DefaultValues.unknownVersion
         let deviceModel = UIDevice.current.localizedModel
         let osVersion = UIDevice.current.systemVersion
-
+        
         // Get user information
         let userId = UserSession.current.userId ?? DefaultValues.unknownUser
         let userEmail = UserSession.current.userEmail ?? DefaultValues.unknownUser
         let userRole = UserSession.current.role?.name ?? DefaultValues.unknownUser
-
+        
         mailComposer.setMessageBody(
             R.string.global.feedbackEmailBody(
                 appVersion, deviceModel, osVersion, userId, userEmail, userRole), isHTML: false)
-
+        
         present(mailComposer, animated: true)
     }
-
+    
     // MARK: - MFMailComposeViewControllerDelegate
     func mailComposeController(
         _ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult,
@@ -643,7 +656,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             }
         }
     }
-
+    
     private func showSuccessAlert() {
         let alert = UIAlertController(
             title: R.string.global.feedbackSuccessTitle(),
@@ -657,7 +670,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ))
         present(alert, animated: true)
     }
-
+    
     private func confirmDeleteDemoData() {
         let alert = UIAlertController(
             title: R.string.global.deleteDemoDataTitle(),
@@ -684,7 +697,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             })
         present(alert, animated: true)
     }
-
+    
     private func confirmDeleteAllData() {
         let alert = UIAlertController(
             title: R.string.global.deleteAllData(),
@@ -712,7 +725,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             })
         present(alert, animated: true)
     }
-
+    
     // MARK: - Safari
     private func openSafari(url: String) {
         guard let url = URL(string: url) else { return }
@@ -720,26 +733,26 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         safariVC.modalPresentationStyle = .pageSheet
         present(safariVC, animated: true)
     }
-
+    
     // MARK: - Legal URLs
     private enum LegalDocType {
         case privacy
         case terms
     }
-
+    
     private func getLegalUrl(type: LegalDocType) -> String {
         // Check if the current language is Ukrainian
         let isUkrainian = Locale.current.languageCode == "uk"
-
+        
         switch type {
         case .privacy:
             return isUkrainian
-                ? "https://leokvit.notion.site/313f9211d4378065b441d8876d169bec?source=copy_link" // TODO: Replace with actual UA link
-                : "https://leokvit.notion.site/Privacy-Policy-313f9211d437808aaf71cd2390e4671d?source=copy_link"
+            ? "https://leokvit.notion.site/313f9211d4378065b441d8876d169bec?source=copy_link" // TODO: Replace with actual UA link
+            : "https://leokvit.notion.site/Privacy-Policy-313f9211d437808aaf71cd2390e4671d?source=copy_link"
         case .terms:
             return isUkrainian
-                ? "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link" // TODO: Replace with actual UA link
-                : "https://leokvit.notion.site/Terms-of-Service-313f9211d4378018b630fe6d2bfbbe09?source=copy_link"
+            ? "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link" // TODO: Replace with actual UA link
+            : "https://leokvit.notion.site/Terms-of-Service-313f9211d4378018b630fe6d2bfbbe09?source=copy_link"
         }
     }
 }
@@ -748,7 +761,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 extension SettingListViewController {
     func setConstraints() {
         view.addSubview(tableView)
-
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(
                 equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 0),
@@ -765,7 +778,7 @@ extension SettingListViewController: SubscriptionBannerViewDelegate {
         let controller = SubscriptionController.makeDefault()
         navigationController?.pushViewController(controller, animated: true)
     }
-
+    
     func didTapPurchase(product: SKProduct) {
         SVProgressHUD.show(withStatus: R.string.global.loading())
         IAPManager.shared.purchaseProduct(product) { [weak self] success, error in

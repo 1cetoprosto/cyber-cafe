@@ -638,6 +638,18 @@
 		F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */; };
 		F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DE27F30F0700BB2D93 /* ProductListItemViewModel.swift */; };
+		F3F2036B2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */; };
+		F3F2036C2FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */; };
+		F3F2036D2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */; };
+		F3F2036E2FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */; };
+		F3F2036F2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */; };
+		F3F203702FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */; };
+		F3F203732FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */; };
+		F3F203742FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */; };
+		F3F203752FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */; };
+		F3F203762FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */; };
+		F3F203772FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */; };
+		F3F203782FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */; };
 		F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
 		F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
 		F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
@@ -925,6 +937,10 @@
 		F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3EB27DE27F30F0700BB2D93 /* ProductListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemViewModel.swift; sourceTree = "<group>"; };
+		F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCategoryFirstPickerViewController.swift; sourceTree = "<group>"; };
+		F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCategoryFirstProductsViewController.swift; sourceTree = "<group>"; };
+		F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPickerCategoryGridCell.swift; sourceTree = "<group>"; };
+		F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPickerProductTileCell.swift; sourceTree = "<group>"; };
 		F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionType.swift; sourceTree = "<group>"; };
 		F3F6A6042C2FEB9A000961C8 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		F3F6A6082C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPReceiptAdapterProtocol.swift; sourceTree = "<group>"; };
@@ -1595,6 +1611,8 @@
 			isa = PBXGroup;
 			children = (
 				F34BC9B02F62F4B8000476B5 /* OrderReceiptPadViewController.swift */,
+				F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */,
+				F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */,
 				F34BC9B12F62F4B8000476B5 /* OrderSplitContainerViewController.swift */,
 				F35E91B22F49DB9B0050EB4A /* OrderProductPickerViewController.swift */,
 				F3821C6227E9FC62006D40FC /* Cells */,
@@ -1617,6 +1635,8 @@
 			isa = PBXGroup;
 			children = (
 				F316A300273901410083E830 /* OrderTableViewCell.swift */,
+				F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */,
+				F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */,
 				F34BC9B82F62F4D3000476B5 /* CategoryCell.swift */,
 				F34BC9B92F62F4D3000476B5 /* ProductGridCell.swift */,
 				F35E91A12F49C20D0050EB4A /* OrderCollectionViewCell.swift */,
@@ -2810,6 +2830,8 @@
 				F3E357F72BEFF2AB005050CB /* OrderModel.swift in Sources */,
 				F34BC9B62F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
 				F34BC9B72F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
+				F3F203772FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,
+				F3F203782FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */,
 				F3410E6D2BDD24710007157B /* UIColor.swift in Sources */,
 				F3410E6B2BDD23E60007157B /* Constants.swift in Sources */,
 				F385B40A2C1D78BF00973CAA /* PersonListModelProtocol.swift in Sources */,
@@ -2930,6 +2952,8 @@
 				9327316B3511B41DCA377F2A /* FIRInventoryAdjustmentModel.swift in Sources */,
 				06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */,
 				5A84FE6B34B56E0E69C8E6E6 /* DashboardPeriod.swift in Sources */,
+				F3F2036B2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */,
+				F3F2036C2FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */,
 				70E997F9A553EC01784428B5 /* OpexAggregationService.swift in Sources */,
 				D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */,
 				616D0BCC9656EF676C7EDBB2 /* FinanceAggregationService.swift in Sources */,
@@ -3013,6 +3037,8 @@
 				F3B339D42C0B22FE0073F19A /* UIColor.swift in Sources */,
 				F34BC9B22F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
 				F34BC9B32F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
+				F3F203732FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,
+				F3F203742FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */,
 				F3B339D52C0B22FE0073F19A /* Constants.swift in Sources */,
 				F3B339D62C0B22FE0073F19A /* CostListViewModelType.swift in Sources */,
 				F3B339D72C0B22FE0073F19A /* SVProgressHUD+Extension.swift in Sources */,
@@ -3133,6 +3159,8 @@
 				58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */,
 				772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */,
 				C121AFC3DBBF2DAB688C832F /* DashboardPeriod.swift in Sources */,
+				F3F2036D2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */,
+				F3F2036E2FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */,
 				F3DA99BDDC0433656561976A /* OpexAggregationService.swift in Sources */,
 				8326DB2EA2AF252E03E3D6FB /* IncomeAggregationService.swift in Sources */,
 				C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */,
@@ -3216,6 +3244,8 @@
 				F3B33A732C0B23450073F19A /* UIColor.swift in Sources */,
 				F34BC9B42F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
 				F34BC9B52F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
+				F3F203752FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,
+				F3F203762FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */,
 				F3B33A742C0B23450073F19A /* Constants.swift in Sources */,
 				F3B33A752C0B23450073F19A /* CostListViewModelType.swift in Sources */,
 				F3B33A762C0B23450073F19A /* SVProgressHUD+Extension.swift in Sources */,
@@ -3336,6 +3366,8 @@
 				41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */,
 				4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */,
 				272F2C8EF8403B652C8D1B8B /* DashboardPeriod.swift in Sources */,
+				F3F2036F2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */,
+				F3F203702FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */,
 				1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */,
 				4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */,
 				77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */,
@@ -3516,7 +3548,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3533,7 +3565,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3550,7 +3582,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3566,7 +3598,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3583,7 +3615,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3597,7 +3629,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3614,7 +3646,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3627,7 +3659,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3644,7 +3676,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -3658,7 +3690,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3675,7 +3707,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 44;
+				CURRENT_PROJECT_VERSION = 47;
 				DEVELOPMENT_TEAM = Q9843C43NA;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GENERATE_INFOPLIST_FILE = YES;
@@ -3688,7 +3720,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
