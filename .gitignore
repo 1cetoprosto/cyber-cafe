@@ -108,3 +108,5 @@ iOSInjectionProject/
 
 # Environment Variables
 .env
+.env.secret
+fastlane/.env.secret
