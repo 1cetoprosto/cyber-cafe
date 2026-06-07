@@ -21,12 +21,28 @@ platform :ios do
     ensure_git_status_clean
 
     # 2. Increment build number for ALL targets
-    # (Requires agvtool enabled in Xcode project settings)
-    increment_build_number(xcodeproj: "TrackMyCafe.xcodeproj")
+    plist_paths = [
+      "TrackMyCafe/Configuration/TrackMyCafe Prod/Info.plist",
+      "TrackMyCafe/Configuration/TrackMyCafe Beta/Info.plist",
+      "TrackMyCafe/Configuration/TrackMyCafe Dev/Info.plist"
+    ]
+
+    build_numbers = plist_paths.map do |path|
+      get_info_plist_value(key: "CFBundleVersion", path: path).to_i
+    end
+
+    next_build_number = (build_numbers.max + 1).to_s
+
+    plist_paths.each do |path|
+      set_info_plist_value(
+        path: path,
+        key: "CFBundleVersion",
+        value: next_build_number
+      )
+    end
 
     # 3. Commit the version bump (so the repo is clean for next run if build fails)
     commit_version_bump(
-      xcodeproj: "TrackMyCafe.xcodeproj",
       message: "chore: Bump build number [skip ci]", # [skip ci] prevents loop if you have CI
       force: true
     )
