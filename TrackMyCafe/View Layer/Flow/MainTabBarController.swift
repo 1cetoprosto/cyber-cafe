@@ -9,7 +9,9 @@ import FirebaseAuth
 import SVProgressHUD
 import UIKit
 
-class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINavigationControllerDelegate {
+class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
+    UINavigationControllerDelegate
+{
 
     private var hasAlreadyCheckedSession = false
     private var demoDataButtonSafeAreaBottomConstraint: NSLayoutConstraint?
@@ -34,16 +36,6 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
         setupNotifications()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        if demoDataButtonTabBarTopConstraint?.isActive == true { return }
-        guard tabBar.superview != nil else { return }
-
-        demoDataButtonSafeAreaBottomConstraint?.isActive = false
-        demoDataButtonTabBarTopConstraint?.isActive = true
-    }
-
     private func setupDemoDataButton() {
         view.addSubview(demoDataButton)
         demoDataButton.centerXToSuperview()
@@ -52,18 +44,25 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
             equalTo: view.safeAreaLayoutGuide.bottomAnchor,
             constant: -24
         )
+        demoDataButtonSafeAreaBottomConstraint?.priority = .defaultHigh
         demoDataButtonSafeAreaBottomConstraint?.isActive = true
 
         demoDataButtonTabBarTopConstraint = demoDataButton.bottomAnchor.constraint(
-            equalTo: tabBar.topAnchor,
+            lessThanOrEqualTo: tabBar.topAnchor,
             constant: -12
         )
+        demoDataButtonTabBarTopConstraint?.priority = .required
+        demoDataButtonTabBarTopConstraint?.isActive = true
     }
 
     private func setupNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: .demoDataDidDelete, object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(updateDemoDataButtonVisibility), name: .demoDataDidDelete,
+            object: nil)
         // Listen for data updates (e.g. after seeding)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateDemoDataButtonVisibility), name: NSNotification.Name("DataDidUpdate"), object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(updateDemoDataButtonVisibility),
+            name: NSNotification.Name("DataDidUpdate"), object: nil)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -98,18 +97,19 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
             preferredStyle: .alert
         )
         alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
-            SVProgressHUD.show()
-            DemoDataManager.shared.deleteDemoData { success in
-                SVProgressHUD.dismiss()
-                if success {
-                    SVProgressHUD.showSuccess(withStatus: R.string.global.success())
-                    // Button visibility will be updated via notification
-                } else {
-                    SVProgressHUD.showError(withStatus: R.string.global.error())
+        alert.addAction(
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+                SVProgressHUD.show()
+                DemoDataManager.shared.deleteDemoData { success in
+                    SVProgressHUD.dismiss()
+                    if success {
+                        SVProgressHUD.showSuccess(withStatus: R.string.global.success())
+                        // Button visibility will be updated via notification
+                    } else {
+                        SVProgressHUD.showError(withStatus: R.string.global.error())
+                    }
                 }
-            }
-        })
+            })
         present(alert, animated: true)
     }
 
@@ -197,33 +197,33 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
         let stacked = appearance.stackedLayoutAppearance
         stacked.selected.iconColor = selectedColor
         stacked.selected.titleTextAttributes = [
-            .foregroundColor: selectedColor,
+            .foregroundColor: selectedColor
         ]
         stacked.normal.iconColor = unselectedColor
         stacked.normal.titleTextAttributes = [
-            .foregroundColor: unselectedColor,
+            .foregroundColor: unselectedColor
         ]
 
         // Apply to inline layout
         let inline = appearance.inlineLayoutAppearance
         inline.selected.iconColor = selectedColor
         inline.selected.titleTextAttributes = [
-            .foregroundColor: selectedColor,
+            .foregroundColor: selectedColor
         ]
         inline.normal.iconColor = unselectedColor
         inline.normal.titleTextAttributes = [
-            .foregroundColor: unselectedColor,
+            .foregroundColor: unselectedColor
         ]
 
         // Apply to compact inline layout
         let compact = appearance.compactInlineLayoutAppearance
         compact.selected.iconColor = selectedColor
         compact.selected.titleTextAttributes = [
-            .foregroundColor: selectedColor,
+            .foregroundColor: selectedColor
         ]
         compact.normal.iconColor = unselectedColor
         compact.normal.titleTextAttributes = [
-            .foregroundColor: unselectedColor,
+            .foregroundColor: unselectedColor
         ]
 
         tabBar.standardAppearance = appearance
@@ -337,11 +337,16 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate, UINa
 }
 
 extension MainTabBarController {
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+    func tabBarController(
+        _ tabBarController: UITabBarController, didSelect viewController: UIViewController
+    ) {
         updateDemoDataButtonVisibility()
     }
 
-    func navigationController(_ navigationController: UINavigationController, didShow viewController: UIViewController, animated: Bool) {
+    func navigationController(
+        _ navigationController: UINavigationController, didShow viewController: UIViewController,
+        animated: Bool
+    ) {
         updateDemoDataButtonVisibility()
     }
 }
