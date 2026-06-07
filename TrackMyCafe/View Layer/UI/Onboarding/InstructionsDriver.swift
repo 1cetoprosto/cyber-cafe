@@ -3,7 +3,8 @@ import UIKit
 #if canImport(Instructions)
     import Instructions
 
-    final class InstructionsDriver: NSObject, Loggable, CoachMarksDriver, CoachMarksControllerDataSource,
+    final class InstructionsDriver: NSObject, Loggable, CoachMarksDriver,
+        CoachMarksControllerDataSource,
         CoachMarksControllerDelegate
     {
         private let controller = CoachMarksController()
@@ -12,7 +13,8 @@ import UIKit
         private var completion: (() -> Void)?
 
         func present(
-            on host: UIViewController, steps: [OnboardingStepModel], completion: @escaping () -> Void
+            on host: UIViewController, steps: [OnboardingStepModel],
+            completion: @escaping () -> Void
         ) {
             self.host = host
             let filtered = steps.sorted { $0.order < $1.order }.filter {
@@ -64,8 +66,10 @@ import UIKit
                 return coachMarksController.helper.makeCoachMark()
             }
 
-            let fallbackFrame = CGRect(x: window.bounds.midX, y: window.bounds.midY, width: 1, height: 1)
-            var coachMark = coachMarksController.helper.makeCoachMark(forFrame: fallbackFrame, in: window)
+            let fallbackFrame = CGRect(
+                x: window.bounds.midX, y: window.bounds.midY, width: 1, height: 1)
+            var coachMark = coachMarksController.helper.makeCoachMark(
+                forFrame: fallbackFrame, in: window)
             coachMark.gapBetweenCoachMarkAndCutoutPath = 8
             coachMark.horizontalMargin = 24
             coachMark.arrowOrientation = .top
@@ -85,7 +89,8 @@ import UIKit
 
             views.bodyView.hintLabel.text = steps[index].title + "\n" + steps[index].message
             views.bodyView.nextLabel.text =
-                (index == steps.count - 1) ? R.string.global.actionDone() : R.string.global.actionNext()
+                (index == steps.count - 1)
+                ? R.string.global.actionDone() : R.string.global.actionNext()
 
             if let body = views.bodyView as? CoachMarkBodyDefaultView {
                 body.hintLabel.textColor = .white
@@ -97,15 +102,21 @@ import UIKit
             let windowWidth = host?.view.window?.bounds.width ?? UIScreen.main.bounds.width
             let maxBodyWidth = max(280, windowWidth - (coachMark.horizontalMargin * 2))
 
-            if !views.bodyView.constraints.contains(where: { $0.identifier == "coachMark.body.minWidth" }) {
-                let constraint = views.bodyView.widthAnchor.constraint(greaterThanOrEqualToConstant: 240)
+            if !views.bodyView.constraints.contains(where: {
+                $0.identifier == "coachMark.body.minWidth"
+            }) {
+                let constraint = views.bodyView.widthAnchor.constraint(
+                    greaterThanOrEqualToConstant: 240)
                 constraint.priority = .required
                 constraint.identifier = "coachMark.body.minWidth"
                 constraint.isActive = true
             }
 
-            if !views.bodyView.constraints.contains(where: { $0.identifier == "coachMark.body.maxWidth" }) {
-                let constraint = views.bodyView.widthAnchor.constraint(lessThanOrEqualToConstant: maxBodyWidth)
+            if !views.bodyView.constraints.contains(where: {
+                $0.identifier == "coachMark.body.maxWidth"
+            }) {
+                let constraint = views.bodyView.widthAnchor.constraint(
+                    lessThanOrEqualToConstant: maxBodyWidth)
                 constraint.priority = .required
                 constraint.identifier = "coachMark.body.maxWidth"
                 constraint.isActive = true
@@ -124,7 +135,8 @@ import UIKit
 
             hint.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
             hint.setContentHuggingPriority(.defaultLow, for: .vertical)
-            views.bodyView.nextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+            views.bodyView.nextLabel.setContentCompressionResistancePriority(
+                .required, for: .vertical)
             views.bodyView.nextLabel.setContentHuggingPriority(.required, for: .vertical)
 
             let windowHeight = host?.view.window?.bounds.height ?? UIScreen.main.bounds.height
@@ -132,14 +144,16 @@ import UIKit
             let minHintHeight: CGFloat = 44
 
             if !hint.constraints.contains(where: { $0.identifier == "coachMark.hint.maxHeight" }) {
-                let constraint = hint.heightAnchor.constraint(lessThanOrEqualToConstant: maxHintHeight)
+                let constraint = hint.heightAnchor.constraint(
+                    lessThanOrEqualToConstant: maxHintHeight)
                 constraint.priority = .required
                 constraint.identifier = "coachMark.hint.maxHeight"
                 constraint.isActive = true
             }
 
             if !hint.constraints.contains(where: { $0.identifier == "coachMark.hint.minHeight" }) {
-                let constraint = hint.heightAnchor.constraint(greaterThanOrEqualToConstant: minHintHeight)
+                let constraint = hint.heightAnchor.constraint(
+                    greaterThanOrEqualToConstant: minHintHeight)
                 constraint.priority = .required
                 constraint.identifier = "coachMark.hint.minHeight"
                 constraint.isActive = true
@@ -197,8 +211,9 @@ import UIKit
                 let indexPath = tableView.indexPath(for: cell)
             {
                 let rectInTable = cell.convert(cell.bounds, to: tableView)
-                let visible = tableView.bounds.inset(by: UIEdgeInsets(
-                    top: padding, left: 0, bottom: padding, right: 0))
+                let visible = tableView.bounds.inset(
+                    by: UIEdgeInsets(
+                        top: padding, left: 0, bottom: padding, right: 0))
                 if visible.contains(rectInTable) {
                     tableView.layoutIfNeeded()
                     return
@@ -217,8 +232,9 @@ import UIKit
                 let indexPath = collectionView.indexPath(for: cell)
             {
                 let rectInCollection = cell.convert(cell.bounds, to: collectionView)
-                let visible = collectionView.bounds.inset(by: UIEdgeInsets(
-                    top: padding, left: 0, bottom: padding, right: 0))
+                let visible = collectionView.bounds.inset(
+                    by: UIEdgeInsets(
+                        top: padding, left: 0, bottom: padding, right: 0))
                 if visible.contains(rectInCollection) {
                     collectionView.layoutIfNeeded()
                     return
@@ -319,7 +335,6 @@ import UIKit
                 for sub in window.subviews {
                     if let found = findView(withAccessibilityIdentifier: key, in: sub) {
                         return found
-                        return found
                     }
                 }
             }
@@ -334,7 +349,9 @@ import UIKit
             return nil
         }
 
-        private func preferredArrowOrientation(for view: UIView, host: UIViewController) -> CoachMarkArrowOrientation {
+        private func preferredArrowOrientation(for view: UIView, host: UIViewController)
+            -> CoachMarkArrowOrientation
+        {
             guard let window = host.view.window else { return .top }
 
             let frameInWindow = view.convert(view.bounds, to: window)
