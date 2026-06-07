@@ -23,7 +23,11 @@ final class InstructionsDriver: NSObject, CoachMarksDriver, CoachMarksController
         self.completion = completion
         controller.dataSource = self
         controller.delegate = self
-        controller.start(in: .currentWindow(of: host))
+        host.view.layoutIfNeeded()
+        DispatchQueue.main.async { [weak self, weak host] in
+            guard let self, let host else { return }
+            self.controller.start(in: .currentWindow(of: host))
+        }
     }
 
     func numberOfCoachMarks(for coachMarksController: CoachMarksController) -> Int {
@@ -37,21 +41,72 @@ final class InstructionsDriver: NSObject, CoachMarksDriver, CoachMarksController
             return coachMarksController.helper.makeCoachMark()
         }
 
-        // Scroll to view if needed BEFORE creating the coach mark
-        // Try to find a parent UIScrollView and scroll to the target view
         var superview = view.superview
         while let sView = superview {
             if let scrollView = sView as? UIScrollView {
-                let frame = view.convert(view.bounds, to: scrollView)
-                let paddedFrame = frame.insetBy(dx: 0, dy: -40)
-                scrollView.scrollRectToVisible(paddedFrame, animated: false)
+                host?.view.layoutIfNeeded()
                 scrollView.layoutIfNeeded()
+
+                let frame = view.convert(view.bounds, to: scrollView)
+                let targetMidY = frame.midY
+                let desiredMidY = scrollView.bounds.height * 0.65
+
+                let inset = scrollView.adjustedContentInset
+                let minOffsetY = -inset.top
+                let contentHeight = scrollView.contentLayoutGuide.layoutFrame.height
+                let maxOffsetY = max(
+                    -inset.top,
+                    contentHeight - scrollView.bounds.height + inset.bottom
+                )
+                let rawOffsetY = scrollView.contentOffset.y + (targetMidY - desiredMidY)
+                let clampedOffsetY = min(max(rawOffsetY, minOffsetY), maxOffsetY)
+                scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: clampedOffsetY), animated: false)
+
+                scrollView.layoutIfNeeded()
+                host?.view.layoutIfNeeded()
+                host?.view.window?.layoutIfNeeded()
+
+                if let window = host?.view.window {
+                    let safeTop = window.safeAreaInsets.top
+                    let safeBottom = window.bounds.height - window.safeAreaInsets.bottom
+                    let frameInWindow = view.convert(view.bounds, to: window)
+                    let margin: CGFloat = 80
+                    var correctedOffsetY = scrollView.contentOffset.y
+
+                    if frameInWindow.minY < safeTop + margin {
+                        correctedOffsetY -= (safeTop + margin - frameInWindow.minY)
+                    } else if frameInWindow.maxY > safeBottom - margin {
+                        correctedOffsetY += (frameInWindow.maxY - (safeBottom - margin))
+                    }
+
+                    let finalOffsetY = min(max(correctedOffsetY, minOffsetY), maxOffsetY)
+                    if abs(finalOffsetY - scrollView.contentOffset.y) > 0.5 {
+                        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: finalOffsetY), animated: false)
+                        scrollView.layoutIfNeeded()
+                        host?.view.layoutIfNeeded()
+                        host?.view.window?.layoutIfNeeded()
+                    }
+                }
                 break
             }
             superview = sView.superview
         }
 
         var coachMark = coachMarksController.helper.makeCoachMark(for: view)
+        if let window = host?.view.window {
+            let frameInWindow = view.convert(view.bounds, to: window)
+            let safeTop = window.safeAreaInsets.top
+            let safeBottom = window.bounds.height - window.safeAreaInsets.bottom
+
+            let availableAbove = frameInWindow.minY - safeTop
+            let availableBelow = safeBottom - frameInWindow.maxY
+
+            coachMark.arrowOrientation = (availableBelow >= 220 || availableBelow >= availableAbove) ? .top : .bottom
+        } else {
+            coachMark.arrowOrientation = .top
+        }
+        coachMark.gapBetweenCoachMarkAndCutoutPath = 8
+        coachMark.horizontalMargin = 24
         return coachMark
     }
 
@@ -62,9 +117,65 @@ final class InstructionsDriver: NSObject, CoachMarksDriver, CoachMarksController
     ) -> (bodyView: UIView & CoachMarkBodyView, arrowView: (UIView & CoachMarkArrowView)?) {
         let views = coachMarksController.helper.makeDefaultCoachViews(
             withArrow: true, arrowOrientation: coachMark.arrowOrientation)
-        views.bodyView.hintLabel.text = steps[index].title + "\n" + steps[index].message
+        
+        let hintText = steps[index].title + "\n" + steps[index].message
+        views.bodyView.hintLabel.text = hintText
         views.bodyView.nextLabel.text =
-        (index == steps.count - 1) ? R.string.global.actionDone() : R.string.global.actionNext()
+            (index == steps.count - 1) ? R.string.global.actionDone() : R.string.global.actionNext()
+
+        let windowWidth = host?.view.window?.bounds.width ?? UIScreen.main.bounds.width
+        let maxBodyWidth = max(280, windowWidth - (coachMark.horizontalMargin * 2))
+        if !views.bodyView.constraints.contains(where: { $0.identifier == "coachMark.body.minWidth" }) {
+            let c = views.bodyView.widthAnchor.constraint(greaterThanOrEqualToConstant: 240)
+            c.priority = .required
+            c.identifier = "coachMark.body.minWidth"
+            c.isActive = true
+        }
+        if !views.bodyView.constraints.contains(where: { $0.identifier == "coachMark.body.maxWidth" }) {
+            let c = views.bodyView.widthAnchor.constraint(lessThanOrEqualToConstant: maxBodyWidth)
+            c.priority = .required
+            c.identifier = "coachMark.body.maxWidth"
+            c.isActive = true
+        }
+        
+        let hint = views.bodyView.hintLabel
+        hint.isScrollEnabled = true
+        hint.isEditable = false
+        hint.isSelectable = false
+        hint.showsVerticalScrollIndicator = false
+        hint.showsHorizontalScrollIndicator = false
+        hint.backgroundColor = .clear
+        hint.textColor = UIColor.Main.text
+        hint.font = Typography.body
+        hint.textContainer.maximumNumberOfLines = 0
+        hint.textContainer.lineBreakMode = .byWordWrapping
+        
+        hint.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
+        hint.setContentHuggingPriority(.defaultLow, for: .vertical)
+        views.bodyView.nextLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        views.bodyView.nextLabel.setContentHuggingPriority(.required, for: .vertical)
+        
+        let windowHeight = host?.view.window?.bounds.height ?? UIScreen.main.bounds.height
+        let maxHintHeight = min(260, windowHeight * 0.30)
+        let minHintHeight: CGFloat = 44
+        
+        if !hint.constraints.contains(where: { $0.identifier == "coachMark.hint.maxHeight" }) {
+            let c = hint.heightAnchor.constraint(lessThanOrEqualToConstant: maxHintHeight)
+            c.priority = .required
+            c.identifier = "coachMark.hint.maxHeight"
+            c.isActive = true
+        }
+        
+        if !hint.constraints.contains(where: { $0.identifier == "coachMark.hint.minHeight" }) {
+            let c = hint.heightAnchor.constraint(greaterThanOrEqualToConstant: minHintHeight)
+            c.priority = .required
+            c.identifier = "coachMark.hint.minHeight"
+            c.isActive = true
+        }
+        
+        views.bodyView.setNeedsLayout()
+        views.bodyView.layoutIfNeeded()
+        
         return (views.bodyView, views.arrowView)
     }
 
@@ -78,31 +189,7 @@ final class InstructionsDriver: NSObject, CoachMarksDriver, CoachMarksController
         _ coachMarksController: CoachMarksController,
         willShow coachMark: CoachMark,
         at index: Int
-    ) {
-        print("InstructionsDriver: willShow step \(index)")
-        guard let view = resolveView(for: steps[index].targetKey) else {
-            print("InstructionsDriver: View not found for key \(steps[index].targetKey)")
-            return
-        }
-
-        // Try to find a parent UIScrollView and scroll to the target view
-        var superview = view.superview
-        while let sView = superview {
-            if let scrollView = sView as? UIScrollView {
-                print("InstructionsDriver: Found scroll view for \(steps[index].targetKey)")
-                let frame = view.convert(view.bounds, to: scrollView)
-                // Add vertical padding to make sure it's not stick to edges
-                let paddedFrame = frame.insetBy(dx: 0, dy: -40)
-
-                // Use animated: false to ensure immediate update before coach mark is drawn
-                scrollView.scrollRectToVisible(paddedFrame, animated: false)
-                scrollView.layoutIfNeeded()
-                print("InstructionsDriver: Scrolled to \(paddedFrame)")
-                break
-            }
-            superview = sView.superview
-        }
-    }
+    ) { }
 
     private func resolveView(for key: String) -> UIView? {
         // 1) Search in controller's root view hierarchy
