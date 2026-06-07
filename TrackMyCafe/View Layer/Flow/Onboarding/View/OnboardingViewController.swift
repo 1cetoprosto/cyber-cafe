@@ -88,7 +88,9 @@ final class OnboardingViewController: UIViewController {
         pageControl.centerXToSuperview()
         pageControl.bottomToTop(of: nextButton, offset: -20)
 
-        nextButton.edgesToSuperview(excluding: .top, insets: .bottom(50) + .left(24) + .right(24))
+        nextButton.leftToSuperview(offset: 24)
+        nextButton.rightToSuperview(offset: -24)
+        nextButton.bottomToSuperview(offset: -20, usingSafeArea: true)
         nextButton.height(50)
     }
 
