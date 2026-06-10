@@ -650,6 +650,15 @@
 		F3F203762FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */; };
 		F3F203772FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */; };
 		F3F203782FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */; };
+		F3F2053E2FD83115007249FB /* ImageStoragePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */; };
+		F3F2053F2FD83115007249FB /* ImageStoragePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */; };
+		F3F205402FD83115007249FB /* ImageStoragePaths.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */; };
+		F3F205422FD8313B007249FB /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205412FD8313B007249FB /* ImageStorageService.swift */; };
+		F3F205432FD8313B007249FB /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205412FD8313B007249FB /* ImageStorageService.swift */; };
+		F3F205442FD8313B007249FB /* ImageStorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205412FD8313B007249FB /* ImageStorageService.swift */; };
+		F3F205532FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */; };
+		F3F205542FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */; };
+		F3F205552FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */; };
 		F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
 		F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
 		F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */; };
@@ -941,6 +950,9 @@
 		F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCategoryFirstProductsViewController.swift; sourceTree = "<group>"; };
 		F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPickerCategoryGridCell.swift; sourceTree = "<group>"; };
 		F3F203722FD521B5007249FB /* OrderPickerProductTileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPickerProductTileCell.swift; sourceTree = "<group>"; };
+		F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStoragePaths.swift; sourceTree = "<group>"; };
+		F3F205412FD8313B007249FB /* ImageStorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorageService.swift; sourceTree = "<group>"; };
+		F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductCategoryDataService.swift; sourceTree = "<group>"; };
 		F3F6A6002C2FEB0A000961C8 /* SubscriptionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionType.swift; sourceTree = "<group>"; };
 		F3F6A6042C2FEB9A000961C8 /* IAPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPManager.swift; sourceTree = "<group>"; };
 		F3F6A6082C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IAPReceiptAdapterProtocol.swift; sourceTree = "<group>"; };
@@ -960,6 +972,7 @@
 		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
 		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
 		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F3F205482FD8317B007249FB /* Utilities */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utilities; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1477,6 +1490,7 @@
 		F3410E692BDD23BB0007157B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */,
 				F3F6A5FE2C2FEAE0000961C8 /* Subscription */,
 				F3410E6A2BDD23E60007157B /* Constants.swift */,
 				F3410EA32BDD3C8E0007157B /* UserSession.swift */,
@@ -1951,6 +1965,7 @@
 		F39A52F327311FDD00C8F2D3 /* TrackMyCafe */ = {
 			isa = PBXGroup;
 			children = (
+				F3F205482FD8317B007249FB /* Utilities */,
 				F3B33AD42C0B28820073F19A /* Configuration */,
 				F38707DD2BE6207F00B6F313 /* Entitlements */,
 				F39A5331273250C300C8F2D3 /* Application */,
@@ -1997,6 +2012,7 @@
 		F39B5D2D28472E7A000F7D43 /* FIR */ = {
 			isa = PBXGroup;
 			children = (
+				F3F205412FD8313B007249FB /* ImageStorageService.swift */,
 				F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */,
 				F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */,
 			);
@@ -2157,6 +2173,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */,
 				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
 				F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */,
 				F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */,
@@ -2275,6 +2292,7 @@
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
+				F3F205482FD8317B007249FB /* Utilities */,
 			);
 			name = "TrackMyCafe Prod";
 			packageProductDependencies = (
@@ -2323,6 +2341,7 @@
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
+				F3F205482FD8317B007249FB /* Utilities */,
 			);
 			name = "TrackMyCafe Beta";
 			packageProductDependencies = (
@@ -2371,6 +2390,7 @@
 				F35E91AE2F49D7DA0050EB4A /* ProductCategories */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3B7A8342EE220F0007BF216 /* Onboarding */,
+				F3F205482FD8317B007249FB /* Utilities */,
 			);
 			name = "TrackMyCafe Dev";
 			packageProductDependencies = (
@@ -2872,6 +2892,7 @@
 				F3A640B82C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3410EB02BDD40410007157B /* Date+Extension.swift in Sources */,
 				F32B52B92F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
+				F3F205432FD8313B007249FB /* ImageStorageService.swift in Sources */,
 				F3988ADE27EB11EB00215976 /* CostListItemViewModelType.swift in Sources */,
 				F39A53352732525900C8F2D3 /* OrderListViewController.swift in Sources */,
 				F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -2918,11 +2939,13 @@
 				F3DD2197277AEF76001570D3 /* RealmProductsPriceModel.swift in Sources */,
 				F31BD82B284DF90200B8FD3B /* FIRProductsPriceModel.swift in Sources */,
 				F385B4152C1D863D00973CAA /* BaseReusableView.swift in Sources */,
+				F3F2053E2FD83115007249FB /* ImageStoragePaths.swift in Sources */,
 				F3821C8227EAEB97006D40FC /* OrderListItemViewModelType.swift in Sources */,
 				F385B40C2C1D7DDD00973CAA /* UIKitFactory.swift in Sources */,
 				F3A640BC2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5162C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F316A2FB273808100083E830 /* UIFont+Extension.swift in Sources */,
+				F3F205532FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */,
 				6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */,
 				2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */,
@@ -3079,6 +3102,7 @@
 				F3A640B92C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F32B52B82F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
+				F3F205442FD8313B007249FB /* ImageStorageService.swift in Sources */,
 				F39D78532C2034DD0003B556 /* Technician.swift in Sources */,
 				F3B339EF2C0B22FE0073F19A /* RememberMeButton.swift in Sources */,
 				F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -3125,11 +3149,13 @@
 				F3B33A062C0B22FE0073F19A /* SettingListViewController.swift in Sources */,
 				F3B33A072C0B22FE0073F19A /* RealmProductsPriceModel.swift in Sources */,
 				F3B33A082C0B22FE0073F19A /* FIRProductsPriceModel.swift in Sources */,
+				F3F2053F2FD83115007249FB /* ImageStoragePaths.swift in Sources */,
 				F3B33A092C0B22FE0073F19A /* OrderListItemViewModelType.swift in Sources */,
 				F3B33A0A2C0B22FE0073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BD2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5172C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F3F6A6272C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
+				F3F205542FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */,
 				6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */,
 				97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */,
@@ -3286,6 +3312,7 @@
 				F3A640BA2C340D21006BCACD /* SubscriptionReuseView.swift in Sources */,
 				F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F32B52B72F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
+				F3F205422FD8313B007249FB /* ImageStorageService.swift in Sources */,
 				F39D78542C2034DE0003B556 /* Technician.swift in Sources */,
 				F3B33A8E2C0B23450073F19A /* RememberMeButton.swift in Sources */,
 				F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
@@ -3332,11 +3359,13 @@
 				F3B33AA52C0B23450073F19A /* SettingListViewController.swift in Sources */,
 				F3B33AA62C0B23450073F19A /* RealmProductsPriceModel.swift in Sources */,
 				F3B33AA72C0B23450073F19A /* FIRProductsPriceModel.swift in Sources */,
+				F3F205402FD83115007249FB /* ImageStoragePaths.swift in Sources */,
 				F3B33AA82C0B23450073F19A /* OrderListItemViewModelType.swift in Sources */,
 				F3B33AA92C0B23450073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BE2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5182C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
 				F3F6A6282C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
+				F3F205552FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */,
 				0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */,
 				DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */,
