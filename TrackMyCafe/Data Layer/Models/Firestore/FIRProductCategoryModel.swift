@@ -5,11 +5,12 @@ struct FIRProductCategoryModel: Codable {
     @DocumentID var id: String?
     var name: String = ""
     var sortOrder: Int = 0
+    var imagePath: String?
     
     init(dataModel: ProductCategoryModel) {
         self.id = dataModel.id
         self.name = dataModel.name
         self.sortOrder = dataModel.sortOrder
+        self.imagePath = dataModel.imagePath
     }
 }
-

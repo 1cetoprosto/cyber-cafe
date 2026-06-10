@@ -369,6 +369,7 @@
 "enterQuantityPerUnit" = "Введіть кількість на одиницю";
 "pleaseEnterProductName" = "Будь ласка, введіть назву товару";
 "failedToSaveProductPrice" = "Не вдалося зберегти ціну товару";
+"failedToSaveProductCategory" = "Не вдалося зберегти категорію товарів";
 
 "ingredientAlreadyExists" = "Інгредієнт вже існує";
 "overwriteIngredientMessage" = "Цей інгредієнт вже є в рецепті. Ви хочете перезаписати його?";
