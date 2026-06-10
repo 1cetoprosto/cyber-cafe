@@ -20,7 +20,8 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     private var collectionBottomConstraint: Constraint?
 
     private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        let collectionView = UICollectionView(
+            frame: .zero, collectionViewLayout: UICollectionViewLayout())
         collectionView.backgroundColor = UIColor.Main.background
         collectionView.alwaysBounceVertical = true
         return collectionView
@@ -163,7 +164,8 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 
         returnToOrderButton.leftToSuperview(offset: UIConstants.standardPadding)
         returnToOrderButton.rightToSuperview(offset: -UIConstants.standardPadding)
-        returnToOrderButton.bottomToSuperview(offset: -UIConstants.standardPadding, usingSafeArea: true)
+        returnToOrderButton.bottomToSuperview(
+            offset: -UIConstants.standardPadding, usingSafeArea: true)
         returnToOrderButton.height(UIConstants.buttonHeight)
         returnToOrderButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
     }
@@ -224,13 +226,13 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                heightDimension: .estimated(220)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(168)
+                heightDimension: .estimated(220)
             )
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
@@ -269,8 +271,12 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     }
 }
 
-extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
+    UICollectionViewDelegate
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+        -> Int
+    {
         filteredProducts.count
     }
 
@@ -291,7 +297,8 @@ extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource, 
         cell.configure(
             title: product.name,
             price: product.price.currency,
-            quantity: qty
+            quantity: qty,
+            imagePath: product.imagePath
         )
 
         cell.onMinusTapped = { [weak self] in

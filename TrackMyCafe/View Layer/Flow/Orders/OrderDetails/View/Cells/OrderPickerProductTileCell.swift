@@ -3,6 +3,9 @@ import UIKit
 
 final class OrderPickerProductTileCell: UICollectionViewCell {
     static let reuseIdentifier = "OrderPickerProductTileCell"
+    private enum Layout {
+        static let imageAspectRatio: CGFloat = 2.0 / 3.0
+    }
 
     var onMinusTapped: (() -> Void)?
 
@@ -14,11 +17,18 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         return view
     }()
 
+    private let photoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
     private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = UIColor.TabBar.tint
-        imageView.image = UIImage(systemName: "cup.and.saucer.fill")
+        imageView.image = AppImagePlaceholder.product()
         return imageView
     }()
 
@@ -64,6 +74,15 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         return label
     }()
 
+    private lazy var textStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [titleLabel, priceLabel])
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 4
+        return stack
+    }()
+
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -73,16 +92,18 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         contentView.layer.masksToBounds = true
 
         contentView.addSubview(imageContainer)
+        imageContainer.addSubview(photoImageView)
         imageContainer.addSubview(imageView)
         imageContainer.addSubview(quantityLabel)
         contentView.addSubview(minusButton)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(priceLabel)
+        contentView.addSubview(textStackView)
 
         imageContainer.topToSuperview(offset: 12)
         imageContainer.leftToSuperview(offset: 12)
         imageContainer.rightToSuperview(offset: -12)
-        imageContainer.height(64)
+        imageContainer.heightToWidth(of: imageContainer, multiplier: Layout.imageAspectRatio)
+
+        photoImageView.edgesToSuperview()
 
         imageView.centerInSuperview()
         imageView.size(CGSize(width: 28, height: 28))
@@ -95,14 +116,10 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         minusButton.centerYToSuperview()
         minusButton.rightToSuperview(offset: -10)
 
-        titleLabel.topToBottom(of: imageContainer, offset: 10)
-        titleLabel.leftToSuperview(offset: 12)
-        titleLabel.rightToSuperview(offset: -12)
-
-        priceLabel.topToBottom(of: titleLabel, offset: 4)
-        priceLabel.leftToSuperview(offset: 12)
-        priceLabel.rightToSuperview(offset: -12)
-        priceLabel.bottomToSuperview(offset: -12, relation: .equalOrLess)
+        textStackView.topToBottom(of: imageContainer, offset: 10)
+        textStackView.leftToSuperview(offset: 12)
+        textStackView.rightToSuperview(offset: -(12 + 32 + 10))
+        textStackView.bottomToSuperview(offset: -12)
 
         minusButton.addTarget(self, action: #selector(minusTapped), for: .touchUpInside)
     }
@@ -114,6 +131,9 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         onMinusTapped = nil
+        photoImageView.cancelImageLoad()
+        photoImageView.image = nil
+        photoImageView.alpha = 1
         quantityLabel.isHidden = true
         minusButton.isHidden = true
         quantityLabel.text = nil
@@ -130,18 +150,34 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         }
     }
 
-    func configure(title: String, price: String, quantity: Int) {
+    func configure(title: String, price: String, quantity: Int, imagePath: String?) {
         titleLabel.text = title
         priceLabel.text = price
+
+        if let imagePath, !imagePath.isEmpty {
+            imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.12)
+            photoImageView.setImage(
+                pathOrURL: imagePath, placeholder: AppImagePlaceholder.product())
+            imageView.isHidden = true
+        } else {
+            imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.12)
+            photoImageView.image = nil
+            imageView.isHidden = false
+        }
 
         let isActive = quantity > 0
         quantityLabel.isHidden = !isActive
         minusButton.isHidden = !isActive
         if isActive {
             quantityLabel.text = "\(quantity)"
-            imageView.alpha = 0.18
-            imageView.tintColor = UIColor.Main.text.withAlphaComponent(0.25)
+            if imageView.isHidden {
+                photoImageView.alpha = 0.35
+            } else {
+                imageView.alpha = 0.18
+                imageView.tintColor = UIColor.Main.text.withAlphaComponent(0.25)
+            }
         } else {
+            photoImageView.alpha = 1
             imageView.alpha = 1
             imageView.tintColor = UIColor.TabBar.tint
         }
