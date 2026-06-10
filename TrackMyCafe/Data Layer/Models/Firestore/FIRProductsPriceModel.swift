@@ -14,6 +14,7 @@ struct FIRProductsPriceModel: Codable {
   var price: Double = 0.0
   var categoryId: String?
   var recipe: [FIRRecipeItemModel] = []
+  var imagePath: String?
 
   init(dataModel: ProductsPriceModel) {
     self.id = dataModel.id
@@ -21,6 +22,7 @@ struct FIRProductsPriceModel: Codable {
     self.price = dataModel.price
     self.categoryId = dataModel.categoryId
     self.recipe = dataModel.recipe.map { FIRRecipeItemModel(dataModel: $0) }
+    self.imagePath = dataModel.imagePath
   }
 }
 

@@ -13,6 +13,7 @@ protocol ProductDetailsViewModelType: AnyObject {
     var currentRecipe: [RecipeItemModel] { get }
     var allIngredients: [IngredientModel] { get }
     var categoryId: String? { get }
+    var imagePath: String? { get }
     
     var onRecipeChanged: (() -> Void)? { get set }
     var onIngredientsLoaded: (() -> Void)? { get set }
@@ -21,6 +22,9 @@ protocol ProductDetailsViewModelType: AnyObject {
     func parsedPrice(from text: String?) -> Double?
     func saveProductPrice(name: String?, price: Double?) async throws
     func setCategoryId(_ id: String?)
+
+    func setSelectedImageData(_ data: Data?)
+    func markImageDeleted()
     
     func fetchIngredients() async
     func hasIngredient(_ ingredient: IngredientModel) -> Bool

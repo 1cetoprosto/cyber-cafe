@@ -24,7 +24,8 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 
     private var displayedCategories: [ProductCategoryModel] {
         let allTitle = NSLocalizedString("all", tableName: "Global", comment: "")
-        let allCategory = ProductCategoryModel(id: CategoryConstants.allId, name: allTitle, sortOrder: -1)
+        let allCategory = ProductCategoryModel(
+            id: CategoryConstants.allId, name: allTitle, sortOrder: -1)
         return [allCategory] + categories
     }
 
@@ -48,7 +49,8 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     }()
 
     private lazy var productsCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: makeProductsLayout())
+        let collectionView = UICollectionView(
+            frame: .zero, collectionViewLayout: makeProductsLayout())
         collectionView.backgroundColor = UIColor.Main.background
         collectionView.alwaysBounceVertical = true
         return collectionView
@@ -191,15 +193,16 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                heightDimension: .estimated(160)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(84)
+                heightDimension: .estimated(160)
             )
-            let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: columns)
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: groupSize, subitem: item, count: columns)
             group.interItemSpacing = .fixed(spacing)
 
             let section = NSCollectionLayoutSection(group: group)
@@ -216,8 +219,11 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 }
 
 extension OrderProductPickerViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    UICollectionViewDelegateFlowLayout
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+        -> Int
+    {
         if collectionView === categoriesCollectionView {
             return displayedCategories.count
         }
@@ -240,7 +246,8 @@ extension OrderProductPickerViewController: UICollectionViewDelegate, UICollecti
             else { return UICollectionViewCell() }
 
             let category = displayedCategories[indexPath.item]
-            let isSelected = (category.id == CategoryConstants.allId)
+            let isSelected =
+                (category.id == CategoryConstants.allId)
                 ? (selectedCategoryId == nil)
                 : (category.id == selectedCategoryId)
             cell.configure(title: category.name, isSelected: isSelected)
@@ -255,7 +262,8 @@ extension OrderProductPickerViewController: UICollectionViewDelegate, UICollecti
         else { return UICollectionViewCell() }
 
         let product = filteredProducts[indexPath.item]
-        cell.configure(title: product.name, price: product.price.currency)
+        cell.configure(
+            title: product.name, price: product.price.currency, imagePath: product.imagePath)
         return cell
     }
 

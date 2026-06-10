@@ -198,6 +198,11 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
             DomainDatabaseService.shared.deleteProductsPrice(model: model) { [self] success in
                 if success {
                     logger.notice("productsPrice type \(model.id) deleted successfully")
+                    Task {
+                        _ = try? await FirebaseImageStorageService.shared.delete(
+                            atPath: ImageStoragePaths.productImagePath(productId: model.id)
+                        )
+                    }
                     self.configure()
                     
                     tableView.reloadData()

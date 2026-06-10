@@ -13,19 +13,22 @@ struct ProductsPriceModel {
     var price: Double
     var categoryId: String?
     var recipe: [RecipeItemModel]
+    var imagePath: String?
     
     init(
         id: String,
         name: String,
         price: Double,
         categoryId: String? = nil,
-        recipe: [RecipeItemModel] = []
+        recipe: [RecipeItemModel] = [],
+        imagePath: String? = nil
     ) {
         self.id = id
         self.name = name
         self.price = price
         self.categoryId = categoryId
         self.recipe = recipe
+        self.imagePath = imagePath
     }
     
     init(realmModel: RealmProductsPriceModel) {
@@ -34,6 +37,7 @@ struct ProductsPriceModel {
         self.price = realmModel.price
         self.categoryId = nil
         self.recipe = realmModel.recipe.map { RecipeItemModel(realmModel: $0) }
+        self.imagePath = nil
     }
     
     init(firebaseModel: FIRProductsPriceModel) {
@@ -42,5 +46,6 @@ struct ProductsPriceModel {
         self.price = firebaseModel.price
         self.categoryId = firebaseModel.categoryId
         self.recipe = firebaseModel.recipe.map { RecipeItemModel(firebaseModel: $0) }
+        self.imagePath = firebaseModel.imagePath
     }
 }

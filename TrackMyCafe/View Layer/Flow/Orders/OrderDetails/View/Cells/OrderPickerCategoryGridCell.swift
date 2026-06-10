@@ -3,8 +3,20 @@ import UIKit
 
 final class OrderPickerCategoryGridCell: UICollectionViewCell {
     static let reuseIdentifier = "OrderPickerCategoryGridCell"
+    private enum Layout {
+        static let imageAspectRatio: CGFloat = 2.0 / 3.0
+    }
 
-    private let iconView: UIView = {
+    private lazy var contentStackView: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [imageContainer, titleLabel])
+        stack.axis = .vertical
+        stack.alignment = .fill
+        stack.distribution = .fill
+        stack.spacing = 10
+        return stack
+    }()
+
+    private let imageContainer: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TabBar.tint.alpha(0.14)
         view.layer.cornerRadius = 12
@@ -12,11 +24,18 @@ final class OrderPickerCategoryGridCell: UICollectionViewCell {
         return view
     }()
 
-    private let iconImageView: UIImageView = {
+    private let photoImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
+
+    private let placeholderImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
         imageView.tintColor = UIColor.TabBar.tint
-        imageView.image = UIImage(systemName: "square.grid.2x2")
+        imageView.image = AppImagePlaceholder.category()
         return imageView
     }()
 
@@ -37,21 +56,17 @@ final class OrderPickerCategoryGridCell: UICollectionViewCell {
         contentView.layer.cornerRadius = 14
         contentView.layer.masksToBounds = true
 
-        contentView.addSubview(iconView)
-        iconView.addSubview(iconImageView)
-        contentView.addSubview(titleLabel)
+        imageContainer.addSubview(photoImageView)
+        imageContainer.addSubview(placeholderImageView)
+        contentView.addSubview(contentStackView)
 
-        iconView.topToSuperview(offset: 12)
-        iconView.centerXToSuperview()
-        iconView.size(CGSize(width: 56, height: 56))
+        contentStackView.edgesToSuperview(insets: .uniform(12))
+        imageContainer.heightToWidth(of: imageContainer, multiplier: Layout.imageAspectRatio)
 
-        iconImageView.centerInSuperview()
-        iconImageView.size(CGSize(width: 26, height: 26))
+        photoImageView.edgesToSuperview()
 
-        titleLabel.topToBottom(of: iconView, offset: 10)
-        titleLabel.leftToSuperview(offset: 10)
-        titleLabel.rightToSuperview(offset: -10)
-        titleLabel.bottomToSuperview(offset: -10, relation: .equalOrLess)
+        placeholderImageView.centerInSuperview()
+        placeholderImageView.size(CGSize(width: 26, height: 26))
     }
 
     required init?(coder: NSCoder) {
@@ -64,9 +79,29 @@ final class OrderPickerCategoryGridCell: UICollectionViewCell {
         }
     }
 
-    func configure(title: String) {
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        photoImageView.cancelImageLoad()
+        photoImageView.image = nil
+        placeholderImageView.isHidden = false
+        titleLabel.text = nil
+        accessibilityLabel = nil
+    }
+
+    func configure(title: String, imagePath: String?) {
         titleLabel.text = title
         accessibilityLabel = title
         accessibilityTraits = [.button]
+
+        if let imagePath, !imagePath.isEmpty {
+            imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.14)
+            photoImageView.setImage(
+                pathOrURL: imagePath, placeholder: AppImagePlaceholder.category())
+            placeholderImageView.isHidden = true
+        } else {
+            imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.14)
+            photoImageView.image = nil
+            placeholderImageView.isHidden = false
+        }
     }
 }
