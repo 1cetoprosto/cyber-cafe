@@ -15,7 +15,8 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     private var collectionBottomConstraint: Constraint?
 
     private let collectionView: UICollectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewLayout())
+        let collectionView = UICollectionView(
+            frame: .zero, collectionViewLayout: UICollectionViewLayout())
         collectionView.backgroundColor = UIColor.Main.background
         collectionView.alwaysBounceVertical = true
         return collectionView
@@ -95,7 +96,8 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
                 comment: ""
             )
         } else {
-            navigationItem.backButtonTitle = NSLocalizedString("back", tableName: "Global", comment: "")
+            navigationItem.backButtonTitle = NSLocalizedString(
+                "back", tableName: "Global", comment: "")
         }
 
         if navigationController?.presentingViewController != nil {
@@ -153,7 +155,8 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
 
         returnToOrderButton.leftToSuperview(offset: UIConstants.standardPadding)
         returnToOrderButton.rightToSuperview(offset: -UIConstants.standardPadding)
-        returnToOrderButton.bottomToSuperview(offset: -UIConstants.standardPadding, usingSafeArea: true)
+        returnToOrderButton.bottomToSuperview(
+            offset: -UIConstants.standardPadding, usingSafeArea: true)
         returnToOrderButton.height(UIConstants.buttonHeight)
         returnToOrderButton.addTarget(self, action: #selector(closeTapped), for: .touchUpInside)
     }
@@ -217,13 +220,13 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
 
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .fractionalHeight(1.0)
+                heightDimension: .estimated(160)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .absolute(132)
+                heightDimension: .estimated(160)
             )
             let group = NSCollectionLayoutGroup.horizontal(
                 layoutSize: groupSize,
@@ -255,8 +258,12 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     }
 }
 
-extension OrderCategoryFirstPickerViewController: UICollectionViewDataSource, UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+extension OrderCategoryFirstPickerViewController: UICollectionViewDataSource,
+    UICollectionViewDelegate
+{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+        -> Int
+    {
         categories.count
     }
 
@@ -272,7 +279,7 @@ extension OrderCategoryFirstPickerViewController: UICollectionViewDataSource, UI
         else { return UICollectionViewCell() }
 
         let category = categories[indexPath.item]
-        cell.configure(title: category.name)
+        cell.configure(title: category.name, imagePath: category.imagePath)
         return cell
     }
 

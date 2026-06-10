@@ -369,6 +369,7 @@
 "enterQuantityPerUnit" = "Enter quantity per unit";
 "pleaseEnterProductName" = "Please enter product name";
 "failedToSaveProductPrice" = "Failed to save product price";
+"failedToSaveProductCategory" = "Failed to save product category";
 
 "ingredientAlreadyExists" = "Ingredient already exists";
 "overwriteIngredientMessage" = "This ingredient is already in the recipe. Do you want to overwrite it?";

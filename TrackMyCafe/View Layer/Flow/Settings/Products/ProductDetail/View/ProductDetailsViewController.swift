@@ -5,6 +5,7 @@
 //  Created by Леонід Квіт on 27.11.2021.
 //
 
+import PhotosUI
 import TinyConstraints
 import UIKit
 
@@ -25,6 +26,17 @@ class ProductDetailsViewController: UIViewController {
         stackView.distribution = .fill
         stackView.alignment = .fill
         return stackView
+    }()
+
+    private lazy var productImageView: UIImageView = {
+        let view = UIImageView()
+        view.contentMode = .scaleAspectFill
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 12
+        view.isUserInteractionEnabled = true
+        view.backgroundColor = UIColor.TabBar.tint.alpha(0.12)
+        view.accessibilityTraits = [.image]
+        return view
     }()
 
     // MARK: - Inputs
@@ -103,6 +115,14 @@ class ProductDetailsViewController: UIViewController {
 
     private let viewModel: ProductDetailsViewModelType
     private var categories: [ProductCategoryModel] = []
+    private var isImagePresent: Bool = false
+    private var isSaving = false
+
+    private lazy var imageLoadingIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .medium)
+        indicator.hidesWhenStopped = true
+        return indicator
+    }()
 
     init(viewModel: ProductDetailsViewModelType) {
         self.viewModel = viewModel
@@ -153,6 +173,7 @@ class ProductDetailsViewController: UIViewController {
         priceInputContainer.setReturnKeyType(.done)
 
         // Add containers to stack
+        mainStackView.addArrangedSubview(productImageView)
         mainStackView.addArrangedSubview(nameInputContainer)
         mainStackView.addArrangedSubview(priceInputContainer)
         mainStackView.addArrangedSubview(categoryInputContainer)
@@ -161,6 +182,12 @@ class ProductDetailsViewController: UIViewController {
         mainStackView.addArrangedSubview(recipeTitleLabel)
         mainStackView.addArrangedSubview(recipeTableView)
         mainStackView.addArrangedSubview(addIngredientButton)
+
+        productImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        )
+        productImageView.addSubview(imageLoadingIndicator)
+        imageLoadingIndicator.centerInSuperview()
     }
 
     private func updateRecipeUI() {
@@ -204,7 +231,8 @@ class ProductDetailsViewController: UIViewController {
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor,
                 constant: -UIConstants.largeSpacing
             ),
-            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.centerXAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             mainStackView.leadingAnchor.constraint(
                 greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
                 constant: horizontalInset
@@ -220,12 +248,14 @@ class ProductDetailsViewController: UIViewController {
         // Container heights
         let containerHeight =
             UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+        productImageView.height(180)
         nameInputContainer.height(containerHeight)
         priceInputContainer.height(containerHeight)
         categoryInputContainer.height(containerHeight)
         addIngredientButton.height(UIConstants.buttonHeight)
 
-        recipeTableViewHeightConstraint = recipeTableView.heightAnchor.constraint(equalToConstant: 0)
+        recipeTableViewHeightConstraint = recipeTableView.heightAnchor.constraint(
+            equalToConstant: 0)
         recipeTableViewHeightConstraint?.isActive = true
 
         // Save button constraints
@@ -260,6 +290,73 @@ class ProductDetailsViewController: UIViewController {
                 self?.updateCategorySelection()
             }
         }
+
+        applyInitialImage()
+    }
+
+    private func applyInitialImage() {
+        let placeholder = AppImagePlaceholder.product()
+        if let path = viewModel.imagePath, !path.isEmpty {
+            isImagePresent = true
+            productImageView.setImage(pathOrURL: path, placeholder: placeholder)
+        } else {
+            isImagePresent = false
+            productImageView.image = placeholder
+        }
+    }
+
+    @objc private func imageTapped() {
+        guard !isSaving else { return }
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        alert.addAction(
+            UIAlertAction(title: R.string.global.gallery(), style: .default) { [weak self] _ in
+                self?.presentPhotoPicker()
+            }
+        )
+
+        if isImagePresent {
+            alert.addAction(
+                UIAlertAction(title: R.string.global.delete(), style: .destructive) {
+                    [weak self] _ in
+                    self?.viewModel.markImageDeleted()
+                    self?.applyInitialImage()
+                }
+            )
+        }
+
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
+
+        if let popover = alert.popoverPresentationController {
+            popover.sourceView = productImageView
+            popover.sourceRect = productImageView.bounds
+        }
+
+        present(alert, animated: true)
+    }
+
+    private func presentPhotoPicker() {
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.selectionLimit = 1
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
+    }
+
+    private func makeJPEGData(from image: UIImage) -> Data? {
+        let maxDimension: CGFloat = 1400
+        let size = image.size
+        let longestSide = max(size.width, size.height)
+        guard longestSide > 0 else { return nil }
+        let scale = min(1, maxDimension / longestSide)
+        let targetSize = CGSize(width: size.width * scale, height: size.height * scale)
+
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        let rendered = renderer.image { _ in
+            image.draw(in: CGRect(origin: .zero, size: targetSize))
+        }
+        return rendered.jpegData(compressionQuality: 0.86)
     }
 
     private func updateCategorySelection() {
@@ -287,7 +384,8 @@ class ProductDetailsViewController: UIViewController {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
 
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let flexSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(
             title: R.string.global.actionOk(),
             style: .done,
@@ -346,7 +444,8 @@ class ProductDetailsViewController: UIViewController {
             alert.addAction(
                 UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
             alert.addAction(
-                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) { [weak self] _ in
+                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) {
+                    [weak self] _ in
                     self?.navigationController?.popToRootViewController(animated: true)
                 })
 
@@ -365,7 +464,8 @@ class ProductDetailsViewController: UIViewController {
                 })
         }
 
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
 
         if let popoverController = alert.popoverPresentationController {
             popoverController.sourceView = addIngredientButton
@@ -376,8 +476,10 @@ class ProductDetailsViewController: UIViewController {
     }
 
     private func showQuantityInput(for ingredient: IngredientModel) {
-        let message = R.string.global.enterQuantityPerUnit() + " (" + ingredient.unit.localizedName + ")"
-        let alert = UIAlertController(title: ingredient.name, message: message, preferredStyle: .alert)
+        let message =
+            R.string.global.enterQuantityPerUnit() + " (" + ingredient.unit.localizedName + ")"
+        let alert = UIAlertController(
+            title: ingredient.name, message: message, preferredStyle: .alert)
 
         alert.addTextField { (textField: UITextField) in
             textField.keyboardType = UIKeyboardType.decimalPad
@@ -413,7 +515,8 @@ class ProductDetailsViewController: UIViewController {
                         UIAlertAction(title: R.string.global.no(), style: .cancel, handler: nil))
                     self.present(overwriteAlert, animated: true)
                 } else {
-                    self.viewModel.addRecipeItem(ingredient: ingredient, quantity: quantity, overwrite: false)
+                    self.viewModel.addRecipeItem(
+                        ingredient: ingredient, quantity: quantity, overwrite: false)
                 }
             })
 
@@ -441,7 +544,7 @@ class ProductDetailsViewController: UIViewController {
 
         let parsedPrice = viewModel.parsedPrice(from: priceText) ?? 0.0
 
-        saveButton.isEnabled = false
+        setSavingState(true)
         Task { [weak self] in
             guard let self = self else { return }
             do {
@@ -451,15 +554,38 @@ class ProductDetailsViewController: UIViewController {
                 }
             } catch {
                 _ = await MainActor.run {
+                    let description =
+                        error.localizedDescription.isEmpty
+                        ? R.string.global.failedToSaveProductPrice()
+                        : error.localizedDescription
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: R.string.global.failedToSaveProductPrice()
+                        description: description
                     ) {}
                 }
             }
             _ = await MainActor.run {
-                self.saveButton.isEnabled = true
+                self.setSavingState(false)
             }
+        }
+    }
+
+    private func setSavingState(_ isSaving: Bool) {
+        self.isSaving = isSaving
+        saveButton.isEnabled = !isSaving
+        saveButton.setTitle(
+            isSaving ? R.string.global.loading() : R.string.global.save(),
+            for: .normal
+        )
+        productImageView.isUserInteractionEnabled = !isSaving
+    }
+
+    private func setImageLoading(_ isLoading: Bool) {
+        productImageView.isUserInteractionEnabled = !isLoading && !isSaving
+        if isLoading {
+            imageLoadingIndicator.startAnimating()
+        } else {
+            imageLoadingIndicator.stopAnimating()
         }
     }
 
@@ -500,7 +626,8 @@ extension ProductDetailsViewController: UITextFieldDelegate {
         // Check if it's the alert text field. Since we don't have a direct reference to the alert text field here easily without storing it,
         // we can check if it is NOT one of our known properties.
         if textField == nameInputContainer.textFieldReference
-            || textField == priceInputContainer.textFieldReference {
+            || textField == priceInputContainer.textFieldReference
+        {
             return true
         }
 
@@ -548,6 +675,49 @@ extension ProductDetailsViewController: UITableViewDataSource, UITableViewDelega
     ) {
         if editingStyle == .delete {
             viewModel.removeRecipeItem(at: indexPath.row)
+        }
+    }
+}
+
+extension ProductDetailsViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+
+        guard let item = results.first?.itemProvider else { return }
+
+        Task { [weak self] in
+            guard let self else { return }
+            await MainActor.run {
+                self.setImageLoading(true)
+            }
+            defer {
+                Task { @MainActor [weak self] in
+                    self?.setImageLoading(false)
+                }
+            }
+            let image = await self.loadImage(from: item)
+            guard let image else { return }
+
+            let data = self.makeJPEGData(from: image)
+            guard let data else { return }
+
+            self.viewModel.setSelectedImageData(data)
+            _ = await MainActor.run {
+                self.productImageView.image = image
+                self.isImagePresent = true
+            }
+        }
+    }
+
+    private func loadImage(from provider: NSItemProvider) async -> UIImage? {
+        await withCheckedContinuation { continuation in
+            if provider.canLoadObject(ofClass: UIImage.self) {
+                provider.loadObject(ofClass: UIImage.self) { object, _ in
+                    continuation.resume(returning: object as? UIImage)
+                }
+            } else {
+                continuation.resume(returning: nil)
+            }
         }
     }
 }
