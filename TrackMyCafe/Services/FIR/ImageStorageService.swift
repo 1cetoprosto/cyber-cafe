@@ -1,3 +1,4 @@
+import FirebaseCore
 import FirebaseStorage
 import Foundation
 
@@ -10,6 +11,10 @@ protocol ImageStorageServiceProtocol {
 final class FirebaseImageStorageService: ImageStorageServiceProtocol {
     static let shared = FirebaseImageStorageService()
 
+    private enum ErrorDomain {
+        static let storageUpload = "FirebaseImageStorageService.upload"
+    }
+
     private func makeReference(path: String) -> StorageReference {
         var ref = Storage.storage().reference()
         for part in path.split(separator: "/").map(String.init) where !part.isEmpty {
@@ -18,11 +23,60 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
         return ref
     }
 
+    private func environmentDescription() -> String {
+        let options = FirebaseApp.app()?.options
+        let projectId = options?.projectID ?? "unknown"
+        let bucket = options?.storageBucket ?? "unknown"
+        return "projectId=\(projectId), bucket=\(bucket)"
+    }
+
+    private func wrapUploadError(_ error: Error, path: String) -> Error {
+        let nsError = error as NSError
+        guard nsError.domain == StorageErrorDomain else { return error }
+
+        let code = StorageErrorCode(rawValue: nsError.code)
+        let env = environmentDescription()
+
+        switch code {
+        case .objectNotFound, .bucketNotFound:
+            return NSError(
+                domain: ErrorDomain.storageUpload,
+                code: nsError.code,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Firebase Storage is not available for this environment or is misconfigured (\(env)). Please enable Storage for this Firebase project or verify GoogleService-Info.plist. Path: \(path)."
+                ]
+            )
+        case .unauthenticated, .unauthorized:
+            return NSError(
+                domain: ErrorDomain.storageUpload,
+                code: nsError.code,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Firebase Storage permission error (\(env)). Please verify Firebase Auth state and Storage rules. Path: \(path)."
+                ]
+            )
+        default:
+            return NSError(
+                domain: ErrorDomain.storageUpload,
+                code: nsError.code,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Firebase Storage upload failed (\(env)). Path: \(path). Error: \(error.localizedDescription)"
+                ]
+            )
+        }
+    }
+
     func upload(data: Data, toPath path: String, contentType: String) async throws {
         let metadata = StorageMetadata()
         metadata.contentType = contentType
 
-        try await putData(ref: makeReference(path: path), data: data, metadata: metadata)
+        do {
+            try await putData(ref: makeReference(path: path), data: data, metadata: metadata)
+        } catch {
+            throw wrapUploadError(error, path: path)
+        }
     }
 
     func delete(atPath path: String) async throws {
