@@ -27,10 +27,6 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
         static let storageUpload = "FirebaseImageStorageService.upload"
     }
 
-    private enum UploadPolicy {
-        static let maxUploadBytes = 2 * 1024 * 1024
-    }
-
     private func makeReference(path: String) -> StorageReference {
         var ref = Storage.storage().reference()
         for part in path.split(separator: "/").map(String.init) where !part.isEmpty {
@@ -85,9 +81,9 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
     }
 
     func upload(data: Data, toPath path: String, contentType: String) async throws {
-        guard data.count <= UploadPolicy.maxUploadBytes else {
+        guard data.count <= ImageUploadPolicy.maxUploadBytes else {
             throw UploadValidationError.payloadTooLarge(
-                maxBytes: UploadPolicy.maxUploadBytes,
+                maxBytes: ImageUploadPolicy.maxUploadBytes,
                 actualBytes: data.count
             )
         }
