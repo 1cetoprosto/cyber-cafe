@@ -361,7 +361,9 @@ class ProductDetailsViewController: UIViewController {
         var quality: CGFloat = CGFloat(ImageUploadPolicy.initialJPEGQuality)
         var data = rendered.jpegData(compressionQuality: quality)
 
-        while let data, data.count > maxBytes, quality > CGFloat(ImageUploadPolicy.minJPEGQuality) {
+        while let currentData = data, currentData.count > maxBytes,
+            quality > CGFloat(ImageUploadPolicy.minJPEGQuality)
+        {
             quality -= CGFloat(ImageUploadPolicy.jpegQualityStep)
             data = rendered.jpegData(compressionQuality: quality)
         }
@@ -383,7 +385,9 @@ class ProductDetailsViewController: UIViewController {
 
             quality = CGFloat(ImageUploadPolicy.initialJPEGQuality)
             data = rendered.jpegData(compressionQuality: quality)
-            while let data, data.count > maxBytes, quality > CGFloat(ImageUploadPolicy.minJPEGQuality) {
+            while let currentData = data, currentData.count > maxBytes,
+                quality > CGFloat(ImageUploadPolicy.minJPEGQuality)
+            {
                 quality -= CGFloat(ImageUploadPolicy.jpegQualityStep)
                 data = rendered.jpegData(compressionQuality: quality)
             }
