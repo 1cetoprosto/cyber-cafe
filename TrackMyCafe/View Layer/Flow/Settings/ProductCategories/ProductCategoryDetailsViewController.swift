@@ -189,6 +189,15 @@ final class ProductCategoryDetailsViewController: UIViewController, Loggable {
 
     @objc private func saveTapped() {
         view.endEditing(true)
+        let trimmedName = (nameInputContainer.text ?? "").trimmingCharacters(
+            in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else {
+            PopupFactory.showPopup(
+                title: R.string.global.error(),
+                description: R.string.global.fillAllFields()
+            ) {}
+            return
+        }
         setSavingState(true)
         Task { [weak self] in
             guard let self else { return }

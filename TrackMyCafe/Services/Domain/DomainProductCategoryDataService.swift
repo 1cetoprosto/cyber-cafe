@@ -1,7 +1,14 @@
 import Foundation
 
-enum DomainProductCategoryError: Error {
+enum DomainProductCategoryError: LocalizedError {
     case saveFailed
+
+    var errorDescription: String? {
+        switch self {
+        case .saveFailed:
+            return R.string.global.fillAllFields()
+        }
+    }
 }
 
 protocol ProductCategoryDataServiceProtocol {
