@@ -345,6 +345,7 @@ class ProductDetailsViewController: UIViewController {
     }
 
     private func makeJPEGData(from image: UIImage) -> Data? {
+        let maxBytes = 2 * 1024 * 1024
         let maxDimension: CGFloat = 1400
         let size = image.size
         let longestSide = max(size.width, size.height)
@@ -353,10 +354,43 @@ class ProductDetailsViewController: UIViewController {
         let targetSize = CGSize(width: size.width * scale, height: size.height * scale)
 
         let renderer = UIGraphicsImageRenderer(size: targetSize)
-        let rendered = renderer.image { _ in
+        var rendered = renderer.image { _ in
             image.draw(in: CGRect(origin: .zero, size: targetSize))
         }
-        return rendered.jpegData(compressionQuality: 0.86)
+
+        var quality: CGFloat = 0.86
+        var data = rendered.jpegData(compressionQuality: quality)
+
+        while let data, data.count > maxBytes, quality > 0.44 {
+            quality -= 0.08
+            data = rendered.jpegData(compressionQuality: quality)
+        }
+
+        if let data, data.count <= maxBytes { return data }
+
+        var scaleFactor: CGFloat = 0.85
+        while rendered.size.width > 320, rendered.size.height > 320 {
+            let nextSize = CGSize(
+                width: rendered.size.width * scaleFactor,
+                height: rendered.size.height * scaleFactor
+            )
+            let nextRenderer = UIGraphicsImageRenderer(size: nextSize)
+            rendered = nextRenderer.image { _ in
+                rendered.draw(in: CGRect(origin: .zero, size: nextSize))
+            }
+
+            quality = 0.86
+            data = rendered.jpegData(compressionQuality: quality)
+            while let data, data.count > maxBytes, quality > 0.44 {
+                quality -= 0.08
+                data = rendered.jpegData(compressionQuality: quality)
+            }
+
+            if let data, data.count <= maxBytes { return data }
+            scaleFactor = max(0.75, scaleFactor - 0.05)
+        }
+
+        return data
     }
 
     private func updateCategorySelection() {
