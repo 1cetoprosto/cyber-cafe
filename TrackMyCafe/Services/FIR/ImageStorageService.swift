@@ -11,8 +11,24 @@ protocol ImageStorageServiceProtocol {
 final class FirebaseImageStorageService: ImageStorageServiceProtocol {
     static let shared = FirebaseImageStorageService()
 
+    enum UploadValidationError: LocalizedError {
+        case payloadTooLarge(maxBytes: Int, actualBytes: Int)
+
+        var errorDescription: String? {
+            switch self {
+            case .payloadTooLarge(let maxBytes, let actualBytes):
+                return
+                    "Image is too large to upload (\(actualBytes) bytes). Max allowed is \(maxBytes) bytes."
+            }
+        }
+    }
+
     private enum ErrorDomain {
         static let storageUpload = "FirebaseImageStorageService.upload"
+    }
+
+    private enum UploadPolicy {
+        static let maxUploadBytes = 2 * 1024 * 1024
     }
 
     private func makeReference(path: String) -> StorageReference {
@@ -69,6 +85,13 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
     }
 
     func upload(data: Data, toPath path: String, contentType: String) async throws {
+        guard data.count <= UploadPolicy.maxUploadBytes else {
+            throw UploadValidationError.payloadTooLarge(
+                maxBytes: UploadPolicy.maxUploadBytes,
+                actualBytes: data.count
+            )
+        }
+
         let metadata = StorageMetadata()
         metadata.contentType = contentType
 
