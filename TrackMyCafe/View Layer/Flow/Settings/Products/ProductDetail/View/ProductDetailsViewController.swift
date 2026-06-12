@@ -345,8 +345,8 @@ class ProductDetailsViewController: UIViewController {
     }
 
     private func makeJPEGData(from image: UIImage) -> Data? {
-        let maxBytes = 2 * 1024 * 1024
-        let maxDimension: CGFloat = 1400
+        let maxBytes = ImageUploadPolicy.maxUploadBytes
+        let maxDimension: CGFloat = CGFloat(ImageUploadPolicy.maxDimension)
         let size = image.size
         let longestSide = max(size.width, size.height)
         guard longestSide > 0 else { return nil }
@@ -358,18 +358,20 @@ class ProductDetailsViewController: UIViewController {
             image.draw(in: CGRect(origin: .zero, size: targetSize))
         }
 
-        var quality: CGFloat = 0.86
+        var quality: CGFloat = CGFloat(ImageUploadPolicy.initialJPEGQuality)
         var data = rendered.jpegData(compressionQuality: quality)
 
-        while let data, data.count > maxBytes, quality > 0.44 {
-            quality -= 0.08
+        while let data, data.count > maxBytes, quality > CGFloat(ImageUploadPolicy.minJPEGQuality) {
+            quality -= CGFloat(ImageUploadPolicy.jpegQualityStep)
             data = rendered.jpegData(compressionQuality: quality)
         }
 
         if let data, data.count <= maxBytes { return data }
 
-        var scaleFactor: CGFloat = 0.85
-        while rendered.size.width > 320, rendered.size.height > 320 {
+        var scaleFactor: CGFloat = CGFloat(ImageUploadPolicy.initialDownscaleFactor)
+        while rendered.size.width > CGFloat(ImageUploadPolicy.minDimension),
+            rendered.size.height > CGFloat(ImageUploadPolicy.minDimension)
+        {
             let nextSize = CGSize(
                 width: rendered.size.width * scaleFactor,
                 height: rendered.size.height * scaleFactor
@@ -379,15 +381,18 @@ class ProductDetailsViewController: UIViewController {
                 rendered.draw(in: CGRect(origin: .zero, size: nextSize))
             }
 
-            quality = 0.86
+            quality = CGFloat(ImageUploadPolicy.initialJPEGQuality)
             data = rendered.jpegData(compressionQuality: quality)
-            while let data, data.count > maxBytes, quality > 0.44 {
-                quality -= 0.08
+            while let data, data.count > maxBytes, quality > CGFloat(ImageUploadPolicy.minJPEGQuality) {
+                quality -= CGFloat(ImageUploadPolicy.jpegQualityStep)
                 data = rendered.jpegData(compressionQuality: quality)
             }
 
             if let data, data.count <= maxBytes { return data }
-            scaleFactor = max(0.75, scaleFactor - 0.05)
+            scaleFactor = max(
+                CGFloat(ImageUploadPolicy.minDownscaleFactor),
+                scaleFactor - CGFloat(ImageUploadPolicy.downscaleFactorStep)
+            )
         }
 
         return data

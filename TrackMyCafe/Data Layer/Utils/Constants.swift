@@ -30,6 +30,18 @@ struct Links {
         "https://leokvit.notion.site/Privacy-Policy-8e03f5636033475795267873620f326e?source=copy_link"
 }
 
+struct ImageUploadPolicy {
+    static let maxUploadBytes: Int = 2 * 1024 * 1024
+    static let maxDimension: Double = 1400
+    static let minDimension: Double = 320
+    static let initialJPEGQuality: Double = 0.86
+    static let minJPEGQuality: Double = 0.44
+    static let jpegQualityStep: Double = 0.08
+    static let initialDownscaleFactor: Double = 0.85
+    static let minDownscaleFactor: Double = 0.75
+    static let downscaleFactorStep: Double = 0.05
+}
+
 // notifications
 extension Notification.Name {
     static let adminInfoReload = Notification.Name("adminInfoReloadNotification")
