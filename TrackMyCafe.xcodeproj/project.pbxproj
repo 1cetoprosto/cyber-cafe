@@ -360,6 +360,9 @@
 		F3A640C62C3438D6006BCACD /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C52C3438D6006BCACD /* TPInAppReceipt */; };
 		F3A640C82C3438D6006BCACD /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C72C3438D6006BCACD /* TPInAppReceipt-Objc */; };
 		F3B036E12B777898009C085D /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
+		F3B19F9A2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B19F982FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift */; };
+		F3B19F9C2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B19F982FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift */; };
+		F3B19F9E2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B19F982FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift */; };
 		F3B339AC2C0B22FE0073F19A /* CostDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* CostDetailsListViewController.swift */; };
 		F3B339AD2C0B22FE0073F19A /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
 		F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA12BDD3AFC0007157B /* String+Extension.swift */; };
@@ -908,6 +911,7 @@
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
 		F3A640BF2C34243F006BCACD /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		F3B036E02B777898009C085D /* Additional materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Additional materials"; sourceTree = "<group>"; };
+		F3B19F982FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailListTableViewCell.swift; sourceTree = "<group>"; };
 		F3B33A2F2C0B22FE0073F19A /* TrackMyCafe Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TrackMyCafe Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B33ACE2C0B23450073F19A /* TrackMyCafe Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TrackMyCafe Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B33AD02C0B26080073F19A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1554,6 +1558,7 @@
 		F3410EA82BDD3E150007157B /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				F3B19F982FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift */,
 				F324E60A2F486E99003A7469 /* Selection */,
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F30E1D832F65DF6300425DFF /* AppLabel.swift */,
@@ -2879,6 +2884,7 @@
 				F3410EB22BDD408B0007157B /* Settings.swift in Sources */,
 				F3D97EB82F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
+				F3B19F9A2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */,
 				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
 				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
@@ -3089,6 +3095,7 @@
 				F3F6A60E2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
 				F3D97EB92F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
+				F3B19F9E2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */,
 				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
 				F3B339E82C0B22FE0073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
@@ -3299,6 +3306,7 @@
 				F3F6A60F2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
 				F3D97EBA2F4DF7D8006270AF /* DemoDataManager.swift in Sources */,
 				F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
+				F3B19F9C2FDC8B1F002537D0 /* ThumbnailListTableViewCell.swift in Sources */,
 				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,
 				F3B33A872C0B23450073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
