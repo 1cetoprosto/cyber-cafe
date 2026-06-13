@@ -20,14 +20,14 @@ private enum UIImageViewAssociatedKeys {
 enum AppImagePlaceholder {
     static func product() -> UIImage? {
         make(
-            systemName: "cup.and.saucer.fill",
-            pointSize: 26
+            systemName: "photo",
+            pointSize: 28
         )
     }
 
     static func category() -> UIImage? {
         make(
-            systemName: "square.grid.2x2",
+            systemName: "photo",
             pointSize: 24
         )
     }

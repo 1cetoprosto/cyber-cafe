@@ -8,6 +8,10 @@ final class ProductCategoriesListViewController: UIViewController, Loggable {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .singleLine
+        tableView.rowHeight = 54
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 0
+        }
         return tableView
     }()
 
@@ -23,8 +27,8 @@ final class ProductCategoriesListViewController: UIViewController, Loggable {
         title = R.string.global.products()
 
         tableView.register(
-            UITableViewCell.self,
-            forCellReuseIdentifier: "CategoryCell"
+            ProductCategoryTableViewCell.self,
+            forCellReuseIdentifier: ProductCategoryTableViewCell.reuseIdentifier
         )
         tableView.dataSource = self
         tableView.delegate = self
@@ -77,24 +81,25 @@ extension ProductCategoriesListViewController: UITableViewDataSource, UITableVie
         return categories.count
     }
 
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        8
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        UIView(frame: .zero)
+    }
+
     func tableView(
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "CategoryCell",
-            for: indexPath
-        )
+        let cell =
+            tableView.dequeueReusableCell(
+                withIdentifier: ProductCategoryTableViewCell.reuseIdentifier,
+                for: indexPath
+            ) as! ProductCategoryTableViewCell
         let category = categories[indexPath.row]
-        var content = cell.defaultContentConfiguration()
-        content.text = category.name
-        let placeholder = AppImagePlaceholder.category()
-        content.image = placeholder
-        cell.contentConfiguration = content
-
-        cell.imageView?.contentMode = .scaleAspectFill
-        cell.imageView?.clipsToBounds = true
-        cell.imageView?.setImage(pathOrURL: category.imagePath, placeholder: placeholder)
+        cell.configure(category: category)
 
         return cell
     }

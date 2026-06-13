@@ -298,9 +298,12 @@ class ProductDetailsViewController: UIViewController {
         let placeholder = AppImagePlaceholder.product()
         if let path = viewModel.imagePath, !path.isEmpty {
             isImagePresent = true
-            productImageView.setImage(pathOrURL: path, placeholder: placeholder)
+            productImageView.contentMode = .scaleAspectFill
+            productImageView.setImage(pathOrURL: path, placeholder: nil)
         } else {
             isImagePresent = false
+            productImageView.cancelImageLoad()
+            productImageView.contentMode = .center
             productImageView.image = placeholder
         }
     }
@@ -746,6 +749,7 @@ extension ProductDetailsViewController: PHPickerViewControllerDelegate {
 
             self.viewModel.setSelectedImageData(data)
             _ = await MainActor.run {
+                self.productImageView.contentMode = .scaleAspectFill
                 self.productImageView.image = image
                 self.isImagePresent = true
             }
