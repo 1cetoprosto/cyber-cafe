@@ -171,6 +171,8 @@ struct OrderModel {
 }
 ```
 
+> Примітка: це поточна header-level модель чеку. Для `v1.1.0` item-level аналітика, `ABC` та повний `COGS` snapshot спираються на окремий `OrderItemModel`, а не на розширення цього struct усією reporting-логікою.
+
 #### Firestore Model
 
 ```swift

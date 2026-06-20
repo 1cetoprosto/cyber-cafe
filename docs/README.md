@@ -130,7 +130,7 @@ pod install
 |------|------|
 | `settings.language` | Мова додатку |
 | `settings.theme` | Тема (світла/темна) |
-| `settings.online` | Онлайн/офлайн режим |
+| `settings.online` | Legacy-прапорець; не є цільовою частиною нової архітектури |
 | `hasSeenOnboarding` | Чи показувався onboarding |
 
 ### Firebase Collections
