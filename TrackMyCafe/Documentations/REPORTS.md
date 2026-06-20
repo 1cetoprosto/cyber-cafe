@@ -5,6 +5,11 @@
 
 Цей документ описує склад і логіку основних звітів: P&L, ABC-аналіз, Динаміка. Усі звіти read‑only; історичні значення COGS не перераховуються при майбутніх змінах рецептів.
 
+> **Важливо про межі відповідальності:**
+> - aggregation services рахують базові period-based summaries для dashboard;
+> - finance/reporting facade будує DTO для звітів поверх цих summaries;
+> - Reports Hub UI тільки відображає готові DTO і не містить власних фінансових формул.
+
 ---
 
 ## 1. P&L (Profit & Loss)
@@ -19,17 +24,20 @@
 - `GrossMargin% = GrossProfit / Sales` (якщо Sales > 0)
 
 **Джерела даних:**
-- Orders / OrderItemModel (фіксують totalAmount і totalCost у момент продажу)
+- `OrderModel` (header-level totals)
+- `OrderItemModel` (item-level snapshot для `salePrice`, `costPrice`, `quantity`)
 - OpexExpenseModel
 
 **Фільтри:**
 - Період: день / тиждень / місяць / довільний
-- За потреби: способи оплати (готівка/картка)
+- За потреби: способи оплати (готівка/картка), але тільки після завершення journal-based finance layer
 
 ---
 
 ## 2. ABC-аналіз
 **Мета:** виділити топ‑продукти за вкладом у виручку та маржу.
+
+> **Передумова:** ABC звіт вважається коректним тільки якщо `OrderItemModel.costPrice` стабільно фіксується на момент продажу.
 
 **Метрики на продукт:**
 - `SalesByProduct = Σ( salePrice * qty )`
@@ -63,6 +71,7 @@
 ---
 
 ## 4. Технічні замітки
-- Розрахунки виконуються у відповідному сервісі аналітики (Reporting/Analytics Service).
-- Дані кешуються за періодами для швидкого відображення на дашборді.
+- Розрахунки для dashboard виконуються в aggregation services (`IncomeAggregationService`, `OpexAggregationService`, `FinanceAggregationService`).
+- Розрахунки для `P&L`, `ABC`, `Trends` виконуються у finance/reporting facade поверх aggregation services.
+- Дані можуть кешуватись за періодами, але кеш не є окремим source of truth.
 - Експорт CSV планується на рівні UI контролера звіту.
