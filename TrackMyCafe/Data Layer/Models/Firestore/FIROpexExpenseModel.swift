@@ -13,6 +13,7 @@ struct FIROpexExpenseModel: Codable, Identifiable {
     var date: Date
     var categoryId: String
     var amount: Double
+    var paymentAccount: PaymentAccount?
     var note: String?
     
     init(dataModel: OpexExpenseModel) {
@@ -20,6 +21,7 @@ struct FIROpexExpenseModel: Codable, Identifiable {
         self.date = dataModel.date
         self.categoryId = dataModel.categoryId
         self.amount = dataModel.amount
+        self.paymentAccount = dataModel.paymentAccount
         self.note = dataModel.note
     }
 }
