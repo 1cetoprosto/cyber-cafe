@@ -164,6 +164,8 @@ struct FirebaseCollections {
     static let purchases = "purchases"
     static let inventoryAdjustments = "inventoryAdjustments"
     static let opexExpenses = "opexExpenses"
+    static let journalEntries = "journal_entries"
+    static let dailyBalances = "daily_balances"
     static let subscriptions = "Subscriptions"
     static let info = ".info"
     static let productCategories = "productCategories"
