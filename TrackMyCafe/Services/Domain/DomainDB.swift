@@ -55,6 +55,24 @@ protocol DomainDB {
     func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void)
     func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
 
+    // Journal entries
+    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void)
+    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void)
+
+    // Daily balances
+    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void)
+    func fetchDailyBalance(
+        forAccount account: PaymentAccount,
+        date: Date,
+        completion: @escaping (DailyBalanceModel?) -> Void
+    )
+    func fetchDailyBalances(
+        forAccount account: PaymentAccount,
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([DailyBalanceModel]) -> Void
+    )
+
     // Asynchronous methods for updating and retrieving data on income types
     func updateType(model: TypeModel, type: String)
     func fetchTypes(completion: @escaping ([TypeModel]) -> Void)
