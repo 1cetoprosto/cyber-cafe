@@ -145,6 +145,112 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
+    func readWhere<T: Decodable>(
+        collection: String,
+        firModel: T.Type,
+        equalTo filters: [String: Any] = [:],
+        orderedBy orderField: String? = nil,
+        startAt startDate: Date? = nil,
+        endAt endDate: Date? = nil,
+        completion: @escaping (Result<[(documentId: String, T)], Error>) -> Void
+    ) {
+        guard let userCollection = getUserCollection(collection: collection) else {
+            completion(
+                .failure(
+                    NSError(
+                        domain: "NoUser", code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            return
+        }
+
+        var query: Query = userCollection
+
+        for (field, value) in filters {
+            query = query.whereField(field, isEqualTo: value)
+        }
+
+        if let orderField {
+            query = query.order(by: orderField)
+        }
+
+        if let startDate, let orderField {
+            query = query.whereField(orderField, isGreaterThanOrEqualTo: startDate)
+        }
+
+        if let endDate, let orderField {
+            query = query.whereField(orderField, isLessThanOrEqualTo: endDate)
+        }
+
+        query.getDocuments { [self] querySnapshot, error in
+            if let error = error {
+                self.logger.error("Error getting filtered documents: \(error.localizedDescription)")
+                completion(.failure(error))
+            } else {
+                let result: [(documentId: String, T)] =
+                    querySnapshot?.documents.compactMap { document in
+                        do {
+                            let data = try document.data(as: T.self)
+                            return (document.documentID, data)
+                        } catch {
+                            self.errorMessage = error.localizedDescription
+                            self.logger.error(
+                                "Error decoding filtered document in collection \(collection): \(error.localizedDescription)"
+                            )
+                            return nil
+                        }
+                    } ?? []
+                completion(.success(result))
+            }
+        }
+    }
+
+    func readDocumentIdRange<T: Decodable>(
+        collection: String,
+        firModel: T.Type,
+        startId: String,
+        endId: String,
+        completion: @escaping (Result<[(documentId: String, T)], Error>) -> Void
+    ) {
+        guard let userCollection = getUserCollection(collection: collection) else {
+            completion(
+                .failure(
+                    NSError(
+                        domain: "NoUser", code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            return
+        }
+
+        let lowerBound = min(startId, endId)
+        let upperBound = max(startId, endId)
+
+        let query = userCollection
+            .order(by: FieldPath.documentID())
+            .start(at: [lowerBound])
+            .end(at: [upperBound])
+
+        query.getDocuments { [self] querySnapshot, error in
+            if let error = error {
+                self.logger.error("Error getting documentId range: \(error.localizedDescription)")
+                completion(.failure(error))
+            } else {
+                let result: [(documentId: String, T)] =
+                    querySnapshot?.documents.compactMap { document in
+                        do {
+                            let data = try document.data(as: T.self)
+                            return (document.documentID, data)
+                        } catch {
+                            self.errorMessage = error.localizedDescription
+                            self.logger.error(
+                                "Error decoding documentId range document in collection \(collection): \(error.localizedDescription)"
+                            )
+                            return nil
+                        }
+                    } ?? []
+                completion(.success(result))
+            }
+        }
+    }
+
     func update<T: Encodable>(
         firModel: T, collection: String, documentId: String,
         completion: @escaping (Result<Void, Error>) -> Void
@@ -356,6 +462,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             FirebaseCollections.types,
             FirebaseCollections.orders,
             FirebaseCollections.productOfOrders,
+            FirebaseCollections.journalEntries,
+            FirebaseCollections.dailyBalances,
             FirebaseCollections.inventoryAdjustments,
             FirebaseCollections.opexExpenses,
             FirebaseCollections.ingredients,

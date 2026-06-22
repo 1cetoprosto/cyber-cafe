@@ -12,6 +12,7 @@ struct OpexExpenseModel: Identifiable, Codable {
     let date: Date
     let categoryId: String
     let amount: Double
+    let paymentAccount: PaymentAccount?
     let note: String?
     
     init(
@@ -19,12 +20,14 @@ struct OpexExpenseModel: Identifiable, Codable {
         date: Date = Date(),
         categoryId: String,
         amount: Double,
+        paymentAccount: PaymentAccount? = nil,
         note: String? = nil
     ) {
         self.id = id
         self.date = date
         self.categoryId = categoryId
         self.amount = amount
+        self.paymentAccount = paymentAccount
         self.note = note
     }
 }

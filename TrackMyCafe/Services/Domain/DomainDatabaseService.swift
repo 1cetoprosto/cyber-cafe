@@ -20,6 +20,10 @@ class DomainDatabaseService: DomainDB {
     //     return SettingsManager.shared.loadOnline()
     // }
 
+    private func normalizedDay(_ date: Date) -> Date {
+        Calendar.current.startOfDay(for: date)
+    }
+
     // MARK: - Ingredient Operations
 
     func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void) {
@@ -689,7 +693,7 @@ class DomainDatabaseService: DomainDB {
                 let models = firModels.map {
                     OpexExpenseModel(
                         id: $0.1.id ?? "", date: $0.1.date, categoryId: $0.1.categoryId,
-                        amount: $0.1.amount, note: $0.1.note)
+                        amount: $0.1.amount, paymentAccount: $0.1.paymentAccount, note: $0.1.note)
                 }
                 completion(models)
             case .failure(let error):
@@ -741,6 +745,123 @@ class DomainDatabaseService: DomainDB {
             let sections = grouped.map { (date: $0.key, items: $0.value) }
                 .sorted { $0.date > $1.date }
             completion(sections)
+        }
+    }
+
+    // MARK: - Journal Entries
+
+    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void) {
+        let firModel = FIRJournalEntryModel(dataModel: model)
+        FirestoreDatabaseService.shared.update(
+            firModel: firModel,
+            collection: FirebaseCollections.journalEntries,
+            documentId: model.id
+        ) { result in
+            switch result {
+            case .success:
+                self.logger.info("Journal entry saved to Firestore successfully")
+                completion(model.id)
+            case .failure(let error):
+                self.logger.error(
+                    "Failed to save journal entry to Firestore: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+    }
+
+    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void) {
+        FirestoreDatabaseService.shared.read(
+            collection: FirebaseCollections.journalEntries,
+            firModel: FIRJournalEntryModel.self
+        ) { result in
+            switch result {
+            case .success(let firModels):
+                let models =
+                    firModels
+                    .map { JournalEntryModel(firebaseModel: $0.1) }
+                    .sorted { $0.date < $1.date }
+                completion(models)
+            case .failure(let error):
+                self.logger.error("Error fetching journal entries: \(error.localizedDescription)")
+                completion([])
+            }
+        }
+    }
+
+    // MARK: - Daily Balances
+
+    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void) {
+        let firModel = FIRDailyBalanceModel(dataModel: model)
+        FirestoreDatabaseService.shared.update(
+            firModel: firModel,
+            collection: FirebaseCollections.dailyBalances,
+            documentId: model.id
+        ) { result in
+            switch result {
+            case .success:
+                self.logger.info("Daily balance saved to Firestore successfully")
+                completion(true)
+            case .failure(let error):
+                self.logger.error(
+                    "Failed to save daily balance to Firestore: \(error.localizedDescription)")
+                completion(false)
+            }
+        }
+    }
+
+    func fetchDailyBalance(
+        forAccount account: PaymentAccount,
+        date: Date,
+        completion: @escaping (DailyBalanceModel?) -> Void
+    ) {
+        let normalizedDate = normalizedDay(date)
+        let documentId = DailyBalanceModel.makeDocumentId(for: account, date: normalizedDate)
+
+        FirestoreDatabaseService.shared.fetchObjectById(
+            ofType: FIRDailyBalanceModel.self,
+            collection: FirebaseCollections.dailyBalances,
+            id: documentId
+        ) { result in
+            switch result {
+            case .success(let firModel):
+                completion(DailyBalanceModel(firebaseModel: firModel))
+            case .failure(let error):
+                self.logger.error("Error fetching daily balance: \(error.localizedDescription)")
+                completion(nil)
+            }
+        }
+        }
+
+    func fetchDailyBalances(
+        forAccount account: PaymentAccount,
+        from startDate: Date,
+        to endDate: Date,
+        completion: @escaping ([DailyBalanceModel]) -> Void
+    ) {
+        let normalizedStartDate = normalizedDay(startDate)
+        let normalizedEndDate = normalizedDay(endDate)
+        let lowerBound = min(normalizedStartDate, normalizedEndDate)
+        let upperBound = max(normalizedStartDate, normalizedEndDate)
+
+        let startId = DailyBalanceModel.makeDocumentId(for: account, date: lowerBound)
+        let endId = DailyBalanceModel.makeDocumentId(for: account, date: upperBound)
+
+        FirestoreDatabaseService.shared.readDocumentIdRange(
+            collection: FirebaseCollections.dailyBalances,
+            firModel: FIRDailyBalanceModel.self,
+            startId: startId,
+            endId: endId
+        ) { result in
+            switch result {
+            case .success(let firModels):
+                let balances =
+                    firModels
+                    .filter { $0.date >= lowerBound && $0.date <= upperBound }
+                    .sorted { $0.date < $1.date }
+                completion(balances)
+            case .failure(let error):
+                completion([])
+            }
         }
     }
 
