@@ -86,13 +86,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     checkFreshInstall()
 
     window = UIWindow(windowScene: windowScene)
+    guard let window else { return }
 
-    // Set a dummy root view controller to make window key and visible
-    window?.rootViewController = UIViewController()
-    window?.makeKeyAndVisible()
-
-    // Apply saved theme immediately
-    Theme.apply(to: window!)
+    // Apply saved theme immediately (before showing UI)
+    Theme.apply(to: window)
 
     // Configure global UI appearance after window is ready
     setupAppearance()
@@ -104,6 +101,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     #endif
 
     start()
+    window.makeKeyAndVisible()
 
         // Debug Logging of App State
         logAppState()
