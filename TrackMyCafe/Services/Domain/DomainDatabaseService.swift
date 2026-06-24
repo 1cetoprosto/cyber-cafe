@@ -277,24 +277,33 @@ class DomainDatabaseService: DomainDB {
         totalCost: Double,
         note: String?
     ) {
-        var updatedModel = FIROrderModel(dataModel: model)
-        updatedModel.date = date
-        updatedModel.type = type
-        updatedModel.sum = total
-        updatedModel.cash = cashAmount
-        updatedModel.card = cardAmount
-        updatedModel.totalCost = totalCost
-        updatedModel.note = note
+        let updatedOrder = OrderModel(
+            id: model.id,
+            date: date,
+            type: type,
+            sum: total,
+            cash: cashAmount,
+            card: cardAmount,
+            totalCost: totalCost,
+            note: note
+        )
+        updateOrder(updatedOrder) { _ in }
+    }
+
+    func updateOrder(_ order: OrderModel, completion: @escaping (Bool) -> Void) {
+        let updatedModel = FIROrderModel(dataModel: order)
         FirestoreDatabaseService.shared.update(
-            firModel: updatedModel, collection: FirebaseCollections.orders, documentId: model.id
+            firModel: updatedModel, collection: FirebaseCollections.orders, documentId: order.id
         ) { result in
             switch result {
             case .success():
                 self.logger.info("Order updated successfully in Firestore database")
+                completion(true)
             case .failure(let error):
                 self.logger.error(
                     "Failed to update order in Firestore database: \(error.localizedDescription)"
                 )
+                completion(false)
             }
         }
     }
@@ -704,6 +713,10 @@ class DomainDatabaseService: DomainDB {
     }
 
     func updateOpexExpense(model: OpexExpenseModel) {
+        updateOpexExpense(model: model) { _ in }
+    }
+
+    func updateOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
         let firModel = FIROpexExpenseModel(dataModel: model)
         FirestoreDatabaseService.shared.update(
             firModel: firModel, collection: FirebaseCollections.opexExpenses,
@@ -712,8 +725,10 @@ class DomainDatabaseService: DomainDB {
             switch result {
             case .success():
                 self.logger.info("Opex expense updated successfully")
+                completion(true)
             case .failure(let error):
                 self.logger.error("Failed to update opex expense: \(error.localizedDescription)")
+                completion(false)
             }
         }
     }
@@ -830,7 +845,7 @@ class DomainDatabaseService: DomainDB {
                 completion(nil)
             }
         }
-        }
+    }
 
     func fetchDailyBalances(
         forAccount account: PaymentAccount,
@@ -856,8 +871,13 @@ class DomainDatabaseService: DomainDB {
             case .success(let firModels):
                 let balances =
                     firModels
-                    .filter { $0.date >= lowerBound && $0.date <= upperBound }
-                    .sorted { $0.date < $1.date }
+                    .map { DailyBalanceModel(firebaseModel: $0.1) }
+                    .filter { balance in
+                        balance.date >= lowerBound && balance.date <= upperBound
+                    }
+                    .sorted { lhs, rhs in
+                        lhs.date < rhs.date
+                    }
                 completion(balances)
             case .failure(let error):
                 completion([])
