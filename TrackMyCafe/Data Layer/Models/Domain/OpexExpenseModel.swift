@@ -14,7 +14,7 @@ struct OpexExpenseModel: Identifiable, Codable {
     let amount: Double
     let paymentAccount: PaymentAccount?
     let note: String?
-    
+
     init(
         id: String = UUID().uuidString,
         date: Date = Date(),
