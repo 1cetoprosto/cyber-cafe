@@ -45,6 +45,7 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
             date: costDate,
             categoryId: cost.categoryId,
             amount: sum,
+            paymentAccount: cost.paymentAccount,
             note: name
         )
 
@@ -54,6 +55,7 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
                 date: costDate,
                 categoryId: "General", // Default category for new items
                 amount: sum,
+                paymentAccount: cost.paymentAccount,
                 note: name
             )
             do {
@@ -64,8 +66,13 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
                 throw error
             }
         } else {
-            await dataService.updateCost(updatedCost, date: costDate, name: name, sum: sum)
-            logger.notice("Cost \(updatedCost.id) updated successfully")
+            do {
+                try await dataService.updateCost(updatedCost, date: costDate, name: name, sum: sum)
+                logger.notice("Cost \(updatedCost.id) updated successfully")
+            } catch {
+                logger.error("Failed to update Cost \(updatedCost.id)")
+                throw error
+            }
         }
     }
 }

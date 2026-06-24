@@ -13,6 +13,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     private var order: OrderModel
     private var types: [TypeModel] = []
     private var selectedRow: Int?
+    private let orderDataService: OrderDataServiceProtocol
     
     let productsViewModel: ProductListViewModel
     
@@ -31,9 +32,14 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     var isNewModel: Bool
     
     // MARK: - Init
-    init(model: OrderModel, isNewModel: Bool = false) {
+    init(
+        model: OrderModel,
+        isNewModel: Bool = false,
+        orderDataService: OrderDataServiceProtocol = DomainOrderDataService()
+    ) {
         self.order = model
         self.isNewModel = isNewModel
+        self.orderDataService = orderDataService
         self.productsViewModel = ProductListViewModel()
         
         fetchTypes()
@@ -136,39 +142,54 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             totalCost: totalCost,
             note: note
         )
-        
-        DomainDatabaseService.shared.saveOrder(order: newOrder) { [weak self] documentId in
-            guard let documentId = documentId else {
+
+        Task { [weak self] in
+            guard let self else {
                 completion(false)
                 return
             }
-            self?.order.id = documentId
-            self?.isNewModel = false
-            completion(true)
+
+            do {
+                let savedOrder = try await orderDataService.createOrder(newOrder)
+                self.order = savedOrder
+                self.isNewModel = false
+                completion(true)
+            } catch {
+                self.logger.error("Failed to create order \(newOrder.id): \(error.localizedDescription)")
+                completion(false)
+            }
         }
     }
     
     private func updateOrder(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Bool) -> Void) {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
-        
-        DomainDatabaseService.shared.fetchOrders(forId: id) { fetchedOrder in
-            guard let fetchedOrder = fetchedOrder else {
+
+        let updatedOrder = OrderModel(
+            id: order.id,
+            date: date,
+            type: type,
+            sum: sum,
+            cash: cash,
+            card: card,
+            totalCost: totalCost,
+            note: note
+        )
+
+        Task { [weak self] in
+            guard let self else {
                 completion(false)
                 return
             }
-            
-            DomainDatabaseService.shared.updateOrders(
-                model: fetchedOrder,
-                date: date,
-                type: type,
-                total: sum,
-                cashAmount: cash,
-                cardAmount: card,
-                totalCost: totalCost,
-                note: note
-            )
-            completion(true)
+
+            do {
+                try await orderDataService.updateOrder(previous: order, current: updatedOrder)
+                self.order = updatedOrder
+                completion(true)
+            } catch {
+                self.logger.error("Failed to update order \(updatedOrder.id): \(error.localizedDescription)")
+                completion(false)
+            }
         }
     }
     
@@ -212,10 +233,20 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     
     func deleteOrder(completion: @escaping () -> Void) {
         ProductListViewModel.deleteOrder(withOrderId: id, date: date)
-        DomainDatabaseService.shared.deleteOrder(order: order) { success in
-            if success {
-                self.logger.notice("Order deleted")
+
+        Task { [weak self] in
+            guard let self else {
+                completion()
+                return
             }
+
+            do {
+                try await orderDataService.deleteOrder(order)
+                self.logger.notice("Order deleted")
+            } catch {
+                self.logger.error("Failed to delete order \(self.order.id): \(error.localizedDescription)")
+            }
+
             completion()
         }
     }

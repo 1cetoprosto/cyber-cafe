@@ -11,6 +11,11 @@ class OrderListViewModel: OrderListViewModelType, Loggable {
     
     private var selectedIndexPath: IndexPath?
     private var sectionsOrders: [(date: Date, items: [OrderModel])]?
+    private let orderDataService: OrderDataServiceProtocol
+
+    init(orderDataService: OrderDataServiceProtocol = DomainOrderDataService()) {
+        self.orderDataService = orderDataService
+    }
     
     func getOrders(completion: @escaping () -> Void) {
         DomainDatabaseService.shared.fetchSectionsOfOrders { [weak self] sectionsOrders in
@@ -66,12 +71,15 @@ class OrderListViewModel: OrderListViewModelType, Loggable {
     func deleteOrderModel(atIndexPath indexPath: IndexPath) {
         guard let model = getOrder(atIndexPath: indexPath) else { return }
         ProductListViewModel.deleteOrder(withOrderId: model.id, date: model.date)
-        
-        DomainDatabaseService.shared.deleteOrder(order: model) { success in
-            if success {
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await orderDataService.deleteOrder(model)
                 self.logger.notice("Order \(model.id) deleted successfully")
-            } else {
-                self.logger.error("Failed to delete order \(model.id)")
+            } catch {
+                self.logger.error("Failed to delete order \(model.id): \(error.localizedDescription)")
             }
         }
     }
