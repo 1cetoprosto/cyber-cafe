@@ -17,6 +17,10 @@ target 'TrackMyCafe Dev' do
   # Pods for TrackMyCafe Dev
 	pod 'R.swift'
 
+target 'TrackMyCafeTests' do
+    inherit! :search_paths
+  end
+
 end
 
 target 'TrackMyCafe Prod' do
