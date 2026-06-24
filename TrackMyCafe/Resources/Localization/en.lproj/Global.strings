@@ -278,6 +278,9 @@
 "orderModeOpenTabDescription" = "All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.";
 "priceList" = "Product Catalog";
 "cash" = "Cash";
+"card" = "Card";
+"cashBalance" = "Cash balance";
+"cardBalance" = "Card balance";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
  "changeDue" = "Change";
@@ -319,6 +322,7 @@
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Amount";
 "costSumPlaceholder" = "Enter amount";
+"paymentMethod" = "Payment method";
 "cost" = "Cost";
 
 // MARK: - Reports

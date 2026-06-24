@@ -14,15 +14,18 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
     var costDate: Date { cost.date }
     var costName: String { cost.note ?? "" }
     var costSum: Double { cost.amount }
+    var paymentAccount: PaymentAccount? { cost.paymentAccount }
+    var paymentAccountOptions: [PaymentAccount] { PaymentAccount.allCases }
 
     init(cost: OpexExpenseModel, dataService: CostDataServiceProtocol) {
         self.cost = cost
         self.dataService = dataService
     }
 
-    func validate(name: String?, sumText: String?) -> Bool {
+    func validate(name: String?, sumText: String?, paymentAccount: PaymentAccount?) -> Bool {
         guard let name = name, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return false }
         guard let sum = parsedSum(from: sumText), sum >= 0 else { return false }
+        guard paymentAccount != nil else { return false }
         return true
     }
 
@@ -35,7 +38,12 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
     }
 
     @MainActor
-    func saveCostModel(costDate: Date, costName: String?, costSum: Double?) async throws {
+    func saveCostModel(
+        costDate: Date,
+        costName: String?,
+        costSum: Double?,
+        paymentAccount: PaymentAccount?
+    ) async throws {
         let name = (costName ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
         let sum = costSum ?? 0.0
 
@@ -45,7 +53,7 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
             date: costDate,
             categoryId: cost.categoryId,
             amount: sum,
-            paymentAccount: cost.paymentAccount,
+            paymentAccount: paymentAccount,
             note: name
         )
 
@@ -55,7 +63,7 @@ class CostDetailsViewModel: CostDetailsViewModelType, Loggable {
                 date: costDate,
                 categoryId: "General", // Default category for new items
                 amount: sum,
-                paymentAccount: cost.paymentAccount,
+                paymentAccount: paymentAccount,
                 note: name
             )
             do {

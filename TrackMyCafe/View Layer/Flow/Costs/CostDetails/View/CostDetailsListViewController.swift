@@ -67,6 +67,35 @@ final class CostDetailsListViewController: UIViewController {
         return container
     }()
 
+    private lazy var paymentMethodContainerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.TableView.cellBackground
+        view.layer.cornerRadius = UIConstants.mediumCornerRadius
+        return view
+    }()
+
+    private lazy var paymentMethodLabel: UILabel = {
+        let label = UILabel()
+        label.font = Typography.footnote
+        label.textColor = UIColor.Main.text
+        label.text = R.string.global.paymentMethod()
+        label.numberOfLines = 0
+        return label
+    }()
+
+    private lazy var paymentMethodControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: [
+            R.string.global.cash(),
+            R.string.global.card(),
+        ])
+        control.selectedSegmentIndex = UISegmentedControl.noSegment
+        if #available(iOS 13.0, *) {
+            control.selectedSegmentTintColor = UIColor.Button.background
+        }
+        control.setContentCompressionResistancePriority(.required, for: .vertical)
+        return control
+    }()
+
     // MARK: - Action Button
     private lazy var saveButton: UIButton = {
         let button = DefaultButton()
@@ -107,6 +136,8 @@ final class CostDetailsListViewController: UIViewController {
         view.addSubview(scrollView)
         view.addSubview(saveButton)
         scrollView.addSubview(mainStackView)
+        paymentMethodContainerView.addSubview(paymentMethodLabel)
+        paymentMethodContainerView.addSubview(paymentMethodControl)
 
         // Configure input containers
         nameInputContainer.setDelegate(self)
@@ -122,6 +153,7 @@ final class CostDetailsListViewController: UIViewController {
         // Add containers to stack view
         mainStackView.addArrangedSubview(dateInputContainer)
         mainStackView.addArrangedSubview(nameInputContainer)
+        mainStackView.addArrangedSubview(paymentMethodContainerView)
         mainStackView.addArrangedSubview(priceInputContainer)
     }
 
@@ -178,7 +210,14 @@ final class CostDetailsListViewController: UIViewController {
         UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
         dateInputContainer.height(containerHeight)
         nameInputContainer.height(containerHeight)
+        paymentMethodContainerView.height(containerHeight)
         priceInputContainer.height(containerHeight)
+
+        paymentMethodLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+        paymentMethodLabel.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+        paymentMethodControl.topToBottom(of: paymentMethodLabel, offset: UIConstants.smallSpacing)
+        paymentMethodControl.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+        paymentMethodControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
 
         // Save Button constraints
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
@@ -194,6 +233,7 @@ final class CostDetailsListViewController: UIViewController {
     private func setupData() {
         dateInputContainer.date = viewModel.costDate
         nameInputContainer.text = viewModel.costName
+        selectPaymentAccount(viewModel.paymentAccount)
         if viewModel.costSum > 0 {
             priceInputContainer.text = viewModel.costSum.decimalFormat
         } else {
@@ -230,8 +270,9 @@ final class CostDetailsListViewController: UIViewController {
     @objc private func saveAction() {
         let name = nameInputContainer.text
         let sumText = priceInputContainer.text
+        let paymentAccount = selectedPaymentAccount
 
-        guard viewModel.validate(name: name, sumText: sumText) else {
+        guard viewModel.validate(name: name, sumText: sumText, paymentAccount: paymentAccount) else {
             PopupFactory.showPopup(
                 title: R.string.global.error(),
                 description: R.string.global.fillAllFields()
@@ -248,7 +289,8 @@ final class CostDetailsListViewController: UIViewController {
                 try await self.viewModel.saveCostModel(
                     costDate: self.dateInputContainer.date ?? Date(),
                     costName: name,
-                    costSum: sum
+                    costSum: sum,
+                    paymentAccount: paymentAccount
                 )
                 await MainActor.run {
                     self.onSave?()
@@ -270,6 +312,28 @@ final class CostDetailsListViewController: UIViewController {
 
     @objc private func dismissKeyboard() {
         view.endEditing(true)
+    }
+
+    private var selectedPaymentAccount: PaymentAccount? {
+        switch paymentMethodControl.selectedSegmentIndex {
+        case 0:
+            return .cash
+        case 1:
+            return .card
+        default:
+            return nil
+        }
+    }
+
+    private func selectPaymentAccount(_ account: PaymentAccount?) {
+        switch account {
+        case .cash:
+            paymentMethodControl.selectedSegmentIndex = 0
+        case .card:
+            paymentMethodControl.selectedSegmentIndex = 1
+        case .none:
+            paymentMethodControl.selectedSegmentIndex = UISegmentedControl.noSegment
+        }
     }
 
     deinit {}
