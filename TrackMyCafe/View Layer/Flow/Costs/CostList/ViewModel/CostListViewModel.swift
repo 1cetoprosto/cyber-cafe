@@ -10,6 +10,11 @@ import Foundation
 class CostListViewModel: CostListViewModelType, Loggable {
     private var selectedIndexPath: IndexPath?
     private var sectionsCosts: [(date: Date, items: [OpexExpenseModel])]?
+    private let dataService: CostDataServiceProtocol
+
+    init(dataService: CostDataServiceProtocol = DomainCostDataService()) {
+        self.dataService = dataService
+    }
     
     func getCosts(completion: @escaping () -> ()) {
         DomainDatabaseService.shared.fetchSectionsOfOpexExpenses { sectionsCosts in
@@ -51,7 +56,7 @@ class CostListViewModel: CostListViewModelType, Loggable {
               let sectionsCosts = self.sectionsCosts else { return nil }
         let cost = sectionsCosts[selectedIndexPath.section].items[selectedIndexPath.row]
         
-        return CostDetailsViewModel(cost: cost, dataService: DomainCostDataService())
+        return CostDetailsViewModel(cost: cost, dataService: dataService)
     }
     
     func selectRow(atIndexPath indexPath: IndexPath) {
@@ -66,12 +71,15 @@ class CostListViewModel: CostListViewModelType, Loggable {
     
     func deleteCostModel(atIndexPath indexPath: IndexPath) {
         guard let model = getCostModel(atIndexPath: indexPath) else { return }
-        
-        DomainDatabaseService.shared.deleteOpexExpense(model: model) { success in
-            if success {
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await dataService.deleteCost(model)
                 self.logger.notice("Costs \(model.id) deleted successfully")
-            } else {
-                self.logger.error("Failed to delete costs \(model.id)")
+            } catch {
+                self.logger.error("Failed to delete costs \(model.id): \(error.localizedDescription)")
             }
         }
     }
