@@ -278,6 +278,9 @@
 "orderModeOpenTabDescription" = "Всі продажі в одному чеку за день. Товари вже в списку, змінюйте кількість (+/-). Рекомендовано для малого асортименту.";
 "priceList" = "Каталог товарів";
 "cash" = "Готівка";
+"card" = "Картка";
+"cashBalance" = "Залишок готівки";
+"cardBalance" = "Залишок на картці";
 "receivedInCash" = "Отримано готівкою";
 "receivedByCard" = "Отримано карткою";
 "changeDue" = "Решта";
@@ -319,6 +322,7 @@
 "costNamePlaceholder" = "Введіть назву витрати";
 "costSum" = "Сума";
 "costSumPlaceholder" = "Введіть суму";
+"paymentMethod" = "Спосіб оплати";
 "cost" = "Витрата";
 
 // MARK: - Reports

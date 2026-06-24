@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 372 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 377 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -446,12 +446,33 @@ struct _R {
       /// Locales: en, uk
       var cancel: RswiftResources.StringResource { .init(key: "cancel", tableName: "Global", source: source, developmentValue: "Cancel", comment: nil) }
 
+      /// en translation: Card
+      ///
+      /// Key: card
+      ///
+      /// Locales: en, uk
+      var card: RswiftResources.StringResource { .init(key: "card", tableName: "Global", source: source, developmentValue: "Card", comment: nil) }
+
+      /// en translation: Card balance
+      ///
+      /// Key: cardBalance
+      ///
+      /// Locales: en, uk
+      var cardBalance: RswiftResources.StringResource { .init(key: "cardBalance", tableName: "Global", source: source, developmentValue: "Card balance", comment: nil) }
+
       /// en translation: Cash
       ///
       /// Key: cash
       ///
       /// Locales: en, uk
       var cash: RswiftResources.StringResource { .init(key: "cash", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
+
+      /// en translation: Cash balance
+      ///
+      /// Key: cashBalance
+      ///
+      /// Locales: en, uk
+      var cashBalance: RswiftResources.StringResource { .init(key: "cashBalance", tableName: "Global", source: source, developmentValue: "Cash balance", comment: nil) }
 
       /// en translation: General
       ///
@@ -1866,6 +1887,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var passwordValidateDesc: RswiftResources.StringResource { .init(key: "passwordValidateDesc", tableName: "Global", source: source, developmentValue: "Password must contain at least 6 characters", comment: nil) }
+
+      /// en translation: Payment method
+      ///
+      /// Key: paymentMethod
+      ///
+      /// Locales: en, uk
+      var paymentMethod: RswiftResources.StringResource { .init(key: "paymentMethod", tableName: "Global", source: source, developmentValue: "Payment method", comment: nil) }
 
       /// en translation: per
       ///

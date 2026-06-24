@@ -11,8 +11,15 @@ protocol CostDetailsViewModelType {
   var costDate: Date { get }
   var costName: String { get }
   var costSum: Double { get }
+  var paymentAccount: PaymentAccount? { get }
+  var paymentAccountOptions: [PaymentAccount] { get }
 
-  func validate(name: String?, sumText: String?) -> Bool
+  func validate(name: String?, sumText: String?, paymentAccount: PaymentAccount?) -> Bool
   func parsedSum(from text: String?) -> Double?
-  func saveCostModel(costDate: Date, costName: String?, costSum: Double?) async throws
+  func saveCostModel(
+    costDate: Date,
+    costName: String?,
+    costSum: Double?,
+    paymentAccount: PaymentAccount?
+  ) async throws
 }

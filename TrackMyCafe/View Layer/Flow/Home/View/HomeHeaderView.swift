@@ -75,8 +75,9 @@ final class HomeHeaderView: UIView {
         showDeleteDemoData: Bool = false
     ) {
         // Redundant delete button hidden as per request (replaced by floating button)
-        deleteDemoDataButton.isHidden = true // !showDeleteDemoData
-        deleteDemoDataButton.addTarget(self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
+        deleteDemoDataButton.isHidden = true  // !showDeleteDemoData
+        deleteDemoDataButton.addTarget(
+            self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
 
         dateLabel.text = DateFormatter.appFullDate.string(from: date)
         periodControl.selectedSegmentIndex = period.rawValue
@@ -156,7 +157,8 @@ final class HomeHeaderView: UIView {
 
         let contentStack = UIStackView(
             arrangedSubviews: [
-                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2, balanceCard,
+                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2,
+                balanceCard,
             ]
         )
         contentStack.axis = NSLayoutConstraint.Axis.vertical
@@ -189,7 +191,8 @@ final class HomeHeaderView: UIView {
 
     private func updateExpenseButtonBorder() {
         if #available(iOS 13.0, *) {
-            expenseButton.layer.borderColor = UIColor.Main.text.resolvedColor(with: traitCollection).alpha(0.15).cgColor
+            expenseButton.layer.borderColor =
+                UIColor.Main.text.resolvedColor(with: traitCollection).alpha(0.15).cgColor
         } else {
             expenseButton.layer.borderColor = UIColor.Main.text.alpha(0.15).cgColor
         }
@@ -439,30 +442,34 @@ private final class BalanceCard: UIView {
         iconCard.contentMode = .scaleAspectFit
 
         cashLabel.apply(.balanceTitle)
-        cashLabel.text = R.string.global.receivedInCash()
+        cashLabel.text = R.string.global.cashBalance()
         cardLabel.apply(.balanceTitle)
-        cardLabel.text = R.string.global.receivedByCard()
+        cardLabel.text = R.string.global.cardBalance()
 
         cashValue.apply(.balanceValue)
         cardValue.apply(.balanceValue)
 
-        let cashRow = UIStackView(arrangedSubviews: [iconCash, cashLabel, UIView(), cashValue])
-        cashRow.axis = .horizontal
-        cashRow.spacing = UIConstants.smallSpacing
+        let cashHeaderRow = UIStackView(arrangedSubviews: [
+            iconCash, cashLabel, UIView(), cashValue,
+        ])
+        cashHeaderRow.axis = .horizontal
+        cashHeaderRow.spacing = UIConstants.smallSpacing
         iconCash.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
         cashLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         cashValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let cardRow = UIStackView(arrangedSubviews: [iconCard, cardLabel, UIView(), cardValue])
-        cardRow.axis = .horizontal
-        cardRow.spacing = UIConstants.smallSpacing
+        let cardHeaderRow = UIStackView(arrangedSubviews: [
+            iconCard, cardLabel, UIView(), cardValue,
+        ])
+        cardHeaderRow.axis = .horizontal
+        cardHeaderRow.spacing = UIConstants.smallSpacing
         iconCard.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
         cardLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         cardValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let stack = UIStackView(arrangedSubviews: [cashRow, cardRow])
+        let stack = UIStackView(arrangedSubviews: [cashHeaderRow, cardHeaderRow])
         stack.axis = .vertical
         stack.spacing = UIConstants.standardSpacing
 
