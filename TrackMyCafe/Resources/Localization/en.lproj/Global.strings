@@ -281,6 +281,16 @@
 "card" = "Card";
 "cashBalance" = "Cash balance";
 "cardBalance" = "Card balance";
+"manualOperations" = "Manual operations";
+"manualMovementType" = "Operation type";
+"manualMovementDeposit" = "Deposit";
+"manualMovementWithdrawal" = "Withdrawal";
+"manualMovementTransfer" = "Transfer";
+"manualMovementAdjustment" = "Adjustment";
+"manualMovementFromAccount" = "From account";
+"manualMovementToAccount" = "To account";
+"manualMovementSign" = "Sign";
+"manualMovementInvalidTransfer" = "Select different accounts for transfer.";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
  "changeDue" = "Change";
