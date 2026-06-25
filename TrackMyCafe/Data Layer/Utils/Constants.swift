@@ -132,6 +132,8 @@ struct UserDefaultsKeys {
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
+    static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"
+    static let financeHistoryBackfillCompletedAt = "finance.historyBackfillCompletedAt"
 }
 
 enum OrderEntryMode: String {
