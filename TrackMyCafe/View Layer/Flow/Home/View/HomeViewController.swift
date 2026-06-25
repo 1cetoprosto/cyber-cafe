@@ -34,6 +34,9 @@ final class HomeViewController: UIViewController, ProGated {
         headerView.onPeriodChanged = { [weak self] idx in
             self?.applyPeriodChange(index: idx)
         }
+        headerView.onManualOperations = { [weak self] in
+            self?.openManualOperations()
+        }
         headerView.onDeleteDemoData = { [weak self] in
             self?.confirmDeleteDemoData()
         }
@@ -166,6 +169,18 @@ final class HomeViewController: UIViewController, ProGated {
 
     private func reloadAfterAction() {
         Task { await loadData() }
+    }
+
+    private func openManualOperations() {
+        checkProOrShowPaywall { [weak self] in
+            guard let self else { return }
+            let viewModel = ManualMovementListViewModel(
+                service: DomainManualMovementService()
+            )
+            let vc = ManualMovementListViewController(viewModel: viewModel)
+            vc.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
 
     private func confirmDeleteDemoData() {

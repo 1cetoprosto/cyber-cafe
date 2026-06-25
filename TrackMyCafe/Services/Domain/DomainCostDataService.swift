@@ -30,6 +30,7 @@ protocol BalanceJournalServiceProtocol {
         -> Set<BalanceScope>
     func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws
         -> Set<BalanceScope>
+    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<BalanceScope>
 }
 
 protocol DailyBalanceMaterializerProtocol {
@@ -121,6 +122,19 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
         let newEntries = makePurchaseEntries(from: current)
         return try await replaceJournalEntries(
             sourceType: .purchase,
+            sourceId: sourceId,
+            newEntries: newEntries
+        )
+    }
+
+    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<BalanceScope>
+    {
+        guard !sourceId.isEmpty else {
+            throw FinanceMutationError.missingIdentifier
+        }
+
+        return try await replaceJournalEntries(
+            sourceType: .manual,
             sourceId: sourceId,
             newEntries: newEntries
         )

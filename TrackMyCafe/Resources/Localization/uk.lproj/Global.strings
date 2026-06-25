@@ -281,6 +281,16 @@
 "card" = "Картка";
 "cashBalance" = "Залишок готівки";
 "cardBalance" = "Залишок на картці";
+"manualOperations" = "Ручні операції";
+"manualMovementType" = "Тип операції";
+"manualMovementDeposit" = "Поповнення";
+"manualMovementWithdrawal" = "Зняття";
+"manualMovementTransfer" = "Переказ";
+"manualMovementAdjustment" = "Коригування";
+"manualMovementFromAccount" = "З рахунку";
+"manualMovementToAccount" = "На рахунок";
+"manualMovementSign" = "Знак";
+"manualMovementInvalidTransfer" = "Для переказу оберіть різні рахунки.";
 "receivedInCash" = "Отримано готівкою";
 "receivedByCard" = "Отримано карткою";
 "changeDue" = "Решта";
