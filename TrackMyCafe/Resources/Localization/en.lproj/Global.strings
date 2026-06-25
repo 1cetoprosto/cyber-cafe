@@ -278,6 +278,19 @@
 "orderModeOpenTabDescription" = "All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.";
 "priceList" = "Product Catalog";
 "cash" = "Cash";
+"card" = "Card";
+"cashBalance" = "Cash balance";
+"cardBalance" = "Card balance";
+"manualOperations" = "Manual operations";
+"manualMovementType" = "Operation type";
+"manualMovementDeposit" = "Deposit";
+"manualMovementWithdrawal" = "Withdrawal";
+"manualMovementTransfer" = "Transfer";
+"manualMovementAdjustment" = "Adjustment";
+"manualMovementFromAccount" = "From account";
+"manualMovementToAccount" = "To account";
+"manualMovementSign" = "Sign";
+"manualMovementInvalidTransfer" = "Select different accounts for transfer.";
 "receivedInCash" = "Received in cash";
 "receivedByCard" = "Received by card";
  "changeDue" = "Change";
@@ -319,6 +332,7 @@
 "costNamePlaceholder" = "Enter cost name";
 "costSum" = "Amount";
 "costSumPlaceholder" = "Enter amount";
+"paymentMethod" = "Payment method";
 "cost" = "Cost";
 
 // MARK: - Reports

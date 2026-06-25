@@ -16,6 +16,7 @@ struct FIRJournalEntryModel: Codable, Identifiable {
     var sourceType: JournalSourceType
     var sourceId: String
     var note: String?
+    var manualKind: ManualMovementKind?
 
     init(dataModel: JournalEntryModel) {
         self.id = dataModel.id
@@ -25,5 +26,6 @@ struct FIRJournalEntryModel: Codable, Identifiable {
         self.sourceType = dataModel.sourceType
         self.sourceId = dataModel.sourceId
         self.note = dataModel.note
+        self.manualKind = dataModel.manualKind
     }
 }

@@ -13,10 +13,14 @@ protocol CreatePurchaseViewModelType {
     var initialIngredientId: String? { get }
     var initialQuantity: String { get }
     var initialPrice: String { get }
-    
+    var initialTotalAmount: Double { get }
+    var initialPaymentAccount: PaymentAccount? { get }
+
     func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void)
     func savePurchase(
         date: Date, ingredientId: String, quantity: Double, price: Double,
+        totalAmount: Double,
+        paymentAccount: PaymentAccount,
         completion: @escaping (Bool, String?) -> Void)
 }
 
@@ -27,7 +31,7 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
     private let purchaseToEdit: PurchaseModel?
 
     var isEditing: Bool { purchaseToEdit != nil }
-    
+
     var initialDate: Date { purchaseToEdit?.date ?? Date() }
     var initialIngredientId: String? { purchaseToEdit?.ingredientId }
     var initialQuantity: String {
@@ -39,6 +43,8 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
         guard let p = purchaseToEdit?.price else { return "" }
         return p.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", p) : String(p)
     }
+    var initialTotalAmount: Double { purchaseToEdit?.totalAmount ?? 0 }
+    var initialPaymentAccount: PaymentAccount? { purchaseToEdit?.paymentAccount }
 
     init(
         purchaseToEdit: PurchaseModel? = nil,
@@ -58,6 +64,8 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
 
     func savePurchase(
         date: Date, ingredientId: String, quantity: Double, price: Double,
+        totalAmount: Double,
+        paymentAccount: PaymentAccount,
         completion: @escaping (Bool, String?) -> Void
     ) {
         // Validation
@@ -69,6 +77,10 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
             completion(false, "Price cannot be negative")
             return
         }
+        guard totalAmount >= 0 else {
+            completion(false, "Total amount cannot be negative")
+            return
+        }
 
         if let oldPurchase = purchaseToEdit {
             let newPurchase = PurchaseModel(
@@ -76,10 +88,13 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
                 date: date,
                 ingredientId: ingredientId,
                 quantity: quantity,
-                price: price
+                price: price,
+                totalAmount: totalAmount,
+                paymentAccount: paymentAccount
             )
-            
-            inventoryService.editPurchase(oldPurchase: oldPurchase, newPurchase: newPurchase) { result in
+
+            inventoryService.editPurchase(oldPurchase: oldPurchase, newPurchase: newPurchase) {
+                result in
                 switch result {
                 case .success:
                     completion(true, nil)
@@ -92,7 +107,9 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
                 date: date,
                 ingredientId: ingredientId,
                 quantity: quantity,
-                price: price
+                price: price,
+                totalAmount: totalAmount,
+                paymentAccount: paymentAccount
             )
 
             // Use InventoryService to process purchase (update stock/avgCost)

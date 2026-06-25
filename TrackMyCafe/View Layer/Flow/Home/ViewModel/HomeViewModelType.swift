@@ -15,7 +15,7 @@ protocol HomeViewModelType {
 
     @MainActor
     func loadDashboard() async
-    
+
     func setPeriod(_ period: DashboardPeriod)
     func recomputeForCurrentData()
 }

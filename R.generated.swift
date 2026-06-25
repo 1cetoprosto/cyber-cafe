@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 372 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 386 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -446,12 +446,33 @@ struct _R {
       /// Locales: en, uk
       var cancel: RswiftResources.StringResource { .init(key: "cancel", tableName: "Global", source: source, developmentValue: "Cancel", comment: nil) }
 
+      /// en translation: Card
+      ///
+      /// Key: card
+      ///
+      /// Locales: en, uk
+      var card: RswiftResources.StringResource { .init(key: "card", tableName: "Global", source: source, developmentValue: "Card", comment: nil) }
+
+      /// en translation: Card balance
+      ///
+      /// Key: cardBalance
+      ///
+      /// Locales: en, uk
+      var cardBalance: RswiftResources.StringResource { .init(key: "cardBalance", tableName: "Global", source: source, developmentValue: "Card balance", comment: nil) }
+
       /// en translation: Cash
       ///
       /// Key: cash
       ///
       /// Locales: en, uk
       var cash: RswiftResources.StringResource { .init(key: "cash", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
+
+      /// en translation: Cash balance
+      ///
+      /// Key: cashBalance
+      ///
+      /// Locales: en, uk
+      var cashBalance: RswiftResources.StringResource { .init(key: "cashBalance", tableName: "Global", source: source, developmentValue: "Cash balance", comment: nil) }
 
       /// en translation: General
       ///
@@ -1307,6 +1328,76 @@ struct _R {
       /// Locales: en, uk
       var manageSubscriptions: RswiftResources.StringResource { .init(key: "manageSubscriptions", tableName: "Global", source: source, developmentValue: "Manage Subscriptions", comment: nil) }
 
+      /// en translation: Adjustment
+      ///
+      /// Key: manualMovementAdjustment
+      ///
+      /// Locales: en, uk
+      var manualMovementAdjustment: RswiftResources.StringResource { .init(key: "manualMovementAdjustment", tableName: "Global", source: source, developmentValue: "Adjustment", comment: nil) }
+
+      /// en translation: Deposit
+      ///
+      /// Key: manualMovementDeposit
+      ///
+      /// Locales: en, uk
+      var manualMovementDeposit: RswiftResources.StringResource { .init(key: "manualMovementDeposit", tableName: "Global", source: source, developmentValue: "Deposit", comment: nil) }
+
+      /// en translation: From account
+      ///
+      /// Key: manualMovementFromAccount
+      ///
+      /// Locales: en, uk
+      var manualMovementFromAccount: RswiftResources.StringResource { .init(key: "manualMovementFromAccount", tableName: "Global", source: source, developmentValue: "From account", comment: nil) }
+
+      /// en translation: Select different accounts for transfer.
+      ///
+      /// Key: manualMovementInvalidTransfer
+      ///
+      /// Locales: en, uk
+      var manualMovementInvalidTransfer: RswiftResources.StringResource { .init(key: "manualMovementInvalidTransfer", tableName: "Global", source: source, developmentValue: "Select different accounts for transfer.", comment: nil) }
+
+      /// en translation: Sign
+      ///
+      /// Key: manualMovementSign
+      ///
+      /// Locales: en, uk
+      var manualMovementSign: RswiftResources.StringResource { .init(key: "manualMovementSign", tableName: "Global", source: source, developmentValue: "Sign", comment: nil) }
+
+      /// en translation: To account
+      ///
+      /// Key: manualMovementToAccount
+      ///
+      /// Locales: en, uk
+      var manualMovementToAccount: RswiftResources.StringResource { .init(key: "manualMovementToAccount", tableName: "Global", source: source, developmentValue: "To account", comment: nil) }
+
+      /// en translation: Transfer
+      ///
+      /// Key: manualMovementTransfer
+      ///
+      /// Locales: en, uk
+      var manualMovementTransfer: RswiftResources.StringResource { .init(key: "manualMovementTransfer", tableName: "Global", source: source, developmentValue: "Transfer", comment: nil) }
+
+      /// en translation: Operation type
+      ///
+      /// Key: manualMovementType
+      ///
+      /// Locales: en, uk
+      var manualMovementType: RswiftResources.StringResource { .init(key: "manualMovementType", tableName: "Global", source: source, developmentValue: "Operation type", comment: nil) }
+
+      /// en translation: Withdrawal
+      ///
+      /// Key: manualMovementWithdrawal
+      ///
+      /// Locales: en, uk
+      var manualMovementWithdrawal: RswiftResources.StringResource { .init(key: "manualMovementWithdrawal", tableName: "Global", source: source, developmentValue: "Withdrawal", comment: nil) }
+
+      /// en translation: Manual operations
+      ///
+      /// Key: manualOperations
+      ///
+      /// Locales: en, uk
+      var manualOperations: RswiftResources.StringResource { .init(key: "manualOperations", tableName: "Global", source: source, developmentValue: "Manual operations", comment: nil) }
+
       /// en translation: Settings
       ///
       /// Key: menuSettings
@@ -1866,6 +1957,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var passwordValidateDesc: RswiftResources.StringResource { .init(key: "passwordValidateDesc", tableName: "Global", source: source, developmentValue: "Password must contain at least 6 characters", comment: nil) }
+
+      /// en translation: Payment method
+      ///
+      /// Key: paymentMethod
+      ///
+      /// Locales: en, uk
+      var paymentMethod: RswiftResources.StringResource { .init(key: "paymentMethod", tableName: "Global", source: source, developmentValue: "Payment method", comment: nil) }
 
       /// en translation: per
       ///

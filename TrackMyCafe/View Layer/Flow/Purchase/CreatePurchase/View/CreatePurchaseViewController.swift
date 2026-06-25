@@ -13,6 +13,8 @@ class CreatePurchaseViewController: UIViewController {
     private let viewModel: CreatePurchaseViewModelType
     private var ingredients: [IngredientModel] = []
     private var selectedIngredientId: String?
+    private var selectedPaymentAccount: PaymentAccount?
+    private var isTotalAmountManuallyEdited = false
     private var saveButtonBottomConstraint: NSLayoutConstraint!
 
     // MARK: - UI Elements
@@ -27,7 +29,16 @@ class CreatePurchaseViewController: UIViewController {
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = UIConstants.standardPadding
+        stackView.spacing = UIConstants.standardSpacing
+        stackView.distribution = .fill
+        stackView.alignment = .fill
+        return stackView
+    }()
+
+    private lazy var dateAndPaymentRowStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [dateInputContainer, paymentMethodContainer])
+        stackView.axis = .horizontal
+        stackView.spacing = UIConstants.standardSpacing
         stackView.distribution = .fill
         stackView.alignment = .fill
         return stackView
@@ -71,6 +82,15 @@ class CreatePurchaseViewController: UIViewController {
         return container
     }()
 
+    private lazy var quantityAndPriceRowStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [quantityInputContainer, priceInputContainer])
+        stackView.axis = .horizontal
+        stackView.spacing = UIConstants.standardSpacing
+        stackView.distribution = .fillEqually
+        stackView.alignment = .fill
+        return stackView
+    }()
+
     private lazy var priceInputContainer: InputContainerView = {
         let container = InputContainerView(
             labelText: R.string.global.pricePerUnit(),
@@ -78,6 +98,55 @@ class CreatePurchaseViewController: UIViewController {
             isEditable: true,
             placeholder: "0.00"
         )
+        return container
+    }()
+
+    private lazy var totalAmountInputContainer: InputContainerView = {
+        let container = InputContainerView(
+            labelText: R.string.global.costSum(),
+            inputType: .text(keyboardType: .decimalPad),
+            isEditable: true,
+            placeholder: "0.00"
+        )
+        return container
+    }()
+
+    private lazy var paymentMethodSegmentedControl: UISegmentedControl = {
+        let control = UISegmentedControl(items: [R.string.global.cash(), R.string.global.card()])
+        control.selectedSegmentIndex = UISegmentedControl.noSegment
+        control.addTarget(self, action: #selector(paymentMethodChanged), for: .valueChanged)
+        return control
+    }()
+
+    private lazy var paymentMethodContainer: UIView = {
+        let container = UIView()
+
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor.TableView.cellBackground
+        backgroundView.layer.cornerRadius = 12
+
+        let titleLabel = UILabel()
+        titleLabel.text = R.string.global.paymentMethod()
+        titleLabel.applyDynamic(Typography.footnote)
+        titleLabel.textColor = UIColor.Main.text
+        titleLabel.numberOfLines = 1
+        titleLabel.adjustsFontSizeToFitWidth = true
+        titleLabel.minimumScaleFactor = 0.85
+
+        container.addSubview(backgroundView)
+        backgroundView.addSubview(titleLabel)
+        backgroundView.addSubview(paymentMethodSegmentedControl)
+
+        backgroundView.edgesToSuperview()
+
+        titleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+        titleLabel.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+
+        paymentMethodSegmentedControl.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+        paymentMethodSegmentedControl.horizontalToSuperview(
+            insets: .horizontal(UIConstants.standardPadding))
+        paymentMethodSegmentedControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
+
         return container
     }()
 
@@ -115,13 +184,28 @@ class CreatePurchaseViewController: UIViewController {
         // Add toolbar to numeric fields
         addDoneButtonToTextField(quantityInputContainer.textFieldReference)
         addDoneButtonToTextField(priceInputContainer.textFieldReference)
+        addDoneButtonToTextField(totalAmountInputContainer.textFieldReference)
     }
 
     private func setupInitialValues() {
         dateInputContainer.date = viewModel.initialDate
         quantityInputContainer.text = viewModel.initialQuantity
         priceInputContainer.text = viewModel.initialPrice
+
+        if viewModel.isEditing {
+            updateTotalAmountDisplay(amount: viewModel.initialTotalAmount)
+            isTotalAmountManuallyEdited = isInitialTotalAmountCustom()
+        } else {
+            totalAmountInputContainer.text = nil
+            isTotalAmountManuallyEdited = false
+        }
+
         selectedIngredientId = viewModel.initialIngredientId
+        selectedPaymentAccount = viewModel.initialPaymentAccount
+
+        if let paymentAccount = selectedPaymentAccount {
+            paymentMethodSegmentedControl.selectedSegmentIndex = paymentAccount == .cash ? 0 : 1
+        }
 
         if viewModel.isEditing {
             title = R.string.global.editPurchase()
@@ -141,20 +225,34 @@ class CreatePurchaseViewController: UIViewController {
         view.addSubview(saveButton)
         scrollView.addSubview(mainStackView)
 
-        mainStackView.addArrangedSubview(dateInputContainer)
+        mainStackView.addArrangedSubview(dateAndPaymentRowStack)
         mainStackView.addArrangedSubview(ingredientInputContainer)
-        mainStackView.addArrangedSubview(quantityInputContainer)
-        mainStackView.addArrangedSubview(priceInputContainer)
+        mainStackView.addArrangedSubview(quantityAndPriceRowStack)
+        mainStackView.addArrangedSubview(totalAmountInputContainer)
 
         // Configure inputs
         quantityInputContainer.enableNumericInput(maxFractionDigits: 2)
         priceInputContainer.enableNumericInput(maxFractionDigits: 2)
+        totalAmountInputContainer.enableNumericInput(maxFractionDigits: 2)
 
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
             ?? ((Locale.current.languageCode == "uk")
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
+        totalAmountInputContainer.enableCurrencySuffix(symbol: currencySymbol)
+
+        quantityInputContainer.onTextChange = { [weak self] _ in
+            self?.isTotalAmountManuallyEdited = false
+            self?.recalculateTotalAmount()
+        }
+        priceInputContainer.onTextChange = { [weak self] _ in
+            self?.isTotalAmountManuallyEdited = false
+            self?.recalculateTotalAmount()
+        }
+        totalAmountInputContainer.onTextChange = { [weak self] _ in
+            self?.isTotalAmountManuallyEdited = true
+        }
     }
 
     private func setupConstraints() {
@@ -177,7 +275,8 @@ class CreatePurchaseViewController: UIViewController {
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor,
                 constant: -UIConstants.largeSpacing
             ),
-            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.centerXAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             mainStackView.leadingAnchor.constraint(
                 greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
                 constant: horizontalInset
@@ -190,12 +289,15 @@ class CreatePurchaseViewController: UIViewController {
             mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 560),
         ])
 
-        let containerHeight =
-            UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
-        dateInputContainer.height(containerHeight)
-        ingredientInputContainer.height(containerHeight)
-        quantityInputContainer.height(containerHeight)
-        priceInputContainer.height(containerHeight)
+        dateInputContainer.setContentHuggingPriority(.required, for: .horizontal)
+        dateInputContainer.setContentCompressionResistancePriority(.required, for: .horizontal)
+        paymentMethodContainer.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        paymentMethodContainer.setContentCompressionResistancePriority(
+            .defaultLow, for: .horizontal)
+
+        dateInputContainer.widthAnchor
+            .constraint(equalTo: dateAndPaymentRowStack.widthAnchor, multiplier: 0.42)
+            .isActive = true
 
         saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
         saveButton.height(UIConstants.buttonHeight)
@@ -263,6 +365,43 @@ class CreatePurchaseViewController: UIViewController {
         view.endEditing(true)
     }
 
+    @objc private func paymentMethodChanged() {
+        switch paymentMethodSegmentedControl.selectedSegmentIndex {
+        case 0:
+            selectedPaymentAccount = .cash
+        case 1:
+            selectedPaymentAccount = .card
+        default:
+            selectedPaymentAccount = nil
+        }
+    }
+
+    private func recalculateTotalAmount() {
+        guard !isTotalAmountManuallyEdited else { return }
+        let quantity = Double(quantityInputContainer.text ?? "") ?? 0
+        let price = Double(priceInputContainer.text ?? "") ?? 0
+
+        guard !(quantity.isZero && price.isZero) else {
+            totalAmountInputContainer.text = nil
+            return
+        }
+
+        updateTotalAmountDisplay(amount: quantity * price)
+    }
+
+    private func updateTotalAmountDisplay(amount: Double) {
+        totalAmountInputContainer.text = String(format: "%.2f", amount)
+    }
+
+    private func isInitialTotalAmountCustom() -> Bool {
+        guard viewModel.isEditing else { return false }
+
+        let quantity = Double(viewModel.initialQuantity) ?? 0
+        let price = Double(viewModel.initialPrice) ?? 0
+        let calculated = quantity * price
+        return abs(viewModel.initialTotalAmount - calculated) > 0.000_1
+    }
+
     @objc private func saveTapped() {
         guard let ingredientId = selectedIngredientId else {
             showAlert(message: R.string.global.pleaseSelectIngredient())
@@ -279,11 +418,26 @@ class CreatePurchaseViewController: UIViewController {
             return
         }
 
+        guard
+            let totalString = totalAmountInputContainer.text,
+            let totalAmount = Double(totalString)
+        else {
+            showAlert(message: R.string.global.fillAllFields())
+            return
+        }
+
+        guard let paymentAccount = selectedPaymentAccount else {
+            showAlert(message: R.string.global.fillAllFields())
+            return
+        }
+
         viewModel.savePurchase(
             date: dateInputContainer.date ?? Date(),
             ingredientId: ingredientId,
             quantity: qty,
-            price: price
+            price: price,
+            totalAmount: totalAmount,
+            paymentAccount: paymentAccount
         ) { [weak self] success, errorMsg in
             DispatchQueue.main.async {
                 if success {
