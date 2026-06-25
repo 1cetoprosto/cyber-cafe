@@ -15,6 +15,7 @@ struct JournalEntryModel: Identifiable, Codable {
     let sourceType: JournalSourceType
     let sourceId: String
     let note: String?
+    let manualKind: ManualMovementKind?
 
     init(
         id: String = UUID().uuidString,
@@ -23,7 +24,8 @@ struct JournalEntryModel: Identifiable, Codable {
         amount: Double,
         sourceType: JournalSourceType,
         sourceId: String,
-        note: String? = nil
+        note: String? = nil,
+        manualKind: ManualMovementKind? = nil
     ) {
         self.id = id
         self.date = date
@@ -32,6 +34,7 @@ struct JournalEntryModel: Identifiable, Codable {
         self.sourceType = sourceType
         self.sourceId = sourceId
         self.note = note
+        self.manualKind = manualKind
     }
 
     init(firebaseModel: FIRJournalEntryModel) {
@@ -42,5 +45,6 @@ struct JournalEntryModel: Identifiable, Codable {
         self.sourceType = firebaseModel.sourceType
         self.sourceId = firebaseModel.sourceId
         self.note = firebaseModel.note
+        self.manualKind = firebaseModel.manualKind
     }
 }

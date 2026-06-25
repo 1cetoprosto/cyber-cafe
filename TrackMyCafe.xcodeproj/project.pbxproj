@@ -103,6 +103,7 @@
 		C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
 		CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
+		D27C5E72DA75CCE38BF017B1 /* Pods_TrackMyCafeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D83D16AEFA49511A257A666 /* Pods_TrackMyCafeTests.framework */; };
 		D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */; };
 		D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
@@ -174,6 +175,24 @@
 		F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */; };
 		F32B52D42F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */; };
 		F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */; };
+		F32F838E2FE935AE00F4B4AE /* JournalSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838C2FE935AE00F4B4AE /* JournalSourceType.swift */; };
+		F32F838F2FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */; };
+		F32F83902FE935AE00F4B4AE /* PaymentAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */; };
+		F32F83912FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */; };
+		F32F83922FE935AE00F4B4AE /* JournalSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838C2FE935AE00F4B4AE /* JournalSourceType.swift */; };
+		F32F83932FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */; };
+		F32F83942FE935AE00F4B4AE /* PaymentAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */; };
+		F32F83952FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */; };
+		F32F83962FE935AE00F4B4AE /* JournalSourceType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838C2FE935AE00F4B4AE /* JournalSourceType.swift */; };
+		F32F83972FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */; };
+		F32F83982FE935AE00F4B4AE /* PaymentAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */; };
+		F32F83992FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */; };
+		F32F839C2FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839B2FE935CC00F4B4AE /* FIRJournalEntryModel.swift */; };
+		F32F839D2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839A2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift */; };
+		F32F839E2FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839B2FE935CC00F4B4AE /* FIRJournalEntryModel.swift */; };
+		F32F839F2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839A2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift */; };
+		F32F83A02FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839B2FE935CC00F4B4AE /* FIRJournalEntryModel.swift */; };
+		F32F83A12FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32F839A2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift */; };
 		F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC7E275C862C0035767E /* UILabel+Extension.swift */; };
 		F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC80275C89910035767E /* UITextField+Extension.swift */; };
 		F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */; };
@@ -269,6 +288,27 @@
 		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
+		F371BEC32FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BEC42FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BEC52FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BECE2FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BECF2FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BED02FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BED12FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BED22FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BED32FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BED42FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BED52FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BED62FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BED72FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BED82FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BED92FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BEDA2FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BEDB2FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BEDC2FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BEDE2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
+		F371BEDF2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
+		F371BEE02FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
 		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
 		F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
 		F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
@@ -721,6 +761,16 @@
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		F32F83AA2FE98B9300F4B4AE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F39A52E927311FDD00C8F2D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F3B33A312C0B23450073F19A;
+			remoteInfo = "TrackMyCafe Dev";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		0114E19D1BB57BDB678925E3 /* OnboardingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexExpenseModel.swift; sourceTree = "<group>"; };
@@ -749,6 +799,7 @@
 		72B5E49A3B9441A9E185BBF2 /* CostingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostingService.swift; sourceTree = "<group>"; };
 		755C0AF4BCD86A9E7FECC83D /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7D83D16AEFA49511A257A666 /* Pods_TrackMyCafeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRPurchaseModel.swift; sourceTree = "<group>"; };
 		8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.release.xcconfig"; sourceTree = "<group>"; };
@@ -758,9 +809,11 @@
 		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
 		B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIROpexExpenseModel.swift; sourceTree = "<group>"; };
 		BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "SettingListViewController+Extension.swift"; sourceTree = "<group>"; };
+		C46F54595B173CA3F90A3FAE /* Pods-TrackMyCafeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafeTests.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafeTests/Pods-TrackMyCafeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5D958EF9D4321829F0A9B12 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostsTabViewController.swift; sourceTree = "<group>"; };
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
+		CE5F64D425591D699D6994A4 /* Pods-TrackMyCafeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafeTests.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafeTests/Pods-TrackMyCafeTests.release.xcconfig"; sourceTree = "<group>"; };
 		D5FB0242092853861442A8F6 /* StockListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
 		D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
 		D8322C84341922937218E47A /* DashboardPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardPeriod.swift; sourceTree = "<group>"; };
@@ -801,6 +854,13 @@
 		F32B52C42F2B6F800005E63D /* RealmSaleGoodModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmSaleGoodModel.swift; sourceTree = "<group>"; };
 		F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRIngredientModel.swift; sourceTree = "<group>"; };
 		F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRRecipeItemModel.swift; sourceTree = "<group>"; };
+		F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyBalanceModel.swift; sourceTree = "<group>"; };
+		F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalEntryModel.swift; sourceTree = "<group>"; };
+		F32F838C2FE935AE00F4B4AE /* JournalSourceType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JournalSourceType.swift; sourceTree = "<group>"; };
+		F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentAccount.swift; sourceTree = "<group>"; };
+		F32F839A2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRDailyBalanceModel.swift; sourceTree = "<group>"; };
+		F32F839B2FE935CC00F4B4AE /* FIRJournalEntryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRJournalEntryModel.swift; sourceTree = "<group>"; };
+		F32F83A62FE98B9300F4B4AE /* TrackMyCafeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackMyCafeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F32FDC7E275C862C0035767E /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		F32FDC80275C89910035767E /* UITextField+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+Extension.swift"; sourceTree = "<group>"; };
 		F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionLinkButton.swift; sourceTree = "<group>"; };
@@ -856,6 +916,13 @@
 		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
+		F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementKind.swift; sourceTree = "<group>"; };
+		F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementEditViewController.swift; sourceTree = "<group>"; };
+		F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementEditViewModel.swift; sourceTree = "<group>"; };
+		F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementListViewController.swift; sourceTree = "<group>"; };
+		F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementListViewModel.swift; sourceTree = "<group>"; };
+		F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementTableViewCell.swift; sourceTree = "<group>"; };
+		F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainManualMovementService.swift; sourceTree = "<group>"; };
 		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
 		F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModelType.swift; sourceTree = "<group>"; };
@@ -969,6 +1036,7 @@
 		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
 		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
 		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TrackMyCafeTests; sourceTree = "<group>"; };
 		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
 		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
 		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
@@ -976,6 +1044,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F32F83A32FE98B9300F4B4AE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D27C5E72DA75CCE38BF017B1 /* Pods_TrackMyCafeTests.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F39A52EE27311FDD00C8F2D3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1121,6 +1197,7 @@
 				933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */,
 				6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */,
 				7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */,
+				7D83D16AEFA49511A257A666 /* Pods_TrackMyCafeTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1160,6 +1237,8 @@
 				9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */,
 				755C0AF4BCD86A9E7FECC83D /* Pods-TrackMyCafe Prod.debug.xcconfig */,
 				CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */,
+				C46F54595B173CA3F90A3FAE /* Pods-TrackMyCafeTests.debug.xcconfig */,
+				CE5F64D425591D699D6994A4 /* Pods-TrackMyCafeTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1362,6 +1441,8 @@
 		F31BD827284DF3FE00B8FD3B /* Firestore */ = {
 			isa = PBXGroup;
 			children = (
+				F32F839A2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift */,
+				F32F839B2FE935CC00F4B4AE /* FIRJournalEntryModel.swift */,
 				F32B52CE2F2B6F940005E63D /* FIRIngredientModel.swift */,
 				F35E91A92F49D7A80050EB4A /* FIRProductCategoryModel.swift */,
 				F32B52CF2F2B6F940005E63D /* FIRRecipeItemModel.swift */,
@@ -1526,6 +1607,7 @@
 		F3410E882BDD2D380007157B /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				F371BECD2FED426D00D72C3A /* ManualMovements */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3F6A6352C327B73000961C8 /* Admin */,
 				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
@@ -1573,6 +1655,34 @@
 				F3410EB62BDD44370007157B /* PopupFactory.swift */,
 			);
 			path = Popup;
+			sourceTree = "<group>";
+		};
+		F371BEC82FED426D00D72C3A /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */,
+				F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		F371BECC2FED426D00D72C3A /* List */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */,
+				F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */,
+				F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC82FED426D00D72C3A /* Edit */,
+				F371BECC2FED426D00D72C3A /* List */,
+			);
+			path = ManualMovements;
 			sourceTree = "<group>";
 		};
 		F3821C5927E9FA72006D40FC /* OrderList */ = {
@@ -1946,6 +2056,7 @@
 				F3B036E02B777898009C085D /* Additional materials */,
 				F31D5885291230AE0047EB44 /* README.md */,
 				F39A52F327311FDD00C8F2D3 /* TrackMyCafe */,
+				F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */,
 				F39A52F227311FDD00C8F2D3 /* Products */,
 				45CFF4E4688CA7F160236776 /* Pods */,
 				376F0012AAD22EF4E9E21620 /* Frameworks */,
@@ -1958,6 +2069,7 @@
 				F39A52F127311FDD00C8F2D3 /* TrackMyCafe Prod.app */,
 				F3B33A2F2C0B22FE0073F19A /* TrackMyCafe Beta.app */,
 				F3B33ACE2C0B23450073F19A /* TrackMyCafe Dev.app */,
+				F32F83A62FE98B9300F4B4AE /* TrackMyCafeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2173,6 +2285,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
 				F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */,
 				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
 				F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */,
@@ -2200,7 +2313,12 @@
 		F3E357F32BEFF209005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */,
 				F32B52BA2F2B6F620005E63D /* IngredientModel.swift */,
+				F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */,
+				F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */,
+				F32F838C2FE935AE00F4B4AE /* JournalSourceType.swift */,
+				F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */,
 				F35E91A52F49D7950050EB4A /* ProductCategoryModel.swift */,
 				F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */,
 				F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */,
@@ -2269,6 +2387,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		F32F83A52FE98B9300F4B4AE /* TrackMyCafeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F32F83AC2FE98B9300F4B4AE /* Build configuration list for PBXNativeTarget "TrackMyCafeTests" */;
+			buildPhases = (
+				5DF81F5B8BC66C3592D05900 /* [CP] Check Pods Manifest.lock */,
+				F32F83A22FE98B9300F4B4AE /* Sources */,
+				F32F83A32FE98B9300F4B4AE /* Frameworks */,
+				F32F83A42FE98B9300F4B4AE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F32F83AB2FE98B9300F4B4AE /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */,
+			);
+			name = TrackMyCafeTests;
+			productName = TrackMyCafeTests;
+			productReference = F32F83A62FE98B9300F4B4AE /* TrackMyCafeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F39A52F027311FDD00C8F2D3 /* TrackMyCafe Prod */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F39A530527311FDE00C8F2D3 /* Build configuration list for PBXNativeTarget "TrackMyCafe Prod" */;
@@ -2424,9 +2564,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1310;
+				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 1540;
 				TargetAttributes = {
+					F32F83A52FE98B9300F4B4AE = {
+						CreatedOnToolsVersion = 26.5;
+						TestTargetID = F3B33A312C0B23450073F19A;
+					};
 					F39A52F027311FDD00C8F2D3 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -2461,11 +2605,19 @@
 				F39A52F027311FDD00C8F2D3 /* TrackMyCafe Prod */,
 				F3B339922C0B22FE0073F19A /* TrackMyCafe Beta */,
 				F3B33A312C0B23450073F19A /* TrackMyCafe Dev */,
+				F32F83A52FE98B9300F4B4AE /* TrackMyCafeTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F32F83A42FE98B9300F4B4AE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F39A52EF27311FDD00C8F2D3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2601,6 +2753,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		5DF81F5B8BC66C3592D05900 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TrackMyCafeTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		AB56F5E5909D3731C8617DCA /* [CP] Embed Pods Frameworks */ = {
@@ -2781,6 +2955,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F32F83A22FE98B9300F4B4AE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F39A52ED27311FDD00C8F2D3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2837,6 +3018,7 @@
 				F3E357FD2BEFF978005050CB /* TypeModel.swift in Sources */,
 				F316A301273901410083E830 /* OrderTableViewCell.swift in Sources */,
 				F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */,
+				F371BEDF2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3410EAC2BDD3E8E0007157B /* UIImage+Extension.swift in Sources */,
 				F385B4292C1DA60A00973CAA /* Subscription.swift in Sources */,
 				F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -2844,6 +3026,11 @@
 				F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */,
 				F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
+				F371BED32FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BED42FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BED52FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BED62FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BED72FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */,
 				F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */,
 				F385B41D2C1D902A00973CAA /* ModeratorListController.swift in Sources */,
@@ -2865,6 +3052,10 @@
 				F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */,
 				F3EAACFE27526383004B9AF6 /* ProductPriceTableViewCell.swift in Sources */,
 				F385B4272C1DA01B00973CAA /* Log.swift in Sources */,
+				F32F838E2FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
+				F32F838F2FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
+				F32F83902FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F32F83912FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
@@ -2921,6 +3112,8 @@
 				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32F839C2FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */,
+				F32F839D2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */,
 				F32B52C02F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
 				F32B52C12F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C62EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
@@ -2967,6 +3160,7 @@
 				1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */,
 				9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */,
 				AF243119E910850D446E788B /* StockListViewModel.swift in Sources */,
+				F371BEC32FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				2714C430B247DF2FB04F039A /* StockListViewController.swift in Sources */,
 				A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */,
 				CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */,
@@ -3047,6 +3241,7 @@
 				F3F6A62F2C327A43000961C8 /* BaseReusableView.swift in Sources */,
 				F3B339CD2C0B22FE0073F19A /* UIView+Extension.swift in Sources */,
 				F3B339CE2C0B22FE0073F19A /* FirestoreDB.swift in Sources */,
+				F371BEDE2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3F6A6402C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61E2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
 				F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -3054,6 +3249,11 @@
 				F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */,
 				F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3F6A63C2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
+				F371BECE2FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BECF2FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BED02FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BED12FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BED22FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */,
 				F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */,
 				F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */,
@@ -3075,6 +3275,10 @@
 				F3B339DF2C0B22FE0073F19A /* Theme.swift in Sources */,
 				F3B339E02C0B22FE0073F19A /* SettingsManager.swift in Sources */,
 				F3B339E12C0B22FE0073F19A /* DomainDB.swift in Sources */,
+				F32F83962FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
+				F32F83972FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
+				F32F83982FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F32F83992FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
@@ -3131,6 +3335,8 @@
 				F33D34992DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D349A2DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D349B2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32F839E2FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */,
+				F32F839F2FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */,
 				F32B52BE2F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
 				F32B52BF2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
@@ -3177,6 +3383,7 @@
 				9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */,
 				B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */,
 				2D5F29A122CF2BAEC17A82E2 /* StockListViewModel.swift in Sources */,
+				F371BEC52FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */,
 				186B79D935E57A4C5F860FA5 /* StockItemCell.swift in Sources */,
 				6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */,
@@ -3257,6 +3464,7 @@
 				F3F6A6302C327A44000961C8 /* BaseReusableView.swift in Sources */,
 				F3B33A6C2C0B23450073F19A /* UIView+Extension.swift in Sources */,
 				F3B33A6D2C0B23450073F19A /* FirestoreDB.swift in Sources */,
+				F371BEE02FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3F6A6412C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61F2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
 				F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -3264,6 +3472,11 @@
 				F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */,
 				F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3F6A63D2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
+				F371BED82FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BED92FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BEDA2FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BEDB2FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BEDC2FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */,
 				F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */,
 				F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */,
@@ -3285,6 +3498,10 @@
 				F3B33A7E2C0B23450073F19A /* Theme.swift in Sources */,
 				F3B33A7F2C0B23450073F19A /* SettingsManager.swift in Sources */,
 				F3B33A802C0B23450073F19A /* DomainDB.swift in Sources */,
+				F32F83922FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
+				F32F83932FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
+				F32F83942FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F32F83952FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
@@ -3341,6 +3558,8 @@
 				F33D34932DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34942DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34952DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
+				F32F83A02FE935CC00F4B4AE /* FIRJournalEntryModel.swift in Sources */,
+				F32F83A12FE935CC00F4B4AE /* FIRDailyBalanceModel.swift in Sources */,
 				F32B52BC2F2B6F620005E63D /* RecipeItemModel.swift in Sources */,
 				F32B52BD2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
@@ -3387,6 +3606,7 @@
 				B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */,
 				C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */,
 				743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */,
+				F371BEC42FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */,
 				069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */,
 				86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */,
@@ -3412,6 +3632,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		F32F83AB2FE98B9300F4B4AE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F3B33A312C0B23450073F19A /* TrackMyCafe Dev */;
+			targetProxy = F32F83AA2FE98B9300F4B4AE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */ = {
@@ -3444,6 +3672,63 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		F32F83AD2FE98B9300F4B4AE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C46F54595B173CA3F90A3FAE /* Pods-TrackMyCafeTests.debug.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q9843C43NA;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_bundle;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackMyCafe Dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackMyCafe Dev";
+			};
+			name = Debug;
+		};
+		F32F83AE2FE98B9300F4B4AE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = CE5F64D425591D699D6994A4 /* Pods-TrackMyCafeTests.release.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Q9843C43NA;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACH_O_TYPE = mh_bundle;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TrackMyCafe Dev.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TrackMyCafe Dev";
+			};
+			name = Release;
+		};
 		F39A530327311FDE00C8F2D3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3762,6 +4047,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F32F83AC2FE98B9300F4B4AE /* Build configuration list for PBXNativeTarget "TrackMyCafeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F32F83AD2FE98B9300F4B4AE /* Debug */,
+				F32F83AE2FE98B9300F4B4AE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F39A52EC27311FDD00C8F2D3 /* Build configuration list for PBXProject "TrackMyCafe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -6,6 +6,9 @@ final class HomeHeaderView: UIView {
     var onAddExpense: (() -> Void)?
     var onPeriodChanged: ((Int) -> Void)?
     var onDeleteDemoData: (() -> Void)?
+    var onManualOperations: (() -> Void)? {
+        didSet { balanceCard.onManualOperations = onManualOperations }
+    }
 
     private let deleteDemoDataButton: UIButton = {
         let button = UIButton(type: .system)
@@ -75,8 +78,9 @@ final class HomeHeaderView: UIView {
         showDeleteDemoData: Bool = false
     ) {
         // Redundant delete button hidden as per request (replaced by floating button)
-        deleteDemoDataButton.isHidden = true // !showDeleteDemoData
-        deleteDemoDataButton.addTarget(self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
+        deleteDemoDataButton.isHidden = true  // !showDeleteDemoData
+        deleteDemoDataButton.addTarget(
+            self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
 
         dateLabel.text = DateFormatter.appFullDate.string(from: date)
         periodControl.selectedSegmentIndex = period.rawValue
@@ -156,7 +160,8 @@ final class HomeHeaderView: UIView {
 
         let contentStack = UIStackView(
             arrangedSubviews: [
-                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2, balanceCard,
+                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2,
+                balanceCard,
             ]
         )
         contentStack.axis = NSLayoutConstraint.Axis.vertical
@@ -189,7 +194,8 @@ final class HomeHeaderView: UIView {
 
     private func updateExpenseButtonBorder() {
         if #available(iOS 13.0, *) {
-            expenseButton.layer.borderColor = UIColor.Main.text.resolvedColor(with: traitCollection).alpha(0.15).cgColor
+            expenseButton.layer.borderColor =
+                UIColor.Main.text.resolvedColor(with: traitCollection).alpha(0.15).cgColor
         } else {
             expenseButton.layer.borderColor = UIColor.Main.text.alpha(0.15).cgColor
         }
@@ -425,6 +431,10 @@ private final class BalanceCard: UIView {
     private let cashValue = AppLabel(style: .balanceValue)
     private let cardLabel = AppLabel(style: .balanceTitle)
     private let cardValue = AppLabel(style: .balanceValue)
+    var onManualOperations: (() -> Void)?
+    private let manualOperationsControl = UIControl()
+    private let manualOperationsLabel = UILabel()
+    private let manualOperationsChevron = UIImageView()
 
     init() {
         super.init(frame: .zero)
@@ -439,35 +449,79 @@ private final class BalanceCard: UIView {
         iconCard.contentMode = .scaleAspectFit
 
         cashLabel.apply(.balanceTitle)
-        cashLabel.text = R.string.global.receivedInCash()
+        cashLabel.text = R.string.global.cashBalance()
         cardLabel.apply(.balanceTitle)
-        cardLabel.text = R.string.global.receivedByCard()
+        cardLabel.text = R.string.global.cardBalance()
 
         cashValue.apply(.balanceValue)
         cardValue.apply(.balanceValue)
 
-        let cashRow = UIStackView(arrangedSubviews: [iconCash, cashLabel, UIView(), cashValue])
-        cashRow.axis = .horizontal
-        cashRow.spacing = UIConstants.smallSpacing
+        manualOperationsLabel.applyDynamic(Typography.footnote)
+        manualOperationsLabel.textColor = UIColor.Main.text.alpha(0.75)
+        manualOperationsLabel.text = R.string.global.manualOperations()
+        manualOperationsLabel.numberOfLines = 1
+        manualOperationsLabel.adjustsFontSizeToFitWidth = true
+        manualOperationsLabel.minimumScaleFactor = 0.85
+
+        manualOperationsChevron.image = UIImage(systemName: "chevron.right")
+        manualOperationsChevron.tintColor = UIColor.Main.text.alpha(0.45)
+        manualOperationsChevron.contentMode = .scaleAspectFit
+        manualOperationsChevron.setContentHuggingPriority(.required, for: .horizontal)
+        manualOperationsChevron.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        let manualRow = UIStackView(arrangedSubviews: [
+            manualOperationsLabel, UIView(), manualOperationsChevron,
+        ])
+        manualRow.axis = .horizontal
+        manualRow.spacing = UIConstants.smallSpacing
+        manualRow.isUserInteractionEnabled = false
+        manualRow.arrangedSubviews.forEach { $0.isUserInteractionEnabled = false }
+
+        manualOperationsControl.addSubview(manualRow)
+        manualRow.edgesToSuperview()
+        manualOperationsControl.addTarget(
+            self,
+            action: #selector(manualOperationsTap),
+            for: .touchUpInside
+        )
+        manualOperationsControl.isAccessibilityElement = true
+        manualOperationsControl.accessibilityLabel = R.string.global.manualOperations()
+        manualOperationsControl.accessibilityTraits = [.button]
+
+        let divider = UIView()
+        divider.backgroundColor = UIColor.Main.text.alpha(0.06)
+        divider.height(1)
+
+        let cashHeaderRow = UIStackView(arrangedSubviews: [
+            iconCash, cashLabel, UIView(), cashValue,
+        ])
+        cashHeaderRow.axis = .horizontal
+        cashHeaderRow.spacing = UIConstants.smallSpacing
         iconCash.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
         cashLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         cashValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let cardRow = UIStackView(arrangedSubviews: [iconCard, cardLabel, UIView(), cardValue])
-        cardRow.axis = .horizontal
-        cardRow.spacing = UIConstants.smallSpacing
+        let cardHeaderRow = UIStackView(arrangedSubviews: [
+            iconCard, cardLabel, UIView(), cardValue,
+        ])
+        cardHeaderRow.axis = .horizontal
+        cardHeaderRow.spacing = UIConstants.smallSpacing
         iconCard.size(
             CGSize(width: UIConstants.iconContainerSize, height: UIConstants.iconContainerSize))
         cardLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         cardValue.setContentCompressionResistancePriority(.required, for: .horizontal)
 
-        let stack = UIStackView(arrangedSubviews: [cashRow, cardRow])
+        let stack = UIStackView(arrangedSubviews: [cashHeaderRow, cardHeaderRow])
         stack.axis = .vertical
         stack.spacing = UIConstants.standardSpacing
 
-        addSubview(stack)
-        stack.edgesToSuperview(
+        let contentStack = UIStackView(arrangedSubviews: [stack, divider, manualOperationsControl])
+        contentStack.axis = .vertical
+        contentStack.spacing = UIConstants.standardSpacing
+
+        addSubview(contentStack)
+        contentStack.edgesToSuperview(
             insets: .init(
                 top: UIConstants.standardPadding,
                 left: UIConstants.standardPadding,
@@ -482,5 +536,9 @@ private final class BalanceCard: UIView {
     func configure(cash: String, card: String) {
         cashValue.text = cash
         cardValue.text = card
+    }
+
+    @objc private func manualOperationsTap() {
+        onManualOperations?()
     }
 }

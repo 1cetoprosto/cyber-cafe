@@ -36,6 +36,6 @@ class PurchaseListItemViewModel: PurchaseListItemViewModelType {
     }
     
     var total: String {
-        return String(format: "%.2f", purchase.totalCost)
+        return String(format: "%.2f", purchase.totalAmount)
     }
 }

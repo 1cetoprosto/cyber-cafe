@@ -372,11 +372,14 @@ Backfill historical data into journal/daily balances and finish manual validatio
 
 - Add one-time backfill flow for existing orders
 - Add one-time backfill flow for existing opex
+- Add one-time backfill flow for existing purchases that have `paymentAccount`
 - Treat legacy opex without payment method as non-balance-affecting history
+- Treat legacy purchases without payment method as non-balance-affecting history
 - Add rollout-safe migration behavior
 - Validate correctness for:
   - create/edit/delete orders
   - create/edit/delete opex
+  - create/edit purchases
   - historical edits
   - manual movement scenarios if present
 - Remove leftover old balance logic
@@ -421,7 +424,9 @@ Accepted interpretation:
 Do:
 
 - Add one-time backfill for orders and opex
+- Add one-time backfill for purchases with payment method
 - Treat old opex without payment method as non-balance-affecting history
+- Treat old purchases without payment method as non-balance-affecting history
 - Make rollout behavior safe
 - Validate correctness and performance
 - Remove leftover old balance logic
@@ -430,7 +435,7 @@ Do not:
 
 - Introduce new finance sources of truth
 - Add Realm migration work
-- Expand scope into reports or inventory modules
+- Expand scope into reports
 
 Need:
 
