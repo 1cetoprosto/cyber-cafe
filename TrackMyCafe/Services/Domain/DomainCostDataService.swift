@@ -28,6 +28,8 @@ protocol BalanceJournalServiceProtocol {
     func syncOrder(previous: OrderModel?, current: OrderModel?) async throws -> Set<BalanceScope>
     func syncOpex(previous: OpexExpenseModel?, current: OpexExpenseModel?) async throws
         -> Set<BalanceScope>
+    func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws
+        -> Set<BalanceScope>
 }
 
 protocol DailyBalanceMaterializerProtocol {
@@ -103,6 +105,22 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
         let newEntries = makeOpexEntries(from: current)
         return try await replaceJournalEntries(
             sourceType: .opex,
+            sourceId: sourceId,
+            newEntries: newEntries
+        )
+    }
+
+    func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws
+        -> Set<BalanceScope>
+    {
+        let sourceId = current?.id ?? previous?.id ?? ""
+        guard !sourceId.isEmpty else {
+            throw FinanceMutationError.missingIdentifier
+        }
+
+        let newEntries = makePurchaseEntries(from: current)
+        return try await replaceJournalEntries(
+            sourceType: .purchase,
             sourceId: sourceId,
             newEntries: newEntries
         )
@@ -190,6 +208,26 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
                 sourceType: .opex,
                 sourceId: expense.id,
                 note: expense.note
+            )
+        ]
+    }
+
+    private func makePurchaseEntries(from purchase: PurchaseModel?) -> [JournalEntryModel] {
+        guard
+            let purchase,
+            let account = purchase.paymentAccount,
+            !purchase.totalAmount.isApproximatelyZero
+        else {
+            return []
+        }
+
+        return [
+            JournalEntryModel(
+                date: purchase.date,
+                account: account,
+                amount: -purchase.totalAmount,
+                sourceType: .purchase,
+                sourceId: purchase.id
             )
         ]
     }

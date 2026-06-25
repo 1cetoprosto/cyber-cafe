@@ -10,4 +10,5 @@ import Foundation
 enum JournalSourceType: String, Codable, CaseIterable {
     case order
     case opex
+    case purchase
 }
