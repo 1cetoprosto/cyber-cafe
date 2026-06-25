@@ -19,12 +19,24 @@ Branch: `feat/147-pr3-home-ui-daily-balance`
 - Change payment method on edit and verify save succeeds.
 - Try saving without payment method and verify validation blocks the save.
 
+## Purchase
+
+- Create a new purchase with `Cash` selected and verify save succeeds.
+- Create a new purchase with `Card` selected and verify save succeeds.
+- Edit an existing purchase and verify the previously selected payment method is prefilled.
+- Change payment method on edit and verify save succeeds.
+- Verify legacy purchases without `paymentAccount` remain editable and prefill with no selection.
+
 ## Finance Behavior
 
 - Create a cash expense and verify Home cash leftover changes after reload.
 - Create a card expense and verify Home card leftover changes after reload.
+- Create a cash purchase and verify Home cash leftover decreases by `quantity * price` after reload.
+- Create a card purchase and verify Home card leftover decreases by `quantity * price` after reload.
 - Edit a legacy expense without `paymentAccount` and verify selecting a payment method makes it balance-affecting after save.
 - Verify legacy expenses that still have no `paymentAccount` do not affect leftovers until edited and saved with a method.
+- Edit a legacy purchase without `paymentAccount` and verify selecting a payment method makes it balance-affecting after save.
+- Verify legacy purchases that still have no `paymentAccount` do not affect leftovers until edited and saved with a method.
 
 ## Regression
 

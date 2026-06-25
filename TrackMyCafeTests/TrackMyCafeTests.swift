@@ -114,6 +114,67 @@ final class TrackMyCafeTests: XCTestCase {
         XCTAssertTrue(scopes.isEmpty)
     }
 
+    func testBalanceJournalService_purchaseCreate_appendsExpenseEntry() async throws {
+        let persistence = MockFinancePersistence()
+        let service = BalanceJournalService(database: persistence)
+        let purchase = PurchaseModel(
+            id: "purchase-1",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            ingredientId: "ingredient-1",
+            quantity: 4,
+            price: 25,
+            paymentAccount: .card
+        )
+
+        let scopes = try await service.syncPurchase(previous: nil, current: purchase)
+
+        XCTAssertEqual(persistence.savedJournalEntries.count, 1)
+        XCTAssertEqual(persistence.savedJournalEntries.first?.account, .card)
+        XCTAssertEqual(persistence.savedJournalEntries.first?.amount, -100)
+        XCTAssertEqual(
+            scopes,
+            [BalanceScope(account: .card, date: purchase.date)]
+        )
+    }
+
+    func testBalanceJournalService_purchaseUsesStoredTotalAmount() async throws {
+        let persistence = MockFinancePersistence()
+        let service = BalanceJournalService(database: persistence)
+        let purchase = PurchaseModel(
+            id: "purchase-stored-total",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            ingredientId: "ingredient-1",
+            quantity: 4,
+            price: 25,
+            totalAmount: 111,
+            paymentAccount: .cash
+        )
+
+        _ = try await service.syncPurchase(previous: nil, current: purchase)
+
+        XCTAssertEqual(persistence.savedJournalEntries.count, 1)
+        XCTAssertEqual(persistence.savedJournalEntries.first?.amount, -111)
+    }
+
+    func testBalanceJournalService_legacyPurchaseWithoutPaymentAccount_doesNotAppendEntries()
+        async throws
+    {
+        let persistence = MockFinancePersistence()
+        let service = BalanceJournalService(database: persistence)
+        let purchase = PurchaseModel(
+            id: "purchase-legacy",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            ingredientId: "ingredient-1",
+            quantity: 2,
+            price: 15
+        )
+
+        let scopes = try await service.syncPurchase(previous: nil, current: purchase)
+
+        XCTAssertTrue(persistence.savedJournalEntries.isEmpty)
+        XCTAssertTrue(scopes.isEmpty)
+    }
+
     func testDailyBalanceMaterializer_buildsCumulativeBalances() async throws {
         let persistence = MockFinancePersistence()
         let service = DailyBalanceMaterializer(database: persistence)
@@ -324,6 +385,12 @@ private final class MockBalanceJournalService: BalanceJournalServiceProtocol {
         lastPreviousOpex = previous
         lastCurrentOpex = current
         return opexScopesToReturn
+    }
+
+    func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws -> Set<
+        BalanceScope
+    > {
+        []
     }
 }
 
