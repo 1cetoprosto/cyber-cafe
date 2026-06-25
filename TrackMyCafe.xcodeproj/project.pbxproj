@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 71;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -288,6 +288,27 @@
 		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */; };
 		F371AA7B2758B0890059710A /* UIViewController+AlertLanguage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */; };
+		F371BEC32FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BEC42FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BEC52FED421A00D72C3A /* ManualMovementKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */; };
+		F371BECE2FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BECF2FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BED02FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BED12FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BED22FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BED32FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BED42FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BED52FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BED62FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BED72FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BED82FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */; };
+		F371BED92FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */; };
+		F371BEDA2FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */; };
+		F371BEDB2FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */; };
+		F371BEDC2FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */; };
+		F371BEDE2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
+		F371BEDF2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
+		F371BEE02FED42B800D72C3A /* DomainManualMovementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */; };
 		F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
 		F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
 		F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */; };
@@ -895,6 +916,13 @@
 		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
+		F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementKind.swift; sourceTree = "<group>"; };
+		F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementEditViewController.swift; sourceTree = "<group>"; };
+		F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementEditViewModel.swift; sourceTree = "<group>"; };
+		F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementListViewController.swift; sourceTree = "<group>"; };
+		F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementListViewModel.swift; sourceTree = "<group>"; };
+		F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManualMovementTableViewCell.swift; sourceTree = "<group>"; };
+		F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainManualMovementService.swift; sourceTree = "<group>"; };
 		F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModel.swift; sourceTree = "<group>"; };
 		F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderListViewModelType.swift; sourceTree = "<group>"; };
@@ -1005,94 +1033,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F319FE8B2F5C459D00F8D0A4 /* View */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F324E60A2F486E99003A7469 /* Selection */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		F3299A932F35065600EA6532 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = TrackMyCafeTests;
-			sourceTree = "<group>";
-		};
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = ProductCategories;
-			sourceTree = "<group>";
-		};
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		F3F205482FD8317B007249FB /* Utilities */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
+		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
+		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TrackMyCafeTests; sourceTree = "<group>"; };
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F3F205482FD8317B007249FB /* Utilities */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utilities; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1659,6 +1607,7 @@
 		F3410E882BDD2D380007157B /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				F371BECD2FED426D00D72C3A /* ManualMovements */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3F6A6352C327B73000961C8 /* Admin */,
 				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
@@ -1706,6 +1655,34 @@
 				F3410EB62BDD44370007157B /* PopupFactory.swift */,
 			);
 			path = Popup;
+			sourceTree = "<group>";
+		};
+		F371BEC82FED426D00D72C3A /* Edit */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */,
+				F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */,
+			);
+			path = Edit;
+			sourceTree = "<group>";
+		};
+		F371BECC2FED426D00D72C3A /* List */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */,
+				F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */,
+				F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
+		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC82FED426D00D72C3A /* Edit */,
+				F371BECC2FED426D00D72C3A /* List */,
+			);
+			path = ManualMovements;
 			sourceTree = "<group>";
 		};
 		F3821C5927E9FA72006D40FC /* OrderList */ = {
@@ -2308,6 +2285,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
 				F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */,
 				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
 				F3D97EB72F4DF7D8006270AF /* DemoDataManager.swift */,
@@ -2335,6 +2313,7 @@
 		F3E357F32BEFF209005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F371BEC22FED421A00D72C3A /* ManualMovementKind.swift */,
 				F32B52BA2F2B6F620005E63D /* IngredientModel.swift */,
 				F32F838A2FE935AE00F4B4AE /* DailyBalanceModel.swift */,
 				F32F838B2FE935AE00F4B4AE /* JournalEntryModel.swift */,
@@ -2763,9 +2742,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2802,9 +2785,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -2952,9 +2939,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -3027,6 +3018,7 @@
 				F3E357FD2BEFF978005050CB /* TypeModel.swift in Sources */,
 				F316A301273901410083E830 /* OrderTableViewCell.swift in Sources */,
 				F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */,
+				F371BEDF2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3410EAC2BDD3E8E0007157B /* UIImage+Extension.swift in Sources */,
 				F385B4292C1DA60A00973CAA /* Subscription.swift in Sources */,
 				F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -3034,6 +3026,11 @@
 				F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */,
 				F36217C22EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3EAACFC27526241004B9AF6 /* LanguageViewController.swift in Sources */,
+				F371BED32FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BED42FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BED52FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BED62FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BED72FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */,
 				F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */,
 				F385B41D2C1D902A00973CAA /* ModeratorListController.swift in Sources */,
@@ -3163,6 +3160,7 @@
 				1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */,
 				9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */,
 				AF243119E910850D446E788B /* StockListViewModel.swift in Sources */,
+				F371BEC32FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				2714C430B247DF2FB04F039A /* StockListViewController.swift in Sources */,
 				A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */,
 				CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */,
@@ -3243,6 +3241,7 @@
 				F3F6A62F2C327A43000961C8 /* BaseReusableView.swift in Sources */,
 				F3B339CD2C0B22FE0073F19A /* UIView+Extension.swift in Sources */,
 				F3B339CE2C0B22FE0073F19A /* FirestoreDB.swift in Sources */,
+				F371BEDE2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3F6A6402C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61E2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
 				F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -3250,6 +3249,11 @@
 				F3B339CF2C0B22FE0073F19A /* LanguageViewController.swift in Sources */,
 				F36217C32EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3F6A63C2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
+				F371BECE2FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BECF2FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BED02FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BED12FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BED22FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */,
 				F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */,
 				F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */,
@@ -3379,6 +3383,7 @@
 				9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */,
 				B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */,
 				2D5F29A122CF2BAEC17A82E2 /* StockListViewModel.swift in Sources */,
+				F371BEC52FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */,
 				186B79D935E57A4C5F860FA5 /* StockItemCell.swift in Sources */,
 				6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */,
@@ -3459,6 +3464,7 @@
 				F3F6A6302C327A44000961C8 /* BaseReusableView.swift in Sources */,
 				F3B33A6C2C0B23450073F19A /* UIView+Extension.swift in Sources */,
 				F3B33A6D2C0B23450073F19A /* FirestoreDB.swift in Sources */,
+				F371BEE02FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
 				F3F6A6412C327C23000961C8 /* TechnicianDetailsController.swift in Sources */,
 				F3F6A61F2C2FEFFB000961C8 /* PropertyWrappers.swift in Sources */,
 				F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */,
@@ -3466,6 +3472,11 @@
 				F3B33A6E2C0B23450073F19A /* LanguageViewController.swift in Sources */,
 				F36217C12EBF006C00965886 /* DomainCostDataService.swift in Sources */,
 				F3F6A63D2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
+				F371BED82FED426D00D72C3A /* ManualMovementTableViewCell.swift in Sources */,
+				F371BED92FED426D00D72C3A /* ManualMovementEditViewController.swift in Sources */,
+				F371BEDA2FED426D00D72C3A /* ManualMovementListViewModel.swift in Sources */,
+				F371BEDB2FED426D00D72C3A /* ManualMovementEditViewModel.swift in Sources */,
+				F371BEDC2FED426D00D72C3A /* ManualMovementListViewController.swift in Sources */,
 				F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */,
 				F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */,
 				F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */,
@@ -3595,6 +3606,7 @@
 				B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */,
 				C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */,
 				743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */,
+				F371BEC42FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
 				68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */,
 				069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */,
 				86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */,
@@ -3674,8 +3686,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
 				MACH_O_TYPE = mh_bundle;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
@@ -3703,8 +3715,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
-				MARKETING_VERSION = 1.0;
 				MACH_O_TYPE = mh_bundle;
+				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = NO;
