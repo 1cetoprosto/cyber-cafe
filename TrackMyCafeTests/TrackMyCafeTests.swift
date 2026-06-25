@@ -272,6 +272,158 @@ final class TrackMyCafeTests: XCTestCase {
         XCTAssertEqual(materializer.receivedScopes, expectedScopes)
     }
 
+    func testFinanceHistoryBackfillService_createsOnlyMissingEntriesAndMarksCompleted()
+        async throws
+    {
+        let sourceFetcher = MockFinanceHistorySourceFetcher()
+        let persistence = MockFinancePersistence()
+        let materializer = MockDailyBalanceMaterializer()
+        let defaults = makeUserDefaultsSuite()
+
+        let dayOne = makeDate(year: 2026, month: 6, day: 20)
+        let dayTwo = makeDate(year: 2026, month: 6, day: 21)
+        let dayThree = makeDate(year: 2026, month: 6, day: 22)
+
+        sourceFetcher.orders = [
+            OrderModel(
+                id: "order-1",
+                date: dayOne,
+                type: "Hall",
+                sum: 150,
+                cash: 100,
+                card: 50,
+                totalCost: 60,
+                note: "Order"
+            )
+        ]
+        sourceFetcher.expenses = [
+            OpexExpenseModel(
+                id: "opex-1",
+                date: dayTwo,
+                categoryId: "General",
+                amount: 25,
+                paymentAccount: .cash,
+                note: "Beans"
+            ),
+            OpexExpenseModel(
+                id: "opex-legacy",
+                date: dayThree,
+                categoryId: "General",
+                amount: 11,
+                paymentAccount: nil,
+                note: "Legacy"
+            ),
+        ]
+        sourceFetcher.purchases = [
+            PurchaseModel(
+                id: "purchase-1",
+                date: dayThree,
+                ingredientId: "ingredient-1",
+                quantity: 2,
+                price: 20,
+                totalAmount: 40,
+                paymentAccount: .card
+            ),
+            PurchaseModel(
+                id: "purchase-legacy",
+                date: dayThree,
+                ingredientId: "ingredient-2",
+                quantity: 1,
+                price: 15,
+                totalAmount: 15,
+                paymentAccount: nil
+            ),
+        ]
+
+        persistence.journalEntries = [
+            JournalEntryModel(
+                date: dayOne,
+                account: .cash,
+                amount: 100,
+                sourceType: .order,
+                sourceId: "order-1",
+                note: "Old note"
+            )
+        ]
+
+        let service = FinanceHistoryBackfillService(
+            sourceFetcher: sourceFetcher,
+            persistence: persistence,
+            dailyBalanceMaterializer: materializer,
+            userDefaults: defaults
+        )
+
+        let didRun = try await service.runIfNeeded()
+
+        XCTAssertTrue(didRun)
+        XCTAssertEqual(
+            Set(persistence.savedJournalEntries.map { JournalEntrySnapshot(entry: $0) }),
+            Set([
+                JournalEntrySnapshot(account: .card, amount: 50),
+                JournalEntrySnapshot(account: .cash, amount: -25),
+                JournalEntrySnapshot(account: .card, amount: -40),
+            ])
+        )
+        XCTAssertEqual(
+            materializer.receivedScopes,
+            Set([
+                BalanceScope(account: .cash, date: dayOne),
+                BalanceScope(account: .card, date: dayOne),
+            ])
+        )
+        XCTAssertTrue(defaults.bool(forKey: UserDefaultsKeys.financeHistoryBackfillCompleted))
+        XCTAssertNotNil(defaults.object(forKey: UserDefaultsKeys.financeHistoryBackfillCompletedAt))
+    }
+
+    func testFinanceHistoryBackfillService_existingEntriesDoNotDuplicateAndStillMaterialize()
+        async throws
+    {
+        let sourceFetcher = MockFinanceHistorySourceFetcher()
+        let persistence = MockFinancePersistence()
+        let materializer = MockDailyBalanceMaterializer()
+        let defaults = makeUserDefaultsSuite()
+        let date = makeDate(year: 2026, month: 6, day: 22)
+
+        sourceFetcher.orders = [
+            OrderModel(
+                id: "order-existing",
+                date: date,
+                type: "Hall",
+                sum: 80,
+                cash: 80,
+                card: 0,
+                totalCost: 25,
+                note: "Current"
+            )
+        ]
+        persistence.journalEntries = [
+            JournalEntryModel(
+                date: date,
+                account: .cash,
+                amount: 80,
+                sourceType: .order,
+                sourceId: "order-existing",
+                note: "Previous note"
+            )
+        ]
+
+        let service = FinanceHistoryBackfillService(
+            sourceFetcher: sourceFetcher,
+            persistence: persistence,
+            dailyBalanceMaterializer: materializer,
+            userDefaults: defaults
+        )
+
+        let didRun = try await service.runIfNeeded()
+
+        XCTAssertTrue(didRun)
+        XCTAssertTrue(persistence.savedJournalEntries.isEmpty)
+        XCTAssertEqual(
+            materializer.receivedScopes,
+            [BalanceScope(account: .cash, date: date)]
+        )
+    }
+
     private func makeDate(year: Int, month: Int, day: Int) -> Date {
         var components = DateComponents()
         components.year = year
@@ -279,6 +431,13 @@ final class TrackMyCafeTests: XCTestCase {
         components.day = day
         components.hour = 12
         return Calendar.current.date(from: components) ?? Date()
+    }
+
+    private func makeUserDefaultsSuite() -> UserDefaults {
+        let suiteName = "TrackMyCafeTests.\(UUID().uuidString)"
+        let defaults = UserDefaults(suiteName: suiteName) ?? .standard
+        defaults.removePersistentDomain(forName: suiteName)
+        return defaults
     }
 }
 
@@ -399,5 +558,23 @@ private final class MockDailyBalanceMaterializer: DailyBalanceMaterializerProtoc
 
     func materialize(scopes: Set<BalanceScope>) async throws {
         receivedScopes = scopes
+    }
+}
+
+private final class MockFinanceHistorySourceFetcher: FinanceHistorySourceFetching {
+    var orders: [OrderModel] = []
+    var expenses: [OpexExpenseModel] = []
+    var purchases: [PurchaseModel] = []
+
+    func fetchOrders(completion: @escaping ([OrderModel]) -> Void) {
+        completion(orders)
+    }
+
+    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void) {
+        completion(expenses)
+    }
+
+    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void) {
+        completion(purchases)
     }
 }
