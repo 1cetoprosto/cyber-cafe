@@ -157,6 +157,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         } else {
             // Якщо сесія дійсна, переходимо на головний екран додатку
             window?.rootViewController = MainTabBarController()
+            runFinanceHistoryBackfillIfNeeded()
         }
     }
 
@@ -164,6 +165,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         let overlayView = UIScreen.main.snapshotView(afterScreenUpdates: false)
         controller.view.addSubview(overlayView)
         window?.rootViewController = controller
+        runFinanceHistoryBackfillIfNeeded(for: controller)
 
         UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
             overlayView.alpha = 0
@@ -248,6 +250,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         logMessage += "===========================================\n"
 
         logger.info(logMessage)
+    }
+
+    private func runFinanceHistoryBackfillIfNeeded(for controller: UIViewController? = nil) {
+        let rootController = controller ?? window?.rootViewController
+        guard Auth.auth().currentUser != nil else { return }
+        guard rootController is MainTabBarController else { return }
+
+        Task {
+            do {
+                _ = try await FinanceHistoryBackfillService().runIfNeeded()
+            } catch {
+                logger.error("Finance history backfill failed: \(error.localizedDescription)")
+            }
+        }
     }
 }
 

@@ -283,6 +283,9 @@
 		F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
 		F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
 		F36217CF2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */; };
+		F363F28A2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
+		F363F28B2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
+		F363F28C2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
 		F36DA6AB2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AC2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
@@ -913,6 +916,7 @@
 		F36217C42EC04E2300965886 /* ProductDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModel.swift; sourceTree = "<group>"; };
 		F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModelType.swift; sourceTree = "<group>"; };
 		F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductPriceDataService.swift; sourceTree = "<group>"; };
+		F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceHistoryBackfillService.swift; sourceTree = "<group>"; };
 		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
@@ -2285,6 +2289,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */,
 				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
 				F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */,
 				F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */,
@@ -3045,6 +3050,7 @@
 				F3988ADC27EB111600215976 /* CostListViewModelType.swift in Sources */,
 				F3410E9E2BDD3A5A0007157B /* SVProgressHUD+Extension.swift in Sources */,
 				F3EAAD00275266EA004B9AF6 /* ProductDetailsViewController.swift in Sources */,
+				F363F28A2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */,
 				F3EB27D927F30EBE00BB2D93 /* ProductListViewModelType.swift in Sources */,
 				F385B4062C1D784300973CAA /* PersonTableViewCell.swift in Sources */,
 				F3F6A6052C2FEB9A000961C8 /* IAPManager.swift in Sources */,
@@ -3268,6 +3274,7 @@
 				F3B339D82C0B22FE0073F19A /* ProductDetailsViewController.swift in Sources */,
 				F3B339D92C0B22FE0073F19A /* ProductListViewModelType.swift in Sources */,
 				F3B339DA2C0B22FE0073F19A /* SignInController.swift in Sources */,
+				F363F28C2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */,
 				F3B339DB2C0B22FE0073F19A /* Bundle+Extension.swift in Sources */,
 				F3B339DC2C0B22FE0073F19A /* ProductPriceTableViewCell.swift in Sources */,
 				F3B339DD2C0B22FE0073F19A /* R.generated.swift in Sources */,
@@ -3491,6 +3498,7 @@
 				F3B33A772C0B23450073F19A /* ProductDetailsViewController.swift in Sources */,
 				F3B33A782C0B23450073F19A /* ProductListViewModelType.swift in Sources */,
 				F3B33A792C0B23450073F19A /* SignInController.swift in Sources */,
+				F363F28B2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */,
 				F3B33A7A2C0B23450073F19A /* Bundle+Extension.swift in Sources */,
 				F3B33A7B2C0B23450073F19A /* ProductPriceTableViewCell.swift in Sources */,
 				F3B33A7C2C0B23450073F19A /* R.generated.swift in Sources */,
