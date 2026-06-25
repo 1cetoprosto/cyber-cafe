@@ -31,8 +31,16 @@ struct StockWarning {
 class InventoryService: InventoryServiceProtocol {
     static let shared = InventoryService()
     private let databaseService = DomainDatabaseService.shared
+    private let balanceJournalService: BalanceJournalServiceProtocol
+    private let dailyBalanceMaterializer: DailyBalanceMaterializerProtocol
 
-    private init() {}
+    private init(
+        balanceJournalService: BalanceJournalServiceProtocol = BalanceJournalService(),
+        dailyBalanceMaterializer: DailyBalanceMaterializerProtocol = DailyBalanceMaterializer()
+    ) {
+        self.balanceJournalService = balanceJournalService
+        self.dailyBalanceMaterializer = dailyBalanceMaterializer
+    }
 
     // MARK: - Purchase Processing
 
@@ -74,7 +82,7 @@ class InventoryService: InventoryServiceProtocol {
                     // 5. Save Purchase record to history
                     self?.databaseService.savePurchase(model: purchase) { purchaseSuccess in
                         if purchaseSuccess {
-                            completion(.success(()))
+                            self?.syncPurchaseBalance(previous: nil, current: purchase, completion: completion)
                         } else {
                             completion(
                                 .failure(
@@ -139,7 +147,11 @@ class InventoryService: InventoryServiceProtocol {
                     if success {
                         self?.databaseService.savePurchase(model: newPurchase) { purchaseSuccess in
                             if purchaseSuccess {
-                                completion(.success(()))
+                                self?.syncPurchaseBalance(
+                                    previous: oldPurchase,
+                                    current: newPurchase,
+                                    completion: completion
+                                )
                             } else {
                                 completion(
                                     .failure(
@@ -383,6 +395,25 @@ class InventoryService: InventoryServiceProtocol {
 
             checkGroup.notify(queue: .main) {
                 completion(warnings)
+            }
+        }
+    }
+
+    private func syncPurchaseBalance(
+        previous: PurchaseModel?,
+        current: PurchaseModel?,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        Task {
+            do {
+                let scopes = try await balanceJournalService.syncPurchase(
+                    previous: previous,
+                    current: current
+                )
+                try await dailyBalanceMaterializer.materialize(scopes: scopes)
+                completion(.success(()))
+            } catch {
+                completion(.failure(error))
             }
         }
     }

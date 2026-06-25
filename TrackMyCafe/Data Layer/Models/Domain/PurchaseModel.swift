@@ -13,11 +13,13 @@ struct PurchaseModel: Identifiable, Codable {
     let ingredientId: String
     let quantity: Double
     let price: Double  // Unit price
+    let totalAmount: Double
+    let paymentAccount: PaymentAccount?
     let supplierId: String?
 
-    // Computed property for total cost of this purchase
+    // Temporary compatibility accessor for existing finance/inventory code.
     var totalCost: Double {
-        return quantity * price
+        return totalAmount
     }
 
     init(
@@ -26,6 +28,8 @@ struct PurchaseModel: Identifiable, Codable {
         ingredientId: String,
         quantity: Double,
         price: Double,
+        totalAmount: Double? = nil,
+        paymentAccount: PaymentAccount? = nil,
         supplierId: String? = nil
     ) {
         self.id = id
@@ -33,6 +37,8 @@ struct PurchaseModel: Identifiable, Codable {
         self.ingredientId = ingredientId
         self.quantity = quantity
         self.price = price
+        self.totalAmount = totalAmount ?? (quantity * price)
+        self.paymentAccount = paymentAccount
         self.supplierId = supplierId
     }
 
@@ -42,6 +48,8 @@ struct PurchaseModel: Identifiable, Codable {
         self.ingredientId = realmModel.ingredientId
         self.quantity = realmModel.quantity
         self.price = realmModel.price
+        self.totalAmount = realmModel.totalAmount ?? (realmModel.quantity * realmModel.price)
+        self.paymentAccount = realmModel.paymentAccountRaw.flatMap(PaymentAccount.init(rawValue:))
         self.supplierId = realmModel.supplierId
     }
 
@@ -51,6 +59,9 @@ struct PurchaseModel: Identifiable, Codable {
         self.ingredientId = firebaseModel.ingredientId
         self.quantity = firebaseModel.quantity
         self.price = firebaseModel.price
+        self.totalAmount =
+            firebaseModel.totalAmount ?? (firebaseModel.quantity * firebaseModel.price)
+        self.paymentAccount = firebaseModel.paymentAccount
         self.supplierId = firebaseModel.supplierId
     }
 }
