@@ -8,55 +8,51 @@
 import TinyConstraints
 import UIKit
 
-class IngredientTableViewCell: UITableViewCell {
+final class IngredientTableViewCell: BaseListTableViewCell {
 
     static let identifier = "IngredientTableViewCell"
 
     // MARK: - UI Elements
-    private let nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = UIColor.Main.text
+    private let nameLabel: AppLabel = {
+        let label = AppLabel(style: .bodyMultiline)
+        label.textColor = UIColor.TableView.cellLabel
+        label.numberOfLines = 2
         return label
     }()
 
-    private let stockLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = UIColor.gray
+    private let stockLabel: AppLabel = {
+        let label = AppLabel(style: .footnote)
+        label.textColor = UIColor.Main.secondaryText
         return label
     }()
 
-    private let costLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        label.textColor = UIColor.Main.text
+    private let costLabel: AppLabel = {
+        let label = AppLabel(style: .bodyValue)
+        label.textColor = UIColor.TableView.cellLabel
         label.textAlignment = .right
         return label
     }()
 
-    private let unitLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
-        label.textColor = UIColor.Main.text
+    private let unitLabel: AppLabel = {
+        let label = AppLabel(style: .footnoteValue)
+        label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .right
         return label
     }()
 
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupView()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        return nil
     }
 
     // MARK: - Setup
     private func setupView() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        accessoryType = .disclosureIndicator
 
         contentView.addSubview(nameLabel)
         contentView.addSubview(stockLabel)

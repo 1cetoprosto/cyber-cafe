@@ -89,6 +89,7 @@ protocol DomainDB {
     // Purchases
     func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void)
     func savePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void)
+    func deletePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void)
 
     // Recipes
     func fetchRecipe(
