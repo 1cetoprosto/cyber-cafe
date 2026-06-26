@@ -12,14 +12,11 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: OrderListViewModelType?
 
     let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+        let tableView = UITableView.standardList()
         tableView.register(
-            OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorColor = UIColor.TableView.separator
-        // tableView.translatesAutoresizingMaskIntoConstraints = false // Not needed with TinyConstraints
-
+            OrdersTableViewCell.self,
+            forCellReuseIdentifier: OrdersTableViewCell.identifier
+        )
         return tableView
     }()
 

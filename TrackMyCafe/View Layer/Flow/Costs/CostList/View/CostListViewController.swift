@@ -11,17 +11,11 @@ class CostListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: CostListViewModelType?
 
     let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-
+        let tableView = UITableView.standardList()
         tableView.register(
-            CostsTableViewCell.self, forCellReuseIdentifier: CostsTableViewCell.identifier)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        tableView.separatorColor = UIColor.TableView.separator
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 56
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
+            CostsTableViewCell.self,
+            forCellReuseIdentifier: CostsTableViewCell.identifier
+        )
         return tableView
     }()
 

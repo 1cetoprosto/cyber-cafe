@@ -15,12 +15,10 @@ class StockListViewController: UIViewController, ProGated {
     private let viewModel: StockListViewModelProtocol
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView.standardList()
         tableView.register(StockItemCell.self, forCellReuseIdentifier: "StockItemCell")
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 80
         tableView.tableFooterView = UIView()
         return tableView
     }()
@@ -64,8 +62,6 @@ class StockListViewController: UIViewController, ProGated {
 
         view.addSubview(tableView)
         view.addSubview(activityIndicator)
-
-        tableView.backgroundColor = UIColor.Main.background
 
         tableView.edgesToSuperview()
         activityIndicator.centerInSuperview()
