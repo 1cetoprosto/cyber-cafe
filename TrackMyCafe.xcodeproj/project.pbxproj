@@ -286,6 +286,9 @@
 		F363F28A2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
 		F363F28B2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
 		F363F28C2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */; };
+		F363F28E2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
+		F363F28F2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
+		F363F2902FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
 		F36DA6AB2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AC2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
@@ -917,6 +920,7 @@
 		F36217C52EC04E2300965886 /* ProductDetailsViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewModelType.swift; sourceTree = "<group>"; };
 		F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductPriceDataService.swift; sourceTree = "<group>"; };
 		F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceHistoryBackfillService.swift; sourceTree = "<group>"; };
+		F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+StandardList.swift"; sourceTree = "<group>"; };
 		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
@@ -1417,6 +1421,7 @@
 		F316A2F7273804AB0083E830 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */,
 				F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */,
 				F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */,
 				F385B4142C1D863D00973CAA /* BaseReusableView.swift */,
@@ -3063,6 +3068,7 @@
 				F32F83902FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
 				F32F83912FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F3410E6F2BDD25DE0007157B /* R.generated.swift in Sources */,
+				F363F2902FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
 				F3410E8B2BDD2D610007157B /* Theme.swift in Sources */,
 				F34BC9C52F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
@@ -3287,6 +3293,7 @@
 				F32F83982FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
 				F32F83992FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
+				F363F28E2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
 				F3B339E22C0B22FE0073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6312C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
 				F34BC9C32F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,
@@ -3511,6 +3518,7 @@
 				F32F83942FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
 				F32F83952FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
+				F363F28F2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
 				F3B33A812C0B23450073F19A /* ProductListViewController.swift in Sources */,
 				F3F6A6322C327A48000961C8 /* UITableView+Reusable.swift in Sources */,
 				F34BC9C72F63455E000476B5 /* BaseListTableViewCell.swift in Sources */,

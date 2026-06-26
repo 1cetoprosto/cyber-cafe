@@ -14,13 +14,9 @@ class PurchaseListViewController: UIViewController, ProGated {
 
     // MARK: - UI Elements
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView.standardList()
         tableView.register(
             PurchaseTableViewCell.self, forCellReuseIdentifier: PurchaseTableViewCell.identifier)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 72
         return tableView
     }()
 
@@ -385,11 +381,52 @@ extension PurchaseListViewController: UITableViewDelegate {
 
     func tableView(
         _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(
+            style: .destructive,
+            title: R.string.global.delete()
+        ) { [weak self] _, _, completion in
+            guard let self else {
+                completion(false)
+                return
+            }
+
+            self.checkProOrShowPaywall(
+                onSuccess: { [weak self] in
+                    guard let self else {
+                        completion(false)
+                        return
+                    }
+
+                    self.viewModel.deletePurchase(at: indexPath) { [weak self] success in
+                        DispatchQueue.main.async {
+                            if success {
+                                self?.tableView.reloadData()
+                            }
+                            completion(success)
+                        }
+                    }
+                },
+                onDenied: {
+                    completion(false)
+                }
+            )
+        }
+
+        return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+
+    func tableView(
+        _ tableView: UITableView,
         willDisplayHeaderView view: UIView,
         forSection section: Int
     ) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.applyDynamic(Typography.title3)
-        header.textLabel?.textColor = UIColor.Main.text.alpha(0.55)
+        header.textLabel?.font = Typography.footnote
+        header.textLabel?.textColor = UIColor.Main.text
+        if #available(iOS 11.0, *) {
+            header.textLabel?.adjustsFontForContentSizeCategory = true
+        }
     }
 }

@@ -4,14 +4,7 @@ import UIKit
 final class ManualMovementListViewController: UIViewController, ProGated {
     private let viewModel: ManualMovementListViewModelType
 
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 72
-        return tableView
-    }()
+    private let tableView = UITableView.standardList()
 
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
@@ -168,8 +161,10 @@ extension ManualMovementListViewController: UITableViewDelegate {
         forSection section: Int
     ) {
         guard let header = view as? UITableViewHeaderFooterView else { return }
-        header.textLabel?.applyDynamic(Typography.title3)
-        header.textLabel?.textColor = UIColor.Main.text.alpha(0.55)
+        header.textLabel?.font = Typography.footnote
+        header.textLabel?.textColor = UIColor.Main.text
+        if #available(iOS 11.0, *) {
+            header.textLabel?.adjustsFontForContentSizeCategory = true
+        }
     }
 }
-

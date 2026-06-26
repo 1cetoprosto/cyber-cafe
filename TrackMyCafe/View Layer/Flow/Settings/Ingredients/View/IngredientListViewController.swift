@@ -13,14 +13,10 @@ class IngredientListViewController: UIViewController {
     private let viewModel: IngredientListViewModelType
     
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView.standardList()
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(IngredientTableViewCell.self, forCellReuseIdentifier: IngredientTableViewCell.identifier)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 70
         return tableView
     }()
 
@@ -50,7 +46,7 @@ class IngredientListViewController: UIViewController {
         title = viewModel.title
         
         view.addSubview(tableView)
-        tableView.edgesToSuperview()
+        tableView.edgesToSuperview(usingSafeArea: true)
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addIngredientAction))
     }
