@@ -5,10 +5,7 @@ final class ProductCategoriesListViewController: UIViewController, Loggable {
     private var categories: [ProductCategoryModel] = []
 
     private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        return tableView
+        UITableView.standardList()
     }()
 
     override func viewWillAppear(_ animated: Bool) {

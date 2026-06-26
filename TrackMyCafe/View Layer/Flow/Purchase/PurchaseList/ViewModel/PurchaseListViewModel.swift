@@ -14,6 +14,7 @@ protocol PurchaseListViewModelType {
     func numberOfRowInSection(for section: Int) -> Int
     func cellViewModel(for indexPath: IndexPath) -> PurchaseListItemViewModelType?
     func purchase(at indexPath: IndexPath) -> PurchaseModel
+    func deletePurchase(at indexPath: IndexPath, completion: @escaping (Bool) -> Void)
     func availableIngredients() -> [(id: String, name: String)]
     func applyFilter(
         dateRange: ClosedRange<Date>?,
@@ -92,6 +93,24 @@ class PurchaseListViewModel: PurchaseListViewModelType {
 
     func purchase(at indexPath: IndexPath) -> PurchaseModel {
         return sectionsPurchases[indexPath.section].items[indexPath.row]
+    }
+
+    func deletePurchase(at indexPath: IndexPath, completion: @escaping (Bool) -> Void) {
+        let model = purchase(at: indexPath)
+
+        dbService.deletePurchase(model: model) { [weak self] success in
+            guard let self else {
+                completion(false)
+                return
+            }
+
+            if success {
+                self.allPurchases.removeAll { $0.id == model.id }
+                self.applyCurrentFilters()
+            }
+
+            completion(success)
+        }
     }
 
     func applyFilter(

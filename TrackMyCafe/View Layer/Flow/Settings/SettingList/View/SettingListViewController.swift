@@ -54,9 +54,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     private let subscriptionBanner = SubscriptionBannerView()
     
     private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .insetGrouped)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
+        let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(
             SettingsStaticTableViewCell.self,

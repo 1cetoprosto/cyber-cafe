@@ -126,6 +126,24 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
+    func deletePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void) {
+        FirestoreDatabaseService.shared.delete(
+            collection: FirebaseCollections.purchases,
+            documentId: model.id
+        ) { [weak self] result in
+            switch result {
+            case .success:
+                self?.logger.info("Purchase deleted from Firestore successfully")
+                completion(true)
+            case .failure(let error):
+                self?.logger.error(
+                    "Failed to delete purchase from Firestore with error: \(error.localizedDescription)"
+                )
+                completion(false)
+            }
+        }
+    }
+
     // Recipes
     func fetchRecipe(
         forProductId productId: String, completion: @escaping ([RecipeItemModel]) -> Void

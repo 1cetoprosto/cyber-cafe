@@ -22,10 +22,7 @@ class ProductListViewController: UIViewController, Loggable {
     private var currentSortOrder: ProductSortOrder = .none
     
     let tableView: UITableView = {
-        let tableView = UITableView()
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
-        tableView.rowHeight = 44
+        let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         
         return tableView
@@ -147,9 +144,9 @@ class ProductListViewController: UIViewController, Loggable {
         view.addSubview(tableView)
         
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
         
