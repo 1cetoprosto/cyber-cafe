@@ -5,52 +5,46 @@
 //  Created by AI Assistant on 10.02.2026.
 //
 
-import UIKit
 import TinyConstraints
+import UIKit
 
-class PurchaseTableViewCell: UITableViewCell {
+final class PurchaseTableViewCell: BaseListTableViewCell {
 
     // MARK: - UI Elements
     private let nameLabel: AppLabel = {
-        let label = AppLabel(style: .bodyMedium)
-        label.textColor = UIColor.Main.text
+        let label = AppLabel(style: .bodyMultiline)
+        label.textColor = UIColor.TableView.cellLabel
         label.numberOfLines = 2
-        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
     private let detailsLabel: AppLabel = {
         let label = AppLabel(style: .footnoteValue)
-        label.textColor = UIColor.Main.text.alpha(0.75)
+        label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .right
         return label
     }()
 
     private let totalLabel: AppLabel = {
-        let label = AppLabel(style: .bodyBoldValue)
-        label.textColor = UIColor.Main.text
+        let label = AppLabel(style: .bodyValue)
+        label.textColor = UIColor.TableView.cellLabel
         label.textAlignment = .right
         return label
     }()
 
-    private let containerView: UIView = {
-        UIView()
-    }()
-
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupView()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        return nil
     }
 
     // MARK: - Setup
     private func setupView() {
-        backgroundColor = .clear
-        contentView.backgroundColor = .clear
+        accessoryType = .disclosureIndicator
 
         let leftStack = UIStackView(arrangedSubviews: [nameLabel])
         leftStack.axis = .vertical
@@ -68,14 +62,11 @@ class PurchaseTableViewCell: UITableViewCell {
 
         let rootStack = UIStackView(arrangedSubviews: [leftStack, rightStack])
         rootStack.axis = .horizontal
-        rootStack.alignment = .top
+        rootStack.alignment = .center
         rootStack.distribution = .fill
         rootStack.spacing = UIConstants.standardSpacing
 
-        contentView.addSubview(containerView)
-        containerView.addSubview(rootStack)
-
-        containerView.edgesToSuperview()
+        contentView.addSubview(rootStack)
         rootStack.edgesToSuperview(
             insets: .init(
                 top: UIConstants.standardSpacing,

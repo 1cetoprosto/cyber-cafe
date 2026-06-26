@@ -41,12 +41,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
         return collectionView
     }()
 
-    private let tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .singleLine
-        return tableView
-    }()
+    private let tableView = UITableView.standardList(style: .insetGrouped)
 
     private lazy var productsCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -97,6 +92,10 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     }
 
     private func setupTableView() {
+        tableView.register(
+            OrderProductPickerTableViewCell.self,
+            forCellReuseIdentifier: OrderProductPickerTableViewCell.reuseIdentifier
+        )
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -317,16 +316,17 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell =
-            tableView.dequeueReusableCell(withIdentifier: "ProductCell")
-            ?? UITableViewCell(style: .value1, reuseIdentifier: "ProductCell")
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: OrderProductPickerTableViewCell.reuseIdentifier,
+                for: indexPath
+            ) as? OrderProductPickerTableViewCell
+        else {
+            return UITableViewCell()
+        }
 
         let product = filteredProducts[indexPath.row]
-        cell.textLabel?.text = product.name
-        cell.detailTextLabel?.text = product.price.currency
-        cell.backgroundColor = UIColor.Main.background
-        cell.textLabel?.textColor = UIColor.Main.text
-        cell.detailTextLabel?.textColor = UIColor.Main.text
+        cell.configure(product: product)
         return cell
     }
 
@@ -341,5 +341,28 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
                 self.navigationController?.popViewController(animated: true)
             }
         }
+    }
+}
+
+private final class OrderProductPickerTableViewCell: BaseListTableViewCell {
+    static let reuseIdentifier = "OrderProductPickerTableViewCell"
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: .value1, reuseIdentifier: reuseIdentifier)
+        accessoryType = .none
+        textLabel?.applyDynamic(Typography.body)
+        detailTextLabel?.applyDynamic(Typography.body)
+        detailTextLabel?.adjustsFontSizeToFitWidth = true
+        detailTextLabel?.minimumScaleFactor = 0.7
+        detailTextLabel?.lineBreakMode = .byTruncatingTail
+    }
+
+    required init?(coder: NSCoder) {
+        return nil
+    }
+
+    func configure(product: ProductsPriceModel) {
+        textLabel?.text = product.name
+        detailTextLabel?.text = product.price.currency
     }
 }

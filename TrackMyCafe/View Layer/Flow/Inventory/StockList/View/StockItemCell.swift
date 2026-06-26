@@ -8,17 +8,14 @@
 import TinyConstraints
 import UIKit
 
-class StockItemCell: UITableViewCell {
+final class StockItemCell: BaseListTableViewCell {
 
     // MARK: - Views
 
-    private let containerView = UIView()
-
     private let nameLabel: AppLabel = {
-        let label = AppLabel(style: .bodyMedium)
-        label.textColor = UIColor.Main.text
+        let label = AppLabel(style: .bodyMultiline)
+        label.textColor = UIColor.TableView.cellLabel
         label.numberOfLines = 2
-        label.lineBreakMode = .byWordWrapping
         return label
     }()
 
@@ -29,8 +26,8 @@ class StockItemCell: UITableViewCell {
     }()
 
     private let quantityLabel: AppLabel = {
-        let label = AppLabel(style: .bodyBoldValue)
-        label.textColor = UIColor.Main.text
+        let label = AppLabel(style: .bodyValue)
+        label.textColor = UIColor.TableView.cellLabel
         label.textAlignment = .right
         return label
     }()
@@ -45,22 +42,18 @@ class StockItemCell: UITableViewCell {
     // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        return nil
     }
 
     // MARK: - Setup
 
     private func setupUI() {
-        backgroundColor = .clear
-        selectionStyle = .none
-
-        contentView.addSubview(containerView)
-        containerView.edgesToSuperview()
+        accessoryType = .disclosureIndicator
 
         let infoStack = UIStackView(arrangedSubviews: [nameLabel, unitLabel])
         infoStack.axis = .vertical
@@ -79,7 +72,7 @@ class StockItemCell: UITableViewCell {
         rootStack.distribution = .fill
         rootStack.spacing = UIConstants.standardSpacing
 
-        containerView.addSubview(rootStack)
+        contentView.addSubview(rootStack)
         rootStack.edgesToSuperview(
             insets: .init(
                 top: UIConstants.standardSpacing,
@@ -96,27 +89,20 @@ class StockItemCell: UITableViewCell {
     // MARK: - Configuration
 
     func configure(with model: IngredientModel) {
-        // 1. Name + Unit
         nameLabel.text = "\(model.name), \(model.unit.localizedName)"
 
-        // 2. Quantity (was at top right)
         quantityLabel.text = String(format: "%.2f", model.stockQuantity)
 
-        // 3. Average Price (was at bottom right) -> now below Name
         unitLabel.text = String(
             format: R.string.global.inventoryAvgPrice(model.averageCost), model.averageCost)
-        unitLabel.textColor = UIColor.Main.secondaryText
 
-        // 4. Total Value (new) -> now at bottom right
         let totalValue = model.stockQuantity * model.averageCost
         costLabel.text = String(format: R.string.global.inventorySumValue(totalValue), totalValue)
-        costLabel.textColor = UIColor.Main.secondaryText
 
-        // Highlight low stock (hardcoded threshold 5.0 for now, ideally from settings)
         if model.stockQuantity < 5.0 {
             quantityLabel.textColor = .systemRed
         } else {
-            quantityLabel.textColor = UIColor.Main.text
+            quantityLabel.textColor = UIColor.TableView.cellLabel
         }
     }
 }
