@@ -1,34 +1,25 @@
 import TinyConstraints
 import UIKit
 
-final class ManualMovementTableViewCell: UITableViewCell {
+final class ManualMovementTableViewCell: BaseListTableViewCell {
     static let reuseIdentifier = "ManualMovementTableViewCell"
 
-    private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.applyDynamic(Typography.title3DemiBold)
-        label.textColor = UIColor.Main.text
-        label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.85
+    private let titleLabel: AppLabel = {
+        let label = AppLabel(style: .body)
+        label.textColor = UIColor.TableView.cellLabel
         return label
     }()
 
-    private let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.applyDynamic(Typography.footnote)
-        label.textColor = UIColor.Main.text.alpha(0.6)
+    private let subtitleLabel: AppLabel = {
+        let label = AppLabel(style: .footnote)
+        label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 2
         return label
     }()
 
-    private let amountLabel: UILabel = {
-        let label = UILabel()
-        label.applyDynamic(Typography.title3DemiBold)
+    private let amountLabel: AppLabel = {
+        let label = AppLabel(style: .bodyValue)
         label.textAlignment = .right
-        label.numberOfLines = 1
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.6
         label.setContentCompressionResistancePriority(.required, for: .horizontal)
         label.setContentHuggingPriority(.required, for: .horizontal)
         return label
@@ -50,18 +41,16 @@ final class ManualMovementTableViewCell: UITableViewCell {
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .default, reuseIdentifier: reuseIdentifier)
         setupUI()
     }
 
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+        return nil
     }
 
     private func setupUI() {
-        backgroundColor = UIColor.TableView.cellBackground
-        selectionStyle = .default
+        accessoryType = .disclosureIndicator
 
         vStack.addArrangedSubview(titleLabel)
         vStack.addArrangedSubview(subtitleLabel)
@@ -153,7 +142,7 @@ final class ManualMovementTableViewCell: UITableViewCell {
         case .transfer:
             prefix = ""
             currency = NumberFormatter.currencyInteger.string(abs(operation.amount))
-            color = UIColor.Main.text
+            color = UIColor.TableView.cellLabel
         case .adjustment:
             let raw = operation.amount
             prefix = raw >= 0 ? "+" : "-"
@@ -164,4 +153,3 @@ final class ManualMovementTableViewCell: UITableViewCell {
         return ("\(prefix)\(currency)", color)
     }
 }
-
