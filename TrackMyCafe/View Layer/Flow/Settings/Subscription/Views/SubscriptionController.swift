@@ -5,11 +5,11 @@
 //  Created by Леонід Квіт on 02.07.2024.
 //
 
+import SafariServices
 import StoreKit
 import SwiftyStoreKit
 import TinyConstraints
 import UIKit
-import SafariServices
 
 class SubscriptionController: UIViewController, Loggable {
 
@@ -32,9 +32,10 @@ class SubscriptionController: UIViewController, Loggable {
         imageView.clipsToBounds = true
 
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
-           let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
-           let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
-           let lastIcon = iconFiles.last {
+            let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
+            let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
+            let lastIcon = iconFiles.last
+        {
             imageView.image = UIImage(named: lastIcon)
         }
 
@@ -82,19 +83,6 @@ class SubscriptionController: UIViewController, Loggable {
 
     private let featuresStackView = UIStackView()
 
-    private let trialBadge: UILabel = {
-        let label = UILabel()
-        label.text = R.string.global.trialBadgeText(14)
-        label.font = .systemFont(ofSize: 12, weight: .bold)
-        label.textColor = .white
-        label.backgroundColor = .systemOrange
-        label.textAlignment = .center
-        label.layer.cornerRadius = 6
-        label.clipsToBounds = true
-        label.isHidden = true
-        return label
-    }()
-
     private lazy var actionButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(R.string.global.loading(), for: .normal)
@@ -104,7 +92,8 @@ class SubscriptionController: UIViewController, Loggable {
 
     private lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
-        let title = NSLocalizedString("continue_read_only", value: "Continue in Read-Only Mode", comment: "")
+        let title = NSLocalizedString(
+            "continue_read_only", value: "Continue in Read-Only Mode", comment: "")
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
@@ -188,7 +177,9 @@ class SubscriptionController: UIViewController, Loggable {
         proTagLabel.width(40)
         proTagLabel.height(24)
 
-        let headerStack = UIStackView(arrangedSubviews: [headerImageView, titleStack, subtitleLabel])
+        let headerStack = UIStackView(arrangedSubviews: [
+            headerImageView, titleStack, subtitleLabel,
+        ])
         headerStack.axis = .vertical
         headerStack.spacing = 8
         headerStack.alignment = .center
@@ -202,7 +193,6 @@ class SubscriptionController: UIViewController, Loggable {
 
         mainStackView.addArrangedSubview(headerStack)
         mainStackView.addArrangedSubview(featuresContainer)
-        mainStackView.addArrangedSubview(trialBadge)
         mainStackView.addArrangedSubview(actionButton)
         mainStackView.addArrangedSubview(skipButton)
         mainStackView.addArrangedSubview(termsLabel)
@@ -210,7 +200,6 @@ class SubscriptionController: UIViewController, Loggable {
 
         mainStackView.setCustomSpacing(40, after: headerStack)
         mainStackView.setCustomSpacing(30, after: featuresContainer)
-        mainStackView.setCustomSpacing(8, after: trialBadge)
         mainStackView.setCustomSpacing(10, after: actionButton)
         mainStackView.setCustomSpacing(10, after: skipButton)
     }
@@ -224,7 +213,7 @@ class SubscriptionController: UIViewController, Loggable {
             R.string.global.subscriptionFeature2(),
             R.string.global.subscriptionFeature3(),
             R.string.global.subscriptionFeature4(),
-            R.string.global.subscriptionFeature5()
+            R.string.global.subscriptionFeature5(),
         ]
 
         for (index, feature) in features.enumerated() {
@@ -275,14 +264,17 @@ class SubscriptionController: UIViewController, Loggable {
         footerStackView.spacing = 8
         footerStackView.alignment = .center
 
-        let restoreButton = createFooterButton(title: R.string.global.restorePurchases(), action: #selector(restoreAction))
+        let restoreButton = createFooterButton(
+            title: R.string.global.restorePurchases(), action: #selector(restoreAction))
 
         let policyStack = UIStackView()
         policyStack.axis = .horizontal
         policyStack.spacing = 8
 
-        let privacyButton = createFooterButton(title: R.string.global.privacyPolicy(), action: #selector(openPrivacy))
-        let termsButton = createFooterButton(title: R.string.global.termsOfUse(), action: #selector(openTerms))
+        let privacyButton = createFooterButton(
+            title: R.string.global.privacyPolicy(), action: #selector(openPrivacy))
+        let termsButton = createFooterButton(
+            title: R.string.global.termsOfUse(), action: #selector(openTerms))
         let separator = createSeparator()
 
         policyStack.addArrangedSubview(privacyButton)
@@ -319,9 +311,6 @@ class SubscriptionController: UIViewController, Loggable {
 
         headerImageView.size(CGSize(width: 80, height: 80))
         actionButton.height(50)
-
-        trialBadge.width(160)
-        trialBadge.height(26)
     }
 
     // MARK: - Logic
@@ -335,7 +324,8 @@ class SubscriptionController: UIViewController, Loggable {
 
             guard let products = products, !products.isEmpty else {
                 DispatchQueue.main.async {
-                    self.actionButton.setTitle(R.string.global.subscriptionBannerAction(), for: .normal)
+                    self.actionButton.setTitle(
+                        R.string.global.subscriptionBannerAction(), for: .normal)
                     self.actionButton.isEnabled = true
                 }
                 return
@@ -348,9 +338,13 @@ class SubscriptionController: UIViewController, Loggable {
                 guard let self else { return }
                 let hasKnownHistory: Bool = {
                     if IAPManager.shared.nextPaymentDate != nil { return true }
-                    guard let subscription = RequestManager.shared.subscription else { return false }
+                    guard let subscription = RequestManager.shared.subscription else {
+                        return false
+                    }
                     if subscription.nextPaymentDate != nil { return true }
-                    if (subscription.transactionId ?? subscription.originTransactionId) != nil { return true }
+                    if (subscription.transactionId ?? subscription.originTransactionId) != nil {
+                        return true
+                    }
                     return false
                 }()
 
@@ -382,7 +376,6 @@ class SubscriptionController: UIViewController, Loggable {
             isEligibleForTrial: isEligibleForTrial
         )
 
-        trialBadge.isHidden = !displayInfo.isTrial
         actionButton.setTitle(displayInfo.buttonTitle, for: .normal)
         termsLabel.text = displayInfo.termsText
 
@@ -433,7 +426,8 @@ class SubscriptionController: UIViewController, Loggable {
         actionButton.isEnabled = true
         actionButton.backgroundColor = UIColor.Button.background
         actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
-        actionButton.addTarget(self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+        actionButton.addTarget(
+            self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
     }
 
     @objc private func manageSubscriptionAction() {
@@ -539,7 +533,8 @@ class SubscriptionController: UIViewController, Loggable {
                     guard let originTransactionId = receipt.lastAutorenewOriginTransactionId else {
                         return
                     }
-                    RequestManager.shared.isSubscriptionPurchaseLinkedToAccount(originTransactionId) { (status) in
+                    RequestManager.shared.isSubscriptionPurchaseLinkedToAccount(originTransactionId)
+                    { (status) in
                         if status == .linkedCurrent || status == .notLinked {
                             IAPManager.shared.updateSubscriptionInfo(receipt)
                             DispatchQueue.main.async {
@@ -553,7 +548,9 @@ class SubscriptionController: UIViewController, Loggable {
                                     return
                                 }
 
-                                self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
+                                self.showAlert(
+                                    R.string.global.success(),
+                                    body: R.string.global.purchaseRestored())
                                 self.updateUI()
                             }
                         }
@@ -570,7 +567,8 @@ class SubscriptionController: UIViewController, Loggable {
                             return
                         }
 
-                        self.showAlert(R.string.global.success(), body: R.string.global.purchaseRestored())
+                        self.showAlert(
+                            R.string.global.success(), body: R.string.global.purchaseRestored())
                     }
                 }
             }
