@@ -11,23 +11,31 @@ struct OrderItemModel: Identifiable, Codable {
     let id: String
     let productId: String
     let quantity: Int
-    let salePrice: Double    // Price at the moment of sale
-    let costPrice: Double    // COGS at the moment of sale
-    
+    let salePrice: Double  // Price at the moment of sale
+    let costPrice: Double  // COGS at the moment of sale
+
     var totalSale: Double { salePrice * Double(quantity) }
     var totalCost: Double { costPrice * Double(quantity) }
-    
+
     init(
         id: String = UUID().uuidString,
         productId: String,
         quantity: Int,
         salePrice: Double,
-        costPrice: Double = 0.0 // Can be calculated later or passed during creation
+        costPrice: Double = 0.0  // Can be calculated later or passed during creation
     ) {
         self.id = id
         self.productId = productId
         self.quantity = quantity
         self.salePrice = salePrice
         self.costPrice = costPrice
+    }
+
+    init(product: ProductOfOrderModel) {
+        self.id = product.id
+        self.productId = product.productId
+        self.quantity = product.quantity
+        self.salePrice = product.price
+        self.costPrice = product.costPrice
     }
 }
