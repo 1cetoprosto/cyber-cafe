@@ -10,6 +10,7 @@ import Foundation
 protocol CostingServiceProtocol {
     func calculateProductCost(productId: String, completion: @escaping (Double) -> Void)
     func calculateOrderCOGS(items: [OrderItemModel], completion: @escaping (Double) -> Void)
+    func calculateOrderMetrics(items: [OrderItemModel]) -> (totalSale: Double, totalCost: Double)
 }
 
 class CostingService: CostingServiceProtocol {
@@ -65,5 +66,11 @@ class CostingService: CostingServiceProtocol {
         group.notify(queue: .main) {
             completion(totalOrderCOGS)
         }
+    }
+
+    func calculateOrderMetrics(items: [OrderItemModel]) -> (totalSale: Double, totalCost: Double) {
+        let totalSale = items.reduce(0) { $0 + $1.totalSale }
+        let totalCost = items.reduce(0) { $0 + $1.totalCost }
+        return (totalSale, totalCost)
     }
 }

@@ -14,6 +14,7 @@ class DomainDatabaseService: DomainDB {
     static let shared = DomainDatabaseService()
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!, category: "DomainDatabaseService")
+    private let orderSnapshotRepairService = OrderSnapshotRepairService()
 
     // Метод для перевірки, чи включений режим онлайн
     // private func isOnlineModeEnabled() -> Bool {
@@ -231,19 +232,43 @@ class DomainDatabaseService: DomainDB {
 
     func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void)
     {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self
+        guard !id.isEmpty else {
+            completion([])
+            return
+        }
+
+        FirestoreDatabaseService.shared.readWhere(
+            collection: FirebaseCollections.productOfOrders,
+            firModel: FIRProductModel.self,
+            equalTo: ["orderId": id]
         ) { result in
             switch result {
             case .success(let firProducts):
-                let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-                let filteredProduct = ordersProduct.filter { $0.orderId == id }
-                completion(filteredProduct)
+                let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+                self.fetchOrders(forId: id) { order in
+                    guard let order else {
+                        completion(products)
+                        return
+                    }
+
+                    let repairedSnapshot = self.orderSnapshotRepairService.repair(
+                        order: order,
+                        products: products
+                    )
+                    self.persistRepairedSnapshotIfNeeded(repairedSnapshot)
+                    completion(repairedSnapshot.products)
+                }
             case .failure(let error):
                 self.logger.error(
                     "Error fetching products from Firestore: \(error.localizedDescription)")
                 completion([])
             }
+        }
+    }
+
+    func fetchOrderItems(withOrderId id: String, completion: @escaping ([OrderItemModel]) -> Void) {
+        fetchProduct(withOrderId: id) { products in
+            completion(products.map(\.orderItemSnapshot))
         }
     }
 
@@ -327,63 +352,97 @@ class DomainDatabaseService: DomainDB {
     }
 
     func fetchOrders(completion: @escaping ([OrderModel]) -> Void) {
+        let group = DispatchGroup()
+        var fetchedOrders: [OrderModel] = []
+        var fetchedProducts: [ProductOfOrderModel] = []
+        var ordersError: Error?
+        var productsError: Error?
+
+        group.enter()
         FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.orders, firModel: FIROrderModel.self
-        ) {
-            result in
+            collection: FirebaseCollections.orders,
+            firModel: FIROrderModel.self
+        ) { result in
+            defer { group.leave() }
             switch result {
             case .success(let firOrders):
-                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
-                completion(orders)
+                fetchedOrders = firOrders.map { OrderModel(firebaseModel: $1) }
             case .failure(let error):
-                self.logger.error(
-                    "Error fetching products from Firestore: \(error.localizedDescription)")
-                completion([])
+                ordersError = error
             }
+        }
+
+        group.enter()
+        FirestoreDatabaseService.shared.read(
+            collection: FirebaseCollections.productOfOrders,
+            firModel: FIRProductModel.self
+        ) { result in
+            defer { group.leave() }
+            switch result {
+            case .success(let firProducts):
+                fetchedProducts = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+            case .failure(let error):
+                productsError = error
+            }
+        }
+
+        group.notify(queue: .main) {
+            if let ordersError {
+                self.logger.error(
+                    "Error fetching orders from Firestore: \(ordersError.localizedDescription)")
+                completion([])
+                return
+            }
+
+            if let productsError {
+                self.logger.error(
+                    "Error fetching order items from Firestore: \(productsError.localizedDescription)"
+                )
+            }
+
+            let productsByOrderId = Dictionary(grouping: fetchedProducts) { $0.orderId }
+            let repairedOrders = fetchedOrders.map { order in
+                let repairResult = self.orderSnapshotRepairService.repair(
+                    order: order,
+                    products: productsByOrderId[order.id] ?? []
+                )
+                self.persistRepairedSnapshotIfNeeded(repairResult)
+                return repairResult.order
+            }
+            completion(repairedOrders)
         }
     }
 
     func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void)
     {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.orders, firModel: FIROrderModel.self
-        ) {
-            result in
-            switch result {
-            case .success(let firOrders):
-                let calendar = Calendar.current
-                let groupedOrders = Dictionary(
-                    grouping: firOrders.map { OrderModel(firebaseModel: $1) },
-                    by: { order -> Date in
-                        let dateComponents = calendar.dateComponents(
-                            [.year, .month, .day], from: order.date)
-                        return calendar.date(from: dateComponents)!
-                    })
-                let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
-                    .sorted { $0.date > $1.date }
-                completion(sections)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching orders from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+        fetchOrders { orders in
+            let calendar = Calendar.current
+            let groupedOrders = Dictionary(
+                grouping: orders,
+                by: { order -> Date in
+                    let dateComponents = calendar.dateComponents(
+                        [.year, .month, .day], from: order.date)
+                    return calendar.date(from: dateComponents)
+                        ?? calendar.startOfDay(for: order.date)
+                })
+            let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
+                .sorted { $0.date > $1.date }
+            completion(sections)
         }
     }
 
     func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.orders, firModel: FIROrderModel.self
-        ) {
-            result in
+        FirestoreDatabaseService.shared.fetchObjectById(
+            ofType: FIROrderModel.self,
+            collection: FirebaseCollections.orders,
+            id: id
+        ) { result in
             switch result {
-            case .success(let firOrders):
-                let orders = firOrders.map { OrderModel(firebaseModel: $1) }
-                completion(
-                    orders.filter { $0.id == id }
-                        .first)
+            case .success(let firOrder):
+                completion(OrderModel(firebaseModel: firOrder))
             case .failure(let error):
                 self.logger.error(
-                    "Error fetching orders from Firestore: \(error.localizedDescription)")
+                    "Error fetching order by id from Firestore: \(error.localizedDescription)")
                 completion(nil)
             }
         }
@@ -986,6 +1045,37 @@ class DomainDatabaseService: DomainDB {
     }
 }
 
+extension DomainDatabaseService {
+    fileprivate func persistRepairedSnapshotIfNeeded(_ snapshot: OrderSnapshotRepairResult) {
+        if snapshot.didRepairOrder {
+            updateOrder(snapshot.order) { [weak self] success in
+                if !success {
+                    self?.logger.error(
+                        "Failed to persist repaired order snapshot: \(snapshot.order.id)")
+                }
+            }
+        }
+
+        if snapshot.didRepairProducts {
+            snapshot.products.forEach { product in
+                self.persistRepairedProduct(product)
+            }
+        }
+    }
+
+    fileprivate func persistRepairedProduct(_ product: ProductOfOrderModel) {
+        FirestoreDatabaseService.shared.update(
+            firModel: FIRProductModel(dataModel: product),
+            collection: FirebaseCollections.productOfOrders,
+            documentId: product.id
+        ) { [weak self] result in
+            if case .failure(let error) = result {
+                self?.logger.error(
+                    "Failed to persist repaired order item snapshot: \(error.localizedDescription)")
+            }
+        }
+    }
+}
 // MARK: - Seeding Helpers
 extension DomainDatabaseService {
 
