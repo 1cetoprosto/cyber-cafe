@@ -289,6 +289,9 @@
 		F363F28E2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
 		F363F28F2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
 		F363F2902FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */; };
+		F363F45E2FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */; };
+		F363F45F2FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */; };
+		F363F4602FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */; };
 		F36DA6AB2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AC2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
 		F36DA6AD2F3B57C000CE345C /* IngredientTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */; };
@@ -921,6 +924,7 @@
 		F36217CC2EC04E5300965886 /* DomainProductPriceDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainProductPriceDataService.swift; sourceTree = "<group>"; };
 		F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceHistoryBackfillService.swift; sourceTree = "<group>"; };
 		F363F28D2FEE7C1800910F20 /* UITableView+StandardList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+StandardList.swift"; sourceTree = "<group>"; };
+		F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderSnapshotRepairService.swift; sourceTree = "<group>"; };
 		F36DA6AA2F3B57C000CE345C /* IngredientTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7727589CFB0059710A /* SettingsDataTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsDataTableViewCell.swift; sourceTree = "<group>"; };
 		F371AA7A2758B0890059710A /* UIViewController+AlertLanguage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+AlertLanguage.swift"; sourceTree = "<group>"; };
@@ -2294,6 +2298,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */,
 				F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */,
 				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
 				F3F205522FD831A0007249FB /* DomainProductCategoryDataService.swift */,
@@ -3076,6 +3081,7 @@
 				F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */,
 				F3F6A6372C327B83000961C8 /* AdminDetailsController.swift in Sources */,
 				F3E358032BF22B76005050CB /* DomainDB.swift in Sources */,
+				F363F45E2FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */,
 				F35E91AB2F49D7A80050EB4A /* FIRProductCategoryModel.swift in Sources */,
 				F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F316A2F3273803CE0083E830 /* ProductListViewController.swift in Sources */,
@@ -3301,6 +3307,7 @@
 				F3B339E32C0B22FE0073F19A /* Settings.swift in Sources */,
 				F3B339E42C0B22FE0073F19A /* CostListViewController.swift in Sources */,
 				F3B339E52C0B22FE0073F19A /* TypesListViewController.swift in Sources */,
+				F363F45F2FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */,
 				F35E91AA2F49D7A80050EB4A /* FIRProductCategoryModel.swift in Sources */,
 				F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B339E62C0B22FE0073F19A /* SettingsDataTableViewCell.swift in Sources */,
@@ -3526,6 +3533,7 @@
 				F3B33A822C0B23450073F19A /* Settings.swift in Sources */,
 				F3B33A832C0B23450073F19A /* CostListViewController.swift in Sources */,
 				F3B33A842C0B23450073F19A /* TypesListViewController.swift in Sources */,
+				F363F4602FF11C2800910F20 /* OrderSnapshotRepairService.swift in Sources */,
 				F35E91AC2F49D7A80050EB4A /* FIRProductCategoryModel.swift in Sources */,
 				F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */,
 				F3B33A852C0B23450073F19A /* SettingsDataTableViewCell.swift in Sources */,

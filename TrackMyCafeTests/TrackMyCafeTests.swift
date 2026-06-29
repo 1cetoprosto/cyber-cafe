@@ -424,6 +424,130 @@ final class TrackMyCafeTests: XCTestCase {
         )
     }
 
+    func testOrderSnapshotRepairService_derivesMissingCostSumFromCostPrice() {
+        let service = OrderSnapshotRepairService()
+        let order = OrderModel(
+            id: "order-1",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            type: "Hall",
+            sum: 90,
+            cash: 90,
+            card: 0,
+            totalCost: 30
+        )
+        let products = [
+            ProductOfOrderModel(
+                id: "item-1",
+                productId: "product-1",
+                orderId: "order-1",
+                date: order.date,
+                name: "Latte",
+                quantity: 3,
+                price: 30,
+                sum: 90,
+                costPrice: 10,
+                costSum: 0
+            )
+        ]
+
+        let result = service.repair(order: order, products: products)
+
+        XCTAssertTrue(result.didRepairProducts)
+        XCTAssertFalse(result.didRepairOrder)
+        XCTAssertEqual(result.products.first?.costSum, 30)
+        XCTAssertEqual(result.order.totalCost, 30)
+    }
+
+    func testOrderSnapshotRepairService_allocatesMissingItemCostsFromOrderTotalCost() {
+        let service = OrderSnapshotRepairService()
+        let order = OrderModel(
+            id: "order-2",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            type: "Hall",
+            sum: 100,
+            cash: 100,
+            card: 0,
+            totalCost: 40
+        )
+        let products = [
+            ProductOfOrderModel(
+                id: "item-1",
+                productId: "product-1",
+                orderId: "order-2",
+                date: order.date,
+                name: "Espresso",
+                quantity: 1,
+                price: 40,
+                sum: 40
+            ),
+            ProductOfOrderModel(
+                id: "item-2",
+                productId: "product-2",
+                orderId: "order-2",
+                date: order.date,
+                name: "Latte",
+                quantity: 2,
+                price: 30,
+                sum: 60
+            ),
+        ]
+
+        let result = service.repair(order: order, products: products)
+
+        XCTAssertTrue(result.didRepairProducts)
+        XCTAssertFalse(result.didRepairOrder)
+        XCTAssertEqual(result.products[0].costSum, 16, accuracy: 0.0001)
+        XCTAssertEqual(result.products[0].costPrice, 16, accuracy: 0.0001)
+        XCTAssertEqual(result.products[1].costSum, 24, accuracy: 0.0001)
+        XCTAssertEqual(result.products[1].costPrice, 12, accuracy: 0.0001)
+        XCTAssertEqual(result.order.totalCost, 40, accuracy: 0.0001)
+    }
+
+    func testOrderSnapshotRepairService_backfillsMissingOrderTotalCostFromItems() {
+        let service = OrderSnapshotRepairService()
+        let order = OrderModel(
+            id: "order-3",
+            date: makeDate(year: 2026, month: 6, day: 22),
+            type: "Hall",
+            sum: 100,
+            cash: 50,
+            card: 50,
+            totalCost: 0
+        )
+        let products = [
+            ProductOfOrderModel(
+                id: "item-1",
+                productId: "product-1",
+                orderId: "order-3",
+                date: order.date,
+                name: "Flat White",
+                quantity: 2,
+                price: 25,
+                sum: 50,
+                costPrice: 7,
+                costSum: 14
+            ),
+            ProductOfOrderModel(
+                id: "item-2",
+                productId: "product-2",
+                orderId: "order-3",
+                date: order.date,
+                name: "Tea",
+                quantity: 2,
+                price: 25,
+                sum: 50,
+                costPrice: 3,
+                costSum: 6
+            ),
+        ]
+
+        let result = service.repair(order: order, products: products)
+
+        XCTAssertFalse(result.didRepairProducts)
+        XCTAssertTrue(result.didRepairOrder)
+        XCTAssertEqual(result.order.totalCost, 20, accuracy: 0.0001)
+    }
+
     private func makeDate(year: Int, month: Int, day: Int) -> Date {
         var components = DateComponents()
         components.year = year
@@ -547,6 +671,12 @@ private final class MockBalanceJournalService: BalanceJournalServiceProtocol {
     }
 
     func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws -> Set<
+        BalanceScope
+    > {
+        []
+    }
+
+    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<
         BalanceScope
     > {
         []

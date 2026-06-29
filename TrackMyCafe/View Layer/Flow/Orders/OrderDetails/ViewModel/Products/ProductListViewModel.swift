@@ -130,19 +130,11 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     func getTotalAmount() -> Double {
-        var totalSum: Double = 0.0
-        for product in products {
-            totalSum += product.sum
-        }
-        return totalSum
+        orderMetrics().totalSale
     }
 
     func getTotalCostAmount() -> Double {
-        var totalCost: Double = 0.0
-        for product in products {
-            totalCost += product.costSum
-        }
-        return totalCost
+        orderMetrics().totalCost
     }
 
     func clearProducts() {
@@ -348,14 +340,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     // MARK: - Inventory Integration
 
     func validateStock(completion: @escaping ([StockWarning]) -> Void) {
-        let itemsToCheck = products.filter { $0.quantity > 0 }.map {
-            OrderItemModel(
-                productId: $0.productId,
-                quantity: $0.quantity,
-                salePrice: $0.price,
-                costPrice: $0.costPrice
-            )
-        }
+        let itemsToCheck = activeOrderItems()
 
         if itemsToCheck.isEmpty {
             completion([])
@@ -366,14 +351,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     func deductStock(completion: @escaping (Bool) -> Void) {
-        let itemsToDeduct = products.filter { $0.quantity > 0 }.map {
-            OrderItemModel(
-                productId: $0.productId,
-                quantity: $0.quantity,
-                salePrice: $0.price,
-                costPrice: $0.costPrice
-            )
-        }
+        let itemsToDeduct = activeOrderItems()
 
         if itemsToDeduct.isEmpty {
             completion(true)
@@ -389,5 +367,15 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 completion(false)
             }
         }
+    }
+
+    private func activeOrderItems() -> [OrderItemModel] {
+        products
+            .filter { $0.quantity > 0 }
+            .map(\.orderItemSnapshot)
+    }
+
+    private func orderMetrics() -> (totalSale: Double, totalCost: Double) {
+        costingService.calculateOrderMetrics(items: activeOrderItems())
     }
 }

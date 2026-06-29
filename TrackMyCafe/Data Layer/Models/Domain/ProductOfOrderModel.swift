@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductOfOrderModel {
+struct ProductOfOrderModel: Equatable {
     var id: String
     var productId: String
     var orderId: String
@@ -56,5 +56,22 @@ struct ProductOfOrderModel {
         self.sum = firebaseModel.amount
         self.costPrice = firebaseModel.costPrice
         self.costSum = firebaseModel.costSum
+    }
+
+    var orderItemSnapshot: OrderItemModel {
+        OrderItemModel(product: self)
+    }
+
+    var hasCostSnapshot: Bool {
+        abs(costPrice) >= 0.000_1 || abs(costSum) >= 0.000_1
+    }
+
+    mutating func apply(snapshot: OrderItemModel) {
+        productId = snapshot.productId
+        quantity = snapshot.quantity
+        price = snapshot.salePrice
+        sum = snapshot.totalSale
+        costPrice = snapshot.costPrice
+        costSum = snapshot.totalCost
     }
 }
