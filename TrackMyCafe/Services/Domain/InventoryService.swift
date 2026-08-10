@@ -17,8 +17,20 @@ protocol InventoryServiceProtocol {
         adjustment: InventoryAdjustmentModel, completion: @escaping (Result<Void, Error>) -> Void)
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void)
+    func validateStockAvailability(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping ([StockWarning]) -> Void)
     func deductStock(
         for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void)
+    func deductStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
+    func restoreStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 struct StockWarning {
@@ -285,7 +297,19 @@ class InventoryService: InventoryServiceProtocol {
     func deductStock(
         for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void
     ) {
-        guard settingsManager.loadTrackIngredients() else {
+        deductStock(
+            for: items,
+            trackingEnabled: settingsManager.loadTrackIngredients(),
+            completion: completion
+        )
+    }
+
+    func deductStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard trackingEnabled else {
             completion(.success(()))
             return
         }
@@ -354,12 +378,94 @@ class InventoryService: InventoryServiceProtocol {
         }
     }
 
+    func restoreStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard trackingEnabled else {
+            completion(.success(()))
+            return
+        }
+
+        let dispatchGroup = DispatchGroup()
+        var errors: [Error] = []
+
+        for item in items {
+            dispatchGroup.enter()
+            databaseService.fetchRecipe(forProductId: item.productId) { [weak self] recipeItems in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                if recipeItems.isEmpty {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                let innerGroup = DispatchGroup()
+
+                for recipeItem in recipeItems {
+                    innerGroup.enter()
+                    self.databaseService.fetchIngredient(byId: recipeItem.ingredientId) {
+                        ingredient in
+                        guard var ingredient = ingredient else {
+                            innerGroup.leave()
+                            return
+                        }
+
+                        let restoreAmount = recipeItem.quantity * Double(item.quantity)
+                        ingredient.stockQuantity += restoreAmount
+
+                        self.databaseService.saveIngredient(model: ingredient) { success in
+                            if !success {
+                                errors.append(
+                                    NSError(
+                                        domain: "InventoryService", code: 500,
+                                        userInfo: [
+                                            NSLocalizedDescriptionKey:
+                                                "Failed to save ingredient \(ingredient.name)"
+                                        ]))
+                            }
+                            innerGroup.leave()
+                        }
+                    }
+                }
+
+                innerGroup.notify(queue: .global()) {
+                    dispatchGroup.leave()
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            if errors.isEmpty {
+                completion(.success(()))
+            } else {
+                completion(.failure(errors.first!))
+            }
+        }
+    }
+
     // MARK: - Validation
 
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void
     ) {
-        guard settingsManager.loadTrackIngredients() else {
+        validateStockAvailability(
+            for: items,
+            trackingEnabled: settingsManager.loadTrackIngredients(),
+            completion: completion
+        )
+    }
+
+    func validateStockAvailability(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping ([StockWarning]) -> Void
+    ) {
+        guard trackingEnabled else {
             completion([])
             return
         }
