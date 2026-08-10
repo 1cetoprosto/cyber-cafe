@@ -9,6 +9,7 @@
 // MARK: - Common Actions
 "back" = "Back";
 "cancel" = "Cancel";
+"proceed" = "Proceed";
 "retry" = "Retry";
 "save" = "Save";
 "delete" = "Delete";
@@ -427,6 +428,8 @@
 "onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
 "onboardingSettingsTypesTitle" = "Order Types";
 "onboardingSettingsTypesMessage" = "Configure different order types here.";
+"onboardingSettingsTrackIngredientsTitle" = "Track Ingredients";
+"onboardingSettingsTrackIngredientsMessage" = "Turn on to automatically deduct ingredient stock by recipe when you save an order.";
 "logout" = "Logout";
 "account" = "Account";
 
@@ -456,6 +459,18 @@
 "settings_chooseCategoryFirst" = "Choose category first";
 "settings_trackIngredients" = "Track ingredients";
 "settings_trackIngredientsFooter" = "Automatically decrease ingredient stock on sale according to the recipe. Turn off if you only need financial accounting.";
+"settings_trackIngredientsFooterLocked" = "Automatically decreases ingredient stock on sale according to the recipe. The mode is already locked: there are existing orders with stock deductions, so disabling it may break inventory balances.";
+"settings_trackIngredientsConfirmTitle" = "Enable \"Track ingredients\"?";
+"settings_trackIngredientsConfirmMessage" = "After saving the first order in this mode, you will not be able to turn it off automatically. Orders will deduct ingredients by the recipe and show shortage warnings when needed.";
+"settings_trackIngredientsLockedTitle" = "Cannot disable";
+"settings_trackIngredientsLockedMessage" = "You already have orders with automatic recipe-based ingredient deductions. To avoid stock balance mistakes, \"Track ingredients\" mode is locked.";
+"settings_action_enable" = "Enable";
+"settings_action_cancel" = "Cancel";
+"settings_action_ok" = "OK";
+"stockWarningTitle" = "Stock Warning";
+"stockWarningMessagePrefix" = "Not enough stock for:";
+"stockWarningShortageFormat" = "%@: Need %@ more";
+"stockWarningProceedQuestion" = "Proceed anyway?";
 "orderPicker_allProducts" = "All products";
 "orderPicker_returnToOrder" = "Return to order";
 "orderPicker_emptyCategories" = "No categories";
