@@ -70,7 +70,11 @@ class OrderListViewModel: OrderListViewModelType, Loggable {
     
     func deleteOrderModel(atIndexPath indexPath: IndexPath) {
         guard let model = getOrder(atIndexPath: indexPath) else { return }
-        ProductListViewModel.deleteOrder(withOrderId: model.id, date: model.date)
+        ProductListViewModel.deleteOrder(
+            withOrderId: model.id,
+            date: model.date,
+            trackingEnabled: model.inventoryTracking
+        )
 
         Task { [weak self] in
             guard let self else { return }

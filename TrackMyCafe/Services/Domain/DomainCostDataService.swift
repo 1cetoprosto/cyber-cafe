@@ -368,6 +368,7 @@ final class DomainOrderDataService: OrderDataServiceProtocol {
             cash: order.cash,
             card: order.card,
             totalCost: order.totalCost,
+            inventoryTracking: order.inventoryTracking,
             note: order.note
         )
 

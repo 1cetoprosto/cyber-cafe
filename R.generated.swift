@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 386 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 403 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1776,6 +1776,20 @@ struct _R {
       /// Locales: en, uk
       var onboardingSettingsPriceListTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsPriceListTitle", tableName: "Global", source: source, developmentValue: "Product Catalog", comment: nil) }
 
+      /// en translation: Turn on to automatically deduct ingredient stock by recipe when you save an order.
+      ///
+      /// Key: onboardingSettingsTrackIngredientsMessage
+      ///
+      /// Locales: en, uk
+      var onboardingSettingsTrackIngredientsMessage: RswiftResources.StringResource { .init(key: "onboardingSettingsTrackIngredientsMessage", tableName: "Global", source: source, developmentValue: "Turn on to automatically deduct ingredient stock by recipe when you save an order.", comment: nil) }
+
+      /// en translation: Track Ingredients
+      ///
+      /// Key: onboardingSettingsTrackIngredientsTitle
+      ///
+      /// Locales: en, uk
+      var onboardingSettingsTrackIngredientsTitle: RswiftResources.StringResource { .init(key: "onboardingSettingsTrackIngredientsTitle", tableName: "Global", source: source, developmentValue: "Track Ingredients", comment: nil) }
+
       /// en translation: Configure different order types here.
       ///
       /// Key: onboardingSettingsTypesMessage
@@ -2084,6 +2098,13 @@ struct _R {
       /// Locales: en, uk
       var proTag: RswiftResources.StringResource { .init(key: "proTag", tableName: "Global", source: source, developmentValue: "PRO", comment: nil) }
 
+      /// en translation: Proceed
+      ///
+      /// Key: proceed
+      ///
+      /// Locales: en, uk
+      var proceed: RswiftResources.StringResource { .init(key: "proceed", tableName: "Global", source: source, developmentValue: "Proceed", comment: nil) }
+
       /// en translation: Product
       ///
       /// Key: product
@@ -2378,12 +2399,82 @@ struct _R {
       /// Locales: en, uk
       var settingsSectionOrders: RswiftResources.StringResource { .init(key: "settingsSectionOrders", tableName: "Global", source: source, developmentValue: "Orders", comment: nil) }
 
+      /// en translation: Cancel
+      ///
+      /// Key: settings_action_cancel
+      ///
+      /// Locales: en, uk
+      var settings_action_cancel: RswiftResources.StringResource { .init(key: "settings_action_cancel", tableName: "Global", source: source, developmentValue: "Cancel", comment: nil) }
+
+      /// en translation: Enable
+      ///
+      /// Key: settings_action_enable
+      ///
+      /// Locales: en, uk
+      var settings_action_enable: RswiftResources.StringResource { .init(key: "settings_action_enable", tableName: "Global", source: source, developmentValue: "Enable", comment: nil) }
+
+      /// en translation: OK
+      ///
+      /// Key: settings_action_ok
+      ///
+      /// Locales: en, uk
+      var settings_action_ok: RswiftResources.StringResource { .init(key: "settings_action_ok", tableName: "Global", source: source, developmentValue: "OK", comment: nil) }
+
       /// en translation: Choose category first
       ///
       /// Key: settings_chooseCategoryFirst
       ///
       /// Locales: en, uk
       var settings_chooseCategoryFirst: RswiftResources.StringResource { .init(key: "settings_chooseCategoryFirst", tableName: "Global", source: source, developmentValue: "Choose category first", comment: nil) }
+
+      /// en translation: Track ingredients
+      ///
+      /// Key: settings_trackIngredients
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredients: RswiftResources.StringResource { .init(key: "settings_trackIngredients", tableName: "Global", source: source, developmentValue: "Track ingredients", comment: nil) }
+
+      /// en translation: After saving the first order in this mode, you will not be able to turn it off automatically. Orders will deduct ingredients by the recipe and show shortage warnings when needed.
+      ///
+      /// Key: settings_trackIngredientsConfirmMessage
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsConfirmMessage: RswiftResources.StringResource { .init(key: "settings_trackIngredientsConfirmMessage", tableName: "Global", source: source, developmentValue: "After saving the first order in this mode, you will not be able to turn it off automatically. Orders will deduct ingredients by the recipe and show shortage warnings when needed.", comment: nil) }
+
+      /// en translation: Enable "Track ingredients"?
+      ///
+      /// Key: settings_trackIngredientsConfirmTitle
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsConfirmTitle: RswiftResources.StringResource { .init(key: "settings_trackIngredientsConfirmTitle", tableName: "Global", source: source, developmentValue: "Enable \"Track ingredients\"?", comment: nil) }
+
+      /// en translation: Automatically decrease ingredient stock on sale according to the recipe. Turn off if you only need financial accounting.
+      ///
+      /// Key: settings_trackIngredientsFooter
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsFooter: RswiftResources.StringResource { .init(key: "settings_trackIngredientsFooter", tableName: "Global", source: source, developmentValue: "Automatically decrease ingredient stock on sale according to the recipe. Turn off if you only need financial accounting.", comment: nil) }
+
+      /// en translation: Automatically decreases ingredient stock on sale according to the recipe. The mode is already locked: there are existing orders with stock deductions, so disabling it may break inventory balances.
+      ///
+      /// Key: settings_trackIngredientsFooterLocked
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsFooterLocked: RswiftResources.StringResource { .init(key: "settings_trackIngredientsFooterLocked", tableName: "Global", source: source, developmentValue: "Automatically decreases ingredient stock on sale according to the recipe. The mode is already locked: there are existing orders with stock deductions, so disabling it may break inventory balances.", comment: nil) }
+
+      /// en translation: You already have orders with automatic recipe-based ingredient deductions. To avoid stock balance mistakes, "Track ingredients" mode is locked.
+      ///
+      /// Key: settings_trackIngredientsLockedMessage
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsLockedMessage: RswiftResources.StringResource { .init(key: "settings_trackIngredientsLockedMessage", tableName: "Global", source: source, developmentValue: "You already have orders with automatic recipe-based ingredient deductions. To avoid stock balance mistakes, \"Track ingredients\" mode is locked.", comment: nil) }
+
+      /// en translation: Cannot disable
+      ///
+      /// Key: settings_trackIngredientsLockedTitle
+      ///
+      /// Locales: en, uk
+      var settings_trackIngredientsLockedTitle: RswiftResources.StringResource { .init(key: "settings_trackIngredientsLockedTitle", tableName: "Global", source: source, developmentValue: "Cannot disable", comment: nil) }
 
       /// en translation: Something went wrong
       ///
@@ -2433,6 +2524,34 @@ struct _R {
       ///
       /// Locales: en, uk
       var stockPlaceholder: RswiftResources.StringResource { .init(key: "stockPlaceholder", tableName: "Global", source: source, developmentValue: "Stock Quantity", comment: nil) }
+
+      /// en translation: Not enough stock for:
+      ///
+      /// Key: stockWarningMessagePrefix
+      ///
+      /// Locales: en, uk
+      var stockWarningMessagePrefix: RswiftResources.StringResource { .init(key: "stockWarningMessagePrefix", tableName: "Global", source: source, developmentValue: "Not enough stock for:", comment: nil) }
+
+      /// en translation: Proceed anyway?
+      ///
+      /// Key: stockWarningProceedQuestion
+      ///
+      /// Locales: en, uk
+      var stockWarningProceedQuestion: RswiftResources.StringResource { .init(key: "stockWarningProceedQuestion", tableName: "Global", source: source, developmentValue: "Proceed anyway?", comment: nil) }
+
+      /// en translation: %@: Need %@ more
+      ///
+      /// Key: stockWarningShortageFormat
+      ///
+      /// Locales: en, uk
+      var stockWarningShortageFormat: RswiftResources.StringResource2<String, String> { .init(key: "stockWarningShortageFormat", tableName: "Global", source: source, developmentValue: "%@: Need %@ more", comment: nil) }
+
+      /// en translation: Stock Warning
+      ///
+      /// Key: stockWarningTitle
+      ///
+      /// Locales: en, uk
+      var stockWarningTitle: RswiftResources.StringResource { .init(key: "stockWarningTitle", tableName: "Global", source: source, developmentValue: "Stock Warning", comment: nil) }
 
       /// en translation: No subscription
       ///
