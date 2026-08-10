@@ -205,10 +205,28 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.navigationController?.pushViewController(
                         ProductCategoriesListViewController(), animated: true)
                 }),
+            .switchCell(
+                model: SettingsSwitchOption(
+                    title: NSLocalizedString(
+                        "settings_trackIngredients",
+                        tableName: "Global",
+                        comment: ""
+                    ),
+                    icon: UIImage(systemName: "shippingbox"),
+                    iconBackgroundColor: .systemTeal,
+                    isOn: SettingsManager.shared.loadTrackIngredients()
+                ) { isOn in
+                    SettingsManager.shared.saveTrackIngredients(isOn)
+                }),
         ]
         models.append(
             Section(
-                title: R.string.global.settingsSectionMenuInventory(), footer: nil,
+                title: R.string.global.settingsSectionMenuInventory(),
+                footer: NSLocalizedString(
+                    "settings_trackIngredientsFooter",
+                    tableName: "Global",
+                    comment: ""
+                ),
                 option: menuOptions)
         )
         

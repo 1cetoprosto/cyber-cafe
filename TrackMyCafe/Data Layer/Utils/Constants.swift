@@ -128,6 +128,7 @@ struct UserDefaultsKeys {
     static let appleLanguages = "AppleLanguages"
     static let orderEntryMode = "settings.orderEntryMode"
     static let chooseCategoryFirstProductSelection = "settings.chooseCategoryFirstProductSelection"
+    static let trackIngredients = "settings.trackIngredients"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
     static let hasRunBefore = "hasRunBefore"

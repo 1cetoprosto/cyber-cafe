@@ -8,74 +8,89 @@
 import Foundation
 
 class SettingsManager {
-  static let shared = SettingsManager()
+    static let shared = SettingsManager()
 
-  private init() {}
+    private init() {}
 
-  // Constants for UserDefaults keys - using existing constants from UserDefaultsKeys
-  private let languageKey = UserDefaultsKeys.language
-  private let themeKey = UserDefaultsKeys.theme
-  private let onlineKey = UserDefaultsKeys.online
-  private let orderEntryModeKey = UserDefaultsKeys.orderEntryMode
-  private let chooseCategoryFirstProductSelectionKey = UserDefaultsKeys.chooseCategoryFirstProductSelection
+    // Constants for UserDefaults keys - using existing constants from UserDefaultsKeys
+    private let languageKey = UserDefaultsKeys.language
+    private let themeKey = UserDefaultsKeys.theme
+    private let onlineKey = UserDefaultsKeys.online
+    private let orderEntryModeKey = UserDefaultsKeys.orderEntryMode
+    private let chooseCategoryFirstProductSelectionKey = UserDefaultsKeys
+        .chooseCategoryFirstProductSelection
+    private let trackIngredientsKey = UserDefaultsKeys.trackIngredients
 
-  func saveLanguage(_ language: String) {
-    UserDefaults.standard.set(language, forKey: UserDefaultsKeys.language)
-  }
-
-  func loadLanguage() -> String {
-    return UserDefaults.standard.string(forKey: UserDefaultsKeys.language) ?? DefaultValues.defaultLanguage
-  }
-
-  func setAppLanguage(_ languageCode: String) {
-    UserDefaults.standard.set([languageCode], forKey: UserDefaultsKeys.appleLanguages)
-    UserDefaults.standard.synchronize()
-    saveLanguage(languageCode)
-    //Bundle.setLanguage(languageCode: languageCode)
-  }
-
-  func saveTheme(_ theme: String) {
-      UserDefaults.standard.set(theme, forKey: UserDefaultsKeys.theme)
-  }
-
-  func loadTheme() -> String {
-      if let saved = UserDefaults.standard.string(forKey: UserDefaultsKeys.theme) {
-        return saved
-      }
-      // Fallback to current selection's display name
-      let option = ThemeOption.allCases.first(where: { $0.selection.appearance == Theme.currentSelection.appearance && $0.selection.palette == Theme.currentSelection.palette })
-      return option?.displayName ?? Theme.currentThemeStyle.themeName
-  }
-
-  func saveOrderEntryMode(_ mode: OrderEntryMode) {
-    UserDefaults.standard.set(mode.rawValue, forKey: orderEntryModeKey)
-  }
-
-  func loadOrderEntryMode() -> OrderEntryMode {
-    guard let raw = UserDefaults.standard.string(forKey: orderEntryModeKey),
-          let mode = OrderEntryMode(rawValue: raw) else {
-      return .openTab
+    func saveLanguage(_ language: String) {
+        UserDefaults.standard.set(language, forKey: UserDefaultsKeys.language)
     }
-    return mode
-  }
 
-  func saveChooseCategoryFirstProductSelection(_ isOn: Bool) {
-    UserDefaults.standard.set(isOn, forKey: chooseCategoryFirstProductSelectionKey)
-  }
+    func loadLanguage() -> String {
+        return UserDefaults.standard.string(forKey: UserDefaultsKeys.language)
+            ?? DefaultValues.defaultLanguage
+    }
 
-  func loadChooseCategoryFirstProductSelection() -> Bool {
-    UserDefaults.standard.bool(forKey: chooseCategoryFirstProductSelectionKey)
-  }
+    func setAppLanguage(_ languageCode: String) {
+        UserDefaults.standard.set([languageCode], forKey: UserDefaultsKeys.appleLanguages)
+        UserDefaults.standard.synchronize()
+        saveLanguage(languageCode)
+        //Bundle.setLanguage(languageCode: languageCode)
+    }
 
-  // func saveOnline(_ isOn: Bool) {
-  //   UserSession.current.saveOnline(isOn)
-  // }
+    func saveTheme(_ theme: String) {
+        UserDefaults.standard.set(theme, forKey: UserDefaultsKeys.theme)
+    }
 
-  // func loadOnline() -> Bool {
-  //   return UserSession.current.hasOnlineVersion
-  // }
+    func loadTheme() -> String {
+        if let saved = UserDefaults.standard.string(forKey: UserDefaultsKeys.theme) {
+            return saved
+        }
+        // Fallback to current selection's display name
+        let option = ThemeOption.allCases.first(where: {
+            $0.selection.appearance == Theme.currentSelection.appearance
+                && $0.selection.palette == Theme.currentSelection.palette
+        })
+        return option?.displayName ?? Theme.currentThemeStyle.themeName
+    }
 
-  func loadUserEmail() -> String {
-    return UserSession.current.userEmail ?? "Not Autorized"
-  }
+    func saveOrderEntryMode(_ mode: OrderEntryMode) {
+        UserDefaults.standard.set(mode.rawValue, forKey: orderEntryModeKey)
+    }
+
+    func loadOrderEntryMode() -> OrderEntryMode {
+        guard let raw = UserDefaults.standard.string(forKey: orderEntryModeKey),
+            let mode = OrderEntryMode(rawValue: raw)
+        else {
+            return .openTab
+        }
+        return mode
+    }
+
+    func saveChooseCategoryFirstProductSelection(_ isOn: Bool) {
+        UserDefaults.standard.set(isOn, forKey: chooseCategoryFirstProductSelectionKey)
+    }
+
+    func loadChooseCategoryFirstProductSelection() -> Bool {
+        UserDefaults.standard.bool(forKey: chooseCategoryFirstProductSelectionKey)
+    }
+
+    func saveTrackIngredients(_ isOn: Bool) {
+        UserDefaults.standard.set(isOn, forKey: trackIngredientsKey)
+    }
+
+    func loadTrackIngredients() -> Bool {
+        UserDefaults.standard.object(forKey: trackIngredientsKey) as? Bool ?? false
+    }
+
+    // func saveOnline(_ isOn: Bool) {
+    //   UserSession.current.saveOnline(isOn)
+    // }
+
+    // func loadOnline() -> Bool {
+    //   return UserSession.current.hasOnlineVersion
+    // }
+
+    func loadUserEmail() -> String {
+        return UserSession.current.userEmail ?? "Not Autorized"
+    }
 }

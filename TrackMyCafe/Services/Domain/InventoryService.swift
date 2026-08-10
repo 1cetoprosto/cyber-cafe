@@ -33,13 +33,16 @@ class InventoryService: InventoryServiceProtocol {
     private let databaseService = DomainDatabaseService.shared
     private let balanceJournalService: BalanceJournalServiceProtocol
     private let dailyBalanceMaterializer: DailyBalanceMaterializerProtocol
+    private let settingsManager: SettingsManager
 
     private init(
         balanceJournalService: BalanceJournalServiceProtocol = BalanceJournalService(),
-        dailyBalanceMaterializer: DailyBalanceMaterializerProtocol = DailyBalanceMaterializer()
+        dailyBalanceMaterializer: DailyBalanceMaterializerProtocol = DailyBalanceMaterializer(),
+        settingsManager: SettingsManager = .shared
     ) {
         self.balanceJournalService = balanceJournalService
         self.dailyBalanceMaterializer = dailyBalanceMaterializer
+        self.settingsManager = settingsManager
     }
 
     // MARK: - Purchase Processing
@@ -82,7 +85,8 @@ class InventoryService: InventoryServiceProtocol {
                     // 5. Save Purchase record to history
                     self?.databaseService.savePurchase(model: purchase) { purchaseSuccess in
                         if purchaseSuccess {
-                            self?.syncPurchaseBalance(previous: nil, current: purchase, completion: completion)
+                            self?.syncPurchaseBalance(
+                                previous: nil, current: purchase, completion: completion)
                         } else {
                             completion(
                                 .failure(
@@ -256,7 +260,8 @@ class InventoryService: InventoryServiceProtocol {
                                         NSError(
                                             domain: "InventoryService", code: 500,
                                             userInfo: [
-                                                NSLocalizedDescriptionKey: "Failed to save adjustment record"
+                                                NSLocalizedDescriptionKey:
+                                                    "Failed to save adjustment record"
                                             ])))
                             }
                         }
@@ -280,6 +285,11 @@ class InventoryService: InventoryServiceProtocol {
     func deductStock(
         for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        guard settingsManager.loadTrackIngredients() else {
+            completion(.success(()))
+            return
+        }
+
         let dispatchGroup = DispatchGroup()
         var errors: [Error] = []
 
@@ -349,6 +359,11 @@ class InventoryService: InventoryServiceProtocol {
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void
     ) {
+        guard settingsManager.loadTrackIngredients() else {
+            completion([])
+            return
+        }
+
         // This requires fetching recipes for all products in the order
         // For MVP, we'll implement a simplified check or iterate asynchronously
         // Ideally, we need a bulk fetch method.
