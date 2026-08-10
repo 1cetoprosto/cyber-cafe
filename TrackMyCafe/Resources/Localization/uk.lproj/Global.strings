@@ -454,6 +454,8 @@
 
 // MARK: - Orders Picker
 "settings_chooseCategoryFirst" = "Спочатку вибирати категорію";
+"settings_trackIngredients" = "Слідкувати за інгредієнтами";
+"settings_trackIngredientsFooter" = "Автоматично зменшувати залишок інгредієнтів під час продажу за рецептом. Вимкніть, якщо ви ведете тільки фінансовий облік.";
 "orderPicker_allProducts" = "Всі товари";
 "orderPicker_returnToOrder" = "Повернутися до замовлення";
 "orderPicker_emptyCategories" = "Немає категорій";

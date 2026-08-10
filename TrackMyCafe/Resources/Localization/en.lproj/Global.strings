@@ -454,6 +454,8 @@
 
 // MARK: - Orders Picker
 "settings_chooseCategoryFirst" = "Choose category first";
+"settings_trackIngredients" = "Track ingredients";
+"settings_trackIngredientsFooter" = "Automatically decrease ingredient stock on sale according to the recipe. Turn off if you only need financial accounting.";
 "orderPicker_allProducts" = "All products";
 "orderPicker_returnToOrder" = "Return to order";
 "orderPicker_emptyCategories" = "No categories";
