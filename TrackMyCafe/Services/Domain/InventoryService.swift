@@ -17,8 +17,20 @@ protocol InventoryServiceProtocol {
         adjustment: InventoryAdjustmentModel, completion: @escaping (Result<Void, Error>) -> Void)
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void)
+    func validateStockAvailability(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping ([StockWarning]) -> Void)
     func deductStock(
         for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void)
+    func deductStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
+    func restoreStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void)
 }
 
 struct StockWarning {
@@ -33,13 +45,16 @@ class InventoryService: InventoryServiceProtocol {
     private let databaseService = DomainDatabaseService.shared
     private let balanceJournalService: BalanceJournalServiceProtocol
     private let dailyBalanceMaterializer: DailyBalanceMaterializerProtocol
+    private let settingsManager: SettingsManager
 
     private init(
         balanceJournalService: BalanceJournalServiceProtocol = BalanceJournalService(),
-        dailyBalanceMaterializer: DailyBalanceMaterializerProtocol = DailyBalanceMaterializer()
+        dailyBalanceMaterializer: DailyBalanceMaterializerProtocol = DailyBalanceMaterializer(),
+        settingsManager: SettingsManager = .shared
     ) {
         self.balanceJournalService = balanceJournalService
         self.dailyBalanceMaterializer = dailyBalanceMaterializer
+        self.settingsManager = settingsManager
     }
 
     // MARK: - Purchase Processing
@@ -82,7 +97,8 @@ class InventoryService: InventoryServiceProtocol {
                     // 5. Save Purchase record to history
                     self?.databaseService.savePurchase(model: purchase) { purchaseSuccess in
                         if purchaseSuccess {
-                            self?.syncPurchaseBalance(previous: nil, current: purchase, completion: completion)
+                            self?.syncPurchaseBalance(
+                                previous: nil, current: purchase, completion: completion)
                         } else {
                             completion(
                                 .failure(
@@ -256,7 +272,8 @@ class InventoryService: InventoryServiceProtocol {
                                         NSError(
                                             domain: "InventoryService", code: 500,
                                             userInfo: [
-                                                NSLocalizedDescriptionKey: "Failed to save adjustment record"
+                                                NSLocalizedDescriptionKey:
+                                                    "Failed to save adjustment record"
                                             ])))
                             }
                         }
@@ -280,6 +297,23 @@ class InventoryService: InventoryServiceProtocol {
     func deductStock(
         for items: [OrderItemModel], completion: @escaping (Result<Void, Error>) -> Void
     ) {
+        deductStock(
+            for: items,
+            trackingEnabled: settingsManager.loadTrackIngredients(),
+            completion: completion
+        )
+    }
+
+    func deductStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard trackingEnabled else {
+            completion(.success(()))
+            return
+        }
+
         let dispatchGroup = DispatchGroup()
         var errors: [Error] = []
 
@@ -344,11 +378,98 @@ class InventoryService: InventoryServiceProtocol {
         }
     }
 
+    func restoreStock(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) {
+        guard trackingEnabled else {
+            completion(.success(()))
+            return
+        }
+
+        let dispatchGroup = DispatchGroup()
+        var errors: [Error] = []
+
+        for item in items {
+            dispatchGroup.enter()
+            databaseService.fetchRecipe(forProductId: item.productId) { [weak self] recipeItems in
+                guard let self = self else {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                if recipeItems.isEmpty {
+                    dispatchGroup.leave()
+                    return
+                }
+
+                let innerGroup = DispatchGroup()
+
+                for recipeItem in recipeItems {
+                    innerGroup.enter()
+                    self.databaseService.fetchIngredient(byId: recipeItem.ingredientId) {
+                        ingredient in
+                        guard var ingredient = ingredient else {
+                            innerGroup.leave()
+                            return
+                        }
+
+                        let restoreAmount = recipeItem.quantity * Double(item.quantity)
+                        ingredient.stockQuantity += restoreAmount
+
+                        self.databaseService.saveIngredient(model: ingredient) { success in
+                            if !success {
+                                errors.append(
+                                    NSError(
+                                        domain: "InventoryService", code: 500,
+                                        userInfo: [
+                                            NSLocalizedDescriptionKey:
+                                                "Failed to save ingredient \(ingredient.name)"
+                                        ]))
+                            }
+                            innerGroup.leave()
+                        }
+                    }
+                }
+
+                innerGroup.notify(queue: .global()) {
+                    dispatchGroup.leave()
+                }
+            }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+            if errors.isEmpty {
+                completion(.success(()))
+            } else {
+                completion(.failure(errors.first!))
+            }
+        }
+    }
+
     // MARK: - Validation
 
     func validateStockAvailability(
         for items: [OrderItemModel], completion: @escaping ([StockWarning]) -> Void
     ) {
+        validateStockAvailability(
+            for: items,
+            trackingEnabled: settingsManager.loadTrackIngredients(),
+            completion: completion
+        )
+    }
+
+    func validateStockAvailability(
+        for items: [OrderItemModel],
+        trackingEnabled: Bool,
+        completion: @escaping ([StockWarning]) -> Void
+    ) {
+        guard trackingEnabled else {
+            completion([])
+            return
+        }
+
         // This requires fetching recipes for all products in the order
         // For MVP, we'll implement a simplified check or iterate asynchronously
         // Ideally, we need a bulk fetch method.

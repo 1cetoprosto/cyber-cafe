@@ -9,6 +9,7 @@
 // MARK: - Common Actions
 "back" = "Назад";
 "cancel" = "Скасувати";
+"proceed" = "Продовжити";
 "retry" = "Повторити спробу";
 "save" = "Зберегти";
 "delete" = "Видалити";
@@ -427,6 +428,8 @@
 "onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
 "onboardingSettingsTypesTitle" = "Типи замовлень";
 "onboardingSettingsTypesMessage" = "Налаштуйте різні типи замовлень тут.";
+"onboardingSettingsTrackIngredientsTitle" = "Слідкувати за інгредієнтами";
+"onboardingSettingsTrackIngredientsMessage" = "Увімкни, щоб автоматично списувати залишки інгредієнтів за рецептом при збереженні чека.";
 "logout" = "Вийти";
 "account" = "Акаунт";
 
@@ -454,6 +457,20 @@
 
 // MARK: - Orders Picker
 "settings_chooseCategoryFirst" = "Спочатку вибирати категорію";
+"settings_trackIngredients" = "Слідкувати за інгредієнтами";
+"settings_trackIngredientsFooter" = "Автоматично зменшувати залишок інгредієнтів під час продажу за рецептом. Вимкніть, якщо ви ведете тільки фінансовий облік.";
+"settings_trackIngredientsFooterLocked" = "Автоматично зменшує залишок інгредієнтів під час продажу за рецептом. Режим вже заблоковано: у вас існують чеки зі списанням складу, тому вимкнення може зламати залишки.";
+"settings_trackIngredientsConfirmTitle" = "Увімкнути «Слідкувати за інгредієнтами»?";
+"settings_trackIngredientsConfirmMessage" = "Після збереження першого чеку в цьому режимі ви не зможете вимкнути його автоматично. Чеки будуть списувати інгредієнти за рецептом, а при нестачі з’являтиметься попередження.";
+"settings_trackIngredientsLockedTitle" = "Неможливо вимкнути";
+"settings_trackIngredientsLockedMessage" = "У вас уже є чеки з автоматичним списанням інгредієнтів за рецептом. Щоб уникнути помилок у залишках, режим «Слідкувати за інгредієнтами» заблоковано.";
+"settings_action_enable" = "Увімкнути";
+"settings_action_cancel" = "Скасувати";
+"settings_action_ok" = "Гаразд";
+"stockWarningTitle" = "Недостатньо на складі";
+"stockWarningMessagePrefix" = "Не вистачає інгредієнтів:";
+"stockWarningShortageFormat" = "%@: потрібно ще %@";
+"stockWarningProceedQuestion" = "Продовжити збереження?";
 "orderPicker_allProducts" = "Всі товари";
 "orderPicker_returnToOrder" = "Повернутися до замовлення";
 "orderPicker_emptyCategories" = "Немає категорій";

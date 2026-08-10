@@ -23,6 +23,7 @@ struct OrderSnapshotRepairService {
             cash: order.cash,
             card: order.card,
             totalCost: resolvedTotalCost,
+            inventoryTracking: order.inventoryTracking,
             note: order.note
         )
 

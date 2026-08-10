@@ -172,6 +172,24 @@ class DomainDatabaseService: DomainDB {
         model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double,
         sum: Double
     ) {
+        guard !model.id.isEmpty else {
+            logger.warning(
+                "updateProduct called with empty documentId for product \(name), using saveProduct instead"
+            )
+            var product = model
+            product.date = date
+            product.name = name
+            product.quantity = quantity
+            product.price = price
+            product.sum = sum
+            saveProduct(order: product) { [weak self] id in
+                if id == nil {
+                    self?.logger.error("Fallback saveProduct failed for product \(name)")
+                }
+            }
+            return
+        }
+
         var updatedModel = FIRProductModel(dataModel: model)
         updatedModel.date = date
         updatedModel.name = name
@@ -328,6 +346,7 @@ class DomainDatabaseService: DomainDB {
             cash: cashAmount,
             card: cardAmount,
             totalCost: totalCost,
+            inventoryTracking: model.inventoryTracking,
             note: note
         )
         updateOrder(updatedOrder) { _ in }
@@ -478,6 +497,23 @@ class DomainDatabaseService: DomainDB {
                     "Failed to delete order to Firestore with error: \(error.localizedDescription)"
                 )
                 completion(false)
+            }
+        }
+    }
+
+    func hasAnyOrderWithInventoryTracking() async -> Bool {
+        await withCheckedContinuation { continuation in
+            FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.orders,
+                firModel: FIROrderModel.self
+            ) { result in
+                switch result {
+                case .success(let list):
+                    let hasAny = list.contains { ($0.1.inventoryTracking ?? false) == true }
+                    continuation.resume(returning: hasAny)
+                case .failure:
+                    continuation.resume(returning: false)
+                }
             }
         }
     }

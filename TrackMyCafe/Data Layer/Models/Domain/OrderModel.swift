@@ -15,6 +15,7 @@ struct OrderModel {
     var cash: Double
     var card: Double
     var totalCost: Double
+    var inventoryTracking: Bool
     var note: String?
 
     init(
@@ -25,6 +26,7 @@ struct OrderModel {
         cash: Double,
         card: Double,
         totalCost: Double = 0.0,
+        inventoryTracking: Bool = false,
         note: String? = nil
     ) {
         self.id = id
@@ -34,6 +36,7 @@ struct OrderModel {
         self.cash = cash
         self.card = card
         self.totalCost = totalCost
+        self.inventoryTracking = inventoryTracking
         self.note = note
     }
 
@@ -45,6 +48,7 @@ struct OrderModel {
         self.cash = realmModel.cash
         self.card = realmModel.card
         self.totalCost = realmModel.totalCost
+        self.inventoryTracking = realmModel.inventoryTracking
         self.note = realmModel.note
     }
 
@@ -56,6 +60,7 @@ struct OrderModel {
         self.cash = firebaseModel.cash
         self.card = firebaseModel.card
         self.totalCost = firebaseModel.totalCost ?? 0.0
+        self.inventoryTracking = firebaseModel.inventoryTracking ?? false
         self.note = firebaseModel.note
     }
 
@@ -68,6 +73,7 @@ struct OrderModel {
         self.cash = data["cash"] as? Double ?? 0.0
         self.card = data["card"] as? Double ?? 0.0
         self.totalCost = data["totalCost"] as? Double ?? 0.0
+        self.inventoryTracking = data["inventoryTracking"] as? Bool ?? false
         self.note = (data["note"] as? String)?.nilIfEmpty
     }
 }

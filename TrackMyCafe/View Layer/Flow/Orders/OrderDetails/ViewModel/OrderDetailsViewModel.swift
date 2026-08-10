@@ -8,15 +8,21 @@
 import Foundation
 
 class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
-    
+
     // MARK: - Properties
     private var order: OrderModel
     private var types: [TypeModel] = []
     private var selectedRow: Int?
     private let orderDataService: OrderDataServiceProtocol
-    
+
     let productsViewModel: ProductListViewModel
-    
+
+    private var orderTrackingMode: Bool {
+        isNewModel
+            ? SettingsManager.shared.loadTrackIngredients()
+            : order.inventoryTracking
+    }
+
     var id: String { return order.id }
     var date: Date { return order.date }
     var cashLabel: String { return R.string.global.receivedInCash() }
@@ -30,7 +36,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     var type: String { return order.type }
     var note: String { return order.note ?? "" }
     var isNewModel: Bool
-    
+
     // MARK: - Init
     init(
         model: OrderModel,
@@ -41,10 +47,14 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         self.isNewModel = isNewModel
         self.orderDataService = orderDataService
         self.productsViewModel = ProductListViewModel()
-        
+        self.productsViewModel.inventoryTrackingMode =
+            (isNewModel
+                ? SettingsManager.shared.loadTrackIngredients()
+                : model.inventoryTracking)
+
         fetchTypes()
     }
-    
+
     // MARK: - Data Loading
     func loadProducts(completion: @escaping () -> Void) {
         let mode = SettingsManager.shared.loadOrderEntryMode()
@@ -61,7 +71,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             productsViewModel.getProducts(withIdOrder: orderId, completion: completion)
         }
     }
-    
+
     // MARK: - Saving Logic
     func save(
         date: Date,
@@ -76,30 +86,39 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         let cashValue = cash?.double ?? 0.0
         let cardValue = card?.double ?? 0.0
         let note = note?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
-        
+
         if ignoreStockWarning {
-            performSave(date: date, type: type, cash: cashValue, card: cardValue, note: note, completion: completion)
+            performSave(
+                date: date, type: type, cash: cashValue, card: cardValue, note: note,
+                completion: completion)
         } else {
             productsViewModel.validateStock { [weak self] warnings in
                 guard let self = self else { return }
-                
+
                 if !warnings.isEmpty {
                     completion(.failure(.stockValidationFailed(warnings)))
                     return
                 }
-                
-                self.performSave(date: date, type: type, cash: cashValue, card: cardValue, note: note, completion: completion)
+
+                self.performSave(
+                    date: date, type: type, cash: cashValue, card: cardValue, note: note,
+                    completion: completion)
             }
         }
     }
-    
-    private func performSave(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Result<Void, OrderSaveError>) -> Void) {
+
+    private func performSave(
+        date: Date, type: String, cash: Double, card: Double, note: String?,
+        completion: @escaping (Result<Void, OrderSaveError>) -> Void
+    ) {
         // 1. Save/Update Order (Parent)
         if self.isNewModel {
-            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
+            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) {
+                success in
                 if success {
                     // 2. Save Products (Children)
-                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) { productsSaved in
+                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) {
+                        productsSaved in
                         if productsSaved {
                             completion(.success(()))
                         } else {
@@ -111,7 +130,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 }
             }
         } else {
-            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
+            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) {
+                success in
                 if success {
                     // 2. Update Products (Children)
                     self.productsViewModel.updateOrder(date: date) { productsSaved in
@@ -127,11 +147,14 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             }
         }
     }
-    
-    private func createOrder(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Bool) -> Void) {
+
+    private func createOrder(
+        date: Date, type: String, cash: Double, card: Double, note: String?,
+        completion: @escaping (Bool) -> Void
+    ) {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
-        
+
         let newOrder = OrderModel(
             id: id,
             date: date,
@@ -140,6 +163,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             cash: cash,
             card: card,
             totalCost: totalCost,
+            inventoryTracking: orderTrackingMode,
             note: note
         )
 
@@ -155,13 +179,17 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 self.isNewModel = false
                 completion(true)
             } catch {
-                self.logger.error("Failed to create order \(newOrder.id): \(error.localizedDescription)")
+                self.logger.error(
+                    "Failed to create order \(newOrder.id): \(error.localizedDescription)")
                 completion(false)
             }
         }
     }
-    
-    private func updateOrder(date: Date, type: String, cash: Double, card: Double, note: String?, completion: @escaping (Bool) -> Void) {
+
+    private func updateOrder(
+        date: Date, type: String, cash: Double, card: Double, note: String?,
+        completion: @escaping (Bool) -> Void
+    ) {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
 
@@ -173,6 +201,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             cash: cash,
             card: card,
             totalCost: totalCost,
+            inventoryTracking: orderTrackingMode,
             note: note
         )
 
@@ -187,30 +216,31 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 self.order = updatedOrder
                 completion(true)
             } catch {
-                self.logger.error("Failed to update order \(updatedOrder.id): \(error.localizedDescription)")
+                self.logger.error(
+                    "Failed to update order \(updatedOrder.id): \(error.localizedDescription)")
                 completion(false)
             }
         }
     }
-    
+
     // MARK: - Picker Data Source
     func numberOfRowsInComponent(component: Int) -> Int {
         return types.count
     }
-    
+
     func titleForRow(row: Int, component: Int) -> String? {
         return types[row].name
     }
-    
+
     func selectRow(atRow row: Int) {
         self.selectedRow = row
     }
-    
+
     func getSelectedType() -> String? {
         guard let row = selectedRow, row < types.count else { return nil }
         return types[row].name
     }
-    
+
     // MARK: - Helpers
     func fetchTypes() {
         DomainDatabaseService.shared.fetchTypes { [weak self] types in
@@ -220,7 +250,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             }
         }
     }
-    
+
     func verifyRequiredData(completion: @escaping (Bool) -> Void) {
         DomainDatabaseService.shared.fetchTypes { [weak self] types in
             guard let self = self else { return }
@@ -230,9 +260,13 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             }
         }
     }
-    
+
     func deleteOrder(completion: @escaping () -> Void) {
-        ProductListViewModel.deleteOrder(withOrderId: id, date: date)
+        ProductListViewModel.deleteOrder(
+            withOrderId: id,
+            date: date,
+            trackingEnabled: orderTrackingMode
+        )
 
         Task { [weak self] in
             guard let self else {
@@ -244,7 +278,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 try await orderDataService.deleteOrder(order)
                 self.logger.notice("Order deleted")
             } catch {
-                self.logger.error("Failed to delete order \(self.order.id): \(error.localizedDescription)")
+                self.logger.error(
+                    "Failed to delete order \(self.order.id): \(error.localizedDescription)")
             }
 
             completion()

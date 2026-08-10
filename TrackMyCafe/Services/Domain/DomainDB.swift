@@ -42,6 +42,7 @@ protocol DomainDB {
     func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void)
     func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void)
     func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void)
+    func hasAnyOrderWithInventoryTracking() async -> Bool
 
     // Asynchronous methods for updating and retrieving product data
     func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double)

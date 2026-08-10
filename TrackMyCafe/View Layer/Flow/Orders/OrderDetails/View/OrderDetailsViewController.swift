@@ -497,19 +497,40 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func showStockWarning(_ warnings: [StockWarning]) {
+        let shortageFormat = NSLocalizedString(
+            "stockWarningShortageFormat",
+            tableName: "Global",
+            comment: ""
+        )
         let message = warnings.map { warning in
             let shortage = warning.requiredQty - warning.currentStock
-            return "\(warning.ingredientName): Need \(String(format: "%.2f", shortage)) more"
+            let shortageText = String(format: "%.2f", shortage)
+            return String(format: shortageFormat, warning.ingredientName, shortageText)
         }.joined(separator: "\n")
 
+        let prefix = NSLocalizedString(
+            "stockWarningMessagePrefix",
+            tableName: "Global",
+            comment: ""
+        )
+        let question = NSLocalizedString(
+            "stockWarningProceedQuestion",
+            tableName: "Global",
+            comment: ""
+        )
         let alert = UIAlertController(
-            title: "Stock Warning",
-            message: "Not enough stock for:\n" + message + "\nProceed anyway?",
+            title: NSLocalizedString(
+                "stockWarningTitle",
+                tableName: "Global",
+                comment: ""
+            ),
+            message: "\(prefix)\n\(message)\n\(question)",
             preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
         alert.addAction(
             UIAlertAction(
-                title: "Proceed", style: .destructive,
+                title: R.string.global.proceed(),
+                style: .destructive,
                 handler: { [weak self] _ in
                     guard let self = self, let viewModel = self.viewModel else { return }
 
