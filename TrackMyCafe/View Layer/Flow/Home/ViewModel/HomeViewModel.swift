@@ -14,8 +14,8 @@ final class HomeViewModel: HomeViewModelType {
     private(set) var todaySum: Double = 0
     private(set) var weekSum: Double = 0
     private(set) var monthSum: Double = 0
-    private(set) var monthExpenses: Double = 0
-    private(set) var monthProfit: Double = 0
+    private(set) var periodExpenses: Double = 0
+    private(set) var periodProfit: Double = 0
     private(set) var dateToday: Date = Date()
     private(set) var cashBalance: Double = 0
     private(set) var cardBalance: Double = 0
@@ -93,8 +93,9 @@ final class HomeViewModel: HomeViewModelType {
             period: currentPeriod,
             referenceDate: refDate
         )
-        monthExpenses = expenses.total
-        monthProfit = financeService.computeNetProfit(sales: periodIncome.sales, opex: expenses.total)
+        let profit = financeService.summarize(income: periodIncome, opex: expenses)
+        periodExpenses = expenses.total
+        periodProfit = profit.netProfit
 
         cashBalance = currentBalance(for: .cash, referenceDate: refDate)
         cardBalance = currentBalance(for: .card, referenceDate: refDate)

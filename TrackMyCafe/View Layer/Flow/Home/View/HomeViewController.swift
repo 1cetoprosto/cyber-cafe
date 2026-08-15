@@ -236,8 +236,8 @@ final class HomeViewController: UIViewController, ProGated {
             date: viewModel.dateToday,
             period: period,
             sales: sales,
-            expenses: viewModel.monthExpenses,
-            profit: viewModel.monthProfit,
+            expenses: viewModel.periodExpenses,
+            profit: viewModel.periodProfit,
             cash: viewModel.cashBalance,
             card: viewModel.cardBalance,
             showDeleteDemoData: DemoDataManager.shared.isDemoDataPresent
