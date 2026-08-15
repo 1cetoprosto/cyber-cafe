@@ -526,3 +526,8 @@
 "abcProductCountFormat" = "%d items";
 
 "trendsEmpty" = "Not enough data yet — come back after a few periods.";
+
+// MARK: - Common Periods
+"commonDay" = "Day";
+"commonWeek" = "Week";
+"commonMonth" = "Month";

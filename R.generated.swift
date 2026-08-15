@@ -225,9 +225,37 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 403 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 429 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
+
+      /// en translation: No products sold in this period.
+      ///
+      /// Key: abcEmpty
+      ///
+      /// Locales: en, uk
+      var abcEmpty: RswiftResources.StringResource { .init(key: "abcEmpty", tableName: "Global", source: source, developmentValue: "No products sold in this period.", comment: nil) }
+
+      /// en translation: %d items
+      ///
+      /// Key: abcProductCountFormat
+      ///
+      /// Locales: en, uk
+      var abcProductCountFormat: RswiftResources.StringResource1<Int> { .init(key: "abcProductCountFormat", tableName: "Global", source: source, developmentValue: "%d items", comment: nil) }
+
+      /// en translation: Gross Profit
+      ///
+      /// Key: abcRankingGross
+      ///
+      /// Locales: en, uk
+      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "Gross Profit", comment: nil) }
+
+      /// en translation: Sales
+      ///
+      /// Key: abcRankingSales
+      ///
+      /// Locales: en, uk
+      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
 
       /// en translation: Please allow access to %@ in Settings
       ///
@@ -550,6 +578,20 @@ struct _R {
       ///
       /// Locales: en, uk
       var coffeeWithMilkThemeName: RswiftResources.StringResource { .init(key: "coffeeWithMilkThemeName", tableName: "Global", source: source, developmentValue: "System (Latte)", comment: nil) }
+
+      /// en translation: ₴
+      ///
+      /// Key: commonCurrencyUAH
+      ///
+      /// Locales: en, uk
+      var commonCurrencyUAH: RswiftResources.StringResource { .init(key: "commonCurrencyUAH", tableName: "Global", source: source, developmentValue: "₴", comment: nil) }
+
+      /// en translation: ...
+      ///
+      /// Key: commonLoading
+      ///
+      /// Locales: en, uk
+      var commonLoading: RswiftResources.StringResource { .init(key: "commonLoading", tableName: "Global", source: source, developmentValue: "...", comment: nil) }
 
       /// en translation: Confirm
       ///
@@ -1257,6 +1299,97 @@ struct _R {
       ///
       /// Locales: en, uk
       var isAllowCalculationForAdministrator: RswiftResources.StringResource { .init(key: "isAllowCalculationForAdministrator", tableName: "Global", source: source, developmentValue: "Provide access", comment: nil) }
+
+      /// en translation: Cost of Goods Sold
+      ///
+      /// Key: kpiCOGS
+      ///
+      /// Locales: en, uk
+      var kpiCOGS: RswiftResources.StringResource { .init(key: "kpiCOGS", tableName: "Global", source: source, developmentValue: "Cost of Goods Sold", comment: nil) }
+
+      /// en translation: Card
+      ///
+      /// Key: kpiCard
+      ///
+      /// Locales: en, uk
+      var kpiCard: RswiftResources.StringResource { .init(key: "kpiCard", tableName: "Global", source: source, developmentValue: "Card", comment: nil) }
+
+      /// en translation: Cash
+      ///
+      /// Key: kpiCash
+      ///
+      /// Locales: en, uk
+      var kpiCash: RswiftResources.StringResource { .init(key: "kpiCash", tableName: "Global", source: source, developmentValue: "Cash", comment: nil) }
+
+      /// en translation: Expenses
+      ///
+      /// Key: kpiExpensesCount
+      ///
+      /// Locales: en, uk
+      var kpiExpensesCount: RswiftResources.StringResource { .init(key: "kpiExpensesCount", tableName: "Global", source: source, developmentValue: "Expenses", comment: nil) }
+
+      /// en translation: Gross Profit
+      ///
+      /// Key: kpiGrossProfit
+      ///
+      /// Locales: en, uk
+      var kpiGrossProfit: RswiftResources.StringResource { .init(key: "kpiGrossProfit", tableName: "Global", source: source, developmentValue: "Gross Profit", comment: nil) }
+
+      /// en translation: Breakdown
+      ///
+      /// Key: kpiGroupBreakdown
+      ///
+      /// Locales: en, uk
+      var kpiGroupBreakdown: RswiftResources.StringResource { .init(key: "kpiGroupBreakdown", tableName: "Global", source: source, developmentValue: "Breakdown", comment: nil) }
+
+      /// en translation: Payment & Counts
+      ///
+      /// Key: kpiGroupDetails
+      ///
+      /// Locales: en, uk
+      var kpiGroupDetails: RswiftResources.StringResource { .init(key: "kpiGroupDetails", tableName: "Global", source: source, developmentValue: "Payment & Counts", comment: nil) }
+
+      /// en translation: Summary
+      ///
+      /// Key: kpiGroupSummary
+      ///
+      /// Locales: en, uk
+      var kpiGroupSummary: RswiftResources.StringResource { .init(key: "kpiGroupSummary", tableName: "Global", source: source, developmentValue: "Summary", comment: nil) }
+
+      /// en translation: Gross Margin
+      ///
+      /// Key: kpiMargin
+      ///
+      /// Locales: en, uk
+      var kpiMargin: RswiftResources.StringResource { .init(key: "kpiMargin", tableName: "Global", source: source, developmentValue: "Gross Margin", comment: nil) }
+
+      /// en translation: Net Profit
+      ///
+      /// Key: kpiNetProfit
+      ///
+      /// Locales: en, uk
+      var kpiNetProfit: RswiftResources.StringResource { .init(key: "kpiNetProfit", tableName: "Global", source: source, developmentValue: "Net Profit", comment: nil) }
+
+      /// en translation: Operating Expenses
+      ///
+      /// Key: kpiOpex
+      ///
+      /// Locales: en, uk
+      var kpiOpex: RswiftResources.StringResource { .init(key: "kpiOpex", tableName: "Global", source: source, developmentValue: "Operating Expenses", comment: nil) }
+
+      /// en translation: Orders
+      ///
+      /// Key: kpiOrdersCount
+      ///
+      /// Locales: en, uk
+      var kpiOrdersCount: RswiftResources.StringResource { .init(key: "kpiOrdersCount", tableName: "Global", source: source, developmentValue: "Orders", comment: nil) }
+
+      /// en translation: Sales
+      ///
+      /// Key: kpiSales
+      ///
+      /// Locales: en, uk
+      var kpiSales: RswiftResources.StringResource { .init(key: "kpiSales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
 
       /// en translation: This subscription is already linked to another lab.
       ///
@@ -2217,12 +2350,54 @@ struct _R {
       /// Locales: en, uk
       var repeatAgain: RswiftResources.StringResource { .init(key: "repeatAgain", tableName: "Global", source: source, developmentValue: "Please try again", comment: nil) }
 
+      /// en translation: Rank products by sales or gross profit to find A/B/C drivers and long-tail items.
+      ///
+      /// Key: reportsABCSubtitle
+      ///
+      /// Locales: en, uk
+      var reportsABCSubtitle: RswiftResources.StringResource { .init(key: "reportsABCSubtitle", tableName: "Global", source: source, developmentValue: "Rank products by sales or gross profit to find A/B/C drivers and long-tail items.", comment: nil) }
+
+      /// en translation: ABC Analysis
+      ///
+      /// Key: reportsABCTitle
+      ///
+      /// Locales: en, uk
+      var reportsABCTitle: RswiftResources.StringResource { .init(key: "reportsABCTitle", tableName: "Global", source: source, developmentValue: "ABC Analysis", comment: nil) }
+
+      /// en translation: Income, costs, margin, and bottom-line net profit for the period.
+      ///
+      /// Key: reportsPLSubtitle
+      ///
+      /// Locales: en, uk
+      var reportsPLSubtitle: RswiftResources.StringResource { .init(key: "reportsPLSubtitle", tableName: "Global", source: source, developmentValue: "Income, costs, margin, and bottom-line net profit for the period.", comment: nil) }
+
+      /// en translation: Profit & Loss
+      ///
+      /// Key: reportsPLTitle
+      ///
+      /// Locales: en, uk
+      var reportsPLTitle: RswiftResources.StringResource { .init(key: "reportsPLTitle", tableName: "Global", source: source, developmentValue: "Profit & Loss", comment: nil) }
+
       /// en translation: Reports
       ///
       /// Key: reportsTitle
       ///
       /// Locales: en, uk
       var reportsTitle: RswiftResources.StringResource { .init(key: "reportsTitle", tableName: "Global", source: source, developmentValue: "Reports", comment: nil) }
+
+      /// en translation: Compare performance over multiple consecutive periods to spot direction and momentum.
+      ///
+      /// Key: reportsTrendsSubtitle
+      ///
+      /// Locales: en, uk
+      var reportsTrendsSubtitle: RswiftResources.StringResource { .init(key: "reportsTrendsSubtitle", tableName: "Global", source: source, developmentValue: "Compare performance over multiple consecutive periods to spot direction and momentum.", comment: nil) }
+
+      /// en translation: Periodic Trends
+      ///
+      /// Key: reportsTrendsTitle
+      ///
+      /// Locales: en, uk
+      var reportsTrendsTitle: RswiftResources.StringResource { .init(key: "reportsTrendsTitle", tableName: "Global", source: source, developmentValue: "Periodic Trends", comment: nil) }
 
       /// en translation: required
       ///
@@ -2867,6 +3042,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var transferingData: RswiftResources.StringResource { .init(key: "transferingData", tableName: "Global", source: source, developmentValue: "Transferring data...", comment: nil) }
+
+      /// en translation: Not enough data yet — come back after a few periods.
+      ///
+      /// Key: trendsEmpty
+      ///
+      /// Locales: en, uk
+      var trendsEmpty: RswiftResources.StringResource { .init(key: "trendsEmpty", tableName: "Global", source: source, developmentValue: "Not enough data yet — come back after a few periods.", comment: nil) }
 
       /// en translation: %d days FREE
       ///
