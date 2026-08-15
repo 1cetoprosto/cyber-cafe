@@ -7,7 +7,7 @@ final class ABCProductCell: UITableViewCell {
 
     private let containerView: UIView = {
         let v = UIView()
-        v.backgroundColor = Theme.current.secondaryBackground
+        v.backgroundColor = Theme.current.cellBackground
         v.layer.cornerRadius = UIConstants.mediumCornerRadius
         return v
     }()
@@ -361,7 +361,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         title: String, count: Int, value: Double, currency: String, color: UIColor
     ) {
         let card = UIView()
-        card.backgroundColor = Theme.current.secondaryBackground
+        card.backgroundColor = Theme.current.cellBackground
         card.layer.cornerRadius = UIConstants.mediumCornerRadius
 
         let titleL = UILabel()
