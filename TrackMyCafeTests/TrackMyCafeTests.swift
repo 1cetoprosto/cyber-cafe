@@ -592,8 +592,8 @@ final class TrackMyCafeTests: XCTestCase {
     func testFinanceAggregationService_summarize_producesGrossNetMargin() {
         let service = FinanceAggregationService()
         let income = IncomeSummary(
-            sales: 1000, cash: 600, card: 400, cogs: 400, last: [])
-        let opex = OpexSummary(total: 200, last: [])
+            sales: 1000, cash: 600, card: 400, cogs: 400, count: 0, last: [])
+        let opex = OpexSummary(total: 200, count: 0, last: [])
 
         let result = service.summarize(income: income, opex: opex)
 
@@ -608,8 +608,8 @@ final class TrackMyCafeTests: XCTestCase {
     func testFinanceAggregationService_summarize_zeroSales_marginIsZero() {
         let service = FinanceAggregationService()
         let income = IncomeSummary(
-            sales: 0, cash: 0, card: 0, cogs: 0, last: [])
-        let opex = OpexSummary(total: 50, last: [])
+            sales: 0, cash: 0, card: 0, cogs: 0, count: 0, last: [])
+        let opex = OpexSummary(total: 50, count: 0, last: [])
 
         let result = service.summarize(income: income, opex: opex)
 
