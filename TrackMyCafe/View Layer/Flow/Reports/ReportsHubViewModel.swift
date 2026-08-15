@@ -13,7 +13,7 @@ struct ReportListItem {
     let symbol: String
 }
 
-protocol ReportsHubViewModelType {
+protocol ReportsHubViewModelType: AnyObject {
     var currentPeriod: DashboardPeriod { get }
     var onPeriodChanged: (() -> Void)? { get set }
     var numberOfReports: Int { get }
