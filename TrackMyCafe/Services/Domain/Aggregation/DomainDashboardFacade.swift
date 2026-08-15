@@ -133,8 +133,12 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
         let worst = ranking.min { $0.grossProfit < $1.grossProfit }
 
         let balances = DashboardBalances(
-            cash: latestBalance(for: .cash, dailyBalancesByAccount: dailyBalancesByAccount, referenceDate: referenceDate),
-            card: latestBalance(for: .card, dailyBalancesByAccount: dailyBalancesByAccount, referenceDate: referenceDate)
+            cash: latestBalance(
+                for: .cash, dailyBalancesByAccount: dailyBalancesByAccount,
+                referenceDate: referenceDate),
+            card: latestBalance(
+                for: .card, dailyBalancesByAccount: dailyBalancesByAccount,
+                referenceDate: referenceDate)
         )
 
         return DashboardSnapshot(
@@ -150,9 +154,9 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
     }
 }
 
-private extension DomainDashboardFacade {
+extension DomainDashboardFacade {
 
-    func buildProductRanking(
+    fileprivate func buildProductRanking(
         productsOfOrders: [ProductOfOrderModel],
         interval: DateInterval
     ) -> [DashboardProductRanking] {
@@ -163,7 +167,7 @@ private extension DomainDashboardFacade {
             var accum = byProduct[key] ?? (name: item.name, sales: 0, cogs: 0, qty: 0)
             accum.sales += item.sum
             accum.cogs += item.costSum
-            accum.qty += item.quantity
+            accum.qty += Double(item.quantity)
             accum.name = item.name
             byProduct[key] = accum
         }
@@ -179,7 +183,7 @@ private extension DomainDashboardFacade {
         }
     }
 
-    func latestBalance(
+    fileprivate func latestBalance(
         for account: PaymentAccount,
         dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]],
         referenceDate: Date
