@@ -374,7 +374,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         valueL.left(to: titleL)
         valueL.right(to: titleL)
         valueL.bottomToSuperview(offset: -UIConstants.smallSpacing, relation: .equalOrLess)
-        valueL.centerYToSuperview(offset: 10, relation: .equalOrLess, priority: .defaultHigh)
+        valueL.centerYToSuperview(offset: 10, priority: .defaultHigh)
 
         summaryStack.addArrangedSubview(card)
     }
