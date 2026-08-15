@@ -225,6 +225,11 @@ struct SystemImages {
     static let bag = "bag"
     static let takeoutbagAndCupAndStrawFill = "takeoutbag.and.cup.and.straw.fill"
     static let gearshape = "gearshape"
+    static let chartBar = "chart.bar.doc.horizontal"
+    static let chartPie = "chart.pie"
+    static let chartLine = "chart.line.uptrend.xyaxis"
+    static let chartTab = "chart.bar"
+    static let chevronRight = "chevron.right"
 }
 
 // MARK: - Asset Names
