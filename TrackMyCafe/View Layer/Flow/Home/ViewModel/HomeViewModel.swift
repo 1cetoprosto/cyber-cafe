@@ -1,15 +1,15 @@
 import Foundation
 
 final class HomeViewModel: HomeViewModelType {
-    private let incomeService: IncomeAggregationServiceProtocol
-    private let opexService: OpexAggregationServiceProtocol
-    private let financeService: FinanceAggregationServiceProtocol
+    private let facade: DomainDashboardFacadeProtocol
     private let database: DomainDB
 
     private var currentPeriod: DashboardPeriod = .month
     private var allOrders: [OrderModel] = []
     private var allExpenses: [OpexExpenseModel] = []
+    private var allProductsOfOrders: [ProductOfOrderModel] = []
     private var dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]] = [:]
+    private var snapshot: DashboardSnapshot?
 
     private(set) var todaySum: Double = 0
     private(set) var weekSum: Double = 0
@@ -24,14 +24,10 @@ final class HomeViewModel: HomeViewModelType {
     private(set) var lastExpense: [OpexExpenseModel] = []
 
     init(
-        incomeService: IncomeAggregationServiceProtocol = IncomeAggregationService(),
-        opexService: OpexAggregationServiceProtocol = OpexAggregationService(),
-        financeService: FinanceAggregationServiceProtocol = FinanceAggregationService(),
+        facade: DomainDashboardFacadeProtocol = DomainDashboardFacade(),
         database: DomainDB = DomainDatabaseService.shared
     ) {
-        self.incomeService = incomeService
-        self.opexService = opexService
-        self.financeService = financeService
+        self.facade = facade
         self.database = database
     }
 
@@ -41,11 +37,13 @@ final class HomeViewModel: HomeViewModelType {
 
         async let orders = fetchOrders()
         async let costs = fetchExpenses()
+        async let productsOfOrders = fetchAllProductsOfOrders()
         async let cashBalances = fetchDailyBalances(for: .cash, through: dateToday)
         async let cardBalances = fetchDailyBalances(for: .card, through: dateToday)
 
         allOrders = await orders
         allExpenses = await costs
+        allProductsOfOrders = await productsOfOrders
         dailyBalancesByAccount[.cash] = await cashBalances
         dailyBalancesByAccount[.card] = await cardBalances
 
@@ -59,54 +57,37 @@ final class HomeViewModel: HomeViewModelType {
 
     func recomputeForCurrentData() {
         let refDate = dateToday
-        let todayIncome = incomeService.summarize(
+        snapshot = facade.makeSnapshot(
+            currentPeriod: currentPeriod,
+            referenceDate: refDate,
             orders: allOrders,
-            period: .day,
-            referenceDate: refDate
-        )
-        let weekIncome = incomeService.summarize(
-            orders: allOrders,
-            period: .week,
-            referenceDate: refDate
-        )
-        let monthIncome = incomeService.summarize(
-            orders: allOrders,
-            period: .month,
-            referenceDate: refDate
-        )
-        let periodIncome: IncomeSummary
-        switch currentPeriod {
-        case .day:
-            periodIncome = todayIncome
-        case .week:
-            periodIncome = weekIncome
-        case .month:
-            periodIncome = monthIncome
-        }
-        
-        todaySum = todayIncome.sales
-        weekSum = weekIncome.sales
-        monthSum = monthIncome.sales
-
-        let expenses = opexService.summarize(
             expenses: allExpenses,
-            period: currentPeriod,
-            referenceDate: refDate
+            productsOfOrders: allProductsOfOrders,
+            dailyBalancesByAccount: dailyBalancesByAccount
         )
-        let profit = financeService.summarize(income: periodIncome, opex: expenses)
-        periodExpenses = expenses.total
-        periodProfit = profit.netProfit
 
-        cashBalance = currentBalance(for: .cash, referenceDate: refDate)
-        cardBalance = currentBalance(for: .card, referenceDate: refDate)
+        let dayPL = snapshot?.plByPeriod[.day]
+        let weekPL = snapshot?.plByPeriod[.week]
+        let monthPL = snapshot?.plByPeriod[.month]
+        let currentPL = snapshot?.plByPeriod[currentPeriod]
 
-        lastIncome = periodIncome.last
-        lastExpense = expenses.last
+        todaySum = dayPL?.sales ?? 0
+        weekSum = weekPL?.sales ?? 0
+        monthSum = monthPL?.sales ?? 0
+
+        periodExpenses = currentPL?.opex ?? 0
+        periodProfit = currentPL?.netProfit ?? 0
+
+        cashBalance = snapshot?.balances.cash ?? 0
+        cardBalance = snapshot?.balances.card ?? 0
+
+        lastIncome = snapshot?.lastOrdersInPeriod ?? []
+        lastExpense = snapshot?.lastExpensesInPeriod ?? []
     }
 }
 
-private extension HomeViewModel {
-    func fetchOrders() async -> [OrderModel] {
+extension HomeViewModel {
+    fileprivate func fetchOrders() async -> [OrderModel] {
         await withCheckedContinuation { continuation in
             database.fetchOrders { models in
                 continuation.resume(returning: models)
@@ -114,7 +95,7 @@ private extension HomeViewModel {
         }
     }
 
-    func fetchExpenses() async -> [OpexExpenseModel] {
+    fileprivate func fetchExpenses() async -> [OpexExpenseModel] {
         await withCheckedContinuation { continuation in
             database.fetchOpexExpenses { models in
                 continuation.resume(returning: models)
@@ -122,19 +103,22 @@ private extension HomeViewModel {
         }
     }
 
-    func fetchDailyBalances(for account: PaymentAccount, through referenceDate: Date) async -> [DailyBalanceModel] {
+    fileprivate func fetchAllProductsOfOrders() async -> [ProductOfOrderModel] {
         await withCheckedContinuation { continuation in
-            database.fetchDailyBalances(forAccount: account, from: .distantPast, to: referenceDate) { balances in
-                continuation.resume(returning: balances)
+            database.fetchProductsOfOrders(from: .distantPast, to: Date()) { models in
+                continuation.resume(returning: models)
             }
         }
     }
 
-    func currentBalance(for account: PaymentAccount, referenceDate: Date) -> Double {
-        let normalizedReferenceDate = Calendar.current.startOfDay(for: referenceDate)
-        return dailyBalancesByAccount[account]?
-            .filter { Calendar.current.startOfDay(for: $0.date) <= normalizedReferenceDate }
-            .last?
-            .balance ?? 0
+    fileprivate func fetchDailyBalances(for account: PaymentAccount, through referenceDate: Date)
+        async -> [DailyBalanceModel]
+    {
+        await withCheckedContinuation { continuation in
+            database.fetchDailyBalances(forAccount: account, from: .distantPast, to: referenceDate)
+            { balances in
+                continuation.resume(returning: balances)
+            }
+        }
     }
 }

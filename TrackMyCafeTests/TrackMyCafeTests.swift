@@ -579,8 +579,10 @@ final class TrackMyCafeTests: XCTestCase {
     func testDashboardPeriod_weekInterval_coversSevenDays() {
         let ref = makeDate(year: 2026, month: 6, day: 22)
         let interval = DashboardPeriod.week.interval(for: ref)
-        let dayCount = Calendar.current.dateComponents(
-            [.day], from: interval.start, to: interval.end).day ?? -1
+        let dayCount =
+            Calendar.current.dateComponents(
+                [.day], from: interval.start, to: interval.end
+            ).day ?? -1
         XCTAssertGreaterThanOrEqual(dayCount, 6)
         XCTAssertLessThanOrEqual(dayCount, 7)
     }
@@ -620,8 +622,9 @@ final class TrackMyCafeTests: XCTestCase {
     func testIncomeAggregationService_sumsCogsAndFiltersByDay() {
         let service = IncomeAggregationService()
         let ref = makeDate(year: 2026, month: 6, day: 22)
-        let otherDay = Calendar.current.date(
-            byAdding: .day, value: 1, to: ref) ?? ref
+        let otherDay =
+            Calendar.current.date(
+                byAdding: .day, value: 1, to: ref) ?? ref
         let orders = [
             OrderModel(
                 id: "o1", date: ref, type: "Hall",
@@ -644,8 +647,9 @@ final class TrackMyCafeTests: XCTestCase {
     func testOpexAggregationService_filtersByPeriod() {
         let service = OpexAggregationService()
         let ref = makeDate(year: 2026, month: 6, day: 22)
-        let otherMonth = Calendar.current.date(
-            byAdding: .month, value: 1, to: ref) ?? ref
+        let otherMonth =
+            Calendar.current.date(
+                byAdding: .month, value: 1, to: ref) ?? ref
         let expenses = [
             OpexExpenseModel(
                 id: "e1", date: ref, categoryId: "Rent",
@@ -659,6 +663,211 @@ final class TrackMyCafeTests: XCTestCase {
             expenses: expenses, period: .month, referenceDate: ref)
 
         XCTAssertEqual(summary.total, 100, accuracy: 0.0001)
+    }
+
+    // MARK: - DomainDashboardFacade
+
+    func testDomainDashboardFacade_basicPLComputedCorrectly() {
+        let facade = DomainDashboardFacade()
+        let refDate = makeDate(year: 2026, month: 8, day: 15)
+        let orders: [OrderModel] = [
+            OrderModel(
+                id: "o1", date: refDate, type: "Hall", sum: 200, cash: 200, card: 0, totalCost: 80,
+                note: ""),
+            OrderModel(
+                id: "o2", date: refDate.addingTimeInterval(-600), type: "Hall", sum: 100, cash: 0,
+                card: 100, totalCost: 40, note: ""),
+        ]
+        let expenses: [OpexExpenseModel] = [
+            OpexExpenseModel(
+                id: "e1", date: refDate, name: "Rent", note: "", price: 50, paymentAccount: .cash,
+                category: nil)
+        ]
+
+        let snapshot = facade.makeSnapshot(
+            currentPeriod: .day,
+            referenceDate: refDate,
+            orders: orders,
+            expenses: expenses,
+            productsOfOrders: [],
+            dailyBalancesByAccount: [:]
+        )
+
+        let day = try! XCTUnwrap(snapshot.plByPeriod[.day])
+        XCTAssertEqual(day.sales, 300, accuracy: 0.0001)
+        XCTAssertEqual(day.cogs, 120, accuracy: 0.0001)
+        XCTAssertEqual(day.opex, 50, accuracy: 0.0001)
+        XCTAssertEqual(day.grossProfit, 180, accuracy: 0.0001)
+        XCTAssertEqual(day.netProfit, 130, accuracy: 0.0001)
+        XCTAssertEqual(day.grossMarginPercent, 60.0, accuracy: 0.01)
+        XCTAssertEqual(day.ordersCount, 2)
+        XCTAssertEqual(day.expensesCount, 1)
+    }
+
+    func testDomainDashboardFacade_threePeriodsAreIndependent() {
+        let facade = DomainDashboardFacade()
+        let refDate = makeDate(year: 2026, month: 8, day: 15)
+        let sameDay = makeDate(year: 2026, month: 8, day: 15)
+        let anotherDaySameWeek = makeDate(year: 2026, month: 8, day: 10)
+        let sameMonthDifferentWeek = makeDate(year: 2026, month: 8, day: 1)
+        let differentMonth = makeDate(year: 2026, month: 7, day: 15)
+
+        let orders: [OrderModel] = [
+            OrderModel(
+                id: "d", date: sameDay, type: "H", sum: 100, cash: 100, card: 0, totalCost: 0,
+                note: ""),
+            OrderModel(
+                id: "w", date: anotherDaySameWeek, type: "H", sum: 200, cash: 200, card: 0,
+                totalCost: 0, note: ""),
+            OrderModel(
+                id: "m", date: sameMonthDifferentWeek, type: "H", sum: 400, cash: 400, card: 0,
+                totalCost: 0, note: ""),
+            OrderModel(
+                id: "x", date: differentMonth, type: "H", sum: 999, cash: 999, card: 0,
+                totalCost: 0, note: ""),
+        ]
+
+        let snapshot = facade.makeSnapshot(
+            currentPeriod: .week,
+            referenceDate: refDate,
+            orders: orders,
+            expenses: [],
+            productsOfOrders: [],
+            dailyBalancesByAccount: [:]
+        )
+
+        XCTAssertEqual(snapshot.plByPeriod[.day]?.sales, 100, accuracy: 0.01)
+        XCTAssertEqual(snapshot.plByPeriod[.week]?.sales, 300, accuracy: 0.01)
+        XCTAssertEqual(snapshot.plByPeriod[.month]?.sales, 700, accuracy: 0.01)
+    }
+
+    func testDomainDashboardFacade_periodSelector_switchesLastListsToCorrectPeriod() {
+        let facade = DomainDashboardFacade()
+        let day1 = makeDate(year: 2026, month: 8, day: 15)
+        let day7 = makeDate(year: 2026, month: 8, day: 13)
+        let day30 = makeDate(year: 2026, month: 8, day: 1)
+        let orderToday = OrderModel(
+            id: "today", date: day1, type: "H", sum: 100, cash: 100, card: 0, totalCost: 0, note: ""
+        )
+        let orderWeekOnly = OrderModel(
+            id: "week", date: day7, type: "H", sum: 50, cash: 50, card: 0, totalCost: 0, note: "")
+        let orderMonthOnly = OrderModel(
+            id: "month", date: day30, type: "H", sum: 20, cash: 20, card: 0, totalCost: 0, note: "")
+
+        let ref = day1
+        let snapshotDay = facade.makeSnapshot(
+            currentPeriod: .day,
+            referenceDate: ref,
+            orders: [orderToday, orderWeekOnly, orderMonthOnly],
+            expenses: [],
+            productsOfOrders: [],
+            dailyBalancesByAccount: [:]
+        )
+        let snapshotWeek = facade.makeSnapshot(
+            currentPeriod: .week,
+            referenceDate: ref,
+            orders: [orderToday, orderWeekOnly, orderMonthOnly],
+            expenses: [],
+            productsOfOrders: [],
+            dailyBalancesByAccount: [:]
+        )
+        let snapshotMonth = facade.makeSnapshot(
+            currentPeriod: .month,
+            referenceDate: ref,
+            orders: [orderToday, orderWeekOnly, orderMonthOnly],
+            expenses: [],
+            productsOfOrders: [],
+            dailyBalancesByAccount: [:]
+        )
+
+        XCTAssertEqual(snapshotDay.lastOrdersInPeriod.count, 1)
+        XCTAssertEqual(snapshotDay.lastOrdersInPeriod.first?.id, "today")
+        XCTAssertEqual(snapshotWeek.lastOrdersInPeriod.count, 2)
+        XCTAssertEqual(snapshotMonth.lastOrdersInPeriod.count, 3)
+    }
+
+    func testDomainDashboardFacade_bestAndWorstProduct() {
+        let facade = DomainDashboardFacade()
+        let ref = makeDate(year: 2026, month: 8, day: 15)
+        let inPeriod = ref.addingTimeInterval(3600)
+        let products: [ProductOfOrderModel] = [
+            ProductOfOrderModel(
+                id: "p1", orderId: "o", productId: "a", name: "Espresso",
+                price: 30, quantity: 5, costPerUnit: 5, sum: 150, costSum: 25, date: inPeriod),
+            ProductOfOrderModel(
+                id: "p2", orderId: "o", productId: "b", name: "Tea",
+                price: 20, quantity: 2, costPerUnit: 18, sum: 40, costSum: 36, date: inPeriod),
+        ]
+
+        let snapshot = facade.makeSnapshot(
+            currentPeriod: .day,
+            referenceDate: ref,
+            orders: [],
+            expenses: [],
+            productsOfOrders: products,
+            dailyBalancesByAccount: [:]
+        )
+
+        XCTAssertEqual(snapshot.bestProductInPeriod?.productId, "a")
+        XCTAssertEqual(snapshot.bestProductInPeriod?.grossProfit, 125, accuracy: 0.0001)
+        XCTAssertEqual(snapshot.worstProductInPeriod?.productId, "b")
+        XCTAssertEqual(snapshot.worstProductInPeriod?.grossProfit, 4, accuracy: 0.0001)
+    }
+
+    func testDomainDashboardFacade_productRankingOutsidePeriodIgnored() {
+        let facade = DomainDashboardFacade()
+        let ref = makeDate(year: 2026, month: 8, day: 15)
+        let inside = ref.addingTimeInterval(3600)
+        let outside = makeDate(year: 2026, month: 8, day: 1)
+        let products: [ProductOfOrderModel] = [
+            ProductOfOrderModel(
+                id: "p1", orderId: "o1", productId: "a", name: "X",
+                price: 10, quantity: 1, costPerUnit: 1, sum: 10, costSum: 1, date: inside),
+            ProductOfOrderModel(
+                id: "p2", orderId: "o2", productId: "b", name: "Y",
+                price: 99, quantity: 1, costPerUnit: 1, sum: 99, costSum: 1, date: outside),
+        ]
+
+        let snapshot = facade.makeSnapshot(
+            currentPeriod: .day,
+            referenceDate: ref,
+            orders: [],
+            expenses: [],
+            productsOfOrders: products,
+            dailyBalancesByAccount: [:]
+        )
+
+        XCTAssertEqual(snapshot.bestProductInPeriod?.productId, "a")
+        XCTAssertEqual(snapshot.worstProductInPeriod?.productId, "a")
+    }
+
+    func testDomainDashboardFacade_balancesPicksLatestForReferenceDate() {
+        let facade = DomainDashboardFacade()
+        let ref = makeDate(year: 2026, month: 8, day: 15)
+        let balances: [PaymentAccount: [DailyBalanceModel]] = [
+            .cash: [
+                DailyBalanceModel(
+                    account: .cash, date: makeDate(year: 2026, month: 8, day: 10), balance: 50),
+                DailyBalanceModel(
+                    account: .cash, date: makeDate(year: 2026, month: 8, day: 14), balance: 200),
+            ],
+            .card: [
+                DailyBalanceModel(
+                    account: .card, date: makeDate(year: 2026, month: 8, day: 12), balance: 300)
+            ],
+        ]
+
+        let snapshot = facade.makeSnapshot(
+            currentPeriod: .day,
+            referenceDate: ref,
+            orders: [],
+            expenses: [],
+            productsOfOrders: [],
+            dailyBalancesByAccount: balances
+        )
+
+        XCTAssertEqual(snapshot.balances.cash, 200, accuracy: 0.0001)
+        XCTAssertEqual(snapshot.balances.card, 300, accuracy: 0.0001)
     }
 
     private func makeDate(year: Int, month: Int, day: Int) -> Date {
