@@ -227,7 +227,9 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         let kpi = PLKPIView()
         let text: String
         if let currency {
-            text = Self.amountFormatter.string(for: value) ?? ""
+            let f = Self.amountFormatter
+            f.currencySymbol = currency
+            text = f.string(for: value) ?? ""
         } else if let suffix {
             text = (Self.percentFormatter.string(for: value) ?? "") + suffix
         } else {
@@ -309,7 +311,7 @@ final class PLKPIView: UIView {
         valueLabel.left(to: titleLabel)
         valueLabel.right(to: titleLabel)
         valueLabel.bottomToSuperview(offset: -UIConstants.mediumSpacing, relation: .equalOrLess)
-        valueLabel.centerYToSuperview(offset: 8, relation: .equalOrLess, priority: .defaultHigh)
+        valueLabel.centerYToSuperview(offset: 8, priority: .defaultHigh)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) not implemented") }

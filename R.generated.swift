@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 429 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 432 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -586,12 +586,33 @@ struct _R {
       /// Locales: en, uk
       var commonCurrencyUAH: RswiftResources.StringResource { .init(key: "commonCurrencyUAH", tableName: "Global", source: source, developmentValue: "₴", comment: nil) }
 
+      /// en translation: Day
+      ///
+      /// Key: commonDay
+      ///
+      /// Locales: en, uk
+      var commonDay: RswiftResources.StringResource { .init(key: "commonDay", tableName: "Global", source: source, developmentValue: "Day", comment: nil) }
+
       /// en translation: ...
       ///
       /// Key: commonLoading
       ///
       /// Locales: en, uk
       var commonLoading: RswiftResources.StringResource { .init(key: "commonLoading", tableName: "Global", source: source, developmentValue: "...", comment: nil) }
+
+      /// en translation: Month
+      ///
+      /// Key: commonMonth
+      ///
+      /// Locales: en, uk
+      var commonMonth: RswiftResources.StringResource { .init(key: "commonMonth", tableName: "Global", source: source, developmentValue: "Month", comment: nil) }
+
+      /// en translation: Week
+      ///
+      /// Key: commonWeek
+      ///
+      /// Locales: en, uk
+      var commonWeek: RswiftResources.StringResource { .init(key: "commonWeek", tableName: "Global", source: source, developmentValue: "Week", comment: nil) }
 
       /// en translation: Confirm
       ///
