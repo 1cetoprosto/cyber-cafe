@@ -7,7 +7,7 @@ final class ReportsHubReportCell: UITableViewCell {
 
     private let containerView: UIView = {
         let view = UIView()
-        view.backgroundColor = Theme.current.secondaryBackground
+        view.backgroundColor = Theme.current.cellBackground
         view.layer.cornerRadius = UIConstants.mediumCornerRadius
         view.layer.shadowColor = UIColor.black.cgColor
         view.layer.shadowOpacity = 0.06
@@ -25,7 +25,6 @@ final class ReportsHubReportCell: UITableViewCell {
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = .white
         return imageView
     }()
 
@@ -132,6 +131,7 @@ final class ReportsHubReportCell: UITableViewCell {
         case .abc: accent = Theme.current.tabBarTint
         case .trends: accent = .systemOrange
         }
-        iconContainerView.backgroundColor = accent
+        iconContainerView.backgroundColor = accent.withAlphaComponent(0.15)
+        iconImageView.tintColor = accent
     }
 }

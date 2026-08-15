@@ -147,11 +147,12 @@ final class PLReportDetailViewController: UIViewController, Loggable {
                 "kpiGroupSummary", tableName: "Global", value: "Summary", comment: ""))
         let kpiSales = makeKPI(
             title: NSLocalizedString("kpiSales", tableName: "Global", value: "Sales", comment: ""),
-            value: report.sales, currency: currency, accent: Theme.current.tabBarTint)
+            value: report.sales, currency: currency, accent: Theme.current.primaryText)
         let kpiGross = makeKPI(
             title: NSLocalizedString(
                 "kpiGrossProfit", tableName: "Global", value: "Gross Profit", comment: ""),
-            value: report.grossProfit, currency: currency, accent: .systemGreen)
+            value: report.grossProfit, currency: currency,
+            accent: report.grossProfit >= 0 ? .systemGreen : .systemRed)
         let kpiNet = makeKPI(
             title: NSLocalizedString(
                 "kpiNetProfit", tableName: "Global", value: "Net Profit", comment: ""),
@@ -166,15 +167,15 @@ final class PLReportDetailViewController: UIViewController, Loggable {
                 "kpiGroupBreakdown", tableName: "Global", value: "Breakdown", comment: ""))
         let kpiCogs = makeKPI(
             title: NSLocalizedString("kpiCOGS", tableName: "Global", value: "COGS", comment: ""),
-            value: report.cogs, currency: currency, accent: .systemOrange)
+            value: report.cogs, currency: currency, accent: Theme.current.primaryText)
         let kpiOpex = makeKPI(
             title: NSLocalizedString(
                 "kpiOpex", tableName: "Global", value: "Operating Expenses", comment: ""),
-            value: report.opex, currency: currency, accent: .systemOrange)
+            value: report.opex, currency: currency, accent: Theme.current.primaryText)
         let kpiMargin = makeKPI(
             title: NSLocalizedString(
                 "kpiMargin", tableName: "Global", value: "Gross Margin", comment: ""),
-            value: report.grossMarginPercent, suffix: " %", accent: Theme.current.tabBarTint)
+            value: report.grossMarginPercent, suffix: " %", accent: Theme.current.primaryText)
         addRow(lhs: kpiCogs, rhs: kpiOpex)
         addSingleRow(kpiMargin)
 
@@ -191,11 +192,11 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         let kpiOrders = makeKPI(
             title: NSLocalizedString(
                 "kpiOrdersCount", tableName: "Global", value: "Orders", comment: ""),
-            value: Double(report.ordersCount), suffix: nil, accent: Theme.current.secondaryText)
+            value: Double(report.ordersCount), suffix: nil, accent: Theme.current.primaryText)
         let kpiExp = makeKPI(
             title: NSLocalizedString(
                 "kpiExpensesCount", tableName: "Global", value: "Expenses", comment: ""),
-            value: Double(report.expensesCount), suffix: nil, accent: Theme.current.secondaryText)
+            value: Double(report.expensesCount), suffix: nil, accent: Theme.current.primaryText)
         addRow(lhs: kpiCash, rhs: kpiCard)
         addRow(lhs: kpiOrders, rhs: kpiExp)
     }
@@ -270,7 +271,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 final class PLKPIView: UIView {
     private let container: UIView = {
         let v = UIView()
-        v.backgroundColor = Theme.current.secondaryBackground
+        v.backgroundColor = Theme.current.cellBackground
         v.layer.cornerRadius = UIConstants.mediumCornerRadius
         return v
     }()
