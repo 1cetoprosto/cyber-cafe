@@ -492,3 +492,37 @@
 "sortBy" = "Sort by";
 "nameAZ" = "Name (A-Z)";
 "nameZA" = "Name (Z-A)";
+
+// MARK: - Reports
+"reportsPLTitle" = "Profit & Loss";
+"reportsPLSubtitle" = "Income, costs, margin, and bottom-line net profit for the period.";
+"reportsABCTitle" = "ABC Analysis";
+"reportsABCSubtitle" = "Rank products by sales or gross profit to find A/B/C drivers and long-tail items.";
+"reportsTrendsTitle" = "Periodic Trends";
+"reportsTrendsSubtitle" = "Compare performance over multiple consecutive periods to spot direction and momentum.";
+
+"kpiGroupSummary" = "Summary";
+"kpiGroupBreakdown" = "Breakdown";
+"kpiGroupDetails" = "Payment & Counts";
+
+"kpiSales" = "Sales";
+"kpiCOGS" = "Cost of Goods Sold";
+"kpiGrossProfit" = "Gross Profit";
+"kpiOpex" = "Operating Expenses";
+"kpiNetProfit" = "Net Profit";
+"kpiMargin" = "Gross Margin";
+
+"kpiCash" = "Cash";
+"kpiCard" = "Card";
+"kpiOrdersCount" = "Orders";
+"kpiExpensesCount" = "Expenses";
+
+"commonCurrencyUAH" = "₴";
+"commonLoading" = "...";
+
+"abcRankingSales" = "Sales";
+"abcRankingGross" = "Gross Profit";
+"abcEmpty" = "No products sold in this period.";
+"abcProductCountFormat" = "%d items";
+
+"trendsEmpty" = "Not enough data yet — come back after a few periods.";

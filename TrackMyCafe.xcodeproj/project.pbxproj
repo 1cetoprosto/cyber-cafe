@@ -396,6 +396,9 @@
 		F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
 		F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
 		F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54D4B30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
@@ -986,6 +989,7 @@
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
 		F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDashboardFacade.swift; sourceTree = "<group>"; };
+		F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceReportingService.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
@@ -2303,6 +2307,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */,
 				F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */,
 				F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */,
 				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
@@ -3019,6 +3024,7 @@
 				F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */,
 				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
 				F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
+				F3A54D4B30307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F32B52C82F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52C92F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
@@ -3246,6 +3252,7 @@
 				F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */,
+				F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3B339C42C0B22FE0073F19A /* SetPasswordController.swift in Sources */,
 				F32B52C52F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52C62F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
@@ -3473,6 +3480,7 @@
 				F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */,
+				F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3B33A632C0B23450073F19A /* SetPasswordController.swift in Sources */,
 				F32B52CB2F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52CC2F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,

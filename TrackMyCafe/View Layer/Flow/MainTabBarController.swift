@@ -255,18 +255,11 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
             itemName: R.string.global.costs(),  // Should ideally be "Costs & Inventory"
             itemImage: SystemImages.bag)
 
-        // Tab 4: Reports (Placeholder for now, using existing logic or empty)
-        // For now, let's skip Reports tab creation until implemented, or use a placeholder
-        // Using PurchaseListViewController as a temporary placeholder if needed,
-        // but since Purchases are now in Tab 3, we can leave Tab 4 for Reports later.
-        // For MVP 2.0 structure, let's keep 5 tabs if possible, or 4.
-        // Let's create a temporary Reports placeholder.
-        //        let reportsViewController = createNavController(
-        //            viewController: UIViewController(),  // Placeholder
-        //            itemName: R.string.global.reportsTitle(),
-        //            itemImage: "chart.bar")  // SystemImages.chartBar if exists, or string
-        //        reportsViewController.viewControllers.first?.view.backgroundColor = .systemBackground
-        //        reportsViewController.viewControllers.first?.title = R.string.global.reportsTitle()
+        // Tab 4: Reports Hub (P&L / ABC / Trends)
+        let reportsViewController = createNavController(
+            viewController: ReportsHubViewController(),
+            itemName: R.string.global.reportsTitle(),
+            itemImage: SystemImages.chartTab)
 
         // Tab 5: Settings
         let settingsViewController = createNavController(
@@ -275,12 +268,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
             itemImage: SystemImages.gearshape)
 
         // Update: Removed separate Purchases tab (now in Tab 3)
-        // Added Reports placeholder
+        // Added Reports as Tab 4
         viewControllers = [
             homeViewController,
             ordersViewController,
             costsTabViewController,
-            // reportsViewController,
+            reportsViewController,
             settingsViewController,
         ]
     }
