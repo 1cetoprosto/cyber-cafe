@@ -870,6 +870,136 @@ final class TrackMyCafeTests: XCTestCase {
         XCTAssertEqual(snapshot.balances.card, 300, accuracy: 0.0001)
     }
 
+    // MARK: - Finance/Reporting Facade #145
+
+    func testFinanceReporting_abcBuckets_bySales_80_95_100() {
+        let service = FinanceReportingService()
+        let aug15 = makeDate(year: 2026, month: 8, day: 15)
+        let range = DashboardPeriod.month.interval(for: aug15)
+
+        // 4 products with sales 60 / 20 / 15 / 5 (total 100)
+        let p1 = ProductOfOrderModel(
+            id: "1", productId: "a", orderId: "o1", date: aug15, name: "Espresso", quantity: 1,
+            price: 60, sum: 60, costPrice: 20, costSum: 20)
+        let p2 = ProductOfOrderModel(
+            id: "2", productId: "b", orderId: "o1", date: aug15, name: "Latte", quantity: 1,
+            price: 20, sum: 20, costPrice: 8, costSum: 8)
+        let p3 = ProductOfOrderModel(
+            id: "3", productId: "c", orderId: "o1", date: aug15, name: "Cake", quantity: 1,
+            price: 15, sum: 15, costPrice: 5, costSum: 5)
+        let p4 = ProductOfOrderModel(
+            id: "4", productId: "d", orderId: "o1", date: aug15, name: "Water", quantity: 1,
+            price: 5, sum: 5, costPrice: 1, costSum: 1)
+
+        let rows = service.buildABCRows(
+            productsOfOrders: [p1, p2, p3, p4], range: range, rankingKey: .sales)
+
+        XCTAssertEqual(rows.count, 4)
+        XCTAssertEqual(rows[0].productId, "a")
+        XCTAssertEqual(rows[0].sharePercent, 60, accuracy: 0.0001)
+        XCTAssertEqual(rows[0].cumulativePercent, 60, accuracy: 0.0001)
+        XCTAssertEqual(rows[0].bucket, .a)
+        XCTAssertEqual(rows[1].productId, "b")
+        XCTAssertEqual(rows[1].sharePercent, 20, accuracy: 0.0001)
+        XCTAssertEqual(rows[1].cumulativePercent, 80, accuracy: 0.0001)
+        XCTAssertEqual(rows[1].bucket, .b)
+        XCTAssertEqual(rows[2].productId, "c")
+        XCTAssertEqual(rows[2].sharePercent, 15, accuracy: 0.0001)
+        XCTAssertEqual(rows[2].cumulativePercent, 95, accuracy: 0.0001)
+        XCTAssertEqual(rows[2].bucket, .c)
+        XCTAssertEqual(rows[3].productId, "d")
+        XCTAssertEqual(rows[3].sharePercent, 5, accuracy: 0.0001)
+        XCTAssertEqual(rows[3].cumulativePercent, 100, accuracy: 0.0001)
+        XCTAssertEqual(rows[3].bucket, .c)
+    }
+
+    func testFinanceReporting_abcBuckets_byGrossProfit_reorders() {
+        let service = FinanceReportingService()
+        let aug15 = makeDate(year: 2026, month: 8, day: 15)
+        let range = DashboardPeriod.month.interval(for: aug15)
+
+        // Espresso: sales=50 cost=20 -> gross=30
+        // Latte:    sales=40 cost=10 -> gross=30
+        // Water:    sales=80 cost=70 -> gross=10
+        let p1 = ProductOfOrderModel(
+            id: "1", productId: "a", orderId: "o1", date: aug15, name: "Espresso", quantity: 1,
+            price: 50, sum: 50, costPrice: 20, costSum: 20)
+        let p2 = ProductOfOrderModel(
+            id: "2", productId: "b", orderId: "o1", date: aug15, name: "Latte", quantity: 1,
+            price: 40, sum: 40, costPrice: 10, costSum: 10)
+        let p3 = ProductOfOrderModel(
+            id: "3", productId: "c", orderId: "o1", date: aug15, name: "Water", quantity: 1,
+            price: 80, sum: 80, costPrice: 70, costSum: 70)
+
+        let rows = service.buildABCRows(
+            productsOfOrders: [p1, p2, p3], range: range, rankingKey: .grossProfit)
+
+        XCTAssertEqual(rows.count, 3)
+        // по gross: Espresso/Latte (30) → then Water (10). Водночас share% = відсоток sales.
+        XCTAssertEqual(rows[0].grossProfit, 30, accuracy: 0.0001)
+        XCTAssertEqual(rows[1].grossProfit, 30, accuracy: 0.0001)
+        XCTAssertEqual(rows[2].productId, "c")
+        XCTAssertEqual(rows[2].grossProfit, 10, accuracy: 0.0001)
+        let totalShare = rows.reduce(0) { $0 + $1.sharePercent }
+        XCTAssertEqual(totalShare, 100, accuracy: 0.0001)
+    }
+
+    func testFinanceReporting_trendWindows_4days_countAndOrder() {
+        let service = FinanceReportingService()
+        let ref = makeDate(year: 2026, month: 8, day: 15)
+        let windows = service.buildTrendWindows(
+            periodicity: .day, periodsBack: 4, referenceDate: ref)
+
+        XCTAssertEqual(windows.count, 4)
+        // Windows [12, 13, 14, 15] - ascending chronological
+        let cal = Calendar.current
+        let firstComponents = cal.dateComponents([.day, .month, .year], from: windows.first!.start)
+        let lastComponents = cal.dateComponents([.day, .month, .year], from: windows.last!.start)
+        XCTAssertEqual(firstComponents.day, 12)
+        XCTAssertEqual(lastComponents.day, 15)
+        // Ascending order: end[i] <= start[i+1]
+        for i in 0..<(windows.count - 1) {
+            XCTAssertLessThanOrEqual(windows[i].end, windows[i + 1].start)
+        }
+    }
+
+    func testFinanceReporting_trendWindows_3months_count() {
+        let service = FinanceReportingService()
+        let ref = makeDate(year: 2026, month: 8, day: 15)
+        let windows = service.buildTrendWindows(
+            periodicity: .month, periodsBack: 3, referenceDate: ref)
+
+        XCTAssertEqual(windows.count, 3)
+        // months 6/2026, 7/2026, 8/2026
+        let cal = Calendar.current
+        let months = windows.map { cal.dateComponents([.month], from: $0.start).month! }
+        XCTAssertEqual(months, [6, 7, 8])
+    }
+
+    func testFinanceReporting_abcIgnoresItemsOutsideRange() {
+        let service = FinanceReportingService()
+        let aug15 = makeDate(year: 2026, month: 8, day: 15)
+        let range = DashboardPeriod.day.interval(for: aug15)
+        // 3 items: 1 in day, 2 in other days
+        let inDay = ProductOfOrderModel(
+            id: "1", productId: "a", orderId: "o1", date: aug15, name: "A", quantity: 1, price: 80,
+            sum: 80, costPrice: 20, costSum: 20)
+        let outDay1 = ProductOfOrderModel(
+            id: "2", productId: "b", orderId: "o2", date: aug15.addingTimeInterval(-86400),
+            name: "B", quantity: 1, price: 100, sum: 100, costPrice: 50, costSum: 50)
+        let outDay2 = ProductOfOrderModel(
+            id: "3", productId: "c", orderId: "o3", date: aug15.addingTimeInterval(+86400),
+            name: "C", quantity: 1, price: 200, sum: 200, costPrice: 100, costSum: 100)
+
+        let rows = service.buildABCRows(
+            productsOfOrders: [inDay, outDay1, outDay2], range: range, rankingKey: .sales)
+
+        XCTAssertEqual(rows.count, 1)
+        XCTAssertEqual(rows[0].productId, "a")
+        XCTAssertEqual(rows[0].sharePercent, 100, accuracy: 0.0001)
+        XCTAssertEqual(rows[0].bucket, .a)
+    }
+
     private func makeDate(year: Int, month: Int, day: Int) -> Date {
         var components = DateComponents()
         components.year = year
