@@ -7,7 +7,7 @@ final class TrendPointCell: UITableViewCell {
 
     private let containerView: UIView = {
         let v = UIView()
-        v.backgroundColor = Theme.current.secondaryBackground
+        v.backgroundColor = Theme.current.cellBackground
         v.layer.cornerRadius = UIConstants.mediumCornerRadius
         return v
     }()
@@ -129,8 +129,10 @@ final class TrendPointCell: UITableViewCell {
         salesLabel.text = "Sales: " + (fCurrency.string(for: point.sales) ?? "")
 
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        addBreakdownRow(title: "COGS", value: point.cogs, currency: currency, color: .systemOrange)
-        addBreakdownRow(title: "Opex", value: point.opex, currency: currency, color: .systemOrange)
+        addBreakdownRow(
+            title: "COGS", value: point.cogs, currency: currency, color: Theme.current.primaryText)
+        addBreakdownRow(
+            title: "Opex", value: point.opex, currency: currency, color: Theme.current.primaryText)
     }
 
     private func addBreakdownRow(title: String, value: Double, currency: String, color: UIColor) {
@@ -322,7 +324,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
         addSummaryCard(
             title: "Total Sales", value: totalSales, currency: currency,
-            color: Theme.current.tabBarTint)
+            color: Theme.current.primaryText)
         addSummaryCard(
             title: "Total Net", value: totalNet, currency: currency,
             color: totalNet >= 0 ? .systemGreen : .systemRed)
@@ -343,7 +345,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
     private func addSummaryCard(title: String, value: Double, currency: String, color: UIColor) {
         let card = UIView()
-        card.backgroundColor = Theme.current.secondaryBackground
+        card.backgroundColor = Theme.current.cellBackground
         card.layer.cornerRadius = UIConstants.mediumCornerRadius
 
         let titleL = UILabel()
