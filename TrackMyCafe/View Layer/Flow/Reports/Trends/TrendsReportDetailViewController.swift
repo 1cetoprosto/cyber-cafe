@@ -88,7 +88,8 @@ final class TrendPointCell: UITableViewCell {
 
         netLabel.top(to: periodLabel)
         netLabel.rightToSuperview(offset: -UIConstants.mediumSpacing)
-        netLabel.leftToRight(of: periodLabel, offset: UIConstants.smallSpacing, relation: .equalOrGreater)
+        netLabel.leftToRight(
+            of: periodLabel, offset: UIConstants.smallSpacing, relation: .equalOrGreater)
 
         deltaLabel.topToBottom(of: netLabel, offset: 2)
         deltaLabel.right(to: netLabel)
@@ -104,7 +105,9 @@ final class TrendPointCell: UITableViewCell {
         breakdownStack.bottomToSuperview(offset: -UIConstants.mediumSpacing)
     }
 
-    func configure(point: TrendPoint, previousSales: Double?, previousNet: Double?, currency: String) {
+    func configure(
+        point: TrendPoint, previousSales: Double?, previousNet: Double?, currency: String
+    ) {
         periodLabel.text = point.label
 
         let fCurrency = TrendPointCell.currencyFormatter(currency: currency)
@@ -165,12 +168,18 @@ final class TrendPointCell: UITableViewCell {
     }
 }
 
-final class TrendsReportDetailViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, Loggable {
+final class TrendsReportDetailViewController: UIViewController, UITableViewDelegate,
+    UITableViewDataSource, Loggable
+{
 
     private let sharedViewModel: ReportsHubViewModelType
 
     private let segmentedControl: UISegmentedControl = {
-        let items = [R.string.global.day(), R.string.global.week(), R.string.global.month()]
+        let items = [
+            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
+            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
+            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+        ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
         control.setTitleTextAttributes(
@@ -223,7 +232,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
-        title = NSLocalizedString("reportsTrendsTitle", tableName: "Global", value: "Trends", comment: "")
+        title = NSLocalizedString(
+            "reportsTrendsTitle", tableName: "Global", value: "Trends", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = false
 
         tableView.delegate = self
@@ -233,7 +243,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         bindViewModel()
         apply(sharedViewModel.currentPeriod)
 
-        segmentedControl.addTarget(self, action: #selector(periodSegmentChanged), for: .valueChanged)
+        segmentedControl.addTarget(
+            self, action: #selector(periodSegmentChanged), for: .valueChanged)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -253,7 +264,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         )
         header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
         navigationItem.titleView = header
-        navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32).isActive = true
+        navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
+            .isActive = true
 
         let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 100))
         let wrapper = UIStackView(arrangedSubviews: [summaryStack])
@@ -290,7 +302,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
     private func reloadData() {
         Task { @MainActor in
-            emptyStateLabel.text = NSLocalizedString("commonLoading", tableName: "Global", value: "...", comment: "")
+            emptyStateLabel.text = NSLocalizedString(
+                "commonLoading", tableName: "Global", value: "...", comment: "")
             let report = await sharedViewModel.buildTrendsReport(periodsBack: 6)
             render(report: report)
         }
@@ -300,18 +313,27 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         points = report.points
 
         summaryStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        let currency = NSLocalizedString("commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = NSLocalizedString(
+            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
 
         let totalSales = points.reduce(0) { $0 + $1.sales }
         let totalNet = points.reduce(0) { $0 + $1.netProfit }
         let avgNet = points.isEmpty ? 0 : totalNet / Double(points.count)
 
-        addSummaryCard(title: "Total Sales", value: totalSales, currency: currency, color: Theme.current.tabBarTint)
-        addSummaryCard(title: "Total Net", value: totalNet, currency: currency, color: totalNet >= 0 ? .systemGreen : .systemRed)
-        addSummaryCard(title: "Avg Net / Period", value: avgNet, currency: currency, color: avgNet >= 0 ? .systemGreen : .systemRed)
+        addSummaryCard(
+            title: "Total Sales", value: totalSales, currency: currency,
+            color: Theme.current.tabBarTint)
+        addSummaryCard(
+            title: "Total Net", value: totalNet, currency: currency,
+            color: totalNet >= 0 ? .systemGreen : .systemRed)
+        addSummaryCard(
+            title: "Avg Net / Period", value: avgNet, currency: currency,
+            color: avgNet >= 0 ? .systemGreen : .systemRed)
 
         if points.isEmpty {
-            emptyStateLabel.text = NSLocalizedString("trendsEmpty", tableName: "Global", value: "No data for selected periodicity.", comment: "")
+            emptyStateLabel.text = NSLocalizedString(
+                "trendsEmpty", tableName: "Global", value: "No data for selected periodicity.",
+                comment: "")
             tableView.backgroundView = emptyStateLabel
         } else {
             tableView.backgroundView = nil
@@ -368,11 +390,16 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TrendPointCell.identifier, for: indexPath) as! TrendPointCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: TrendPointCell.identifier, for: indexPath)
+            as! TrendPointCell
         let point = points[indexPath.row]
         let previous = indexPath.row > 0 ? points[indexPath.row - 1] : nil
-        let currency = NSLocalizedString("commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
-        cell.configure(point: point, previousSales: previous?.sales, previousNet: previous?.netProfit, currency: currency)
+        let currency = NSLocalizedString(
+            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        cell.configure(
+            point: point, previousSales: previous?.sales, previousNet: previous?.netProfit,
+            currency: currency)
         return cell
     }
 }

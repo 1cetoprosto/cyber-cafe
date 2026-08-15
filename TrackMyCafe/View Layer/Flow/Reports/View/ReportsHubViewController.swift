@@ -9,9 +9,9 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
 
     private let segmentedControl: UISegmentedControl = {
         let items = [
-            R.string.global.day(),
-            R.string.global.week(),
-            R.string.global.month(),
+            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
+            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
+            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint

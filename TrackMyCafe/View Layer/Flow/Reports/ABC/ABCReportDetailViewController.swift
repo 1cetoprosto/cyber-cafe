@@ -166,7 +166,11 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     private let sharedViewModel: ReportsHubViewModelType
 
     private let segmentedControl: UISegmentedControl = {
-        let items = [R.string.global.day(), R.string.global.week(), R.string.global.month()]
+        let items = [
+            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
+            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
+            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+        ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
         control.setTitleTextAttributes(
@@ -416,9 +420,12 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ABCProductCell.identifier, for: indexPath) as! ABCProductCell
+        let cell =
+            tableView.dequeueReusableCell(withIdentifier: ABCProductCell.identifier, for: indexPath)
+            as! ABCProductCell
         let row = rows[indexPath.row]
-        let currency = NSLocalizedString("commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = NSLocalizedString(
+            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
         cell.configure(row: row, currency: currency)
         return cell
     }
