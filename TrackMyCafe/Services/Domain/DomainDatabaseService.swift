@@ -290,6 +290,31 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
+    func fetchProductsOfOrders(
+        from startDate: Date, to endDate: Date,
+        completion: @escaping ([ProductOfOrderModel]) -> Void
+    ) {
+        FirestoreDatabaseService.shared.readWhere(
+            collection: FirebaseCollections.productOfOrders,
+            firModel: FIRProductModel.self,
+            equalTo: [:],
+            orderedBy: "date",
+            startAt: startDate,
+            endAt: endDate
+        ) { result in
+            switch result {
+            case .success(let firProducts):
+                let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+                completion(products)
+            case .failure(let error):
+                self.logger.error(
+                    "Error fetching products in date range from Firestore: \(error.localizedDescription)"
+                )
+                completion([])
+            }
+        }
+    }
+
     func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void) {
         FirestoreDatabaseService.shared.create(
             firModel: FIRProductModel(dataModel: order),
