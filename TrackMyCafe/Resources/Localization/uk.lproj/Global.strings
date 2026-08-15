@@ -526,3 +526,8 @@
 "abcProductCountFormat" = "%d одиниць";
 
 "trendsEmpty" = "Поки мало даних — повертайся після кількох періодів.";
+
+// MARK: - Common Periods
+"commonDay" = "День";
+"commonWeek" = "Тиждень";
+"commonMonth" = "Місяць";

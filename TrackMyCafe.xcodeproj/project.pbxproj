@@ -399,6 +399,24 @@
 		F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
 		F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
 		F3A54D4B30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54DA930308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DAA30308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DAB30308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DAC30308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DAD30308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DAE30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54DAF30308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DB030308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DB130308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DB230308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DB330308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DB430308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54DB530308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DB630308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DB730308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DB830308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DB930308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DBA30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
@@ -990,6 +1008,12 @@
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
 		F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDashboardFacade.swift; sourceTree = "<group>"; };
 		F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceReportingService.swift; sourceTree = "<group>"; };
+		F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABCReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendsReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubReportCell.swift; sourceTree = "<group>"; };
+		F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewController.swift; sourceTree = "<group>"; };
+		F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewModel.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
@@ -1629,6 +1653,7 @@
 		F3410E882BDD2D380007157B /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				F3A54DA830308325002B0C00 /* Reports */,
 				F371BECD2FED426D00D72C3A /* ManualMovements */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3F6A6352C327B73000961C8 /* Admin */,
@@ -2184,6 +2209,59 @@
 				FFF1E72380963127006F5D52 /* Ingredients */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		F3A54D9E30308325002B0C00 /* ABC */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
+			);
+			path = ABC;
+			sourceTree = "<group>";
+		};
+		F3A54DA030308325002B0C00 /* PL */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
+			);
+			path = PL;
+			sourceTree = "<group>";
+		};
+		F3A54DA230308325002B0C00 /* Trends */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
+			);
+			path = Trends;
+			sourceTree = "<group>";
+		};
+		F3A54DA430308325002B0C00 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F3A54DA630308325002B0C00 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA430308325002B0C00 /* Cells */,
+				F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DA830308325002B0C00 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9E30308325002B0C00 /* ABC */,
+				F3A54DA030308325002B0C00 /* PL */,
+				F3A54DA230308325002B0C00 /* Trends */,
+				F3A54DA630308325002B0C00 /* View */,
+				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
+			);
+			path = Reports;
 			sourceTree = "<group>";
 		};
 		F3A640AE2C340888006BCACD /* Subscription */ = {
@@ -3037,6 +3115,12 @@
 				F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */,
 				F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */,
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
+				F3A54DA930308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DAA30308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DAB30308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DAC30308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DAD30308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DAE30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F3F6A6092C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift in Sources */,
 				F385B41F2C1D904700973CAA /* TechnicianDetailsController.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
@@ -3265,6 +3349,12 @@
 				F3B339C92C0B22FE0073F19A /* TypeModel.swift in Sources */,
 				F3F6A6232C32799B000961C8 /* TechniciansListController.swift in Sources */,
 				F3B339CA2C0B22FE0073F19A /* OrderTableViewCell.swift in Sources */,
+				F3A54DB530308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DB630308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DB730308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DB830308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DB930308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DBA30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F39D785B2C2056190003B556 /* PersonListModelProtocol.swift in Sources */,
 				F3B339CB2C0B22FE0073F19A /* ProductListItemViewModel.swift in Sources */,
 				F3B339CC2C0B22FE0073F19A /* UIImage+Extension.swift in Sources */,
@@ -3493,6 +3583,12 @@
 				F3B33A682C0B23450073F19A /* TypeModel.swift in Sources */,
 				F3F6A6242C32799C000961C8 /* TechniciansListController.swift in Sources */,
 				F3B33A692C0B23450073F19A /* OrderTableViewCell.swift in Sources */,
+				F3A54DAF30308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DB030308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DB130308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DB230308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DB330308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DB430308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F39D785C2C2056190003B556 /* PersonListModelProtocol.swift in Sources */,
 				F3B33A6A2C0B23450073F19A /* ProductListItemViewModel.swift in Sources */,
 				F3B33A6B2C0B23450073F19A /* UIImage+Extension.swift in Sources */,
