@@ -393,6 +393,9 @@
 		F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */; };
 		F39D785B2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
 		F39D785C2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
+		F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
@@ -982,6 +985,7 @@
 		F39B5D1628460A06000F7D43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
+		F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDashboardFacade.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
@@ -1268,6 +1272,7 @@
 			isa = PBXGroup;
 			children = (
 				D8322C84341922937218E47A /* DashboardPeriod.swift */,
+				F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */,
 				287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */,
 				27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */,
 				5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */,
@@ -3159,6 +3164,7 @@
 				F3F205532FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */,
 				6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */,
+				F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */,
 				EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */,
 				1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */,
@@ -3385,6 +3391,7 @@
 				F3F205542FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */,
 				6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */,
+				F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */,
 				175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */,
 				11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */,
@@ -3611,6 +3618,7 @@
 				F3F205552FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */,
 				0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */,
+				F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */,
 				61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */,
 				E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */,
