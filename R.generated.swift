@@ -225,9 +225,37 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 432 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 444 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
+
+      /// en translation: A (0–80%)
+      ///
+      /// Key: abcBucketATitle
+      ///
+      /// Locales: en, uk
+      var abcBucketATitle: RswiftResources.StringResource { .init(key: "abcBucketATitle", tableName: "Global", source: source, developmentValue: "A (0–80%)", comment: nil) }
+
+      /// en translation: B (80–95%)
+      ///
+      /// Key: abcBucketBTitle
+      ///
+      /// Locales: en, uk
+      var abcBucketBTitle: RswiftResources.StringResource { .init(key: "abcBucketBTitle", tableName: "Global", source: source, developmentValue: "B (80–95%)", comment: nil) }
+
+      /// en translation: C (95–100%)
+      ///
+      /// Key: abcBucketCTitle
+      ///
+      /// Locales: en, uk
+      var abcBucketCTitle: RswiftResources.StringResource { .init(key: "abcBucketCTitle", tableName: "Global", source: source, developmentValue: "C (95–100%)", comment: nil) }
+
+      /// en translation: Σ %@
+      ///
+      /// Key: abcCumulativePrefixFormat
+      ///
+      /// Locales: en, uk
+      var abcCumulativePrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcCumulativePrefixFormat", tableName: "Global", source: source, developmentValue: "Σ %@", comment: nil) }
 
       /// en translation: No products sold in this period.
       ///
@@ -242,6 +270,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var abcProductCountFormat: RswiftResources.StringResource1<Int> { .init(key: "abcProductCountFormat", tableName: "Global", source: source, developmentValue: "%d items", comment: nil) }
+
+      /// en translation: Qty: %@
+      ///
+      /// Key: abcQtyPrefixFormat
+      ///
+      /// Locales: en, uk
+      var abcQtyPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcQtyPrefixFormat", tableName: "Global", source: source, developmentValue: "Qty: %@", comment: nil) }
 
       /// en translation: Gross Profit
       ///
@@ -3064,12 +3099,61 @@ struct _R {
       /// Locales: en, uk
       var transferingData: RswiftResources.StringResource { .init(key: "transferingData", tableName: "Global", source: source, developmentValue: "Transferring data...", comment: nil) }
 
+      /// en translation: Avg Net / Period
+      ///
+      /// Key: trendsAvgNetPeriod
+      ///
+      /// Locales: en, uk
+      var trendsAvgNetPeriod: RswiftResources.StringResource { .init(key: "trendsAvgNetPeriod", tableName: "Global", source: source, developmentValue: "Avg Net / Period", comment: nil) }
+
+      /// en translation: COGS
+      ///
+      /// Key: trendsCOGS
+      ///
+      /// Locales: en, uk
+      var trendsCOGS: RswiftResources.StringResource { .init(key: "trendsCOGS", tableName: "Global", source: source, developmentValue: "COGS", comment: nil) }
+
+      /// en translation: %@%.1f%% vs prev
+      ///
+      /// Key: trendsDeltaFormat
+      ///
+      /// Locales: en, uk
+      var trendsDeltaFormat: RswiftResources.StringResource2<String, Double> { .init(key: "trendsDeltaFormat", tableName: "Global", source: source, developmentValue: "%@%.1f%% vs prev", comment: nil) }
+
       /// en translation: Not enough data yet — come back after a few periods.
       ///
       /// Key: trendsEmpty
       ///
       /// Locales: en, uk
       var trendsEmpty: RswiftResources.StringResource { .init(key: "trendsEmpty", tableName: "Global", source: source, developmentValue: "Not enough data yet — come back after a few periods.", comment: nil) }
+
+      /// en translation: Opex
+      ///
+      /// Key: trendsOpex
+      ///
+      /// Locales: en, uk
+      var trendsOpex: RswiftResources.StringResource { .init(key: "trendsOpex", tableName: "Global", source: source, developmentValue: "Opex", comment: nil) }
+
+      /// en translation: Sales: %@
+      ///
+      /// Key: trendsSalesPrefixFormat
+      ///
+      /// Locales: en, uk
+      var trendsSalesPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "trendsSalesPrefixFormat", tableName: "Global", source: source, developmentValue: "Sales: %@", comment: nil) }
+
+      /// en translation: Total Net
+      ///
+      /// Key: trendsTotalNet
+      ///
+      /// Locales: en, uk
+      var trendsTotalNet: RswiftResources.StringResource { .init(key: "trendsTotalNet", tableName: "Global", source: source, developmentValue: "Total Net", comment: nil) }
+
+      /// en translation: Total Sales
+      ///
+      /// Key: trendsTotalSales
+      ///
+      /// Locales: en, uk
+      var trendsTotalSales: RswiftResources.StringResource { .init(key: "trendsTotalSales", tableName: "Global", source: source, developmentValue: "Total Sales", comment: nil) }
 
       /// en translation: %d days FREE
       ///
