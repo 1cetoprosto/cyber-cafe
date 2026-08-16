@@ -119,15 +119,14 @@ final class TrendPointCell: UITableViewCell {
         let deltaText: String
         if let previousNet, previousNet != 0 {
             let sign = deltaPct >= 0 ? "+" : ""
-            deltaText = String(format: R.string.global.trendsDeltaFormat(), sign, deltaPct)
+            deltaText = R.string.global.trendsDeltaFormat(sign, deltaPct)
         } else {
             deltaText = ""
         }
         deltaLabel.text = deltaText
         deltaLabel.textColor = deltaPct >= 0 ? .systemGreen : .systemRed
 
-        salesLabel.text = String(
-            format: R.string.global.trendsSalesPrefixFormat(),
+        salesLabel.text = R.string.global.trendsSalesPrefixFormat(
             fCurrency.string(for: point.sales) ?? "")
 
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
