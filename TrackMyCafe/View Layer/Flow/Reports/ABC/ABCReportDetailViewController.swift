@@ -138,9 +138,9 @@ final class ABCProductCell: UITableViewCell {
 
     private static func bucketMeta(_ bucket: ABCBucket) -> (String, UIColor) {
         switch bucket {
-        case .a: return ("A", .systemGreen)
-        case .b: return ("B", .systemOrange)
-        case .c: return ("C", .systemGray)
+        case .a: return ("💰", .systemGreen)
+        case .b: return ("⚖️", .systemOrange)
+        case .c: return ("🤔", .systemGray)
         }
     }
 
@@ -202,10 +202,15 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private let summaryStack = UIStackView()
 
+    private static let showMoreIdentifier = "ABCShowMoreCell"
+
     private let tableView: UITableView = {
         let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(ABCProductCell.self, forCellReuseIdentifier: ABCProductCell.identifier)
+        tableView.register(
+            UITableViewCell.self,
+            forCellReuseIdentifier: ABCReportDetailViewController.showMoreIdentifier)
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 90
         tableView.separatorStyle = .none
@@ -223,6 +228,22 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private var rows: [ABCProductRow] = []
     private var countsByBucket: [ABCBucket: Int] = [:]
+    private var showAllBucketC: Bool = false
+
+    private var visibleRows: [ABCProductRow] {
+        guard !showAllBucketC else { return rows }
+        let bucketCStartIdx = rows.firstIndex { $0.bucket == .c } ?? rows.endIndex
+        let firstC = rows[bucketCStartIdx...]
+        let limitedC = firstC.prefix(5)
+        return Array(rows[..<bucketCStartIdx]) + Array(limitedC)
+    }
+
+    private var hiddenBucketCCount: Int {
+        guard !showAllBucketC else { return 0 }
+        let bucketCStartIdx = rows.firstIndex { $0.bucket == .c } ?? rows.endIndex
+        let cTotal = rows[bucketCStartIdx...].count
+        return max(0, cTotal - 5)
+    }
 
     init(viewModel: ReportsHubViewModelType) {
         self.sharedViewModel = viewModel
@@ -328,6 +349,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     private func render(report: ABCReport) {
         rows = report.rows
         countsByBucket = report.countsByBucket
+        showAllBucketC = false
 
         summaryStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
@@ -412,16 +434,33 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        rows.count
+        visibleRows.count + (hiddenBucketCCount > 0 ? 1 : 0)
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == visibleRows.count, hiddenBucketCCount > 0 {
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: ABCReportDetailViewController.showMoreIdentifier, for: indexPath)
+            cell.backgroundColor = .clear
+            cell.selectionStyle = .none
+            cell.textLabel?.text = R.string.global.commonShowMoreN(hiddenBucketCCount)
+            cell.textLabel?.textAlignment = .center
+            cell.textLabel?.textColor = Theme.current.tabBarTint
+            cell.textLabel?.font = Typography.bodyDemiBold
+            return cell
+        }
         let cell =
             tableView.dequeueReusableCell(withIdentifier: ABCProductCell.identifier, for: indexPath)
             as! ABCProductCell
-        let row = rows[indexPath.row]
+        let row = visibleRows[indexPath.row]
         let currency = R.string.global.commonCurrencyUAH()
         cell.configure(row: row, currency: currency)
         return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row == visibleRows.count, hiddenBucketCCount > 0 else { return }
+        showAllBucketC = true
+        tableView.reloadData()
     }
 }
