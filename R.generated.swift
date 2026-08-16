@@ -225,30 +225,30 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 444 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 458 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
-      /// en translation: A (0–80%)
+      /// en translation: 💰 MAKES MONEY
       ///
       /// Key: abcBucketATitle
       ///
       /// Locales: en, uk
-      var abcBucketATitle: RswiftResources.StringResource { .init(key: "abcBucketATitle", tableName: "Global", source: source, developmentValue: "A (0–80%)", comment: nil) }
+      var abcBucketATitle: RswiftResources.StringResource { .init(key: "abcBucketATitle", tableName: "Global", source: source, developmentValue: "💰 MAKES MONEY", comment: nil) }
 
-      /// en translation: B (80–95%)
+      /// en translation: ⚖️ MIDDLE
       ///
       /// Key: abcBucketBTitle
       ///
       /// Locales: en, uk
-      var abcBucketBTitle: RswiftResources.StringResource { .init(key: "abcBucketBTitle", tableName: "Global", source: source, developmentValue: "B (80–95%)", comment: nil) }
+      var abcBucketBTitle: RswiftResources.StringResource { .init(key: "abcBucketBTitle", tableName: "Global", source: source, developmentValue: "⚖️ MIDDLE", comment: nil) }
 
-      /// en translation: C (95–100%)
+      /// en translation: 🤔 REVIEW THIS
       ///
       /// Key: abcBucketCTitle
       ///
       /// Locales: en, uk
-      var abcBucketCTitle: RswiftResources.StringResource { .init(key: "abcBucketCTitle", tableName: "Global", source: source, developmentValue: "C (95–100%)", comment: nil) }
+      var abcBucketCTitle: RswiftResources.StringResource { .init(key: "abcBucketCTitle", tableName: "Global", source: source, developmentValue: "🤔 REVIEW THIS", comment: nil) }
 
       /// en translation: Σ %@
       ///
@@ -278,19 +278,19 @@ struct _R {
       /// Locales: en, uk
       var abcQtyPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcQtyPrefixFormat", tableName: "Global", source: source, developmentValue: "Qty: %@", comment: nil) }
 
-      /// en translation: Gross Profit
+      /// en translation: By gross profit
       ///
       /// Key: abcRankingGross
       ///
       /// Locales: en, uk
-      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "Gross Profit", comment: nil) }
+      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "By gross profit", comment: nil) }
 
-      /// en translation: Sales
+      /// en translation: By sales
       ///
       /// Key: abcRankingSales
       ///
       /// Locales: en, uk
-      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
+      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "By sales", comment: nil) }
 
       /// en translation: Please allow access to %@ in Settings
       ///
@@ -628,6 +628,20 @@ struct _R {
       /// Locales: en, uk
       var commonDay: RswiftResources.StringResource { .init(key: "commonDay", tableName: "Global", source: source, developmentValue: "Day", comment: nil) }
 
+      /// en translation: Hide costs 👆
+      ///
+      /// Key: commonHideCosts
+      ///
+      /// Locales: en, uk
+      var commonHideCosts: RswiftResources.StringResource { .init(key: "commonHideCosts", tableName: "Global", source: source, developmentValue: "Hide costs 👆", comment: nil) }
+
+      /// en translation: Hide details 👆
+      ///
+      /// Key: commonHideDetails
+      ///
+      /// Locales: en, uk
+      var commonHideDetails: RswiftResources.StringResource { .init(key: "commonHideDetails", tableName: "Global", source: source, developmentValue: "Hide details 👆", comment: nil) }
+
       /// en translation: ...
       ///
       /// Key: commonLoading
@@ -641,6 +655,27 @@ struct _R {
       ///
       /// Locales: en, uk
       var commonMonth: RswiftResources.StringResource { .init(key: "commonMonth", tableName: "Global", source: source, developmentValue: "Month", comment: nil) }
+
+      /// en translation: Show costs 👇
+      ///
+      /// Key: commonShowCosts
+      ///
+      /// Locales: en, uk
+      var commonShowCosts: RswiftResources.StringResource { .init(key: "commonShowCosts", tableName: "Global", source: source, developmentValue: "Show costs 👇", comment: nil) }
+
+      /// en translation: Show details 👇
+      ///
+      /// Key: commonShowDetails
+      ///
+      /// Locales: en, uk
+      var commonShowDetails: RswiftResources.StringResource { .init(key: "commonShowDetails", tableName: "Global", source: source, developmentValue: "Show details 👇", comment: nil) }
+
+      /// en translation: Show %d more
+      ///
+      /// Key: commonShowMoreN
+      ///
+      /// Locales: en, uk
+      var commonShowMoreN: RswiftResources.StringResource1<Int> { .init(key: "commonShowMoreN", tableName: "Global", source: source, developmentValue: "Show %d more", comment: nil) }
 
       /// en translation: Week
       ///
@@ -1188,6 +1223,27 @@ struct _R {
       /// Locales: en, uk
       var home: RswiftResources.StringResource { .init(key: "home", tableName: "Global", source: source, developmentValue: "Home", comment: nil) }
 
+      /// en translation: Costs
+      ///
+      /// Key: hubBigCostsLabel
+      ///
+      /// Locales: en, uk
+      var hubBigCostsLabel: RswiftResources.StringResource { .init(key: "hubBigCostsLabel", tableName: "Global", source: source, developmentValue: "Costs", comment: nil) }
+
+      /// en translation: Remained
+      ///
+      /// Key: hubBigNetLabel
+      ///
+      /// Locales: en, uk
+      var hubBigNetLabel: RswiftResources.StringResource { .init(key: "hubBigNetLabel", tableName: "Global", source: source, developmentValue: "Remained", comment: nil) }
+
+      /// en translation: Sales
+      ///
+      /// Key: hubBigSalesLabel
+      ///
+      /// Locales: en, uk
+      var hubBigSalesLabel: RswiftResources.StringResource { .init(key: "hubBigSalesLabel", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
+
       /// en translation: Income
       ///
       /// Key: income
@@ -1355,6 +1411,27 @@ struct _R {
       ///
       /// Locales: en, uk
       var isAllowCalculationForAdministrator: RswiftResources.StringResource { .init(key: "isAllowCalculationForAdministrator", tableName: "Global", source: source, developmentValue: "Provide access", comment: nil) }
+
+      /// en translation: ALL COSTS
+      ///
+      /// Key: kpiBigCosts
+      ///
+      /// Locales: en, uk
+      var kpiBigCosts: RswiftResources.StringResource { .init(key: "kpiBigCosts", tableName: "Global", source: source, developmentValue: "ALL COSTS", comment: nil) }
+
+      /// en translation: REMAINED (PROFIT)
+      ///
+      /// Key: kpiBigNet
+      ///
+      /// Locales: en, uk
+      var kpiBigNet: RswiftResources.StringResource { .init(key: "kpiBigNet", tableName: "Global", source: source, developmentValue: "REMAINED (PROFIT)", comment: nil) }
+
+      /// en translation: ALL SALES
+      ///
+      /// Key: kpiBigRevenue
+      ///
+      /// Locales: en, uk
+      var kpiBigRevenue: RswiftResources.StringResource { .init(key: "kpiBigRevenue", tableName: "Global", source: source, developmentValue: "ALL SALES", comment: nil) }
 
       /// en translation: Cost of Goods Sold
       ///
@@ -2406,33 +2483,33 @@ struct _R {
       /// Locales: en, uk
       var repeatAgain: RswiftResources.StringResource { .init(key: "repeatAgain", tableName: "Global", source: source, developmentValue: "Please try again", comment: nil) }
 
-      /// en translation: Rank products by sales or gross profit to find A/B/C drivers and long-tail items.
+      /// en translation: Top menu items and what you may want to review.
       ///
       /// Key: reportsABCSubtitle
       ///
       /// Locales: en, uk
-      var reportsABCSubtitle: RswiftResources.StringResource { .init(key: "reportsABCSubtitle", tableName: "Global", source: source, developmentValue: "Rank products by sales or gross profit to find A/B/C drivers and long-tail items.", comment: nil) }
+      var reportsABCSubtitle: RswiftResources.StringResource { .init(key: "reportsABCSubtitle", tableName: "Global", source: source, developmentValue: "Top menu items and what you may want to review.", comment: nil) }
 
-      /// en translation: ABC Analysis
+      /// en translation: What makes money
       ///
       /// Key: reportsABCTitle
       ///
       /// Locales: en, uk
-      var reportsABCTitle: RswiftResources.StringResource { .init(key: "reportsABCTitle", tableName: "Global", source: source, developmentValue: "ABC Analysis", comment: nil) }
+      var reportsABCTitle: RswiftResources.StringResource { .init(key: "reportsABCTitle", tableName: "Global", source: source, developmentValue: "What makes money", comment: nil) }
 
-      /// en translation: Income, costs, margin, and bottom-line net profit for the period.
+      /// en translation: Revenue minus all costs = your real profit.
       ///
       /// Key: reportsPLSubtitle
       ///
       /// Locales: en, uk
-      var reportsPLSubtitle: RswiftResources.StringResource { .init(key: "reportsPLSubtitle", tableName: "Global", source: source, developmentValue: "Income, costs, margin, and bottom-line net profit for the period.", comment: nil) }
+      var reportsPLSubtitle: RswiftResources.StringResource { .init(key: "reportsPLSubtitle", tableName: "Global", source: source, developmentValue: "Revenue minus all costs = your real profit.", comment: nil) }
 
-      /// en translation: Profit & Loss
+      /// en translation: What's left
       ///
       /// Key: reportsPLTitle
       ///
       /// Locales: en, uk
-      var reportsPLTitle: RswiftResources.StringResource { .init(key: "reportsPLTitle", tableName: "Global", source: source, developmentValue: "Profit & Loss", comment: nil) }
+      var reportsPLTitle: RswiftResources.StringResource { .init(key: "reportsPLTitle", tableName: "Global", source: source, developmentValue: "What's left", comment: nil) }
 
       /// en translation: Reports
       ///
@@ -2441,19 +2518,19 @@ struct _R {
       /// Locales: en, uk
       var reportsTitle: RswiftResources.StringResource { .init(key: "reportsTitle", tableName: "Global", source: source, developmentValue: "Reports", comment: nil) }
 
-      /// en translation: Compare performance over multiple consecutive periods to spot direction and momentum.
+      /// en translation: Compare results to the previous period at a glance.
       ///
       /// Key: reportsTrendsSubtitle
       ///
       /// Locales: en, uk
-      var reportsTrendsSubtitle: RswiftResources.StringResource { .init(key: "reportsTrendsSubtitle", tableName: "Global", source: source, developmentValue: "Compare performance over multiple consecutive periods to spot direction and momentum.", comment: nil) }
+      var reportsTrendsSubtitle: RswiftResources.StringResource { .init(key: "reportsTrendsSubtitle", tableName: "Global", source: source, developmentValue: "Compare results to the previous period at a glance.", comment: nil) }
 
-      /// en translation: Periodic Trends
+      /// en translation: Momentum
       ///
       /// Key: reportsTrendsTitle
       ///
       /// Locales: en, uk
-      var reportsTrendsTitle: RswiftResources.StringResource { .init(key: "reportsTrendsTitle", tableName: "Global", source: source, developmentValue: "Periodic Trends", comment: nil) }
+      var reportsTrendsTitle: RswiftResources.StringResource { .init(key: "reportsTrendsTitle", tableName: "Global", source: source, developmentValue: "Momentum", comment: nil) }
 
       /// en translation: required
       ///
@@ -3106,6 +3183,20 @@ struct _R {
       /// Locales: en, uk
       var trendsAvgNetPeriod: RswiftResources.StringResource { .init(key: "trendsAvgNetPeriod", tableName: "Global", source: source, developmentValue: "Avg Net / Period", comment: nil) }
 
+      /// en translation: ➕ Better by %@%.1f%% ✅
+      ///
+      /// Key: trendsBetterByFormat
+      ///
+      /// Locales: en, uk
+      var trendsBetterByFormat: RswiftResources.StringResource2<String, Double> { .init(key: "trendsBetterByFormat", tableName: "Global", source: source, developmentValue: "➕ Better by %@%.1f%% ✅", comment: nil) }
+
+      /// en translation: REMAINED for the period
+      ///
+      /// Key: trendsBigNetRemainedPeriod
+      ///
+      /// Locales: en, uk
+      var trendsBigNetRemainedPeriod: RswiftResources.StringResource { .init(key: "trendsBigNetRemainedPeriod", tableName: "Global", source: source, developmentValue: "REMAINED for the period", comment: nil) }
+
       /// en translation: COGS
       ///
       /// Key: trendsCOGS
@@ -3154,6 +3245,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var trendsTotalSales: RswiftResources.StringResource { .init(key: "trendsTotalSales", tableName: "Global", source: source, developmentValue: "Total Sales", comment: nil) }
+
+      /// en translation: ➖ Worse by %@%.1f%% ⚠️
+      ///
+      /// Key: trendsWorseByFormat
+      ///
+      /// Locales: en, uk
+      var trendsWorseByFormat: RswiftResources.StringResource2<String, Double> { .init(key: "trendsWorseByFormat", tableName: "Global", source: source, developmentValue: "➖ Worse by %@%.1f%% ⚠️", comment: nil) }
 
       /// en translation: %d days FREE
       ///
