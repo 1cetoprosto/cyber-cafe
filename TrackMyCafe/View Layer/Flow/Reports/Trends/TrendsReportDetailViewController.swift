@@ -24,18 +24,19 @@ final class TrendPointCell: UITableViewCell {
         let l = UILabel()
         l.font = Typography.body
         l.textColor = Theme.current.primaryText
-        l.textAlignment = .right
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
+        l.numberOfLines = 1
         return l
     }()
 
     private let netLabel: UILabel = {
         let l = UILabel()
-        l.font = Typography.title3DemiBold
+        l.font = Typography.title2DemiBold
         l.textAlignment = .right
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
+        l.numberOfLines = 1
         return l
     }()
 
@@ -43,14 +44,14 @@ final class TrendPointCell: UITableViewCell {
         let l = UILabel()
         l.font = Typography.footnote
         l.textAlignment = .right
+        l.numberOfLines = 1
         return l
     }()
 
     private let breakdownStack: UIStackView = {
         let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.spacing = UIConstants.standardSpacing
-        sv.distribution = .fillEqually
+        sv.axis = .vertical
+        sv.spacing = 2
         return sv
     }()
 
@@ -96,9 +97,8 @@ final class TrendPointCell: UITableViewCell {
 
         salesLabel.topToBottom(of: periodLabel, offset: UIConstants.smallSpacing)
         salesLabel.left(to: periodLabel)
+        salesLabel.right(to: netLabel)
 
-        breakdownStack.axis = .vertical
-        breakdownStack.spacing = 2
         breakdownStack.topToBottom(of: salesLabel, offset: 4)
         breakdownStack.left(to: periodLabel)
         breakdownStack.right(to: netLabel)
@@ -106,7 +106,8 @@ final class TrendPointCell: UITableViewCell {
     }
 
     func configure(
-        point: TrendPoint, previousSales: Double?, previousNet: Double?, currency: String
+        point: TrendPoint, previousSales: Double?, previousNet: Double?, currency: String,
+        costsShown: Bool
     ) {
         periodLabel.text = point.label
 
@@ -119,7 +120,10 @@ final class TrendPointCell: UITableViewCell {
         let deltaText: String
         if let previousNet, previousNet != 0 {
             let sign = deltaPct >= 0 ? "+" : ""
-            deltaText = R.string.global.trendsDeltaFormat(sign, deltaPct)
+            deltaText =
+                deltaPct >= 0
+                ? R.string.global.trendsBetterByFormat(sign, deltaPct)
+                : R.string.global.trendsWorseByFormat(sign, deltaPct)
         } else {
             deltaText = ""
         }
@@ -129,13 +133,16 @@ final class TrendPointCell: UITableViewCell {
         salesLabel.text = R.string.global.trendsSalesPrefixFormat(
             fCurrency.string(for: point.sales) ?? "")
 
+        // Simple costs show/hide: populate but toggle isHidden (bottom constraint pins to container, so height ok if all hidden inside empty stack)
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        addBreakdownRow(
-            title: R.string.global.trendsCOGS(),
-            value: point.cogs, currency: currency, color: Theme.current.primaryText)
-        addBreakdownRow(
-            title: R.string.global.trendsOpex(),
-            value: point.opex, currency: currency, color: Theme.current.primaryText)
+        if costsShown {
+            addBreakdownRow(
+                title: R.string.global.trendsCOGS(),
+                value: point.cogs, currency: currency, color: Theme.current.primaryText)
+            addBreakdownRow(
+                title: R.string.global.trendsOpex(),
+                value: point.opex, currency: currency, color: Theme.current.primaryText)
+        }
     }
 
     private func addBreakdownRow(title: String, value: Double, currency: String, color: UIColor) {
@@ -196,20 +203,23 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         return control
     }()
 
-    private let summaryStack: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.distribution = .fillEqually
-        sv.spacing = UIConstants.mediumSpacing
-        return sv
+    private let costsToggleButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.setTitle(R.string.global.commonShowCosts(), for: .normal)
+        b.titleLabel?.font = Typography.bodyBold
+        b.setTitleColor(Theme.current.tabBarTint, for: .normal)
+        b.contentHorizontalAlignment = .leading
+        return b
     }()
+
+    private var costsShown: Bool = false
 
     private let tableView: UITableView = {
         let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(TrendPointCell.self, forCellReuseIdentifier: TrendPointCell.identifier)
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 120
+        tableView.estimatedRowHeight = 130
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -249,6 +259,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
         segmentedControl.addTarget(
             self, action: #selector(periodSegmentChanged), for: .valueChanged)
+        costsToggleButton.addTarget(
+            self, action: #selector(toggleCosts), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -271,21 +283,110 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
             .isActive = true
 
-        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 100))
-        let wrapper = UIStackView(arrangedSubviews: [summaryStack])
+        // BIG summary header: one total NET for all periods
+        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 210))
+        tableHeader.tag = 999
+        tableView.tableHeaderView = tableHeader
+
+        view.addSubview(tableView)
+        tableView.edgesToSuperview(usingSafeArea: true)
+    }
+
+    private func renderSummaryHeader(
+        totalNet: Double, totalSales: Double, totalCosts: Double, currency: String
+    ) {
+        guard let header = tableView.tableHeaderView, header.tag == 999 else { return }
+        header.subviews.forEach { $0.removeFromSuperview() }
+
+        // Big net card
+        let netCard = UIView()
+        netCard.backgroundColor = Theme.current.cellBackground
+        netCard.layer.cornerRadius = UIConstants.mediumCornerRadius
+
+        let netTitleL = UILabel()
+        netTitleL.font = Typography.footnote
+        netTitleL.textColor = Theme.current.secondaryText
+        netTitleL.numberOfLines = 2
+        netTitleL.text = R.string.global.trendsBigNetRemainedPeriod()
+
+        let netValueL = UILabel()
+        netValueL.font = Typography.largeTitleBold
+        netValueL.textColor = totalNet >= 0 ? .systemGreen : .systemRed
+        netValueL.adjustsFontSizeToFitWidth = true
+        netValueL.minimumScaleFactor = 0.6
+        netValueL.numberOfLines = 1
+
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.currencySymbol = currency
+        f.maximumFractionDigits = 0
+        netValueL.text = f.string(for: totalNet)
+
+        netCard.addSubview(netTitleL)
+        netCard.addSubview(netValueL)
+
+        netTitleL.topToSuperview(offset: UIConstants.smallSpacing)
+        netTitleL.leftToSuperview(offset: UIConstants.mediumSpacing)
+        netTitleL.rightToSuperview(offset: -UIConstants.mediumSpacing)
+
+        netValueL.topToBottom(of: netTitleL, offset: 4, relation: .equalOrGreater)
+        netValueL.left(to: netTitleL)
+        netValueL.right(to: netTitleL)
+        netValueL.height(min: 56)
+
+        // Footer: Sales | Costs small row
+        let smallSV = UIStackView()
+        smallSV.axis = .horizontal
+        smallSV.distribution = .fillEqually
+        smallSV.spacing = UIConstants.mediumSpacing
+
+        smallSV.addArrangedSubview(
+            makeSmallSummary(
+                title: R.string.global.hubBigSalesLabel(),
+                valueStr: f.string(for: totalSales) ?? "0", color: Theme.current.primaryText))
+        smallSV.addArrangedSubview(
+            makeSmallSummary(
+                title: R.string.global.hubBigCostsLabel(),
+                valueStr: f.string(for: totalCosts) ?? "0", color: .systemOrange))
+
+        netCard.addSubview(smallSV)
+        smallSV.topToBottom(of: netValueL, offset: UIConstants.smallSpacing)
+        smallSV.left(to: netTitleL)
+        smallSV.right(to: netTitleL)
+        smallSV.bottomToSuperview(offset: -UIConstants.smallSpacing)
+
+        // Wrap: netCard + costsToggleButton
+        let wrapper = UIStackView(arrangedSubviews: [netCard, costsToggleButton])
         wrapper.axis = .vertical
+        wrapper.spacing = UIConstants.smallSpacing
         wrapper.isLayoutMarginsRelativeArrangement = true
         wrapper.layoutMargins = UIEdgeInsets(
             top: UIConstants.mediumSpacing,
             left: UIConstants.standardPadding,
             bottom: UIConstants.mediumSpacing,
             right: UIConstants.standardPadding)
-        tableHeader.addSubview(wrapper)
-        wrapper.edgesToSuperview()
-        tableView.tableHeaderView = tableHeader
 
-        view.addSubview(tableView)
-        tableView.edgesToSuperview(usingSafeArea: true)
+        header.addSubview(wrapper)
+        wrapper.edgesToSuperview()
+    }
+
+    private func makeSmallSummary(title: String, valueStr: String, color: UIColor) -> UIView {
+        let titleL = UILabel()
+        titleL.font = Typography.footnoteLight
+        titleL.textColor = Theme.current.secondaryText
+        titleL.text = title
+
+        let valueL = UILabel()
+        valueL.font = Typography.calloutDemi
+        valueL.textColor = color
+        valueL.adjustsFontSizeToFitWidth = true
+        valueL.minimumScaleFactor = 0.7
+        valueL.text = valueStr
+
+        let sv = UIStackView(arrangedSubviews: [titleL, valueL])
+        sv.axis = .vertical
+        sv.spacing = 2
+        return sv
     }
 
     private func bindViewModel() {
@@ -304,6 +405,18 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         sharedViewModel.selectPeriod(at: sender.selectedSegmentIndex)
     }
 
+    @objc private func toggleCosts() {
+        costsShown.toggle()
+        let title =
+            costsShown
+            ? R.string.global.commonHideCosts() : R.string.global.commonShowCosts()
+        costsToggleButton.setTitle(title, for: .normal)
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            self?.view.layoutIfNeeded()
+        }
+        tableView.reloadData()
+    }
+
     private func reloadData() {
         Task { @MainActor in
             emptyStateLabel.text = R.string.global.commonLoading()
@@ -315,25 +428,14 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     private func render(report: TrendsReport) {
         points = report.points
 
-        summaryStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         let currency = R.string.global.commonCurrencyUAH()
-
         let totalSales = points.reduce(0) { $0 + $1.sales }
         let totalNet = points.reduce(0) { $0 + $1.netProfit }
-        let avgNet = points.isEmpty ? 0 : totalNet / Double(points.count)
+        let totalCosts = points.reduce(0) { $0 + $1.cogs + $1.opex }
 
-        addSummaryCard(
-            title: R.string.global.trendsTotalSales(),
-            value: totalSales, currency: currency,
-            color: Theme.current.primaryText)
-        addSummaryCard(
-            title: R.string.global.trendsTotalNet(),
-            value: totalNet, currency: currency,
-            color: totalNet >= 0 ? .systemGreen : .systemRed)
-        addSummaryCard(
-            title: R.string.global.trendsAvgNetPeriod(),
-            value: avgNet, currency: currency,
-            color: avgNet >= 0 ? .systemGreen : .systemRed)
+        renderSummaryHeader(
+            totalNet: totalNet, totalSales: totalSales, totalCosts: totalCosts,
+            currency: currency)
 
         if points.isEmpty {
             emptyStateLabel.text = R.string.global.trendsEmpty()
@@ -342,44 +444,6 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
             tableView.backgroundView = nil
         }
         tableView.reloadData()
-    }
-
-    private func addSummaryCard(title: String, value: Double, currency: String, color: UIColor) {
-        let card = UIView()
-        card.backgroundColor = Theme.current.cellBackground
-        card.layer.cornerRadius = UIConstants.mediumCornerRadius
-
-        let titleL = UILabel()
-        titleL.font = Typography.footnote
-        titleL.textColor = Theme.current.secondaryText
-        titleL.text = title
-        titleL.numberOfLines = 2
-
-        let valueL = UILabel()
-        valueL.font = Typography.title3DemiBold
-        valueL.textColor = color
-        valueL.adjustsFontSizeToFitWidth = true
-        valueL.minimumScaleFactor = 0.7
-
-        let f = NumberFormatter()
-        f.numberStyle = .currency
-        f.currencySymbol = currency
-        f.maximumFractionDigits = 0
-        valueL.text = f.string(for: value)
-
-        card.addSubview(titleL)
-        card.addSubview(valueL)
-        titleL.topToSuperview(offset: UIConstants.smallSpacing)
-        titleL.leftToSuperview(offset: UIConstants.smallSpacing)
-        titleL.rightToSuperview(offset: -UIConstants.smallSpacing)
-
-        valueL.topToBottom(of: titleL, offset: 4, relation: .equalOrGreater)
-        valueL.left(to: titleL)
-        valueL.right(to: titleL)
-        valueL.bottomToSuperview(offset: -UIConstants.smallSpacing, relation: .equalOrLess)
-        valueL.centerYToSuperview(offset: 10, priority: .defaultHigh)
-
-        summaryStack.addArrangedSubview(card)
     }
 
     // MARK: - Table
@@ -401,7 +465,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         let currency = R.string.global.commonCurrencyUAH()
         cell.configure(
             point: point, previousSales: previous?.sales, previousNet: previous?.netProfit,
-            currency: currency)
+            currency: currency, costsShown: costsShown)
         return cell
     }
 }

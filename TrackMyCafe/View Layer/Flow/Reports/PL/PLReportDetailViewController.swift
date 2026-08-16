@@ -51,6 +51,24 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         return label
     }()
 
+    // Simplified UX: 3 BIG at a glance, + Show/Hide details for accounting
+    private var detailsShown: Bool = false
+    private let detailsToggleButton: UIButton = {
+        let b = UIButton(type: .system)
+        b.setTitle(R.string.global.commonShowDetails(), for: .normal)
+        b.titleLabel?.font = Typography.bodyBold
+        b.setTitleColor(Theme.current.tabBarTint, for: .normal)
+        b.contentHorizontalAlignment = .leading
+        return b
+    }()
+    private let detailsWrapperStack: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.spacing = UIConstants.mediumSpacing
+        sv.isHidden = true
+        return sv
+    }()
+
     private var kpiRows: [PLKPIView] = []
     private var summaryRows: [PLKPIView] = []
     private var countsRows: [PLKPIView] = []
@@ -75,6 +93,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         apply(sharedViewModel.currentPeriod, animated: false)
 
         segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        detailsToggleButton.addTarget(self, action: #selector(toggleDetails), for: .touchUpInside)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -123,6 +142,19 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         sharedViewModel.selectPeriod(at: sender.selectedSegmentIndex)
     }
 
+    @objc private func toggleDetails() {
+        detailsShown.toggle()
+        let title =
+            detailsShown
+            ? R.string.global.commonHideDetails() : R.string.global.commonShowDetails()
+        detailsToggleButton.setTitle(title, for: .normal)
+        UIView.animate(withDuration: 0.25) { [weak self] in
+            guard let self = self else { return }
+            self.detailsWrapperStack.isHidden = !self.detailsShown
+            self.view.layoutIfNeeded()
+        }
+    }
+
     private func reloadData() {
         Task { @MainActor in
             emptyStateLabel.text = R.string.global.commonLoading()
@@ -133,14 +165,37 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
     private func render(report: PLReport) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        detailsWrapperStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         kpiRows.removeAll()
         summaryRows.removeAll()
         countsRows.removeAll()
 
         let currency = R.string.global.commonCurrencyUAH()
 
-        // Section 1: Main KPIs (Sales, Gross Profit, Net Profit)
-        addSectionHeader(title: R.string.global.kpiGroupSummary())
+        // --- SIMPLE 3 BIG (always first) ---
+        let bigSales = makeBigKPI(
+            title: R.string.global.kpiBigRevenue(),
+            valueStr: Self.currencyString(value: report.sales, currency: currency),
+            accent: Theme.current.primaryText, huge: false)
+        let bigCosts = makeBigKPI(
+            title: R.string.global.kpiBigCosts(),
+            valueStr: Self.currencyString(value: report.cogs + report.opex, currency: currency),
+            accent: .systemOrange, huge: false)
+        let bigNet = makeBigKPI(
+            title: R.string.global.kpiBigNet(),
+            valueStr: Self.currencyString(value: report.netProfit, currency: currency),
+            accent: report.netProfit >= 0 ? .systemGreen : .systemRed, huge: true)
+        stackView.addArrangedSubview(bigSales)
+        stackView.addArrangedSubview(bigCosts)
+        stackView.addArrangedSubview(bigNet)
+
+        // --- Toggle details button ---
+        stackView.addArrangedSubview(detailsToggleButton)
+        stackView.addArrangedSubview(detailsWrapperStack)
+
+        // --- DETAILED (hidden by default, for management decisions) ---
+        // Section 1: Summary
+        addDetailsSectionHeader(title: R.string.global.kpiGroupSummary())
         let kpiSales = makeKPI(
             title: R.string.global.kpiSales(),
             value: report.sales, currency: currency, accent: Theme.current.primaryText)
@@ -152,11 +207,11 @@ final class PLReportDetailViewController: UIViewController, Loggable {
             title: R.string.global.kpiNetProfit(),
             value: report.netProfit, currency: currency,
             accent: report.netProfit >= 0 ? .systemGreen : .systemRed)
-        addRow(lhs: kpiSales, rhs: kpiGross)
-        addSingleRow(kpiNet)
+        addDetailsRow(lhs: kpiSales, rhs: kpiGross)
+        addDetailsSingleRow(kpiNet)
 
-        // Section 2: Breakdown (COGS, Opex, Margin%)
-        addSectionHeader(title: R.string.global.kpiGroupBreakdown())
+        // Section 2: Breakdown
+        addDetailsSectionHeader(title: R.string.global.kpiGroupBreakdown())
         let kpiCogs = makeKPI(
             title: R.string.global.kpiCOGS(),
             value: report.cogs, currency: currency, accent: Theme.current.primaryText)
@@ -166,11 +221,11 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         let kpiMargin = makeKPI(
             title: R.string.global.kpiMargin(),
             value: report.grossMarginPercent, suffix: " %", accent: Theme.current.primaryText)
-        addRow(lhs: kpiCogs, rhs: kpiOpex)
-        addSingleRow(kpiMargin)
+        addDetailsRow(lhs: kpiCogs, rhs: kpiOpex)
+        addDetailsSingleRow(kpiMargin)
 
         // Section 3: Payment + Counts
-        addSectionHeader(title: R.string.global.kpiGroupDetails())
+        addDetailsSectionHeader(title: R.string.global.kpiGroupDetails())
         let kpiCash = makeKPI(
             title: R.string.global.kpiCash(),
             value: report.cashSales, currency: currency, accent: Theme.current.primaryText)
@@ -183,28 +238,70 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         let kpiExp = makeKPI(
             title: R.string.global.kpiExpensesCount(),
             value: Double(report.expensesCount), suffix: nil, accent: Theme.current.primaryText)
-        addRow(lhs: kpiCash, rhs: kpiCard)
-        addRow(lhs: kpiOrders, rhs: kpiExp)
+        addDetailsRow(lhs: kpiCash, rhs: kpiCard)
+        addDetailsRow(lhs: kpiOrders, rhs: kpiExp)
     }
 
-    private func addSectionHeader(title: String) {
+    // MARK: - 3 Big KPI cards (simple truth)
+
+    private func makeBigKPI(
+        title: String, valueStr: String, accent: UIColor, huge: Bool
+    ) -> UIView {
+        let container = UIView()
+        container.backgroundColor = Theme.current.cellBackground
+        container.layer.cornerRadius = UIConstants.mediumCornerRadius
+
+        let titleL = UILabel()
+        titleL.font = Typography.footnote
+        titleL.textColor = Theme.current.secondaryText
+        titleL.numberOfLines = 2
+        titleL.text = title
+
+        let valueL = UILabel()
+        valueL.font = huge ? Typography.largeTitleBold : Typography.title1Bold
+        valueL.textColor = accent
+        valueL.adjustsFontSizeToFitWidth = true
+        valueL.minimumScaleFactor = 0.6
+        valueL.numberOfLines = 1
+        valueL.text = valueStr
+
+        container.addSubview(titleL)
+        container.addSubview(valueL)
+        let minH: CGFloat = huge ? 150 : 108
+        container.height(min: minH)
+
+        titleL.topToSuperview(offset: UIConstants.smallSpacing)
+        titleL.leftToSuperview(offset: UIConstants.mediumSpacing)
+        titleL.rightToSuperview(offset: -UIConstants.mediumSpacing)
+
+        valueL.topToBottom(of: titleL, offset: 4, relation: .equalOrGreater)
+        valueL.left(to: titleL)
+        valueL.right(to: titleL)
+        valueL.bottomToSuperview(offset: -UIConstants.smallSpacing, relation: .equalOrLess)
+        valueL.centerYToSuperview(offset: huge ? 14 : 8, priority: .defaultHigh)
+        return container
+    }
+
+    // MARK: - Helpers (details)
+
+    private func addDetailsSectionHeader(title: String) {
         let label = UILabel()
         label.text = title.uppercased()
         label.font = Typography.footnote
         label.textColor = Theme.current.secondaryText
-        stackView.addArrangedSubview(label)
+        detailsWrapperStack.addArrangedSubview(label)
     }
 
-    private func addRow(lhs: PLKPIView, rhs: PLKPIView) {
+    private func addDetailsRow(lhs: PLKPIView, rhs: PLKPIView) {
         let row = UIStackView(arrangedSubviews: [lhs, rhs])
         row.axis = .horizontal
         row.spacing = UIConstants.mediumSpacing
         row.distribution = .fillEqually
-        stackView.addArrangedSubview(row)
+        detailsWrapperStack.addArrangedSubview(row)
     }
 
-    private func addSingleRow(_ view: PLKPIView) {
-        stackView.addArrangedSubview(view)
+    private func addDetailsSingleRow(_ view: PLKPIView) {
+        detailsWrapperStack.addArrangedSubview(view)
     }
 
     private func makeKPI(
@@ -225,6 +322,12 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         kpi.configure(title: title, value: text, accent: accent)
         kpiRows.append(kpi)
         return kpi
+    }
+
+    private static func currencyString(value: Double, currency: String) -> String {
+        let f = Self.amountFormatter
+        f.currencySymbol = currency
+        return f.string(for: value) ?? "0"
     }
 
     private static let amountFormatter: NumberFormatter = {
@@ -251,7 +354,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     }()
 }
 
-// MARK: - PL KPI View (single tile)
+// MARK: - PL KPI View (single tile — used in detailed)
 
 final class PLKPIView: UIView {
     private let container: UIView = {

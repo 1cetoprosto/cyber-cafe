@@ -494,12 +494,12 @@
 "nameZA" = "Name (Z-A)";
 
 // MARK: - Reports
-"reportsPLTitle" = "Profit & Loss";
-"reportsPLSubtitle" = "Income, costs, margin, and bottom-line net profit for the period.";
-"reportsABCTitle" = "ABC Analysis";
-"reportsABCSubtitle" = "Rank products by sales or gross profit to find A/B/C drivers and long-tail items.";
-"reportsTrendsTitle" = "Periodic Trends";
-"reportsTrendsSubtitle" = "Compare performance over multiple consecutive periods to spot direction and momentum.";
+"reportsPLTitle" = "What's left";
+"reportsPLSubtitle" = "Revenue minus all costs = your real profit.";
+"reportsABCTitle" = "What makes money";
+"reportsABCSubtitle" = "Top menu items and what you may want to review.";
+"reportsTrendsTitle" = "Momentum";
+"reportsTrendsSubtitle" = "Compare results to the previous period at a glance.";
 
 "kpiGroupSummary" = "Summary";
 "kpiGroupBreakdown" = "Breakdown";
@@ -520,8 +520,8 @@
 "commonCurrencyUAH" = "₴";
 "commonLoading" = "...";
 
-"abcRankingSales" = "Sales";
-"abcRankingGross" = "Gross Profit";
+"abcRankingSales" = "By sales";
+"abcRankingGross" = "By gross profit";
 "abcEmpty" = "No products sold in this period.";
 "abcProductCountFormat" = "%d items";
 
@@ -542,8 +542,27 @@
 "trendsDeltaFormat" = "%@%.1f%% vs prev";
 
 // MARK: - Reports ABC Buckets
-"abcBucketATitle" = "A (0–80%)";
-"abcBucketBTitle" = "B (80–95%)";
-"abcBucketCTitle" = "C (95–100%)";
+"abcBucketATitle" = "💰 MAKES MONEY";
+"abcBucketBTitle" = "⚖️ MIDDLE";
+"abcBucketCTitle" = "🤔 REVIEW THIS";
 "abcQtyPrefixFormat" = "Qty: %@";
 "abcCumulativePrefixFormat" = "Σ %@";
+
+// MARK: - Reports Simplified UX (non-accountant friendly)
+"kpiBigRevenue" = "ALL SALES";
+"kpiBigCosts" = "ALL COSTS";
+"kpiBigNet" = "REMAINED (PROFIT)";
+
+"commonShowDetails" = "Show details 👇";
+"commonHideDetails" = "Hide details 👆";
+"commonShowCosts" = "Show costs 👇";
+"commonHideCosts" = "Hide costs 👆";
+"commonShowMoreN" = "Show %d more";
+
+"trendsBigNetRemainedPeriod" = "REMAINED for the period";
+"trendsBetterByFormat" = "➕ Better by %@%.1f%% ✅";
+"trendsWorseByFormat" = "➖ Worse by %@%.1f%% ⚠️";
+
+"hubBigSalesLabel" = "Sales";
+"hubBigCostsLabel" = "Costs";
+"hubBigNetLabel" = "Remained";
