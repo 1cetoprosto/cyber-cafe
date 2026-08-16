@@ -121,14 +121,19 @@ final class ABCProductCell: UITableViewCell {
         nameLabel.text = row.productName
 
         let qtyStr = ABCProductCell.integerFormatter.string(for: row.quantity) ?? ""
-        qtyLabel.text = "Qty: " + qtyStr
+        qtyLabel.text = String(
+            format: NSLocalizedString(
+                "abcQtyPrefixFormat", tableName: "Global", value: "Qty: %@", comment: ""), qtyStr)
 
         let salesStr =
             ABCProductCell.currencyFormatter(currency: currency).string(for: row.sales) ?? ""
         salesLabel.text = salesStr
 
         shareLabel.text = String(format: "%.1f%%", row.sharePercent)
-        cumulativeLabel.text = "Σ " + String(format: "%.1f%%", row.cumulativePercent)
+        cumulativeLabel.text = String(
+            format: NSLocalizedString(
+                "abcCumulativePrefixFormat", tableName: "Global", value: "Σ %@", comment: ""),
+            String(format: "%.1f%%", row.cumulativePercent))
 
         let (title, color) = ABCProductCell.bucketMeta(row.bucket)
         bucketBadge.text = title
@@ -338,13 +343,19 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         let bucketSales = Dictionary(grouping: rows, by: { $0.bucket })
             .mapValues { $0.reduce(0) { $0 + $1.sales } }
         addSummaryCard(
-            title: "A (0–80%)", count: countsByBucket[.a] ?? 0, value: bucketSales[.a] ?? 0,
+            title: NSLocalizedString(
+                "abcBucketATitle", tableName: "Global", value: "A (0–80%)", comment: ""),
+            count: countsByBucket[.a] ?? 0, value: bucketSales[.a] ?? 0,
             currency: currency, color: .systemGreen)
         addSummaryCard(
-            title: "B (80–95%)", count: countsByBucket[.b] ?? 0, value: bucketSales[.b] ?? 0,
+            title: NSLocalizedString(
+                "abcBucketBTitle", tableName: "Global", value: "B (80–95%)", comment: ""),
+            count: countsByBucket[.b] ?? 0, value: bucketSales[.b] ?? 0,
             currency: currency, color: .systemOrange)
         addSummaryCard(
-            title: "C (95–100%)", count: countsByBucket[.c] ?? 0, value: bucketSales[.c] ?? 0,
+            title: NSLocalizedString(
+                "abcBucketCTitle", tableName: "Global", value: "C (95–100%)", comment: ""),
+            count: countsByBucket[.c] ?? 0, value: bucketSales[.c] ?? 0,
             currency: currency, color: .systemGray)
 
         if rows.isEmpty {

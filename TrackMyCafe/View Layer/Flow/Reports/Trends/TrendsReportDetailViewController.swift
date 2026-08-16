@@ -119,20 +119,30 @@ final class TrendPointCell: UITableViewCell {
         let deltaText: String
         if let previousNet, previousNet != 0 {
             let sign = deltaPct >= 0 ? "+" : ""
-            deltaText = String(format: "%@%.1f%% vs prev", sign, deltaPct)
+            deltaText = String(
+                format: NSLocalizedString(
+                    "trendsDeltaFormat", tableName: "Global", value: "%@%.1f%% vs prev",
+                    comment: ""), sign, deltaPct)
         } else {
             deltaText = ""
         }
         deltaLabel.text = deltaText
         deltaLabel.textColor = deltaPct >= 0 ? .systemGreen : .systemRed
 
-        salesLabel.text = "Sales: " + (fCurrency.string(for: point.sales) ?? "")
+        salesLabel.text = String(
+            format: NSLocalizedString(
+                "trendsSalesPrefixFormat", tableName: "Global", value: "Sales: %@", comment: ""),
+            fCurrency.string(for: point.sales) ?? "")
 
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         addBreakdownRow(
-            title: "COGS", value: point.cogs, currency: currency, color: Theme.current.primaryText)
+            title: NSLocalizedString(
+                "trendsCOGS", tableName: "Global", value: "COGS", comment: ""),
+            value: point.cogs, currency: currency, color: Theme.current.primaryText)
         addBreakdownRow(
-            title: "Opex", value: point.opex, currency: currency, color: Theme.current.primaryText)
+            title: NSLocalizedString(
+                "trendsOpex", tableName: "Global", value: "Opex", comment: ""),
+            value: point.opex, currency: currency, color: Theme.current.primaryText)
     }
 
     private func addBreakdownRow(title: String, value: Double, currency: String, color: UIColor) {
@@ -323,13 +333,19 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         let avgNet = points.isEmpty ? 0 : totalNet / Double(points.count)
 
         addSummaryCard(
-            title: "Total Sales", value: totalSales, currency: currency,
+            title: NSLocalizedString(
+                "trendsTotalSales", tableName: "Global", value: "Total Sales", comment: ""),
+            value: totalSales, currency: currency,
             color: Theme.current.primaryText)
         addSummaryCard(
-            title: "Total Net", value: totalNet, currency: currency,
+            title: NSLocalizedString(
+                "trendsTotalNet", tableName: "Global", value: "Total Net", comment: ""),
+            value: totalNet, currency: currency,
             color: totalNet >= 0 ? .systemGreen : .systemRed)
         addSummaryCard(
-            title: "Avg Net / Period", value: avgNet, currency: currency,
+            title: NSLocalizedString(
+                "trendsAvgNetPeriod", tableName: "Global", value: "Avg Net / Period", comment: ""),
+            value: avgNet, currency: currency,
             color: avgNet >= 0 ? .systemGreen : .systemRed)
 
         if points.isEmpty {

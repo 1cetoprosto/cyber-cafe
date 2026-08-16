@@ -531,3 +531,19 @@
 "commonDay" = "Day";
 "commonWeek" = "Week";
 "commonMonth" = "Month";
+
+// MARK: - Reports Trends
+"trendsTotalSales" = "Total Sales";
+"trendsTotalNet" = "Total Net";
+"trendsAvgNetPeriod" = "Avg Net / Period";
+"trendsSalesPrefixFormat" = "Sales: %@";
+"trendsCOGS" = "COGS";
+"trendsOpex" = "Opex";
+"trendsDeltaFormat" = "%@%.1f%% vs prev";
+
+// MARK: - Reports ABC Buckets
+"abcBucketATitle" = "A (0–80%)";
+"abcBucketBTitle" = "B (80–95%)";
+"abcBucketCTitle" = "C (95–100%)";
+"abcQtyPrefixFormat" = "Qty: %@";
+"abcCumulativePrefixFormat" = "Σ %@";
