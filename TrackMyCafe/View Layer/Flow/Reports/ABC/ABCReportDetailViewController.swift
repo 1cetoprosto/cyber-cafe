@@ -121,9 +121,7 @@ final class ABCProductCell: UITableViewCell {
         nameLabel.text = row.productName
 
         let qtyStr = ABCProductCell.integerFormatter.string(for: row.quantity) ?? ""
-        qtyLabel.text = String(
-            format: NSLocalizedString(
-                "abcQtyPrefixFormat", tableName: "Global", value: "Qty: %@", comment: ""), qtyStr)
+        qtyLabel.text = String(format: R.string.global.abcQtyPrefixFormat(), qtyStr)
 
         let salesStr =
             ABCProductCell.currencyFormatter(currency: currency).string(for: row.sales) ?? ""
@@ -131,8 +129,7 @@ final class ABCProductCell: UITableViewCell {
 
         shareLabel.text = String(format: "%.1f%%", row.sharePercent)
         cumulativeLabel.text = String(
-            format: NSLocalizedString(
-                "abcCumulativePrefixFormat", tableName: "Global", value: "Σ %@", comment: ""),
+            format: R.string.global.abcCumulativePrefixFormat(),
             String(format: "%.1f%%", row.cumulativePercent))
 
         let (title, color) = ABCProductCell.bucketMeta(row.bucket)
@@ -172,9 +169,9 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private let segmentedControl: UISegmentedControl = {
         let items = [
-            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
-            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
-            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+            R.string.global.commonDay(),
+            R.string.global.commonWeek(),
+            R.string.global.commonMonth(),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
@@ -189,9 +186,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private let rankingControl: UISegmentedControl = {
         let items = [
-            NSLocalizedString("abcRankingSales", tableName: "Global", value: "Sales", comment: ""),
-            NSLocalizedString(
-                "abcRankingGross", tableName: "Global", value: "Gross Profit", comment: ""),
+            R.string.global.abcRankingSales(),
+            R.string.global.abcRankingGross(),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
@@ -241,8 +237,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
-        title = NSLocalizedString(
-            "reportsABCTitle", tableName: "Global", value: "ABC Analysis", comment: "")
+        title = R.string.global.reportsABCTitle()
         navigationController?.navigationBar.prefersLargeTitles = false
 
         tableView.delegate = self
@@ -325,8 +320,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private func reloadData() {
         Task { @MainActor in
-            emptyStateLabel.text = NSLocalizedString(
-                "commonLoading", tableName: "Global", value: "...", comment: "")
+            emptyStateLabel.text = R.string.global.commonLoading()
             let report = await sharedViewModel.buildABCReport(rankingKey: rankingKey)
             render(report: report)
         }
@@ -338,29 +332,24 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
         summaryStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        let currency = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = R.string.global.commonCurrencyUAH()
         let bucketSales = Dictionary(grouping: rows, by: { $0.bucket })
             .mapValues { $0.reduce(0) { $0 + $1.sales } }
         addSummaryCard(
-            title: NSLocalizedString(
-                "abcBucketATitle", tableName: "Global", value: "A (0–80%)", comment: ""),
+            title: R.string.global.abcBucketATitle(),
             count: countsByBucket[.a] ?? 0, value: bucketSales[.a] ?? 0,
             currency: currency, color: .systemGreen)
         addSummaryCard(
-            title: NSLocalizedString(
-                "abcBucketBTitle", tableName: "Global", value: "B (80–95%)", comment: ""),
+            title: R.string.global.abcBucketBTitle(),
             count: countsByBucket[.b] ?? 0, value: bucketSales[.b] ?? 0,
             currency: currency, color: .systemOrange)
         addSummaryCard(
-            title: NSLocalizedString(
-                "abcBucketCTitle", tableName: "Global", value: "C (95–100%)", comment: ""),
+            title: R.string.global.abcBucketCTitle(),
             count: countsByBucket[.c] ?? 0, value: bucketSales[.c] ?? 0,
             currency: currency, color: .systemGray)
 
         if rows.isEmpty {
-            emptyStateLabel.text = NSLocalizedString(
-                "abcEmpty", tableName: "Global", value: "No products in this period.", comment: "")
+            emptyStateLabel.text = R.string.global.abcEmpty()
             tableView.backgroundView = emptyStateLabel
         } else {
             tableView.backgroundView = nil
@@ -384,10 +373,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         let countL = UILabel()
         countL.font = Typography.footnoteLight
         countL.textColor = Theme.current.secondaryText
-        countL.text = String(
-            format: NSLocalizedString(
-                "abcProductCountFormat", tableName: "Global", value: "%d items", comment: ""), count
-        )
+        countL.text = String(format: R.string.global.abcProductCountFormat(), count)
 
         let valueL = UILabel()
         valueL.font = Typography.title3DemiBold
@@ -435,8 +421,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
             tableView.dequeueReusableCell(withIdentifier: ABCProductCell.identifier, for: indexPath)
             as! ABCProductCell
         let row = rows[indexPath.row]
-        let currency = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = R.string.global.commonCurrencyUAH()
         cell.configure(row: row, currency: currency)
         return cell
     }
