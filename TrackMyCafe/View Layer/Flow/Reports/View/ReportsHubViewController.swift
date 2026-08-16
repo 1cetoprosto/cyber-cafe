@@ -9,9 +9,9 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
 
     private let segmentedControl: UISegmentedControl = {
         let items = [
-            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
-            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
-            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+            R.string.global.commonDay(),
+            R.string.global.commonWeek(),
+            R.string.global.commonMonth(),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
@@ -149,8 +149,8 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
                 withIdentifier: ReportsHubReportCell.identifier,
                 for: indexPath) as! ReportsHubReportCell
         let item = viewModel.report(at: indexPath.row)
-        let title = NSLocalizedString(item.titleKey, tableName: "Global", comment: "")
-        let subtitle = NSLocalizedString(item.subtitleKey, tableName: "Global", comment: "")
+        let title = item.title()
+        let subtitle = item.subtitle()
         cell.configure(kind: item.kind, title: title, subtitle: subtitle, symbol: item.symbol)
         return cell
     }

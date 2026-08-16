@@ -7,9 +7,9 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
     private let segmentedControl: UISegmentedControl = {
         let items = [
-            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
-            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
-            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+            R.string.global.commonDay(),
+            R.string.global.commonWeek(),
+            R.string.global.commonMonth(),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
@@ -67,7 +67,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
-        title = NSLocalizedString("reportsPLTitle", tableName: "Global", comment: "")
+        title = R.string.global.reportsPLTitle()
         navigationController?.navigationBar.prefersLargeTitles = false
 
         setupLayout()
@@ -125,8 +125,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
     private func reloadData() {
         Task { @MainActor in
-            emptyStateLabel.text = NSLocalizedString(
-                "commonLoading", tableName: "Global", value: "...", comment: "")
+            emptyStateLabel.text = R.string.global.commonLoading()
             let report = await sharedViewModel.buildPLReport()
             render(report: report)
         }
@@ -138,64 +137,51 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         summaryRows.removeAll()
         countsRows.removeAll()
 
-        let currency = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = R.string.global.commonCurrencyUAH()
 
         // Section 1: Main KPIs (Sales, Gross Profit, Net Profit)
-        addSectionHeader(
-            title: NSLocalizedString(
-                "kpiGroupSummary", tableName: "Global", value: "Summary", comment: ""))
+        addSectionHeader(title: R.string.global.kpiGroupSummary())
         let kpiSales = makeKPI(
-            title: NSLocalizedString("kpiSales", tableName: "Global", value: "Sales", comment: ""),
+            title: R.string.global.kpiSales(),
             value: report.sales, currency: currency, accent: Theme.current.primaryText)
         let kpiGross = makeKPI(
-            title: NSLocalizedString(
-                "kpiGrossProfit", tableName: "Global", value: "Gross Profit", comment: ""),
+            title: R.string.global.kpiGrossProfit(),
             value: report.grossProfit, currency: currency,
             accent: report.grossProfit >= 0 ? .systemGreen : .systemRed)
         let kpiNet = makeKPI(
-            title: NSLocalizedString(
-                "kpiNetProfit", tableName: "Global", value: "Net Profit", comment: ""),
+            title: R.string.global.kpiNetProfit(),
             value: report.netProfit, currency: currency,
             accent: report.netProfit >= 0 ? .systemGreen : .systemRed)
         addRow(lhs: kpiSales, rhs: kpiGross)
         addSingleRow(kpiNet)
 
         // Section 2: Breakdown (COGS, Opex, Margin%)
-        addSectionHeader(
-            title: NSLocalizedString(
-                "kpiGroupBreakdown", tableName: "Global", value: "Breakdown", comment: ""))
+        addSectionHeader(title: R.string.global.kpiGroupBreakdown())
         let kpiCogs = makeKPI(
-            title: NSLocalizedString("kpiCOGS", tableName: "Global", value: "COGS", comment: ""),
+            title: R.string.global.kpiCOGS(),
             value: report.cogs, currency: currency, accent: Theme.current.primaryText)
         let kpiOpex = makeKPI(
-            title: NSLocalizedString(
-                "kpiOpex", tableName: "Global", value: "Operating Expenses", comment: ""),
+            title: R.string.global.kpiOpex(),
             value: report.opex, currency: currency, accent: Theme.current.primaryText)
         let kpiMargin = makeKPI(
-            title: NSLocalizedString(
-                "kpiMargin", tableName: "Global", value: "Gross Margin", comment: ""),
+            title: R.string.global.kpiMargin(),
             value: report.grossMarginPercent, suffix: " %", accent: Theme.current.primaryText)
         addRow(lhs: kpiCogs, rhs: kpiOpex)
         addSingleRow(kpiMargin)
 
         // Section 3: Payment + Counts
-        addSectionHeader(
-            title: NSLocalizedString(
-                "kpiGroupDetails", tableName: "Global", value: "Details", comment: ""))
+        addSectionHeader(title: R.string.global.kpiGroupDetails())
         let kpiCash = makeKPI(
-            title: NSLocalizedString("kpiCash", tableName: "Global", value: "Cash", comment: ""),
+            title: R.string.global.kpiCash(),
             value: report.cashSales, currency: currency, accent: Theme.current.primaryText)
         let kpiCard = makeKPI(
-            title: NSLocalizedString("kpiCard", tableName: "Global", value: "Card", comment: ""),
+            title: R.string.global.kpiCard(),
             value: report.cardSales, currency: currency, accent: Theme.current.primaryText)
         let kpiOrders = makeKPI(
-            title: NSLocalizedString(
-                "kpiOrdersCount", tableName: "Global", value: "Orders", comment: ""),
+            title: R.string.global.kpiOrdersCount(),
             value: Double(report.ordersCount), suffix: nil, accent: Theme.current.primaryText)
         let kpiExp = makeKPI(
-            title: NSLocalizedString(
-                "kpiExpensesCount", tableName: "Global", value: "Expenses", comment: ""),
+            title: R.string.global.kpiExpensesCount(),
             value: Double(report.expensesCount), suffix: nil, accent: Theme.current.primaryText)
         addRow(lhs: kpiCash, rhs: kpiCard)
         addRow(lhs: kpiOrders, rhs: kpiExp)
@@ -244,8 +230,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     private static let amountFormatter: NumberFormatter = {
         let f = NumberFormatter()
         f.numberStyle = .currency
-        f.currencySymbol = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        f.currencySymbol = R.string.global.commonCurrencyUAH()
         f.maximumFractionDigits = 0
         return f
     }()
