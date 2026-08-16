@@ -119,10 +119,7 @@ final class TrendPointCell: UITableViewCell {
         let deltaText: String
         if let previousNet, previousNet != 0 {
             let sign = deltaPct >= 0 ? "+" : ""
-            deltaText = String(
-                format: NSLocalizedString(
-                    "trendsDeltaFormat", tableName: "Global", value: "%@%.1f%% vs prev",
-                    comment: ""), sign, deltaPct)
+            deltaText = String(format: R.string.global.trendsDeltaFormat(), sign, deltaPct)
         } else {
             deltaText = ""
         }
@@ -130,18 +127,15 @@ final class TrendPointCell: UITableViewCell {
         deltaLabel.textColor = deltaPct >= 0 ? .systemGreen : .systemRed
 
         salesLabel.text = String(
-            format: NSLocalizedString(
-                "trendsSalesPrefixFormat", tableName: "Global", value: "Sales: %@", comment: ""),
+            format: R.string.global.trendsSalesPrefixFormat(),
             fCurrency.string(for: point.sales) ?? "")
 
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         addBreakdownRow(
-            title: NSLocalizedString(
-                "trendsCOGS", tableName: "Global", value: "COGS", comment: ""),
+            title: R.string.global.trendsCOGS(),
             value: point.cogs, currency: currency, color: Theme.current.primaryText)
         addBreakdownRow(
-            title: NSLocalizedString(
-                "trendsOpex", tableName: "Global", value: "Opex", comment: ""),
+            title: R.string.global.trendsOpex(),
             value: point.opex, currency: currency, color: Theme.current.primaryText)
     }
 
@@ -188,9 +182,9 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
     private let segmentedControl: UISegmentedControl = {
         let items = [
-            NSLocalizedString("commonDay", tableName: "Global", value: "Day", comment: ""),
-            NSLocalizedString("commonWeek", tableName: "Global", value: "Week", comment: ""),
-            NSLocalizedString("commonMonth", tableName: "Global", value: "Month", comment: ""),
+            R.string.global.commonDay(),
+            R.string.global.commonWeek(),
+            R.string.global.commonMonth(),
         ]
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
@@ -244,8 +238,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
-        title = NSLocalizedString(
-            "reportsTrendsTitle", tableName: "Global", value: "Trends", comment: "")
+        title = R.string.global.reportsTrendsTitle()
         navigationController?.navigationBar.prefersLargeTitles = false
 
         tableView.delegate = self
@@ -314,8 +307,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
     private func reloadData() {
         Task { @MainActor in
-            emptyStateLabel.text = NSLocalizedString(
-                "commonLoading", tableName: "Global", value: "...", comment: "")
+            emptyStateLabel.text = R.string.global.commonLoading()
             let report = await sharedViewModel.buildTrendsReport(periodsBack: 6)
             render(report: report)
         }
@@ -325,33 +317,27 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         points = report.points
 
         summaryStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        let currency = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = R.string.global.commonCurrencyUAH()
 
         let totalSales = points.reduce(0) { $0 + $1.sales }
         let totalNet = points.reduce(0) { $0 + $1.netProfit }
         let avgNet = points.isEmpty ? 0 : totalNet / Double(points.count)
 
         addSummaryCard(
-            title: NSLocalizedString(
-                "trendsTotalSales", tableName: "Global", value: "Total Sales", comment: ""),
+            title: R.string.global.trendsTotalSales(),
             value: totalSales, currency: currency,
             color: Theme.current.primaryText)
         addSummaryCard(
-            title: NSLocalizedString(
-                "trendsTotalNet", tableName: "Global", value: "Total Net", comment: ""),
+            title: R.string.global.trendsTotalNet(),
             value: totalNet, currency: currency,
             color: totalNet >= 0 ? .systemGreen : .systemRed)
         addSummaryCard(
-            title: NSLocalizedString(
-                "trendsAvgNetPeriod", tableName: "Global", value: "Avg Net / Period", comment: ""),
+            title: R.string.global.trendsAvgNetPeriod(),
             value: avgNet, currency: currency,
             color: avgNet >= 0 ? .systemGreen : .systemRed)
 
         if points.isEmpty {
-            emptyStateLabel.text = NSLocalizedString(
-                "trendsEmpty", tableName: "Global", value: "No data for selected periodicity.",
-                comment: "")
+            emptyStateLabel.text = R.string.global.trendsEmpty()
             tableView.backgroundView = emptyStateLabel
         } else {
             tableView.backgroundView = nil
@@ -413,8 +399,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
             as! TrendPointCell
         let point = points[indexPath.row]
         let previous = indexPath.row > 0 ? points[indexPath.row - 1] : nil
-        let currency = NSLocalizedString(
-            "commonCurrencyUAH", tableName: "Global", value: "₴", comment: "")
+        let currency = R.string.global.commonCurrencyUAH()
         cell.configure(
             point: point, previousSales: previous?.sales, previousNet: previous?.netProfit,
             currency: currency)

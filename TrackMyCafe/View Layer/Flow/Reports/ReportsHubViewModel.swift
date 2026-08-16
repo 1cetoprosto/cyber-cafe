@@ -8,8 +8,8 @@ enum ReportListKind {
 
 struct ReportListItem {
     let kind: ReportListKind
-    let titleKey: String
-    let subtitleKey: String
+    let title: () -> String
+    let subtitle: () -> String
     let symbol: String
 }
 
@@ -41,18 +41,18 @@ final class ReportsHubViewModel: ReportsHubViewModelType {
     private let reports: [ReportListItem] = [
         ReportListItem(
             kind: .pl,
-            titleKey: "reportsPLTitle",
-            subtitleKey: "reportsPLSubtitle",
+            title: { R.string.global.reportsPLTitle() },
+            subtitle: { R.string.global.reportsPLSubtitle() },
             symbol: SystemImages.chartBar),
         ReportListItem(
             kind: .abc,
-            titleKey: "reportsABCTitle",
-            subtitleKey: "reportsABCSubtitle",
+            title: { R.string.global.reportsABCTitle() },
+            subtitle: { R.string.global.reportsABCSubtitle() },
             symbol: SystemImages.chartPie),
         ReportListItem(
             kind: .trends,
-            titleKey: "reportsTrendsTitle",
-            subtitleKey: "reportsTrendsSubtitle",
+            title: { R.string.global.reportsTrendsTitle() },
+            subtitle: { R.string.global.reportsTrendsSubtitle() },
             symbol: SystemImages.chartLine),
     ]
 
