@@ -531,3 +531,19 @@
 "commonDay" = "День";
 "commonWeek" = "Тиждень";
 "commonMonth" = "Місяць";
+
+// MARK: - Reports Trends
+"trendsTotalSales" = "Всього продаж";
+"trendsTotalNet" = "Всього чистий";
+"trendsAvgNetPeriod" = "Сер. чистий / період";
+"trendsSalesPrefixFormat" = "Продажі: %@";
+"trendsCOGS" = "Собівартість";
+"trendsOpex" = "Опер. витрати";
+"trendsDeltaFormat" = "%@%.1f%% до попереднього";
+
+// MARK: - Reports ABC Buckets
+"abcBucketATitle" = "A (0–80%)";
+"abcBucketBTitle" = "B (80–95%)";
+"abcBucketCTitle" = "C (95–100%)";
+"abcQtyPrefixFormat" = "Кількість: %@";
+"abcCumulativePrefixFormat" = "Σ %@";
