@@ -494,12 +494,12 @@
 "nameZA" = "Назвою (Я-А)";
 
 // MARK: - Reports
-"reportsPLTitle" = "Прибутки та збитки";
-"reportsPLSubtitle" = "Дохід, собівартість, маржа та чистий прибуток за обраний період.";
-"reportsABCTitle" = "ABC-аналіз";
-"reportsABCSubtitle" = "Рейтингуй товари за обсягом продажів або валовими прибутками, щоб побачити драйвери A/B/C і довгий хвіст.";
-"reportsTrendsTitle" = "Динаміка періодів";
-"reportsTrendsSubtitle" = "Порівнюй результати за декільма послідовними періодами, щоб відстежувати напрям і імпульс.";
+"reportsPLTitle" = "Скільки залишилось";
+"reportsPLSubtitle" = "Виручка мінус усі витрати — ваш реальний прибуток.";
+"reportsABCTitle" = "Що робить гроші";
+"reportsABCSubtitle" = "Топ-позиції меню і те, що варто перевірити.";
+"reportsTrendsTitle" = "Динаміка";
+"reportsTrendsSubtitle" = "З одного погляду — краще чи гірше за попередній період.";
 
 "kpiGroupSummary" = "Підсумок";
 "kpiGroupBreakdown" = "Розкладка";
@@ -520,8 +520,8 @@
 "commonCurrencyUAH" = "₴";
 "commonLoading" = "...";
 
-"abcRankingSales" = "Продажі";
-"abcRankingGross" = "Валовий прибуток";
+"abcRankingSales" = "За продажем";
+"abcRankingGross" = "За валовим прибутком";
 "abcEmpty" = "У цьому періоді жодного товару не продано.";
 "abcProductCountFormat" = "%d одиниць";
 
@@ -542,8 +542,27 @@
 "trendsDeltaFormat" = "%@%.1f%% до попереднього";
 
 // MARK: - Reports ABC Buckets
-"abcBucketATitle" = "A (0–80%)";
-"abcBucketBTitle" = "B (80–95%)";
-"abcBucketCTitle" = "C (95–100%)";
+"abcBucketATitle" = "💰 РОБИТЬ ГРОШІ";
+"abcBucketBTitle" = "⚖️ СЕРЕДНЄ";
+"abcBucketCTitle" = "🤔 ПЕРЕВІРИТИ";
 "abcQtyPrefixFormat" = "Кількість: %@";
 "abcCumulativePrefixFormat" = "Σ %@";
+
+// MARK: - Reports Simplified UX (non-accountant friendly)
+"kpiBigRevenue" = "ВСЬО ПРОДАНО";
+"kpiBigCosts" = "УСІ ВИТРАТИ";
+"kpiBigNet" = "ЗАЛИШИЛОСЬ (прибуток)";
+
+"commonShowDetails" = "Показати деталі 👇";
+"commonHideDetails" = "Сховати деталі 👆";
+"commonShowCosts" = "Показати витрати 👇";
+"commonHideCosts" = "Сховати витрати 👆";
+"commonShowMoreN" = "Показати ще %d";
+
+"trendsBigNetRemainedPeriod" = "ЗАЛИШИЛОСЬ за період";
+"trendsBetterByFormat" = "➕ Кращіше на %@%.1f%% ✅";
+"trendsWorseByFormat" = "➖ Гірше на %@%.1f%% ⚠️";
+
+"hubBigSalesLabel" = "Продажі";
+"hubBigCostsLabel" = "Витрати";
+"hubBigNetLabel" = "Залишилось";

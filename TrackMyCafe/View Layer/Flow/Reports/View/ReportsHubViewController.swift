@@ -32,6 +32,73 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return label
     }()
 
+    // MARK: - Hero KPI Card (at-a-glance truth)
+
+    private let heroCardView: UIView = {
+        let v = UIView()
+        v.backgroundColor = Theme.current.cellBackground
+        v.layer.cornerRadius = UIConstants.mediumCornerRadius
+        return v
+    }()
+
+    private let heroNetTitleLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.footnote
+        l.textColor = Theme.current.secondaryText
+        l.numberOfLines = 1
+        l.text = R.string.global.kpiBigNet()
+        return l
+    }()
+
+    private let heroNetValueLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.largeTitleBold
+        l.textColor = Theme.current.primaryText
+        l.adjustsFontSizeToFitWidth = true
+        l.minimumScaleFactor = 0.6
+        l.numberOfLines = 1
+        l.setContentHuggingPriority(.defaultLow, for: .vertical)
+        return l
+    }()
+
+    private let heroSalesTitleLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.footnoteLight
+        l.textColor = Theme.current.secondaryText
+        l.text = R.string.global.hubBigSalesLabel()
+        l.numberOfLines = 1
+        return l
+    }()
+
+    private let heroSalesValueLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.calloutDemi
+        l.textColor = Theme.current.primaryText
+        l.adjustsFontSizeToFitWidth = true
+        l.minimumScaleFactor = 0.7
+        l.numberOfLines = 1
+        return l
+    }()
+
+    private let heroCostsTitleLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.footnoteLight
+        l.textColor = Theme.current.secondaryText
+        l.text = R.string.global.hubBigCostsLabel()
+        l.numberOfLines = 1
+        return l
+    }()
+
+    private let heroCostsValueLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.calloutDemi
+        l.textColor = .systemOrange
+        l.adjustsFontSizeToFitWidth = true
+        l.minimumScaleFactor = 0.7
+        l.numberOfLines = 1
+        return l
+    }()
+
     private let tableView: UITableView = {
         let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,9 +137,46 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     private func setupLayout() {
-        let headerStack = UIStackView(arrangedSubviews: [segmentedControl, periodInfoLabel])
+        // Hero card subviews
+        heroCardView.addSubview(heroNetTitleLabel)
+        heroCardView.addSubview(heroNetValueLabel)
+
+        let salesSV = UIStackView(arrangedSubviews: [heroSalesTitleLabel, heroSalesValueLabel])
+        salesSV.axis = .vertical
+        salesSV.spacing = 2
+
+        let costsSV = UIStackView(arrangedSubviews: [heroCostsTitleLabel, heroCostsValueLabel])
+        costsSV.axis = .vertical
+        costsSV.spacing = 2
+
+        let bottomSV = UIStackView(arrangedSubviews: [salesSV, costsSV])
+        bottomSV.axis = .horizontal
+        bottomSV.distribution = .fillEqually
+        bottomSV.spacing = UIConstants.smallSpacing
+
+        heroCardView.addSubview(bottomSV)
+
+        heroNetTitleLabel.topToSuperview(offset: UIConstants.smallSpacing)
+        heroNetTitleLabel.leftToSuperview(offset: UIConstants.standardPadding)
+        heroNetTitleLabel.rightToSuperview(offset: -UIConstants.standardPadding)
+
+        heroNetValueLabel.topToBottom(of: heroNetTitleLabel, offset: 4)
+        heroNetValueLabel.left(to: heroNetTitleLabel)
+        heroNetValueLabel.right(to: heroNetTitleLabel)
+
+        bottomSV.topToBottom(of: heroNetValueLabel, offset: UIConstants.smallSpacing)
+        bottomSV.left(to: heroNetTitleLabel)
+        bottomSV.right(to: heroNetTitleLabel)
+        bottomSV.bottomToSuperview(offset: -UIConstants.smallSpacing)
+
+        // Header: segmented + period + hero card
+        let headerStack = UIStackView(arrangedSubviews: [
+            segmentedControl,
+            periodInfoLabel,
+            heroCardView,
+        ])
         headerStack.axis = .vertical
-        headerStack.spacing = UIConstants.smallSpacing
+        headerStack.spacing = UIConstants.mediumSpacing
         headerStack.isLayoutMarginsRelativeArrangement = true
         headerStack.layoutMargins = UIEdgeInsets(
             top: UIConstants.smallSpacing,
@@ -84,7 +188,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         headerStack.frame = CGRect(
             x: 0, y: 0,
             width: view.bounds.width,
-            height: 90
+            height: 250
         )
         tableView.tableHeaderView = headerStack
 
@@ -109,6 +213,46 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         segmentedControl.selectedSegmentIndex = viewModel.segmentIndex(for: period)
         periodInfoLabel.text = periodDescription(for: period)
         tableView.reloadData()
+        loadHeroCard(for: period)
+    }
+
+    private func loadHeroCard(for period: DashboardPeriod) {
+        // skeleton until real data
+        let currency = R.string.global.commonCurrencyUAH()
+        heroSalesValueLabel.text = Self.currencyString(value: 0, currency: currency)
+        heroCostsValueLabel.text = Self.currencyString(value: 0, currency: currency)
+        heroNetValueLabel.text = Self.currencyString(value: 0, currency: currency)
+        heroNetValueLabel.textColor = Theme.current.primaryText
+
+        Task { @MainActor in
+            let report = await viewModel.buildPLReport()
+            applyHeroCard(
+                sales: report.sales,
+                totalCosts: report.cogs + report.opex,
+                netProfit: report.netProfit,
+                currency: currency
+            )
+        }
+    }
+
+    private func applyHeroCard(
+        sales: Double,
+        totalCosts: Double,
+        netProfit: Double,
+        currency: String
+    ) {
+        heroSalesValueLabel.text = Self.currencyString(value: sales, currency: currency)
+        heroCostsValueLabel.text = Self.currencyString(value: totalCosts, currency: currency)
+        heroNetValueLabel.text = Self.currencyString(value: netProfit, currency: currency)
+        heroNetValueLabel.textColor = netProfit >= 0 ? .systemGreen : .systemRed
+    }
+
+    private static func currencyString(value: Double, currency: String) -> String {
+        let f = NumberFormatter()
+        f.numberStyle = .currency
+        f.currencySymbol = currency
+        f.maximumFractionDigits = 0
+        return f.string(for: value) ?? "0"
     }
 
     private func periodDescription(for period: DashboardPeriod) -> String {
