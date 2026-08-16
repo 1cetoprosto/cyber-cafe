@@ -121,16 +121,15 @@ final class ABCProductCell: UITableViewCell {
         nameLabel.text = row.productName
 
         let qtyStr = ABCProductCell.integerFormatter.string(for: row.quantity) ?? ""
-        qtyLabel.text = String(format: R.string.global.abcQtyPrefixFormat(), qtyStr)
+        qtyLabel.text = R.string.global.abcQtyPrefixFormat(qtyStr)
 
         let salesStr =
             ABCProductCell.currencyFormatter(currency: currency).string(for: row.sales) ?? ""
         salesLabel.text = salesStr
 
         shareLabel.text = String(format: "%.1f%%", row.sharePercent)
-        cumulativeLabel.text = String(
-            format: R.string.global.abcCumulativePrefixFormat(),
-            String(format: "%.1f%%", row.cumulativePercent))
+        let cumulativeStr = String(format: "%.1f%%", row.cumulativePercent)
+        cumulativeLabel.text = R.string.global.abcCumulativePrefixFormat(cumulativeStr)
 
         let (title, color) = ABCProductCell.bucketMeta(row.bucket)
         bucketBadge.text = title
@@ -373,7 +372,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         let countL = UILabel()
         countL.font = Typography.footnoteLight
         countL.textColor = Theme.current.secondaryText
-        countL.text = String(format: R.string.global.abcProductCountFormat(), count)
+        countL.text = R.string.global.abcProductCountFormat(count)
 
         let valueL = UILabel()
         valueL.font = Typography.title3DemiBold
