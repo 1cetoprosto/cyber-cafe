@@ -262,22 +262,10 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }
 
     private func setupLayout() {
-        let header = UIView()
-        header.addSubview(segmentedControl)
-        segmentedControl.edgesToSuperview(
-            insets: UIEdgeInsets(
-                top: UIConstants.mediumSpacing,
-                left: UIConstants.standardPadding,
-                bottom: UIConstants.mediumSpacing,
-                right: UIConstants.standardPadding)
-        )
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
-        navigationItem.titleView = header
-        navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
-            .isActive = true
+        navigationItem.titleView = nil
 
         // BIG summary header: one total NET for all periods
-        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 210))
+        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 286))
         tableHeader.tag = 999
         tableView.tableHeaderView = tableHeader
 
@@ -291,7 +279,11 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         guard let header = tableView.tableHeaderView, header.tag == 999 else { return }
         header.subviews.forEach { $0.removeFromSuperview() }
 
-        // Big net card
+        segmentedControl.removeFromSuperview()
+        header.addSubview(segmentedControl)
+        segmentedControl.topToSuperview(offset: UIConstants.standardSpacing)
+        segmentedControl.leftToSuperview(offset: UIConstants.standardPadding)
+        segmentedControl.rightToSuperview(offset: -UIConstants.standardPadding)
         let netCard = UIView()
         netCard.backgroundColor = Theme.current.cellBackground
         netCard.layer.cornerRadius = UIConstants.mediumCornerRadius
@@ -360,7 +352,10 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
             right: UIConstants.standardPadding)
 
         header.addSubview(wrapper)
-        wrapper.edgesToSuperview()
+        wrapper.topToBottom(of: segmentedControl, offset: UIConstants.smallSpacing)
+        wrapper.leftToSuperview()
+        wrapper.rightToSuperview()
+        wrapper.bottomToSuperview()
     }
 
     private func makeSmallSummary(title: String, valueStr: String, color: UIColor) -> UIView {
