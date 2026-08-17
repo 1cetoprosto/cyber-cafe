@@ -96,7 +96,7 @@ protocol FinanceReportingServiceProtocol {
 
 // MARK: - Finance/Reporting Facade Implementation
 
-final class FinanceReportingService: FinanceReportingServiceProtocol {
+final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
 
     private let database: DomainDB
     private let incomeService: IncomeAggregationServiceProtocol
@@ -187,6 +187,13 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
             return TrendsReport(periodicity: periodicity, referenceDate: referenceDate, points: [])
         }
         let (orders, expenses) = await fetchBaseData(from: firstStart, to: lastEnd)
+        let df = DateFormatter()
+        df.locale = Locale(identifier: "uk_UA")
+        df.dateFormat = "dd.MM.yyyy HH:mm"
+        logger.info(
+            "Trends fetch periodicity=\(String(describing: periodicity)) periodsBack=\(periodsBack)"
+                + " windows.count=\(windows.count) orders=\(orders.count) expenses=\(expenses.count)"
+        )
         var points: [TrendPoint] = []
         for (index, window) in windows.enumerated() {
             let label = Self.trendLabel(for: periodicity, date: window.start, index: index)
@@ -199,17 +206,36 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
                 intervalStart: window.start,
                 intervalEnd: window.end)
             let profit = financeService.summarize(income: income, opex: opex)
-            points.append(
-                TrendPoint(
-                    label: label,
-                    startDate: window.start,
-                    endDate: window.end,
-                    sales: profit.sales,
-                    cogs: profit.cogs,
-                    opex: profit.opex,
-                    netProfit: profit.netProfit
-                ))
+            let point = TrendPoint(
+                label: label,
+                startDate: window.start,
+                endDate: window.end,
+                sales: profit.sales,
+                cogs: profit.cogs,
+                opex: profit.opex,
+                netProfit: profit.netProfit
+            )
+            logger.info(
+                "  → [\(index)] \(label)"
+                    + " [\(df.string(from: window.start)) – \(df.string(from: window.end))]"
+                    + " ordersInWindow=\(income.count) expensesInWindow=\(opex.count)"
+                    + " sales=\(String(format: "%.0f", profit.sales))"
+                    + " cogs=\(String(format: "%.0f", profit.cogs))"
+                    + " opex=\(String(format: "%.0f", profit.opex))"
+                    + " net=\(String(format: "%.0f", profit.netProfit))"
+            )
+            points.append(point)
         }
+        let totalSales = points.reduce(0) { $0 + $1.sales }
+        let totalCogs = points.reduce(0) { $0 + $1.cogs }
+        let totalOpex = points.reduce(0) { $0 + $1.opex }
+        let totalNet = points.reduce(0) { $0 + $1.netProfit }
+        logger.info(
+            "Trends fetch TOTAL sales=\(String(format: "%.0f", totalSales))"
+                + " cogs=\(String(format: "%.0f", totalCogs))"
+                + " opex=\(String(format: "%.0f", totalOpex))"
+                + " net=\(String(format: "%.0f", totalNet))"
+        )
         return TrendsReport(periodicity: periodicity, referenceDate: referenceDate, points: points)
     }
 
