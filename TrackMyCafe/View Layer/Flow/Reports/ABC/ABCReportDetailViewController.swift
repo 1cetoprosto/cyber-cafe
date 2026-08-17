@@ -199,10 +199,10 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
         control.setTitleTextAttributes(
-            [.foregroundColor: Theme.current.primaryText, .font: Typography.footnote],
+            [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
             for: .normal)
         control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.bodyDemiBold],
+            [.foregroundColor: UIColor.white, .font: Typography.headline],
             for: .selected)
         control.selectedSegmentIndex = 0
         return control
@@ -210,8 +210,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private let rankingTitleLabel: UILabel = {
         let l = UILabel()
-        l.font = Typography.footnote
-        l.textColor = Theme.current.secondaryText
+        l.font = Typography.headline
+        l.textColor = Theme.current.primaryText
         l.text = R.string.global.abcRankingTitle()
         return l
     }()
@@ -330,7 +330,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
             .isActive = true
 
         let tableHeader = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 172))
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 240))
         // Ranking card container
         let rankingCard = UIView()
         rankingCard.backgroundColor = Theme.current.cellBackground
@@ -344,7 +344,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         rankingControl.left(to: rankingTitleLabel)
         rankingControl.right(to: rankingTitleLabel)
         rankingControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
-        rankingControl.height(32)
+        rankingControl.height(40)
+        rankingCard.height(min: 104)
 
         let vStack = UIStackView(arrangedSubviews: [rankingCard, summaryStack])
         vStack.axis = .vertical
@@ -442,9 +443,9 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         titleL.font = Typography.footnote
         titleL.textColor = Theme.current.secondaryText
         titleL.text = title
-        titleL.numberOfLines = 2
+        titleL.numberOfLines = 1
         titleL.adjustsFontSizeToFitWidth = true
-        titleL.minimumScaleFactor = 0.7
+        titleL.minimumScaleFactor = 0.55
         titleL.allowsDefaultTighteningForTruncation = true
 
         let countL = UILabel()
@@ -452,13 +453,13 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         countL.textColor = Theme.current.secondaryText
         countL.text = R.string.global.abcProductCountFormat(count)
         countL.adjustsFontSizeToFitWidth = true
-        countL.minimumScaleFactor = 0.8
+        countL.minimumScaleFactor = 0.75
 
         let valueL = UILabel()
         valueL.font = Typography.title3DemiBold
         valueL.textColor = color
         valueL.adjustsFontSizeToFitWidth = true
-        valueL.minimumScaleFactor = 0.6
+        valueL.minimumScaleFactor = 0.55
         valueL.allowsDefaultTighteningForTruncation = true
 
         let f = NumberFormatter()

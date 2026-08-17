@@ -520,9 +520,9 @@
 "commonCurrencyUAH" = "₴";
 "commonLoading" = "...";
 
-"abcRankingTitle" = "Рейтингувати за";
-"abcRankingSales" = "Продажі";
-"abcRankingGross" = "Продажі - Собівартість";
+"abcRankingTitle" = "Що важливіше?";
+"abcRankingSales" = "Оборот";
+"abcRankingGross" = "Прибуток";
 "abcEmpty" = "У цьому періоді жодного товару не продано.";
 "abcProductCountFormat" = "%d одиниць";
 

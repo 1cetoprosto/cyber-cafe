@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 469 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 470 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -278,19 +278,26 @@ struct _R {
       /// Locales: en, uk
       var abcQtyPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcQtyPrefixFormat", tableName: "Global", source: source, developmentValue: "Qty: %@", comment: nil) }
 
-      /// en translation: By gross profit
+      /// en translation: Gross
       ///
       /// Key: abcRankingGross
       ///
       /// Locales: en, uk
-      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "By gross profit", comment: nil) }
+      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "Gross", comment: nil) }
 
-      /// en translation: By sales
+      /// en translation: Sales
       ///
       /// Key: abcRankingSales
       ///
       /// Locales: en, uk
-      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "By sales", comment: nil) }
+      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
+
+      /// en translation: Rank by
+      ///
+      /// Key: abcRankingTitle
+      ///
+      /// Locales: en, uk
+      var abcRankingTitle: RswiftResources.StringResource { .init(key: "abcRankingTitle", tableName: "Global", source: source, developmentValue: "Rank by", comment: nil) }
 
       /// en translation: Share: %@
       ///
