@@ -273,7 +273,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
-        title = R.string.global.reportsHubTitle()
+        title = R.string.global.reportsABCTitle()
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationItem.largeTitleDisplayMode = .always
 
