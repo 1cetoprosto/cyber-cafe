@@ -520,9 +520,9 @@
 "commonCurrencyUAH" = "₴";
 "commonLoading" = "...";
 
-"abcRankingTitle" = "Rank by";
-"abcRankingSales" = "Sales";
-"abcRankingGross" = "Gross";
+"abcRankingTitle" = "What matters?";
+"abcRankingSales" = "Revenue";
+"abcRankingGross" = "Profit";
 "abcEmpty" = "No products sold in this period.";
 "abcProductCountFormat" = "%d items";
 
