@@ -113,6 +113,9 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
         stackView.addArrangedSubview(segmentedControl)
         stackView.setCustomSpacing(UIConstants.standardSpacing, after: segmentedControl)
+        // Inset segmented away from edges like table headers do
+        segmentedControl.leftToSuperview(offset: UIConstants.standardPadding)
+        segmentedControl.rightToSuperview(offset: -UIConstants.standardPadding)
         stackView.addArrangedSubview(emptyStateLabel)
     }
 
@@ -154,7 +157,11 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     }
 
     private func render(report: PLReport) {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        stackView.arrangedSubviews.forEach { subview in
+            if subview !== segmentedControl { subview.removeFromSuperview() }
+        }
+        stackView.addArrangedSubview(segmentedControl)
+        stackView.setCustomSpacing(UIConstants.standardSpacing, after: segmentedControl)
         detailsWrapperStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         kpiRows.removeAll()
         summaryRows.removeAll()
@@ -186,12 +193,27 @@ final class PLReportDetailViewController: UIViewController, Loggable {
             badgeTint: (isNetPositive ? UIColor.systemGreen : UIColor.systemRed).withAlphaComponent(
                 0.15),
             iconTint: isNetPositive ? .systemGreen : .systemRed)
-        stackView.addArrangedSubview(bigSales)
-        stackView.addArrangedSubview(bigCosts)
-        stackView.addArrangedSubview(bigNet)
+        let kpiWrapper = UIStackView(arrangedSubviews: [bigSales, bigCosts, bigNet])
+        kpiWrapper.axis = .vertical
+        kpiWrapper.spacing = UIConstants.standardSpacing
+        kpiWrapper.isLayoutMarginsRelativeArrangement = true
+        kpiWrapper.layoutMargins = UIEdgeInsets(
+            top: 0,
+            left: UIConstants.standardPadding,
+            bottom: 0,
+            right: UIConstants.standardPadding)
+        stackView.addArrangedSubview(kpiWrapper)
 
         // --- Toggle details button ---
+        detailsToggleButton.leftToSuperview(offset: UIConstants.standardPadding)
+        detailsToggleButton.rightToSuperview(offset: -UIConstants.standardPadding)
         stackView.addArrangedSubview(detailsToggleButton)
+        detailsWrapperStack.isLayoutMarginsRelativeArrangement = true
+        detailsWrapperStack.layoutMargins = UIEdgeInsets(
+            top: 0,
+            left: UIConstants.standardPadding,
+            bottom: 0,
+            right: UIConstants.standardPadding)
         stackView.addArrangedSubview(detailsWrapperStack)
 
         // --- TIER 2 DETAILED (hidden by default — NO DUPLICATES of the 3 big above) ---
