@@ -99,7 +99,7 @@ final class HomeHeaderView: UIView {
         let incomeTitle = R.string.global.incomeFor(periodTitle.lowercased())
         summaryCard.configure(title: incomeTitle, value: salesText)
         expensesCard.configure(
-            title: R.string.global.costs() + " " + periodTitle.lowercased(),
+            title: R.string.global.expensesFor(periodTitle.lowercased()),
             value: NumberFormatter.currencyInteger.string(expenses)
         )
         profitCard.configure(

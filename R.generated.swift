@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 458 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 468 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -2258,6 +2258,76 @@ struct _R {
       ///
       /// Locales: en, uk
       var phone: RswiftResources.StringResource { .init(key: "phone", tableName: "Global", source: source, developmentValue: "Phone", comment: nil) }
+
+      /// en translation: 📋 Average order
+      ///
+      /// Key: plAovTitle
+      ///
+      /// Locales: en, uk
+      var plAovTitle: RswiftResources.StringResource { .init(key: "plAovTitle", tableName: "Global", source: source, developmentValue: "📋 Average order", comment: nil) }
+
+      /// en translation: 💳 Card
+      ///
+      /// Key: plCardSalesTitle
+      ///
+      /// Locales: en, uk
+      var plCardSalesTitle: RswiftResources.StringResource { .init(key: "plCardSalesTitle", tableName: "Global", source: source, developmentValue: "💳 Card", comment: nil) }
+
+      /// en translation: 💵 Cash
+      ///
+      /// Key: plCashSalesTitle
+      ///
+      /// Locales: en, uk
+      var plCashSalesTitle: RswiftResources.StringResource { .init(key: "plCashSalesTitle", tableName: "Global", source: source, developmentValue: "💵 Cash", comment: nil) }
+
+      /// en translation: 📝 Expense entries
+      ///
+      /// Key: plExpensesCountTitle
+      ///
+      /// Locales: en, uk
+      var plExpensesCountTitle: RswiftResources.StringResource { .init(key: "plExpensesCountTitle", tableName: "Global", source: source, developmentValue: "📝 Expense entries", comment: nil) }
+
+      /// en translation: 🏢 Running costs
+      ///
+      /// Key: plOperatingCostsTitle
+      ///
+      /// Locales: en, uk
+      var plOperatingCostsTitle: RswiftResources.StringResource { .init(key: "plOperatingCostsTitle", tableName: "Global", source: source, developmentValue: "🏢 Running costs", comment: nil) }
+
+      /// en translation: 🔢 Orders
+      ///
+      /// Key: plOrdersCountTitle
+      ///
+      /// Locales: en, uk
+      var plOrdersCountTitle: RswiftResources.StringResource { .init(key: "plOrdersCountTitle", tableName: "Global", source: source, developmentValue: "🔢 Orders", comment: nil) }
+
+      /// en translation: 🛒 Product costs
+      ///
+      /// Key: plProductCostsTitle
+      ///
+      /// Locales: en, uk
+      var plProductCostsTitle: RswiftResources.StringResource { .init(key: "plProductCostsTitle", tableName: "Global", source: source, developmentValue: "🛒 Product costs", comment: nil) }
+
+      /// en translation: Key ratios
+      ///
+      /// Key: plSectionCoefficients
+      ///
+      /// Locales: en, uk
+      var plSectionCoefficients: RswiftResources.StringResource { .init(key: "plSectionCoefficients", tableName: "Global", source: source, developmentValue: "Key ratios", comment: nil) }
+
+      /// en translation: What goes into costs
+      ///
+      /// Key: plSectionCostsBreakdown
+      ///
+      /// Locales: en, uk
+      var plSectionCostsBreakdown: RswiftResources.StringResource { .init(key: "plSectionCostsBreakdown", tableName: "Global", source: source, developmentValue: "What goes into costs", comment: nil) }
+
+      /// en translation: How people paid
+      ///
+      /// Key: plSectionSalesSplit
+      ///
+      /// Locales: en, uk
+      var plSectionSalesSplit: RswiftResources.StringResource { .init(key: "plSectionSalesSplit", tableName: "Global", source: source, developmentValue: "How people paid", comment: nil) }
 
       /// en translation: Please add ingredients
       ///
