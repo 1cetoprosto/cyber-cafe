@@ -566,3 +566,17 @@
 "hubBigSalesLabel" = "Продажі";
 "hubBigCostsLabel" = "Витрати";
 "hubBigNetLabel" = "Залишилось";
+
+// MARK: - Reports P&L Tier 2 (Simple, non-accountant)
+"plSectionCostsBreakdown" = "З чого складаються витрати";
+"plProductCostsTitle" = "🛒 Витрати на продукти";
+"plOperatingCostsTitle" = "🏢 Витрати на роботу";
+
+"plSectionSalesSplit" = "Розподіл продажів";
+"plCashSalesTitle" = "💵 Готівка";
+"plCardSalesTitle" = "💳 Картка";
+
+"plSectionCoefficients" = "Коефіцієнти";
+"plAovTitle" = "📋 Середній чек";
+"plOrdersCountTitle" = "🔢 Замовлень";
+"plExpensesCountTitle" = "📝 Витрат записано";

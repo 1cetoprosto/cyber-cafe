@@ -1,5 +1,5 @@
-import TinyConstraints
 import SVProgressHUD
+import TinyConstraints
 import UIKit
 
 final class HomeViewController: UIViewController, ProGated {
@@ -12,7 +12,8 @@ final class HomeViewController: UIViewController, ProGated {
         tv.backgroundColor = UIColor.Main.background
         tv.separatorStyle = .none
         tv.register(
-            TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.identifier)
+            TransactionTableViewCell.self,
+            forCellReuseIdentifier: TransactionTableViewCell.identifier)
         return tv
     }()
 
@@ -54,7 +55,9 @@ final class HomeViewController: UIViewController, ProGated {
 
         Task { await loadData() }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"), object: nil)
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(dataDidUpdate), name: NSNotification.Name("DataDidUpdate"),
+            object: nil)
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(contentSizeCategoryDidChange),
@@ -246,72 +249,12 @@ final class HomeViewController: UIViewController, ProGated {
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
-    func numberOfSections(in tableView: UITableView) -> Int { 2 }
+    func numberOfSections(in tableView: UITableView) -> Int { 0 }
 
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let titleText =
-        section == 0 ? R.string.global.recentIncomes() : R.string.global.recentExpenses()
-        let action = section == 0 ? #selector(openIncomeList) : #selector(openCostList)
-        return makeSectionHeader(title: titleText, action: action)
-    }
-
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        UIConstants.tableSectionHeaderHeight
-    }
-
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        section == 0 ? viewModel.lastIncome.count : viewModel.lastExpense.count
-    }
-
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? { nil }
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat { 0 }
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int { 0 }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard
-            let cell = tableView.dequeueReusableCell(
-                withIdentifier: TransactionTableViewCell.identifier, for: indexPath)
-                as? TransactionTableViewCell
-        else { return UITableViewCell() }
-        if indexPath.section == 0 {
-            let item = viewModel.lastIncome[indexPath.row]
-            cell.configure(title: item.type, date: item.date, amount: item.sum, isIncome: true)
-        } else {
-            let item = viewModel.lastExpense[indexPath.row]
-            cell.configure(title: item.note ?? "", date: item.date, amount: item.amount, isIncome: false)
-        }
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 0 {
-            navigationController?.pushViewController(OrderListViewController(), animated: true)
-        } else {
-            navigationController?.pushViewController(CostListViewController(), animated: true)
-        }
-    }
-
-    @objc private func openIncomeList() {
-        navigationController?.pushViewController(OrderListViewController(), animated: true)
-    }
-    @objc private func openCostList() {
-        navigationController?.pushViewController(CostListViewController(), animated: true)
-    }
-
-    private func makeSectionHeader(title: String, action: Selector) -> UIView {
-        let container = UIView()
-        container.backgroundColor = UIColor.Main.background
-        let titleLabel = UILabel()
-        titleLabel.applyDynamic(Typography.title3DemiBold)
-        titleLabel.textColor = UIColor.Main.text
-        titleLabel.text = title
-        let button = UIButton(type: .system)
-        button.setTitle(R.string.global.allArrow(), for: .normal)
-        button.setTitleColor(Theme.current.tabBarUnselectedTint, for: .normal)
-        button.titleLabel?.font = Typography.body
-        button.addTarget(self, action: action, for: .touchUpInside)
-        container.addSubview(titleLabel)
-        container.addSubview(button)
-        titleLabel.leadingToSuperview(offset: UIConstants.standardSpacing)
-        titleLabel.centerYToSuperview()
-        button.trailingToSuperview(offset: UIConstants.standardSpacing)
-        button.centerYToSuperview()
-        return container
+        UITableViewCell()
     }
 }
