@@ -280,23 +280,15 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }
 
     private func setupLayout() {
-        let header = UIView()
-        header.addSubview(segmentedControl)
-        segmentedControl.edgesToSuperview(
-            insets: UIEdgeInsets(
-                top: UIConstants.mediumSpacing,
-                left: UIConstants.standardPadding,
-                bottom: UIConstants.mediumSpacing,
-                right: UIConstants.standardPadding)
-        )
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
-        navigationItem.titleView = header
-        navigationItem.titleView?.widthAnchor.constraint(
-            equalToConstant: view.bounds.width - 32
-        ).isActive = true
+        navigationItem.titleView = nil
 
         let tableHeader = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 240))
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 312))
+        tableHeader.addSubview(segmentedControl)
+        segmentedControl.topToSuperview(offset: UIConstants.standardSpacing)
+        segmentedControl.leftToSuperview(offset: UIConstants.standardPadding)
+        segmentedControl.rightToSuperview(offset: -UIConstants.standardPadding)
+
         // Ranking card container
         let rankingCard = UIView()
         rankingCard.backgroundColor = Theme.current.cellBackground
@@ -318,12 +310,15 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         vStack.spacing = UIConstants.mediumSpacing
         vStack.isLayoutMarginsRelativeArrangement = true
         vStack.layoutMargins = UIEdgeInsets(
-            top: UIConstants.mediumSpacing,
+            top: 0,
             left: UIConstants.standardPadding,
             bottom: UIConstants.mediumSpacing,
             right: UIConstants.standardPadding)
         tableHeader.addSubview(vStack)
-        vStack.edgesToSuperview()
+        vStack.topToBottom(of: segmentedControl, offset: UIConstants.standardSpacing)
+        vStack.leftToSuperview()
+        vStack.rightToSuperview()
+        vStack.bottomToSuperview()
         tableView.tableHeaderView = tableHeader
 
         view.addSubview(tableView)
