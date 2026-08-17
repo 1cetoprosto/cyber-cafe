@@ -340,7 +340,7 @@
 "reportsTitle" = "Звіти";
 
 // MARK: - Ingredients & Products
-"month" = "місяць";
+"month" = "Місяць";
 "productName" = "Назва товару";
 "ingredientNamePlaceholder" = "Назва інгредієнта";
 "ingredientNameExplanation" = "Введіть назву інгредієнта";

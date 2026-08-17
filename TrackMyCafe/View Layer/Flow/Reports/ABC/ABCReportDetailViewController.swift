@@ -260,8 +260,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         super.viewDidLoad()
         view.backgroundColor = Theme.current.primaryBackground
         title = R.string.global.reportsABCTitle()
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationItem.largeTitleDisplayMode = .always
+        navigationController?.navigationBar.prefersLargeTitles = false
 
         tableView.delegate = self
         tableView.dataSource = self
@@ -277,48 +276,20 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.backgroundColor = Theme.current.primaryBackground
-        appearance.shadowColor = .clear
-        appearance.titleTextAttributes = [
-            .foregroundColor: Theme.current.primaryText,
-            .font: Typography.headline,
-        ]
-        appearance.largeTitleTextAttributes = [
-            .foregroundColor: Theme.current.primaryText,
-            .font: Typography.largeTitle,
-        ]
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.tintColor = Theme.current.primaryText
         reloadData()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithDefaultBackground()
-        appearance.shadowColor = nil
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
     }
 
     private func setupLayout() {
         let header = UIView()
-        header.backgroundColor = .clear
         header.addSubview(segmentedControl)
         segmentedControl.edgesToSuperview(
             insets: UIEdgeInsets(
-                top: UIConstants.smallSpacing,
-                left: 0,
-                bottom: UIConstants.smallSpacing,
-                right: 0)
+                top: UIConstants.mediumSpacing,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.mediumSpacing,
+                right: UIConstants.standardPadding)
         )
-        segmentedControl.height(44)
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 56)
+        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
         navigationItem.titleView = header
         navigationItem.titleView?.widthAnchor.constraint(
             equalToConstant: view.bounds.width - 32
