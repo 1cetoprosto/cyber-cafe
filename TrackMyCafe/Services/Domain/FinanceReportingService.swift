@@ -247,9 +247,12 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
     }
 
     private func fetchProductsOfOrders(from: Date, to: Date) async -> [ProductOfOrderModel] {
-        let safeFrom = max(from, Self.firestoreSafePast)
+        let safeFrom = max(Self.firestoreSafePast, Date.distantPast)
         return await withCheckedContinuation { continuation in
-            database.fetchProductsOfOrders(from: safeFrom, to: to) { models in
+            database.fetchProductsOfOrders(
+                from: safeFrom,
+                to: Date.distantFuture
+            ) { models in
                 continuation.resume(returning: models)
             }
         }
