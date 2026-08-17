@@ -417,20 +417,24 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         points = report.points
 
         let currency = R.string.global.commonCurrencyUAH()
-        let totalSales = points.reduce(0) { $0 + $1.sales }
-        let totalNet = points.reduce(0) { $0 + $1.netProfit }
-        let totalCosts = points.reduce(0) { $0 + $1.cogs + $1.opex }
+        let currentPoint = points.last
+        let totalSales = currentPoint?.sales ?? 0
+        let totalNet = currentPoint?.netProfit ?? 0
+        let totalCosts = (currentPoint?.cogs ?? 0) + (currentPoint?.opex ?? 0)
+        let sumSales = points.reduce(0) { $0 + $1.sales }
+        let sumNet = points.reduce(0) { $0 + $1.netProfit }
+        let sumCosts = points.reduce(0) { $0 + $1.cogs + $1.opex }
 
         logger.info(
             "Trends render period=\(String(describing: report.periodicity))"
-            + " points=\(points.count)"
-            + " sales=\(totalSales) costs=\(totalCosts) net=\(totalNet)"
+                + " points=\(points.count)"
+                + " CURRENT=[sales=\(totalSales), costs=\(totalCosts), net=\(totalNet)]"
+                + " SUM_6_PERIODS=[=[=[=[=[="
         )
+
         points.enumerated().forEach { idx, p in
             logger.info(
-                "  → [\(idx)] \(p.label)"
-                + " dates \(p.startDate) – \(p.endDate)"
-                + " sales=\(p.sales) cogs=\(p.cogs) opex=\(p.opex) net=\(p.netProfit)"
+                " render point [\(idx)] \(p.label) s=\(p.sales) net=\(p.netProfit)"
             )
         }
 
