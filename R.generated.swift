@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 468 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 469 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -250,12 +250,12 @@ struct _R {
       /// Locales: en, uk
       var abcBucketCTitle: RswiftResources.StringResource { .init(key: "abcBucketCTitle", tableName: "Global", source: source, developmentValue: "🤔 REVIEW THIS", comment: nil) }
 
-      /// en translation: Σ %@
+      /// en translation: Cumul: %@
       ///
       /// Key: abcCumulativePrefixFormat
       ///
       /// Locales: en, uk
-      var abcCumulativePrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcCumulativePrefixFormat", tableName: "Global", source: source, developmentValue: "Σ %@", comment: nil) }
+      var abcCumulativePrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcCumulativePrefixFormat", tableName: "Global", source: source, developmentValue: "Cumul: %@", comment: nil) }
 
       /// en translation: No products sold in this period.
       ///
@@ -291,6 +291,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "By sales", comment: nil) }
+
+      /// en translation: Share: %@
+      ///
+      /// Key: abcSharePrefixFormat
+      ///
+      /// Locales: en, uk
+      var abcSharePrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcSharePrefixFormat", tableName: "Global", source: source, developmentValue: "Share: %@", comment: nil) }
 
       /// en translation: Please allow access to %@ in Settings
       ///
