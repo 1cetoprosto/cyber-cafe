@@ -292,12 +292,12 @@ struct _R {
       /// Locales: en, uk
       var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Revenue", comment: nil) }
 
-      /// en translation: What matters?
+      /// en translation: What do we rate by?
       ///
       /// Key: abcRankingTitle
       ///
       /// Locales: en, uk
-      var abcRankingTitle: RswiftResources.StringResource { .init(key: "abcRankingTitle", tableName: "Global", source: source, developmentValue: "What matters?", comment: nil) }
+      var abcRankingTitle: RswiftResources.StringResource { .init(key: "abcRankingTitle", tableName: "Global", source: source, developmentValue: "What do we rate by?", comment: nil) }
 
       /// en translation: Share: %@
       ///
