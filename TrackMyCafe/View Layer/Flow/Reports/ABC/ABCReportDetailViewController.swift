@@ -282,16 +282,28 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.setBackgroundImage(
-            UIImage(), for: .default)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.backgroundColor = .clear
+        appearance.shadowColor = .clear
+        appearance.titleTextAttributes = [
+            .foregroundColor: Theme.current.primaryText,
+            .font: Typography.headline,
+        ]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.tintColor = Theme.current.primaryText
         reloadData()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        navigationController?.navigationBar.shadowImage = nil
-        navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithDefaultBackground()
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
     }
 
     private func setupLayout() {
@@ -309,7 +321,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
             .isActive = true
 
-        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 104))
+        let tableHeader = UIView(
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 128))
         let vStack = UIStackView(arrangedSubviews: [rankingControl, summaryStack])
         vStack.axis = .vertical
         vStack.spacing = UIConstants.mediumSpacing
@@ -407,17 +420,23 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         titleL.textColor = Theme.current.secondaryText
         titleL.text = title
         titleL.numberOfLines = 2
+        titleL.adjustsFontSizeToFitWidth = true
+        titleL.minimumScaleFactor = 0.7
+        titleL.allowsDefaultTighteningForTruncation = true
 
         let countL = UILabel()
         countL.font = Typography.footnoteLight
         countL.textColor = Theme.current.secondaryText
         countL.text = R.string.global.abcProductCountFormat(count)
+        countL.adjustsFontSizeToFitWidth = true
+        countL.minimumScaleFactor = 0.8
 
         let valueL = UILabel()
         valueL.font = Typography.title3DemiBold
         valueL.textColor = color
         valueL.adjustsFontSizeToFitWidth = true
-        valueL.minimumScaleFactor = 0.7
+        valueL.minimumScaleFactor = 0.6
+        valueL.allowsDefaultTighteningForTruncation = true
 
         let f = NumberFormatter()
         f.numberStyle = .currency
@@ -436,10 +455,12 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         countL.left(to: titleL)
         countL.right(to: titleL)
 
-        valueL.topToBottom(of: countL, offset: 4, relation: .equalOrGreater)
+        valueL.topToBottom(of: countL, offset: 4)
         valueL.left(to: titleL)
         valueL.right(to: titleL)
-        valueL.bottomToSuperview(offset: -UIConstants.smallSpacing, relation: .equalOrLess)
+        valueL.bottomToSuperview(offset: -UIConstants.smallSpacing)
+
+        card.height(min: 84)
 
         summaryStack.addArrangedSubview(card)
     }
