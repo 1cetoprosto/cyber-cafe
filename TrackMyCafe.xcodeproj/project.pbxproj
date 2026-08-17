@@ -417,6 +417,9 @@
 		F3A54DB830308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
 		F3A54DB930308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
 		F3A54DBA30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54E0E30333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
+		F3A54E1030333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
+		F3A54E1230333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
@@ -1014,6 +1017,7 @@
 		F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubReportCell.swift; sourceTree = "<group>"; };
 		F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewController.swift; sourceTree = "<group>"; };
 		F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewModel.swift; sourceTree = "<group>"; };
+		F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSegmentedControl.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
@@ -1687,6 +1691,7 @@
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F30E1D832F65DF6300425DFF /* AppLabel.swift */,
 				F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */,
+				F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */,
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
@@ -3185,6 +3190,7 @@
 				F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
+				F3A54E0E30333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */,
@@ -3419,6 +3425,7 @@
 				F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
+				F3A54E1030333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B339E82C0B22FE0073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B339E92C0B22FE0073F19A /* Role.swift in Sources */,
 				F3B339EA2C0B22FE0073F19A /* SceneDelegate.swift in Sources */,
@@ -3653,6 +3660,7 @@
 				F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,
+				F3A54E1230333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B33A872C0B23450073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B33A882C0B23450073F19A /* Role.swift in Sources */,
 				F3B33A892C0B23450073F19A /* SceneDelegate.swift in Sources */,
