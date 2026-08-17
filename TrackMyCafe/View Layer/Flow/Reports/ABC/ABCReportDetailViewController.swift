@@ -186,7 +186,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
             [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
             for: .normal)
         control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.bodyBold],
+            [.foregroundColor: UIColor.white, .font: Typography.headline],
             for: .selected)
         return control
     }()
@@ -315,19 +315,34 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }
 
     private func setupLayout() {
-        let header = UIView()
-        header.addSubview(segmentedControl)
+        let titleCard = UIView()
+        titleCard.backgroundColor = Theme.current.cellBackground
+        titleCard.layer.cornerRadius = UIConstants.mediumCornerRadius
+        titleCard.addSubview(segmentedControl)
         segmentedControl.edgesToSuperview(
             insets: UIEdgeInsets(
-                top: UIConstants.mediumSpacing,
-                left: UIConstants.standardPadding,
-                bottom: UIConstants.mediumSpacing,
-                right: UIConstants.standardPadding)
+                top: UIConstants.smallSpacing,
+                left: UIConstants.smallSpacing,
+                bottom: UIConstants.smallSpacing,
+                right: UIConstants.smallSpacing)
         )
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
+        segmentedControl.height(40)
+        titleCard.height(min: 56)
+
+        let header = UIView()
+        header.addSubview(titleCard)
+        titleCard.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: UIConstants.mediumSpacing,
+                left: 0,
+                bottom: UIConstants.mediumSpacing,
+                right: 0)
+        )
+        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 88)
         navigationItem.titleView = header
-        navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
-            .isActive = true
+        navigationItem.titleView?.widthAnchor.constraint(
+            equalToConstant: view.bounds.width - 32
+        ).isActive = true
 
         let tableHeader = UIView(
             frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 240))
