@@ -190,13 +190,14 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
         var points: [TrendPoint] = []
         for (index, window) in windows.enumerated() {
             let label = Self.trendLabel(for: periodicity, date: window.start, index: index)
-            // reference date for period filter = middle of window (to ensure correct boundary match)
-            let mid = window.start.addingTimeInterval(
-                (window.end.timeIntervalSince1970 - window.start.timeIntervalSince1970) / 2)
             let income = incomeService.summarize(
-                orders: orders, period: periodicity, referenceDate: mid)
+                orders: orders,
+                intervalStart: window.start,
+                intervalEnd: window.end)
             let opex = opexService.summarize(
-                expenses: expenses, period: periodicity, referenceDate: mid)
+                expenses: expenses,
+                intervalStart: window.start,
+                intervalEnd: window.end)
             let profit = financeService.summarize(income: income, opex: opex)
             points.append(
                 TrendPoint(
