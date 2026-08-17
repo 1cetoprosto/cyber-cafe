@@ -95,19 +95,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     }
 
     private func setupLayout() {
-        let header = UIView()
-        header.addSubview(segmentedControl)
-        segmentedControl.edgesToSuperview(
-            insets: UIEdgeInsets(
-                top: UIConstants.mediumSpacing,
-                left: UIConstants.standardPadding,
-                bottom: UIConstants.mediumSpacing,
-                right: UIConstants.standardPadding)
-        )
-        header.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 64)
-        navigationItem.titleView = header
-        navigationItem.titleView?.widthAnchor.constraint(equalToConstant: view.bounds.width - 32)
-            .isActive = true
+        navigationItem.titleView = nil
 
         view.addSubview(scrollView)
         scrollView.edgesToSuperview(usingSafeArea: true)
@@ -116,6 +104,15 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         stackView.width(to: scrollView, offset: 0)
         stackView.edgesToSuperview()
 
+        stackView.isLayoutMarginsRelativeArrangement = true
+        stackView.layoutMargins = UIEdgeInsets(
+            top: UIConstants.standardSpacing,
+            left: 0,
+            bottom: UIConstants.standardSpacing,
+            right: 0)
+
+        stackView.addArrangedSubview(segmentedControl)
+        stackView.setCustomSpacing(UIConstants.standardSpacing, after: segmentedControl)
         stackView.addArrangedSubview(emptyStateLabel)
     }
 
