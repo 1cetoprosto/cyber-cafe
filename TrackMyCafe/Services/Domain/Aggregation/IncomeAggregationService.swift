@@ -12,6 +12,8 @@ struct IncomeSummary {
 protocol IncomeAggregationServiceProtocol {
     func summarize(orders: [OrderModel], period: DashboardPeriod, referenceDate: Date)
         -> IncomeSummary
+    func summarize(orders: [OrderModel], intervalStart: Date, intervalEnd: Date)
+        -> IncomeSummary
 }
 
 final class IncomeAggregationService: IncomeAggregationServiceProtocol {
@@ -19,8 +21,15 @@ final class IncomeAggregationService: IncomeAggregationServiceProtocol {
         -> IncomeSummary
     {
         let interval = period.interval(for: referenceDate)
+        return summarize(
+            orders: orders, intervalStart: interval.start, intervalEnd: interval.end)
+    }
+
+    func summarize(orders: [OrderModel], intervalStart: Date, intervalEnd: Date)
+        -> IncomeSummary
+    {
         let filtered = orders.filter { order in
-            order.date >= interval.start && order.date <= interval.end
+            order.date >= intervalStart && order.date < intervalEnd
         }
         let sales = filtered.reduce(0) { $0 + $1.sum }
         let cash = filtered.reduce(0) { $0 + $1.cash }

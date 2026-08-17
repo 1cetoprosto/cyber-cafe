@@ -290,14 +290,21 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         heroNetIconView.tintColor = Theme.current.secondaryText
         heroNetIconBadge.backgroundColor = Theme.current.secondaryText.withAlphaComponent(0.12)
 
-        Task { @MainActor in
-            let report = await viewModel.buildPLReport()
-            applyHeroCard(
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
+            logger.info("ReportsHub loadHeroCard period=\(String(describing: period)) start")
+            let report = await self.viewModel.buildPLReport()
+            logger.info(
+                "ReportsHub loadHeroCard period=\(String(describing: period))"
+                    + " sales=\(report.sales) costs=\(report.cogs + report.opex) net=\(report.netProfit)"
+            )
+            self.applyHeroCard(
                 sales: report.sales,
                 totalCosts: report.cogs + report.opex,
                 netProfit: report.netProfit,
                 currency: currency
             )
+            self.view.layoutIfNeeded()
         }
     }
 
