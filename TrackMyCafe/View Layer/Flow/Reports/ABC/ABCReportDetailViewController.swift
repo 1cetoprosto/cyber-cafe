@@ -174,36 +174,22 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
 
     private let sharedViewModel: ReportsHubViewModelType
 
-    private let segmentedControl: UISegmentedControl = {
+    private let segmentedControl: DefaultSegmentedControl = {
         let items = [
             R.string.global.commonDay(),
             R.string.global.commonWeek(),
             R.string.global.commonMonth(),
         ]
-        let control = UISegmentedControl(items: items)
-        control.selectedSegmentTintColor = Theme.current.tabBarTint
-        control.setTitleTextAttributes(
-            [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
-            for: .normal)
-        control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.headline],
-            for: .selected)
+        let control = DefaultSegmentedControl(items: items)
         return control
     }()
 
-    private let rankingControl: UISegmentedControl = {
+    private let rankingControl: DefaultSegmentedControl = {
         let items = [
             R.string.global.abcRankingSales(),
             R.string.global.abcRankingGross(),
         ]
-        let control = UISegmentedControl(items: items)
-        control.selectedSegmentTintColor = Theme.current.tabBarTint
-        control.setTitleTextAttributes(
-            [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
-            for: .normal)
-        control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.headline],
-            for: .selected)
+        let control = DefaultSegmentedControl(items: items)
         control.selectedSegmentIndex = 0
         return control
     }()
