@@ -186,20 +186,13 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
     private let sharedViewModel: ReportsHubViewModelType
 
-    private let segmentedControl: UISegmentedControl = {
+    private let segmentedControl: DefaultSegmentedControl = {
         let items = [
             R.string.global.commonDay(),
             R.string.global.commonWeek(),
             R.string.global.commonMonth(),
         ]
-        let control = UISegmentedControl(items: items)
-        control.selectedSegmentTintColor = Theme.current.tabBarTint
-        control.setTitleTextAttributes(
-            [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
-            for: .normal)
-        control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.bodyBold],
-            for: .selected)
+        let control = DefaultSegmentedControl(items: items)
         return control
     }()
 
