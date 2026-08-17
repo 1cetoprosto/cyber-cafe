@@ -566,3 +566,17 @@
 "hubBigSalesLabel" = "Sales";
 "hubBigCostsLabel" = "Costs";
 "hubBigNetLabel" = "Remained";
+
+// MARK: - Reports P&L Tier 2 (Simple, non-accountant)
+"plSectionCostsBreakdown" = "What goes into costs";
+"plProductCostsTitle" = "🛒 Product costs";
+"plOperatingCostsTitle" = "🏢 Running costs";
+
+"plSectionSalesSplit" = "How people paid";
+"plCashSalesTitle" = "💵 Cash";
+"plCardSalesTitle" = "💳 Card";
+
+"plSectionCoefficients" = "Key ratios";
+"plAovTitle" = "📋 Average order";
+"plOrdersCountTitle" = "🔢 Orders";
+"plExpensesCountTitle" = "📝 Expense entries";

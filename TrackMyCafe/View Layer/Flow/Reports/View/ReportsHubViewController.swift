@@ -32,13 +32,24 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return label
     }()
 
-    // MARK: - Hero KPI Card (at-a-glance truth)
+    // MARK: - Hero KPI Card (at-a-glance truth, unified Home TodayCardView style: badge + icon + title + value)
 
     private let heroCardView: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
-        v.layer.cornerRadius = UIConstants.mediumCornerRadius
+        v.layer.cornerRadius = UIConstants.extraLargeCornerRadius
         return v
+    }()
+
+    private let heroNetIconBadge: UIView = {
+        let v = UIView()
+        v.layer.cornerRadius = UIConstants.badgeCornerRadius
+        return v
+    }()
+    private let heroNetIconView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        return iv
     }()
 
     private let heroNetTitleLabel: UILabel = {
@@ -61,6 +72,19 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return l
     }()
 
+    private let heroSalesBadge: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
+        v.layer.cornerRadius = 14
+        return v
+    }()
+    private let heroSalesIcon: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "arrow.up.right")
+        iv.tintColor = .systemGreen
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }()
     private let heroSalesTitleLabel: UILabel = {
         let l = UILabel()
         l.font = Typography.footnoteLight
@@ -69,7 +93,6 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         l.numberOfLines = 1
         return l
     }()
-
     private let heroSalesValueLabel: UILabel = {
         let l = UILabel()
         l.font = Typography.calloutDemi
@@ -80,6 +103,19 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return l
     }()
 
+    private let heroCostsBadge: UIView = {
+        let v = UIView()
+        v.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.15)
+        v.layer.cornerRadius = 14
+        return v
+    }()
+    private let heroCostsIcon: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(systemName: "arrow.down.right")
+        iv.tintColor = .systemOrange
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }()
     private let heroCostsTitleLabel: UILabel = {
         let l = UILabel()
         l.font = Typography.footnoteLight
@@ -88,7 +124,6 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         l.numberOfLines = 1
         return l
     }()
-
     private let heroCostsValueLabel: UILabel = {
         let l = UILabel()
         l.font = Typography.calloutDemi
@@ -137,37 +172,65 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     private func setupLayout() {
-        // Hero card subviews
+        // Hero card layout (unified badge-icon + title + value pattern, same as Home)
+        heroNetIconBadge.addSubview(heroNetIconView)
+        heroNetIconView.size(
+            CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+        heroNetIconView.centerInSuperview()
+        let badgeSize = UIConstants.badgeSize
+        heroNetIconBadge.size(CGSize(width: badgeSize, height: badgeSize))
+
+        heroCardView.addSubview(heroNetIconBadge)
         heroCardView.addSubview(heroNetTitleLabel)
         heroCardView.addSubview(heroNetValueLabel)
 
-        let salesSV = UIStackView(arrangedSubviews: [heroSalesTitleLabel, heroSalesValueLabel])
-        salesSV.axis = .vertical
-        salesSV.spacing = 2
-
-        let costsSV = UIStackView(arrangedSubviews: [heroCostsTitleLabel, heroCostsValueLabel])
-        costsSV.axis = .vertical
-        costsSV.spacing = 2
-
-        let bottomSV = UIStackView(arrangedSubviews: [salesSV, costsSV])
-        bottomSV.axis = .horizontal
-        bottomSV.distribution = .fillEqually
-        bottomSV.spacing = UIConstants.smallSpacing
-
-        heroCardView.addSubview(bottomSV)
-
-        heroNetTitleLabel.topToSuperview(offset: UIConstants.smallSpacing)
-        heroNetTitleLabel.leftToSuperview(offset: UIConstants.standardPadding)
+        // Net header row: badge + title
+        heroNetIconBadge.leftToSuperview(offset: UIConstants.standardPadding)
+        heroNetIconBadge.topToSuperview(offset: UIConstants.standardPadding)
+        heroNetTitleLabel.leftToRight(of: heroNetIconBadge, offset: UIConstants.smallSpacing)
+        heroNetTitleLabel.top(to: heroNetIconBadge, offset: 0)
         heroNetTitleLabel.rightToSuperview(offset: -UIConstants.standardPadding)
 
         heroNetValueLabel.topToBottom(of: heroNetTitleLabel, offset: 4)
         heroNetValueLabel.left(to: heroNetTitleLabel)
         heroNetValueLabel.right(to: heroNetTitleLabel)
 
-        bottomSV.topToBottom(of: heroNetValueLabel, offset: UIConstants.smallSpacing)
-        bottomSV.left(to: heroNetTitleLabel)
-        bottomSV.right(to: heroNetTitleLabel)
-        bottomSV.bottomToSuperview(offset: -UIConstants.smallSpacing)
+        // Sales mini row with icon badge
+        heroSalesBadge.addSubview(heroSalesIcon)
+        heroSalesIcon.size(CGSize(width: 16, height: 16))
+        heroSalesIcon.centerInSuperview()
+        heroSalesBadge.size(CGSize(width: 28, height: 28))
+        let salesTitleSV = UIStackView(arrangedSubviews: [heroSalesTitleLabel, heroSalesValueLabel])
+        salesTitleSV.axis = .vertical
+        salesTitleSV.spacing = 2
+        let salesSV = UIStackView(arrangedSubviews: [heroSalesBadge, salesTitleSV])
+        salesSV.axis = .horizontal
+        salesSV.spacing = UIConstants.smallSpacing
+        salesSV.alignment = .center
+
+        // Costs mini row with icon badge
+        heroCostsBadge.addSubview(heroCostsIcon)
+        heroCostsIcon.size(CGSize(width: 16, height: 16))
+        heroCostsIcon.centerInSuperview()
+        heroCostsBadge.size(CGSize(width: 28, height: 28))
+        let costsTitleSV = UIStackView(arrangedSubviews: [heroCostsTitleLabel, heroCostsValueLabel])
+        costsTitleSV.axis = .vertical
+        costsTitleSV.spacing = 2
+        let costsSV = UIStackView(arrangedSubviews: [heroCostsBadge, costsTitleSV])
+        costsSV.axis = .horizontal
+        costsSV.spacing = UIConstants.smallSpacing
+        costsSV.alignment = .center
+
+        let bottomSV = UIStackView(arrangedSubviews: [salesSV, costsSV])
+        bottomSV.axis = .horizontal
+        bottomSV.distribution = .fillEqually
+        bottomSV.spacing = UIConstants.standardPadding
+
+        heroCardView.addSubview(bottomSV)
+        bottomSV.topToBottom(of: heroNetValueLabel, offset: UIConstants.standardSpacing)
+        bottomSV.leftToSuperview(offset: UIConstants.standardPadding)
+        bottomSV.rightToSuperview(offset: -UIConstants.standardPadding)
+        bottomSV.bottomToSuperview(offset: -UIConstants.standardPadding)
 
         // Header: segmented + period + hero card
         let headerStack = UIStackView(arrangedSubviews: [
@@ -223,6 +286,10 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         heroCostsValueLabel.text = Self.currencyString(value: 0, currency: currency)
         heroNetValueLabel.text = Self.currencyString(value: 0, currency: currency)
         heroNetValueLabel.textColor = Theme.current.primaryText
+        heroNetIconView.image = UIImage(
+            systemName: "arrow.left.and.right.righttriangle.left.righttriangle.right")
+        heroNetIconView.tintColor = Theme.current.secondaryText
+        heroNetIconBadge.backgroundColor = Theme.current.secondaryText.withAlphaComponent(0.12)
 
         Task { @MainActor in
             let report = await viewModel.buildPLReport()
@@ -244,7 +311,13 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         heroSalesValueLabel.text = Self.currencyString(value: sales, currency: currency)
         heroCostsValueLabel.text = Self.currencyString(value: totalCosts, currency: currency)
         heroNetValueLabel.text = Self.currencyString(value: netProfit, currency: currency)
-        heroNetValueLabel.textColor = netProfit >= 0 ? .systemGreen : .systemRed
+        let isPositive = netProfit >= 0
+        heroNetValueLabel.textColor = isPositive ? .systemGreen : .systemRed
+        heroNetIconView.image = UIImage(
+            systemName: isPositive ? "arrow.up.right" : "arrow.down.right")
+        heroNetIconView.tintColor = isPositive ? .systemGreen : .systemRed
+        heroNetIconBadge.backgroundColor =
+            (isPositive ? UIColor.systemGreen : UIColor.systemRed).withAlphaComponent(0.15)
     }
 
     private static func currencyString(value: Double, currency: String) -> String {
