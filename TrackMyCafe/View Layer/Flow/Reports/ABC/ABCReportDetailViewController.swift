@@ -283,9 +283,9 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         navigationItem.titleView = nil
 
         let tableHeader = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 280))
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 240))
         tableHeader.addSubview(segmentedControl)
-        segmentedControl.topToSuperview(offset: UIConstants.standardSpacing)
+        segmentedControl.topToSuperview(offset: UIConstants.smallSpacing)
         segmentedControl.leftToSuperview(offset: UIConstants.standardPadding)
         segmentedControl.rightToSuperview(offset: -UIConstants.standardPadding)
 

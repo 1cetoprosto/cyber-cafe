@@ -265,7 +265,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         navigationItem.titleView = nil
 
         // BIG summary header: one total NET for all periods
-        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 286))
+        let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 246))
         tableHeader.tag = 999
         tableView.tableHeaderView = tableHeader
 
