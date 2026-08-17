@@ -546,7 +546,8 @@
 "abcBucketBTitle" = "⚖️ MIDDLE";
 "abcBucketCTitle" = "🤔 REVIEW THIS";
 "abcQtyPrefixFormat" = "Qty: %@";
-"abcCumulativePrefixFormat" = "Σ %@";
+"abcSharePrefixFormat" = "Share: %@";
+"abcCumulativePrefixFormat" = "Cumul: %@";
 
 // MARK: - Reports Simplified UX (non-accountant friendly)
 "kpiBigRevenue" = "ALL SALES";

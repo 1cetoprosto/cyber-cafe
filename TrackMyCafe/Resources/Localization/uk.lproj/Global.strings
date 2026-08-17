@@ -546,7 +546,8 @@
 "abcBucketBTitle" = "⚖️ СЕРЕДНЄ";
 "abcBucketCTitle" = "🤔 ПЕРЕВІРИТИ";
 "abcQtyPrefixFormat" = "Кількість: %@";
-"abcCumulativePrefixFormat" = "Σ %@";
+"abcSharePrefixFormat" = "Частка: %@";
+"abcCumulativePrefixFormat" = "Всього: %@";
 
 // MARK: - Reports Simplified UX (non-accountant friendly)
 "kpiBigRevenue" = "ВСЬО ПРОДАНО";
