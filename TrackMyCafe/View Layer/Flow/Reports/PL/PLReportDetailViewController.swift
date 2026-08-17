@@ -408,7 +408,7 @@ final class PLKPIView: UIView {
         super.init(frame: frame)
         addSubview(container)
         container.edgesToSuperview()
-        container.height(min: 92)
+        container.height(min: 76)
 
         container.addSubview(titleLabel)
         container.addSubview(valueLabel)
@@ -421,7 +421,6 @@ final class PLKPIView: UIView {
         valueLabel.left(to: titleLabel)
         valueLabel.right(to: titleLabel)
         valueLabel.bottomToSuperview(offset: -UIConstants.mediumSpacing, relation: .equalOrLess)
-        valueLabel.centerYToSuperview(offset: 8, priority: .defaultHigh)
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) not implemented") }
