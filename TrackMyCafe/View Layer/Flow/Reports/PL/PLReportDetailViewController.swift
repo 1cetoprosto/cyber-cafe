@@ -172,19 +172,30 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
         let currency = R.string.global.commonCurrencyUAH()
 
-        // --- SIMPLE 3 BIG (always first) ---
+        // --- SIMPLE 3 BIG (always first, unified badge-icon style same as Home TodayCardView) ---
         let bigSales = makeBigKPI(
             title: R.string.global.kpiBigRevenue(),
             valueStr: Self.currencyString(value: report.sales, currency: currency),
-            accent: Theme.current.primaryText, huge: false)
+            accent: Theme.current.primaryText, huge: false,
+            badgeIcon: "arrow.up.right",
+            badgeTint: UIColor.systemGreen.withAlphaComponent(0.15),
+            iconTint: .systemGreen)
         let bigCosts = makeBigKPI(
             title: R.string.global.kpiBigCosts(),
             valueStr: Self.currencyString(value: report.cogs + report.opex, currency: currency),
-            accent: .systemOrange, huge: false)
+            accent: .systemOrange, huge: false,
+            badgeIcon: "cart.fill",
+            badgeTint: UIColor.systemOrange.withAlphaComponent(0.15),
+            iconTint: .systemOrange)
+        let isNetPositive = report.netProfit >= 0
         let bigNet = makeBigKPI(
             title: R.string.global.kpiBigNet(),
             valueStr: Self.currencyString(value: report.netProfit, currency: currency),
-            accent: report.netProfit >= 0 ? .systemGreen : .systemRed, huge: true)
+            accent: isNetPositive ? .systemGreen : .systemRed, huge: true,
+            badgeIcon: isNetPositive ? "arrow.up.right" : "arrow.down.right",
+            badgeTint: (isNetPositive ? UIColor.systemGreen : UIColor.systemRed).withAlphaComponent(
+                0.15),
+            iconTint: isNetPositive ? .systemGreen : .systemRed)
         stackView.addArrangedSubview(bigSales)
         stackView.addArrangedSubview(bigCosts)
         stackView.addArrangedSubview(bigNet)
@@ -193,63 +204,66 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         stackView.addArrangedSubview(detailsToggleButton)
         stackView.addArrangedSubview(detailsWrapperStack)
 
-        // --- DETAILED (hidden by default, for management decisions) ---
-        // Section 1: Summary
-        addDetailsSectionHeader(title: R.string.global.kpiGroupSummary())
-        let kpiSales = makeKPI(
-            title: R.string.global.kpiSales(),
-            value: report.sales, currency: currency, accent: Theme.current.primaryText)
-        let kpiGross = makeKPI(
-            title: R.string.global.kpiGrossProfit(),
-            value: report.grossProfit, currency: currency,
-            accent: report.grossProfit >= 0 ? .systemGreen : .systemRed)
-        let kpiNet = makeKPI(
-            title: R.string.global.kpiNetProfit(),
-            value: report.netProfit, currency: currency,
-            accent: report.netProfit >= 0 ? .systemGreen : .systemRed)
-        addDetailsRow(lhs: kpiSales, rhs: kpiGross)
-        addDetailsSingleRow(kpiNet)
-
-        // Section 2: Breakdown
-        addDetailsSectionHeader(title: R.string.global.kpiGroupBreakdown())
-        let kpiCogs = makeKPI(
-            title: R.string.global.kpiCOGS(),
+        // --- TIER 2 DETAILED (hidden by default — NO DUPLICATES of the 3 big above) ---
+        // Section 1: Cost breakdown (simple language, no "COGS/Opex" terms)
+        addDetailsSectionHeader(title: R.string.global.plSectionCostsBreakdown())
+        let kpiProductCosts = makeKPI(
+            title: R.string.global.plProductCostsTitle(),
             value: report.cogs, currency: currency, accent: Theme.current.primaryText)
-        let kpiOpex = makeKPI(
-            title: R.string.global.kpiOpex(),
+        let kpiRunningCosts = makeKPI(
+            title: R.string.global.plOperatingCostsTitle(),
             value: report.opex, currency: currency, accent: Theme.current.primaryText)
-        let kpiMargin = makeKPI(
-            title: R.string.global.kpiMargin(),
-            value: report.grossMarginPercent, suffix: " %", accent: Theme.current.primaryText)
-        addDetailsRow(lhs: kpiCogs, rhs: kpiOpex)
-        addDetailsSingleRow(kpiMargin)
+        addDetailsRow(lhs: kpiProductCosts, rhs: kpiRunningCosts)
 
-        // Section 3: Payment + Counts
-        addDetailsSectionHeader(title: R.string.global.kpiGroupDetails())
+        // Section 2: Sales distribution (replace "Payment & counts" = hard to understand)
+        addDetailsSectionHeader(title: R.string.global.plSectionSalesSplit())
         let kpiCash = makeKPI(
-            title: R.string.global.kpiCash(),
+            title: R.string.global.plCashSalesTitle(),
             value: report.cashSales, currency: currency, accent: Theme.current.primaryText)
         let kpiCard = makeKPI(
-            title: R.string.global.kpiCard(),
+            title: R.string.global.plCardSalesTitle(),
             value: report.cardSales, currency: currency, accent: Theme.current.primaryText)
-        let kpiOrders = makeKPI(
-            title: R.string.global.kpiOrdersCount(),
-            value: Double(report.ordersCount), suffix: nil, accent: Theme.current.primaryText)
-        let kpiExp = makeKPI(
-            title: R.string.global.kpiExpensesCount(),
-            value: Double(report.expensesCount), suffix: nil, accent: Theme.current.primaryText)
         addDetailsRow(lhs: kpiCash, rhs: kpiCard)
-        addDetailsRow(lhs: kpiOrders, rhs: kpiExp)
+
+        // Section 3: Key ratios / coefficients — AOV is primary, plus counts
+        addDetailsSectionHeader(title: R.string.global.plSectionCoefficients())
+        let aovValue: Double =
+            report.ordersCount > 0 ? report.sales / Double(report.ordersCount) : 0
+        let kpiAOV = makeKPI(
+            title: R.string.global.plAovTitle(),
+            value: aovValue, currency: currency, accent: Theme.current.primaryText)
+        addDetailsSingleRow(kpiAOV)
+
+        let kpiOrders = makeKPI(
+            title: R.string.global.plOrdersCountTitle(),
+            value: Double(report.ordersCount), suffix: nil, accent: Theme.current.primaryText)
+        let kpiExpCount = makeKPI(
+            title: R.string.global.plExpensesCountTitle(),
+            value: Double(report.expensesCount), suffix: nil, accent: Theme.current.primaryText)
+        addDetailsRow(lhs: kpiOrders, rhs: kpiExpCount)
     }
 
-    // MARK: - 3 Big KPI cards (simple truth)
+    // MARK: - 3 Big KPI cards (simple truth — unified Home TodayCardView style: badge icon + title + value)
 
     private func makeBigKPI(
-        title: String, valueStr: String, accent: UIColor, huge: Bool
+        title: String, valueStr: String, accent: UIColor, huge: Bool,
+        badgeIcon: String, badgeTint: UIColor, iconTint: UIColor
     ) -> UIView {
         let container = UIView()
         container.backgroundColor = Theme.current.cellBackground
-        container.layer.cornerRadius = UIConstants.mediumCornerRadius
+        container.layer.cornerRadius = UIConstants.extraLargeCornerRadius
+
+        let badgeView = UIView()
+        badgeView.backgroundColor = badgeTint
+        badgeView.layer.cornerRadius = UIConstants.badgeCornerRadius
+        let iconView = UIImageView()
+        iconView.image = UIImage(systemName: badgeIcon)
+        iconView.tintColor = iconTint
+        iconView.contentMode = .scaleAspectFit
+        badgeView.addSubview(iconView)
+        iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+        iconView.centerInSuperview()
+        badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
         let titleL = UILabel()
         titleL.font = Typography.footnote
@@ -265,20 +279,27 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         valueL.numberOfLines = 1
         valueL.text = valueStr
 
-        container.addSubview(titleL)
-        container.addSubview(valueL)
+        let textStack = UIStackView(arrangedSubviews: [titleL, valueL])
+        textStack.axis = .vertical
+        textStack.spacing = huge ? UIConstants.smallSpacing : 4
+        textStack.alignment = .leading
+
+        let mainStack = UIStackView(arrangedSubviews: [badgeView, textStack])
+        mainStack.axis = .horizontal
+        mainStack.spacing = UIConstants.smallSpacing
+        mainStack.alignment = .center
+
+        container.addSubview(mainStack)
+        mainStack.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: UIConstants.standardPadding,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.standardPadding,
+                right: UIConstants.standardPadding
+            )
+        )
         let minH: CGFloat = huge ? 150 : 108
         container.height(min: minH)
-
-        titleL.topToSuperview(offset: UIConstants.smallSpacing)
-        titleL.leftToSuperview(offset: UIConstants.mediumSpacing)
-        titleL.rightToSuperview(offset: -UIConstants.mediumSpacing)
-
-        valueL.topToBottom(of: titleL, offset: 4, relation: .equalOrGreater)
-        valueL.left(to: titleL)
-        valueL.right(to: titleL)
-        valueL.bottomToSuperview(offset: -UIConstants.smallSpacing, relation: .equalOrLess)
-        valueL.centerYToSuperview(offset: huge ? 14 : 8, priority: .defaultHigh)
         return container
     }
 
