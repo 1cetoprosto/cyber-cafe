@@ -46,8 +46,8 @@ final class HomeHeaderView: UIView {
     )
     private let profitCard = ProfitCard()
     private let balanceCard = BalanceCard()
-    private let periodControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [
+    private let periodControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: [
             R.string.global.today(), R.string.global.week(), R.string.global.month(),
         ])
         control.selectedSegmentIndex = 2
