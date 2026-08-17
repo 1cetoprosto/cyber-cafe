@@ -98,6 +98,14 @@ final class ABCProductCell: UITableViewCell {
 
         nameLabel.leftToRight(of: bucketBadge, offset: UIConstants.mediumSpacing)
         nameLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+        nameLabel.rightToLeft(
+            of: salesLabel, offset: -UIConstants.mediumSpacing,
+            relation: .equalOrLess)
+        nameLabel.setContentCompressionResistancePriority(
+            .defaultLow, for: .horizontal)
+        salesLabel.setContentCompressionResistancePriority(
+            .required, for: .horizontal)
+        salesLabel.setContentHuggingPriority(.required, for: .horizontal)
 
         qtyLabel.left(to: nameLabel)
         qtyLabel.topToBottom(of: nameLabel, offset: UIConstants.smallSpacing)
@@ -105,8 +113,7 @@ final class ABCProductCell: UITableViewCell {
 
         salesLabel.topToSuperview(offset: UIConstants.mediumSpacing)
         salesLabel.rightToSuperview(offset: -UIConstants.mediumSpacing)
-        salesLabel.leftToRight(
-            of: nameLabel, offset: UIConstants.mediumSpacing, relation: .equalOrGreater)
+        salesLabel.width(min: 60)
 
         shareLabel.topToBottom(of: salesLabel, offset: 2)
         shareLabel.right(to: salesLabel)
@@ -127,7 +134,8 @@ final class ABCProductCell: UITableViewCell {
             ABCProductCell.currencyFormatter(currency: currency).string(for: row.sales) ?? ""
         salesLabel.text = salesStr
 
-        shareLabel.text = String(format: "%.1f%%", row.sharePercent)
+        let sharePct = String(format: "%.1f%%", row.sharePercent)
+        shareLabel.text = R.string.global.abcSharePrefixFormat(sharePct)
         let cumulativeStr = String(format: "%.1f%%", row.cumulativePercent)
         cumulativeLabel.text = R.string.global.abcCumulativePrefixFormat(cumulativeStr)
 
