@@ -278,26 +278,26 @@ struct _R {
       /// Locales: en, uk
       var abcQtyPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "abcQtyPrefixFormat", tableName: "Global", source: source, developmentValue: "Qty: %@", comment: nil) }
 
-      /// en translation: Gross
+      /// en translation: Profit
       ///
       /// Key: abcRankingGross
       ///
       /// Locales: en, uk
-      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "Gross", comment: nil) }
+      var abcRankingGross: RswiftResources.StringResource { .init(key: "abcRankingGross", tableName: "Global", source: source, developmentValue: "Profit", comment: nil) }
 
-      /// en translation: Sales
+      /// en translation: Revenue
       ///
       /// Key: abcRankingSales
       ///
       /// Locales: en, uk
-      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Sales", comment: nil) }
+      var abcRankingSales: RswiftResources.StringResource { .init(key: "abcRankingSales", tableName: "Global", source: source, developmentValue: "Revenue", comment: nil) }
 
-      /// en translation: Rank by
+      /// en translation: What matters?
       ///
       /// Key: abcRankingTitle
       ///
       /// Locales: en, uk
-      var abcRankingTitle: RswiftResources.StringResource { .init(key: "abcRankingTitle", tableName: "Global", source: source, developmentValue: "Rank by", comment: nil) }
+      var abcRankingTitle: RswiftResources.StringResource { .init(key: "abcRankingTitle", tableName: "Global", source: source, developmentValue: "What matters?", comment: nil) }
 
       /// en translation: Share: %@
       ///
