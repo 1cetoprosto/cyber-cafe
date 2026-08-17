@@ -226,16 +226,17 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         bottomSV.bottomToSuperview(offset: -UIConstants.standardPadding)
 
         // Header: segmented + period + hero card
+        segmentedControl.height(40)
         let headerStack = UIStackView(arrangedSubviews: [
             segmentedControl,
             periodInfoLabel,
             heroCardView,
         ])
         headerStack.axis = .vertical
-        headerStack.spacing = UIConstants.mediumSpacing
+        headerStack.spacing = UIConstants.standardSpacing
         headerStack.isLayoutMarginsRelativeArrangement = true
         headerStack.layoutMargins = UIEdgeInsets(
-            top: UIConstants.smallSpacing,
+            top: UIConstants.standardSpacing,
             left: UIConstants.standardPadding,
             bottom: UIConstants.mediumSpacing,
             right: UIConstants.standardPadding
@@ -244,7 +245,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         headerStack.frame = CGRect(
             x: 0, y: 0,
             width: view.bounds.width,
-            height: 250
+            height: 310
         )
         tableView.tableHeaderView = headerStack
 
@@ -266,9 +267,14 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     private func apply(_ period: DashboardPeriod) {
-        segmentedControl.selectedSegmentIndex = viewModel.segmentIndex(for: period)
+        let idx = viewModel.segmentIndex(for: period)
+        segmentedControl.selectedSegmentIndex = idx
         periodInfoLabel.text = periodDescription(for: period)
+        logger.info(
+            "ReportsHub apply period=\(String(describing: period)) segIndex=\(idx) desc=\(periodInfoLabel.text ?? "")"
+        )
         tableView.reloadData()
+        view.layoutIfNeeded()
         loadHeroCard(for: period)
     }
 
@@ -340,6 +346,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }
 
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
+        logger.info("ReportsHub segmentChanged → index \(sender.selectedSegmentIndex)")
         viewModel.selectPeriod(at: sender.selectedSegmentIndex)
     }
 
