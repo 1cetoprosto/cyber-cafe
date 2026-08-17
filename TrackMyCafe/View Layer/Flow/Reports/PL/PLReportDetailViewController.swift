@@ -204,10 +204,17 @@ final class PLReportDetailViewController: UIViewController, Loggable {
             right: UIConstants.standardPadding)
         stackView.addArrangedSubview(kpiWrapper)
 
-        // --- Toggle details button ---
-        detailsToggleButton.leftToSuperview(offset: UIConstants.standardPadding)
-        detailsToggleButton.rightToSuperview(offset: -UIConstants.standardPadding)
-        stackView.addArrangedSubview(detailsToggleButton)
+        // --- Toggle details button (wrap in a margins container — button cannot be constrained until in a superview) ---
+        let toggleWrapper = UIView()
+        toggleWrapper.addSubview(detailsToggleButton)
+        detailsToggleButton.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: 0,
+                left: UIConstants.standardPadding,
+                bottom: 0,
+                right: UIConstants.standardPadding)
+        )
+        stackView.addArrangedSubview(toggleWrapper)
         detailsWrapperStack.isLayoutMarginsRelativeArrangement = true
         detailsWrapperStack.layoutMargins = UIEdgeInsets(
             top: 0,
