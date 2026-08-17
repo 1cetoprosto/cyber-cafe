@@ -29,6 +29,7 @@ final class AppLabel: UILabel {
         let textColor: UIColor
         let adjustsFontSizeToFitWidth: Bool
         let minimumScaleFactor: CGFloat
+        let allowsDefaultTighteningForTruncation: Bool
 
         init(
             font: UIFont,
@@ -36,7 +37,8 @@ final class AppLabel: UILabel {
             lineBreakMode: NSLineBreakMode,
             textColor: UIColor,
             adjustsFontSizeToFitWidth: Bool = false,
-            minimumScaleFactor: CGFloat = 1
+            minimumScaleFactor: CGFloat = 1,
+            allowsDefaultTighteningForTruncation: Bool = false
         ) {
             self.font = font
             self.numberOfLines = numberOfLines
@@ -44,6 +46,7 @@ final class AppLabel: UILabel {
             self.textColor = textColor
             self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
             self.minimumScaleFactor = minimumScaleFactor
+            self.allowsDefaultTighteningForTruncation = allowsDefaultTighteningForTruncation
         }
     }
 
@@ -136,17 +139,21 @@ final class AppLabel: UILabel {
         ),
         .kpiTitle: Configuration(
             font: Typography.footnote,
-            numberOfLines: 2,
-            lineBreakMode: .byWordWrapping,
-            textColor: UIColor.Main.text.alpha(0.7)
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text.alpha(0.7),
+            adjustsFontSizeToFitWidth: true,
+            minimumScaleFactor: 0.7,
+            allowsDefaultTighteningForTruncation: true
         ),
         .kpiValue: Configuration(
-            font: Typography.title2DemiBold,
+            font: Typography.title3DemiBold,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
             textColor: UIColor.Main.text,
             adjustsFontSizeToFitWidth: true,
-            minimumScaleFactor: 0.7
+            minimumScaleFactor: 0.6,
+            allowsDefaultTighteningForTruncation: true
         ),
         .kpiFooter: Configuration(
             font: Typography.footnote,
@@ -191,5 +198,8 @@ final class AppLabel: UILabel {
         textColor = configuration.textColor
         adjustsFontSizeToFitWidth = configuration.adjustsFontSizeToFitWidth
         minimumScaleFactor = configuration.minimumScaleFactor
+        allowsDefaultTighteningForTruncation =
+            configuration
+            .allowsDefaultTighteningForTruncation
     }
 }

@@ -318,7 +318,7 @@ private final class TodayCardView: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
-        stack.alignment = .center
+        stack.alignment = .top
 
         addSubview(stack)
         stack.edgesToSuperview(
@@ -367,7 +367,7 @@ private final class SimpleKpiCard: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
-        stack.alignment = .center
+        stack.alignment = .top
 
         addSubview(stack)
         stack.edgesToSuperview(
