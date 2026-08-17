@@ -29,7 +29,7 @@
 // MARK: - Settings Sections
 "settingsSectionEstablishment" = "Establishment";
 "settingsSectionMenuInventory" = "Menu & Inventory";
-"settingsSectionOrders" = "Orders";
+"settingsSectionOrders" = "Receipts";
 "settingsSectionAppearance" = "Appearance";
 "settingsSectionAppInfo" = "App Info";
 
@@ -126,7 +126,7 @@
 "technicianLimitReached" = "Technician limit reached";
 "changeSub" = "Change Subscription";
 "technicianNoteGoesHere" = "Technician note goes here";
-"allOrders" = "All Orders";
+"allOrders" = "All Receipts";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
 "resendInvite" = "Resend Invite";
@@ -263,16 +263,16 @@
 "typeDelivery" = "Delivery";
 
 // MARK: - Orders
-"orders" = "Orders";
+"orders" = "Receipts";
 "income" = "Income";
 "chooseType" = "Choose type";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Data for the selected date already exists. Open and edit them?";
 
 // MARK: - Products
 "products" = "Products";
-"order" = "Order";
-"productCategories" = "Product categories";
-"orderEntryModeTitle" = "Order entry mode";
+"order" = "Receipt";
+"productCategories" = "Product Categories";
+"orderEntryModeTitle" = "Receipt entry mode";
 "orderModePerOrder" = "Classic Mode";
 "orderModeOpenTab" = "Simplified Mode (Donate-Cafe)";
 "orderModePerOrderDescription" = "Each customer is a separate check. Items added from Catalog. Recommended for large assortment.";
@@ -298,7 +298,7 @@
 "money2" = "0.00";
 "money3" = "0.00";
 "totalTitle" = "Total";
-"defaultOrderType" = "Order";
+"defaultOrderType" = "Receipt";
 
 // MARK: - Inventory
 "inventoryTitle" = "Inventory";
@@ -365,7 +365,7 @@
 "defaultType" = "Default Type";
 "pleaseEnterTypeName" = "Please enter type name";
 "failedToSaveType" = "Failed to save type";
-"typeDescription" = "These types are used to categorise orders, for example, in-store, takeaway or delivery.";
+"typeDescription" = "These types are used to categorise receipts, for example, in-store, takeaway or delivery.";
 
 // MARK: - Language & Theme
 "english" = "English";
@@ -396,22 +396,22 @@
 "gallery" = "Gallery";
 "access_image_title" = "Access Denied";
 "access_image_desc" = "Please allow access to %@ in Settings";
-"onboardingOrdersAddTitle" = "Add Order";
-"onboardingOrdersAddMessage" = "Tap here to create a new order.";
+"onboardingOrdersAddTitle" = "Add Receipt";
+"onboardingOrdersAddMessage" = "Tap here to create a new receipt.";
 "onboardingOrderDetailsDateTitle" = "Date";
-"onboardingOrderDetailsDateMessage" = "Select the date of the order.";
-"onboardingOrderDetailsTypeTitle" = "Order Type";
-"onboardingOrderDetailsTypeMessage" = "Choose the type of order (e.g., Dine-in, Takeaway).";
+"onboardingOrderDetailsDateMessage" = "Select the date of the receipt.";
+"onboardingOrderDetailsTypeTitle" = "Receipt Type";
+"onboardingOrderDetailsTypeMessage" = "Choose the type of receipt (e.g., Dine-in, Takeaway).";
 "onboardingOrderDetailsProductsTitle" = "Products";
-"onboardingOrderDetailsProductsMessage" = "Add products to the order here.";
+"onboardingOrderDetailsProductsMessage" = "Add products to the receipt here.";
 "onboardingOrderDetailsTotalsTitle" = "Totals";
-"onboardingOrderDetailsTotalsMessage" = "Review the total amount.";
+"onboardingOrderDetailsTotalsMessage" = "Check the total amount.";
 "onboardingOrderDetailsCashTitle" = "Cash Payment";
 "onboardingOrderDetailsCashMessage" = "Enter the amount paid in cash.";
 "onboardingOrderDetailsCardTitle" = "Card Payment";
 "onboardingOrderDetailsCardMessage" = "Enter the amount paid by card.";
-"onboardingOrderDetailsSaveTitle" = "Save Order";
-"onboardingOrderDetailsSaveMessage" = "Tap to save the order.";
+"onboardingOrderDetailsSaveTitle" = "Save Receipt";
+"onboardingOrderDetailsSaveMessage" = "Tap to save the receipt.";
 "onboardingCostsAddTitle" = "Add Cost";
 "onboardingCostsAddMessage" = "Tap here to record a new expense.";
 "onboardingCostDetailsDateTitle" = "Date";
@@ -426,10 +426,10 @@
 "onboardingSettingsPriceListMessage" = "Manage your products and prices here.";
 "onboardingSettingsAddProductTitle" = "Add Product";
 "onboardingSettingsAddProductMessage" = "Add a new product to your menu.";
-"onboardingSettingsTypesTitle" = "Order Types";
-"onboardingSettingsTypesMessage" = "Configure different order types here.";
+"onboardingSettingsTypesTitle" = "Receipt Types";
+"onboardingSettingsTypesMessage" = "Configure different receipt types here.";
 "onboardingSettingsTrackIngredientsTitle" = "Track Ingredients";
-"onboardingSettingsTrackIngredientsMessage" = "Turn on to automatically deduct ingredient stock by recipe when you save an order.";
+"onboardingSettingsTrackIngredientsMessage" = "Enable to automatically deduct ingredient stock by recipe when saving a receipt.";
 "logout" = "Logout";
 "account" = "Account";
 
@@ -439,7 +439,7 @@
 "deleteDemoDataTitle" = "Delete Demo Data?";
 "deleteDemoDataMessage" = "This will remove all demo data but keep your personal entries.";
 "deleteAllData" = "Delete All Data";
-"deleteAllDataMessage" = "This will permanently delete ALL your data (products, orders, etc). This action cannot be undone.";
+"deleteAllDataMessage" = "This will permanently delete ALL your data (products, receipts, etc). This action cannot be undone.";
 "deleting" = "Deleting...";
 "demoDataTitle" = "Demo Data";
 "demoDataMessage" = "Would you like to fill the app with demo data to see how it works?";
@@ -472,7 +472,7 @@
 "stockWarningShortageFormat" = "%@: Need %@ more";
 "stockWarningProceedQuestion" = "Proceed anyway?";
 "orderPicker_allProducts" = "All products";
-"orderPicker_returnToOrder" = "Return to order";
+"orderPicker_returnToOrder" = "Back to receipt";
 "orderPicker_emptyCategories" = "No categories";
 "orderPicker_emptyProducts" = "No products";
 "orderPicker_noResults" = "No results";
@@ -514,7 +514,7 @@
 
 "kpiCash" = "Cash";
 "kpiCard" = "Card";
-"kpiOrdersCount" = "Orders";
+"kpiOrdersCount" = "Receipts";
 "kpiExpensesCount" = "Expenses";
 
 "commonCurrencyUAH" = "₴";
@@ -569,14 +569,14 @@
 
 // MARK: - Reports P&L Tier 2 (Simple, non-accountant)
 "plSectionCostsBreakdown" = "What goes into costs";
-"plProductCostsTitle" = "🛒 Product costs";
-"plOperatingCostsTitle" = "🏢 Running costs";
+"plProductCostsTitle" = "🛒 Products";
+"plOperatingCostsTitle" = "💼 Other costs";
 
-"plSectionSalesSplit" = "How people paid";
+"plSectionSalesSplit" = "💵 Cash received";
 "plCashSalesTitle" = "💵 Cash";
 "plCardSalesTitle" = "💳 Card";
 
-"plSectionCoefficients" = "Key ratios";
-"plAovTitle" = "📋 Average order";
-"plOrdersCountTitle" = "🔢 Orders";
+"plSectionCoefficients" = "📋 Key metrics";
+"plAovTitle" = "📋 Average receipt";
+"plOrdersCountTitle" = "🔢 Receipts";
 "plExpensesCountTitle" = "📝 Expense entries";
