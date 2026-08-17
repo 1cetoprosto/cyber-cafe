@@ -199,13 +199,21 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         let control = UISegmentedControl(items: items)
         control.selectedSegmentTintColor = Theme.current.tabBarTint
         control.setTitleTextAttributes(
-            [.foregroundColor: Theme.current.primaryText, .font: Typography.bodyMedium],
+            [.foregroundColor: Theme.current.primaryText, .font: Typography.footnote],
             for: .normal)
         control.setTitleTextAttributes(
-            [.foregroundColor: UIColor.white, .font: Typography.bodyBold],
+            [.foregroundColor: UIColor.white, .font: Typography.bodyDemiBold],
             for: .selected)
         control.selectedSegmentIndex = 0
         return control
+    }()
+
+    private let rankingTitleLabel: UILabel = {
+        let l = UILabel()
+        l.font = Typography.footnote
+        l.textColor = Theme.current.secondaryText
+        l.text = R.string.global.abcRankingTitle()
+        return l
     }()
 
     private let summaryStack = UIStackView()
@@ -322,8 +330,23 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
             .isActive = true
 
         let tableHeader = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 128))
-        let vStack = UIStackView(arrangedSubviews: [rankingControl, summaryStack])
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 172))
+        // Ranking card container
+        let rankingCard = UIView()
+        rankingCard.backgroundColor = Theme.current.cellBackground
+        rankingCard.layer.cornerRadius = UIConstants.mediumCornerRadius
+        rankingCard.addSubview(rankingTitleLabel)
+        rankingCard.addSubview(rankingControl)
+        rankingTitleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+        rankingTitleLabel.leftToSuperview(offset: UIConstants.mediumSpacing)
+        rankingTitleLabel.rightToSuperview(offset: -UIConstants.mediumSpacing)
+        rankingControl.topToBottom(of: rankingTitleLabel, offset: UIConstants.smallSpacing)
+        rankingControl.left(to: rankingTitleLabel)
+        rankingControl.right(to: rankingTitleLabel)
+        rankingControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
+        rankingControl.height(32)
+
+        let vStack = UIStackView(arrangedSubviews: [rankingCard, summaryStack])
         vStack.axis = .vertical
         vStack.spacing = UIConstants.mediumSpacing
         vStack.isLayoutMarginsRelativeArrangement = true
