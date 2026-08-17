@@ -283,7 +283,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         navigationItem.titleView = nil
 
         let tableHeader = UIView(
-            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 312))
+            frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 292))
         tableHeader.addSubview(segmentedControl)
         segmentedControl.topToSuperview(offset: UIConstants.standardSpacing)
         segmentedControl.leftToSuperview(offset: UIConstants.standardPadding)
@@ -295,15 +295,14 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         rankingCard.layer.cornerRadius = UIConstants.mediumCornerRadius
         rankingCard.addSubview(rankingTitleLabel)
         rankingCard.addSubview(rankingControl)
-        rankingTitleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
-        rankingTitleLabel.leftToSuperview(offset: UIConstants.mediumSpacing)
-        rankingTitleLabel.rightToSuperview(offset: -UIConstants.mediumSpacing)
-        rankingControl.topToBottom(of: rankingTitleLabel, offset: UIConstants.smallSpacing)
+        rankingTitleLabel.topToSuperview(offset: UIConstants.standardSpacing)
+        rankingTitleLabel.leftToSuperview(offset: UIConstants.standardPadding)
+        rankingTitleLabel.rightToSuperview(offset: -UIConstants.standardPadding)
+        rankingControl.topToBottom(of: rankingTitleLabel, offset: UIConstants.mediumSpacing)
         rankingControl.left(to: rankingTitleLabel)
         rankingControl.right(to: rankingTitleLabel)
-        rankingControl.bottomToSuperview(offset: -UIConstants.mediumSpacing)
-        rankingControl.height(40)
-        rankingCard.height(min: 104)
+        rankingControl.bottomToSuperview(offset: -UIConstants.standardSpacing)
+        rankingCard.height(min: 84)
 
         let vStack = UIStackView(arrangedSubviews: [rankingCard, summaryStack])
         vStack.axis = .vertical
