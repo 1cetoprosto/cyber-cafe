@@ -265,7 +265,13 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
         let filtered = productsOfOrders.filter { range.contains($0.date) }
         var byProduct: [String: (name: String, sales: Double, cogs: Double, qty: Double)] = [:]
         for item in filtered {
-            let key = item.productId
+            let key: String = {
+                let pid = item.productId.trimmingCharacters(in: .whitespacesAndNewlines)
+                if pid.isEmpty {
+                    return "name::" + item.name
+                }
+                return pid
+            }()
             var accum = byProduct[key] ?? (name: item.name, sales: 0, cogs: 0, qty: 0)
             accum.sales += item.sum
             accum.cogs += item.costSum
@@ -276,7 +282,7 @@ final class FinanceReportingService: FinanceReportingServiceProtocol {
         let ranking = byProduct.map { (key, value) -> ABCProductRow in
             let gross = value.sales - value.cogs
             return ABCProductRow(
-                productId: key,
+                productId: key.hasPrefix("name::") ? "" : key,
                 productName: value.name,
                 sales: value.sales,
                 cogs: value.cogs,
