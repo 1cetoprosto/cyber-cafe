@@ -311,13 +311,13 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         container.addSubview(mainStack)
         mainStack.edgesToSuperview(
             insets: UIEdgeInsets(
-                top: UIConstants.standardPadding,
+                top: UIConstants.mediumSpacing,
                 left: UIConstants.standardPadding,
-                bottom: UIConstants.standardPadding,
+                bottom: UIConstants.mediumSpacing,
                 right: UIConstants.standardPadding
             )
         )
-        let minH: CGFloat = huge ? 150 : 108
+        let minH: CGFloat = huge ? 100 : 76
         container.height(min: minH)
         return container
     }
