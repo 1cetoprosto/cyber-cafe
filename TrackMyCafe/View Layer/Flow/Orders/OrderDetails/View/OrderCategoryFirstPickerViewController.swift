@@ -35,7 +35,7 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     private let returnToOrderButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(
-            NSLocalizedString("orderPicker_returnToOrder", tableName: "Global", comment: ""),
+            R.string.global.orderPicker_returnToOrder(),
             for: .normal
         )
         button.isHidden = true
@@ -63,7 +63,7 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.Main.background
-        title = NSLocalizedString("orderPicker_allProducts", tableName: "Global", comment: "")
+        title = R.string.global.orderPicker_allProducts()
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
 
@@ -90,14 +90,9 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
         navigationItem.rightBarButtonItem = nil
 
         if traitCollection.horizontalSizeClass == .regular {
-            navigationItem.backButtonTitle = NSLocalizedString(
-                "orderPicker_allProducts",
-                tableName: "Global",
-                comment: ""
-            )
+            navigationItem.backButtonTitle = R.string.global.orderPicker_allProducts()
         } else {
-            navigationItem.backButtonTitle = NSLocalizedString(
-                "back", tableName: "Global", comment: "")
+            navigationItem.backButtonTitle = R.string.global.back()
         }
 
         if navigationController?.presentingViewController != nil {
@@ -193,8 +188,8 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
             emptyStateLabel.isHidden = false
             emptyStateLabel.text =
                 trimmed.isEmpty
-                ? NSLocalizedString("orderPicker_emptyCategories", tableName: "Global", comment: "")
-                : NSLocalizedString("orderPicker_noResults", tableName: "Global", comment: "")
+                ? R.string.global.orderPicker_emptyCategories()
+                : R.string.global.orderPicker_noResults()
         } else {
             emptyStateLabel.isHidden = true
         }

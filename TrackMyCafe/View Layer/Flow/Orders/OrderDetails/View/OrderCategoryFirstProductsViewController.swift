@@ -40,7 +40,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     private let returnToOrderButton: UIButton = {
         let button = DefaultButton()
         button.setTitle(
-            NSLocalizedString("orderPicker_returnToOrder", tableName: "Global", comment: ""),
+            R.string.global.orderPicker_returnToOrder(),
             for: .normal
         )
         button.isHidden = true
@@ -199,8 +199,8 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
             emptyStateLabel.isHidden = false
             emptyStateLabel.text =
                 trimmed.isEmpty
-                ? NSLocalizedString("orderPicker_emptyProducts", tableName: "Global", comment: "")
-                : NSLocalizedString("orderPicker_noResults", tableName: "Global", comment: "")
+                ? R.string.global.orderPicker_emptyProducts()
+                : R.string.global.orderPicker_noResults()
         } else {
             emptyStateLabel.isHidden = true
         }

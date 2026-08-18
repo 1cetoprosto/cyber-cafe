@@ -23,7 +23,7 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
     private var selectedCategoryId: String?
 
     private var displayedCategories: [ProductCategoryModel] {
-        let allTitle = NSLocalizedString("all", tableName: "Global", comment: "")
+        let allTitle = R.string.global.all()
         let allCategory = ProductCategoryModel(
             id: CategoryConstants.allId, name: allTitle, sortOrder: -1)
         return [allCategory] + categories

@@ -12,8 +12,8 @@ class InventoryContainerViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let segmentedControl: UISegmentedControl = {
-        let sc = UISegmentedControl(items: ["Stock", "Purchases", "Audit"])  // Will be updated in setupUI
+    private let segmentedControl: DefaultSegmentedControl = {
+        let sc = DefaultSegmentedControl(items: ["Stock", "Purchases", "Audit"])
         sc.selectedSegmentIndex = 0
         return sc
     }()

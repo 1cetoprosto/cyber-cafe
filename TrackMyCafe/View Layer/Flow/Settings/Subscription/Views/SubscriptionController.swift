@@ -92,8 +92,7 @@ class SubscriptionController: UIViewController, Loggable {
 
     private lazy var skipButton: UIButton = {
         let button = UIButton(type: .system)
-        let title = NSLocalizedString(
-            "continue_read_only", value: "Continue in Read-Only Mode", comment: "")
+        let title = R.string.global.subscriptionContinueReadOnly()
         button.setTitle(title, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         button.addTarget(self, action: #selector(skipAction), for: .touchUpInside)

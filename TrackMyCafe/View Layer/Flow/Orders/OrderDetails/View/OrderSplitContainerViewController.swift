@@ -39,8 +39,7 @@ final class OrderSplitContainerViewController: UIViewController {
             let categories = OrderCategoryFirstPickerViewController(
                 productsViewModel: viewModel.productsViewModel
             )
-            categories.title = NSLocalizedString(
-                "orderPicker_allProducts", tableName: "Global", comment: "")
+            categories.title = R.string.global.orderPicker_allProducts()
             pickerRoot = categories
         } else {
             let catalog = OrderProductPickerViewController(

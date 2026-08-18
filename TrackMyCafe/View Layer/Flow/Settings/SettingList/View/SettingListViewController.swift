@@ -110,11 +110,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             let isLocked = await DomainDatabaseService.shared.hasAnyOrderWithInventoryTracking()
             self.inventoryTrackingLocked = isLocked
             guard self.models.count > 1 else { return }
-            let key =
+            let footer =
                 isLocked
-                ? "settings_trackIngredientsFooterLocked"
-                : "settings_trackIngredientsFooter"
-            let footer = NSLocalizedString(key, tableName: "Global", comment: "")
+                ? R.string.global.settings_trackIngredientsFooterLocked()
+                : R.string.global.settings_trackIngredientsFooter()
             let oldSection = self.models[1]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
             let updatedOptions = oldSection.option.enumerated().map {
@@ -160,20 +159,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func presentTrackIngredientsEnableConfirmation() {
         let alert = UIAlertController(
-            title: NSLocalizedString(
-                "settings_trackIngredientsConfirmTitle",
-                tableName: "Global",
-                comment: ""
-            ),
-            message: NSLocalizedString(
-                "settings_trackIngredientsConfirmMessage",
-                tableName: "Global",
-                comment: ""
-            ),
+            title: R.string.global.settings_trackIngredientsConfirmTitle(),
+            message: R.string.global.settings_trackIngredientsConfirmMessage(),
             preferredStyle: .alert
         )
         let cancel = UIAlertAction(
-            title: NSLocalizedString("settings_action_cancel", tableName: "Global", comment: ""),
+            title: R.string.global.settings_action_cancel(),
             style: .cancel
         ) { [weak self] _ in
             guard let self = self else { return }
@@ -181,7 +172,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             self.rollbackTrackIngredientsSwitchToOff()
         }
         let enable = UIAlertAction(
-            title: NSLocalizedString("settings_action_enable", tableName: "Global", comment: ""),
+            title: R.string.global.settings_action_enable(),
             style: .default
         ) { [weak self] _ in
             guard let self = self else { return }
@@ -195,20 +186,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func presentTrackIngredientsLockedAlertAndRollbackSwitch() {
         let alert = UIAlertController(
-            title: NSLocalizedString(
-                "settings_trackIngredientsLockedTitle",
-                tableName: "Global",
-                comment: ""
-            ),
-            message: NSLocalizedString(
-                "settings_trackIngredientsLockedMessage",
-                tableName: "Global",
-                comment: ""
-            ),
+            title: R.string.global.settings_trackIngredientsLockedTitle(),
+            message: R.string.global.settings_trackIngredientsLockedMessage(),
             preferredStyle: .alert
         )
         let ok = UIAlertAction(
-            title: NSLocalizedString("settings_action_ok", tableName: "Global", comment: ""),
+            title: R.string.global.settings_action_ok(),
             style: .default
         ) { [weak self] _ in
             guard let self = self else { return }
@@ -401,11 +384,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ),
             .switchCell(
                 model: SettingsSwitchOption(
-                    title: NSLocalizedString(
-                        "settings_trackIngredients",
-                        tableName: "Global",
-                        comment: ""
-                    ),
+                    title: R.string.global.settings_trackIngredients(),
                     icon: UIImage(systemName: "shippingbox"),
                     iconBackgroundColor: .systemTeal,
                     isOn: SettingsManager.shared.loadTrackIngredients()
@@ -416,11 +395,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]
         return Section(
             title: R.string.global.settingsSectionMenuInventory(),
-            footer: NSLocalizedString(
-                "settings_trackIngredientsFooter",
-                tableName: "Global",
-                comment: ""
-            ),
+            footer: R.string.global.settings_trackIngredientsFooter(),
             option: menuOptions
         )
     }
@@ -456,11 +431,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ),
             .switchCell(
                 model: SettingsSwitchOption(
-                    title: NSLocalizedString(
-                        "settings_chooseCategoryFirst",
-                        tableName: "Global",
-                        comment: ""
-                    ),
+                    title: R.string.global.settings_chooseCategoryFirst(),
                     icon: UIImage(systemName: "square.grid.2x2"),
                     iconBackgroundColor: .systemIndigo,
                     isOn: SettingsManager.shared.loadChooseCategoryFirstProductSelection()
@@ -482,7 +453,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]
         let ordersSection = Section(
             title: R.string.global.settingsSectionOrders(),
-            footer: NSLocalizedString("typeDescription", tableName: "Global", comment: ""),
+            footer: R.string.global.typeDescription(),
             option: orderOptions
         )
 
@@ -540,7 +511,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ),
             .staticCell(
                 model: SettingsStaticOption(
-                    title: NSLocalizedString("privacyPolicy", tableName: "Global", comment: ""),
+                    title: R.string.global.privacyPolicy(),
                     icon: UIImage(systemName: "hand.raised.fill"),
                     iconBackgroundColor: .systemGray
                 ) { [weak self] in
@@ -550,7 +521,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ),
             .staticCell(
                 model: SettingsStaticOption(
-                    title: NSLocalizedString("termsOfService", tableName: "Global", comment: ""),
+                    title: R.string.global.termsOfService(),
                     icon: UIImage(systemName: "doc.text.fill"),
                     iconBackgroundColor: .systemGray
                 ) { [weak self] in

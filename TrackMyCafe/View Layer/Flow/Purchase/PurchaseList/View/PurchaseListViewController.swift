@@ -244,8 +244,8 @@ private final class DateRangePickerViewController: UIViewController {
 
     private var startDate: Date = Date()
     private var endDate: Date = Date()
-    private let modeControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [R.string.global.dateFrom(), R.string.global.dateTo()])
+    private let modeControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: [R.string.global.dateFrom(), R.string.global.dateTo()])
         control.selectedSegmentIndex = 0
         return control
     }()
