@@ -520,7 +520,7 @@
 "commonCurrencyUAH" = "₴";
 "commonLoading" = "...";
 
-"abcRankingTitle" = "Що важливіше?";
+"abcRankingTitle" = "По чому оцінюємо?";
 "abcRankingSales" = "Оборот";
 "abcRankingGross" = "Прибуток";
 "abcEmpty" = "У цьому періоді жодного товару не продано.";
