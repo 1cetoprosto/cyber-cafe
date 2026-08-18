@@ -28,43 +28,44 @@ enum SubscriptionType: String, CaseIterable {
 
     var rawValue: String {
         switch self {
-            case .none: return "none"
-            case .proMonthly:
-                // Check if we are running the Beta app
-                if let bundleID = Bundle.main.bundleIdentifier, bundleID.lowercased().contains(".beta") {
-                    return SubscriptionType.betaID
-                }
-                return SubscriptionType.productionID
+        case .none: return "none"
+        case .proMonthly:
+            // Check if we are running the Beta app
+            if let bundleID = Bundle.main.bundleIdentifier, bundleID.lowercased().contains(".beta")
+            {
+                return SubscriptionType.betaID
+            }
+            return SubscriptionType.productionID
         }
     }
 
     var productId: String? {
         switch self {
-            case .none:
-                return nil
-            case .proMonthly:
-                return rawValue
+        case .none:
+            return nil
+        case .proMonthly:
+            return rawValue
         }
     }
 
     var subscriptionId: String? {
         switch self {
-            case .proMonthly: return "pro_monthly"
-            default: return nil
+        case .proMonthly: return "pro_monthly"
+        default: return nil
         }
     }
 
     var name: String {
         switch self {
-            case .none: return R.string.global.subPlanNoneName()
-            case .proMonthly: return NSLocalizedString("subPlanProMonthlyName", tableName: "Global", comment: "")
+        case .none: return R.string.global.subPlanNoneName()
+        case .proMonthly: return R.string.global.subPlanProMonthlyName()
         }
     }
 
     var info: String {
         switch self {
-            case .none: return R.string.global.subPlanNoneDescription()
-            case .proMonthly: return NSLocalizedString("subPlanProMonthlyDescription", tableName: "Global", comment: "")
+        case .none: return R.string.global.subPlanNoneDescription()
+        case .proMonthly: return R.string.global.subPlanProMonthlyDescription()
         }
     }
 
@@ -81,9 +82,8 @@ extension SubscriptionType {
 
     var staffCount: Int {
         switch self {
-            case .none: return 0
-            case .proMonthly: return 1000 // Unlimited/High limit
+        case .none: return 0
+        case .proMonthly: return 1000  // Unlimited/High limit
         }
     }
 }
-

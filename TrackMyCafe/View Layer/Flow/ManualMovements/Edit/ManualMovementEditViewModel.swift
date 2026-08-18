@@ -29,11 +29,11 @@ enum ManualMovementEditError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidAmount:
-            return NSLocalizedString("fillAllFields", tableName: "Global", comment: "")
+            return R.string.global.fillAllFields()
         case .missingAccount:
-            return NSLocalizedString("fillAllFields", tableName: "Global", comment: "")
+            return R.string.global.fillAllFields()
         case .invalidTransferAccounts:
-            return NSLocalizedString("manualMovementInvalidTransfer", tableName: "Global", comment: "")
+            return R.string.global.manualMovementInvalidTransfer()
         }
     }
 }
@@ -122,8 +122,12 @@ final class ManualMovementEditViewModel: ManualMovementEditViewModelType {
                 note: noteToSave
             )
         case .transfer:
-            guard let fromAccount, let toAccount else { throw ManualMovementEditError.missingAccount }
-            guard fromAccount != toAccount else { throw ManualMovementEditError.invalidTransferAccounts }
+            guard let fromAccount, let toAccount else {
+                throw ManualMovementEditError.missingAccount
+            }
+            guard fromAccount != toAccount else {
+                throw ManualMovementEditError.invalidTransferAccounts
+            }
             operation = ManualMovementOperation(
                 id: operationId,
                 date: date,
@@ -143,7 +147,7 @@ final class ManualMovementEditViewModel: ManualMovementEditViewModelType {
         let formatter = NumberFormatter()
         formatter.locale = Locale.current
         formatter.numberStyle = .decimal
-        return formatter.number(from: text)?.doubleValue ?? Double(text.replacingOccurrences(of: ",", with: "."))
+        return formatter.number(from: text)?.doubleValue
+            ?? Double(text.replacingOccurrences(of: ",", with: "."))
     }
 }
-
