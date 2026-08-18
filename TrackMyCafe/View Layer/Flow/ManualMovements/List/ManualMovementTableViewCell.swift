@@ -74,13 +74,13 @@ final class ManualMovementTableViewCell: BaseListTableViewCell {
     private func operationTitle(kind: ManualMovementKind) -> String {
         switch kind {
         case .deposit:
-            return NSLocalizedString("manualMovementDeposit", tableName: "Global", comment: "")
+            return R.string.global.manualMovementDeposit()
         case .withdrawal:
-            return NSLocalizedString("manualMovementWithdrawal", tableName: "Global", comment: "")
+            return R.string.global.manualMovementWithdrawal()
         case .transfer:
-            return NSLocalizedString("manualMovementTransfer", tableName: "Global", comment: "")
+            return R.string.global.manualMovementTransfer()
         case .adjustment:
-            return NSLocalizedString("manualMovementAdjustment", tableName: "Global", comment: "")
+            return R.string.global.manualMovementAdjustment()
         }
     }
 
@@ -117,9 +117,9 @@ final class ManualMovementTableViewCell: BaseListTableViewCell {
     private func accountTitle(_ account: PaymentAccount) -> String {
         switch account {
         case .cash:
-            return NSLocalizedString("cash", tableName: "Global", comment: "")
+            return R.string.global.cash()
         case .card:
-            return NSLocalizedString("card", tableName: "Global", comment: "")
+            return R.string.global.card()
         }
     }
 

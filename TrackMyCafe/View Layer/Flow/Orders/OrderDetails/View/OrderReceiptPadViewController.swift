@@ -229,7 +229,8 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
 
     private func setupTable() {
         view.addSubview(tableView)
-        tableView.register(OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
+        tableView.register(
+            OrderTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.orderCell)
         tableView.delegate = self
         tableView.preservesSuperviewLayoutMargins = true
         tableView.directionalLayoutMargins = NSDirectionalEdgeInsets(
@@ -250,7 +251,8 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         footerContainer.leftToSuperview()
         footerContainer.rightToSuperview()
         footerContainer.translatesAutoresizingMaskIntoConstraints = false
-        footerContainer.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor).isActive = true
+        footerContainer.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
+            .isActive = true
 
         tableView.topToBottom(of: headerContainer, offset: UIConstants.standardPadding)
         tableView.leftToSuperview()
@@ -284,7 +286,9 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         )
 
         let stack = UIStackView(
-            arrangedSubviews: [totalStackView, cashCardStackView, noteInputContainer, changeStackView, saveButton]
+            arrangedSubviews: [
+                totalStackView, cashCardStackView, noteInputContainer, changeStackView, saveButton,
+            ]
         )
         stack.axis = .vertical
         stack.spacing = UIConstants.standardPadding
@@ -296,7 +300,7 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         saveButton.height(UIConstants.buttonHeight)
 
         totalTitleLabel.text = viewModel.orderLabel
-        changeTitleLabel.text = NSLocalizedString("changeDue", tableName: "Global", comment: "")
+        changeTitleLabel.text = R.string.global.changeDue()
         updateTotals()
         updateChangeLabel()
     }
@@ -386,7 +390,9 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
                     return UITableViewCell()
                 }
 
-                guard let index = self.viewModel.productsViewModel.index(forProductId: item.productId) else {
+                guard
+                    let index = self.viewModel.productsViewModel.index(forProductId: item.productId)
+                else {
                     return cell
                 }
                 let vm = self.viewModel.productsViewModel.cellViewModel(
@@ -407,7 +413,9 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
 
     private func applySnapshot(animatingDifferences: Bool) {
         guard let dataSource else { return }
-        let items = viewModel.productsViewModel.activeProductIds().map { OrderReceiptItem(productId: $0) }
+        let items = viewModel.productsViewModel.activeProductIds().map {
+            OrderReceiptItem(productId: $0)
+        }
         var snapshot = NSDiffableDataSourceSnapshot<Int, OrderReceiptItem>()
         snapshot.appendSections([0])
         snapshot.appendItems(items, toSection: 0)
@@ -424,7 +432,9 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         case .productUpdated(let productId):
             guard let dataSource else { return }
             let items = dataSource.snapshot().itemIdentifiers
-            if let quantity = viewModel.productsViewModel.quantity(forProductId: productId), quantity == 0 {
+            if let quantity = viewModel.productsViewModel.quantity(forProductId: productId),
+                quantity == 0
+            {
                 applySnapshot(animatingDifferences: true)
                 return
             }
@@ -453,8 +463,8 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
 
         let hasCashInput =
             !(cashInputContainer.text?
-                .trimmingCharacters(in: .whitespacesAndNewlines)
-                .isEmpty ?? true)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .isEmpty ?? true)
         changeStackView.isHidden = !hasCashInput
         changeValueLabel.text = change.currency
     }
@@ -555,7 +565,8 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         switch result {
         case .success:
             onSave?()
-            navigationController?.parent?.navigationController?.popToRootViewController(animated: true)
+            navigationController?.parent?.navigationController?.popToRootViewController(
+                animated: true)
         case .failure(let error):
             switch error {
             case .stockValidationFailed(let warnings):
@@ -573,37 +584,22 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
     }
 
     private func showStockWarning(_ warnings: [StockWarning]) {
-        let shortageFormat = NSLocalizedString(
-            "stockWarningShortageFormat",
-            tableName: "Global",
-            comment: ""
-        )
         let message = warnings.map { warning in
             let shortage = warning.requiredQty - warning.currentStock
             let shortageText = String(format: "%.2f", shortage)
-            return String(format: shortageFormat, warning.ingredientName, shortageText)
+            return R.string.global.stockWarningShortageFormat(
+                warning.ingredientName, shortageText)
         }.joined(separator: "\n")
 
-        let prefix = NSLocalizedString(
-            "stockWarningMessagePrefix",
-            tableName: "Global",
-            comment: ""
-        )
-        let question = NSLocalizedString(
-            "stockWarningProceedQuestion",
-            tableName: "Global",
-            comment: ""
-        )
+        let prefix = R.string.global.stockWarningMessagePrefix()
+        let question = R.string.global.stockWarningProceedQuestion()
         let alert = UIAlertController(
-            title: NSLocalizedString(
-                "stockWarningTitle",
-                tableName: "Global",
-                comment: ""
-            ),
+            title: R.string.global.stockWarningTitle(),
             message: "\(prefix)\n\(message)\n\(question)",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
         alert.addAction(
             UIAlertAction(
                 title: R.string.global.proceed(),
