@@ -21,14 +21,14 @@ final class ManualMovementEditViewController: UIViewController {
         return stackView
     }()
 
-    private lazy var kindControl: UISegmentedControl = {
+    private lazy var kindControl: DefaultSegmentedControl = {
         let items = [
-            NSLocalizedString("manualMovementDeposit", tableName: "Global", comment: ""),
-            NSLocalizedString("manualMovementWithdrawal", tableName: "Global", comment: ""),
-            NSLocalizedString("manualMovementTransfer", tableName: "Global", comment: ""),
-            NSLocalizedString("manualMovementAdjustment", tableName: "Global", comment: ""),
+            R.string.global.manualMovementDeposit(),
+            R.string.global.manualMovementWithdrawal(),
+            R.string.global.manualMovementTransfer(),
+            R.string.global.manualMovementAdjustment(),
         ]
-        let control = UISegmentedControl(items: items)
+        let control = DefaultSegmentedControl(items: items)
         control.selectedSegmentIndex = 0
         control.addTarget(self, action: #selector(kindChanged), for: .valueChanged)
         return control
@@ -36,7 +36,7 @@ final class ManualMovementEditViewController: UIViewController {
 
     private lazy var kindContainerView: UIView = {
         makeSegmentedContainer(
-            title: NSLocalizedString("manualMovementType", tableName: "Global", comment: ""),
+            title: R.string.global.manualMovementType(),
             control: kindControl
         )
     }()
@@ -62,7 +62,7 @@ final class ManualMovementEditViewController: UIViewController {
 
     private let accountLabel = UILabel()
 
-    private lazy var accountControl: UISegmentedControl = {
+    private lazy var accountControl: DefaultSegmentedControl = {
         makeAccountControl()
     }()
 
@@ -71,40 +71,37 @@ final class ManualMovementEditViewController: UIViewController {
         return makeSegmentedContainer(label: accountLabel, control: accountControl)
     }()
 
-    private lazy var fromAccountControl: UISegmentedControl = {
+    private lazy var fromAccountControl: DefaultSegmentedControl = {
         makeAccountControl()
     }()
 
     private lazy var fromAccountContainerView: UIView = {
         makeSegmentedContainer(
-            title: NSLocalizedString("manualMovementFromAccount", tableName: "Global", comment: ""),
+            title: R.string.global.manualMovementFromAccount(),
             control: fromAccountControl
         )
     }()
 
-    private lazy var toAccountControl: UISegmentedControl = {
+    private lazy var toAccountControl: DefaultSegmentedControl = {
         makeAccountControl()
     }()
 
     private lazy var toAccountContainerView: UIView = {
         makeSegmentedContainer(
-            title: NSLocalizedString("manualMovementToAccount", tableName: "Global", comment: ""),
+            title: R.string.global.manualMovementToAccount(),
             control: toAccountControl
         )
     }()
 
-    private lazy var signControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["+", "-"])
+    private lazy var signControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: ["+", "-"])
         control.selectedSegmentIndex = 0
-        if #available(iOS 13.0, *) {
-            control.selectedSegmentTintColor = UIColor.Button.background
-        }
         return control
     }()
 
     private lazy var signContainerView: UIView = {
         makeSegmentedContainer(
-            title: NSLocalizedString("manualMovementSign", tableName: "Global", comment: ""),
+            title: R.string.global.manualMovementSign(),
             control: signControl
         )
     }()
@@ -140,8 +137,8 @@ final class ManualMovementEditViewController: UIViewController {
         view.backgroundColor = UIColor.Main.background
         title =
             viewModel.isEditing
-            ? NSLocalizedString("edit", tableName: "Global", comment: "")
-            : NSLocalizedString("add", tableName: "Global", comment: "")
+            ? R.string.global.edit()
+            : R.string.global.add()
 
         view.addSubview(scrollView)
         view.addSubview(saveButton)
@@ -214,26 +211,24 @@ final class ManualMovementEditViewController: UIViewController {
         label.numberOfLines = 0
     }
 
-    private func makeAccountControl() -> UISegmentedControl {
-        let control = UISegmentedControl(items: [
+    private func makeAccountControl() -> DefaultSegmentedControl {
+        let control = DefaultSegmentedControl(items: [
             R.string.global.cash(),
             R.string.global.card(),
         ])
         control.selectedSegmentIndex = UISegmentedControl.noSegment
-        if #available(iOS 13.0, *) {
-            control.selectedSegmentTintColor = UIColor.Button.background
-        }
         return control
     }
 
-    private func makeSegmentedContainer(title: String, control: UISegmentedControl) -> UIView {
+    private func makeSegmentedContainer(title: String, control: DefaultSegmentedControl) -> UIView {
         let label = UILabel()
         configureTitleLabel(label)
         label.text = title
         return makeSegmentedContainer(label: label, control: control)
     }
 
-    private func makeSegmentedContainer(label: UILabel, control: UISegmentedControl) -> UIView {
+    private func makeSegmentedContainer(label: UILabel, control: DefaultSegmentedControl) -> UIView
+    {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = UIConstants.mediumCornerRadius
@@ -275,13 +270,11 @@ final class ManualMovementEditViewController: UIViewController {
 
         switch kind {
         case .deposit:
-            accountLabel.text = NSLocalizedString(
-                "manualMovementToAccount", tableName: "Global", comment: "")
+            accountLabel.text = R.string.global.manualMovementToAccount()
         case .withdrawal:
-            accountLabel.text = NSLocalizedString(
-                "manualMovementFromAccount", tableName: "Global", comment: "")
+            accountLabel.text = R.string.global.manualMovementFromAccount()
         case .adjustment:
-            accountLabel.text = NSLocalizedString("account", tableName: "Global", comment: "")
+            accountLabel.text = R.string.global.account()
         case .transfer:
             accountLabel.text = ""
         }
@@ -359,7 +352,7 @@ final class ManualMovementEditViewController: UIViewController {
         }
     }
 
-    private func selectedAccount(_ control: UISegmentedControl) -> PaymentAccount? {
+    private func selectedAccount(_ control: DefaultSegmentedControl) -> PaymentAccount? {
         switch control.selectedSegmentIndex {
         case 0:
             return .cash
@@ -370,7 +363,7 @@ final class ManualMovementEditViewController: UIViewController {
         }
     }
 
-    private func selectAccount(_ account: PaymentAccount?, in control: UISegmentedControl) {
+    private func selectAccount(_ account: PaymentAccount?, in control: DefaultSegmentedControl) {
         switch account {
         case .cash:
             control.selectedSegmentIndex = 0

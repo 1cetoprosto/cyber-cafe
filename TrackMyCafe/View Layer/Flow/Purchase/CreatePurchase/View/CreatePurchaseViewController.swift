@@ -111,8 +111,8 @@ class CreatePurchaseViewController: UIViewController {
         return container
     }()
 
-    private lazy var paymentMethodSegmentedControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [R.string.global.cash(), R.string.global.card()])
+    private lazy var paymentMethodSegmentedControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: [R.string.global.cash(), R.string.global.card()])
         control.selectedSegmentIndex = UISegmentedControl.noSegment
         control.addTarget(self, action: #selector(paymentMethodChanged), for: .valueChanged)
         return control
