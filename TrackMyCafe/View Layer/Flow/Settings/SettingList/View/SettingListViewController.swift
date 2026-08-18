@@ -338,8 +338,15 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     func configure() {
         models.removeAll()
+        models.append(makeEstablishmentSection())
+        models.append(makeMenuInventorySection())
+        models.append(contentsOf: makeOrdersAndAppearanceSections())
+        models.append(contentsOf: makeAppInfoDevAndAccountSections())
+    }
 
-        // 1. Establishment
+    // MARK: - Section builders
+
+    private func makeEstablishmentSection() -> Section {
         var establishmentOptions = [SettingsOptionType]()
         establishmentOptions.append(
             .staticCell(
@@ -353,12 +360,13 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             )
         )
-        models.append(
-            Section(
-                title: R.string.global.settingsSectionEstablishment(), footer: nil,
-                option: establishmentOptions))
+        return Section(
+            title: R.string.global.settingsSectionEstablishment(),
+            footer: nil,
+            option: establishmentOptions)
+    }
 
-        // 2. Menu & Inventory
+    private func makeMenuInventorySection() -> Section {
         let menuOptions: [SettingsOptionType] = [
             .staticCell(
                 model: SettingsStaticOption(
@@ -406,19 +414,18 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             ),
         ]
-        models.append(
-            Section(
-                title: R.string.global.settingsSectionMenuInventory(),
-                footer: NSLocalizedString(
-                    "settings_trackIngredientsFooter",
-                    tableName: "Global",
-                    comment: ""
-                ),
-                option: menuOptions
-            )
+        return Section(
+            title: R.string.global.settingsSectionMenuInventory(),
+            footer: NSLocalizedString(
+                "settings_trackIngredientsFooter",
+                tableName: "Global",
+                comment: ""
+            ),
+            option: menuOptions
         )
+    }
 
-        // 3. Orders
+    private func makeOrdersAndAppearanceSections() -> [Section] {
         let currentMode = SettingsManager.shared.loadOrderEntryMode()
         let orderModeTitle: String
         switch currentMode {
@@ -473,15 +480,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             ),
         ]
-        models.append(
-            Section(
-                title: R.string.global.settingsSectionOrders(),
-                footer: NSLocalizedString("typeDescription", tableName: "Global", comment: ""),
-                option: orderOptions
-            )
+        let ordersSection = Section(
+            title: R.string.global.settingsSectionOrders(),
+            footer: NSLocalizedString("typeDescription", tableName: "Global", comment: ""),
+            option: orderOptions
         )
 
-        // 4. Appearance
         let appearanceOptions: [SettingsOptionType] = [
             .dataCell(
                 model: SettingsDataOption(
@@ -499,14 +503,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             )
         ]
-        models.append(
-            Section(
-                title: R.string.global.settingsSectionAppearance(), footer: nil,
-                option: appearanceOptions
-            )
+        let appearanceSection = Section(
+            title: R.string.global.settingsSectionAppearance(), footer: nil,
+            option: appearanceOptions
         )
+        return [ordersSection, appearanceSection]
+    }
 
-        // 5. App Info
+    private func makeAppInfoDevAndAccountSections() -> [Section] {
         var appInfoOptions: [SettingsOptionType] = [
             .staticCell(
                 model: SettingsStaticOption(
@@ -600,11 +604,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             )
         )
 
-        models.append(
-            Section(
-                title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions
-            )
+        let appInfoSection = Section(
+            title: R.string.global.settingsSectionAppInfo(), footer: nil, option: appInfoOptions
         )
+        var sections: [Section] = [appInfoSection]
 
         #if DEBUG
             let devOptions: [SettingsOptionType] = [
@@ -646,13 +649,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     }
                 )
             ]
-
-            models.append(
-                Section(title: R.string.global.developer(), footer: nil, option: devOptions)
-            )
+            sections.append(
+                Section(title: R.string.global.developer(), footer: nil, option: devOptions))
         #endif
 
-        // Add Logout button at the end
         let logout = SettingsOptionType.staticCell(
             model: SettingsStaticOption(
                 title: R.string.global.logout(),
@@ -662,7 +662,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 self?.handleUserLogOut()
             }
         )
-        models.append(Section(title: R.string.global.account(), footer: nil, option: [logout]))
+        sections.append(Section(title: R.string.global.account(), footer: nil, option: [logout]))
+        return sections
     }
 
     func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {

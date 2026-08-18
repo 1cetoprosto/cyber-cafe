@@ -23,6 +23,10 @@ protocol DomainDB {
 
     // Order Products (ProductOfOrder)
     func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void)
+    func fetchProductsOfOrders(
+        from startDate: Date, to endDate: Date,
+        completion: @escaping ([ProductOfOrderModel]) -> Void
+    )
     func fetchOrderItems(withOrderId id: String, completion: @escaping ([OrderItemModel]) -> Void)
     func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void)
     func deleteProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void)
