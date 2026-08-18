@@ -67,12 +67,12 @@ final class ManualMovementListViewController: UIViewController, ProGated {
 
     private func showError(_ message: String) {
         let alert = UIAlertController(
-            title: NSLocalizedString("error", tableName: "Global", comment: ""),
+            title: R.string.global.error(),
             message: message,
             preferredStyle: .alert
         )
         alert.addAction(
-            UIAlertAction(title: NSLocalizedString("actionOk", tableName: "Global", comment: ""), style: .default)
+            UIAlertAction(title: R.string.global.actionOk(), style: .default)
         )
         present(alert, animated: true)
     }
@@ -130,8 +130,9 @@ extension ManualMovementListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
-        let deleteTitle = NSLocalizedString("delete", tableName: "Global", comment: "")
-        let action = UIContextualAction(style: .destructive, title: deleteTitle) { [weak self] _, _, completion in
+        let deleteTitle = R.string.global.delete()
+        let action = UIContextualAction(style: .destructive, title: deleteTitle) {
+            [weak self] _, _, completion in
             guard let self else {
                 completion(false)
                 return

@@ -497,36 +497,21 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func showStockWarning(_ warnings: [StockWarning]) {
-        let shortageFormat = NSLocalizedString(
-            "stockWarningShortageFormat",
-            tableName: "Global",
-            comment: ""
-        )
         let message = warnings.map { warning in
             let shortage = warning.requiredQty - warning.currentStock
             let shortageText = String(format: "%.2f", shortage)
-            return String(format: shortageFormat, warning.ingredientName, shortageText)
+            return R.string.global.stockWarningShortageFormat(
+                warning.ingredientName, shortageText)
         }.joined(separator: "\n")
 
-        let prefix = NSLocalizedString(
-            "stockWarningMessagePrefix",
-            tableName: "Global",
-            comment: ""
-        )
-        let question = NSLocalizedString(
-            "stockWarningProceedQuestion",
-            tableName: "Global",
-            comment: ""
-        )
+        let prefix = R.string.global.stockWarningMessagePrefix()
+        let question = R.string.global.stockWarningProceedQuestion()
         let alert = UIAlertController(
-            title: NSLocalizedString(
-                "stockWarningTitle",
-                tableName: "Global",
-                comment: ""
-            ),
+            title: R.string.global.stockWarningTitle(),
             message: "\(prefix)\n\(message)\n\(question)",
             preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
+        alert.addAction(
+            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
         alert.addAction(
             UIAlertAction(
                 title: R.string.global.proceed(),

@@ -83,15 +83,12 @@ final class CostDetailsListViewController: UIViewController {
         return label
     }()
 
-    private lazy var paymentMethodControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [
+    private lazy var paymentMethodControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: [
             R.string.global.cash(),
             R.string.global.card(),
         ])
         control.selectedSegmentIndex = UISegmentedControl.noSegment
-        if #available(iOS 13.0, *) {
-            control.selectedSegmentTintColor = UIColor.Button.background
-        }
         control.setContentCompressionResistancePriority(.required, for: .vertical)
         return control
     }()

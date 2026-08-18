@@ -12,8 +12,8 @@ class CostsTabViewController: UIViewController {
 
     // MARK: - Properties
 
-    private let segmentedControl: UISegmentedControl = {
-        let sc = UISegmentedControl(items: ["Inventory", "Costs"])  // Will be updated in setupUI
+    private let segmentedControl: DefaultSegmentedControl = {
+        let sc = DefaultSegmentedControl(items: ["Inventory", "Costs"])
         sc.selectedSegmentIndex = 0
         return sc
     }()
@@ -35,11 +35,11 @@ class CostsTabViewController: UIViewController {
     }
 
     // MARK: - Setup
-    
+
     private func setupUI() {
         title = R.string.global.costs()
         view.backgroundColor = UIColor.Main.background
-        
+
         // Setup Segmented Control in Navigation Title View or below Navigation Bar
         // Placing it below navigation bar for better accessibility and standard iOS look
 
@@ -104,7 +104,7 @@ class CostsTabViewController: UIViewController {
     }
 
     // MARK: - Helper
-    
+
     // Made internal so child controllers can call it
     func updateNavigationItems(for child: UIViewController) {
         // Proxy the navigation items from the child to this container
