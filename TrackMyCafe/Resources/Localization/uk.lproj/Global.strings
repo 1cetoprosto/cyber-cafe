@@ -29,7 +29,7 @@
 // MARK: - Settings Sections
 "settingsSectionEstablishment" = "Заклад";
 "settingsSectionMenuInventory" = "Меню та Склад";
-"settingsSectionOrders" = "Замовлення";
+"settingsSectionOrders" = "Чеки";
 "settingsSectionAppearance" = "Інтерфейс";
 "settingsSectionAppInfo" = "Про додаток";
 
@@ -126,7 +126,7 @@
 "technicianLimitReached" = "Ліміт офіціантів досягнуто";
 "changeSub" = "Змінити підписку";
 "technicianNoteGoesHere" = "Нотатка про офіціанта";
-"allOrders" = "Всі замовлення";
+"allOrders" = "Всі чеки";
 "prices" = "Ціни";
 "printPrices" = "Друк цін";
 "resendInvite" = "Надіслати запрошення знову";
@@ -263,16 +263,16 @@
 "typeDelivery" = "Доставка";
 
 // MARK: - Orders
-"orders" = "Замовлення";
+"orders" = "Чеки";
 "income" = "Доходи";
 "chooseType" = "Оберіть тип";
 "dataForTheSelectedDateAlreadyExistsOpenAndEditThem" = "Дані за обрану дату вже існують. Відкрити та редагувати їх?";
 
 // MARK: - Products
 "products" = "Товари";
-"order" = "Замовлення";
+"order" = "Чек";
 "productCategories" = "Категорії товарів";
-"orderEntryModeTitle" = "Режим введення замовлень";
+"orderEntryModeTitle" = "Режим введення чеків";
 "orderModePerOrder" = "Класична схема";
 "orderModeOpenTab" = "Спрощена схема (Donate-кафе)";
 "orderModePerOrderDescription" = "Кожен клієнт — окремий чек. Товари додаються з Каталогу. Рекомендовано для великого асортименту.";
@@ -298,7 +298,7 @@
 "money2" = "0.00";
 "money3" = "0.00";
 "totalTitle" = "Всього";
-"defaultOrderType" = "Замовлення";
+"defaultOrderType" = "Чек";
 
 // MARK: - Inventory
 "inventoryTitle" = "Склад";
@@ -340,7 +340,7 @@
 "reportsTitle" = "Звіти";
 
 // MARK: - Ingredients & Products
-"month" = "місяць";
+"month" = "Місяць";
 "productName" = "Назва товару";
 "ingredientNamePlaceholder" = "Назва інгредієнта";
 "ingredientNameExplanation" = "Введіть назву інгредієнта";
@@ -365,7 +365,7 @@
 "defaultType" = "Тип за замовчуванням";
 "pleaseEnterTypeName" = "Будь ласка, введіть назву типу";
 "failedToSaveType" = "Не вдалося зберегти тип";
-"typeDescription" = "Ці типи використовуються для категоризації замовлень (наприклад, В закладі, З собою, Доставка).";
+"typeDescription" = "Ці типи використовуються для категоризації чеків (наприклад, В закладі, З собою, Доставка).";
 
 // MARK: - Language & Theme
 "english" = "Англійська";
@@ -396,22 +396,22 @@
 "gallery" = "Галерея";
 "access_image_title" = "Доступ заборонено";
 "access_image_desc" = "Будь ласка, надайте доступ до %@ в Налаштуваннях";
-"onboardingOrdersAddTitle" = "Додати замовлення";
-"onboardingOrdersAddMessage" = "Натисніть тут, щоб створити нове замовлення.";
+"onboardingOrdersAddTitle" = "Додати чек";
+"onboardingOrdersAddMessage" = "Натисніть тут, щоб створити новий чек.";
 "onboardingOrderDetailsDateTitle" = "Дата";
-"onboardingOrderDetailsDateMessage" = "Оберіть дату замовлення.";
-"onboardingOrderDetailsTypeTitle" = "Тип замовлення";
-"onboardingOrderDetailsTypeMessage" = "Виберіть тип замовлення (наприклад, В закладі, З собою).";
+"onboardingOrderDetailsDateMessage" = "Оберіть дату чека.";
+"onboardingOrderDetailsTypeTitle" = "Тип чека";
+"onboardingOrderDetailsTypeMessage" = "Виберіть тип чека (наприклад, В закладі, З собою).";
 "onboardingOrderDetailsProductsTitle" = "Товари";
-"onboardingOrderDetailsProductsMessage" = "Додайте товари до замовлення тут.";
+"onboardingOrderDetailsProductsMessage" = "Додайте товари до чека тут.";
 "onboardingOrderDetailsTotalsTitle" = "Разом";
 "onboardingOrderDetailsTotalsMessage" = "Перевірте загальну суму.";
 "onboardingOrderDetailsCashTitle" = "Оплата готівкою";
 "onboardingOrderDetailsCashMessage" = "Введіть суму, сплачену готівкою.";
 "onboardingOrderDetailsCardTitle" = "Оплата карткою";
 "onboardingOrderDetailsCardMessage" = "Введіть суму, сплачену карткою.";
-"onboardingOrderDetailsSaveTitle" = "Зберегти замовлення";
-"onboardingOrderDetailsSaveMessage" = "Натисніть, щоб зберегти замовлення.";
+"onboardingOrderDetailsSaveTitle" = "Зберегти чек";
+"onboardingOrderDetailsSaveMessage" = "Натисніть, щоб зберегти чек.";
 "onboardingCostsAddTitle" = "Додати витрату";
 "onboardingCostsAddMessage" = "Натисніть тут, щоб записати нову витрату.";
 "onboardingCostDetailsDateTitle" = "Дата";
@@ -426,8 +426,8 @@
 "onboardingSettingsPriceListMessage" = "Керуйте своїми товарами та цінами тут.";
 "onboardingSettingsAddProductTitle" = "Додати товар";
 "onboardingSettingsAddProductMessage" = "Додайте новий товар до вашого меню.";
-"onboardingSettingsTypesTitle" = "Типи замовлень";
-"onboardingSettingsTypesMessage" = "Налаштуйте різні типи замовлень тут.";
+"onboardingSettingsTypesTitle" = "Типи чеків";
+"onboardingSettingsTypesMessage" = "Налаштуйте різні типи чеків тут.";
 "onboardingSettingsTrackIngredientsTitle" = "Слідкувати за інгредієнтами";
 "onboardingSettingsTrackIngredientsMessage" = "Увімкни, щоб автоматично списувати залишки інгредієнтів за рецептом при збереженні чека.";
 "logout" = "Вийти";
@@ -439,7 +439,7 @@
 "deleteDemoDataTitle" = "Видалити демо-дані?";
 "deleteDemoDataMessage" = "Це видалить усі демо-записи, але збереже ваші особисті дані.";
 "deleteAllData" = "Видалити всі дані";
-"deleteAllDataMessage" = "Це назавжди видалить ВСІ ваші дані (товари, замовлення тощо). Цю дію неможливо скасувати.";
+"deleteAllDataMessage" = "Це назавжди видалить ВСІ ваші дані (товари, чеки тощо). Цю дію неможливо скасувати.";
 "deleting" = "Видалення...";
 "demoDataTitle" = "Демо-дані";
 "demoDataMessage" = "Бажаєте заповнити додаток демо-даними для ознайомлення?";
@@ -472,7 +472,7 @@
 "stockWarningShortageFormat" = "%@: потрібно ще %@";
 "stockWarningProceedQuestion" = "Продовжити збереження?";
 "orderPicker_allProducts" = "Всі товари";
-"orderPicker_returnToOrder" = "Повернутися до замовлення";
+"orderPicker_returnToOrder" = "Повернутися до чека";
 "orderPicker_emptyCategories" = "Немає категорій";
 "orderPicker_emptyProducts" = "Немає товарів";
 "orderPicker_noResults" = "Нічого не знайдено";
@@ -492,3 +492,93 @@
 "sortBy" = "Сортувати за";
 "nameAZ" = "Назвою (А-Я)";
 "nameZA" = "Назвою (Я-А)";
+
+// MARK: - Reports
+"reportsPLTitle" = "Скільки залишилось";
+"reportsPLSubtitle" = "Виручка мінус усі витрати — ваш реальний прибуток.";
+"reportsABCTitle" = "Що робить гроші";
+"reportsABCSubtitle" = "Топ-позиції меню і те, що варто перевірити.";
+"reportsTrendsTitle" = "Динаміка";
+"reportsTrendsSubtitle" = "З одного погляду — краще чи гірше за попередній період.";
+
+"kpiGroupSummary" = "Підсумок";
+"kpiGroupBreakdown" = "Розкладка";
+"kpiGroupDetails" = "Оплата та кількість";
+
+"kpiSales" = "Продажі";
+"kpiCOGS" = "Собівартість проданого товару";
+"kpiGrossProfit" = "Валовий прибуток";
+"kpiOpex" = "Операційні витрати";
+"kpiNetProfit" = "Чистий прибуток";
+"kpiMargin" = "Валова маржа";
+
+"kpiCash" = "Готівка";
+"kpiCard" = "Картка";
+"kpiOrdersCount" = "Чеки";
+"kpiExpensesCount" = "Витрати";
+
+"commonCurrencyUAH" = "₴";
+"commonLoading" = "...";
+
+"abcRankingTitle" = "По чому оцінюємо?";
+"abcRankingSales" = "Оборот";
+"abcRankingGross" = "Прибуток";
+"abcEmpty" = "У цьому періоді жодного товару не продано.";
+"abcProductCountFormat" = "%d одиниць";
+
+"trendsEmpty" = "Поки мало даних — повертайся після кількох періодів.";
+
+// MARK: - Common Periods
+"commonDay" = "День";
+"commonWeek" = "Тиждень";
+"commonMonth" = "Місяць";
+
+// MARK: - Reports Trends
+"trendsTotalSales" = "Всього продаж";
+"trendsTotalNet" = "Всього чистий";
+"trendsAvgNetPeriod" = "Сер. чистий / період";
+"trendsSalesPrefixFormat" = "Продажі: %@";
+"trendsCOGS" = "Собівартість";
+"trendsOpex" = "Опер. витрати";
+"trendsDeltaFormat" = "%@%.1f%% до попереднього";
+
+// MARK: - Reports ABC Buckets
+"abcBucketATitle" = "💰 РОБИТЬ ГРОШІ";
+"abcBucketBTitle" = "⚖️ СЕРЕДНЄ";
+"abcBucketCTitle" = "🤔 ПЕРЕВІРИТИ";
+"abcQtyPrefixFormat" = "Кількість: %@";
+"abcSharePrefixFormat" = "Частка: %@";
+"abcCumulativePrefixFormat" = "Всього: %@";
+
+// MARK: - Reports Simplified UX (non-accountant friendly)
+"kpiBigRevenue" = "ВСЬО ПРОДАНО";
+"kpiBigCosts" = "УСІ ВИТРАТИ";
+"kpiBigNet" = "ЗАЛИШИЛОСЬ (прибуток)";
+
+"commonShowDetails" = "Показати деталі 👇";
+"commonHideDetails" = "Сховати деталі 👆";
+"commonShowCosts" = "Показати витрати 👇";
+"commonHideCosts" = "Сховати витрати 👆";
+"commonShowMoreN" = "Показати ще %d";
+
+"trendsBigNetRemainedPeriod" = "ЗАЛИШИЛОСЬ за період";
+"trendsBetterByFormat" = "➕ Кращіше на %@%.1f%% ✅";
+"trendsWorseByFormat" = "➖ Гірше на %@%.1f%% ⚠️";
+
+"hubBigSalesLabel" = "Продажі";
+"hubBigCostsLabel" = "Витрати";
+"hubBigNetLabel" = "Залишилось";
+
+// MARK: - Reports P&L Tier 2 (Simple, non-accountant)
+"plSectionCostsBreakdown" = "З чого складаються витрати";
+"plProductCostsTitle" = "🛒 Товари";
+"plOperatingCostsTitle" = "💼 Інші витрати";
+
+"plSectionSalesSplit" = "💵 Надходження коштів";
+"plCashSalesTitle" = "💵 Готівка";
+"plCardSalesTitle" = "💳 Картка";
+
+"plSectionCoefficients" = "📋 Основні показники";
+"plAovTitle" = "📋 Середній чек";
+"plOrdersCountTitle" = "🔢 Чеків";
+"plExpensesCountTitle" = "📝 Витрат записано";

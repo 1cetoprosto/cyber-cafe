@@ -4,8 +4,8 @@ protocol HomeViewModelType {
     var todaySum: Double { get }
     var weekSum: Double { get }
     var monthSum: Double { get }
-    var monthExpenses: Double { get }
-    var monthProfit: Double { get }
+    var periodExpenses: Double { get }
+    var periodProfit: Double { get }
     var dateToday: Date { get }
     var cashBalance: Double { get }
     var cardBalance: Double { get }

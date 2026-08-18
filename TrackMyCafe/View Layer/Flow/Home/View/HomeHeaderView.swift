@@ -46,8 +46,8 @@ final class HomeHeaderView: UIView {
     )
     private let profitCard = ProfitCard()
     private let balanceCard = BalanceCard()
-    private let periodControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: [
+    private let periodControl: DefaultSegmentedControl = {
+        let control = DefaultSegmentedControl(items: [
             R.string.global.today(), R.string.global.week(), R.string.global.month(),
         ])
         control.selectedSegmentIndex = 2
@@ -99,7 +99,7 @@ final class HomeHeaderView: UIView {
         let incomeTitle = R.string.global.incomeFor(periodTitle.lowercased())
         summaryCard.configure(title: incomeTitle, value: salesText)
         expensesCard.configure(
-            title: R.string.global.costs() + " " + periodTitle.lowercased(),
+            title: R.string.global.expensesFor(periodTitle.lowercased()),
             value: NumberFormatter.currencyInteger.string(expenses)
         )
         profitCard.configure(
@@ -318,7 +318,7 @@ private final class TodayCardView: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
-        stack.alignment = .center
+        stack.alignment = .top
 
         addSubview(stack)
         stack.edgesToSuperview(
@@ -367,7 +367,7 @@ private final class SimpleKpiCard: UIView {
         let stack = UIStackView(arrangedSubviews: [iconBadge, header])
         stack.axis = .horizontal
         stack.spacing = UIConstants.smallSpacing
-        stack.alignment = .center
+        stack.alignment = .top
 
         addSubview(stack)
         stack.edgesToSuperview(

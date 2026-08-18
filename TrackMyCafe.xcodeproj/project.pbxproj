@@ -393,6 +393,33 @@
 		F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */; };
 		F39D785B2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
 		F39D785C2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
+		F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
+		F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54D4B30307AA8002B0C00 /* FinanceReportingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */; };
+		F3A54DA930308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DAA30308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DAB30308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DAC30308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DAD30308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DAE30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54DAF30308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DB030308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DB130308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DB230308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DB330308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DB430308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54DB530308325002B0C00 /* PLReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */; };
+		F3A54DB630308325002B0C00 /* ReportsHubViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */; };
+		F3A54DB730308325002B0C00 /* ReportsHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */; };
+		F3A54DB830308325002B0C00 /* ReportsHubReportCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */; };
+		F3A54DB930308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */; };
+		F3A54DBA30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */; };
+		F3A54E0E30333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
+		F3A54E1030333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
+		F3A54E1230333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */; };
 		F3A640B02C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B12C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
 		F3A640B22C3408A3006BCACD /* SubscriptionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */; };
@@ -982,6 +1009,15 @@
 		F39B5D1628460A06000F7D43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
+		F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDashboardFacade.swift; sourceTree = "<group>"; };
+		F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceReportingService.swift; sourceTree = "<group>"; };
+		F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABCReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PLReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrendsReportDetailViewController.swift; sourceTree = "<group>"; };
+		F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubReportCell.swift; sourceTree = "<group>"; };
+		F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewController.swift; sourceTree = "<group>"; };
+		F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportsHubViewModel.swift; sourceTree = "<group>"; };
+		F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultSegmentedControl.swift; sourceTree = "<group>"; };
 		F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionController.swift; sourceTree = "<group>"; };
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
@@ -1268,6 +1304,7 @@
 			isa = PBXGroup;
 			children = (
 				D8322C84341922937218E47A /* DashboardPeriod.swift */,
+				F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */,
 				287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */,
 				27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */,
 				5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */,
@@ -1620,6 +1657,7 @@
 		F3410E882BDD2D380007157B /* Flow */ = {
 			isa = PBXGroup;
 			children = (
+				F3A54DA830308325002B0C00 /* Reports */,
 				F371BECD2FED426D00D72C3A /* ManualMovements */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3F6A6352C327B73000961C8 /* Admin */,
@@ -1653,6 +1691,7 @@
 				F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */,
 				F30E1D832F65DF6300425DFF /* AppLabel.swift */,
 				F34BC9C02F63455E000476B5 /* BaseListTableViewCell.swift */,
+				F3A54E0C30333D1C002B0C00 /* DefaultSegmentedControl.swift */,
 				F3DB41B42EBDE2050095FBE1 /* NumericTextInputFilter.swift */,
 				F3410EA92BDD3E230007157B /* MainNavigationController.swift */,
 				F3C67911293929EF00E64D49 /* DefaultButton.swift */,
@@ -2177,6 +2216,59 @@
 			path = Settings;
 			sourceTree = "<group>";
 		};
+		F3A54D9E30308325002B0C00 /* ABC */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
+			);
+			path = ABC;
+			sourceTree = "<group>";
+		};
+		F3A54DA030308325002B0C00 /* PL */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
+			);
+			path = PL;
+			sourceTree = "<group>";
+		};
+		F3A54DA230308325002B0C00 /* Trends */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
+			);
+			path = Trends;
+			sourceTree = "<group>";
+		};
+		F3A54DA430308325002B0C00 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA330308325002B0C00 /* ReportsHubReportCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F3A54DA630308325002B0C00 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA430308325002B0C00 /* Cells */,
+				F3A54DA530308325002B0C00 /* ReportsHubViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DA830308325002B0C00 /* Reports */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9E30308325002B0C00 /* ABC */,
+				F3A54DA030308325002B0C00 /* PL */,
+				F3A54DA230308325002B0C00 /* Trends */,
+				F3A54DA630308325002B0C00 /* View */,
+				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
+			);
+			path = Reports;
+			sourceTree = "<group>";
+		};
 		F3A640AE2C340888006BCACD /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
@@ -2298,6 +2390,7 @@
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */,
 				F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */,
 				F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */,
 				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
@@ -3014,6 +3107,7 @@
 				F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */,
 				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
 				F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
+				F3A54D4B30307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3264985275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F32B52C82F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52C92F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
@@ -3026,6 +3120,12 @@
 				F3158C4B2763443700136861 /* RealmDatabaseService.swift in Sources */,
 				F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */,
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
+				F3A54DA930308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DAA30308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DAB30308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DAC30308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DAD30308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DAE30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F3F6A6092C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift in Sources */,
 				F385B41F2C1D904700973CAA /* TechnicianDetailsController.swift in Sources */,
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
@@ -3090,6 +3190,7 @@
 				F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1742D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F39A5337273252A500C8F2D3 /* CostListViewController.swift in Sources */,
+				F3A54E0E30333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B7C24D2806D81300DF5C2B /* TypesListViewController.swift in Sources */,
 				F371AA7827589CFB0059710A /* SettingsDataTableViewCell.swift in Sources */,
 				F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */,
@@ -3159,6 +3260,7 @@
 				F3F205532FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */,
 				6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */,
+				F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */,
 				EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */,
 				1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */,
@@ -3240,6 +3342,7 @@
 				F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */,
+				F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3B339C42C0B22FE0073F19A /* SetPasswordController.swift in Sources */,
 				F32B52C52F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52C62F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
@@ -3252,6 +3355,12 @@
 				F3B339C92C0B22FE0073F19A /* TypeModel.swift in Sources */,
 				F3F6A6232C32799B000961C8 /* TechniciansListController.swift in Sources */,
 				F3B339CA2C0B22FE0073F19A /* OrderTableViewCell.swift in Sources */,
+				F3A54DB530308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DB630308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DB730308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DB830308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DB930308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DBA30308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F39D785B2C2056190003B556 /* PersonListModelProtocol.swift in Sources */,
 				F3B339CB2C0B22FE0073F19A /* ProductListItemViewModel.swift in Sources */,
 				F3B339CC2C0B22FE0073F19A /* UIImage+Extension.swift in Sources */,
@@ -3316,6 +3425,7 @@
 				F3DB41B92EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1732D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B339E72C0B22FE0073F19A /* UIColor+Extension.swift in Sources */,
+				F3A54E1030333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B339E82C0B22FE0073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B339E92C0B22FE0073F19A /* Role.swift in Sources */,
 				F3B339EA2C0B22FE0073F19A /* SceneDelegate.swift in Sources */,
@@ -3385,6 +3495,7 @@
 				F3F205542FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */,
 				6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */,
+				F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */,
 				175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */,
 				11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */,
@@ -3466,6 +3577,7 @@
 				F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */,
+				F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
 				F3B33A632C0B23450073F19A /* SetPasswordController.swift in Sources */,
 				F32B52CB2F2B6F800005E63D /* RealmRecipeItemModel.swift in Sources */,
 				F32B52CC2F2B6F800005E63D /* RealmSaleGoodModel.swift in Sources */,
@@ -3478,6 +3590,12 @@
 				F3B33A682C0B23450073F19A /* TypeModel.swift in Sources */,
 				F3F6A6242C32799C000961C8 /* TechniciansListController.swift in Sources */,
 				F3B33A692C0B23450073F19A /* OrderTableViewCell.swift in Sources */,
+				F3A54DAF30308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
+				F3A54DB030308325002B0C00 /* ReportsHubViewModel.swift in Sources */,
+				F3A54DB130308325002B0C00 /* ReportsHubViewController.swift in Sources */,
+				F3A54DB230308325002B0C00 /* ReportsHubReportCell.swift in Sources */,
+				F3A54DB330308325002B0C00 /* TrendsReportDetailViewController.swift in Sources */,
+				F3A54DB430308325002B0C00 /* ABCReportDetailViewController.swift in Sources */,
 				F39D785C2C2056190003B556 /* PersonListModelProtocol.swift in Sources */,
 				F3B33A6A2C0B23450073F19A /* ProductListItemViewModel.swift in Sources */,
 				F3B33A6B2C0B23450073F19A /* UIImage+Extension.swift in Sources */,
@@ -3542,6 +3660,7 @@
 				F3DB41BA2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */,
 				F37CB1722D5A8CE0006F1E89 /* AppLogger.swift in Sources */,
 				F3B33A862C0B23450073F19A /* UIColor+Extension.swift in Sources */,
+				F3A54E1230333D1C002B0C00 /* DefaultSegmentedControl.swift in Sources */,
 				F3B33A872C0B23450073F19A /* SettingsSwitchTableViewCell.swift in Sources */,
 				F3B33A882C0B23450073F19A /* Role.swift in Sources */,
 				F3B33A892C0B23450073F19A /* SceneDelegate.swift in Sources */,
@@ -3611,6 +3730,7 @@
 				F3F205552FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */,
 				0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */,
+				F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */,
 				DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */,
 				61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */,
 				E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */,
@@ -3905,7 +4025,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3940,7 +4060,7 @@
 					"@executable_path/Frameworks",
 				);
 				MACH_O_TYPE = mh_execute;
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -3973,7 +4093,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -4005,7 +4125,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -4038,7 +4158,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -4070,7 +4190,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.10;
+				MARKETING_VERSION = 1.1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
