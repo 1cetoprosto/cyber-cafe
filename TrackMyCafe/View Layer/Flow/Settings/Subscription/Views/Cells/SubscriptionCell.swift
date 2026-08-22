@@ -31,18 +31,18 @@ class SubscriptionCell: UITableViewCell {
     }()
     
     private lazy var nameLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 17, weight: .bold)
         return label
     }()
     
     private lazy var priceLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         return label
     }()
     
     private lazy var infoLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 14)
         label.numberOfLines = 0
         return label

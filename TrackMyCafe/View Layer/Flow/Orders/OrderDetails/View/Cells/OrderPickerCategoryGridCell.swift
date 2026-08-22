@@ -40,11 +40,11 @@ final class OrderPickerCategoryGridCell: UICollectionViewCell {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyMultiline)
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         return label
     }()
 

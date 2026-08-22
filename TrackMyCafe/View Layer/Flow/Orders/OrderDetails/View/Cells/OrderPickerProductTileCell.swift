@@ -33,7 +33,7 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
     }()
 
     private let quantityLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.textAlignment = .center
         label.textColor = UIColor.Main.text
         let baseSize = UIFont.preferredFont(forTextStyle: .largeTitle).pointSize
@@ -59,18 +59,18 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyBold)
         label.numberOfLines = 2
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.bodyBold)
+        label.apply(.bodyBold)
         return label
     }()
 
     private let priceLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.numberOfLines = 1
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.footnote)
+        label.apply(.footnote)
         return label
     }()
 
