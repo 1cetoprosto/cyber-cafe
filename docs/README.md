@@ -1,6 +1,8 @@
 # TrackMyCafe (Cyber Cafe)
 
 iOS додаток для обліку доходів та витрат в кафе.
+Поточний релізний baseline: **v1.1.0** (Reports Hub / P&L / ABC / Trends вже присутні в коді та таббарі).
+Ближчі stability/feature-patch релізи: `v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4` (див. `TrackMyCafe/Documentations/ROADMAP.md`).
 
 ## Опис
 
@@ -16,7 +18,10 @@ TrackMyCafe — це мобільний додаток для власників
 - Планування продаж та план-фактний аналіз
 - Підтримка світлої та темної тем
 - Локалізація (українська, англійська)
-- Звіти з графіками та діаграмами
+- Звіти з графіками та діаграмами (Reports Hub: P&L, ABC-аналіз, Динаміка)
+- Dashboard (Home) з Sales/COGS/Opex/Gross/Net метриками за період
+- Inventory behavior: глобальний перемикач `Track Ingredients` для автоматичного списання/відновлення складу при продажу/поверненні
+- Журнал ручних складських коригувань на основі `InventoryAdjustmentModel`
 - Синхронізація декількох пристроїв (Firebase Firestore)
 - Біометрична автентифікація (Face ID / Touch ID)
 
@@ -25,19 +30,20 @@ TrackMyCafe — це мобільний додаток для власників
 - **iOS**: 15.0+
 - **Xcode**: 14.0+
 - **Swift**: 5.x
-- **CocoaPods**: 1.12+
+- **CocoaPods**: 1.12+ (планується міграція R.swift на SPM у v1.1.4)
 
 ## Залежності
 
 Основні залежності проєкту:
 
-- **Firebase**:
+- **Firebase (v10+)**:
   - FirebaseAuth — автентифікація користувачів
   - FirebaseFirestore — хмарна база даних
   - FirebaseStorage — зберігання файлів
   - FirebaseFirestoreSwift — Swift розширення для Firestore
-- **Realm** — локальна база даних
+- **Realm (v10+)** — legacy локальна база (планується повне видалення з продукційних шляхів у v1.1.3)
 - **R.swift** — типобезпечні ресурси
+- **TinyConstraints** — programmatic Auto Layout (UIKit only, no Storyboards/SwiftUI)
 - **SVProgressHUD** — індикатори завантаження
 - **KeychainAccess** — безпечне зберігання даних
 
@@ -57,23 +63,24 @@ TrackMyCafe/
 │   ├── Models/           # Моделі даних
 │   │   ├── Domain/       # Domain моделі
 │   │   ├── Firestore/    # Firebase моделі
-│   │   └── Realm/        # Realm моделі
+│   │   └── Realm/        # Realm моделі (legacy)
 │   ├── Service/          # Сервіси зберігання
 │   └── Utils/            # Утиліти та константи
 ├── Services/             # Бізнес-логіка
-│   ├── Domain/           # Domain сервіси
+│   ├── Domain/           # Domain сервіси (aggregation, finance/reporting facade)
 │   ├── FIR/              # Firebase сервіси
-│   └── Realm/            # Realm сервіси
-├── View Layer/           # UI шар
+│   └── Realm/            # Realm сервіси (legacy)
+├── View Layer/           # UI шар (UIKit + TinyConstraints, programmatic)
 │   ├── Flow/             # Екрани та флоу
 │   │   ├── Auth/         # Авторизація
-│   │   ├── Home/         # Головний екран
-│   │   ├── Orders/       # Замовлення
-│   │   ├── Costs/        # Витрати
-│   │   ├── Inventory/    # Інвентар
-│   │   ├── Settings/     # Налаштування
+│   │   ├── Home/         # Головний екран / Dashboard
+│   │   ├── Orders/       # Замовлення / POS / Історія
+│   │   ├── Costs/        # Витрати (Purchases / Opex / Inventory)
+│   │   ├── Inventory/    # Інвентар / Закупівлі / Інвентаризація
+│   │   ├── Reports/      # Reports Hub / P&L / ABC / Trends (v1.1.0+)
+│   │   ├── Settings/     # Налаштування (Track Ingredients, Products, Ingredients)
 │   │   └── ...
-│   └── UI/               # UI компоненти
+│   └── UI/               # UI компоненти, Onboarding, PopupFactory
 ├── Extensions/           # Swift розширення
 ├── Utilities/            # Допоміжні утиліти
 └── Resources/            # Ресурси (Localizable, Assets)
@@ -132,6 +139,7 @@ pod install
 | `settings.theme` | Тема (світла/темна) |
 | `settings.online` | Legacy-прапорець; не є цільовою частиною нової архітектури |
 | `hasSeenOnboarding` | Чи показувався onboarding |
+| `settings.trackIngredients` | Глобальний перемикач автоматичного списання складу за рецептом |
 
 ### Firebase Collections
 
@@ -139,12 +147,15 @@ pod install
 |----------|------|
 | `users` | Користувачі |
 | `roles` | Ролі та доступи |
-| `orders` | Замовлення |
+| `orders` | Замовлення (шапка + totals, з COGS snapshot з v1.0.9+) |
+| `orderItems` | Item-level чеку (з salePrice/costPrice замовчуванням з v1.0.9+) |
 | `productsPrice` | Продукти та ціни |
-| `ingredients` | Інгредієнти |
-| `purchases` | Закупівлі |
+| `ingredients` | Інгредієнти (залишки, середня ціна, low-stock thresholds) |
+| `recipes` | Рецепти (Products → Ingredients) |
+| `purchases` | Закупівлі (поповнення складу, зміна averageCost) |
 | `opexExpenses` | Операційні витрати |
-| `inventoryAdjustments` | Коригування запасів |
+| `inventoryAdjustments` | Коригування запасів (manual correction / audit trail) |
+| `journalEntries` / `dailyBalances` | (target) Журналізовані залишки cash/card (в розробці / roadmap) |
 
 ## Тестування
 
@@ -152,9 +163,13 @@ pod install
 
 ## Додаткова документація
 
-- [Architecture](architecture.md) — архітектура додатку
-- [Conventions](conventions.md) — code style та правила розробки
-- [API](api/openapi.yaml) — OpenAPI специфікація
+Детальна продуктова/дев-документація лежить у `TrackMyCafe/Documentations/`:
+
+- [DEV_IMPLEMENTATION_GUIDE.md](../TrackMyCafe/Documentations/DEV_IMPLEMENTATION_GUIDE.md) — канонічний поточний стан продукту (shipped vs planned), межі модулів, джерела істини.
+- [ROADMAP.md](../TrackMyCafe/Documentations/ROADMAP.md) — релізна карта: v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4 після shipped v1.1.0.
+- [ARCHITECTURE_AND_LOGIC.md](../TrackMyCafe/Documentations/ARCHITECTURE_AND_LOGIC.md) — цільова архітектура, доменні моделі, сервіси, бізнес-правила.
+- [REPORTS.md](../TrackMyCafe/Documentations/REPORTS.md) — специфікація Reports Hub (P&L / ABC / Trends) — вже відповідає shipped стану v1.1.0+.
+- [V1_1_IMPLEMENTATION_GUIDE.md](../TrackMyCafe/Documentations/V1_1_IMPLEMENTATION_GUIDE.md) — execution playbook, anti-rework правила, DoR/DoD, release discipline.
 
 ## Ліцензія
 

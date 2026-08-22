@@ -1,32 +1,38 @@
 # Архітектура та Логіка TrackMyCafe
 
-Цей документ описує target architecture: цільові доменні моделі, бізнес-правила, сервіси та взаємодію між ними.
+Цей документ описує **target architecture** — цільові доменні моделі, бізнес-правила, сервіси та взаємодію між ними.
 
 Важливо:
 
-- це не release roadmap;
-- це не канонічний статус поточної реалізації;
-- якщо треба зрозуміти, що реально вже shipped у `1.0.7`, дивись `DEV_IMPLEMENTATION_GUIDE.md`;
-- якщо треба зрозуміти чергу релізів після `1.0.7`, дивись `ROADMAP.md`.
+- це не release roadmap (див. `ROADMAP.md`);
+- це не канонічний статус поточної реалізації (див. `DEV_IMPLEMENTATION_GUIDE.md`);
+- якщо треба зрозуміти, що реально вже **shipped у v1.1.0**, дивись `DEV_IMPLEMENTATION_GUIDE.md`;
+- якщо треба зрозуміти чергу релізів після shipped v1.1.0, дивись `ROADMAP.md`.
 
 ---
 
 ## 0. Версії та охоплення
 
-- **Поточний release baseline: 1.0.7**
-  - Основні екрани: `Home`, `Income`, `Costs`, `Settings`.
-  - `Reports Hub` у поточному таббарі ще не ввімкнений.
-  - `Home` вже має базові summaries і period-based aggregation для частини метрик, але це ще не повний `P&L dashboard`.
-  - `InventoryAdjustmentModel` і ручні коригування вже існують, але bulk inventory workflow ще не добудований.
-  - Firebase Firestore є primary storage; Realm лишається legacy-шаром.
+- **Shipped release baseline: v1.1.0**
+  - Основні екрани: `Home (Dashboard)`, `Income (Sales/POS + Order History)`, `Costs (Inventory + Opex)`, `Reports Hub`, `Settings`.
+  - `Reports Hub` у MainTabBarController (tab 4) **вже ввімкнений**: P&L, ABC-аналіз, Trends.
+  - `Home` вже має period-based aggregation (Sales/COGS/Opex/Gross/Net Profit) через centralized aggregation services + finance/reporting facade.
+  - `InventoryAdjustmentModel`, ручні коригування, **Track Ingredients toggle** та **COGS snapshot (Order+OrderItem)** вже реалізовані в коді.
+  - Firebase Firestore — primary storage; Realm — **legacy-шар**, що поступово прибирається з продукційних шляхів (v1.1.3).
 
-- **Наступні релізи**
-  - Довести до кінця `cash/card balances`.
-  - Довести до кінця historical `COGS snapshot` на рівні `OrderModel`/`OrderItemModel`.
-  - Додати `Track Ingredients`.
-  - Після цього добудувати full aggregation/reporting stack.
+- **1.1.x stability/feature-patch line (in progress / roadmap)**
+  1. v1.1.1: UI stability (UILabel → AppLabel / Dynamic Type) + docs sync.
+  2. v1.1.2: Inventory audit bulk workflow + per-ingredient low-stock thresholds.
+  3. v1.1.3: Remove Realm from prod paths, uniform async/await, domain models refine.
+  4. v1.1.4: UI polish (secondaryText, PopupFactory/InputPopupView), R.swift SPM.
 
-Нижченаведені моделі та сервіси описують **цільову архітектуру**, до якої додаток рухається. Поточна реалізація `1.0.7` покриває лише частину цієї логіки.
+- **Future minors (після 1.1.x, за явною user-потребою)**
+  - Journal-based cash/card balances + materialized DailyBalance.
+  - Multi-location / Roles.
+  - CSV export / drill-down filters for Reports.
+  - OCR / scan purchase receipts.
+
+Нижченаведені моделі та сервіси описують **цільову архітектуру**, до якої додаток рухається; частина цієї логіки вже реалізована у shipped v1.1.0 (зокрема aggregation/reporting layer і моделі Order/OrderItem з COGS snapshot).
 
 ---
 
@@ -71,11 +77,11 @@ struct OpexExpenseModel: Identifiable, Codable {
 **Вплив:** Зменшує `Ingredient.stockQuantity`, збільшує `Revenue`.
 
 > **Важливо про стан моделі:**
-> У кодовій базі 1.0.x `OrderModel` все ще зберігає переважно "шапку" чеку (`sum`, `cash`, `card`, `totalCost`), а item-level деталізація живе окремо.
-> Для задач `#143`, `#145`, `#146` та `#154` цільовою моделлю вважаємо зв'язку `OrderModel` + `OrderItemModel`, де:
+> У кодовій базі **1.0.x → v1.1.0** baseline `OrderModel` з часом став сумісним зі snapshot-підходом: стабільний `totalCost` на рівні `OrderModel` і item-level деталізація `OrderItemModel` вже використовуються Reports Hub та Dashboard як джерело P&L / ABC / Trends (shipped v1.1.0).
+> Для **майбутньої роботи** (domain models refine у v1.1.3 / future minors) цільовою моделлю вважаємо зв'язку `OrderModel` + `OrderItemModel`, де:
 > - `OrderModel` відповідає за підсумок чеку;
 > - `OrderItemModel` відповідає за item-level snapshot (`salePrice`, `costPrice`, `quantity`);
-> - ABC/reporting більше не повинні спиратись на абстрактну single-line `Sale` модель.
+> - ABC/reporting більше не спиратимуться на абстрактну single-line `Sale` модель.
 
 ```swift
 struct OrderModel {
@@ -164,7 +170,7 @@ struct InventoryAdjustmentModel {
 *   `GrossProfit = Sales - COGS`
 *   `NetProfit = GrossProfit - Opex`
 
-У версії **1.0.7** Home уже використовує частину aggregation services, але повний шар, наведений у цьому підрозділі, все ще є таргетом для `#154` і `#145`.
+У версії **1.0.7** Home уже використовував частину aggregation services. У **shipped v1.1.0** шар зведено до повного стану: aggregation services + finance/reporting facade є canonical джерелом для Dashboard (Home) та Reports Hub, і UI не дублює формули. Майбутні релізи (v1.1.3 domain refine, v1.2 journal balances) доповнюють цей шар, не руйнуючи вже укладених меж.
 
 ---
 
