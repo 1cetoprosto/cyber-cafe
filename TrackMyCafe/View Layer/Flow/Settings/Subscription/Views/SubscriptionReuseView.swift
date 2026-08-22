@@ -29,7 +29,7 @@ class SubscriptionReuseView: UIView {
     // MARK: - Private Properties
     
     private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.numberOfLines = 0
         label.textColor = UIColor.Main.text // Змінюємо на загальний колір тексту
         label.font = .systemFont(ofSize: 17) // Використовуємо стандартний розмір шрифту
