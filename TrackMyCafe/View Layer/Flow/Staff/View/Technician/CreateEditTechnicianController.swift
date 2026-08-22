@@ -163,7 +163,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
     let container = UIView()
     //container.backgroundColor = UIColor.TableView.cellBackground
     container.translatesAutoresizingMaskIntoConstraints = false
-    let titleLabel = UILabel()
+    let titleLabel = AppLabel(style: .footnote)
     titleLabel.text = label
     titleLabel.textColor = UIColor.Main.text
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -202,7 +202,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
   ) -> UIView {
     let container = UIView()
     container.translatesAutoresizingMaskIntoConstraints = false
-    let titleLabel = UILabel()
+    let titleLabel = AppLabel(style: .footnote)
     titleLabel.text = label
     titleLabel.textColor = UIColor.Main.text
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -238,7 +238,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
   private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView {
     let container = UIView()
     container.translatesAutoresizingMaskIntoConstraints = false
-    let titleLabel = UILabel()
+    let titleLabel = AppLabel(style: .footnote)
     titleLabel.text = label
     titleLabel.textColor = UIColor.Main.text
     titleLabel.translatesAutoresizingMaskIntoConstraints = false
