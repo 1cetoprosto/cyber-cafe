@@ -62,7 +62,7 @@
 - Issue `#240` docs / medium: chore(docs): sync product docs with current shipped state (цей самий документ, README, DEV guide, ARCH, REPORTS).
 - **DoD:**
   - Основні екрани (Home, Reports Hub, Costs, Inventory, Settings) не мають bare `UILabel`, де це впливає на розміри/колір/динаміку шрифту.
-  - docs/README.md + Documentations/*.md вже відповідають v1.1.x shipped реальності, описи “Reports ще не реалізовано” прибрані.
+  - docs/README.md + docs/internal/*.md вже відповідають v1.1.x shipped реальності, описи “Reports ще не реалізовано” прибрані.
 
 ### `v1.1.2` — Inventory Audit & Bulk Count
 
