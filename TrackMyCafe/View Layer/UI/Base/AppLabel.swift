@@ -3,15 +3,27 @@ import UIKit
 final class AppLabel: UILabel {
     enum Style {
         case largeTitle
+        case largeTitleBold
+        case largeTitleBoldValue
+        case title1
+        case title1Bold
+        case title1BoldValue
         case title2DemiBold
         case title3
+        case title3DemiBold
+        case title3DemiBoldValue
         case title3Value
+        case headline
         case body
         case bodyMedium
+        case bodyDemiBold
         case bodyBold
         case bodyBoldValue
         case bodyMultiline
         case bodyValue
+        case callout
+        case calloutDemi
+        case calloutDemiValue
         case footnote
         case footnoteLight
         case footnoteValue
@@ -57,6 +69,42 @@ final class AppLabel: UILabel {
             lineBreakMode: .byWordWrapping,
             textColor: UIColor.Main.text
         ),
+        .largeTitleBold: Configuration(
+            font: Typography.largeTitleBold,
+            numberOfLines: 2,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .largeTitleBoldValue: Configuration(
+            font: Typography.largeTitleBold,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text,
+            adjustsFontSizeToFitWidth: true,
+            minimumScaleFactor: 0.6,
+            allowsDefaultTighteningForTruncation: true
+        ),
+        .title1: Configuration(
+            font: Typography.title1,
+            numberOfLines: 2,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .title1Bold: Configuration(
+            font: Typography.title1Bold,
+            numberOfLines: 2,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .title1BoldValue: Configuration(
+            font: Typography.title1Bold,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text,
+            adjustsFontSizeToFitWidth: true,
+            minimumScaleFactor: 0.6,
+            allowsDefaultTighteningForTruncation: true
+        ),
         .title2DemiBold: Configuration(
             font: Typography.title2DemiBold,
             numberOfLines: 1,
@@ -69,6 +117,20 @@ final class AppLabel: UILabel {
             lineBreakMode: .byTruncatingTail,
             textColor: UIColor.Main.text
         ),
+        .title3DemiBold: Configuration(
+            font: Typography.title3DemiBold,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .title3DemiBoldValue: Configuration(
+            font: Typography.title3DemiBold,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text,
+            adjustsFontSizeToFitWidth: true,
+            minimumScaleFactor: 0.7
+        ),
         .title3Value: Configuration(
             font: Typography.title3,
             numberOfLines: 1,
@@ -76,6 +138,12 @@ final class AppLabel: UILabel {
             textColor: UIColor.Main.text,
             adjustsFontSizeToFitWidth: true,
             minimumScaleFactor: 0.7
+        ),
+        .headline: Configuration(
+            font: Typography.headline,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
         ),
         .body: Configuration(
             font: Typography.body,
@@ -85,6 +153,12 @@ final class AppLabel: UILabel {
         ),
         .bodyMedium: Configuration(
             font: Typography.bodyMedium,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .bodyDemiBold: Configuration(
+            font: Typography.bodyDemiBold,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
             textColor: UIColor.Main.text
@@ -116,6 +190,27 @@ final class AppLabel: UILabel {
             textColor: UIColor.Main.text,
             adjustsFontSizeToFitWidth: true,
             minimumScaleFactor: 0.8
+        ),
+        .callout: Configuration(
+            font: Typography.callout,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .calloutDemi: Configuration(
+            font: Typography.calloutDemi,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text
+        ),
+        .calloutDemiValue: Configuration(
+            font: Typography.calloutDemi,
+            numberOfLines: 1,
+            lineBreakMode: .byTruncatingTail,
+            textColor: UIColor.Main.text,
+            adjustsFontSizeToFitWidth: true,
+            minimumScaleFactor: 0.7,
+            allowsDefaultTighteningForTruncation: true
         ),
         .footnote: Configuration(
             font: Typography.footnote,
