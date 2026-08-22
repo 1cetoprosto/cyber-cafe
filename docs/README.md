@@ -2,7 +2,7 @@
 
 iOS додаток для обліку доходів та витрат в кафе.
 Поточний релізний baseline: **v1.1.0** (Reports Hub / P&L / ABC / Trends вже присутні в коді та таббарі).
-Ближчі stability/feature-patch релізи: `v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4` (див. `TrackMyCafe/Documentations/ROADMAP.md`).
+Ближчі stability/feature-patch релізи: `v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4` (див. `internal/ROADMAP.md`).
 
 ## Опис
 
@@ -163,13 +163,13 @@ pod install
 
 ## Додаткова документація
 
-Детальна продуктова/дев-документація лежить у `TrackMyCafe/Documentations/`:
+Детальна продуктова/дев-документація лежить у `docs/internal/` та сусідніх підпапках:
 
-- [DEV_IMPLEMENTATION_GUIDE.md](../TrackMyCafe/Documentations/DEV_IMPLEMENTATION_GUIDE.md) — канонічний поточний стан продукту (shipped vs planned), межі модулів, джерела істини.
-- [ROADMAP.md](../TrackMyCafe/Documentations/ROADMAP.md) — релізна карта: v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4 після shipped v1.1.0.
-- [ARCHITECTURE_AND_LOGIC.md](../TrackMyCafe/Documentations/ARCHITECTURE_AND_LOGIC.md) — цільова архітектура, доменні моделі, сервіси, бізнес-правила.
-- [REPORTS.md](../TrackMyCafe/Documentations/REPORTS.md) — специфікація Reports Hub (P&L / ABC / Trends) — вже відповідає shipped стану v1.1.0+.
-- [V1_1_IMPLEMENTATION_GUIDE.md](../TrackMyCafe/Documentations/V1_1_IMPLEMENTATION_GUIDE.md) — execution playbook, anti-rework правила, DoR/DoD, release discipline.
+- [DEV_IMPLEMENTATION_GUIDE.md](internal/DEV_IMPLEMENTATION_GUIDE.md) — канонічний поточний стан продукту (shipped vs planned), межі модулів, джерела істини.
+- [ROADMAP.md](internal/ROADMAP.md) — релізна карта: v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4 після shipped v1.1.0.
+- [ARCHITECTURE_AND_LOGIC.md](internal/ARCHITECTURE_AND_LOGIC.md) — цільова архітектура, доменні моделі, сервіси, бізнес-правила.
+- [REPORTS.md](internal/REPORTS.md) — специфікація Reports Hub (P&L / ABC / Trends) — вже відповідає shipped стану v1.1.0+.
+- [V1_1_IMPLEMENTATION_GUIDE.md](internal/V1_1_IMPLEMENTATION_GUIDE.md) — execution playbook, anti-rework правила, DoR/DoD, release discipline.
 
 ## Ліцензія
 
