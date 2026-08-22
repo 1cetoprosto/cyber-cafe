@@ -24,106 +24,106 @@
 - `ARCHITECTURE_AND_LOGIC.md`:
   target architecture, доменні моделі, сервіси, long-term business rules.
 - `ROADMAP.md`:
-  релізна послідовність після `1.0.7`.
+  релізна послідовність після **shipped v1.1.0** (лінія 1.1.x patches).
 - `V1_1_IMPLEMENTATION_GUIDE.md`:
   solo-dev execution playbook, anti-rework правила, DoR/DoD, release discipline.
 - `REPORTS.md`:
-  окрема специфікація майбутнього reporting module.
+  специфікація Reports Hub, яка вже відповідає поточному shipped стану v1.1.0+.
 
-## Поточний стан на `1.0.7`
+## Поточний стан на **shipped v1.1.0** (baseline для 1.1.x)
 
-### Що вже є в додатку
+### Що вже є в додатку (reality після v1.1.0)
 
-- Є 4 основні таби: `Home`, `Income`, `Costs`, `Settings`.
-- Окремого `Reports` tab або `Reports Hub` у поточному UI ще немає.
-- `Home` вже показує базову зведену інформацію і використовує period-based summaries для продажів та витрат.
-- `Products`, `Ingredients`, `Recipes`, `Purchases`, `Stock List`, `Opex`, `Order History`, `POS` уже присутні в коді.
+- Є 5 основних табів: `Home (Dashboard)`, `Income (Sales/POS + Order History)`, `Costs (Inventory / Opex)`, `Reports Hub`, `Settings`.
+- Reports Hub (tab 4) вже увімкнений і містить: P&L, ABC-аналіз, Trends (Динаміка).
+- `Home` показує period-based summaries для Sales / COGS / Opex / Gross Profit / Net Profit і використовує централізовані aggregation services.
+- `Products`, `Ingredients`, `Recipes`, `Purchases`, `Stock List`, `Opex`, `Order History`, `POS` вже присутні в коді.
 - Ручні складські коригування вже є через `InventoryAdjustmentModel` і `InventoryService.processStockAdjustment(...)`.
+- **Track Ingredients**: глобальний toggle (on/off) для автоматичного списання/відновлення складу при продажу/поверненні (v1.0.10).
+- **COGS snapshot**: на рівні `OrderModel.totalCost` + `OrderItemModel.costPrice` стабільно фіксується в момент продажу (v1.0.9).
+- **Finance/reporting layer**: centralized aggregation (`IncomeAggregationService`, `OpexAggregationService`, `FinanceAggregationService`) + facade для reports DTO (v1.1.0).
 
-### Що реалізовано частково
+### Що реалізовано частково (in progress / next patches)
 
-- `HomeViewModel` уже використовує `IncomeAggregationService`, `OpexAggregationService` і простий `FinanceAggregationService`, але це ще не повний finance/reporting layer.
-- `OrderModel` уже має поле `totalCost`, але повна модель для reporting ще не зведена до стабільної зв'язки `OrderModel + OrderItemModel` як єдиного джерела для `P&L`, `ABC`, `Trends`.
-- `InventoryService.deductStock(...)` уже списує склад під час продажу, але глобальний toggle `Track Ingredients` ще не реалізований.
-- `InventoryAdjustment` уже існує як модель і persisted event, але повного bulk inventory workflow та окремого audit-focused UI ще немає.
+- Cash/card balances показані на Home, але ще **не вирішено через journal-based `JournalEntry` + materialized `DailyBalance`**. Поки це aggregation-based approximation; для повної фінансової довіри потрібен окремий реліз (target — додасться після 1.1.x, якщо буде явно необхідно).
+- `InventoryAdjustment` існує як модель і persisted event, але ще **немає bulk audit workflow** і audit-focused UI (target v1.1.2, `#144`).
+- Low-stock thresholds ще не повністю інтегровані в UI і моделі (target v1.1.2, `#152`).
+- Realm ще присутній у продукційних кодових шляхах десь (legacy), хоча нові фінансові/репорт-модулі вже не побудовані на ньому (plan v1.1.3, `#141`/`#178`).
+- Деякі FIR/Domain сервіси ще змішують completion blocks і async/await; треба uniform async/await entrance (v1.1.3, `#140`).
+- UI-консистентність: bare UILabel ще зустрічаються; secondaryText ще не ввезено всюди; попапи частини через UIAlertController (v1.1.1 та v1.1.4).
 
-### Що ще не реалізовано
+### Що ще не реалізовано явно (за потреби після 1.1.x)
 
-- journal-based `cash/card balances`;
-- `Track Ingredients` setting;
-- стабільний item-level `COGS snapshot` для звітності;
-- повний `finance/reporting facade`;
-- `Reports Hub UI`;
-- bulk inventory count workflow.
+- Journal-based `cash/card balances` + `DailyBalance` як materialized джерело істини;
+- Додаткові Reports drill-down (CSV export, фільтри по receipt types, payment methods breakdown — доки немає явного user ask);
+- Multi-location / roles / permissions;
+- OCR/сканування чеків для закупівель.
 
 ## Поточні межі модулів
 
 ### Продажі
 
 - Поточний факт продажу в коді живе навколо `OrderModel`.
-- У `1.0.7` це ще переважно header-level модель чеку: `sum`, `cash`, `card`, `totalCost`, `note`.
-- Для майбутньої аналітики canonical direction такий:
-  - `OrderModel` = шапка чеку та totals;
-  - `OrderItemModel` = item-level snapshot (`salePrice`, `costPrice`, `quantity`).
+- У **v1.1.0** це вже не "тільки шапка": canonical snapshot = `OrderModel` + `OrderItemModel` (з `salePrice`, `costPrice`, `quantity`).
+- Для звітності (P&L, ABC, Trends) беремо **samе snapshot**, не перераховуючи COGS з поточних рецептів.
 
 ### Склад
 
-- `IngredientModel` і `PurchaseModel` уже формують робочий inventory baseline.
-- Середня ціна рахується через weighted average.
+- `IngredientModel` і `PurchaseModel` формують робочий inventory baseline.
+- Середня ціна рахується через weighted average при purchase.
 - `InventoryAdjustmentModel` змінює тільки кількість, не `averageCost`.
 - Негативні залишки дозволені й повинні лишатись підтриманим сценарієм.
+- Track Ingredients (v1.0.10):
+  - `On` → `processSale` списує склад за рецептом; refund відновлює.
+  - `Off` → sale/refund не змінюють склад автоматично; ручні InventoryAdjustment залишаються доступними.
 
 ### Opex
 
-- `OpexExpenseModel` уже є окремою сутністю.
-- У поточному продукті Opex впливає на узагальнені показники Home.
-- Payment-method accounting для Opex ще не завершений, тому balances поки не можна вважати фінансово завершеними.
+- `OpexExpenseModel` — окрема сутність; впливає на Net Profit і Home summaries.
+- Payment-method accounting для Opex ще незавершений; тому cash/card balances поки вважаються aggregation-based.
 
-### Dashboard
+### Dashboard (Home)
 
-- `Home` у `1.0.7` уже не є "порожнім екраном", але це ще не повний `P&L dashboard`.
-- У коді є period-based income/opex aggregation.
-- Поточний `FinanceAggregationService` рахує тільки спрощений `net profit = sales - opex`.
-- `COGS`, `gross profit`, `margin`, journal balances і report DTO ще не централізовані повністю.
+- У **v1.1.0** це вже не "порожній екран", це робочий P&L dashboard для періоду: Sales / COGS / Opex / Gross Profit / Net Profit.
+- Period-based income/opex aggregation централізована в aggregation services; HomeViewModel не містить власних фінансових формул.
 
-### Reports
+### Reports (v1.1.0 shipped)
 
-- `REPORTS.md` описує target spec.
-- У коді `Reports Hub` ще не увімкнений.
-- Тому всі report-oriented описи в docs треба читати як target state, а не як already shipped behavior.
+- `REPORTS.md` тепер описує **shipped специфікацію**, а не тільки target.
+- Reports Hub UI: P&L / ABC / Trends.
+- Reports Hub використовує готові reporting DTO з finance/reporting facade; UI не рахує фінанси сам.
 
 ## Джерела істини по зонах
 
-- inventory quantities -> `IngredientModel.stockQuantity` + `PurchaseModel` + `InventoryAdjustmentModel`
-- ingredient cost basis -> `IngredientModel.averageCost`
-- current sales summary -> `OrderModel`
-- future historical COGS truth -> `OrderModel.totalCost` + `OrderItemModel.costPrice`
-- current Home sales/opex summaries -> aggregation services
-- future balances -> `JournalEntry` + `DailyBalance`
-- future report projections -> finance/reporting facade
+- inventory quantities → `IngredientModel.stockQuantity` + `PurchaseModel` + `InventoryAdjustmentModel`
+- ingredient cost basis → `IngredientModel.averageCost` (weighted average at purchase)
+- historical COGS snapshot for a sale → `OrderModel.totalCost` + `OrderItemModel.costPrice` (фікс в момент продажу v1.0.9+)
+- current sales summary → aggregation over `OrderModel` (+ `OrderItemModel` для деталізації)
+- Home dashboard summaries → aggregation services + finance facade (UI не рахує)
+- Reports (P&L/ABC/Trends) → finance/reporting facade (використовує aggregation services як нижній шар)
+- Track Ingredients behavior → global setting + enforcement in service layer, not in VC/VM
+- Realm → legacy-шар; нові фінансові/репорт-модулі не повинні будуватись навколо нього
 
 ## Що важливо не плутати
 
-- `Sale` у старих описах це business shorthand, а не окрема canonical модель для reporting.
-- `InventoryAdjustment` не дорівнює `Track Ingredients`.
-- `InventoryAdjustment` це manual correction / audit trail.
-- `Track Ingredients` це глобальне правило автоматичних списань при sale/refund.
-- `DailyClose` у майбутньому може існувати лише як derived business snapshot, але не як окреме джерело фінансової істини.
-- Realm у кодовій базі ще присутній, але нові фінансові сутності не повинні будуватись навколо нього як source of truth.
+- `Sale` у старих описах це business shorthand, а не окрема canonical модель для reporting. Канонічний запис = `OrderModel` + `OrderItemModel`.
+- `InventoryAdjustment` не дорівнює `Track Ingredients`:
+  - `InventoryAdjustment` = ручна коригування / audit trail;
+  - `Track Ingredients` = глобальне правило автоматичних списань при sale/refund.
+- `DailyClose` у майбутньому може існувати лише як derived business snapshot, але не окреме джерело фінансової істини.
+- Якщо метрика вже порахована в сервісі, її не треба перераховувати в ViewModel; UI тільки відображає DTO.
+- Зміни рецепта **не переписують** історичний COGS; історичний COGS = snapshot.
 
-## Поточний target після `1.0.7`
+## Поточний target після shipped v1.1.0
 
-Після стабілізації поточного релізу рух іде так:
+Релізна лінія 1.1.x (див. `ROADMAP.md`):
 
-1. `cash/card balances`
-2. `COGS snapshot`
-3. `Track Ingredients`
-4. `aggregation services hardening`
-5. `finance/reporting facade`
-6. `Reports Hub UI`
-7. `inventory audit / bulk count`
+1. v1.1.1 — UI stability (UILabel → AppLabel, Dynamic Type) + docs sync.
+2. v1.1.2 — Inventory audit/bulk count workflow + per-ingredient low-stock thresholds.
+3. v1.1.3 — Architecture cleanup (Realm removal from prod paths, async/await uniform, domain models refine).
+4. v1.1.4 — UI polish (secondaryText, PopupFactory/InputPopupView, R.swift SPM migration).
 
-Детальний порядок релізів винесений у `ROADMAP.md`.
+Після v1.1.4 вирішуємо, чи потрібен next minor (v1.2) для великих фіч типу journal balances / multi-location / roles / CSV export reports.
 
 ## Мінімальні правила консистентності
 
@@ -131,15 +131,16 @@
 - Складські коригування не повинні змінювати `averageCost`.
 - UI не повинен бути власником фінансових формул.
 - Якщо метрика вже порахована в сервісі, її не треба перераховувати в `ViewModel`.
-- Якщо поведінка продажу щодо складу буде керуватись setting-ом, вона повинна бути зашита в сервісний шар, а не в контролери.
+- Якщо поведінка продажу щодо складу керується setting-ом, вона повинна бути зашита в сервісний шар, а не в контролери.
+- Onboarding versionTag (див. `OnboardingManager`) рівний версії випуску, в якій фіча вперше зʼявилася, щоб upgrade-користувачі бачили тільки нові tours.
 
 ## Що читати далі
 
 - Якщо треба зрозуміти target models/services:
   дивись `ARCHITECTURE_AND_LOGIC.md`.
-- Якщо треба зрозуміти порядок релізів:
+- Якщо треба зрозуміти порядок релізів 1.1.x:
   дивись `ROADMAP.md`.
 - Якщо треба зрозуміти як працювати одному без переробок:
   дивись `V1_1_IMPLEMENTATION_GUIDE.md`.
-- Якщо треба деталізація майбутніх звітів:
+- Якщо треба специфікація Reports Hub (shipped v1.1.0+):
   дивись `REPORTS.md`.
