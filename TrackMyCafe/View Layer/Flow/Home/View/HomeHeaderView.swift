@@ -22,15 +22,15 @@ final class HomeHeaderView: UIView {
     }()
 
     private let titleLabel: UILabel = {
-        let l = UILabel()
-        l.applyDynamic(Typography.title2DemiBold)
+        let l = AppLabel(style: .title2DemiBold)
+        l.apply(.title2DemiBold)
         l.text = R.string.global.appName()
         return l
     }()
 
     private let dateLabel: UILabel = {
-        let l = UILabel()
-        l.applyDynamic(Typography.footnote)
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnote)
         return l
     }()
 
@@ -433,7 +433,7 @@ private final class BalanceCard: UIView {
     private let cardValue = AppLabel(style: .balanceValue)
     var onManualOperations: (() -> Void)?
     private let manualOperationsControl = UIControl()
-    private let manualOperationsLabel = UILabel()
+    private let manualOperationsLabel = AppLabel(style: .footnote)
     private let manualOperationsChevron = UIImageView()
 
     init() {
@@ -456,7 +456,7 @@ private final class BalanceCard: UIView {
         cashValue.apply(.balanceValue)
         cardValue.apply(.balanceValue)
 
-        manualOperationsLabel.applyDynamic(Typography.footnote)
+        manualOperationsLabel.apply(.footnote)
         manualOperationsLabel.textColor = UIColor.Main.text.alpha(0.75)
         manualOperationsLabel.text = R.string.global.manualOperations()
         manualOperationsLabel.numberOfLines = 1
