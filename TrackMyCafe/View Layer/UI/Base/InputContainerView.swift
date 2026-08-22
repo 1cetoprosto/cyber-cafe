@@ -29,8 +29,8 @@ final class InputContainerView: UIView {
   }()
 
   private lazy var titleLabel: UILabel = {
-    let label = UILabel()
-    label.font = Typography.footnote
+    let label = AppLabel(style: .footnote)
+    label.apply(.footnote)
     label.textColor = UIColor.Main.text
     label.numberOfLines = 1
     label.adjustsFontSizeToFitWidth = true
@@ -42,7 +42,7 @@ final class InputContainerView: UIView {
   // Input Elements
   private lazy var textField: UITextField = {
     let textField = UITextField()
-    textField.font = Typography.title3
+    textField.apply(.title3)
     textField.textColor = UIColor.Main.text
     textField.backgroundColor = .clear
     textField.borderStyle = .none
@@ -376,9 +376,9 @@ final class InputContainerView: UIView {
         ? DefaultValues.currencySymbol
         : (Locale.current.currencySymbol ?? DefaultValues.dollarSymbol)
     }
-    let label = UILabel()
+    let label = AppLabel(style: .footnote)
     label.text = " \(currency)"
-    label.font = Typography.title3
+    label.apply(.title3)
     label.textColor = UIColor.Main.text
     label.sizeToFit()
     textField.rightView = label

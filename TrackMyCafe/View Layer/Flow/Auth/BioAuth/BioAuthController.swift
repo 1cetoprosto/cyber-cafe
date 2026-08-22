@@ -13,7 +13,7 @@ class BioAuthController: UIViewController {
     
     private lazy var iconView = UIImageView()
     private lazy var titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

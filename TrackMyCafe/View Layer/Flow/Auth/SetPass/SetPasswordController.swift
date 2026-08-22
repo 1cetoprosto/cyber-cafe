@@ -99,7 +99,7 @@ class SetPasswordController: UIViewController {
 
         let imageView = UIImageView(image: R.image.setPassword()?.tint(color: UIColor.NavBar.text))
         imageView.size(CGSize(width: 120, height: 120))
-        let titleLabel = UILabel()
+        let titleLabel = AppLabel(style: .footnote)
         titleLabel.numberOfLines = 0
         titleLabel.textAlignment = .center
         titleLabel.text = R.string.auth.setPasswordTitle()

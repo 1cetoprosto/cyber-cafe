@@ -129,7 +129,7 @@ import UIKit
             hint.showsVerticalScrollIndicator = false
             hint.showsHorizontalScrollIndicator = false
             hint.backgroundColor = .clear
-            hint.font = Typography.body
+            hint.apply(.body)
             hint.textContainer.maximumNumberOfLines = 0
             hint.textContainer.lineBreakMode = .byWordWrapping
 

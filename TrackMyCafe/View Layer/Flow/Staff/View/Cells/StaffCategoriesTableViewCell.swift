@@ -19,7 +19,7 @@ class StaffCategoriesTableViewCell: UITableViewCell {
   }()
 
   let typeLabel: UILabel = {
-    let label = UILabel()
+    let label = AppLabel(style: .footnote)
     label.text = ""
     label.translatesAutoresizingMaskIntoConstraints = false
     label.textColor = UIColor.TableView.cellLabel
