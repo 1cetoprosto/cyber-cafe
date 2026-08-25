@@ -60,7 +60,7 @@ final class ManualMovementEditViewController: UIViewController {
         return container
     }()
 
-    private let accountLabel = UILabel()
+    private let accountLabel = AppLabel(style: .footnote)
 
     private lazy var accountControl: DefaultSegmentedControl = {
         makeAccountControl()
@@ -205,8 +205,8 @@ final class ManualMovementEditViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    private func configureTitleLabel(_ label: UILabel) {
-        label.applyDynamic(Typography.footnote)
+    private func configureTitleLabel(_ label: AppLabel) {
+        label.apply(.footnote)
         label.textColor = UIColor.Main.text
         label.numberOfLines = 0
     }
@@ -221,13 +221,13 @@ final class ManualMovementEditViewController: UIViewController {
     }
 
     private func makeSegmentedContainer(title: String, control: DefaultSegmentedControl) -> UIView {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         configureTitleLabel(label)
         label.text = title
         return makeSegmentedContainer(label: label, control: control)
     }
 
-    private func makeSegmentedContainer(label: UILabel, control: DefaultSegmentedControl) -> UIView
+    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView
     {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground

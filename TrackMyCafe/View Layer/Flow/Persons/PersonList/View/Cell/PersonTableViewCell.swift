@@ -28,7 +28,7 @@ class PersonTableViewCell: UITableViewCell {
     }()
     
     private lazy var nameLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.textColor = UIColor.TableView.cellLabel
         label.font = .systemFont(ofSize: 17)
         label.numberOfLines = 0
@@ -37,7 +37,7 @@ class PersonTableViewCell: UITableViewCell {
     }()
     
     private lazy var phoneLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 14)
         label.textColor = UIColor.Main.text
         return label

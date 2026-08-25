@@ -18,8 +18,8 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }()
 
     private let periodInfoLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.body
+        let label = AppLabel(style: .body)
+        label.apply(.body)
         label.textColor = Theme.current.secondaryText
         label.textAlignment = .center
         return label
@@ -46,8 +46,8 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }()
 
     private let heroNetTitleLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnote
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnote)
         l.textColor = Theme.current.secondaryText
         l.numberOfLines = 1
         l.text = R.string.global.kpiBigNet()
@@ -55,8 +55,8 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     }()
 
     private let heroNetValueLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.largeTitleBold
+        let l = AppLabel(style: .footnote)
+        l.apply(.largeTitleBold)
         l.textColor = Theme.current.primaryText
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.6
@@ -79,16 +79,16 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return iv
     }()
     private let heroSalesTitleLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnoteLight
+        let l = AppLabel(style: .footnoteLight)
+        l.apply(.footnoteLight)
         l.textColor = Theme.current.secondaryText
         l.text = R.string.global.hubBigSalesLabel()
         l.numberOfLines = 1
         return l
     }()
     private let heroSalesValueLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.calloutDemi
+        let l = AppLabel(style: .footnote)
+        l.apply(.calloutDemi)
         l.textColor = Theme.current.primaryText
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
@@ -110,16 +110,16 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         return iv
     }()
     private let heroCostsTitleLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnoteLight
+        let l = AppLabel(style: .footnoteLight)
+        l.apply(.footnoteLight)
         l.textColor = Theme.current.secondaryText
         l.text = R.string.global.hubBigCostsLabel()
         l.numberOfLines = 1
         return l
     }()
     private let heroCostsValueLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.calloutDemi
+        let l = AppLabel(style: .footnote)
+        l.apply(.calloutDemi)
         l.textColor = .systemOrange
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7

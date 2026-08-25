@@ -75,8 +75,8 @@ final class CostDetailsListViewController: UIViewController {
     }()
 
     private lazy var paymentMethodLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = UIColor.Main.text
         label.text = R.string.global.paymentMethod()
         label.numberOfLines = 0

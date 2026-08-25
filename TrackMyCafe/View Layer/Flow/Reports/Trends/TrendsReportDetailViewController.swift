@@ -13,16 +13,16 @@ final class TrendPointCell: UITableViewCell {
     }()
 
     private let periodLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.bodyBold
+        let l = AppLabel(style: .bodyBold)
+        l.apply(.bodyBold)
         l.textColor = Theme.current.primaryText
         l.numberOfLines = 2
         return l
     }()
 
     private let salesLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.body
+        let l = AppLabel(style: .footnote)
+        l.apply(.body)
         l.textColor = Theme.current.primaryText
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
@@ -31,8 +31,8 @@ final class TrendPointCell: UITableViewCell {
     }()
 
     private let netLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.title2DemiBold
+        let l = AppLabel(style: .title2DemiBold)
+        l.apply(.title2DemiBold)
         l.textAlignment = .right
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
@@ -41,8 +41,8 @@ final class TrendPointCell: UITableViewCell {
     }()
 
     private let deltaLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnote
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnote)
         l.textAlignment = .right
         l.numberOfLines = 1
         return l
@@ -150,13 +150,13 @@ final class TrendPointCell: UITableViewCell {
         stack.axis = .horizontal
         stack.distribution = .equalSpacing
 
-        let t = UILabel()
-        t.font = Typography.footnoteLight
+        let t = AppLabel(style: .footnote)
+        t.apply(.footnoteLight)
         t.textColor = Theme.current.secondaryText
         t.text = title
 
-        let v = UILabel()
-        v.font = Typography.footnote
+        let v = AppLabel(style: .footnote)
+        v.apply(.footnote)
         v.textColor = color
         v.textAlignment = .right
         v.text = TrendPointCell.currencyFormatter(currency: currency).string(for: value) ?? ""
@@ -218,8 +218,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }()
 
     private let emptyStateLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.body
+        let l = AppLabel(style: .bodyMultiline)
+        l.apply(.body)
         l.textColor = Theme.current.secondaryText
         l.textAlignment = .center
         l.numberOfLines = 0
@@ -288,14 +288,14 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         netCard.backgroundColor = Theme.current.cellBackground
         netCard.layer.cornerRadius = UIConstants.mediumCornerRadius
 
-        let netTitleL = UILabel()
-        netTitleL.font = Typography.footnote
+        let netTitleL = AppLabel(style: .footnote)
+        netTitleL.apply(.footnote)
         netTitleL.textColor = Theme.current.secondaryText
         netTitleL.numberOfLines = 2
         netTitleL.text = R.string.global.trendsBigNetRemainedPeriod()
 
-        let netValueL = UILabel()
-        netValueL.font = Typography.largeTitleBold
+        let netValueL = AppLabel(style: .footnote)
+        netValueL.apply(.largeTitleBold)
         netValueL.textColor = totalNet >= 0 ? .systemGreen : .systemRed
         netValueL.adjustsFontSizeToFitWidth = true
         netValueL.minimumScaleFactor = 0.6
@@ -359,13 +359,13 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }
 
     private func makeSmallSummary(title: String, valueStr: String, color: UIColor) -> UIView {
-        let titleL = UILabel()
-        titleL.font = Typography.footnoteLight
+        let titleL = AppLabel(style: .footnote)
+        titleL.apply(.footnoteLight)
         titleL.textColor = Theme.current.secondaryText
         titleL.text = title
 
-        let valueL = UILabel()
-        valueL.font = Typography.calloutDemi
+        let valueL = AppLabel(style: .footnote)
+        valueL.apply(.calloutDemi)
         valueL.textColor = color
         valueL.adjustsFontSizeToFitWidth = true
         valueL.minimumScaleFactor = 0.7
