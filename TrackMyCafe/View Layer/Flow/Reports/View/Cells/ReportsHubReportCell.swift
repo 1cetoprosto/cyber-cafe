@@ -29,8 +29,8 @@ final class ReportsHubReportCell: UITableViewCell {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.title3DemiBold
+        let label = AppLabel(style: .title3DemiBold)
+        label.apply(.title3DemiBold)
         label.textColor = Theme.current.primaryText
         label.numberOfLines = 1
         label.adjustsFontForContentSizeCategory = true
@@ -38,8 +38,8 @@ final class ReportsHubReportCell: UITableViewCell {
     }()
 
     private let subtitleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = Theme.current.secondaryText
         label.numberOfLines = 0
         return label

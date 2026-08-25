@@ -266,10 +266,10 @@ private final class DateRangePickerViewController: UIViewController {
         return button
     }()
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .title3DemiBold)
         label.textAlignment = .center
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.title3DemiBold)
+        label.apply(.title3DemiBold)
         label.text = R.string.global.filterByDate()
         return label
     }()

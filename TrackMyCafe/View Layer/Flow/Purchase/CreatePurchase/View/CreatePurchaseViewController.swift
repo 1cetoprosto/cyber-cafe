@@ -125,9 +125,9 @@ class CreatePurchaseViewController: UIViewController {
         backgroundView.backgroundColor = UIColor.TableView.cellBackground
         backgroundView.layer.cornerRadius = 12
 
-        let titleLabel = UILabel()
+        let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = R.string.global.paymentMethod()
-        titleLabel.applyDynamic(Typography.footnote)
+        titleLabel.apply(.footnote)
         titleLabel.textColor = UIColor.Main.text
         titleLabel.numberOfLines = 1
         titleLabel.adjustsFontSizeToFitWidth = true

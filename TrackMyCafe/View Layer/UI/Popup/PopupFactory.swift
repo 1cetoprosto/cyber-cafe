@@ -344,7 +344,7 @@ private class OrderModePopupView: UIView {
     var cancel: (() -> Void)?
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.orderEntryModeTitle()
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textColor = .label
@@ -354,7 +354,7 @@ private class OrderModePopupView: UIView {
     }()
 
     private let descriptionLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label

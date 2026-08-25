@@ -35,7 +35,7 @@ class InventoryContainerViewController: UIViewController {
     private lazy var auditVC: UIViewController = {
         let vc = UIViewController()
         vc.view.backgroundColor = .systemGroupedBackground
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.inventoryAuditComingSoon()
         label.textColor = .label
         vc.view.addSubview(label)
