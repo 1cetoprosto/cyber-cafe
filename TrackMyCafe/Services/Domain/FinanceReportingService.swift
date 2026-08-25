@@ -17,6 +17,8 @@ struct PLReport {
     let grossMarginPercent: Double
     let ordersCount: Int
     let expensesCount: Int
+    let manualSpending: Double
+    let spendingResult: Double
 }
 
 // MARK: - ABC Report DTO
@@ -102,29 +104,35 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
     private let incomeService: IncomeAggregationServiceProtocol
     private let opexService: OpexAggregationServiceProtocol
     private let financeService: FinanceAggregationServiceProtocol
+    private let manualMovementService: ManualMovementServiceProtocol
 
     init(
         database: DomainDB = DomainDatabaseService.shared,
         incomeService: IncomeAggregationServiceProtocol = IncomeAggregationService(),
         opexService: OpexAggregationServiceProtocol = OpexAggregationService(),
-        financeService: FinanceAggregationServiceProtocol = FinanceAggregationService()
+        financeService: FinanceAggregationServiceProtocol = FinanceAggregationService(),
+        manualMovementService: ManualMovementServiceProtocol = DomainManualMovementService()
     ) {
         self.database = database
         self.incomeService = incomeService
         self.opexService = opexService
         self.financeService = financeService
+        self.manualMovementService = manualMovementService
     }
 
     // MARK: - P&L
 
     func fetchPLReport(period: DashboardPeriod, referenceDate: Date) async -> PLReport {
         let range = period.interval(for: referenceDate)
-        let (orders, expenses) = await fetchBaseData(from: range.start, to: range.end)
+        let (orders, expenses, manualOps) = await fetchPLBaseData(from: range.start, to: range.end)
         let income = incomeService.summarize(
             orders: orders, period: period, referenceDate: referenceDate)
         let opex = opexService.summarize(
             expenses: expenses, period: period, referenceDate: referenceDate)
         let profit = financeService.summarize(income: income, opex: opex)
+        let manualSpending = aggregateManualSpending(
+            operations: manualOps, intervalStart: range.start, intervalEnd: range.end)
+        let spendingResult = manualSpending - profit.sales
         return PLReport(
             period: period,
             referenceDate: referenceDate,
@@ -138,7 +146,9 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
             netProfit: profit.netProfit,
             grossMarginPercent: profit.grossMarginPercent,
             ordersCount: income.count,
-            expensesCount: opex.count
+            expensesCount: opex.count,
+            manualSpending: manualSpending,
+            spendingResult: spendingResult
         )
     }
 
@@ -240,6 +250,30 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
     }
 
     // MARK: - Private (Data Fetch)
+
+    private func fetchPLBaseData(from: Date, to: Date) async -> (
+        orders: [OrderModel], expenses: [OpexExpenseModel], manualOps: [ManualMovementOperation]
+    ) {
+        let (baseOrders, baseExpenses) = await fetchBaseData(from: from, to: to)
+        let manual = await manualMovementService.fetchOperations()
+        return (baseOrders, baseExpenses, manual)
+    }
+
+    private func aggregateManualSpending(
+        operations: [ManualMovementOperation], intervalStart: Date, intervalEnd: Date
+    ) -> Double {
+        operations.reduce(0) { total, op in
+            guard op.date >= intervalStart && op.date <= intervalEnd else { return total }
+            switch op.kind {
+            case .withdrawal:
+                return total + abs(op.amount)
+            case .adjustment where op.amount < 0:
+                return total + abs(op.amount)
+            default:
+                return total
+            }
+        }
+    }
 
     private static let firestoreSafePast: Date = {
         var components = DateComponents()

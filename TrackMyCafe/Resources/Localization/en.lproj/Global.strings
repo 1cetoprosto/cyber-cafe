@@ -582,3 +582,6 @@
 "plAovTitle" = "📋 Average receipt";
 "plOrdersCountTitle" = "🔢 Receipts";
 "plExpensesCountTitle" = "📝 Expense entries";
+"plCompensation" = "💰 Compensation";
+"plSpending" = "💸 Spending";
+"plResult" = "📊 Result";

@@ -582,3 +582,6 @@
 "plAovTitle" = "📋 Середній чек";
 "plOrdersCountTitle" = "🔢 Чеків";
 "plExpensesCountTitle" = "📝 Витрат записано";
+"plCompensation" = "💰 Компенсація";
+"plSpending" = "💸 Витрата";
+"plResult" = "📊 Результат";

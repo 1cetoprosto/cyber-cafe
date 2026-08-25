@@ -171,7 +171,7 @@ final class PLReportDetailViewController: UIViewController, Loggable {
 
         // --- SIMPLE 3 BIG (always first, unified badge-icon style same as Home TodayCardView) ---
         let bigSales = makeBigKPI(
-            title: R.string.global.kpiBigRevenue(),
+            title: R.string.global.plCompensation(),
             valueStr: Self.currencyString(value: report.sales, currency: currency),
             accent: Theme.current.primaryText, huge: false,
             badgeIcon: "arrow.up.right",
@@ -203,6 +203,20 @@ final class PLReportDetailViewController: UIViewController, Loggable {
             bottom: 0,
             right: UIConstants.standardPadding)
         stackView.addArrangedSubview(kpiWrapper)
+        stackView.setCustomSpacing(UIConstants.standardSpacing, after: kpiWrapper)
+
+        // --- 3-COLUMN: Компенсація / Витрата / Результат (cash register join) ---
+        let spendingCard = makeSpendingComparisonCard(report: report, currency: currency)
+        let spendingWrapper = UIView()
+        spendingWrapper.addSubview(spendingCard)
+        spendingCard.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: 0,
+                left: UIConstants.standardPadding,
+                bottom: 0,
+                right: UIConstants.standardPadding)
+        )
+        stackView.addArrangedSubview(spendingWrapper)
 
         // --- Toggle details button (wrap in a margins container — button cannot be constrained until in a superview) ---
         let toggleWrapper = UIView()
@@ -320,6 +334,81 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         let minH: CGFloat = huge ? 100 : 76
         container.height(min: minH)
         return container
+    }
+
+    // MARK: - 3-column Spending vs Compensation comparison card
+
+    private func makeSpendingComparisonCard(report: PLReport, currency: String) -> UIView {
+        let container = UIView()
+        container.backgroundColor = Theme.current.cellBackground
+        container.layer.cornerRadius = UIConstants.extraLargeCornerRadius
+
+        let compensationTitle = makeColumnHeaderLabel(text: R.string.global.plCompensation())
+        let spendingTitle = makeColumnHeaderLabel(text: R.string.global.plSpending())
+        let resultTitle = makeColumnHeaderLabel(text: R.string.global.plResult())
+        let headerRow = UIStackView(arrangedSubviews: [
+            compensationTitle, spendingTitle, resultTitle,
+        ])
+        headerRow.axis = .horizontal
+        headerRow.spacing = UIConstants.smallSpacing
+        headerRow.distribution = .fillEqually
+
+        let compValue = Self.currencyString(value: report.sales, currency: currency)
+        let spendValue = Self.currencyString(value: report.manualSpending, currency: currency)
+        let resultValue = Self.currencyString(value: report.spendingResult, currency: currency)
+        let compensationValue = makeColumnValueLabel(
+            text: compValue, accent: Theme.current.primaryText)
+        let spendingValue = makeColumnValueLabel(
+            text: spendValue, accent: .systemOrange)
+        let isResultPositive = report.spendingResult >= 0
+        let resultValueL = makeColumnValueLabel(
+            text: resultValue,
+            accent: isResultPositive ? .systemGreen : .systemRed)
+        let valueRow = UIStackView(arrangedSubviews: [
+            compensationValue, spendingValue, resultValueL,
+        ])
+        valueRow.axis = .horizontal
+        valueRow.spacing = UIConstants.smallSpacing
+        valueRow.distribution = .fillEqually
+
+        let vStack = UIStackView(arrangedSubviews: [headerRow, valueRow])
+        vStack.axis = .vertical
+        vStack.spacing = UIConstants.mediumSpacing
+
+        container.addSubview(vStack)
+        vStack.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: UIConstants.standardPadding,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.standardPadding,
+                right: UIConstants.standardPadding
+            )
+        )
+        container.height(min: 96)
+        return container
+    }
+
+    private func makeColumnHeaderLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.font = Typography.footnote
+        label.textColor = Theme.current.secondaryText
+        label.numberOfLines = 2
+        label.textAlignment = .center
+        label.text = text
+        return label
+    }
+
+    private func makeColumnValueLabel(text: String, accent: UIColor) -> UILabel {
+        let label = UILabel()
+        label.font = Typography.title2DemiBold
+        label.textColor = accent
+        label.numberOfLines = 1
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.65
+        label.allowsDefaultTighteningForTruncation = true
+        label.textAlignment = .center
+        label.text = text
+        return label
     }
 
     // MARK: - Helpers (details)
