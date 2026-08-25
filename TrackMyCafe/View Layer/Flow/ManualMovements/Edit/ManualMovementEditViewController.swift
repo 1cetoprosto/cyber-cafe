@@ -205,7 +205,7 @@ final class ManualMovementEditViewController: UIViewController {
         view.addGestureRecognizer(tapGesture)
     }
 
-    private func configureTitleLabel(_ label: UILabel) {
+    private func configureTitleLabel(_ label: AppLabel) {
         label.apply(.footnote)
         label.textColor = UIColor.Main.text
         label.numberOfLines = 0
@@ -227,7 +227,7 @@ final class ManualMovementEditViewController: UIViewController {
         return makeSegmentedContainer(label: label, control: control)
     }
 
-    private func makeSegmentedContainer(label: UILabel, control: DefaultSegmentedControl) -> UIView
+    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView
     {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
