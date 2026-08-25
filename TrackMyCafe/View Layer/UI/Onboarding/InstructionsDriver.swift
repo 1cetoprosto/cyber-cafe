@@ -92,12 +92,10 @@ import UIKit
                 (index == steps.count - 1)
                 ? R.string.global.actionDone() : R.string.global.actionNext()
 
-            if let body = views.bodyView as? CoachMarkBodyDefaultView {
-                body.hintLabel.textColor = .white
-                body.nextLabel.textColor = .white
-                body.background.innerColor = UIColor.black.withAlphaComponent(0.85)
-                body.background.borderColor = UIColor.white.withAlphaComponent(0.12)
-            }
+            views.bodyView.hintLabel.textColor = .white
+            views.bodyView.nextLabel.textColor = .white
+            views.bodyView.background.innerColor = UIColor.black.withAlphaComponent(0.85)
+            views.bodyView.background.borderColor = UIColor.white.withAlphaComponent(0.12)
 
             let windowWidth = host?.view.window?.bounds.width ?? UIScreen.main.bounds.width
             let maxBodyWidth = max(280, windowWidth - (coachMark.horizontalMargin * 2))

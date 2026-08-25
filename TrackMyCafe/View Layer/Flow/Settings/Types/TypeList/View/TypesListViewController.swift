@@ -117,7 +117,7 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footer = UIView()
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.typeDescription()
         label.font = .systemFont(ofSize: 14)
         label.textColor = .secondaryLabel

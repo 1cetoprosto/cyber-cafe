@@ -43,8 +43,8 @@ final class CreateIngredientViewController: UIViewController {
     }()
     
     private lazy var nameExplanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         label.text = R.string.global.ingredientNameExplanation()
@@ -63,8 +63,8 @@ final class CreateIngredientViewController: UIViewController {
     }()
     
     private lazy var costExplanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         label.text = R.string.global.costExplanation()
@@ -83,8 +83,8 @@ final class CreateIngredientViewController: UIViewController {
     }()
     
     private lazy var stockExplanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         label.text = R.string.global.stockExplanation()
@@ -102,8 +102,8 @@ final class CreateIngredientViewController: UIViewController {
     }()
     
     private lazy var unitExplanationLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.footnote
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
         label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         label.text = R.string.global.unitExplanation()

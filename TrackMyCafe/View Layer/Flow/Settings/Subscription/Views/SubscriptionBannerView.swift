@@ -55,7 +55,7 @@ final class SubscriptionBannerView: UIView {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.subscriptionBannerTitle()
         label.font = .systemFont(ofSize: 22, weight: .bold)
         // Use system semantic color for text
@@ -64,7 +64,7 @@ final class SubscriptionBannerView: UIView {
     }()
 
     private let proTagLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = "PRO"
         label.font = .systemFont(ofSize: 12, weight: .bold)
         label.textColor = .white
@@ -76,7 +76,7 @@ final class SubscriptionBannerView: UIView {
     }()
 
     private let descriptionLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.subscriptionBannerDescription()
         label.font = .systemFont(ofSize: 15, weight: .regular)
         // Use system semantic color for secondary text
@@ -97,7 +97,7 @@ final class SubscriptionBannerView: UIView {
     }()
 
     private let termsLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 11, weight: .regular)
         label.textColor = UIColor.Main.secondaryText
         label.textAlignment = .center

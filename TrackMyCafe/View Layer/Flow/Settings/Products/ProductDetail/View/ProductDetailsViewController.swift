@@ -76,7 +76,7 @@ class ProductDetailsViewController: UIViewController {
 
     // MARK: - Recipe UI
     private lazy var recipeTitleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.recipe()
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textColor = UIColor.Main.text

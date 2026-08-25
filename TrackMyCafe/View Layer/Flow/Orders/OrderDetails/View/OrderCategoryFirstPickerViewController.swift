@@ -23,11 +23,11 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     }()
 
     private let emptyStateLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyMultiline)
         label.textAlignment = .center
         label.numberOfLines = 0
         label.textColor = UIColor.Main.text.withAlphaComponent(0.6)
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         label.isHidden = true
         return label
     }()

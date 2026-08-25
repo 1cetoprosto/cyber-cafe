@@ -13,8 +13,8 @@ final class ABCProductCell: UITableViewCell {
     }()
 
     private let bucketBadge: UILabel = {
-        let l = UILabel()
-        l.font = Typography.title3DemiBold
+        let l = AppLabel(style: .title3DemiBold)
+        l.apply(.title3DemiBold)
         l.textAlignment = .center
         l.textColor = .white
         l.layer.cornerRadius = 18
@@ -23,23 +23,23 @@ final class ABCProductCell: UITableViewCell {
     }()
 
     private let nameLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.bodyBold
+        let l = AppLabel(style: .footnote)
+        l.apply(.bodyBold)
         l.textColor = Theme.current.primaryText
         l.numberOfLines = 2
         return l
     }()
 
     private let qtyLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnote
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnote)
         l.textColor = Theme.current.secondaryText
         return l
     }()
 
     private let salesLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.bodyMedium
+        let l = AppLabel(style: .footnote)
+        l.apply(.bodyMedium)
         l.textColor = Theme.current.primaryText
         l.textAlignment = .right
         l.adjustsFontSizeToFitWidth = true
@@ -48,16 +48,16 @@ final class ABCProductCell: UITableViewCell {
     }()
 
     private let shareLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnote
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnote)
         l.textColor = Theme.current.secondaryText
         l.textAlignment = .right
         return l
     }()
 
     private let cumulativeLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.footnoteLight
+        let l = AppLabel(style: .footnote)
+        l.apply(.footnoteLight)
         l.textColor = Theme.current.secondaryText
         l.textAlignment = .right
         return l
@@ -195,8 +195,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }()
 
     private let rankingTitleLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.headline
+        let l = AppLabel(style: .headline)
+        l.apply(.headline)
         l.textColor = Theme.current.primaryText
         l.text = R.string.global.abcRankingTitle()
         return l
@@ -220,8 +220,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     }()
 
     private let emptyStateLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.body
+        let l = AppLabel(style: .bodyMultiline)
+        l.apply(.body)
         l.textColor = Theme.current.secondaryText
         l.textAlignment = .center
         l.numberOfLines = 0
@@ -399,8 +399,8 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         card.backgroundColor = Theme.current.cellBackground
         card.layer.cornerRadius = UIConstants.mediumCornerRadius
 
-        let titleL = UILabel()
-        titleL.font = Typography.footnote
+        let titleL = AppLabel(style: .footnote)
+        titleL.apply(.footnote)
         titleL.textColor = Theme.current.secondaryText
         titleL.text = title
         titleL.numberOfLines = 1
@@ -408,15 +408,15 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         titleL.minimumScaleFactor = 0.55
         titleL.allowsDefaultTighteningForTruncation = true
 
-        let countL = UILabel()
-        countL.font = Typography.footnoteLight
+        let countL = AppLabel(style: .footnote)
+        countL.apply(.footnoteLight)
         countL.textColor = Theme.current.secondaryText
         countL.text = R.string.global.abcProductCountFormat(count)
         countL.adjustsFontSizeToFitWidth = true
         countL.minimumScaleFactor = 0.75
 
-        let valueL = UILabel()
-        valueL.font = Typography.title3DemiBold
+        let valueL = AppLabel(style: .footnote)
+        valueL.apply(.title3DemiBold)
         valueL.textColor = color
         valueL.adjustsFontSizeToFitWidth = true
         valueL.minimumScaleFactor = 0.55

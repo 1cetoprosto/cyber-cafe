@@ -20,9 +20,9 @@ final class DemoDataFloatingButton: UIButton {
     }()
 
     private let titleLabelView: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyMedium)
         label.text = R.string.global.deleteDemoData()
-        label.font = Typography.bodyMedium
+        label.apply(.bodyMedium)
         label.textColor = UIColor.Main.text
         return label
     }()

@@ -13,22 +13,22 @@ final class TransactionTableViewCell: UITableViewCell {
   }()
 
   private let titleLabel: UILabel = {
-    let l = UILabel()
-    l.applyDynamic(Typography.body)
+    let l = AppLabel(style: .body)
+    l.apply(.body)
     l.textColor = UIColor.Main.text
     return l
   }()
 
   private let dateLabel: UILabel = {
-    let l = UILabel()
-    l.applyDynamic(Typography.footnote)
+    let l = AppLabel(style: .footnote)
+    l.apply(.footnote)
     l.textColor = UIColor.Main.text.alpha(0.6)
     return l
   }()
 
   private let amountLabel: UILabel = {
-    let l = UILabel()
-      l.applyDynamic(Typography.body)
+    let l = AppLabel(style: .body)
+      l.apply(.body)
     l.textAlignment = .right
     return l
   }()

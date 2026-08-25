@@ -36,8 +36,8 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     }()
 
     private let emptyStateLabel: UILabel = {
-        let label = UILabel()
-        label.font = Typography.body
+        let label = AppLabel(style: .bodyMultiline)
+        label.apply(.body)
         label.textColor = Theme.current.secondaryText
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -284,13 +284,13 @@ final class PLReportDetailViewController: UIViewController, Loggable {
         iconView.centerInSuperview()
         badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
 
-        let titleL = UILabel()
-        titleL.font = Typography.footnote
+        let titleL = AppLabel(style: .footnote)
+        titleL.apply(.footnote)
         titleL.textColor = Theme.current.secondaryText
         titleL.numberOfLines = 2
         titleL.text = title
 
-        let valueL = UILabel()
+        let valueL = AppLabel(style: .footnote)
         valueL.font = huge ? Typography.largeTitleBold : Typography.title1Bold
         valueL.textColor = accent
         valueL.adjustsFontSizeToFitWidth = true
@@ -325,9 +325,9 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     // MARK: - Helpers (details)
 
     private func addDetailsSectionHeader(title: String) {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = title.uppercased()
-        label.font = Typography.footnote
+        label.apply(.footnote)
         label.textColor = Theme.current.secondaryText
         detailsWrapperStack.addArrangedSubview(label)
     }
@@ -404,16 +404,16 @@ final class PLKPIView: UIView {
         return v
     }()
     private let titleLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.body
+        let l = AppLabel(style: .bodyMultiline)
+        l.apply(.body)
         l.textColor = Theme.current.secondaryText
         l.numberOfLines = 2
         l.adjustsFontForContentSizeCategory = true
         return l
     }()
     private let valueLabel: UILabel = {
-        let l = UILabel()
-        l.font = Typography.title2DemiBold
+        let l = AppLabel(style: .footnote)
+        l.apply(.title2DemiBold)
         l.textColor = Theme.current.primaryText
         l.numberOfLines = 1
         l.adjustsFontSizeToFitWidth = true

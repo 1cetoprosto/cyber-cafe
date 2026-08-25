@@ -47,7 +47,7 @@ class SubscriptionController: UIViewController, Loggable {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.appName()
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textAlignment = .center
@@ -55,7 +55,7 @@ class SubscriptionController: UIViewController, Loggable {
     }()
 
     private let proTagLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = "PRO"
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .white
@@ -67,7 +67,7 @@ class SubscriptionController: UIViewController, Loggable {
     }()
 
     private let subtitleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = R.string.global.subscriptionSubtitle()
         label.font = .systemFont(ofSize: 17, weight: .medium)
         label.textAlignment = .center
@@ -101,7 +101,7 @@ class SubscriptionController: UIViewController, Loggable {
     }()
 
     private let termsLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 12, weight: .regular)
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -238,7 +238,7 @@ class SubscriptionController: UIViewController, Loggable {
             iconContainer.width(20)
             iconContainer.height(20)
 
-            let label = UILabel()
+            let label = AppLabel(style: .footnote)
             label.text = feature
             label.font = .systemFont(ofSize: 16)
             label.textColor = UIColor.Main.text
@@ -285,7 +285,7 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     private func createSeparator() -> UILabel {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = "|"
         label.textColor = UIColor.Main.secondaryText
         label.font = .systemFont(ofSize: 12)
