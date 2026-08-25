@@ -27,11 +27,11 @@ class OrderTableViewCell: UITableViewCell {
     }()
 
     let productLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .body)
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
 
@@ -39,11 +39,11 @@ class OrderTableViewCell: UITableViewCell {
     }()
 
     let quantityLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.text = ""
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
 
         return label
     }()

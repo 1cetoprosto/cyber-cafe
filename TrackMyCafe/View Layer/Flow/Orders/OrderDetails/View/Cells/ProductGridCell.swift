@@ -31,17 +31,17 @@ final class ProductGridCell: UICollectionViewCell {
     }()
 
     private let titleLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyMultiline)
         label.numberOfLines = 2
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         return label
     }()
 
     private let priceLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.textColor = UIColor.Main.text
-        label.applyDynamic(Typography.footnote)
+        label.apply(.footnote)
         return label
     }()
 

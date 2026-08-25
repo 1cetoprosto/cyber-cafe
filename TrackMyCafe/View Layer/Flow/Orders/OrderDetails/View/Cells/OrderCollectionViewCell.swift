@@ -24,19 +24,19 @@ class OrderCollectionViewCell: UICollectionViewCell {
     }()
     
     let productLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .bodyMultiline)
         label.textAlignment = .center
         label.numberOfLines = 2
         label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         return label
     }()
     
     let quantityLabel: UILabel = {
-        let label = UILabel()
+        let label = AppLabel(style: .footnote)
         label.textAlignment = .center
         label.textColor = UIColor.TableView.cellLabel
-        label.applyDynamic(Typography.body)
+        label.apply(.body)
         return label
     }()
     

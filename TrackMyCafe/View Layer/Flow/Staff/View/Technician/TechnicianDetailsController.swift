@@ -124,7 +124,7 @@ class TechnicianDetailsController: UIViewController {
     sectionView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(sectionView)
 
-    let phoneLabel = UILabel()
+    let phoneLabel = AppLabel(style: .footnote)
     phoneLabel.text = R.string.global.phone()
     phoneLabel.translatesAutoresizingMaskIntoConstraints = false
     sectionView.addSubview(phoneLabel)
@@ -165,7 +165,7 @@ class TechnicianDetailsController: UIViewController {
     sectionView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(sectionView)
 
-    let switchLabel = UILabel()
+    let switchLabel = AppLabel(style: .footnote)
     switchLabel.text = R.string.global.allowCalculation()
     switchLabel.translatesAutoresizingMaskIntoConstraints = false
     sectionView.addSubview(switchLabel)
@@ -198,7 +198,7 @@ class TechnicianDetailsController: UIViewController {
     sectionView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(sectionView)
 
-    let noteLabel = UILabel()
+    let noteLabel = AppLabel(style: .footnote)
     noteLabel.text = R.string.global.note()
     noteLabel.translatesAutoresizingMaskIntoConstraints = false
     sectionView.addSubview(noteLabel)
