@@ -7,41 +7,46 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00E8DDCA8335C86E52C380DA /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A35F542D1857D5676BED20 /* InventoryAdjustmentDetailViewModel.swift */; };
 		0100A8D091003841AFDED1F1 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		053B057E633F68A37D8C6489 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
 		061E249A1C6FA8D5EF35AA1A /* SubscriptionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */; };
 		06590AABDC12DDCA7F09553B /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
-		069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
+		07BA6FD13C40D19607C4556E /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79C03AB2DEE7A6261E6E4E5 /* DomainInventoryAdjustmentDataService.swift */; };
 		0E980A2C21B9CC72F4516FAC /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
 		11FF313CB4EEBB383E004560 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		1233B54EE48DDF61D179B1C6 /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
 		1408ABBFC34A0CC4E231E905 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
 		1520E44575FD23AD2AC5FBB2 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		175CCBD935C49B11071AD4FB /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
-		186B79D935E57A4C5F860FA5 /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
 		1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
 		2062336CEFB66EE59F9C22D2 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		228522146BDF800CDB1DD230 /* SubscriptionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BCF0BEE0B930E14CBBC9B4 /* SubscriptionPresenter.swift */; };
 		236FE50EC1F176EE21409F96 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D958EF9D4321829F0A9B12 /* OnboardingViewModel.swift */; };
-		2714C430B247DF2FB04F039A /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
 		272F2C8EF8403B652C8D1B8B /* DashboardPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8322C84341922937218E47A /* DashboardPeriod.swift */; };
 		290BC38D0FC7339835D90AD3 /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		2A3DC05A20F5AAF1036F935B /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		2CE263E0E30F498DF06D8515 /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
-		2D5F29A122CF2BAEC17A82E2 /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
 		309C9BC32731315EFC798532 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
 		32B8B86C01018A89A21F3C3C /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
 		33685760B24A285E00EB5505 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		36DE2B9C5DA8D5E537AF3479 /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		38E329256CEF26D2FA2F8E57 /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A79FEB112EF6CCD0D5D76F /* InventoryAdjustmentDetailViewController.swift */; };
 		3A6E8C60E84511C5510EC70E /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0BC14E600EB2B68A020A2 /* OnboardingCell.swift */; };
 		3B4B6CEF4F19020CA61E542F /* CreatePurchaseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAD07469C63E32CAA6902B68 /* CreatePurchaseViewModel.swift */; };
 		3F2453C445B3640596D717FF /* InventoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B162B8F1542975346D60E96C /* InventoryService.swift */; };
+		407049828CF824B88CD32CF7 /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E00C3A07E71145094E3E2 /* InventoryAuditService.swift */; };
 		41B28220EBF9A67574D03A16 /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
 		41E971F257A830E4ACC7257D /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
+		42ACA65DF8BAE470582DAB42 /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF09692ED2AE937B1A819 /* InventoryAdjustmentCell.swift */; };
 		42B110982825E42E7C413BEF /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0114E19D1BB57BDB678925E3 /* OnboardingViewController.swift */; };
 		4977F65AE7E611D0F5DEC14A /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
 		4A28A93925922CA1446419A5 /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
+		4C112A1DFA255A85B304F8C5 /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A79FEB112EF6CCD0D5D76F /* InventoryAdjustmentDetailViewController.swift */; };
 		4C43FC8B94A23DAEB82BC5D4 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
+		4CA8BAA3D632A60E1CB121E4 /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C69292BCFCD04043C72B98 /* InventorySessionListViewController.swift */; };
+		4E9A7E3905D85F91285BD281 /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */; };
+		51C55B89A99CFB87C7C6AE22 /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4D2D06DE6C95E45B997B4 /* InventoryAdjustmentListViewController.swift */; };
 		552467AE60F8B2EDD9769D5F /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
 		563EAF02C40232F74EB95C0C /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		58F545BF97FD5E080173E3AB /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
@@ -52,16 +57,23 @@
 		61C389CCF0831B8536889149 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		6632D7C445B8F1727CFE69E2 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		66D52AFA3785F04F868BEBFE /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD7023830D52366E592DF97 /* PaddedTextField.swift */; };
-		68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
+		6999695FB0B0B6245FE46225 /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E00C3A07E71145094E3E2 /* InventoryAuditService.swift */; };
+		6B23D347D4F815507E7BF9C6 /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C69292BCFCD04043C72B98 /* InventorySessionListViewController.swift */; };
+		6BBA2A31FBCC38434A101968 /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B903EDF15F857EF3B668C19E /* BulkSessionViewController.swift */; };
 		6E50D8DAB17C1B1436DACFE7 /* IngredientListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */; };
 		6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		70E997F9A553EC01784428B5 /* OpexAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */; };
+		73375A1F4685F3DC5F332666 /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF09692ED2AE937B1A819 /* InventoryAdjustmentCell.swift */; };
 		73DD30768303A68FE11227F8 /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D958EF9D4321829F0A9B12 /* OnboardingViewModel.swift */; };
-		743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
+		753A442C5F46C75DD317B95D /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B903EDF15F857EF3B668C19E /* BulkSessionViewController.swift */; };
+		7601DB9A69B002162B949E7E /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D219D9147A492E9E4AB9AE18 /* InventoryAdjustmentListViewModel.swift */; };
 		76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */; };
+		76C912C5C7091BF242C6E482 /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79C03AB2DEE7A6261E6E4E5 /* DomainInventoryAdjustmentDataService.swift */; };
 		772F8B1C666F5DF867B416B2 /* FIROpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */; };
 		77B686EC2C65B30FAD473CD3 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
+		783FC953A0751D65E6971640 /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B141ACFBC04EFC8F9C778 /* InventorySessionListViewModel.swift */; };
+		7A468FFF906EA2A82619EABA /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D219D9147A492E9E4AB9AE18 /* InventoryAdjustmentListViewModel.swift */; };
 		7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
 		8022698E009A355D97397BAA /* CostingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B5E49A3B9441A9E185BBF2 /* CostingService.swift */; };
 		8085320D6FEC24703DD60FA6 /* Pods_TrackMyCafe_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */; };
@@ -70,7 +82,6 @@
 		856C77E55B7076912583B40B /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
 		87E09BE852A5451015EFEE24 /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
-		8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FB0242092853861442A8F6 /* StockListViewController.swift */; };
 		90E4D556B60570351A3E9B3C /* SubscriptionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */; };
 		916CE4D97FDBD6479D2B9A37 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0114E19D1BB57BDB678925E3 /* OnboardingViewController.swift */; };
 		9327316B3511B41DCA377F2A /* FIRInventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47FD1F21E33AB28573D226D6 /* FIRInventoryAdjustmentModel.swift */; };
@@ -78,16 +89,19 @@
 		97DFE5A38DEE5F1D153E1B5A /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		992E138DE57AEB96B2FA9F31 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0114E19D1BB57BDB678925E3 /* OnboardingViewController.swift */; };
 		9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
+		9A9EEA9B99D13BC057AE587D /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B0FF09692ED2AE937B1A819 /* InventoryAdjustmentCell.swift */; };
 		9AF5E5CA5BB9EC73B5BA7637 /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
 		9CE2CCDB6EBC99D5108A5B63 /* PurchaseListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */; };
+		A1023A72AD20DABF9822AD3C /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84374C0EE97DDF2F4F0CBF8F /* InventorySessionCell.swift */; };
+		A1C2AA329C46FFA5D4289BF3 /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A35F542D1857D5676BED20 /* InventoryAdjustmentDetailViewModel.swift */; };
 		A33C597EEE9963EE8DACCC14 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
 		A4F5E2DF01331DAF58FE6170 /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
-		A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */; };
+		A6E4F543F7B9A46AA1DB2559 /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4D2D06DE6C95E45B997B4 /* InventoryAdjustmentListViewController.swift */; };
+		A82B4F8B6FC236E98A12EB46 /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84374C0EE97DDF2F4F0CBF8F /* InventorySessionCell.swift */; };
 		A8BC953F9140B4D897592A82 /* SubscriptionBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */; };
 		AAB3415C6BECB15B68146C70 /* SubscriptionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BCF0BEE0B930E14CBBC9B4 /* SubscriptionPresenter.swift */; };
 		ACAB351423CD8EDEC4EE4E2C /* OrderItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */; };
 		AD123069E8110835BA7FDD0D /* FIRPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */; };
-		AF243119E910850D446E788B /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */; };
 		B0E4382A296950739D620DDD /* SubscriptionPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60BCF0BEE0B930E14CBBC9B4 /* SubscriptionPresenter.swift */; };
 		B219C4C17A1B02090B190ADE /* OpexCategoryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */; };
 		B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */; };
@@ -98,14 +112,22 @@
 		B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
 		BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */; };
 		BAFBEBC5C2BA63181AFD95C1 /* PurchaseListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */; };
+		BB79C9B46A16CCE289CCCAB7 /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F4D2D06DE6C95E45B997B4 /* InventoryAdjustmentListViewController.swift */; };
 		BBB1DBACF848F9A1DBBDC3DB /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
 		C121AFC3DBBF2DAB688C832F /* DashboardPeriod.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8322C84341922937218E47A /* DashboardPeriod.swift */; };
 		C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */; };
+		C5EFC64653D762252534A667 /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B903EDF15F857EF3B668C19E /* BulkSessionViewController.swift */; };
 		C607F96C23948CDC042DF233 /* FinanceAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */; };
+		C614B1B14D185D318618B8F7 /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A79C03AB2DEE7A6261E6E4E5 /* DomainInventoryAdjustmentDataService.swift */; };
+		CA6985C2BCD1EF4AE86EAD86 /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84374C0EE97DDF2F4F0CBF8F /* InventorySessionCell.swift */; };
 		CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */; };
+		CE6A2B6B691D39E70EBD0451 /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63A35F542D1857D5676BED20 /* InventoryAdjustmentDetailViewModel.swift */; };
 		D27C5E72DA75CCE38BF017B1 /* Pods_TrackMyCafeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D83D16AEFA49511A257A666 /* Pods_TrackMyCafeTests.framework */; };
 		D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */; };
+		D4AF51466787C5142FFC7D38 /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A92E00C3A07E71145094E3E2 /* InventoryAuditService.swift */; };
 		D6BB3356F32A4C11CFDCC6E2 /* IncomeAggregationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */; };
+		D7FDFBD23E6530FDA9163C3A /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07C69292BCFCD04043C72B98 /* InventorySessionListViewController.swift */; };
+		D99C22E322B1D5E882A24150 /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */; };
 		DAB64B07CB231ED814B50F83 /* IngredientListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */; };
 		DCEDBEB2BBF150953BA5FC1F /* PurchaseListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */; };
 		E101D6DE5B6C4F4D7EFA47CE /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5D958EF9D4321829F0A9B12 /* OnboardingViewModel.swift */; };
@@ -113,7 +135,11 @@
 		E3AE52D5F378C4DE87CD4E50 /* PurchaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */; };
 		E50180A38BAE4BBB1AB7473E /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
 		E7E294F239D1CF0AEEF3BBF1 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
+		E8CF71775A6BE81B16BB02BA /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B141ACFBC04EFC8F9C778 /* InventorySessionListViewModel.swift */; };
+		EAA9EB64878F3A97BA55F8F8 /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20A79FEB112EF6CCD0D5D76F /* InventoryAdjustmentDetailViewController.swift */; };
+		EB557D68BD63D11AFE6A49EB /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 735B141ACFBC04EFC8F9C778 /* InventorySessionListViewModel.swift */; };
 		EC45ACC3713979B621CC2EF6 /* OpexExpenseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B5A4D7A893BE6EB1649AC7 /* OpexExpenseModel.swift */; };
+		EC8439D3274474D8EB811C15 /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */; };
 		EFDC85A71ABFA60F51079015 /* IngredientListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */; };
 		F078CD1025085C8BEEC21896 /* OnboardingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3F0BC14E600EB2B68A020A2 /* OnboardingCell.swift */; };
 		F07FA7D16A86021102274D6B /* InventoryAdjustmentModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */; };
@@ -139,7 +165,6 @@
 		F31BD829284DF42800B8FD3B /* FIROrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD828284DF42800B8FD3B /* FIROrderModel.swift */; };
 		F31BD82B284DF90200B8FD3B /* FIRProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */; };
 		F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
-		F31D5882291224190047EB44 /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
 		F31D5886291230AE0047EB44 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
 		F31FCA3C2768789B00124366 /* RealmOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FCA3B2768789B00124366 /* RealmOrderModel.swift */; };
 		F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31FD0DC281D218500353BF7 /* FIRProductModel.swift */; };
@@ -393,6 +418,54 @@
 		F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */; };
 		F39D785B2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
 		F39D785C2C2056190003B556 /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
+		F3A35EC9303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAB303EE0F0001FBCFF /* InventoryAdjustmentCell.swift */; };
+		F3A35ECA303EE0F0001FBCFF /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC3303EE0F0001FBCFF /* StockItemCell.swift */; };
+		F3A35ECB303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB0303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift */; };
+		F3A35ECC303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAE303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift */; };
+		F3A35ECD303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC0303EE0F0001FBCFF /* InventorySessionListViewModel.swift */; };
+		F3A35ECE303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAD303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift */; };
+		F3A35ECF303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBC303EE0F0001FBCFF /* InventorySessionCell.swift */; };
+		F3A35ED0303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBE303EE0F0001FBCFF /* InventorySessionListViewController.swift */; };
+		F3A35ED1303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB9303EE0F0001FBCFF /* InventoryContainerViewController.swift */; };
+		F3A35ED2303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB6303EE0F0001FBCFF /* BulkSessionViewModel.swift */; };
+		F3A35ED3303EE0F0001FBCFF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC6303EE0F0001FBCFF /* StockListViewModel.swift */; };
+		F3A35ED4303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB1303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift */; };
+		F3A35ED5303EE0F0001FBCFF /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC4303EE0F0001FBCFF /* StockListViewController.swift */; };
+		F3A35ED6303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB4303EE0F0001FBCFF /* BulkSessionViewController.swift */; };
+		F3A35ED7303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAB303EE0F0001FBCFF /* InventoryAdjustmentCell.swift */; };
+		F3A35ED8303EE0F0001FBCFF /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC3303EE0F0001FBCFF /* StockItemCell.swift */; };
+		F3A35ED9303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB0303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift */; };
+		F3A35EDA303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAE303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift */; };
+		F3A35EDB303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC0303EE0F0001FBCFF /* InventorySessionListViewModel.swift */; };
+		F3A35EDC303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAD303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift */; };
+		F3A35EDD303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBC303EE0F0001FBCFF /* InventorySessionCell.swift */; };
+		F3A35EDE303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBE303EE0F0001FBCFF /* InventorySessionListViewController.swift */; };
+		F3A35EDF303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB9303EE0F0001FBCFF /* InventoryContainerViewController.swift */; };
+		F3A35EE0303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB6303EE0F0001FBCFF /* BulkSessionViewModel.swift */; };
+		F3A35EE1303EE0F0001FBCFF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC6303EE0F0001FBCFF /* StockListViewModel.swift */; };
+		F3A35EE2303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB1303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift */; };
+		F3A35EE3303EE0F0001FBCFF /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC4303EE0F0001FBCFF /* StockListViewController.swift */; };
+		F3A35EE4303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB4303EE0F0001FBCFF /* BulkSessionViewController.swift */; };
+		F3A35EE5303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAB303EE0F0001FBCFF /* InventoryAdjustmentCell.swift */; };
+		F3A35EE6303EE0F0001FBCFF /* StockItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC3303EE0F0001FBCFF /* StockItemCell.swift */; };
+		F3A35EE7303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB0303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift */; };
+		F3A35EE8303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAE303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift */; };
+		F3A35EE9303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC0303EE0F0001FBCFF /* InventorySessionListViewModel.swift */; };
+		F3A35EEA303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EAD303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift */; };
+		F3A35EEB303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBC303EE0F0001FBCFF /* InventorySessionCell.swift */; };
+		F3A35EEC303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EBE303EE0F0001FBCFF /* InventorySessionListViewController.swift */; };
+		F3A35EED303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB9303EE0F0001FBCFF /* InventoryContainerViewController.swift */; };
+		F3A35EEE303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB6303EE0F0001FBCFF /* BulkSessionViewModel.swift */; };
+		F3A35EEF303EE0F0001FBCFF /* StockListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC6303EE0F0001FBCFF /* StockListViewModel.swift */; };
+		F3A35EF0303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB1303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift */; };
+		F3A35EF1303EE0F0001FBCFF /* StockListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EC4303EE0F0001FBCFF /* StockListViewController.swift */; };
+		F3A35EF2303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EB4303EE0F0001FBCFF /* BulkSessionViewController.swift */; };
+		F3A35EF5303EE148001FBCFF /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */; };
+		F3A35EF6303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */; };
+		F3A35EF7303EE148001FBCFF /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */; };
+		F3A35EF8303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */; };
+		F3A35EF9303EE148001FBCFF /* InventoryAuditService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */; };
+		F3A35EFA303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */; };
 		F3A54CA330307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
 		F3A54CA430307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
 		F3A54CA530307599002B0C00 /* DomainDashboardFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */; };
@@ -539,18 +612,12 @@
 		F3B33A162C0B22FE0073F19A /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339A42C0B22FE0073F19A /* SwiftEntryKit */; };
 		F3B33A182C0B22FE0073F19A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339982C0B22FE0073F19A /* FirebaseFirestore */; };
 		F3B33A1B2C0B22FE0073F19A /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339A02C0B22FE0073F19A /* TinyConstraints */; };
-		F3B33A1D2C0B22FE0073F19A /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3B33A1F2C0B22FE0073F19A /* Auth.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E7F2BDD2B540007157B /* Auth.strings */; };
 		F3B33A202C0B22FE0073F19A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
 		F3B33A212C0B22FE0073F19A /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
-		F3B33A222C0B22FE0073F19A /* SaleGoodModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6A28265F400036B433 /* SaleGoodModel.png */; };
 		F3B33A232C0B22FE0073F19A /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
-		F3B33A242C0B22FE0073F19A /* SalesModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6828265F400036B433 /* SalesModel.png */; };
 		F3B33A252C0B22FE0073F19A /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3410E982BDD31840007157B /* Icons.xcassets */; };
 		F3B33A262C0B22FE0073F19A /* Global.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E942BDD300D0007157B /* Global.strings */; };
-		F3B33A272C0B22FE0073F19A /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
-		F3B33A282C0B22FE0073F19A /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
-		F3B33A292C0B22FE0073F19A /* TypeOfDonationModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */; };
 		F3B33A2A2C0B22FE0073F19A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */; };
 		F3B33A4B2C0B23450073F19A /* CostDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* CostDetailsListViewController.swift */; };
 		F3B33A4C2C0B23450073F19A /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
@@ -655,18 +722,12 @@
 		F3B33AB52C0B23450073F19A /* SwiftEntryKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A432C0B23450073F19A /* SwiftEntryKit */; };
 		F3B33AB72C0B23450073F19A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A372C0B23450073F19A /* FirebaseFirestore */; };
 		F3B33ABA2C0B23450073F19A /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A3F2C0B23450073F19A /* TinyConstraints */; };
-		F3B33ABC2C0B23450073F19A /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
 		F3B33ABE2C0B23450073F19A /* Auth.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E7F2BDD2B540007157B /* Auth.strings */; };
 		F3B33ABF2C0B23450073F19A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
 		F3B33AC02C0B23450073F19A /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
-		F3B33AC12C0B23450073F19A /* SaleGoodModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6A28265F400036B433 /* SaleGoodModel.png */; };
 		F3B33AC22C0B23450073F19A /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
-		F3B33AC32C0B23450073F19A /* SalesModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6828265F400036B433 /* SalesModel.png */; };
 		F3B33AC42C0B23450073F19A /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3410E982BDD31840007157B /* Icons.xcassets */; };
 		F3B33AC52C0B23450073F19A /* Global.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E942BDD300D0007157B /* Global.strings */; };
-		F3B33AC62C0B23450073F19A /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
-		F3B33AC72C0B23450073F19A /* Screenshot1.png in Resources */ = {isa = PBXBuildFile; fileRef = F31D5881291224190047EB44 /* Screenshot1.png */; };
-		F3B33AC82C0B23450073F19A /* TypeOfDonationModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */; };
 		F3B33AC92C0B23450073F19A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */; };
 		F3B33AD32C0B26080073F19A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3B33AD02C0B26080073F19A /* GoogleService-Info.plist */; };
 		F3B33ADA2C0B29500073F19A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3B33AD82C0B29500073F19A /* GoogleService-Info.plist */; };
@@ -676,11 +737,6 @@
 		F3B7C2542806D9F600DF5C2B /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
 		F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3BBB1B22748D6C000744C3B /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */; };
-		F3BF4C6D28265F400036B433 /* SalesModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6828265F400036B433 /* SalesModel.png */; };
-		F3BF4C6E28265F400036B433 /* TypeOfDonationModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */; };
-		F3BF4C6F28265F400036B433 /* SaleGoodModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6A28265F400036B433 /* SaleGoodModel.png */; };
-		F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */; };
-		F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */ = {isa = PBXBuildFile; fileRef = F3BF4C6C28265F400036B433 /* PurchaseModel.png */; };
 		F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
 		F3D8DB722F529A4800898100 /* TrackMyCafe.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */; };
 		F3D8DB732F529A4800898100 /* TrackMyCafe.storekit in Resources */ = {isa = PBXBuildFile; fileRef = F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */; };
@@ -795,6 +851,7 @@
 		F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		FB42220CC9DA241188396827 /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
+		FEFBECCDA978CE42D84B8669 /* InventoryAdjustmentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D219D9147A492E9E4AB9AE18 /* InventoryAdjustmentListViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -813,11 +870,15 @@
 		06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DemoDataFloatingButton.swift; sourceTree = "<group>"; };
 		06D59AF2F0AA53F1BA973F5E /* Pods-TrackMyCafe Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		06F62BAD7A44F6B05481E951 /* IngredientListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewController.swift; sourceTree = "<group>"; };
+		07C69292BCFCD04043C72B98 /* InventorySessionListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventorySessionListViewController.swift; path = "View Layer/Flow/Inventory/Sessions/View/InventorySessionListViewController.swift"; sourceTree = "<group>"; };
 		0BD579A062148876F7E9DAEE /* Pods-TrackMyCafe Beta.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.debug.xcconfig"; sourceTree = "<group>"; };
 		176C8E4B11E5920B65578186 /* OpexCategoryModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexCategoryModel.swift; sourceTree = "<group>"; };
+		20A79FEB112EF6CCD0D5D76F /* InventoryAdjustmentDetailViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAdjustmentDetailViewController.swift; path = "View Layer/Flow/Inventory/Audit/View/InventoryAdjustmentDetailViewController.swift"; sourceTree = "<group>"; };
 		27E5355EAC70CBDE5DF12E7B /* IncomeAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IncomeAggregationService.swift; sourceTree = "<group>"; };
 		287C00B3CD0E54955D1E9AAC /* OpexAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OpexAggregationService.swift; sourceTree = "<group>"; };
 		2E9A0E08923E359F5819A334 /* Pods-TrackMyCafe Beta.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Beta.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Beta/Pods-TrackMyCafe Beta.release.xcconfig"; sourceTree = "<group>"; };
+		38F4D2D06DE6C95E45B997B4 /* InventoryAdjustmentListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAdjustmentListViewController.swift; path = "View Layer/Flow/Inventory/Audit/View/InventoryAdjustmentListViewController.swift"; sourceTree = "<group>"; };
+		3B0FF09692ED2AE937B1A819 /* InventoryAdjustmentCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAdjustmentCell.swift; path = "View Layer/Flow/Inventory/Audit/View/Cells/InventoryAdjustmentCell.swift"; sourceTree = "<group>"; };
 		3BCE4CBC98EDF6AA14D1C150 /* CreatePurchaseViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CreatePurchaseViewController.swift; sourceTree = "<group>"; };
 		3F58E67793C35737B63123E1 /* IngredientListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModel.swift; sourceTree = "<group>"; };
 		404B56D6E49CC8D6CD71CF6B /* PurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseModel.swift; sourceTree = "<group>"; };
@@ -826,31 +887,35 @@
 		58301BF0EA0AA4AD13300E91 /* PurchaseListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewModel.swift; sourceTree = "<group>"; };
 		5B7BFCD1D0CEE9A05D68687A /* FinanceAggregationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FinanceAggregationService.swift; sourceTree = "<group>"; };
 		5ECBA02165C1A3C5DB2CD2F7 /* InventoryAdjustmentModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentModel.swift; sourceTree = "<group>"; };
-		60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockItemCell.swift; sourceTree = "<group>"; };
 		60BCF0BEE0B930E14CBBC9B4 /* SubscriptionPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubscriptionPresenter.swift; sourceTree = "<group>"; };
 		625ED993A46F6F73C51D5FEE /* IngredientListViewModelType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = IngredientListViewModelType.swift; sourceTree = "<group>"; };
+		63A35F542D1857D5676BED20 /* InventoryAdjustmentDetailViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAdjustmentDetailViewModel.swift; path = "View Layer/Flow/Inventory/Audit/ViewModel/InventoryAdjustmentDetailViewModel.swift"; sourceTree = "<group>"; };
 		6416781F69E5445B42ECEB9D /* Pods_TrackMyCafe_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BF72BC721AC4C1BF63AC562 /* PurchaseListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListViewController.swift; sourceTree = "<group>"; };
 		6DA632FB7E61C8ABEAD0817E /* InventoryContainerViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryContainerViewController.swift; sourceTree = "<group>"; };
 		72B5E49A3B9441A9E185BBF2 /* CostingService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostingService.swift; sourceTree = "<group>"; };
+		735B141ACFBC04EFC8F9C778 /* InventorySessionListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventorySessionListViewModel.swift; path = "View Layer/Flow/Inventory/Sessions/ViewModel/InventorySessionListViewModel.swift"; sourceTree = "<group>"; };
 		755C0AF4BCD86A9E7FECC83D /* Pods-TrackMyCafe Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.debug.xcconfig"; sourceTree = "<group>"; };
 		7C4E4EDD7236148656A9CB48 /* Pods_TrackMyCafe_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7D83D16AEFA49511A257A666 /* Pods_TrackMyCafeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F31227355627D04B9D00853 /* FIRPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIRPurchaseModel.swift; sourceTree = "<group>"; };
+		84374C0EE97DDF2F4F0CBF8F /* InventorySessionCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventorySessionCell.swift; path = "View Layer/Flow/Inventory/Sessions/View/Cells/InventorySessionCell.swift"; sourceTree = "<group>"; };
 		8C00A1CCB953E6D7EE894365 /* OrderItemModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OrderItemModel.swift; sourceTree = "<group>"; };
 		9056576D1E599B8A41EB74C5 /* Pods-TrackMyCafe Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Dev.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Dev/Pods-TrackMyCafe Dev.release.xcconfig"; sourceTree = "<group>"; };
 		933B72C0EBE065A136862002 /* Pods_TrackMyCafe_Beta.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TrackMyCafe_Beta.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AD7023830D52366E592DF97 /* PaddedTextField.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
-		A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewModel.swift; sourceTree = "<group>"; };
+		A79C03AB2DEE7A6261E6E4E5 /* DomainInventoryAdjustmentDataService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DomainInventoryAdjustmentDataService.swift; path = Services/Domain/DomainInventoryAdjustmentDataService.swift; sourceTree = "<group>"; };
+		A92E00C3A07E71145094E3E2 /* InventoryAuditService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAuditService.swift; path = Services/Domain/InventoryAuditService.swift; sourceTree = "<group>"; };
 		B162B8F1542975346D60E96C /* InventoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = InventoryService.swift; sourceTree = "<group>"; };
 		B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = FIROpexExpenseModel.swift; sourceTree = "<group>"; };
+		B903EDF15F857EF3B668C19E /* BulkSessionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewController.swift; path = "View Layer/Flow/Inventory/Bulk/View/BulkSessionViewController.swift"; sourceTree = "<group>"; };
 		BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "SettingListViewController+Extension.swift"; sourceTree = "<group>"; };
 		C46F54595B173CA3F90A3FAE /* Pods-TrackMyCafeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafeTests.debug.xcconfig"; path = "Target Support Files/Pods-TrackMyCafeTests/Pods-TrackMyCafeTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C5D958EF9D4321829F0A9B12 /* OnboardingViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = CostsTabViewController.swift; sourceTree = "<group>"; };
 		CCDA06ECE1F0D21E58F60FC0 /* Pods-TrackMyCafe Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafe Prod.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafe Prod/Pods-TrackMyCafe Prod.release.xcconfig"; sourceTree = "<group>"; };
 		CE5F64D425591D699D6994A4 /* Pods-TrackMyCafeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrackMyCafeTests.release.xcconfig"; path = "Target Support Files/Pods-TrackMyCafeTests/Pods-TrackMyCafeTests.release.xcconfig"; sourceTree = "<group>"; };
-		D5FB0242092853861442A8F6 /* StockListViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
+		D219D9147A492E9E4AB9AE18 /* InventoryAdjustmentListViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryAdjustmentListViewModel.swift; path = "View Layer/Flow/Inventory/Audit/ViewModel/InventoryAdjustmentListViewModel.swift"; sourceTree = "<group>"; };
 		D717B0E3CE5350358FD9B583 /* RealmPurchaseModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RealmPurchaseModel.swift; sourceTree = "<group>"; };
 		D8322C84341922937218E47A /* DashboardPeriod.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DashboardPeriod.swift; sourceTree = "<group>"; };
 		DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SubscriptionBannerView.swift; sourceTree = "<group>"; };
@@ -872,7 +937,6 @@
 		F31BD828284DF42800B8FD3B /* FIROrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIROrderModel.swift; sourceTree = "<group>"; };
 		F31BD82A284DF90200B8FD3B /* FIRProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRProductsPriceModel.swift; sourceTree = "<group>"; };
 		F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRTypeModel.swift; sourceTree = "<group>"; };
-		F31D5881291224190047EB44 /* Screenshot1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Screenshot1.png; sourceTree = "<group>"; };
 		F31D5885291230AE0047EB44 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		F31FCA3B2768789B00124366 /* RealmOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmOrderModel.swift; sourceTree = "<group>"; };
 		F31FD0DC281D218500353BF7 /* FIRProductModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIRProductModel.swift; sourceTree = "<group>"; };
@@ -989,7 +1053,6 @@
 		F385B4282C1DA60A00973CAA /* Subscription.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Subscription.swift; sourceTree = "<group>"; };
 		F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		F38707DE2BE620E600B6F313 /* Cyber-coffe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Cyber-coffe.entitlements"; sourceTree = "<group>"; };
-		F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "API Donate-cafe.md"; sourceTree = "<group>"; };
 		F38EE5152C3939D500933E67 /* StaffCategoriesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffCategoriesTableViewCell.swift; sourceTree = "<group>"; };
 		F3988ADB27EB111600215976 /* CostListViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostListViewModelType.swift; sourceTree = "<group>"; };
 		F3988ADD27EB11EB00215976 /* CostListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CostListItemViewModelType.swift; sourceTree = "<group>"; };
@@ -1009,6 +1072,22 @@
 		F39B5D1628460A06000F7D43 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDB.swift; sourceTree = "<group>"; };
 		F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDatabaseService.swift; sourceTree = "<group>"; };
+		F3A35EAB303EE0F0001FBCFF /* InventoryAdjustmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentCell.swift; sourceTree = "<group>"; };
+		F3A35EAD303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentDetailViewController.swift; sourceTree = "<group>"; };
+		F3A35EAE303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentListViewController.swift; sourceTree = "<group>"; };
+		F3A35EB0303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentDetailViewModel.swift; sourceTree = "<group>"; };
+		F3A35EB1303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAdjustmentListViewModel.swift; sourceTree = "<group>"; };
+		F3A35EB4303EE0F0001FBCFF /* BulkSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkSessionViewController.swift; sourceTree = "<group>"; };
+		F3A35EB6303EE0F0001FBCFF /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BulkSessionViewModel.swift; sourceTree = "<group>"; };
+		F3A35EB9303EE0F0001FBCFF /* InventoryContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryContainerViewController.swift; sourceTree = "<group>"; };
+		F3A35EBC303EE0F0001FBCFF /* InventorySessionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventorySessionCell.swift; sourceTree = "<group>"; };
+		F3A35EBE303EE0F0001FBCFF /* InventorySessionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventorySessionListViewController.swift; sourceTree = "<group>"; };
+		F3A35EC0303EE0F0001FBCFF /* InventorySessionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventorySessionListViewModel.swift; sourceTree = "<group>"; };
+		F3A35EC3303EE0F0001FBCFF /* StockItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockItemCell.swift; sourceTree = "<group>"; };
+		F3A35EC4303EE0F0001FBCFF /* StockListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockListViewController.swift; sourceTree = "<group>"; };
+		F3A35EC6303EE0F0001FBCFF /* StockListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockListViewModel.swift; sourceTree = "<group>"; };
+		F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainInventoryAdjustmentDataService.swift; sourceTree = "<group>"; };
+		F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InventoryAuditService.swift; sourceTree = "<group>"; };
 		F3A54CA230307599002B0C00 /* DomainDashboardFacade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDashboardFacade.swift; sourceTree = "<group>"; };
 		F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinanceReportingService.swift; sourceTree = "<group>"; };
 		F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ABCReportDetailViewController.swift; sourceTree = "<group>"; };
@@ -1034,11 +1113,6 @@
 		F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeTableViewCell.swift; sourceTree = "<group>"; };
 		F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeDetailsViewController.swift; sourceTree = "<group>"; };
 		F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
-		F3BF4C6828265F400036B433 /* SalesModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SalesModel.png; sourceTree = "<group>"; };
-		F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TypeOfDonationModel.png; sourceTree = "<group>"; };
-		F3BF4C6A28265F400036B433 /* SaleGoodModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SaleGoodModel.png; sourceTree = "<group>"; };
-		F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodsPriceModel.png; sourceTree = "<group>"; };
-		F3BF4C6C28265F400036B433 /* PurchaseModel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PurchaseModel.png; sourceTree = "<group>"; };
 		F3C67911293929EF00E64D49 /* DefaultButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultButton.swift; sourceTree = "<group>"; };
 		F3D8DB712F529A4800898100 /* TrackMyCafe.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = TrackMyCafe.storekit; sourceTree = "<group>"; };
 		F3D8DC0E2F52C83000898100 /* ProGated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProGated.swift; sourceTree = "<group>"; };
@@ -1078,97 +1152,18 @@
 		F3F6A63A2C327BA3000961C8 /* CreateEditAdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAdminController.swift; sourceTree = "<group>"; };
 		F3F6A6432C3280AF000961C8 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
+		FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewModel.swift; path = "View Layer/Flow/Inventory/Bulk/ViewModel/BulkSessionViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		F319FE8B2F5C459D00F8D0A4 /* View */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F324E60A2F486E99003A7469 /* Selection */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Selection;
-			sourceTree = "<group>";
-		};
-		F3299A932F35065600EA6532 /* Cells */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = TrackMyCafeTests;
-			sourceTree = "<group>";
-		};
-		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = ProductCategories;
-			sourceTree = "<group>";
-		};
-		F362781C2EE5508D00A69CFE /* Home */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Home;
-			sourceTree = "<group>";
-		};
-		F3B7A8342EE220F0007BF216 /* Onboarding */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		F3F205482FD8317B007249FB /* Utilities */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Utilities;
-			sourceTree = "<group>";
-		};
+		F319FE8B2F5C459D00F8D0A4 /* View */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = View; sourceTree = "<group>"; };
+		F324E60A2F486E99003A7469 /* Selection */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Selection; sourceTree = "<group>"; };
+		F3299A932F35065600EA6532 /* Cells */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Cells; sourceTree = "<group>"; };
+		F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = TrackMyCafeTests; sourceTree = "<group>"; };
+		F35E91AE2F49D7DA0050EB4A /* ProductCategories */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = ProductCategories; sourceTree = "<group>"; };
+		F362781C2EE5508D00A69CFE /* Home */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Home; sourceTree = "<group>"; };
+		F3B7A8342EE220F0007BF216 /* Onboarding */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Onboarding; sourceTree = "<group>"; };
+		F3F205482FD8317B007249FB /* Utilities */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Utilities; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1276,6 +1271,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		17C6372A937FF20920653E33 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				735B141ACFBC04EFC8F9C778 /* InventorySessionListViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
 		181F6BF06D6997A1288EFB30 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1311,6 +1314,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		252456CE13BC179C002A0D2F /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3B0FF09692ED2AE937B1A819 /* InventoryAdjustmentCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		365EEC962101546D7576DFD2 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -1338,10 +1349,22 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		3EAECCF88A684AC040C83CCD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
 		3F95D5B9278D04E7105F5B38 /* Inventory */ = {
 			isa = PBXGroup;
 			children = (
-				B9E5822E910C6503F952EAF9 /* StockList */,
+				F3A35EB3303EE0F0001FBCFF /* Audit */,
+				F3A35EB8303EE0F0001FBCFF /* Bulk */,
+				F3A35EBB303EE0F0001FBCFF /* Container */,
+				F3A35EC2303EE0F0001FBCFF /* Sessions */,
+				F3A35EC8303EE0F0001FBCFF /* StockList */,
 				1D20FC0BD3E29F8BFBE95EDF /* Container */,
 			);
 			path = Inventory;
@@ -1380,6 +1403,16 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		571DC10532C91EC12168498B /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				E9CEF26E22FA6EF8CD432E2D /* Audit */,
+				DFAE8299D0635C5945E21097 /* Bulk */,
+				5B0491D2DF1E8F1848C2DDBF /* Sessions */,
+			);
+			name = Inventory;
+			sourceTree = "<group>";
+		};
 		5863D6B846DB79E9B0997CDA /* Aggregation */ = {
 			isa = PBXGroup;
 			children = (
@@ -1392,12 +1425,49 @@
 			path = Aggregation;
 			sourceTree = "<group>";
 		};
-		5AD82DC5B0F57136DCC4D6FE /* ViewModel */ = {
+		5B0491D2DF1E8F1848C2DDBF /* Sessions */ = {
 			isa = PBXGroup;
 			children = (
-				A4BB80BCD60550E2E948B3B8 /* StockListViewModel.swift */,
+				17C6372A937FF20920653E33 /* ViewModel */,
+				76229E1CD1115B0D35B5755B /* View */,
 			);
-			path = ViewModel;
+			name = Sessions;
+			sourceTree = "<group>";
+		};
+		76229E1CD1115B0D35B5755B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				A40B87C55FC8D85A373C3581 /* Cells */,
+				07C69292BCFCD04043C72B98 /* InventorySessionListViewController.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		80EFDF6765CB6CD6DEB462EC /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				D219D9147A492E9E4AB9AE18 /* InventoryAdjustmentListViewModel.swift */,
+				63A35F542D1857D5676BED20 /* InventoryAdjustmentDetailViewModel.swift */,
+			);
+			name = ViewModel;
+			sourceTree = "<group>";
+		};
+		865FC52BE8EF8CB2824E10D6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				252456CE13BC179C002A0D2F /* Cells */,
+				38F4D2D06DE6C95E45B997B4 /* InventoryAdjustmentListViewController.swift */,
+				20A79FEB112EF6CCD0D5D76F /* InventoryAdjustmentDetailViewController.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		96BA07D34E74618FB4453199 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B903EDF15F857EF3B668C19E /* BulkSessionViewController.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		A27F15580607CEC8588159BB /* View */ = {
@@ -1408,6 +1478,14 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A40B87C55FC8D85A373C3581 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				84374C0EE97DDF2F4F0CBF8F /* InventorySessionCell.swift */,
+			);
+			name = Cells;
+			sourceTree = "<group>";
+		};
 		B9DF3672CBB1706E0F800085 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1416,13 +1494,20 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		B9E5822E910C6503F952EAF9 /* StockList */ = {
+		BBE985C01F80A32005279BF5 /* View Layer */ = {
 			isa = PBXGroup;
 			children = (
-				EF8F1895EC2BCD66342024D9 /* View */,
-				5AD82DC5B0F57136DCC4D6FE /* ViewModel */,
+				D4EAE0F44D220DB5982505BB /* Flow */,
 			);
-			path = StockList;
+			name = "View Layer";
+			sourceTree = "<group>";
+		};
+		C051FCE4C55D48240029DD5A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				D04FFE7A39D1DFA97139B99E /* Domain */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		CEF67D7D8826132CCB206087 /* Main */ = {
@@ -1433,6 +1518,23 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		D04FFE7A39D1DFA97139B99E /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A79C03AB2DEE7A6261E6E4E5 /* DomainInventoryAdjustmentDataService.swift */,
+				A92E00C3A07E71145094E3E2 /* InventoryAuditService.swift */,
+			);
+			name = Domain;
+			sourceTree = "<group>";
+		};
+		D4EAE0F44D220DB5982505BB /* Flow */ = {
+			isa = PBXGroup;
+			children = (
+				571DC10532C91EC12168498B /* Inventory */,
+			);
+			name = Flow;
+			sourceTree = "<group>";
+		};
 		DACDFC834DF7BC15991ADCAF /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1440,6 +1542,15 @@
 				E3F0BC14E600EB2B68A020A2 /* OnboardingCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		DFAE8299D0635C5945E21097 /* Bulk */ = {
+			isa = PBXGroup;
+			children = (
+				96BA07D34E74618FB4453199 /* View */,
+				3EAECCF88A684AC040C83CCD /* ViewModel */,
+			);
+			name = Bulk;
 			sourceTree = "<group>";
 		};
 		E11F671C95FACE85B4E5B435 /* PurchaseList */ = {
@@ -1469,13 +1580,13 @@
 			path = CreatePurchase;
 			sourceTree = "<group>";
 		};
-		EF8F1895EC2BCD66342024D9 /* View */ = {
+		E9CEF26E22FA6EF8CD432E2D /* Audit */ = {
 			isa = PBXGroup;
 			children = (
-				D5FB0242092853861442A8F6 /* StockListViewController.swift */,
-				60AD104E4DCD6CE0D4ED7417 /* StockItemCell.swift */,
+				865FC52BE8EF8CB2824E10D6 /* View */,
+				80EFDF6765CB6CD6DEB462EC /* ViewModel */,
 			);
-			path = View;
+			name = Audit;
 			sourceTree = "<group>";
 		};
 		EFB17918198405ADB5F45B9D /* View */ = {
@@ -1585,14 +1696,6 @@
 				B339E6943346E259FE073530 /* FIROpexExpenseModel.swift */,
 			);
 			path = Firestore;
-			sourceTree = "<group>";
-		};
-		F31D5880291223D80047EB44 /* Screenshots */ = {
-			isa = PBXGroup;
-			children = (
-				F31D5881291224190047EB44 /* Screenshot1.png */,
-			);
-			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		F33D348E2DCF9C69001DBA6C /* Views */ = {
@@ -2218,7 +2321,8 @@
 				F3158C492763442300136861 /* Services */,
 				F316A2F62738048F0083E830 /* Extensions */,
 				F39A5333273251BF00C8F2D3 /* Resources */,
-				F3BF4C72282671810036B433 /* Documentations */,
+				C051FCE4C55D48240029DD5A /* Services */,
+				BBE985C01F80A32005279BF5 /* View Layer */,
 			);
 			path = TrackMyCafe;
 			sourceTree = "<group>";
@@ -2294,6 +2398,143 @@
 				FFF1E72380963127006F5D52 /* Ingredients */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		F3A35EAC303EE0F0001FBCFF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EAB303EE0F0001FBCFF /* InventoryAdjustmentCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F3A35EAF303EE0F0001FBCFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EAC303EE0F0001FBCFF /* Cells */,
+				F3A35EAD303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift */,
+				F3A35EAE303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A35EB2303EE0F0001FBCFF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EB0303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift */,
+				F3A35EB1303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3A35EB3303EE0F0001FBCFF /* Audit */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EAF303EE0F0001FBCFF /* View */,
+				F3A35EB2303EE0F0001FBCFF /* ViewModel */,
+			);
+			path = Audit;
+			sourceTree = "<group>";
+		};
+		F3A35EB5303EE0F0001FBCFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EB4303EE0F0001FBCFF /* BulkSessionViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A35EB7303EE0F0001FBCFF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EB6303EE0F0001FBCFF /* BulkSessionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3A35EB8303EE0F0001FBCFF /* Bulk */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EB5303EE0F0001FBCFF /* View */,
+				F3A35EB7303EE0F0001FBCFF /* ViewModel */,
+			);
+			path = Bulk;
+			sourceTree = "<group>";
+		};
+		F3A35EBA303EE0F0001FBCFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EB9303EE0F0001FBCFF /* InventoryContainerViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A35EBB303EE0F0001FBCFF /* Container */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EBA303EE0F0001FBCFF /* View */,
+			);
+			path = Container;
+			sourceTree = "<group>";
+		};
+		F3A35EBD303EE0F0001FBCFF /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EBC303EE0F0001FBCFF /* InventorySessionCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		F3A35EBF303EE0F0001FBCFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EBD303EE0F0001FBCFF /* Cells */,
+				F3A35EBE303EE0F0001FBCFF /* InventorySessionListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A35EC1303EE0F0001FBCFF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EC0303EE0F0001FBCFF /* InventorySessionListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3A35EC2303EE0F0001FBCFF /* Sessions */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EBF303EE0F0001FBCFF /* View */,
+				F3A35EC1303EE0F0001FBCFF /* ViewModel */,
+			);
+			path = Sessions;
+			sourceTree = "<group>";
+		};
+		F3A35EC5303EE0F0001FBCFF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EC3303EE0F0001FBCFF /* StockItemCell.swift */,
+				F3A35EC4303EE0F0001FBCFF /* StockListViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A35EC7303EE0F0001FBCFF /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EC6303EE0F0001FBCFF /* StockListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3A35EC8303EE0F0001FBCFF /* StockList */ = {
+			isa = PBXGroup;
+			children = (
+				F3A35EC5303EE0F0001FBCFF /* View */,
+				F3A35EC7303EE0F0001FBCFF /* ViewModel */,
+			);
+			path = StockList;
 			sourceTree = "<group>";
 		};
 		F3A54D9E30308325002B0C00 /* ABC */ = {
@@ -2445,32 +2686,12 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		F3BF4C72282671810036B433 /* Documentations */ = {
-			isa = PBXGroup;
-			children = (
-				F3BF4C73282671960036B433 /* API */,
-				F31D5880291223D80047EB44 /* Screenshots */,
-			);
-			path = Documentations;
-			sourceTree = "<group>";
-		};
-		F3BF4C73282671960036B433 /* API */ = {
-			isa = PBXGroup;
-			children = (
-				F3BF4C6B28265F400036B433 /* GoodsPriceModel.png */,
-				F3BF4C6C28265F400036B433 /* PurchaseModel.png */,
-				F3BF4C6A28265F400036B433 /* SaleGoodModel.png */,
-				F3BF4C6828265F400036B433 /* SalesModel.png */,
-				F3BF4C6928265F400036B433 /* TypeOfDonationModel.png */,
-				F389B3CD281AE41200FA0E06 /* API Donate-cafe.md */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
 		F3E357E72BEFA203005050CB /* Domain */ = {
 			isa = PBXGroup;
 			children = (
 				F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */,
+				F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */,
+				F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */,
 				F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */,
 				F363F2892FED4E2D00910F20 /* FinanceHistoryBackfillService.swift */,
 				F371BEDD2FED42B800D72C3A /* DomainManualMovementService.swift */,
@@ -2810,20 +3031,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3BF4C7028265F400036B433 /* GoodsPriceModel.png in Resources */,
 				F39B5D1728460A06000F7D43 /* GoogleService-Info.plist in Resources */,
 				F3410E802BDD2B540007157B /* Auth.strings in Resources */,
 				F31D5886291230AE0047EB44 /* README.md in Resources */,
 				F3B036E12B777898009C085D /* Additional materials in Resources */,
-				F3BF4C6F28265F400036B433 /* SaleGoodModel.png in Resources */,
 				F3583B9F2BE8D4680079441F /* Config.plist in Resources */,
-				F3BF4C6D28265F400036B433 /* SalesModel.png in Resources */,
 				F3410E992BDD31840007157B /* Icons.xcassets in Resources */,
 				F3410E962BDD300D0007157B /* Global.strings in Resources */,
-				F3BF4C7128265F400036B433 /* PurchaseModel.png in Resources */,
-				F31D5882291224190047EB44 /* Screenshot1.png in Resources */,
 				F3D8DB722F529A4800898100 /* TrackMyCafe.storekit in Resources */,
-				F3BF4C6E28265F400036B433 /* TypeOfDonationModel.png in Resources */,
 				F39A52FE27311FDE00C8F2D3 /* Assets.xcassets in Resources */,
 				B71E408CD218D0EB3E005D62 /* InfoPlist.strings in Resources */,
 			);
@@ -2833,20 +3048,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3B33A1D2C0B22FE0073F19A /* GoodsPriceModel.png in Resources */,
 				F3B33A1F2C0B22FE0073F19A /* Auth.strings in Resources */,
 				F3B33A202C0B22FE0073F19A /* README.md in Resources */,
 				F3B33A212C0B22FE0073F19A /* Additional materials in Resources */,
-				F3B33A222C0B22FE0073F19A /* SaleGoodModel.png in Resources */,
 				F3B33A232C0B22FE0073F19A /* Config.plist in Resources */,
-				F3B33A242C0B22FE0073F19A /* SalesModel.png in Resources */,
 				F3B33ADA2C0B29500073F19A /* GoogleService-Info.plist in Resources */,
 				F3B33A252C0B22FE0073F19A /* Icons.xcassets in Resources */,
 				F3B33A262C0B22FE0073F19A /* Global.strings in Resources */,
-				F3B33A272C0B22FE0073F19A /* PurchaseModel.png in Resources */,
-				F3B33A282C0B22FE0073F19A /* Screenshot1.png in Resources */,
 				F3D8DB732F529A4800898100 /* TrackMyCafe.storekit in Resources */,
-				F3B33A292C0B22FE0073F19A /* TypeOfDonationModel.png in Resources */,
 				F3B33A2A2C0B22FE0073F19A /* Assets.xcassets in Resources */,
 				F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */,
 			);
@@ -2856,20 +3065,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3B33ABC2C0B23450073F19A /* GoodsPriceModel.png in Resources */,
 				F3B33ABE2C0B23450073F19A /* Auth.strings in Resources */,
 				F3B33ABF2C0B23450073F19A /* README.md in Resources */,
 				F3B33AC02C0B23450073F19A /* Additional materials in Resources */,
 				F3B33AD32C0B26080073F19A /* GoogleService-Info.plist in Resources */,
-				F3B33AC12C0B23450073F19A /* SaleGoodModel.png in Resources */,
 				F3B33AC22C0B23450073F19A /* Config.plist in Resources */,
-				F3B33AC32C0B23450073F19A /* SalesModel.png in Resources */,
 				F3B33AC42C0B23450073F19A /* Icons.xcassets in Resources */,
 				F3B33AC52C0B23450073F19A /* Global.strings in Resources */,
-				F3B33AC62C0B23450073F19A /* PurchaseModel.png in Resources */,
-				F3B33AC72C0B23450073F19A /* Screenshot1.png in Resources */,
 				F3D8DB742F529A4800898100 /* TrackMyCafe.storekit in Resources */,
-				F3B33AC82C0B23450073F19A /* TypeOfDonationModel.png in Resources */,
 				F3B33AC92C0B23450073F19A /* Assets.xcassets in Resources */,
 				E7E294F239D1CF0AEEF3BBF1 /* InfoPlist.strings in Resources */,
 			);
@@ -3211,6 +3414,8 @@
 				F32FDC7F275C862C0035767E /* UILabel+Extension.swift in Sources */,
 				F3A640C02C34243F006BCACD /* ImagePicker.swift in Sources */,
 				F3E357FD2BEFF978005050CB /* TypeModel.swift in Sources */,
+				F3A35EF9303EE148001FBCFF /* InventoryAuditService.swift in Sources */,
+				F3A35EFA303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */,
 				F316A301273901410083E830 /* OrderTableViewCell.swift in Sources */,
 				F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */,
 				F371BEDF2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
@@ -3336,6 +3541,20 @@
 				F385B40C2C1D7DDD00973CAA /* UIKitFactory.swift in Sources */,
 				F3A640BC2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5162C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
+				F3A35ED7303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */,
+				F3A35ED8303EE0F0001FBCFF /* StockItemCell.swift in Sources */,
+				F3A35ED9303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				F3A35EDA303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */,
+				F3A35EDB303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */,
+				F3A35EDC303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				F3A35EDD303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */,
+				F3A35EDE303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */,
+				F3A35EDF303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */,
+				F3A35EE0303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */,
+				F3A35EE1303EE0F0001FBCFF /* StockListViewModel.swift in Sources */,
+				F3A35EE2303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */,
+				F3A35EE3303EE0F0001FBCFF /* StockListViewController.swift in Sources */,
+				F3A35EE4303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */,
 				F316A2FB273808100083E830 /* UIFont+Extension.swift in Sources */,
 				F3F205532FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3821C5F27E9FC13006D40FC /* OrderListViewModel.swift in Sources */,
@@ -3359,10 +3578,7 @@
 				BAD024137AC0F8137DA271B9 /* CreatePurchaseViewController.swift in Sources */,
 				1AD01A70A9BF5795A532806B /* RealmPurchaseModel.swift in Sources */,
 				9A4421E60F62F06227F09B18 /* PurchaseTableViewCell.swift in Sources */,
-				AF243119E910850D446E788B /* StockListViewModel.swift in Sources */,
 				F371BEC32FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
-				2714C430B247DF2FB04F039A /* StockListViewController.swift in Sources */,
-				A7B020E20BB389387EBDF45D /* StockItemCell.swift in Sources */,
 				CBE63A86A8D5027E852B8547 /* InventoryContainerViewController.swift in Sources */,
 				FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */,
 				7C7DFAA1F3213735B13D5B96 /* FIRPurchaseModel.swift in Sources */,
@@ -3382,6 +3598,18 @@
 				E101D6DE5B6C4F4D7EFA47CE /* OnboardingViewModel.swift in Sources */,
 				F30E1D852F65DF6300425DFF /* AppLabel.swift in Sources */,
 				228522146BDF800CDB1DD230 /* SubscriptionPresenter.swift in Sources */,
+				76C912C5C7091BF242C6E482 /* DomainInventoryAdjustmentDataService.swift in Sources */,
+				407049828CF824B88CD32CF7 /* InventoryAuditService.swift in Sources */,
+				7A468FFF906EA2A82619EABA /* InventoryAdjustmentListViewModel.swift in Sources */,
+				CE6A2B6B691D39E70EBD0451 /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				73375A1F4685F3DC5F332666 /* InventoryAdjustmentCell.swift in Sources */,
+				51C55B89A99CFB87C7C6AE22 /* InventoryAdjustmentListViewController.swift in Sources */,
+				4C112A1DFA255A85B304F8C5 /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				D99C22E322B1D5E882A24150 /* BulkSessionViewModel.swift in Sources */,
+				753A442C5F46C75DD317B95D /* BulkSessionViewController.swift in Sources */,
+				EB557D68BD63D11AFE6A49EB /* InventorySessionListViewModel.swift in Sources */,
+				A1023A72AD20DABF9822AD3C /* InventorySessionCell.swift in Sources */,
+				6B23D347D4F815507E7BF9C6 /* InventorySessionListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3446,6 +3674,8 @@
 				F3B339CC2C0B22FE0073F19A /* UIImage+Extension.swift in Sources */,
 				F3A640C12C34243F006BCACD /* ImagePicker.swift in Sources */,
 				F3F6A62F2C327A43000961C8 /* BaseReusableView.swift in Sources */,
+				F3A35EF5303EE148001FBCFF /* InventoryAuditService.swift in Sources */,
+				F3A35EF6303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */,
 				F3B339CD2C0B22FE0073F19A /* UIView+Extension.swift in Sources */,
 				F3B339CE2C0B22FE0073F19A /* FirestoreDB.swift in Sources */,
 				F371BEDE2FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
@@ -3571,6 +3801,20 @@
 				F3B33A0A2C0B22FE0073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BD2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5172C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
+				F3A35EC9303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */,
+				F3A35ECA303EE0F0001FBCFF /* StockItemCell.swift in Sources */,
+				F3A35ECB303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				F3A35ECC303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */,
+				F3A35ECD303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */,
+				F3A35ECE303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				F3A35ECF303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */,
+				F3A35ED0303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */,
+				F3A35ED1303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */,
+				F3A35ED2303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */,
+				F3A35ED3303EE0F0001FBCFF /* StockListViewModel.swift in Sources */,
+				F3A35ED4303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */,
+				F3A35ED5303EE0F0001FBCFF /* StockListViewController.swift in Sources */,
+				F3A35ED6303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */,
 				F3F6A6272C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
 				F3F205542FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */,
@@ -3594,10 +3838,7 @@
 				B2BE128F16AE7CC518562F0D /* CreatePurchaseViewController.swift in Sources */,
 				9433CD6DC29B3A6846F8718D /* RealmPurchaseModel.swift in Sources */,
 				B9F9D682B701F0BFA3760BE8 /* PurchaseTableViewCell.swift in Sources */,
-				2D5F29A122CF2BAEC17A82E2 /* StockListViewModel.swift in Sources */,
 				F371BEC52FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
-				8B2F9562AB8F0E57B3BF30EA /* StockListViewController.swift in Sources */,
-				186B79D935E57A4C5F860FA5 /* StockItemCell.swift in Sources */,
 				6ED56965B32EB8B065AA3D21 /* InventoryContainerViewController.swift in Sources */,
 				60515BB5E807E37BB705E174 /* CostsTabViewController.swift in Sources */,
 				A4F5E2DF01331DAF58FE6170 /* FIRPurchaseModel.swift in Sources */,
@@ -3617,6 +3858,18 @@
 				73DD30768303A68FE11227F8 /* OnboardingViewModel.swift in Sources */,
 				F30E1D862F65DF6300425DFF /* AppLabel.swift in Sources */,
 				AAB3415C6BECB15B68146C70 /* SubscriptionPresenter.swift in Sources */,
+				07BA6FD13C40D19607C4556E /* DomainInventoryAdjustmentDataService.swift in Sources */,
+				D4AF51466787C5142FFC7D38 /* InventoryAuditService.swift in Sources */,
+				7601DB9A69B002162B949E7E /* InventoryAdjustmentListViewModel.swift in Sources */,
+				A1C2AA329C46FFA5D4289BF3 /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				9A9EEA9B99D13BC057AE587D /* InventoryAdjustmentCell.swift in Sources */,
+				BB79C9B46A16CCE289CCCAB7 /* InventoryAdjustmentListViewController.swift in Sources */,
+				EAA9EB64878F3A97BA55F8F8 /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				4E9A7E3905D85F91285BD281 /* BulkSessionViewModel.swift in Sources */,
+				C5EFC64653D762252534A667 /* BulkSessionViewController.swift in Sources */,
+				783FC953A0751D65E6971640 /* InventorySessionListViewModel.swift in Sources */,
+				CA6985C2BCD1EF4AE86EAD86 /* InventorySessionCell.swift in Sources */,
+				4CA8BAA3D632A60E1CB121E4 /* InventorySessionListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3681,6 +3934,8 @@
 				F3B33A6B2C0B23450073F19A /* UIImage+Extension.swift in Sources */,
 				F3A640C22C34243F006BCACD /* ImagePicker.swift in Sources */,
 				F3F6A6302C327A44000961C8 /* BaseReusableView.swift in Sources */,
+				F3A35EF7303EE148001FBCFF /* InventoryAuditService.swift in Sources */,
+				F3A35EF8303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift in Sources */,
 				F3B33A6C2C0B23450073F19A /* UIView+Extension.swift in Sources */,
 				F3B33A6D2C0B23450073F19A /* FirestoreDB.swift in Sources */,
 				F371BEE02FED42B800D72C3A /* DomainManualMovementService.swift in Sources */,
@@ -3806,6 +4061,20 @@
 				F3B33AA92C0B23450073F19A /* UIFont+Extension.swift in Sources */,
 				F3A640BE2C341994006BCACD /* CreateEditTechnicianController.swift in Sources */,
 				F38EE5182C3939D500933E67 /* StaffCategoriesTableViewCell.swift in Sources */,
+				F3A35EE5303EE0F0001FBCFF /* InventoryAdjustmentCell.swift in Sources */,
+				F3A35EE6303EE0F0001FBCFF /* StockItemCell.swift in Sources */,
+				F3A35EE7303EE0F0001FBCFF /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				F3A35EE8303EE0F0001FBCFF /* InventoryAdjustmentListViewController.swift in Sources */,
+				F3A35EE9303EE0F0001FBCFF /* InventorySessionListViewModel.swift in Sources */,
+				F3A35EEA303EE0F0001FBCFF /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				F3A35EEB303EE0F0001FBCFF /* InventorySessionCell.swift in Sources */,
+				F3A35EEC303EE0F0001FBCFF /* InventorySessionListViewController.swift in Sources */,
+				F3A35EED303EE0F0001FBCFF /* InventoryContainerViewController.swift in Sources */,
+				F3A35EEE303EE0F0001FBCFF /* BulkSessionViewModel.swift in Sources */,
+				F3A35EEF303EE0F0001FBCFF /* StockListViewModel.swift in Sources */,
+				F3A35EF0303EE0F0001FBCFF /* InventoryAdjustmentListViewModel.swift in Sources */,
+				F3A35EF1303EE0F0001FBCFF /* StockListViewController.swift in Sources */,
+				F3A35EF2303EE0F0001FBCFF /* BulkSessionViewController.swift in Sources */,
 				F3F6A6282C327A0B000961C8 /* PersonTableViewCell.swift in Sources */,
 				F3F205552FD831A0007249FB /* DomainProductCategoryDataService.swift in Sources */,
 				F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */,
@@ -3829,10 +4098,7 @@
 				701C11D8E318FF66E30A15CE /* CreatePurchaseViewController.swift in Sources */,
 				B27B129ECD2A158FC764BC5D /* RealmPurchaseModel.swift in Sources */,
 				C2E0271346F5B0219ED87E54 /* PurchaseTableViewCell.swift in Sources */,
-				743292509F02001D56C40EBF /* StockListViewModel.swift in Sources */,
 				F371BEC42FED421A00D72C3A /* ManualMovementKind.swift in Sources */,
-				68B4030D0F5D3965E706F224 /* StockListViewController.swift in Sources */,
-				069B9BAD804D03DCEE3D8BA9 /* StockItemCell.swift in Sources */,
 				86E11A31F94CE29A805E2DC7 /* InventoryContainerViewController.swift in Sources */,
 				E18E1ABFBDE7419B635C321F /* CostsTabViewController.swift in Sources */,
 				AD123069E8110835BA7FDD0D /* FIRPurchaseModel.swift in Sources */,
@@ -3852,6 +4118,18 @@
 				236FE50EC1F176EE21409F96 /* OnboardingViewModel.swift in Sources */,
 				F30E1D842F65DF6300425DFF /* AppLabel.swift in Sources */,
 				B0E4382A296950739D620DDD /* SubscriptionPresenter.swift in Sources */,
+				C614B1B14D185D318618B8F7 /* DomainInventoryAdjustmentDataService.swift in Sources */,
+				6999695FB0B0B6245FE46225 /* InventoryAuditService.swift in Sources */,
+				FEFBECCDA978CE42D84B8669 /* InventoryAdjustmentListViewModel.swift in Sources */,
+				00E8DDCA8335C86E52C380DA /* InventoryAdjustmentDetailViewModel.swift in Sources */,
+				42ACA65DF8BAE470582DAB42 /* InventoryAdjustmentCell.swift in Sources */,
+				A6E4F543F7B9A46AA1DB2559 /* InventoryAdjustmentListViewController.swift in Sources */,
+				38E329256CEF26D2FA2F8E57 /* InventoryAdjustmentDetailViewController.swift in Sources */,
+				EC8439D3274474D8EB811C15 /* BulkSessionViewModel.swift in Sources */,
+				6BBA2A31FBCC38434A101968 /* BulkSessionViewController.swift in Sources */,
+				E8CF71775A6BE81B16BB02BA /* InventorySessionListViewModel.swift in Sources */,
+				A82B4F8B6FC236E98A12EB46 /* InventorySessionCell.swift in Sources */,
+				D7FDFBD23E6530FDA9163C3A /* InventorySessionListViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

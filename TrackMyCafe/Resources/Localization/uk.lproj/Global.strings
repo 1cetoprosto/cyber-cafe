@@ -304,6 +304,8 @@
 "inventoryTitle" = "Склад";
 "inventorySegmentStock" = "Залишки";
 "inventorySegmentPurchases" = "Закупівлі";
+"inventorySegmentSessions" = "Інвентаризації";
+"inventorySegmentJournal" = "Журнал";
 "inventorySegmentAudit" = "Ревізія";
 "inventoryAuditComingSoon" = "Інвентаризація (Скоро)";
 "inventoryAdjustStock" = "Коригувати залишок";
@@ -311,11 +313,48 @@
 "inventoryQuantityPlaceholder" = "Кількість";
 "inventoryEnterDelta" = "Введіть дельту для %@";
 "inventoryDeltaPlaceholder" = "Дельта (±)";
+"inventoryEnterActualQty" = "Поточна залишка: %.2f. Введіть фактичну кількість для %@.";
+"inventoryActualQtyPlaceholder" = "Фактична кількість";
 "inventoryReason" = "Причина";
 "inventoryReasonPlaceholder" = "Причина коригування";
 "inventoryAvgPrice" = "Сер. ціна: %.2f грн";
 "inventorySumValue" = "Сума: %.2f грн";
 "inventoryLowStock" = "Мало товару";
+
+// MARK: - Inventory Adjustment Source
+"inventoryAdjustmentSourceManual" = "Вручну";
+"inventoryAdjustmentSourceBulkCount" = "Масова інвентарізація";
+"inventoryAdjustmentSourceSystem" = "Система";
+
+// MARK: - Inventory Audit Journal
+"inventoryAdjustmentJournalTitle" = "Журнал рухів";
+"inventoryAuditEmptyState" = "Поки немає рухів залишків. Коригуй залишки через свайп на вкладці «Залишки» або розпочни нову інвентаризацію у вкладці «Інвентаризації».";
+"inventoryUnknownIngredient" = "(Видалений інгредієнт)";
+"inventoryAdjustmentDate" = "Дата";
+"inventoryAdjustmentIngredient" = "Інгредієнт";
+"inventoryAdjustmentDelta" = "Коригування";
+"inventoryAdjustmentStockBefore" = "Залишок до";
+"inventoryAdjustmentStockAfter" = "Залишок після";
+"inventoryAdjustmentSource" = "Джерело";
+"inventoryAdjustmentBulkSession" = "ID сесії інвентаризації";
+"inventoryAdjustmentUser" = "ID користувача";
+"inventoryAdjustmentReason" = "Причина";
+"inventoryAdjustmentDetailTitle" = "Деталі коригування";
+
+// MARK: - Inventory Sessions
+"inventorySessionsTitle" = "Інвентаризації";
+"inventorySessionsEmptyState" = "Інвентаризацій ще немає. Натисни +, щоб розпочати нову.";
+"inventorySessionCountIngredients" = "Змінено позицій: %d";
+
+// MARK: - Inventory Bulk Count
+"inventoryBulkCountShort" = "Масово";
+"inventoryBulkSessionTitle" = "Масова інвентаризація";
+"inventoryBulkExpected" = "В очікуванні: %@";
+"inventoryBulkSessionNote" = "Примітка до сесії";
+"inventoryBulkSessionNotePlaceholder" = "Додайте примітку (напр. Кінець місяця)";
+"inventoryBulkSummaryCounted" = "Пораховано: %li з %li";
+"inventoryBulkSummaryChanges" = "Змін: %li";
+"inventoryBulkCommit" = "Застосувати";
 
 // MARK: - Costs
 "costsTitle" = "Витрати";
