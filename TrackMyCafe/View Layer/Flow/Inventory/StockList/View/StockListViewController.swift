@@ -118,7 +118,8 @@ class StockListViewController: UIViewController, ProGated {
         let alert = UIAlertController(
             title: R.string.global.inventoryAdjustStock(),
             message: String(
-                format: R.string.global.inventoryEnterActualQty(ingredient.stockQuantity),
+                format: R.string.global.inventoryEnterActualQty(
+                    ingredient.stockQuantity, ingredient.name),
                 ingredient.stockQuantity,
                 ingredient.name
             ),
@@ -126,16 +127,18 @@ class StockListViewController: UIViewController, ProGated {
         )
 
         alert.addTextField { textField in
-            textField.keyboardType = .numbersAndPunctuation
+            textField.keyboardType = UIKeyboardType.decimalPad
             textField.placeholder = R.string.global.inventoryActualQtyPlaceholder()
         }
 
         alert.addTextField { textField in
-            textField.keyboardType = .default
+            textField.keyboardType = UIKeyboardType.default
             textField.placeholder = R.string.global.inventoryReasonPlaceholder()
         }
 
-        let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) {
+        let saveAction = UIAlertAction(
+            title: R.string.global.save(), style: UIAlertAction.Style.default
+        ) {
             [weak self] _ in
             guard let self else { return }
             let actualText = alert.textFields?.first?.text ?? ""
@@ -154,7 +157,8 @@ class StockListViewController: UIViewController, ProGated {
                 return
             }
 
-            let trimmedReason = reasonText.trimmingCharacters(in: .whitespacesAndNewlines)
+            let trimmedReason = reasonText.trimmingCharacters(
+                in: CharacterSet.whitespacesAndNewlines)
             guard !trimmedReason.isEmpty else {
                 let field = R.string.global.inventoryReason()
                 self.showError(message: R.string.global.fieldRequired(field))
