@@ -13,7 +13,7 @@ class InventoryContainerViewController: UIViewController {
     // MARK: - Properties
 
     private let segmentedControl: DefaultSegmentedControl = {
-        let sc = DefaultSegmentedControl(items: ["Stock", "Purchases", "Audit"])
+        let sc = DefaultSegmentedControl(items: ["Stock", "Purchases", "Sessions", "Journal"])
         sc.selectedSegmentIndex = 0
         return sc
     }()
@@ -33,14 +33,13 @@ class InventoryContainerViewController: UIViewController {
     }()
 
     private lazy var auditVC: UIViewController = {
-        let vc = UIViewController()
-        vc.view.backgroundColor = .systemGroupedBackground
-        let label = AppLabel(style: .footnote)
-        label.text = R.string.global.inventoryAuditComingSoon()
-        label.textColor = .label
-        vc.view.addSubview(label)
-        label.centerInSuperview()
-        return vc
+        let vm = InventoryAdjustmentListViewModel()
+        return InventoryAdjustmentListViewController(viewModel: vm)
+    }()
+
+    private lazy var inventorySessionsVC: UIViewController = {
+        let vm = InventorySessionListViewModel()
+        return InventorySessionListViewController(viewModel: vm)
     }()
 
     private var currentChild: UIViewController?
@@ -64,7 +63,9 @@ class InventoryContainerViewController: UIViewController {
         segmentedControl.insertSegment(
             withTitle: R.string.global.inventorySegmentPurchases(), at: 1, animated: false)
         segmentedControl.insertSegment(
-            withTitle: R.string.global.inventorySegmentAudit(), at: 2, animated: false)
+            withTitle: R.string.global.inventorySegmentSessions(), at: 2, animated: false)
+        segmentedControl.insertSegment(
+            withTitle: R.string.global.inventorySegmentJournal(), at: 3, animated: false)
         segmentedControl.selectedSegmentIndex = 0
 
         view.addSubview(segmentedControl)
@@ -93,6 +94,8 @@ class InventoryContainerViewController: UIViewController {
         case 1:
             newChild = purchaseListVC
         case 2:
+            newChild = inventorySessionsVC
+        case 3:
             newChild = auditVC
         default:
             return

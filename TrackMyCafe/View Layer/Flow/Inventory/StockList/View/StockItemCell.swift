@@ -53,7 +53,7 @@ final class StockItemCell: BaseListTableViewCell {
     // MARK: - Setup
 
     private func setupUI() {
-        accessoryType = .disclosureIndicator
+        accessoryType = .none
 
         let infoStack = UIStackView(arrangedSubviews: [nameLabel, unitLabel])
         infoStack.axis = .vertical

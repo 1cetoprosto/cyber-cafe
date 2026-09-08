@@ -118,32 +118,47 @@ class StockListViewController: UIViewController, ProGated {
         let alert = UIAlertController(
             title: R.string.global.inventoryAdjustStock(),
             message: String(
-                format: R.string.global.inventoryEnterDelta(ingredient.name), ingredient.name),
+                format: R.string.global.inventoryEnterActualQty(
+                    ingredient.stockQuantity, ingredient.name),
+                ingredient.stockQuantity,
+                ingredient.name
+            ),
             preferredStyle: .alert
         )
 
         alert.addTextField { textField in
-            textField.keyboardType = .numbersAndPunctuation
-            textField.placeholder = R.string.global.inventoryDeltaPlaceholder()
+            textField.keyboardType = UIKeyboardType.decimalPad
+            textField.placeholder = R.string.global.inventoryActualQtyPlaceholder()
         }
 
         alert.addTextField { textField in
-            textField.keyboardType = .default
+            textField.keyboardType = UIKeyboardType.default
             textField.placeholder = R.string.global.inventoryReasonPlaceholder()
         }
 
-        let saveAction = UIAlertAction(title: R.string.global.save(), style: .default) { [weak self] _ in
+        let saveAction = UIAlertAction(
+            title: R.string.global.save(), style: UIAlertAction.Style.default
+        ) {
+            [weak self] _ in
             guard let self else { return }
-            let deltaText = alert.textFields?.first?.text ?? ""
-            let reasonText = (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
+            let actualText = alert.textFields?.first?.text ?? ""
+            let reasonText =
+                (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
 
-            let normalizedDeltaText = deltaText.replacingOccurrences(of: ",", with: ".")
-            guard let delta = Double(normalizedDeltaText), delta != 0 else {
+            let normalizedActualText = actualText.replacingOccurrences(of: ",", with: ".")
+            guard let actualQty = Double(normalizedActualText) else {
                 self.showError(message: R.string.global.invalidQuantity())
                 return
             }
 
-            let trimmedReason = reasonText.trimmingCharacters(in: .whitespacesAndNewlines)
+            let delta = actualQty - ingredient.stockQuantity
+            guard delta != 0 else {
+                self.showError(message: R.string.global.invalidQuantity())
+                return
+            }
+
+            let trimmedReason = reasonText.trimmingCharacters(
+                in: CharacterSet.whitespacesAndNewlines)
             guard !trimmedReason.isEmpty else {
                 let field = R.string.global.inventoryReason()
                 self.showError(message: R.string.global.fieldRequired(field))
@@ -204,14 +219,5 @@ extension StockListViewController: UITableViewDelegate, UITableViewDataSource {
         adjustAction.backgroundColor = .systemBlue
 
         return UISwipeActionsConfiguration(actions: [adjustAction])
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        checkProOrShowPaywall { [weak self] in
-            guard let self else { return }
-            let ingredient = self.viewModel.ingredients[indexPath.row]
-            self.showAdjustmentAlert(for: ingredient)
-        }
     }
 }
