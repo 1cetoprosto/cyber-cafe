@@ -14,12 +14,18 @@ struct FIRInventoryAdjustmentModel: Codable, Identifiable {
     var ingredientId: String
     var quantityDelta: Double
     var reason: String?
-    
+    var source: String?
+    var bulkSessionId: String?
+    var userId: String?
+
     init(dataModel: InventoryAdjustmentModel) {
         self.id = dataModel.id
         self.date = dataModel.date
         self.ingredientId = dataModel.ingredientId
         self.quantityDelta = dataModel.quantityDelta
         self.reason = dataModel.reason
+        self.source = dataModel.source.rawValue
+        self.bulkSessionId = dataModel.bulkSessionId
+        self.userId = dataModel.userId
     }
 }

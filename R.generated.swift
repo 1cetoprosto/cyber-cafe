@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 470 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 501 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1160,12 +1160,12 @@ struct _R {
       /// Locales: en, uk
       var feedbackSuccessTitle: RswiftResources.StringResource { .init(key: "feedbackSuccessTitle", tableName: "Global", source: source, developmentValue: "Feedback Sent", comment: nil) }
 
-      /// en translation: Field '%@' required
+      /// en translation: %@ is required
       ///
       /// Key: fieldRequired
       ///
       /// Locales: en, uk
-      var fieldRequired: RswiftResources.StringResource1<String> { .init(key: "fieldRequired", tableName: "Global", source: source, developmentValue: "Field '%@' required", comment: nil) }
+      var fieldRequired: RswiftResources.StringResource1<String> { .init(key: "fieldRequired", tableName: "Global", source: source, developmentValue: "%@ is required", comment: nil) }
 
       /// en translation: Please fill in all fields
       ///
@@ -1314,12 +1314,117 @@ struct _R {
       /// Locales: en, uk
       var invalidQuantity: RswiftResources.StringResource { .init(key: "invalidQuantity", tableName: "Global", source: source, developmentValue: "Invalid quantity", comment: nil) }
 
+      /// en translation: Actual quantity
+      ///
+      /// Key: inventoryActualQtyPlaceholder
+      ///
+      /// Locales: en, uk
+      var inventoryActualQtyPlaceholder: RswiftResources.StringResource { .init(key: "inventoryActualQtyPlaceholder", tableName: "Global", source: source, developmentValue: "Actual quantity", comment: nil) }
+
       /// en translation: Adjust Stock
       ///
       /// Key: inventoryAdjustStock
       ///
       /// Locales: en, uk
       var inventoryAdjustStock: RswiftResources.StringResource { .init(key: "inventoryAdjustStock", tableName: "Global", source: source, developmentValue: "Adjust Stock", comment: nil) }
+
+      /// en translation: Bulk session ID
+      ///
+      /// Key: inventoryAdjustmentBulkSession
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentBulkSession: RswiftResources.StringResource { .init(key: "inventoryAdjustmentBulkSession", tableName: "Global", source: source, developmentValue: "Bulk session ID", comment: nil) }
+
+      /// en translation: Date
+      ///
+      /// Key: inventoryAdjustmentDate
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentDate: RswiftResources.StringResource { .init(key: "inventoryAdjustmentDate", tableName: "Global", source: source, developmentValue: "Date", comment: nil) }
+
+      /// en translation: Adjustment
+      ///
+      /// Key: inventoryAdjustmentDelta
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentDelta: RswiftResources.StringResource { .init(key: "inventoryAdjustmentDelta", tableName: "Global", source: source, developmentValue: "Adjustment", comment: nil) }
+
+      /// en translation: Adjustment details
+      ///
+      /// Key: inventoryAdjustmentDetailTitle
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentDetailTitle: RswiftResources.StringResource { .init(key: "inventoryAdjustmentDetailTitle", tableName: "Global", source: source, developmentValue: "Adjustment details", comment: nil) }
+
+      /// en translation: Ingredient
+      ///
+      /// Key: inventoryAdjustmentIngredient
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentIngredient: RswiftResources.StringResource { .init(key: "inventoryAdjustmentIngredient", tableName: "Global", source: source, developmentValue: "Ingredient", comment: nil) }
+
+      /// en translation: Inventory journal
+      ///
+      /// Key: inventoryAdjustmentJournalTitle
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentJournalTitle: RswiftResources.StringResource { .init(key: "inventoryAdjustmentJournalTitle", tableName: "Global", source: source, developmentValue: "Inventory journal", comment: nil) }
+
+      /// en translation: Reason
+      ///
+      /// Key: inventoryAdjustmentReason
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentReason: RswiftResources.StringResource { .init(key: "inventoryAdjustmentReason", tableName: "Global", source: source, developmentValue: "Reason", comment: nil) }
+
+      /// en translation: Source
+      ///
+      /// Key: inventoryAdjustmentSource
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentSource: RswiftResources.StringResource { .init(key: "inventoryAdjustmentSource", tableName: "Global", source: source, developmentValue: "Source", comment: nil) }
+
+      /// en translation: Bulk count
+      ///
+      /// Key: inventoryAdjustmentSourceBulkCount
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentSourceBulkCount: RswiftResources.StringResource { .init(key: "inventoryAdjustmentSourceBulkCount", tableName: "Global", source: source, developmentValue: "Bulk count", comment: nil) }
+
+      /// en translation: Manual
+      ///
+      /// Key: inventoryAdjustmentSourceManual
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentSourceManual: RswiftResources.StringResource { .init(key: "inventoryAdjustmentSourceManual", tableName: "Global", source: source, developmentValue: "Manual", comment: nil) }
+
+      /// en translation: System
+      ///
+      /// Key: inventoryAdjustmentSourceSystem
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentSourceSystem: RswiftResources.StringResource { .init(key: "inventoryAdjustmentSourceSystem", tableName: "Global", source: source, developmentValue: "System", comment: nil) }
+
+      /// en translation: Stock after
+      ///
+      /// Key: inventoryAdjustmentStockAfter
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentStockAfter: RswiftResources.StringResource { .init(key: "inventoryAdjustmentStockAfter", tableName: "Global", source: source, developmentValue: "Stock after", comment: nil) }
+
+      /// en translation: Stock before
+      ///
+      /// Key: inventoryAdjustmentStockBefore
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentStockBefore: RswiftResources.StringResource { .init(key: "inventoryAdjustmentStockBefore", tableName: "Global", source: source, developmentValue: "Stock before", comment: nil) }
+
+      /// en translation: User ID
+      ///
+      /// Key: inventoryAdjustmentUser
+      ///
+      /// Locales: en, uk
+      var inventoryAdjustmentUser: RswiftResources.StringResource { .init(key: "inventoryAdjustmentUser", tableName: "Global", source: source, developmentValue: "User ID", comment: nil) }
 
       /// en translation: Inventory Audit (Coming Soon)
       ///
@@ -1328,6 +1433,13 @@ struct _R {
       /// Locales: en, uk
       var inventoryAuditComingSoon: RswiftResources.StringResource { .init(key: "inventoryAuditComingSoon", tableName: "Global", source: source, developmentValue: "Inventory Audit (Coming Soon)", comment: nil) }
 
+      /// en translation: No inventory movements yet. Correct stock via swipe on the Stock tab, or start a new inventory count in the Counts tab.
+      ///
+      /// Key: inventoryAuditEmptyState
+      ///
+      /// Locales: en, uk
+      var inventoryAuditEmptyState: RswiftResources.StringResource { .init(key: "inventoryAuditEmptyState", tableName: "Global", source: source, developmentValue: "No inventory movements yet. Correct stock via swipe on the Stock tab, or start a new inventory count in the Counts tab.", comment: nil) }
+
       /// en translation: Avg price: %.2f UAH
       ///
       /// Key: inventoryAvgPrice
@@ -1335,12 +1447,75 @@ struct _R {
       /// Locales: en, uk
       var inventoryAvgPrice: RswiftResources.StringResource1<Double> { .init(key: "inventoryAvgPrice", tableName: "Global", source: source, developmentValue: "Avg price: %.2f UAH", comment: nil) }
 
+      /// en translation: Commit
+      ///
+      /// Key: inventoryBulkCommit
+      ///
+      /// Locales: en, uk
+      var inventoryBulkCommit: RswiftResources.StringResource { .init(key: "inventoryBulkCommit", tableName: "Global", source: source, developmentValue: "Commit", comment: nil) }
+
+      /// en translation: Bulk count
+      ///
+      /// Key: inventoryBulkCountShort
+      ///
+      /// Locales: en, uk
+      var inventoryBulkCountShort: RswiftResources.StringResource { .init(key: "inventoryBulkCountShort", tableName: "Global", source: source, developmentValue: "Bulk count", comment: nil) }
+
+      /// en translation: Expected: %@
+      ///
+      /// Key: inventoryBulkExpected
+      ///
+      /// Locales: en, uk
+      var inventoryBulkExpected: RswiftResources.StringResource1<String> { .init(key: "inventoryBulkExpected", tableName: "Global", source: source, developmentValue: "Expected: %@", comment: nil) }
+
+      /// en translation: Session note
+      ///
+      /// Key: inventoryBulkSessionNote
+      ///
+      /// Locales: en, uk
+      var inventoryBulkSessionNote: RswiftResources.StringResource { .init(key: "inventoryBulkSessionNote", tableName: "Global", source: source, developmentValue: "Session note", comment: nil) }
+
+      /// en translation: Add a note for this count (e.g. End of month)
+      ///
+      /// Key: inventoryBulkSessionNotePlaceholder
+      ///
+      /// Locales: en, uk
+      var inventoryBulkSessionNotePlaceholder: RswiftResources.StringResource { .init(key: "inventoryBulkSessionNotePlaceholder", tableName: "Global", source: source, developmentValue: "Add a note for this count (e.g. End of month)", comment: nil) }
+
+      /// en translation: Bulk inventory count
+      ///
+      /// Key: inventoryBulkSessionTitle
+      ///
+      /// Locales: en, uk
+      var inventoryBulkSessionTitle: RswiftResources.StringResource { .init(key: "inventoryBulkSessionTitle", tableName: "Global", source: source, developmentValue: "Bulk inventory count", comment: nil) }
+
+      /// en translation: Changes: %li
+      ///
+      /// Key: inventoryBulkSummaryChanges
+      ///
+      /// Locales: en, uk
+      var inventoryBulkSummaryChanges: RswiftResources.StringResource1<Int> { .init(key: "inventoryBulkSummaryChanges", tableName: "Global", source: source, developmentValue: "Changes: %li", comment: nil) }
+
+      /// en translation: Counted: %li of %li
+      ///
+      /// Key: inventoryBulkSummaryCounted
+      ///
+      /// Locales: en, uk
+      var inventoryBulkSummaryCounted: RswiftResources.StringResource2<Int, Int> { .init(key: "inventoryBulkSummaryCounted", tableName: "Global", source: source, developmentValue: "Counted: %li of %li", comment: nil) }
+
       /// en translation: Delta (±)
       ///
       /// Key: inventoryDeltaPlaceholder
       ///
       /// Locales: en, uk
       var inventoryDeltaPlaceholder: RswiftResources.StringResource { .init(key: "inventoryDeltaPlaceholder", tableName: "Global", source: source, developmentValue: "Delta (±)", comment: nil) }
+
+      /// en translation: Current stock: %.2f. Enter actual quantity for %@.
+      ///
+      /// Key: inventoryEnterActualQty
+      ///
+      /// Locales: en, uk
+      var inventoryEnterActualQty: RswiftResources.StringResource2<Double, String> { .init(key: "inventoryEnterActualQty", tableName: "Global", source: source, developmentValue: "Current stock: %.2f. Enter actual quantity for %@.", comment: nil) }
 
       /// en translation: Enter delta for %@
       ///
@@ -1391,6 +1566,13 @@ struct _R {
       /// Locales: en, uk
       var inventorySegmentAudit: RswiftResources.StringResource { .init(key: "inventorySegmentAudit", tableName: "Global", source: source, developmentValue: "Audit", comment: nil) }
 
+      /// en translation: Journal
+      ///
+      /// Key: inventorySegmentJournal
+      ///
+      /// Locales: en, uk
+      var inventorySegmentJournal: RswiftResources.StringResource { .init(key: "inventorySegmentJournal", tableName: "Global", source: source, developmentValue: "Journal", comment: nil) }
+
       /// en translation: Purchases
       ///
       /// Key: inventorySegmentPurchases
@@ -1398,12 +1580,40 @@ struct _R {
       /// Locales: en, uk
       var inventorySegmentPurchases: RswiftResources.StringResource { .init(key: "inventorySegmentPurchases", tableName: "Global", source: source, developmentValue: "Purchases", comment: nil) }
 
+      /// en translation: Counts
+      ///
+      /// Key: inventorySegmentSessions
+      ///
+      /// Locales: en, uk
+      var inventorySegmentSessions: RswiftResources.StringResource { .init(key: "inventorySegmentSessions", tableName: "Global", source: source, developmentValue: "Counts", comment: nil) }
+
       /// en translation: Stock
       ///
       /// Key: inventorySegmentStock
       ///
       /// Locales: en, uk
       var inventorySegmentStock: RswiftResources.StringResource { .init(key: "inventorySegmentStock", tableName: "Global", source: source, developmentValue: "Stock", comment: nil) }
+
+      /// en translation: %d items adjusted
+      ///
+      /// Key: inventorySessionCountIngredients
+      ///
+      /// Locales: en, uk
+      var inventorySessionCountIngredients: RswiftResources.StringResource1<Int> { .init(key: "inventorySessionCountIngredients", tableName: "Global", source: source, developmentValue: "%d items adjusted", comment: nil) }
+
+      /// en translation: No inventory counts yet. Tap + to start a new count.
+      ///
+      /// Key: inventorySessionsEmptyState
+      ///
+      /// Locales: en, uk
+      var inventorySessionsEmptyState: RswiftResources.StringResource { .init(key: "inventorySessionsEmptyState", tableName: "Global", source: source, developmentValue: "No inventory counts yet. Tap + to start a new count.", comment: nil) }
+
+      /// en translation: Inventory counts
+      ///
+      /// Key: inventorySessionsTitle
+      ///
+      /// Locales: en, uk
+      var inventorySessionsTitle: RswiftResources.StringResource { .init(key: "inventorySessionsTitle", tableName: "Global", source: source, developmentValue: "Inventory counts", comment: nil) }
 
       /// en translation: Sum: %.2f UAH
       ///
@@ -1418,6 +1628,13 @@ struct _R {
       ///
       /// Locales: en, uk
       var inventoryTitle: RswiftResources.StringResource { .init(key: "inventoryTitle", tableName: "Global", source: source, developmentValue: "Inventory", comment: nil) }
+
+      /// en translation: (Deleted ingredient)
+      ///
+      /// Key: inventoryUnknownIngredient
+      ///
+      /// Locales: en, uk
+      var inventoryUnknownIngredient: RswiftResources.StringResource { .init(key: "inventoryUnknownIngredient", tableName: "Global", source: source, developmentValue: "(Deleted ingredient)", comment: nil) }
 
       /// en translation: Provide access
       ///
@@ -3636,27 +3853,9 @@ struct _R {
     var tabBarUnselectedTintCoffeeMilk: RswiftResources.ColorResource { .init(name: "TabBarUnselectedTintCoffeeMilk", path: [], bundle: bundle) }
   }
 
-  /// This `_R.image` struct is generated, and contains static references to 19 images.
+  /// This `_R.image` struct is generated, and contains static references to 13 images.
   struct image {
     let bundle: Foundation.Bundle
-
-    /// Image `GoodsPriceModel`.
-    var goodsPriceModel: RswiftResources.ImageResource { .init(name: "GoodsPriceModel", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
-
-    /// Image `PurchaseModel`.
-    var purchaseModel: RswiftResources.ImageResource { .init(name: "PurchaseModel", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
-
-    /// Image `SaleGoodModel`.
-    var saleGoodModel: RswiftResources.ImageResource { .init(name: "SaleGoodModel", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
-
-    /// Image `SalesModel`.
-    var salesModel: RswiftResources.ImageResource { .init(name: "SalesModel", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
-
-    /// Image `Screenshot1`.
-    var screenshot1: RswiftResources.ImageResource { .init(name: "Screenshot1", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
-
-    /// Image `TypeOfDonationModel`.
-    var typeOfDonationModel: RswiftResources.ImageResource { .init(name: "TypeOfDonationModel", path: [], bundle: bundle, locale: LocaleReference.none, onDemandResourceTags: nil) }
 
     /// Image `app-big-logo`.
     var appBigLogo: RswiftResources.ImageResource { .init(name: "app-big-logo", path: [], bundle: bundle, locale: nil, onDemandResourceTags: nil) }
@@ -3746,7 +3945,7 @@ struct _R {
     }
   }
 
-  /// This `_R.file` struct is generated, and contains static references to 11 resource files.
+  /// This `_R.file` struct is generated, and contains static references to 5 resource files.
   struct file {
     let bundle: Foundation.Bundle
 
@@ -3756,31 +3955,13 @@ struct _R {
     /// Resource file `Config.plist`.
     var configPlist: RswiftResources.FileResource { .init(name: "Config", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
 
-    /// Resource file `GoodsPriceModel.png`.
-    var goodsPriceModelPng: RswiftResources.FileResource { .init(name: "GoodsPriceModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
-
     /// Resource file `GoogleService-Info.plist`.
     var googleServiceInfoPlist: RswiftResources.FileResource { .init(name: "GoogleService-Info", pathExtension: "plist", bundle: bundle, locale: LocaleReference.none) }
-
-    /// Resource file `PurchaseModel.png`.
-    var purchaseModelPng: RswiftResources.FileResource { .init(name: "PurchaseModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
 
     /// Resource file `README.md`.
     var readmeMd: RswiftResources.FileResource { .init(name: "README", pathExtension: "md", bundle: bundle, locale: LocaleReference.none) }
 
-    /// Resource file `SaleGoodModel.png`.
-    var saleGoodModelPng: RswiftResources.FileResource { .init(name: "SaleGoodModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
-
-    /// Resource file `SalesModel.png`.
-    var salesModelPng: RswiftResources.FileResource { .init(name: "SalesModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
-
-    /// Resource file `Screenshot1.png`.
-    var screenshot1Png: RswiftResources.FileResource { .init(name: "Screenshot1", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
-
     /// Resource file `TrackMyCafe.storekit`.
     var trackMyCafeStorekit: RswiftResources.FileResource { .init(name: "TrackMyCafe", pathExtension: "storekit", bundle: bundle, locale: LocaleReference.none) }
-
-    /// Resource file `TypeOfDonationModel.png`.
-    var typeOfDonationModelPng: RswiftResources.FileResource { .init(name: "TypeOfDonationModel", pathExtension: "png", bundle: bundle, locale: LocaleReference.none) }
   }
 }

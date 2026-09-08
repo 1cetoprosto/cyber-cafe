@@ -304,6 +304,8 @@
 "inventoryTitle" = "Inventory";
 "inventorySegmentStock" = "Stock";
 "inventorySegmentPurchases" = "Purchases";
+"inventorySegmentSessions" = "Counts";
+"inventorySegmentJournal" = "Journal";
 "inventorySegmentAudit" = "Audit";
 "inventoryAuditComingSoon" = "Inventory Audit (Coming Soon)";
 "inventoryAdjustStock" = "Adjust Stock";
@@ -311,11 +313,49 @@
 "inventoryQuantityPlaceholder" = "Quantity";
 "inventoryEnterDelta" = "Enter delta for %@";
 "inventoryDeltaPlaceholder" = "Delta (±)";
+"inventoryEnterActualQty" = "Current stock: %.2f. Enter actual quantity for %@.";
+"inventoryActualQtyPlaceholder" = "Actual quantity";
 "inventoryReason" = "Reason";
 "inventoryReasonPlaceholder" = "Adjustment reason";
 "inventoryAvgPrice" = "Avg price: %.2f UAH";
 "inventorySumValue" = "Sum: %.2f UAH";
 "inventoryLowStock" = "Low Stock";
+
+// MARK: - Inventory Adjustment Source
+"inventoryAdjustmentSourceManual" = "Manual";
+"inventoryAdjustmentSourceBulkCount" = "Bulk count";
+"inventoryAdjustmentSourceSystem" = "System";
+
+// MARK: - Inventory Audit Journal
+"inventoryAdjustmentJournalTitle" = "Inventory journal";
+"inventoryAuditEmptyState" = "No inventory movements yet. Correct stock via swipe on the Stock tab, or start a new inventory count in the Counts tab.";
+"inventoryUnknownIngredient" = "(Deleted ingredient)";
+"inventoryAdjustmentDate" = "Date";
+"inventoryAdjustmentIngredient" = "Ingredient";
+"inventoryAdjustmentDelta" = "Adjustment";
+"inventoryAdjustmentStockBefore" = "Stock before";
+"inventoryAdjustmentStockAfter" = "Stock after";
+"inventoryAdjustmentSource" = "Source";
+"inventoryAdjustmentBulkSession" = "Bulk session ID";
+"inventoryAdjustmentUser" = "User ID";
+"inventoryAdjustmentReason" = "Reason";
+"inventoryAdjustmentDetailTitle" = "Adjustment details";
+
+// MARK: - Inventory Sessions
+"inventorySessionsTitle" = "Inventory counts";
+"inventorySessionsEmptyState" = "No inventory counts yet. Tap + to start a new count.";
+"inventorySessionCountIngredients" = "%d items adjusted";
+
+// MARK: - Inventory Bulk Count
+"inventoryBulkCountShort" = "Bulk count";
+"inventoryBulkSessionTitle" = "Bulk inventory count";
+"inventoryBulkExpected" = "Expected: %@";
+"inventoryBulkSessionNote" = "Session note";
+"inventoryBulkSessionNotePlaceholder" = "Add a note for this count (e.g. End of month)";
+"inventoryBulkSummaryCounted" = "Counted: %li of %li";
+"inventoryBulkSummaryChanges" = "Changes: %li";
+"inventoryBulkCommit" = "Commit";
+"fieldRequired" = "%@ is required";
 
 // MARK: - Costs
 "costsTitle" = "Costs";

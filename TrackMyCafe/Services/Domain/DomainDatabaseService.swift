@@ -801,13 +801,70 @@ class DomainDatabaseService: DomainDB {
             case .success(let firModels):
                 let models = firModels.map {
                     InventoryAdjustmentModel(
-                        id: $0.1.id ?? "", date: $0.1.date, ingredientId: $0.1.ingredientId,
-                        quantityDelta: $0.1.quantityDelta, reason: $0.1.reason)
+                        id: $0.1.id ?? "",
+                        date: $0.1.date,
+                        ingredientId: $0.1.ingredientId,
+                        quantityDelta: $0.1.quantityDelta,
+                        reason: $0.1.reason,
+                        source: InventoryAdjustmentSource(
+                            rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
+                        ) ?? .manual,
+                        bulkSessionId: $0.1.bulkSessionId,
+                        userId: $0.1.userId
+                    )
                 }
                 completion(models)
             case .failure(let error):
                 self.logger.error(
                     "Error fetching inventory adjustments: \(error.localizedDescription)")
+                completion([])
+            }
+        }
+    }
+
+    func fetchInventoryAdjustments(
+        from startDate: Date? = nil,
+        to endDate: Date? = nil,
+        ingredientId: String? = nil,
+        bulkSessionId: String? = nil,
+        completion: @escaping ([InventoryAdjustmentModel]) -> Void
+    ) {
+        var filters: [String: Any] = [:]
+        if let ingredientId { filters["ingredientId"] = ingredientId }
+        if let bulkSessionId { filters["bulkSessionId"] = bulkSessionId }
+
+        let hasDateRange = startDate != nil || endDate != nil
+        let orderedBy: String? = hasDateRange ? "date" : nil
+
+        FirestoreDatabaseService.shared.readWhere(
+            collection: FirebaseCollections.inventoryAdjustments,
+            firModel: FIRInventoryAdjustmentModel.self,
+            equalTo: filters,
+            orderedBy: orderedBy,
+            startAt: startDate,
+            endAt: endDate
+        ) { result in
+            switch result {
+            case .success(let firModels):
+                let models = firModels.map {
+                    InventoryAdjustmentModel(
+                        id: $0.1.id ?? "",
+                        date: $0.1.date,
+                        ingredientId: $0.1.ingredientId,
+                        quantityDelta: $0.1.quantityDelta,
+                        reason: $0.1.reason,
+                        source: InventoryAdjustmentSource(
+                            rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
+                        ) ?? .manual,
+                        bulkSessionId: $0.1.bulkSessionId,
+                        userId: $0.1.userId
+                    )
+                }
+                .sorted { $0.date > $1.date }
+                completion(models)
+            case .failure(let error):
+                self.logger.error(
+                    "Error fetching filtered inventory adjustments: \(error.localizedDescription)")
                 completion([])
             }
         }

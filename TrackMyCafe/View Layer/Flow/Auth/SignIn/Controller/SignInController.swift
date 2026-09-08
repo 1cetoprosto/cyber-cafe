@@ -42,8 +42,8 @@ class SignInController: UIViewController {
         button.setImage(UIImage(systemName: "eye"), for: .normal)
         button.setImage(UIImage(systemName: "eye.slash"), for: .selected)
         button.tintColor = UIColor.lightGray
-        button.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 10)
+        button.frame = CGRect(x: 0, y: 0, width: 50, height: 40)
+        button.contentHorizontalAlignment = .left
         button.addTarget(self, action: #selector(togglePasswordVisibility(_:)), for: .touchUpInside)
         field.rightView = button
         field.rightViewMode = .always
