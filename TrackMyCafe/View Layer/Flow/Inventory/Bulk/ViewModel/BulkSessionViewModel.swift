@@ -128,7 +128,8 @@ final class BulkSessionViewModel: BulkSessionViewModelProtocol {
                 row.deltaText = "0 \(row.unitText)"
                 row.deltaIsPositive = nil
             } else {
-                row.deltaText = InventoryAdjustmentListViewModel.formatDelta(delta, unit: row.unitText)
+                row.deltaText = InventoryAdjustmentListViewModel.formatDelta(
+                    delta, unit: row.unitText)
                 row.deltaIsPositive = delta > 0
             }
         } else {
@@ -143,7 +144,7 @@ final class BulkSessionViewModel: BulkSessionViewModelProtocol {
     }
 
     func commitSession() {
-        guard var session else { return }
+        guard let session else { return }
         guard canCommit else { return }
 
         isLoading?(true)
@@ -189,7 +190,7 @@ final class BulkSessionViewModel: BulkSessionViewModelProtocol {
 
         var deltaCount = 0
         var deltaSum: Double = 0
-        for (index, row) in items.enumerated() {
+        for (index, _) in items.enumerated() {
             guard let session else { continue }
             guard let counted = session.items[index].countedQuantity else { continue }
             let delta = counted - session.items[index].expectedQuantity

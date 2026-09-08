@@ -107,7 +107,7 @@ final class InventoryAdjustmentDetailViewController: UIViewController {
     }
 
     private func bindViewModel() {
-        var vm = viewModel
+        let vm = viewModel
 
         vm.onDataUpdated = { [weak self] in
             DispatchQueue.main.async {
@@ -122,7 +122,7 @@ final class InventoryAdjustmentDetailViewController: UIViewController {
             }
         }
 
-        vm.onError = { [weak self] message in
+        vm.onError = { message in
             DispatchQueue.main.async {
                 PopupFactory.showPopup(
                     title: R.string.global.error(),

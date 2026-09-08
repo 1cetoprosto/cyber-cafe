@@ -87,7 +87,7 @@ final class InventoryAdjustmentListViewController: UIViewController, ProGated {
     }
 
     private func bindViewModel() {
-        var vm = viewModel
+        let vm = viewModel
 
         vm.onDataUpdated = { [weak self] in
             DispatchQueue.main.async {
