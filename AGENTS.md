@@ -93,7 +93,7 @@ When you need specific information, consult these files in priority order:
 
 ## 🛠️ Xcode MCP Tools Integration
 
-**Prerequisite for MCP:** Xcode ≥ 26.3 must be running with `Cyber-coffe.xcworkspace` open.
+**Prerequisite for MCP:** Xcode ≥ 26.3 must be running with `TrackMyCafe.xcworkspace` open.
 Enable in Xcode: `Settings → Intelligence → Model Context Protocol → [✓] Xcode Tools`.
 
 ### ✅ Priority — use these tools FIRST

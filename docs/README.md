@@ -117,7 +117,7 @@ pod install
 
 ### 4. Збірка та запуск
 
-Відкрийте `Cyber-coffe.xcworkspace` в Xcode та оберіть схему:
+Відкрийте `TrackMyCafe.xcworkspace` в Xcode та оберіть схему:
 
 - **TrackMyCafe Dev** — для розробки
 - **TrackMyCafe Beta** — для тестування
