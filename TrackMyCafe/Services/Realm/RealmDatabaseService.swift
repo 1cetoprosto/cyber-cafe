@@ -286,13 +286,15 @@ class RealmDatabaseService: RealmDB {
     // MARK: - Work with Ingredients
 
     func updateIngredient(
-        model: RealmIngredientModel, name: String, cost: Double, stock: Double, unit: String
+        model: RealmIngredientModel, name: String, cost: Double, stock: Double, unit: String,
+        minStockThreshold: Double? = nil
     ) {
         executeWrite {
             model.name = name
             model.averageCost = cost
             model.stockQuantity = stock
             model.unit = unit
+            model.minStockThreshold = minStockThreshold
             logger.log("Updated ingredient with id: \(model.id, privacy: .public)")
         }
     }
