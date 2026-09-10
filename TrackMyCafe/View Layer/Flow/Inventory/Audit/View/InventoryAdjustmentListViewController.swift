@@ -77,9 +77,11 @@ final class InventoryAdjustmentListViewController: UIViewController, ProGated {
         tableView.edgesToSuperview()
         activityIndicator.centerInSuperview()
 
-        emptyStateLabel.leadingToSuperview(offset: 32)
-        emptyStateLabel.trailingToSuperview(offset: -32)
+        emptyStateLabel.centerXToSuperview()
         emptyStateLabel.centerYToSuperview(offset: -16)
+        emptyStateLabel.widthToSuperview(multiplier: 0.85, relation: .equalOrLess)
+        emptyStateLabel.leadingToSuperview(offset: 24, relation: .equalOrGreater)
+        emptyStateLabel.trailingToSuperview(offset: -24, relation: .equalOrLess)
 
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(handleRefresh), for: .valueChanged)
