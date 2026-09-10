@@ -390,6 +390,9 @@
 "stockExplanation" = "Введіть поточну кількість на складі";
 "unitLabel" = "Од. вим.";
 "unitExplanation" = "Оберіть одиницю виміру";
+"ingredientMinStockThreshold" = "Мін. поріг залишків";
+"ingredientMinStockThresholdPlaceholder" = "Напр. 10.000 (залиште порожнім для 5.0 за замовч.)";
+"ingredientMinStockThresholdExplanation" = "Коли залишок впаде нижче цього значення — кількість підсвітиться червоним у вкладці «Залишки». Якщо порожньо, використовується 5.0.";
 "newIngredient" = "Новий інгредієнт";
 "unit_kg" = "кг";
 "unit_g" = "г";

@@ -44,13 +44,17 @@ final class IngredientListViewModel: IngredientListViewModelType, Loggable {
     }
     
     @MainActor
-    func createIngredient(name: String, cost: Double, stock: Double, unit: MeasurementUnit) async {
+    func createIngredient(
+        name: String, cost: Double, stock: Double, unit: MeasurementUnit,
+        minStockThreshold: Double?
+    ) async {
         let newIngredient = IngredientModel(
             id: UUID().uuidString,
             name: name,
             averageCost: cost,
             stockQuantity: stock,
-            unit: unit
+            unit: unit,
+            minStockThreshold: minStockThreshold
         )
         
         do {
