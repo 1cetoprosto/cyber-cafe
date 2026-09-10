@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 501 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 504 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -1278,6 +1278,27 @@ struct _R {
       ///
       /// Locales: en, uk
       var ingredientAlreadyExists: RswiftResources.StringResource { .init(key: "ingredientAlreadyExists", tableName: "Global", source: source, developmentValue: "Ingredient already exists", comment: nil) }
+
+      /// en translation: Min Stock Threshold
+      ///
+      /// Key: ingredientMinStockThreshold
+      ///
+      /// Locales: en, uk
+      var ingredientMinStockThreshold: RswiftResources.StringResource { .init(key: "ingredientMinStockThreshold", tableName: "Global", source: source, developmentValue: "Min Stock Threshold", comment: nil) }
+
+      /// en translation: When stock falls below this value, the quantity will appear red in the Stock tab. Default 5.0 if left empty.
+      ///
+      /// Key: ingredientMinStockThresholdExplanation
+      ///
+      /// Locales: en, uk
+      var ingredientMinStockThresholdExplanation: RswiftResources.StringResource { .init(key: "ingredientMinStockThresholdExplanation", tableName: "Global", source: source, developmentValue: "When stock falls below this value, the quantity will appear red in the Stock tab. Default 5.0 if left empty.", comment: nil) }
+
+      /// en translation: E.g. 10.000 (leave empty for default 5.0)
+      ///
+      /// Key: ingredientMinStockThresholdPlaceholder
+      ///
+      /// Locales: en, uk
+      var ingredientMinStockThresholdPlaceholder: RswiftResources.StringResource { .init(key: "ingredientMinStockThresholdPlaceholder", tableName: "Global", source: source, developmentValue: "E.g. 10.000 (leave empty for default 5.0)", comment: nil) }
 
       /// en translation: Enter the name of the ingredient
       ///
