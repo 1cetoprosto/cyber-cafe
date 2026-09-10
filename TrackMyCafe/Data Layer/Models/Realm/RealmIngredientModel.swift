@@ -13,7 +13,8 @@ class RealmIngredientModel: Object {
     @Persisted var averageCost: Double = 0.0
     @Persisted var stockQuantity: Double = 0.0
     @Persisted var unit: String = ""
-    
+    @Persisted var minStockThreshold: Double? = nil
+
     convenience init(dataModel: IngredientModel) {
         self.init()
         self.id = dataModel.id
@@ -21,5 +22,6 @@ class RealmIngredientModel: Object {
         self.averageCost = dataModel.averageCost
         self.stockQuantity = dataModel.stockQuantity
         self.unit = dataModel.unit.rawValue
+        self.minStockThreshold = dataModel.minStockThreshold
     }
 }

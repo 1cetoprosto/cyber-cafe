@@ -14,6 +14,9 @@ protocol IngredientListViewModelType {
     
     func fetchIngredients() async
     func deleteIngredient(at index: Int) async
-    func createIngredient(name: String, cost: Double, stock: Double, unit: MeasurementUnit) async
+    func createIngredient(
+        name: String, cost: Double, stock: Double, unit: MeasurementUnit,
+        minStockThreshold: Double?
+    ) async
     func updateIngredient(_ ingredient: IngredientModel) async
 }
