@@ -39,6 +39,19 @@ final class StockItemCell: BaseListTableViewCell {
         return label
     }()
 
+    private let lowStockBadgeImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(
+            systemName: "exclamationmark.triangle.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold))
+        iv.tintColor = .systemRed
+        iv.contentMode = .scaleAspectFit
+        iv.setContentHuggingPriority(.required, for: .horizontal)
+        iv.setContentCompressionResistancePriority(.required, for: .horizontal)
+        iv.isHidden = true
+        return iv
+    }()
+
     // MARK: - Init
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -59,7 +72,12 @@ final class StockItemCell: BaseListTableViewCell {
         infoStack.axis = .vertical
         infoStack.spacing = UIConstants.smallSpacing
 
-        let valueStack = UIStackView(arrangedSubviews: [quantityLabel, costLabel])
+        let quantityRow = UIStackView(arrangedSubviews: [lowStockBadgeImageView, quantityLabel])
+        quantityRow.axis = .horizontal
+        quantityRow.alignment = .center
+        quantityRow.spacing = 6
+
+        let valueStack = UIStackView(arrangedSubviews: [quantityRow, costLabel])
         valueStack.axis = .vertical
         valueStack.spacing = UIConstants.smallSpacing
         valueStack.alignment = .trailing
@@ -99,10 +117,18 @@ final class StockItemCell: BaseListTableViewCell {
         let totalValue = model.stockQuantity * model.averageCost
         costLabel.text = String(format: R.string.global.inventorySumValue(totalValue), totalValue)
 
-        if model.stockQuantity < 5.0 {
+        let threshold = model.minStockThreshold ?? 5.0
+        let isLowStock = model.stockQuantity < threshold
+        lowStockBadgeImageView.isHidden = !isLowStock
+        if isLowStock {
             quantityLabel.textColor = .systemRed
+            let thresholdText = String(format: "%.2f", threshold)
+            accessibilityValue =
+                "\(model.name). Stock: \(model.stockQuantity) \(model.unit.localizedName). Low stock (below threshold \(thresholdText)). Total value \(totalValue)."
         } else {
             quantityLabel.textColor = UIColor.TableView.cellLabel
+            accessibilityValue =
+                "\(model.name). Stock: \(model.stockQuantity) \(model.unit.localizedName). Total value \(totalValue)."
         }
     }
 }
