@@ -12,12 +12,24 @@ final class IngredientTableViewCell: BaseListTableViewCell {
 
     static let identifier = "IngredientTableViewCell"
 
-    // MARK: - UI Elements
     private let nameLabel: AppLabel = {
         let label = AppLabel(style: .bodyMultiline)
         label.textColor = UIColor.TableView.cellLabel
         label.numberOfLines = 2
         return label
+    }()
+
+    private let lowStockBadgeImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(
+            systemName: "exclamationmark.triangle.fill",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 11, weight: .semibold))
+        iv.tintColor = .systemRed
+        iv.contentMode = .scaleAspectFit
+        iv.setContentHuggingPriority(.required, for: .horizontal)
+        iv.setContentCompressionResistancePriority(.required, for: .horizontal)
+        iv.isHidden = true
+        return iv
     }()
 
     private let stockLabel: AppLabel = {
@@ -55,6 +67,7 @@ final class IngredientTableViewCell: BaseListTableViewCell {
         accessoryType = .disclosureIndicator
 
         contentView.addSubview(nameLabel)
+        contentView.addSubview(lowStockBadgeImageView)
         contentView.addSubview(stockLabel)
         contentView.addSubview(costLabel)
         contentView.addSubview(unitLabel)
@@ -68,8 +81,12 @@ final class IngredientTableViewCell: BaseListTableViewCell {
         nameLabel.leadingToSuperview(offset: 16)
         nameLabel.trailingToLeading(of: costLabel, offset: -10, relation: .equalOrLess)
 
+        lowStockBadgeImageView.topToBottom(of: nameLabel, offset: 4)
+        lowStockBadgeImageView.leadingToSuperview(offset: 16)
+        lowStockBadgeImageView.bottomToSuperview(offset: -10, relation: .equalOrLess)
+
         stockLabel.topToBottom(of: nameLabel, offset: 4)
-        stockLabel.leadingToSuperview(offset: 16)
+        stockLabel.leadingToTrailing(of: lowStockBadgeImageView, offset: 6)
         stockLabel.bottomToSuperview(offset: -10)
         stockLabel.trailingToLeading(of: unitLabel, offset: -10, relation: .equalOrLess)
 
@@ -96,5 +113,15 @@ final class IngredientTableViewCell: BaseListTableViewCell {
         // Average Cost (Right Bottom): "12.50 per l"
         let avgCost = String(format: "%.2f", ingredient.averageCost)
         unitLabel.text = "\(avgCost) \(R.string.global.per()) \(ingredient.unit.localizedName)"
+
+        // Low stock highlighting
+        let threshold = ingredient.minStockThreshold ?? 5.0
+        let isLowStock = ingredient.stockQuantity < threshold
+        lowStockBadgeImageView.isHidden = !isLowStock
+        if isLowStock {
+            stockLabel.textColor = .systemRed
+        } else {
+            stockLabel.textColor = UIColor.Main.secondaryText
+        }
     }
 }
