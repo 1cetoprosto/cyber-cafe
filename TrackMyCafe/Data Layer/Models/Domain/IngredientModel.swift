@@ -31,34 +31,39 @@ struct IngredientModel: Identifiable, Codable {
     var averageCost: Double  // Average cost per unit
     var stockQuantity: Double
     var unit: MeasurementUnit
-    
+    var minStockThreshold: Double?
+
     init(
         id: String = UUID().uuidString,
         name: String,
         averageCost: Double = 0.0,
         stockQuantity: Double = 0.0,
-        unit: MeasurementUnit = .pcs
+        unit: MeasurementUnit = .pcs,
+        minStockThreshold: Double? = nil
     ) {
         self.id = id
         self.name = name
         self.averageCost = averageCost
         self.stockQuantity = stockQuantity
         self.unit = unit
+        self.minStockThreshold = minStockThreshold
     }
-    
+
     init(realmModel: RealmIngredientModel) {
         self.id = realmModel.id
         self.name = realmModel.name
         self.averageCost = realmModel.averageCost
         self.stockQuantity = realmModel.stockQuantity
         self.unit = MeasurementUnit(rawValue: realmModel.unit) ?? .pcs
+        self.minStockThreshold = realmModel.minStockThreshold
     }
-    
+
     init(firebaseModel: FIRIngredientModel) {
         self.id = firebaseModel.id ?? ""
         self.name = firebaseModel.name
         self.averageCost = firebaseModel.averageCost
         self.stockQuantity = firebaseModel.stockQuantity
         self.unit = MeasurementUnit(rawValue: firebaseModel.unit) ?? .pcs
+        self.minStockThreshold = firebaseModel.minStockThreshold
     }
 }
