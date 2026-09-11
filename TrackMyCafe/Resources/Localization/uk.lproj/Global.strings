@@ -603,9 +603,15 @@
 "commonHideCosts" = "Сховати витрати 👆";
 "commonShowMoreN" = "Показати ще %d";
 
-"trendsBigNetRemainedPeriod" = "ЗАЛИШИЛОСЬ за період";
-"trendsBetterByFormat" = "➕ Кращіше на %@%.1f%% ✅";
-"trendsWorseByFormat" = "➖ Гірше на %@%.1f%% ⚠️";
+"trendsNetHeaderTitleDay" = "Останній обраний день (%@)";
+"trendsNetHeaderTitleWeek" = "Останній обраний тиждень (%@)";
+"trendsNetHeaderTitleMonth" = "Останній обраний місяць (%@)";
+"trendsNetDeltaPreviousFormat" = "Порівняно з попереднім: %@%.1f%% (%@)";
+"trendsNetDeltaBetter" = "зростання чистих";
+"trendsNetDeltaWorse" = "падіння чистих";
+"trendsSortButton" = "Сортування";
+"trendsSortNewestFirst" = "Спочатку нові";
+"trendsSortOldestFirst" = "Спочатку старіші";
 
 "hubBigSalesLabel" = "Продажі";
 "hubBigCostsLabel" = "Витрати";

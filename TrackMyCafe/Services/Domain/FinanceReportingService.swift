@@ -196,7 +196,12 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
         )
         var points: [TrendPoint] = []
         for (index, window) in windows.enumerated() {
-            let label = Self.trendLabel(for: periodicity, date: window.start, index: index)
+            let label = Self.trendLabel(
+                for: periodicity,
+                startDate: window.start,
+                endDate: window.end,
+                index: index
+            )
             let income = incomeService.summarize(
                 orders: orders,
                 intervalStart: window.start,
@@ -385,18 +390,79 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
         }
     }
 
-    private static func trendLabel(for periodicity: DashboardPeriod, date: Date, index: Int)
-        -> String
-    {
-        let formatter = DateFormatter()
+    private enum SharedFormatters {
+        static let day: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.setLocalizedDateFormatFromTemplate("dMMM")
+            return f
+        }()
+
+        private static let weekDayOnly: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.setLocalizedDateFormatFromTemplate("d")
+            return f
+        }()
+
+        private static let weekMonthOnly: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.setLocalizedDateFormatFromTemplate("MMM")
+            return f
+        }()
+
+        private static let weekYear: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.setLocalizedDateFormatFromTemplate("yy")
+            return f
+        }()
+
+        static func weekLabel(start: Date, end: Date) -> String {
+            let yyStr = weekYear.string(from: end)
+            let sameMonth = Calendar.current.isDate(start, equalTo: end, toGranularity: .month)
+            let sameYear = Calendar.current.isDate(start, equalTo: end, toGranularity: .year)
+            let dayS = weekDayOnly.string(from: start)
+            let dayE = weekDayOnly.string(from: end)
+
+            if sameMonth, sameYear {
+                let mm = weekMonthOnly.string(from: end)
+                return "\(dayS)–\(dayE) \(mm) \(yyStr)"
+            } else if sameYear {
+                let mS = weekMonthOnly.string(from: start)
+                let mE = weekMonthOnly.string(from: end)
+                return "\(dayS) \(mS) – \(dayE) \(mE) \(yyStr)"
+            } else {
+                let yS = weekYear.string(from: start)
+                let mS = weekMonthOnly.string(from: start)
+                let yE = yyStr
+                let mE = weekMonthOnly.string(from: end)
+                return "\(dayS) \(mS) \(yS) – \(dayE) \(mE) \(yE)"
+            }
+        }
+
+        static let month: DateFormatter = {
+            let f = DateFormatter()
+            f.locale = Locale.current
+            f.setLocalizedDateFormatFromTemplate("MMMyyyy")
+            return f
+        }()
+    }
+
+    private static func trendLabel(
+        for periodicity: DashboardPeriod,
+        startDate: Date,
+        endDate: Date,
+        index: Int
+    ) -> String {
         switch periodicity {
         case .day:
-            formatter.dateFormat = "d MMM"
+            return SharedFormatters.day.string(from: startDate)
         case .week:
-            formatter.dateFormat = "'W'w yy"
+            return SharedFormatters.weekLabel(start: startDate, end: endDate)
         case .month:
-            formatter.dateFormat = "LLL yy"
+            return SharedFormatters.month.string(from: startDate)
         }
-        return formatter.string(from: date)
     }
 }
