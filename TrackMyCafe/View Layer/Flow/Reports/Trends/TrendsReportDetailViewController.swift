@@ -5,6 +5,18 @@ final class TrendPointCell: UITableViewCell {
 
     static let identifier = "TrendPointCell"
 
+    enum TrendSortOrder {
+        case newestFirst
+        case oldestFirst
+
+        var localizedTitle: String {
+            switch self {
+            case .newestFirst: return R.string.global.trendsSortNewestFirst()
+            case .oldestFirst: return R.string.global.trendsSortOldestFirst()
+            }
+        }
+    }
+
     private let containerView: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
@@ -92,6 +104,7 @@ final class TrendPointCell: UITableViewCell {
         netLabel.leftToRight(
             of: periodLabel, offset: UIConstants.smallSpacing, relation: .equalOrGreater)
 
+        deltaLabel.isHidden = true
         deltaLabel.topToBottom(of: netLabel, offset: 2)
         deltaLabel.right(to: netLabel)
 
@@ -112,28 +125,22 @@ final class TrendPointCell: UITableViewCell {
         periodLabel.text = point.label
 
         let fCurrency = TrendPointCell.currencyFormatter(currency: currency)
-        let deltaPct = Self.deltaPercent(current: point.netProfit, previous: previousNet)
 
         netLabel.text = fCurrency.string(for: point.netProfit) ?? ""
         netLabel.textColor = point.netProfit >= 0 ? .systemGreen : .systemRed
 
-        let deltaText: String
-        if let previousNet, previousNet != 0 {
-            let sign = deltaPct >= 0 ? "+" : ""
-            deltaText =
-                deltaPct >= 0
-                ? R.string.global.trendsBetterByFormat(sign, deltaPct)
-                : R.string.global.trendsWorseByFormat(sign, deltaPct)
-        } else {
-            deltaText = ""
-        }
-        deltaLabel.text = deltaText
-        deltaLabel.textColor = deltaPct >= 0 ? .systemGreen : .systemRed
+        deltaLabel.text = ""
+        deltaLabel.isHidden = true
 
         salesLabel.text = R.string.global.trendsSalesPrefixFormat(
             fCurrency.string(for: point.sales) ?? "")
 
-        // Simple costs show/hide: populate but toggle isHidden (bottom constraint pins to container, so height ok if all hidden inside empty stack)
+        accessibilityValue = """
+            \(point.label). \
+            \(R.string.global.hubBigNetLabel()): \(netLabel.text ?? ""). \
+            \(R.string.global.hubBigSalesLabel()): \(fCurrency.string(for: point.sales) ?? "").
+            """
+
         breakdownStack.arrangedSubviews.forEach { $0.removeFromSuperview() }
         if costsShown {
             addBreakdownRow(
@@ -206,6 +213,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }()
 
     private var costsShown: Bool = false
+    private var sortOrder: TrendPointCell.TrendSortOrder = .newestFirst
 
     private let tableView: UITableView = {
         let tableView = UITableView.standardList()
@@ -264,6 +272,59 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     private func setupLayout() {
         navigationItem.titleView = nil
 
+        // Sorting menu in navigation bar (right side)
+        setupSortingButton()
+
+        setupTableContainer()
+    }
+
+    private func setupSortingButton() {
+        let sortImage =
+            UIImage(
+                systemName: "arrow.up.arrow.down.circle",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 20, weight: .regular)
+            ) ?? UIImage()
+        let sortBarItem = UIBarButtonItem(
+            image: sortImage,
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        sortBarItem.accessibilityLabel = R.string.global.trendsSortButton()
+        sortBarItem.menu = makeSortMenu()
+        navigationItem.rightBarButtonItem = sortBarItem
+    }
+
+    private func makeSortMenu() -> UIMenu {
+        let newestAction = UIAction(
+            title: TrendPointCell.TrendSortOrder.newestFirst.localizedTitle,
+            image: UIImage(
+                systemName: sortOrder == .newestFirst ? "checkmark.circle.fill" : "circle"),
+            handler: { [weak self] _ in
+                guard let self, self.sortOrder != .newestFirst else { return }
+                self.sortOrder = .newestFirst
+                self.navigationItem.rightBarButtonItem?.menu = self.makeSortMenu()
+                self.tableView.reloadData()
+            }
+        )
+        let oldestAction = UIAction(
+            title: TrendPointCell.TrendSortOrder.oldestFirst.localizedTitle,
+            image: UIImage(
+                systemName: sortOrder == .oldestFirst ? "checkmark.circle.fill" : "circle"),
+            handler: { [weak self] _ in
+                guard let self, self.sortOrder != .oldestFirst else { return }
+                self.sortOrder = .oldestFirst
+                self.navigationItem.rightBarButtonItem?.menu = self.makeSortMenu()
+                self.tableView.reloadData()
+            }
+        )
+        return UIMenu(
+            title: R.string.global.trendsSortButton(),
+            children: [newestAction, oldestAction]
+        )
+    }
+
+    private func setupTableContainer() {
         // BIG summary header: one total NET for all periods
         let tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 246))
         tableHeader.tag = 999
@@ -274,7 +335,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }
 
     private func renderSummaryHeader(
-        totalNet: Double, totalSales: Double, totalCosts: Double, currency: String
+        totalNet: Double, totalSales: Double, totalCosts: Double, currency: String,
+        periodicity: DashboardPeriod, lastPoint: TrendPoint?, previousNet: Double?
     ) {
         guard let header = tableView.tableHeaderView, header.tag == 999 else { return }
         header.subviews.forEach { $0.removeFromSuperview() }
@@ -292,7 +354,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         netTitleL.apply(.footnote)
         netTitleL.textColor = Theme.current.secondaryText
         netTitleL.numberOfLines = 2
-        netTitleL.text = R.string.global.trendsBigNetRemainedPeriod()
+        netTitleL.text = Self.netHeaderTitle(
+            for: periodicity, referenceDate: lastPoint?.startDate ?? Date())
 
         let netValueL = AppLabel(style: .footnote)
         netValueL.apply(.largeTitleBold)
@@ -307,8 +370,29 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         f.maximumFractionDigits = 0
         netValueL.text = f.string(for: totalNet)
 
+        let netDeltaL = AppLabel(style: .footnote)
+        netDeltaL.apply(.footnoteLight)
+        netDeltaL.numberOfLines = 2
+        netDeltaL.textColor = Theme.current.secondaryText
+        let deltaValue = Self.deltaPercentStatic(
+            current: lastPoint?.netProfit ?? 0, previous: previousNet)
+        if let previousNet, previousNet != 0, lastPoint != nil {
+            let sign = deltaValue >= 0 ? "+" : ""
+            let metric =
+                deltaValue >= 0
+                ? R.string.global.trendsNetDeltaBetter()
+                : R.string.global.trendsNetDeltaWorse()
+            netDeltaL.text = R.string.global.trendsNetDeltaPreviousFormat(sign, deltaValue, metric)
+            netDeltaL.textColor = deltaValue >= 0 ? .systemGreen : .systemRed
+        } else if lastPoint == nil {
+            netDeltaL.text = ""
+        } else {
+            netDeltaL.text = ""
+        }
+
         netCard.addSubview(netTitleL)
         netCard.addSubview(netValueL)
+        netCard.addSubview(netDeltaL)
 
         netTitleL.topToSuperview(offset: UIConstants.smallSpacing)
         netTitleL.leftToSuperview(offset: UIConstants.mediumSpacing)
@@ -318,6 +402,10 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         netValueL.left(to: netTitleL)
         netValueL.right(to: netTitleL)
         netValueL.height(min: 56)
+
+        netDeltaL.topToBottom(of: netValueL, offset: 4, relation: .equalOrGreater)
+        netDeltaL.left(to: netTitleL)
+        netDeltaL.right(to: netTitleL)
 
         // Footer: Sales | Costs small row
         let smallSV = UIStackView()
@@ -335,7 +423,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
                 valueStr: f.string(for: totalCosts) ?? "0", color: .systemOrange))
 
         netCard.addSubview(smallSV)
-        smallSV.topToBottom(of: netValueL, offset: UIConstants.smallSpacing)
+        smallSV.topToBottom(
+            of: netDeltaL, offset: UIConstants.smallSpacing, relation: .equalOrGreater)
         smallSV.left(to: netTitleL)
         smallSV.right(to: netTitleL)
         smallSV.bottomToSuperview(offset: -UIConstants.smallSpacing)
@@ -356,6 +445,41 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         wrapper.leftToSuperview()
         wrapper.rightToSuperview()
         wrapper.bottomToSuperview()
+    }
+
+    private static let netHeaderDayFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale.current
+        f.setLocalizedDateFormatFromTemplate("dMMMyyyy")
+        return f
+    }()
+
+    private static let netHeaderWeekMonthFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.locale = Locale.current
+        f.setLocalizedDateFormatFromTemplate("MMMyyyy")
+        return f
+    }()
+
+    private static func netHeaderTitle(for periodicity: DashboardPeriod, referenceDate: Date)
+        -> String
+    {
+        let ref = Self.netHeaderDayFormatter.string(from: referenceDate)
+        switch periodicity {
+        case .day:
+            return R.string.global.trendsNetHeaderTitleDay(ref)
+        case .week:
+            let month = Self.netHeaderWeekMonthFormatter.string(from: referenceDate)
+            return R.string.global.trendsNetHeaderTitleWeek(month)
+        case .month:
+            let month = Self.netHeaderWeekMonthFormatter.string(from: referenceDate)
+            return R.string.global.trendsNetHeaderTitleMonth(month)
+        }
+    }
+
+    private static func deltaPercentStatic(current: Double, previous: Double?) -> Double {
+        guard let previous, previous != 0 else { return 0 }
+        return ((current - previous) / abs(previous)) * 100
     }
 
     private func makeSmallSummary(title: String, valueStr: String, color: UIColor) -> UIView {
@@ -418,18 +542,15 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
 
         let currency = R.string.global.commonCurrencyUAH()
         let currentPoint = points.last
+        let previousPoint: TrendPoint? = (points.count >= 2) ? points[points.count - 2] : nil
         let totalSales = currentPoint?.sales ?? 0
         let totalNet = currentPoint?.netProfit ?? 0
         let totalCosts = (currentPoint?.cogs ?? 0) + (currentPoint?.opex ?? 0)
-        let sumSales = points.reduce(0) { $0 + $1.sales }
-        let sumNet = points.reduce(0) { $0 + $1.netProfit }
-        let sumCosts = points.reduce(0) { $0 + $1.cogs + $1.opex }
 
         logger.info(
             "Trends render period=\(String(describing: report.periodicity))"
                 + " points=\(points.count)"
                 + " CURRENT=[sales=\(totalSales), costs=\(totalCosts), net=\(totalNet)]"
-                + " SUM_6_PERIODS=[=[=[=[=[="
         )
 
         points.enumerated().forEach { idx, p in
@@ -439,8 +560,14 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         }
 
         renderSummaryHeader(
-            totalNet: totalNet, totalSales: totalSales, totalCosts: totalCosts,
-            currency: currency)
+            totalNet: totalNet,
+            totalSales: totalSales,
+            totalCosts: totalCosts,
+            currency: currency,
+            periodicity: report.periodicity,
+            lastPoint: currentPoint,
+            previousNet: previousPoint?.netProfit
+        )
 
         if points.isEmpty {
             emptyStateLabel.text = R.string.global.trendsEmpty()
@@ -461,12 +588,29 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         points.count
     }
 
+    private func sortedPointsForDisplay() -> [TrendPoint] {
+        switch sortOrder {
+        case .newestFirst:
+            return points.reversed()
+        case .oldestFirst:
+            return points
+        }
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =
             tableView.dequeueReusableCell(withIdentifier: TrendPointCell.identifier, for: indexPath)
             as! TrendPointCell
-        let point = points[indexPath.row]
-        let previous = indexPath.row > 0 ? points[indexPath.row - 1] : nil
+        let displayPoints = sortedPointsForDisplay()
+        let point = displayPoints[indexPath.row]
+        let previous: TrendPoint?
+        switch sortOrder {
+        case .newestFirst:
+            previous =
+                (indexPath.row < displayPoints.count - 1) ? displayPoints[indexPath.row + 1] : nil
+        case .oldestFirst:
+            previous = indexPath.row > 0 ? displayPoints[indexPath.row - 1] : nil
+        }
         let currency = R.string.global.commonCurrencyUAH()
         cell.configure(
             point: point, previousSales: previous?.sales, previousNet: previous?.netProfit,
