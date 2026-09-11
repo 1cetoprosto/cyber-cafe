@@ -604,9 +604,15 @@
 "commonHideCosts" = "Hide costs 👆";
 "commonShowMoreN" = "Show %d more";
 
-"trendsBigNetRemainedPeriod" = "REMAINED for the period";
-"trendsBetterByFormat" = "➕ Better by %@%.1f%% ✅";
-"trendsWorseByFormat" = "➖ Worse by %@%.1f%% ⚠️";
+"trendsNetHeaderTitleDay" = "Last selected day (%@)";
+"trendsNetHeaderTitleWeek" = "Last selected week (%@)";
+"trendsNetHeaderTitleMonth" = "Last selected month (%@)";
+"trendsNetDeltaPreviousFormat" = "vs previous: %@%.1f%% (%@)";
+"trendsNetDeltaBetter" = "increase net";
+"trendsNetDeltaWorse" = "decrease net";
+"trendsSortButton" = "Sort";
+"trendsSortNewestFirst" = "Newest first";
+"trendsSortOldestFirst" = "Oldest first";
 
 "hubBigSalesLabel" = "Sales";
 "hubBigCostsLabel" = "Costs";
