@@ -315,18 +315,18 @@ final class ManualMovementEditViewController: UIViewController {
                     note: note,
                     adjustmentIsNegative: adjustmentIsNegative
                 )
-                await MainActor.run {
-                    self.navigationController?.popViewController(animated: true)
+                _ = await MainActor.run { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
                 }
             } catch {
-                await MainActor.run {
+                _ = await MainActor.run {
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
                         description: error.localizedDescription
                     ) {}
                 }
             }
-            await MainActor.run { self.saveButton.isEnabled = true }
+            _ = await MainActor.run { self.saveButton.isEnabled = true }
         }
     }
 

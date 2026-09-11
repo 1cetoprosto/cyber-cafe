@@ -13,8 +13,8 @@ private final class ImageLoadTaskBox: NSObject {
 }
 
 private enum UIImageViewAssociatedKeys {
-    static var imageLoadTaskBox = "UIImageView.imageLoadTaskBox"
-    static var imageLoadToken = "UIImageView.imageLoadToken"
+    nonisolated(unsafe) static var imageLoadTaskBox: ObjCBool = false
+    nonisolated(unsafe) static var imageLoadToken: ObjCBool = false
 }
 
 enum AppImagePlaceholder {
@@ -51,16 +51,18 @@ enum AppImagePlaceholder {
 
 extension UIImageView {
     func cancelImageLoad() {
-        (objc_getAssociatedObject(self, &UIImageViewAssociatedKeys.imageLoadTaskBox)
-            as? ImageLoadTaskBox)?
-            .task?
-            .cancel()
-        objc_setAssociatedObject(
-            self,
-            &UIImageViewAssociatedKeys.imageLoadTaskBox,
-            nil,
-            .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-        )
+        withUnsafePointer(to: &UIImageViewAssociatedKeys.imageLoadTaskBox) { key in
+            (objc_getAssociatedObject(self, UnsafeMutableRawPointer(mutating: key))
+                as? ImageLoadTaskBox)?
+                .task?
+                .cancel()
+            objc_setAssociatedObject(
+                self,
+                UnsafeMutableRawPointer(mutating: key),
+                nil,
+                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
+        }
     }
 
     func setImage(pathOrURL: String?, placeholder: UIImage?) {
@@ -74,12 +76,14 @@ extension UIImageView {
         image = placeholder
 
         let token = UUID().uuidString
-        objc_setAssociatedObject(
-            self,
-            &UIImageViewAssociatedKeys.imageLoadToken,
-            token,
-            .OBJC_ASSOCIATION_COPY_NONATOMIC
-        )
+        withUnsafePointer(to: &UIImageViewAssociatedKeys.imageLoadToken) { key in
+            objc_setAssociatedObject(
+                self,
+                UnsafeMutableRawPointer(mutating: key),
+                token,
+                .OBJC_ASSOCIATION_COPY_NONATOMIC
+            )
+        }
 
         let box = ImageLoadTaskBox()
         box.task = Task { [weak self] in
@@ -88,9 +92,12 @@ extension UIImageView {
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
                     guard let self else { return }
-                    let currentToken =
-                        objc_getAssociatedObject(self, &UIImageViewAssociatedKeys.imageLoadToken)
-                        as? String
+                    let currentToken = withUnsafePointer(
+                        to: &UIImageViewAssociatedKeys.imageLoadToken
+                    ) { key in
+                        objc_getAssociatedObject(self, UnsafeMutableRawPointer(mutating: key))
+                            as? String
+                    }
                     guard currentToken == token else { return }
                     self.image = img
                 }
@@ -98,12 +105,14 @@ extension UIImageView {
                 guard !Task.isCancelled else { return }
             }
         }
-        objc_setAssociatedObject(
-            self,
-            &UIImageViewAssociatedKeys.imageLoadTaskBox,
-            box,
-            .OBJC_ASSOCIATION_RETAIN_NONATOMIC
-        )
+        withUnsafePointer(to: &UIImageViewAssociatedKeys.imageLoadTaskBox) { key in
+            objc_setAssociatedObject(
+                self,
+                UnsafeMutableRawPointer(mutating: key),
+                box,
+                .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+            )
+        }
     }
 
     func setImage(_ url: URL?, placeholder: UIImage?) {

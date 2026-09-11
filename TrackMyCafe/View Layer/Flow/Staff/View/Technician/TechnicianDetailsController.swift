@@ -86,15 +86,6 @@ class TechnicianDetailsController: UIViewController {
   }
 
   private func buildHeaderSection() {
-    let privileges: String
-    if self.fromMod {
-      privileges =
-        technician.role == .techMod
-        ? "Has Technician Privilege" : "Does Not Have Technician Privilege"
-    } else {
-      privileges = technician.role == .techMod ? "Has Mod Privilege" : "Does Not Have Mod Privilege"
-    }
-
     let headerView = UIView()
     headerView.backgroundColor = UIColor.Main.background
     headerView.translatesAutoresizingMaskIntoConstraints = false
