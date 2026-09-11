@@ -1061,7 +1061,7 @@ class DomainDatabaseService: DomainDB {
             firModel: FIRDailyBalanceModel.self,
             startId: startId,
             endId: endId
-        ) { result in
+        ) { [weak self] result in
             switch result {
             case .success(let firModels):
                 let balances =
@@ -1074,7 +1074,9 @@ class DomainDatabaseService: DomainDB {
                         lhs.date < rhs.date
                     }
                 completion(balances)
-            case .failure(let error):
+            case .failure:
+                self?.logger.error(
+                    "Error fetching daily balances for account \(account.rawValue), range \(lowerBound)–\(upperBound)")
                 completion([])
             }
         }
