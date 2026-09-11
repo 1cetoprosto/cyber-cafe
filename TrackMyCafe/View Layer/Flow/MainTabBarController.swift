@@ -98,13 +98,12 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         )
         alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
         alert.addAction(
-            UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
                 SVProgressHUD.show()
                 DemoDataManager.shared.deleteDemoData { success in
                     SVProgressHUD.dismiss()
                     if success {
                         SVProgressHUD.showSuccess(withStatus: R.string.global.success())
-                        // Button visibility will be updated via notification
                     } else {
                         SVProgressHUD.showError(withStatus: R.string.global.error())
                     }

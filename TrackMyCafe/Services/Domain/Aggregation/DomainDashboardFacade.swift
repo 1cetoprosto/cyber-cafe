@@ -87,7 +87,6 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
         dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]]
     ) -> DashboardSnapshot {
         var plByPeriod: [DashboardPeriod: DashboardPeriodPL] = [:]
-        var plCurrent: DashboardPeriodPL?
         var lastOrders: [OrderModel] = []
         var lastExpenses: [OpexExpenseModel] = []
 
@@ -118,7 +117,6 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
             plByPeriod[period] = pl
 
             if period == currentPeriod {
-                plCurrent = pl
                 lastOrders = income.last
                 lastExpenses = opex.last
             }

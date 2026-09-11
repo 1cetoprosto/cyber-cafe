@@ -367,7 +367,7 @@ class RequestManager: NSObject {
     func log(
         date: Date, object: Refs, action: ActionType, description: String, objectRef: String? = ""
     ) {
-        if let currentUser = Auth.auth().currentUser {
+        if Auth.auth().currentUser != nil {
             let db = Firestore.firestore()
             let logsRef = db.collection(Refs.logs.rawValue).document()
             
