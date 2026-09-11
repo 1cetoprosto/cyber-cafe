@@ -7,13 +7,13 @@
 
 import UIKit
 
-public extension UIColor {
-    
+extension UIColor {
+
     /**
      Creates an immuatble UIColor instance specified by a hex string, CSS color name, or nil.
-     
+
      - parameter hexString: A case insensitive String? representing a hex or CSS value e.g.
-     
+
      - **"abc"**
      - **"abc7"**
      - **"#abc7"**
@@ -26,25 +26,27 @@ public extension UIColor {
      - **nil** [UIColor clearColor]
      - **empty string** [UIColor clearColor]
      */
-    convenience init(hex: String?) {
+    public convenience init(hex: String?) {
         let normalizedHexString: String = UIColor.normalize(hex)
-        var c: CUnsignedInt = 0
-        Scanner(string: normalizedHexString).scanHexInt32(&c)
-        self.init(red:UIColorMasks.redValue(c), green:UIColorMasks.greenValue(c), blue:UIColorMasks.blueValue(c), alpha:UIColorMasks.alphaValue(c))
+        var c: UInt64 = 0
+        Scanner(string: normalizedHexString).scanHexInt64(&c)
+        self.init(
+            red: UIColorMasks.redValue(c), green: UIColorMasks.greenValue(c),
+            blue: UIColorMasks.blueValue(c), alpha: UIColorMasks.alphaValue(c))
     }
-    
+
     /**
      Returns a hex equivalent of this UIColor.
-     
+
      - Parameter includeAlpha:   Optional parameter to include the alpha hex.
-     
+
      color.hexDescription() -> "ff0000"
-     
+
      color.hexDescription(true) -> "ff0000aa"
-     
+
      - Returns: A new string with `String` with the color's hexidecimal value.
      */
-    func hexDescription(_ includeAlpha: Bool = false) -> String {
+    public func hexDescription(_ includeAlpha: Bool = false) -> String {
         guard self.cgColor.numberOfComponents == 4 else {
             return "Color not RGB."
         }
@@ -56,30 +58,30 @@ public extension UIColor {
         }
         return color
     }
-    
-    fileprivate enum UIColorMasks: CUnsignedInt {
-        case redMask    = 0xff000000
-        case greenMask  = 0x00ff0000
-        case blueMask   = 0x0000ff00
-        case alphaMask  = 0x000000ff
-        
-        static func redValue(_ value: CUnsignedInt) -> CGFloat {
+
+    fileprivate enum UIColorMasks: UInt64 {
+        case redMask = 0xff00_0000
+        case greenMask = 0x00ff_0000
+        case blueMask = 0x0000_ff00
+        case alphaMask = 0x0000_00ff
+
+        static func redValue(_ value: UInt64) -> CGFloat {
             return CGFloat((value & redMask.rawValue) >> 24) / 255.0
         }
-        
-        static func greenValue(_ value: CUnsignedInt) -> CGFloat {
+
+        static func greenValue(_ value: UInt64) -> CGFloat {
             return CGFloat((value & greenMask.rawValue) >> 16) / 255.0
         }
-        
-        static func blueValue(_ value: CUnsignedInt) -> CGFloat {
+
+        static func blueValue(_ value: UInt64) -> CGFloat {
             return CGFloat((value & blueMask.rawValue) >> 8) / 255.0
         }
-        
-        static func alphaValue(_ value: CUnsignedInt) -> CGFloat {
+
+        static func alphaValue(_ value: UInt64) -> CGFloat {
             return CGFloat(value & alphaMask.rawValue) / 255.0
         }
     }
-    
+
     fileprivate static func normalize(_ hex: String?) -> String {
         guard var hexString = hex else {
             return "00000000"
@@ -91,7 +93,7 @@ public extension UIColor {
             hexString = String(hexString.dropFirst())
         }
         if hexString.count == 3 || hexString.count == 4 {
-            hexString = hexString.map { "\($0)\($0)" } .joined()
+            hexString = hexString.map { "\($0)\($0)" }.joined()
         }
         let hasAlpha = hexString.count > 7
         if !hasAlpha {
@@ -99,7 +101,7 @@ public extension UIColor {
         }
         return hexString
     }
-    
+
     /**
      All modern browsers support the following 140 color names (see http://www.w3schools.com/cssref/css_colornames.asp)
      */
@@ -110,7 +112,7 @@ public extension UIColor {
         }
         return cssName
     }
-    
+
     fileprivate static let cssToHexDictionairy: [String: String] = [
         "CLEAR": "00000000",
         "TRANSPARENT": "00000000",
@@ -261,7 +263,7 @@ public extension UIColor {
         "WHITE": "FFFFFF",
         "WHITESMOKE": "F5F5F5",
         "YELLOW": "FFFF00",
-        "YELLOWGREEN": "9ACD32"
+        "YELLOWGREEN": "9ACD32",
     ]
 }
 
@@ -271,13 +273,13 @@ extension UIColor {
         var green: CGFloat = 0
         var blue: CGFloat = 0
         var alpha: CGFloat = 0
-        
+
         let multiplier = CGFloat(255.999999)
-        
+
         guard self.getRed(&red, green: &green, blue: &blue, alpha: &alpha) else {
             return nil
         }
-        
+
         if alpha == 1.0 {
             return String(
                 format: "#%02lX%02lX%02lX",
@@ -285,8 +287,7 @@ extension UIColor {
                 Int(green * multiplier),
                 Int(blue * multiplier)
             )
-        }
-        else {
+        } else {
             return String(
                 format: "#%02lX%02lX%02lX%02lX",
                 Int(red * multiplier),
@@ -297,4 +298,3 @@ extension UIColor {
         }
     }
 }
-
