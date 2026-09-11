@@ -225,7 +225,7 @@ struct _R {
       var useBioAuth: RswiftResources.StringResource1<String> { .init(key: "useBioAuth", tableName: "Auth", source: source, developmentValue: "Use %@ for quick authorization", comment: nil) }
     }
 
-    /// This `_R.string.global` struct is generated, and contains static references to 504 localization keys.
+    /// This `_R.string.global` struct is generated, and contains static references to 510 localization keys.
     struct global {
       let source: RswiftResources.StringResource.Source
 
@@ -3505,20 +3505,6 @@ struct _R {
       /// Locales: en, uk
       var trendsAvgNetPeriod: RswiftResources.StringResource { .init(key: "trendsAvgNetPeriod", tableName: "Global", source: source, developmentValue: "Avg Net / Period", comment: nil) }
 
-      /// en translation: ➕ Better by %@%.1f%% ✅
-      ///
-      /// Key: trendsBetterByFormat
-      ///
-      /// Locales: en, uk
-      var trendsBetterByFormat: RswiftResources.StringResource2<String, Double> { .init(key: "trendsBetterByFormat", tableName: "Global", source: source, developmentValue: "➕ Better by %@%.1f%% ✅", comment: nil) }
-
-      /// en translation: REMAINED for the period
-      ///
-      /// Key: trendsBigNetRemainedPeriod
-      ///
-      /// Locales: en, uk
-      var trendsBigNetRemainedPeriod: RswiftResources.StringResource { .init(key: "trendsBigNetRemainedPeriod", tableName: "Global", source: source, developmentValue: "REMAINED for the period", comment: nil) }
-
       /// en translation: COGS
       ///
       /// Key: trendsCOGS
@@ -3540,6 +3526,48 @@ struct _R {
       /// Locales: en, uk
       var trendsEmpty: RswiftResources.StringResource { .init(key: "trendsEmpty", tableName: "Global", source: source, developmentValue: "Not enough data yet — come back after a few periods.", comment: nil) }
 
+      /// en translation: increase net
+      ///
+      /// Key: trendsNetDeltaBetter
+      ///
+      /// Locales: en, uk
+      var trendsNetDeltaBetter: RswiftResources.StringResource { .init(key: "trendsNetDeltaBetter", tableName: "Global", source: source, developmentValue: "increase net", comment: nil) }
+
+      /// en translation: vs previous: %@%.1f%% (%@)
+      ///
+      /// Key: trendsNetDeltaPreviousFormat
+      ///
+      /// Locales: en, uk
+      var trendsNetDeltaPreviousFormat: RswiftResources.StringResource3<String, Double, String> { .init(key: "trendsNetDeltaPreviousFormat", tableName: "Global", source: source, developmentValue: "vs previous: %@%.1f%% (%@)", comment: nil) }
+
+      /// en translation: decrease net
+      ///
+      /// Key: trendsNetDeltaWorse
+      ///
+      /// Locales: en, uk
+      var trendsNetDeltaWorse: RswiftResources.StringResource { .init(key: "trendsNetDeltaWorse", tableName: "Global", source: source, developmentValue: "decrease net", comment: nil) }
+
+      /// en translation: Last selected day (%@)
+      ///
+      /// Key: trendsNetHeaderTitleDay
+      ///
+      /// Locales: en, uk
+      var trendsNetHeaderTitleDay: RswiftResources.StringResource1<String> { .init(key: "trendsNetHeaderTitleDay", tableName: "Global", source: source, developmentValue: "Last selected day (%@)", comment: nil) }
+
+      /// en translation: Last selected month (%@)
+      ///
+      /// Key: trendsNetHeaderTitleMonth
+      ///
+      /// Locales: en, uk
+      var trendsNetHeaderTitleMonth: RswiftResources.StringResource1<String> { .init(key: "trendsNetHeaderTitleMonth", tableName: "Global", source: source, developmentValue: "Last selected month (%@)", comment: nil) }
+
+      /// en translation: Last selected week (%@)
+      ///
+      /// Key: trendsNetHeaderTitleWeek
+      ///
+      /// Locales: en, uk
+      var trendsNetHeaderTitleWeek: RswiftResources.StringResource1<String> { .init(key: "trendsNetHeaderTitleWeek", tableName: "Global", source: source, developmentValue: "Last selected week (%@)", comment: nil) }
+
       /// en translation: Opex
       ///
       /// Key: trendsOpex
@@ -3554,6 +3582,27 @@ struct _R {
       /// Locales: en, uk
       var trendsSalesPrefixFormat: RswiftResources.StringResource1<String> { .init(key: "trendsSalesPrefixFormat", tableName: "Global", source: source, developmentValue: "Sales: %@", comment: nil) }
 
+      /// en translation: Sort
+      ///
+      /// Key: trendsSortButton
+      ///
+      /// Locales: en, uk
+      var trendsSortButton: RswiftResources.StringResource { .init(key: "trendsSortButton", tableName: "Global", source: source, developmentValue: "Sort", comment: nil) }
+
+      /// en translation: Newest first
+      ///
+      /// Key: trendsSortNewestFirst
+      ///
+      /// Locales: en, uk
+      var trendsSortNewestFirst: RswiftResources.StringResource { .init(key: "trendsSortNewestFirst", tableName: "Global", source: source, developmentValue: "Newest first", comment: nil) }
+
+      /// en translation: Oldest first
+      ///
+      /// Key: trendsSortOldestFirst
+      ///
+      /// Locales: en, uk
+      var trendsSortOldestFirst: RswiftResources.StringResource { .init(key: "trendsSortOldestFirst", tableName: "Global", source: source, developmentValue: "Oldest first", comment: nil) }
+
       /// en translation: Total Net
       ///
       /// Key: trendsTotalNet
@@ -3567,13 +3616,6 @@ struct _R {
       ///
       /// Locales: en, uk
       var trendsTotalSales: RswiftResources.StringResource { .init(key: "trendsTotalSales", tableName: "Global", source: source, developmentValue: "Total Sales", comment: nil) }
-
-      /// en translation: ➖ Worse by %@%.1f%% ⚠️
-      ///
-      /// Key: trendsWorseByFormat
-      ///
-      /// Locales: en, uk
-      var trendsWorseByFormat: RswiftResources.StringResource2<String, Double> { .init(key: "trendsWorseByFormat", tableName: "Global", source: source, developmentValue: "➖ Worse by %@%.1f%% ⚠️", comment: nil) }
 
       /// en translation: %d days FREE
       ///
