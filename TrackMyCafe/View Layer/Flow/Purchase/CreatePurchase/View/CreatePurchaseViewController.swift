@@ -237,7 +237,7 @@ class CreatePurchaseViewController: UIViewController {
 
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
-            ?? ((Locale.current.languageCode == "uk")
+            ?? (Locale.isCurrentLanguageUkrainian
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
         totalAmountInputContainer.enableCurrencySuffix(symbol: currencySymbol)

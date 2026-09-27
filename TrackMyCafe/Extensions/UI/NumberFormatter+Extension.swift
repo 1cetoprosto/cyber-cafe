@@ -37,7 +37,7 @@ extension NumberFormatter {
     if let symbol = RequestManager.shared.settings?.currencySymbol {
       formater.currencySymbol = symbol
     } else {
-      let isUkrainian = Locale.current.languageCode == "uk"
+      let isUkrainian = Locale.isCurrentLanguageUkrainian
       formater.currencySymbol =
         isUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol
     }

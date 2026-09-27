@@ -13,7 +13,8 @@ class RememberMeButton: UIControl {
 
     var isCheck = false {
         didSet {
-            checkImageView.image = isCheck ? R.image.icon_checkmark()?.withRenderingMode(.alwaysTemplate) : nil
+            checkImageView.image =
+                isCheck ? R.image.icon_checkmark()?.withRenderingMode(.alwaysTemplate) : nil
         }
     }
 
@@ -48,6 +49,13 @@ class RememberMeButton: UIControl {
         setupUI()
 
         addTarget(self, action: #selector(changeValue(_:)), for: .touchUpInside)
+
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([UITraitUserInterfaceStyle.self]) {
+                [weak self] (_: RememberMeButton, _) in
+                self?.updateBorder()
+            }
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -68,9 +76,12 @@ class RememberMeButton: UIControl {
         titleLabel.rightToSuperview()
     }
 
+    @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 13.0, *) {
+        if #available(iOS 17.0, *) {
+            // Handled by trait change registration above.
+        } else {
             if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
                 updateBorder()
             }
@@ -86,7 +97,8 @@ class RememberMeButton: UIControl {
 
     private func updateBorder() {
         if #available(iOS 13.0, *) {
-            boxView.layer.borderColor = UIColor.Main.text.resolvedColor(with: traitCollection).cgColor
+            boxView.layer.borderColor =
+                UIColor.Main.text.resolvedColor(with: traitCollection).cgColor
         } else {
             boxView.layer.borderColor = UIColor.Main.text.cgColor
         }
