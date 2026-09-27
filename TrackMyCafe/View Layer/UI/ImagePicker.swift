@@ -79,7 +79,7 @@ extension ImagePicker {
                 UIAlertAction(
                     title: R.string.global.menuSettings(),
                     style: .default,
-                    handler: { action in
+                    handler: { [weak self] action in
                         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
                             UIApplication.shared.canOpenURL(settingsUrl)
                         else {

@@ -329,7 +329,11 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 .filter { $0.quantity > 0 }
                 .map(\.orderItemSnapshot)
 
-            let finishSaving: () -> Void = {
+            let finishSaving: () -> Void = { [weak self] in
+                guard let self = self else {
+                    completion(false)
+                    return
+                }
                 let group = DispatchGroup()
                 var hasError = false
 
