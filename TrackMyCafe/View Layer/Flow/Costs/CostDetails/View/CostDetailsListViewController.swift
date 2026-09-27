@@ -143,7 +143,7 @@ final class CostDetailsListViewController: UIViewController {
         priceInputContainer.setDelegate(self)
         priceInputContainer.enableNumericInput(maxFractionDigits: 2)
         let currencySymbol = RequestManager.shared.settings?.currencySymbol
-        ?? ((Locale.current.languageCode == "uk") ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
+        ?? (Locale.isCurrentLanguageUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
         priceInputContainer.setReturnKeyType(.done)
 

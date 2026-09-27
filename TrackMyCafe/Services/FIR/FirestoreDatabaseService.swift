@@ -54,7 +54,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
         do {
             let ref = try userCollection.addDocument(from: firModel)
-            logger.info("Created document \(collection) with id - \(String(describing: ref.documentID))")
+            logger.info(
+                "Created document \(collection) with id - \(String(describing: ref.documentID))")
             completion(.success(ref.documentID))
         } catch {
             logger.error(
@@ -65,7 +66,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     func fetchObjectById<T: Decodable>(
-        ofType: T.Type, collection: String, id: String, completion: @escaping (Result<T, Error>) -> Void
+        ofType: T.Type, collection: String, id: String,
+        completion: @escaping (Result<T, Error>) -> Void
     ) {
         guard let userCollection = getUserCollection(collection: collection) else {
             completion(
@@ -128,18 +130,18 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 completion(.failure(error))
             } else {
                 let result: [(documentId: String, T)] =
-                querySnapshot?.documents.compactMap { document in
-                    do {
-                        let data = try document.data(as: T.self)
-                        return (document.documentID, data)
-                    } catch {
-                        self.errorMessage = error.localizedDescription
-                        self.logger.error(
-                            "Error decoding document in collection \(collection): \(error.localizedDescription)"
-                        )
-                        return nil
-                    }
-                } ?? []
+                    querySnapshot?.documents.compactMap { document in
+                        do {
+                            let data = try document.data(as: T.self)
+                            return (document.documentID, data)
+                        } catch {
+                            self.errorMessage = error.localizedDescription
+                            self.logger.error(
+                                "Error decoding document in collection \(collection): \(error.localizedDescription)"
+                            )
+                            return nil
+                        }
+                    } ?? []
                 completion(.success(result))
             }
         }
@@ -223,7 +225,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         let lowerBound = min(startId, endId)
         let upperBound = max(startId, endId)
 
-        let query = userCollection
+        let query =
+            userCollection
             .order(by: FieldPath.documentID())
             .start(at: [lowerBound])
             .end(at: [upperBound])
@@ -295,9 +298,15 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
-    func deleteDocuments(collection: String, ids: [String], completion: @escaping (Result<Void, Error>) -> Void) {
+    func deleteDocuments(
+        collection: String, ids: [String], completion: @escaping (Result<Void, Error>) -> Void
+    ) {
         guard let userCollection = getUserCollection(collection: collection) else {
-            completion(.failure(NSError(domain: "NoUser", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            completion(
+                .failure(
+                    NSError(
+                        domain: "NoUser", code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
             return
         }
 
@@ -320,7 +329,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             }
             batch.commit { error in
                 if let error = error {
-                    self.logger.error("Error batch deleting in \(collection): \(error.localizedDescription)")
+                    self.logger.error(
+                        "Error batch deleting in \(collection): \(error.localizedDescription)")
                     lastError = error
                 }
                 group.leave()
@@ -422,7 +432,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     // MARK: - Delete All Data
 
-    private func deleteCollection(collection: String, batchSize: Int = 400, completion: @escaping (Error?) -> Void) {
+    private func deleteCollection(
+        collection: String, batchSize: Int = 400, completion: @escaping (Error?) -> Void
+    ) {
         guard let userCollection = getUserCollection(collection: collection) else {
             completion(nil)
             return
@@ -450,7 +462,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 if let error = error {
                     completion(error)
                 } else {
-                    self.deleteCollection(collection: collection, batchSize: batchSize, completion: completion)
+                    self.deleteCollection(
+                        collection: collection, batchSize: batchSize, completion: completion)
                 }
             }
         }
@@ -471,7 +484,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             FirebaseCollections.productCategories,
             FirebaseCollections.costs,
             FirebaseCollections.technicians,
-            FirebaseCollections.admins
+            FirebaseCollections.admins,
         ]
         let dispatchGroup = DispatchGroup()
         var overallSuccess = true
@@ -483,10 +496,12 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             deleteCollection(collection: collection) { [weak self] error in
                 if let error = error {
                     self?.logger.error(
-                        "Error deleting documents from collection \(collection): \(error.localizedDescription)")
+                        "Error deleting documents from collection \(collection): \(error.localizedDescription)"
+                    )
                     overallSuccess = false
                 } else {
-                    self?.logger.info("Documents deleted successfully from collection \(collection)")
+                    self?.logger.info(
+                        "Documents deleted successfully from collection \(collection)")
                 }
                 self?.logger.info("dispatchGroup.leave \(collection)")
                 dispatchGroup.leave()
@@ -501,14 +516,22 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     func deleteUserAndRoles(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
-            completion(.failure(NSError(domain: "NoUser", code: 0, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
+            completion(
+                .failure(
+                    NSError(
+                        domain: "NoUser", code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])))
             return
         }
 
         deleteAllData { [weak self] success in
             guard let self = self else { return }
             if !success {
-                completion(.failure(NSError(domain: "DeleteDataError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to delete user data"])))
+                completion(
+                    .failure(
+                        NSError(
+                            domain: "DeleteDataError", code: 0,
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to delete user data"])))
                 return
             }
 
@@ -532,9 +555,17 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     private func deleteRoles(userId: String, completion: @escaping (Error?) -> Void) {
-        db.collection(FirebaseCollections.roles).whereField(FirebaseFields.userRef, isEqualTo: userId).getDocuments { [weak self] snapshot, error in
-            guard let self = self else { completion(error); return }
-            if let error = error { completion(error); return }
+        db.collection(FirebaseCollections.roles).whereField(
+            FirebaseFields.userRef, isEqualTo: userId
+        ).getDocuments { [weak self] snapshot, error in
+            guard let self = self else {
+                completion(error)
+                return
+            }
+            if let error = error {
+                completion(error)
+                return
+            }
 
             let batch = self.db.batch()
             snapshot?.documents.forEach { batch.deleteDocument($0.reference) }
@@ -547,7 +578,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     static func getRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
-        //db.collection("roles")
+            //db.collection("roles")
             .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -566,7 +597,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     static func getTechRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
-        //db.collection("roles")
+            //db.collection("roles")
             .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -609,7 +640,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         // Створення унікального ідентифікатора для користувача
         //let userKey = db.collection("users").document().documentID
         guard let userKey = Auth.auth().currentUser?.uid else {
-            let error = NSError(domain: "Auth", code: 401, userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])
+            let error = NSError(
+                domain: "Auth", code: 401,
+                userInfo: [NSLocalizedDescriptionKey: "No authenticated user found"])
             logger.error("\(error.localizedDescription)")
             completion(.failure(error))
             return
@@ -617,7 +650,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
-            let error = NSError(domain: "UserData", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
+            let error = NSError(
+                domain: "UserData", code: 500,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
             completion(.failure(error))
             return
         }
@@ -625,7 +660,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         // Створення даних ролі
         let roleKey = db.collection(FirebaseCollections.roles).document().documentID
         let role = RoleConfig(
-            ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator,
+            ref: roleKey, email: email, dataRef: userKey, userRef: userKey,
+            role: Role.administrator,
             onlineVersion: true)
 
         let roles = [role]  // Створюємо масив з однією роллю
@@ -657,7 +693,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     func createNewUser(
-        _ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Result<Void, Error>) -> Void
+        _ roles: [RoleConfig], _ id: String, _ email: String,
+        _ completion: @escaping (Result<Void, Error>) -> Void
     ) {
         // Створення унікального ідентифікатора для користувача
         let userKey = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users)
@@ -665,7 +702,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         // Створення даних користувача
         guard let userData = userData(userKey, id, email) else {
-            let error = NSError(domain: "UserData", code: 500, userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
+            let error = NSError(
+                domain: "UserData", code: 500,
+                userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
             completion(.failure(error))
             return
         }
@@ -674,8 +713,9 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         let batch = FirestoreDatabaseService.shared.db.batch()
 
         // Додавання користувача до колекції `users`
-        let userRef = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users).document(
-            userKey)
+        let userRef = FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users)
+            .document(
+                userKey)
         batch.setData(userData, forDocument: userRef)
 
         // Додавання ролей до колекції `roles`
@@ -716,9 +756,16 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             FirebaseFields.avatarThumbnailUrl: "",
         ]
 
-        let isUkrainian = Locale.current.languageCode == "uk"
-        let defaultCurrencyName = isUkrainian ? DefaultValues.currencyName : DefaultValues.dollarName
-        let defaultCurrencySymbol = isUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol
+        let isUkrainian: Bool
+        if #available(iOS 16.0, *) {
+            isUkrainian = Locale.current.language.languageCode?.identifier == "uk"
+        } else {
+            isUkrainian = Locale.current.languageCode == "uk"
+        }
+        let defaultCurrencyName =
+            isUkrainian ? DefaultValues.currencyName : DefaultValues.dollarName
+        let defaultCurrencySymbol =
+            isUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol
         userValue["Settings"] = Settings(
             currencyName: defaultCurrencyName, currencySymbol: defaultCurrencySymbol
         ).forDatabase()
@@ -762,7 +809,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 extension Array {
     func chunked(into size: Int) -> [[Element]] {
         return stride(from: 0, to: count, by: size).map {
-            Array(self[$0 ..< Swift.min($0 + size, count)])
+            Array(self[$0..<Swift.min($0 + size, count)])
         }
     }
 }

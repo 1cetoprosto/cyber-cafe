@@ -278,6 +278,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         OnboardingManager.shared.startIfNeeded(for: .settingsTrackIngredients, on: self)
     }
 
+    @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
@@ -960,7 +961,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func getLegalUrl(type: LegalDocType) -> String {
         // Check if the current language is Ukrainian
-        let isUkrainian = Locale.current.languageCode == "uk"
+        let isUkrainian = Locale.isCurrentLanguageUkrainian
 
         switch type {
         case .privacy:
