@@ -1,0 +1,11 @@
+{
+  "_comment": "Swift / iOS (Xcode) — Cyber Coffe. Base-servers (xcode-tools/context7/GitHub/GitKraken) беруться з глобального конфігу ~/Library/Application Support/Trae/User/mcp.json. Не перелічуємо їх тут, щоб не перетерти command/args.",
+  "mcpServers": {
+    "lsp-bsl-bridge": {
+      "disabled": true
+    },
+    "mcp-1c": {
+      "disabled": true
+    }
+  }
+}
