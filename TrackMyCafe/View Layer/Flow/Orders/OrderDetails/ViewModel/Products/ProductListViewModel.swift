@@ -210,37 +210,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 self.logger.error("Stock deduction failed")
             }
 
-            let group = DispatchGroup()
-            var hasError = false
-
-            for i in self.products.indices {
-                var product = self.products[i]
-                product.orderId = id
-                product.date = date
-
-                group.enter()
-                let productIndex = i
-                let snapshot = product
-                DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
-                    defer { group.leave() }
-                    guard let self = self else { return }
-                    if let newId {
-                        DispatchQueue.main.async {
-                            var updated = snapshot
-                            updated.id = newId
-                            if self.products.indices.contains(productIndex) {
-                                self.products[productIndex] = updated
-                            }
-                        }
-                    } else {
-                        hasError = true
-                    }
-                }
-            }
-
-            group.notify(queue: .main) {
-                completion(!hasError)
-            }
+            self.persistProducts(orderId: id, date: date, completion: completion)
         }
     }
 
@@ -251,73 +221,19 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 return
             }
 
-            // Ensure all current products carry the correct orderId before proceeding
-            // (some may be newly added with empty orderId)
-            for i in self.products.indices {
-                if self.products[i].orderId.isEmpty {
-                    self.products[i].orderId = orderId
-                }
-                self.products[i].date = date
-            }
+            self.prepareProducts(for: orderId, date: date)
 
-            let allProductIds = Set(self.products.map { $0.productId }).union(
-                oldProducts.map { $0.productId })
-
-            let deltaItems: [OrderItemModel] = allProductIds.compactMap { productId in
-                guard !productId.isEmpty else { return nil }
-
-                let newProduct = self.products.first { $0.productId == productId }
-                let oldProduct = oldProducts.first { $0.productId == productId }
-
-                let newQty = newProduct?.quantity ?? 0
-                let oldQty = oldProduct?.quantity ?? 0
-                let deltaQty = newQty - oldQty
-
-                guard deltaQty != 0 else { return nil }
-
-                let salePrice = newProduct?.price ?? oldProduct?.price ?? 0.0
-                let costPrice = newProduct?.costPrice ?? oldProduct?.costPrice ?? 0.0
-
-                return OrderItemModel(
-                    productId: productId,
-                    quantity: deltaQty,
-                    salePrice: salePrice,
-                    costPrice: costPrice
-                )
-            }
+            let deltaItems = self.computeDeltaItems(
+                currentProducts: self.products,
+                oldProducts: oldProducts
+            )
 
             if deltaItems.isEmpty {
-                let group = DispatchGroup()
-                var hasError = false
-
-                for i in self.products.indices {
-                    var product = self.products[i]
-                    product.orderId = orderId
-                    product.date = date
-
-                    group.enter()
-                    let productIndex = i
-                    let snapshot = product
-                    DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
-                        defer { group.leave() }
-                        guard let self = self else { return }
-                        if let newId {
-                            DispatchQueue.main.async {
-                                var updated = snapshot
-                                updated.id = newId
-                                if self.products.indices.contains(productIndex) {
-                                    self.products[productIndex] = updated
-                                }
-                            }
-                        } else {
-                            hasError = true
-                        }
-                    }
-                }
-
-                group.notify(queue: .main) {
-                    completion(!hasError)
-                }
+                self.persistProducts(
+                    orderId: orderId,
+                    date: date,
+                    completion: completion
+                )
                 return
             }
 
@@ -329,103 +245,166 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 .filter { $0.quantity > 0 }
                 .map(\.orderItemSnapshot)
 
-            let finishSaving: () -> Void = { [weak self] in
-                guard let self = self else {
-                    completion(false)
-                    return
-                }
-                let group = DispatchGroup()
-                var hasError = false
+            self.applyInventoryUpdates(
+                revertItems: revertItems,
+                applyItems: applyItems,
+                orderId: orderId,
+                date: date,
+                completion: completion
+            )
+        }
+    }
 
-                for i in self.products.indices {
-                    var product = self.products[i]
-                    product.orderId = orderId
-                    product.date = date
+    // MARK: - Private Helpers
 
-                    group.enter()
-                    let productIndex = i
-                    let snapshot = product
-                    DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
-                        defer { group.leave() }
-                        guard let self = self else { return }
-                        if let newId {
-                            DispatchQueue.main.async {
-                                var updated = snapshot
-                                updated.id = newId
-                                if self.products.indices.contains(productIndex) {
-                                    self.products[productIndex] = updated
-                                }
-                            }
-                        } else {
-                            hasError = true
+    private func prepareProducts(for orderId: String, date: Date) {
+        for i in products.indices {
+            if products[i].orderId.isEmpty {
+                products[i].orderId = orderId
+            }
+            products[i].date = date
+        }
+    }
+
+    private func computeDeltaItems(
+        currentProducts: [ProductOfOrderModel],
+        oldProducts: [ProductOfOrderModel]
+    ) -> [OrderItemModel] {
+        let allProductIds = Set(currentProducts.map { $0.productId }).union(
+            oldProducts.map { $0.productId })
+
+        return allProductIds.compactMap { productId in
+            guard !productId.isEmpty else { return nil }
+
+            let newProduct = currentProducts.first { $0.productId == productId }
+            let oldProduct = oldProducts.first { $0.productId == productId }
+
+            let newQty = newProduct?.quantity ?? 0
+            let oldQty = oldProduct?.quantity ?? 0
+            let deltaQty = newQty - oldQty
+
+            guard deltaQty != 0 else { return nil }
+
+            let salePrice = newProduct?.price ?? oldProduct?.price ?? 0.0
+            let costPrice = newProduct?.costPrice ?? oldProduct?.costPrice ?? 0.0
+
+            return OrderItemModel(
+                productId: productId,
+                quantity: deltaQty,
+                salePrice: salePrice,
+                costPrice: costPrice
+            )
+        }
+    }
+
+    private func persistProducts(
+        orderId: String,
+        date: Date,
+        completion: @escaping (Bool) -> Void
+    ) {
+        let group = DispatchGroup()
+        var hasError = false
+
+        for i in products.indices {
+            var product = products[i]
+            product.orderId = orderId
+            product.date = date
+
+            group.enter()
+            let productIndex = i
+            let snapshot = product
+            DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
+                defer { group.leave() }
+                guard let self = self else { return }
+                if let newId {
+                    DispatchQueue.main.async {
+                        var updated = snapshot
+                        updated.id = newId
+                        if self.products.indices.contains(productIndex) {
+                            self.products[productIndex] = updated
                         }
                     }
+                } else {
+                    hasError = true
                 }
+            }
+        }
 
-                group.notify(queue: .main) {
-                    completion(!hasError)
+        group.notify(queue: .main) {
+            completion(!hasError)
+        }
+    }
+
+    private func applyInventoryUpdates(
+        revertItems: [OrderItemModel],
+        applyItems: [OrderItemModel],
+        orderId: String,
+        date: Date,
+        completion: @escaping (Bool) -> Void
+    ) {
+        let finishSaving: () -> Void = { [weak self] in
+            guard let self = self else {
+                completion(false)
+                return
+            }
+            self.persistProducts(
+                orderId: orderId,
+                date: date,
+                completion: completion
+            )
+        }
+
+        let outerGroup = DispatchGroup()
+        var inventoryError = false
+
+        if !revertItems.isEmpty {
+            outerGroup.enter()
+            inventoryService.restoreStock(
+                for: revertItems,
+                trackingEnabled: inventoryTrackingMode
+            ) { [weak self] result in
+                if case .failure(let error) = result {
+                    self?.logger.error(
+                        "Stock revert failed on order update: \(error.localizedDescription)"
+                    )
+                    inventoryError = true
+                }
+                outerGroup.leave()
+            }
+        }
+
+        outerGroup.notify(queue: .main) { [weak self] in
+            guard let self = self else { return }
+            if inventoryError {
+                completion(false)
+                return
+            }
+
+            let applyGroup = DispatchGroup()
+
+            if !applyItems.isEmpty {
+                applyGroup.enter()
+                self.inventoryService.deductStock(
+                    for: applyItems,
+                    trackingEnabled: self.inventoryTrackingMode
+                ) { [weak self] result in
+                    if case .failure(let error) = result {
+                        self?.logger.error(
+                            "Stock apply failed on order update: \(error.localizedDescription)"
+                        )
+                        inventoryError = true
+                    }
+                    applyGroup.leave()
                 }
             }
 
-            let revertThenApply: () -> Void = { [weak self] in
-                guard let self = self else {
+            applyGroup.notify(queue: .main) {
+                if inventoryError {
                     completion(false)
                     return
                 }
-                let outerGroup = DispatchGroup()
-                var inventoryError = false
-
-                if !revertItems.isEmpty {
-                    outerGroup.enter()
-                    self.inventoryService.restoreStock(
-                        for: revertItems,
-                        trackingEnabled: self.inventoryTrackingMode
-                    ) { result in
-                        if case .failure(let error) = result {
-                            self.logger.error(
-                                "Stock revert failed on order update: \(error.localizedDescription)"
-                            )
-                            inventoryError = true
-                        }
-                        outerGroup.leave()
-                    }
-                }
-
-                outerGroup.notify(queue: .main) {
-                    if inventoryError {
-                        completion(false)
-                        return
-                    }
-
-                    let applyGroup = DispatchGroup()
-
-                    if !applyItems.isEmpty {
-                        applyGroup.enter()
-                        self.inventoryService.deductStock(
-                            for: applyItems,
-                            trackingEnabled: self.inventoryTrackingMode
-                        ) { result in
-                            if case .failure(let error) = result {
-                                self.logger.error(
-                                    "Stock apply failed on order update: \(error.localizedDescription)"
-                                )
-                                inventoryError = true
-                            }
-                            applyGroup.leave()
-                        }
-                    }
-
-                    applyGroup.notify(queue: .main) {
-                        if inventoryError {
-                            completion(false)
-                            return
-                        }
-                        finishSaving()
-                    }
-                }
+                finishSaving()
             }
-
-            revertThenApply()
         }
     }
 
