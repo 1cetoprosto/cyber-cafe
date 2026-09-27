@@ -316,19 +316,40 @@ class DomainDatabaseService: DomainDB {
     }
 
     func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void) {
-        FirestoreDatabaseService.shared.create(
-            firModel: FIRProductModel(dataModel: order),
-            collection: FirebaseCollections.productOfOrders
-        ) { result in
-            switch result {
-            case .success(let id):
-                self.logger.info("Order product saved to Firestore successfully with ID: \(id)")
-                completion(id)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save order product to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(nil)
+        if order.id.isEmpty {
+            FirestoreDatabaseService.shared.create(
+                firModel: FIRProductModel(dataModel: order),
+                collection: FirebaseCollections.productOfOrders
+            ) { result in
+                switch result {
+                case .success(let id):
+                    self.logger.info(
+                        "Order product created in Firestore successfully with ID: \(id)")
+                    completion(id)
+                case .failure(let error):
+                    self.logger.error(
+                        "Failed to create order product in Firestore with error: \(error.localizedDescription)"
+                    )
+                    completion(nil)
+                }
+            }
+        } else {
+            FirestoreDatabaseService.shared.update(
+                firModel: FIRProductModel(dataModel: order),
+                collection: FirebaseCollections.productOfOrders,
+                documentId: order.id
+            ) { result in
+                switch result {
+                case .success:
+                    self.logger.info(
+                        "Order product updated in Firestore successfully with ID: \(order.id)")
+                    completion(order.id)
+                case .failure(let error):
+                    self.logger.error(
+                        "Failed to update order product in Firestore with error: \(error.localizedDescription)"
+                    )
+                    completion(nil)
+                }
             }
         }
     }

@@ -134,7 +134,10 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 success in
                 if success {
                     // 2. Update Products (Children)
-                    self.productsViewModel.updateOrder(date: date) { productsSaved in
+                    self.productsViewModel.updateOrder(
+                        orderId: self.order.id,
+                        date: date
+                    ) { productsSaved in
                         if productsSaved {
                             completion(.success(()))
                         } else {
