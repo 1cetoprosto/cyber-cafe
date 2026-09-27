@@ -106,7 +106,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     private let trackIngredientsOptionIndex = 3
 
     private func refreshInventoryTrackingFooter() {
-        Task { @MainActor in
+        Task { @MainActor [weak self] in
+            guard let self = self else { return }
             let isLocked = await DomainDatabaseService.shared.hasAnyOrderWithInventoryTracking()
             self.inventoryTrackingLocked = isLocked
             guard self.models.count > 1 else { return }
@@ -117,7 +118,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             let oldSection = self.models[1]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
             let updatedOptions = oldSection.option.enumerated().map {
-                idx, opt -> SettingsOptionType in
+                [weak self] idx, opt -> SettingsOptionType in
+                guard let self = self else { return opt }
                 switch opt {
                 case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
                     return SettingsOptionType.switchCell(
