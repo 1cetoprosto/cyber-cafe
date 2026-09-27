@@ -167,7 +167,7 @@ class ProductDetailsViewController: UIViewController {
         priceInputContainer.enableNumericInput(maxFractionDigits: 2)
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
-            ?? ((Locale.current.languageCode == "uk")
+            ?? (Locale.isCurrentLanguageUkrainian
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
         priceInputContainer.setReturnKeyType(.done)

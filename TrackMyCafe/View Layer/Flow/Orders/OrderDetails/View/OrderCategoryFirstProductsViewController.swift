@@ -98,6 +98,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         }
     }
 
+    @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureNavigationItems()
@@ -234,11 +235,20 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .estimated(220)
             )
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: groupSize,
-                subitem: item,
-                count: columns
-            )
+            let group: NSCollectionLayoutGroup
+            if #available(iOS 16.0, *) {
+                group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: groupSize,
+                    repeatingSubitem: item,
+                    count: columns
+                )
+            } else {
+                group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: groupSize,
+                    subitem: item,
+                    count: columns
+                )
+            }
             group.interItemSpacing = .fixed(spacing)
 
             let section = NSCollectionLayoutSection(group: group)

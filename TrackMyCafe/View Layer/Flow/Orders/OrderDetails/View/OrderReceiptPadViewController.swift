@@ -313,7 +313,7 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
 
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
-            ?? ((Locale.current.languageCode == "uk")
+            ?? (Locale.isCurrentLanguageUkrainian
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
 
         cashInputContainer.enableCurrencySuffix(symbol: currencySymbol)

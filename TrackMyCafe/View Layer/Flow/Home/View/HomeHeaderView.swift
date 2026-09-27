@@ -183,6 +183,7 @@ final class HomeHeaderView: UIView {
     @objc private func periodChanged() { onPeriodChanged?(periodControl.selectedSegmentIndex) }
     @objc private func deleteDemoDataTap() { onDeleteDemoData?() }
 
+    @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         if #available(iOS 13.0, *) {

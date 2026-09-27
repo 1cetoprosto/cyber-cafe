@@ -370,7 +370,7 @@ final class InputContainerView: UIView {
         if let symbol = symbol {
             currency = symbol
         } else {
-            let isUkrainian = Locale.current.languageCode == "uk"
+            let isUkrainian = Locale.isCurrentLanguageUkrainian
             currency =
                 isUkrainian
                 ? DefaultValues.currencySymbol

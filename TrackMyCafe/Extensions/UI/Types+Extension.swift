@@ -115,3 +115,18 @@ extension Bool {
         return value
     }
 }
+
+extension Locale {
+
+    static var currentLanguageCode: String? {
+        if #available(iOS 16.0, *) {
+            return Locale.current.language.languageCode?.identifier
+        } else {
+            return Locale.current.languageCode
+        }
+    }
+
+    static var isCurrentLanguageUkrainian: Bool {
+        currentLanguageCode == "uk"
+    }
+}
