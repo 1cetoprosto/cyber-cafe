@@ -181,7 +181,7 @@ final class ManualMovementEditViewController: UIViewController {
         amountInputContainer.enableNumericInput(maxFractionDigits: 2)
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
-            ?? ((Locale.current.languageCode == "uk")
+            ?? (Locale.isCurrentLanguageUkrainian
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         amountInputContainer.enableCurrencySuffix(symbol: currencySymbol)
     }

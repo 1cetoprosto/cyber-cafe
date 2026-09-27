@@ -1097,7 +1097,8 @@ class DomainDatabaseService: DomainDB {
                 completion(balances)
             case .failure:
                 self?.logger.error(
-                    "Error fetching daily balances for account \(account.rawValue), range \(lowerBound)–\(upperBound)")
+                    "Error fetching daily balances for account \(account.rawValue), range \(lowerBound)–\(upperBound)"
+                )
                 completion([])
             }
         }
@@ -1164,7 +1165,7 @@ class DomainDatabaseService: DomainDB {
         // Wait a bit to ensure Firestore processes deletions
         try? await Task.sleep(nanoseconds: 1_000_000_000)  // 1 second
 
-        let isUkrainian = Locale.current.languageCode == "uk"
+        let isUkrainian = Locale.isCurrentLanguageUkrainian
 
         let types = await seedTypes(manifest: &manifest)
         var products = await seedProducts(isUkrainian: isUkrainian, manifest: &manifest)

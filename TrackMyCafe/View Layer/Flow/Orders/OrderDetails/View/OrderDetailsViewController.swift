@@ -180,6 +180,26 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         setupUI()
         setupData()
+
+        if #available(iOS 17.0, *) {
+            registerForTraitChanges([
+                UITraitHorizontalSizeClass.self, UITraitUserInterfaceStyle.self,
+            ]) { [weak self] (_: OrderDetailsViewController, _) in
+                self?.handleTraitCollectionUpdate()
+            }
+        }
+    }
+
+    private func handleTraitCollectionUpdate() {
+        let shouldUseGrid = isPadGridEnabled
+        if isGridView != shouldUseGrid {
+            isGridView = shouldUseGrid
+            tableView.isHidden = isGridView
+            collectionView.isHidden = !isGridView
+        }
+
+        maxContentWidthConstraint?.constant = maxContentWidth
+        view.setNeedsLayout()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -209,18 +229,14 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
+    @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-
-        let shouldUseGrid = isPadGridEnabled
-        if isGridView != shouldUseGrid {
-            isGridView = shouldUseGrid
-            tableView.isHidden = isGridView
-            collectionView.isHidden = !isGridView
+        if #available(iOS 17.0, *) {
+            // Handled by trait change registration above.
+        } else {
+            handleTraitCollectionUpdate()
         }
-
-        maxContentWidthConstraint?.constant = maxContentWidth
-        view.setNeedsLayout()
     }
 
     private var isPadGridEnabled: Bool {
@@ -289,7 +305,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
         let currencySymbol =
             RequestManager.shared.settings?.currencySymbol
-            ?? ((Locale.current.languageCode == "uk")
+            ?? (Locale.isCurrentLanguageUkrainian
                 ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
 
         cashInputContainer.enableCurrencySuffix(symbol: currencySymbol)

@@ -200,8 +200,20 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
                 widthDimension: .fractionalWidth(1.0),
                 heightDimension: .estimated(160)
             )
-            let group = NSCollectionLayoutGroup.horizontal(
-                layoutSize: groupSize, subitem: item, count: columns)
+            let group: NSCollectionLayoutGroup
+            if #available(iOS 16.0, *) {
+                group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: groupSize,
+                    repeatingSubitem: item,
+                    count: columns
+                )
+            } else {
+                group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: groupSize,
+                    subitem: item,
+                    count: columns
+                )
+            }
             group.interItemSpacing = .fixed(spacing)
 
             let section = NSCollectionLayoutSection(group: group)

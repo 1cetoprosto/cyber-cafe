@@ -13,7 +13,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
     static var shared: SceneDelegate {
         guard let scene = UIApplication.shared.connectedScenes.first,
-              let delegate = scene.delegate as? SceneDelegate
+            let delegate = scene.delegate as? SceneDelegate
         else {
             fatalError("No active SceneDelegate instance found")
         }
@@ -39,9 +39,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
                     }
 
                     // Заповнення поля orderId відповідними значеннями з RealmOrderModel
-                    migration.enumerateObjects(ofType: RealmOrderModel.className()) { oldObject, newObject in
+                    migration.enumerateObjects(ofType: RealmOrderModel.className()) {
+                        oldObject, newObject in
                         if let orderId = oldObject!["id"] as? String,
-                           let date = oldObject!["date"] as? Date
+                            let date = oldObject!["date"] as? Date
                         {
                             migration.enumerateObjects(ofType: RealmProductModel.className()) {
                                 productOldObject, productNewObject in
@@ -80,28 +81,28 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // configureRealm() - No longer needed
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
-    logger.info("Current system language code: \(Locale.current.languageCode ?? "N/A")")
+        logger.info("Current system language code: \(Locale.currentLanguageCode ?? "N/A")")
 
-    // Check for fresh install
-    checkFreshInstall()
+        // Check for fresh install
+        checkFreshInstall()
 
-    window = UIWindow(windowScene: windowScene)
-    guard let window else { return }
+        window = UIWindow(windowScene: windowScene)
+        guard let window else { return }
 
-    // Apply saved theme immediately (before showing UI)
-    Theme.apply(to: window)
+        // Apply saved theme immediately (before showing UI)
+        Theme.apply(to: window)
 
-    // Configure global UI appearance after window is ready
-    setupAppearance()
+        // Configure global UI appearance after window is ready
+        setupAppearance()
 
-    #if DEBUG
-    // Reset subscription state for testing
-    // IAPManager.shared.debugResetSubscription()
-    // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
-    #endif
+        #if DEBUG
+            // Reset subscription state for testing
+            // IAPManager.shared.debugResetSubscription()
+            // UserDefaults.standard.set(false, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+        #endif
 
-    start()
-    window.makeKeyAndVisible()
+        start()
+        window.makeKeyAndVisible()
 
         // Debug Logging of App State
         logAppState()
@@ -109,14 +110,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         seedDefaultIncomeTypesIfNeeded()
 
         buildDefaultOnboardingRegistry()
-#if canImport(Instructions)
-        OnboardingManager.shared.configure(driver: InstructionsDriver())
-#endif
+        #if canImport(Instructions)
+            OnboardingManager.shared.configure(driver: InstructionsDriver())
+        #endif
     }
 
     func start() {
         // 1. Check Onboarding
-        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        let hasSeenOnboarding = UserDefaults.standard.bool(
+            forKey: UserDefaultsKeys.hasSeenOnboarding)
         if !hasSeenOnboarding {
             let onboardingVC = OnboardingViewController()
             onboardingVC.delegate = self
@@ -167,14 +169,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         window?.rootViewController = controller
         runFinanceHistoryBackfillIfNeeded(for: controller)
 
-        UIView.animate(withDuration: 0.4, delay: 0, options: .transitionCrossDissolve, animations: {
-            overlayView.alpha = 0
-        }, completion: { finished in
-            overlayView.removeFromSuperview()
-        })
+        UIView.animate(
+            withDuration: 0.4, delay: 0, options: .transitionCrossDissolve,
+            animations: {
+                overlayView.alpha = 0
+            },
+            completion: { finished in
+                overlayView.removeFromSuperview()
+            })
     }
 
-      // MARK: - Helper Methods
+    // MARK: - Helper Methods
 
     private func checkFreshInstall() {
         let key = UserDefaultsKeys.hasRunBefore
@@ -208,14 +213,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
             navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
             navBarAppearance.backgroundColor = UIColor.NavBar.background
-            let appearance = UINavigationBar.appearance(whenContainedInInstancesOf: [MainNavigationController.self])
+            let appearance = UINavigationBar.appearance(whenContainedInInstancesOf: [
+                MainNavigationController.self
+            ])
             appearance.standardAppearance = navBarAppearance
             appearance.compactAppearance = navBarAppearance
             appearance.scrollEdgeAppearance = navBarAppearance
             // appearance.prefersLargeTitles = false // Not available on proxy
         } else {
             UINavigationBar.appearance().barTintColor = UIColor.NavBar.text
-            UINavigationBar.appearance().titleTextAttributes = [.foregroundColor: UIColor.NavBar.text]
+            UINavigationBar.appearance().titleTextAttributes = [
+                .foregroundColor: UIColor.NavBar.text
+            ]
             UINavigationBar.appearance().isTranslucent = false
         }
 
@@ -229,7 +238,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     private func logAppState() {
         let isPro = IAPManager.shared.isProPlan == true
         let nextPayment = IAPManager.shared.nextPaymentDate
-        let hasSeenOnboarding = UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasSeenOnboarding)
+        let hasSeenOnboarding = UserDefaults.standard.bool(
+            forKey: UserDefaultsKeys.hasSeenOnboarding)
         let theme = SettingsManager.shared.loadTheme()
         let orderMode = SettingsManager.shared.loadOrderEntryMode()
         let hasDemoData = DemoDataManager.shared.isDemoDataPresent
@@ -267,7 +277,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
 }
 
-    // MARK: - OnboardingViewControllerDelegate
+// MARK: - OnboardingViewControllerDelegate
 extension SceneDelegate: OnboardingViewControllerDelegate {
     func didFinishOnboarding() {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
