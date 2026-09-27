@@ -213,19 +213,28 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             let group = DispatchGroup()
             var hasError = false
 
-            for var order in self.products {
-                order.orderId = id
-                order.date = date
+            for i in self.products.indices {
+                var product = self.products[i]
+                product.orderId = id
+                product.date = date
 
                 group.enter()
-                DomainDatabaseService.shared.saveProduct(order: order) { id in
-                    if id != nil {
-                        self.logger.notice("Order \(order.id) saved successfully")
+                let productIndex = i
+                let snapshot = product
+                DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
+                    defer { group.leave() }
+                    guard let self = self else { return }
+                    if let newId {
+                        DispatchQueue.main.async {
+                            var updated = snapshot
+                            updated.id = newId
+                            if self.products.indices.contains(productIndex) {
+                                self.products[productIndex] = updated
+                            }
+                        }
                     } else {
-                        self.logger.error("Failed to save order \(order.id)")
                         hasError = true
                     }
-                    group.leave()
                 }
             }
 
@@ -235,33 +244,20 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         }
     }
 
-    func updateOrder(date: Date, completion: @escaping (Bool) -> Void) {
-        guard let orderId = products.first?.orderId, !orderId.isEmpty else {
-            let group = DispatchGroup()
-            var hasError = false
-
-            for var product in products {
-                product.date = date
-                group.enter()
-                DomainDatabaseService.shared.saveProduct(order: product) { id in
-                    if id == nil {
-                        hasError = true
-                    }
-                    group.leave()
-                }
-            }
-
-            group.notify(queue: .main) {
-                completion(!hasError)
-            }
-
-            return
-        }
-
+    func updateOrder(orderId: String, date: Date, completion: @escaping (Bool) -> Void) {
         DomainDatabaseService.shared.fetchProduct(withOrderId: orderId) { [weak self] oldProducts in
             guard let self = self else {
                 completion(false)
                 return
+            }
+
+            // Ensure all current products carry the correct orderId before proceeding
+            // (some may be newly added with empty orderId)
+            for i in self.products.indices {
+                if self.products[i].orderId.isEmpty {
+                    self.products[i].orderId = orderId
+                }
+                self.products[i].date = date
             }
 
             let allProductIds = Set(self.products.map { $0.productId }).union(
@@ -294,15 +290,28 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 let group = DispatchGroup()
                 var hasError = false
 
-                for var product in self.products {
+                for i in self.products.indices {
+                    var product = self.products[i]
                     product.orderId = orderId
                     product.date = date
+
                     group.enter()
-                    DomainDatabaseService.shared.saveProduct(order: product) { id in
-                        if id == nil {
+                    let productIndex = i
+                    let snapshot = product
+                    DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
+                        defer { group.leave() }
+                        guard let self = self else { return }
+                        if let newId {
+                            DispatchQueue.main.async {
+                                var updated = snapshot
+                                updated.id = newId
+                                if self.products.indices.contains(productIndex) {
+                                    self.products[productIndex] = updated
+                                }
+                            }
+                        } else {
                             hasError = true
                         }
-                        group.leave()
                     }
                 }
 
@@ -324,15 +333,28 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 let group = DispatchGroup()
                 var hasError = false
 
-                for var product in self.products {
+                for i in self.products.indices {
+                    var product = self.products[i]
                     product.orderId = orderId
                     product.date = date
+
                     group.enter()
-                    DomainDatabaseService.shared.saveProduct(order: product) { id in
-                        if id == nil {
+                    let productIndex = i
+                    let snapshot = product
+                    DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
+                        defer { group.leave() }
+                        guard let self = self else { return }
+                        if let newId {
+                            DispatchQueue.main.async {
+                                var updated = snapshot
+                                updated.id = newId
+                                if self.products.indices.contains(productIndex) {
+                                    self.products[productIndex] = updated
+                                }
+                            }
+                        } else {
                             hasError = true
                         }
-                        group.leave()
                     }
                 }
 

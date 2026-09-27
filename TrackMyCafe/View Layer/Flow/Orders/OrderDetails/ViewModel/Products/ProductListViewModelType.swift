@@ -20,7 +20,7 @@ protocol ProductListViewModelType {
     func totalSum() -> String
     
     func saveOrder(withOrderId orderId: String, date: Date, completion: @escaping (Bool) -> Void)
-    func updateOrder(date: Date, completion: @escaping (Bool) -> Void)
+    func updateOrder(orderId: String, date: Date, completion: @escaping (Bool) -> Void)
     
     func validateStock(completion: @escaping ([StockWarning]) -> Void)
     func deductStock(completion: @escaping (Bool) -> Void)
