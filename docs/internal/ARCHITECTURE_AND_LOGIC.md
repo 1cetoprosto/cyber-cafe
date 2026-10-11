@@ -18,7 +18,7 @@
   - `Reports Hub` у MainTabBarController (tab 4) **вже ввімкнений**: P&L, ABC-аналіз, Trends.
   - `Home` вже має period-based aggregation (Sales/COGS/Opex/Gross/Net Profit) через centralized aggregation services + finance/reporting facade.
   - `InventoryAdjustmentModel`, ручні коригування, **Track Ingredients toggle** та **COGS snapshot (Order+OrderItem)** вже реалізовані в коді.
-  - Firebase Firestore — primary storage; Realm — **legacy-шар**, що поступово прибирається з продукційних шляхів (v1.1.3).
+  - Firebase Firestore — primary storage; Realm повністю видалено з продукційних шляхів (v1.1.3, `#141`/`#178`).
 
 - **1.1.x stability/feature-patch line (in progress / roadmap)**
   1. v1.1.1: UI stability (UILabel → AppLabel / Dynamic Type) + docs sync.
