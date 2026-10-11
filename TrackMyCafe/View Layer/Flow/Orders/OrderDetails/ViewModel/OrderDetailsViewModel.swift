@@ -113,10 +113,12 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     ) {
         // 1. Save/Update Order (Parent)
         if self.isNewModel {
-            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
+            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) {
+                success in
                 if success {
                     // 2. Save Products (Children)
-                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) { productsSaved in
+                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) {
+                        productsSaved in
                         if productsSaved {
                             completion(.success(()))
                         } else {
@@ -128,7 +130,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 }
             }
         } else {
-            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
+            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) {
+                success in
                 if success {
                     // 2. Update Products (Children)
                     self.productsViewModel.updateOrder(
