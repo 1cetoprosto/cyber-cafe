@@ -28,14 +28,6 @@ struct RecipeItemModel: Identifiable, Codable {
     self.unit = unit
   }
 
-  init(realmModel: RealmRecipeItemModel) {
-    self.id = realmModel.id
-    self.ingredientId = realmModel.ingredientId
-    self.ingredientName = realmModel.ingredientName
-    self.quantity = realmModel.quantity
-    self.unit = MeasurementUnit(rawValue: realmModel.unit) ?? .pcs
-  }
-
   init(firebaseModel: FIRRecipeItemModel) {
     self.id = firebaseModel.id
     self.ingredientId = firebaseModel.ingredientId

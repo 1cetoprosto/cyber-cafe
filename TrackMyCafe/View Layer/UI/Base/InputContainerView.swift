@@ -425,8 +425,7 @@ extension InputContainerView: UIPickerViewDataSource, UIPickerViewDelegate {
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
-        -> String?
-    {
+        -> String? {
         return row < pickerData.count ? pickerData[row] : nil
     }
 

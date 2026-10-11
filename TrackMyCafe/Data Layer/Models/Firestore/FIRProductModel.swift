@@ -33,7 +33,3 @@ struct FIRProductModel: Codable {
         self.costSum = dataModel.costSum
     }
 }
-
-//extension FIRProductModel {
-//    static var empty = FIRProductModel(productModel: RealmProductModel())
-//}

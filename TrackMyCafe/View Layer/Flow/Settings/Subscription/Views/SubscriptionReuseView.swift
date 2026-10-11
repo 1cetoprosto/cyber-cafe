@@ -54,4 +54,3 @@ class SubscriptionReuseView: UIView {
         titleLabel.edgesToSuperview(insets: .init(top: 8, left: 15, bottom: 8, right: 15))
     }
 }
-

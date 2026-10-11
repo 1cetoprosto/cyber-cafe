@@ -5,7 +5,6 @@
 //  Created by Леонід Квіт on 07.11.2021.
 //
 
-import RealmSwift
 import UIKit
 
 enum ProductSortOrder: String {
@@ -16,18 +15,16 @@ enum ProductSortOrder: String {
 
 class ProductListViewController: UIViewController, Loggable {
 
-    //let localRealm = try! Realm()
-    //var productsArray: Results<RealmProductsPriceModel>!
     var productsPrice = [ProductsPriceModel]()
     private var currentSortOrder: ProductSortOrder = .none
-    
+
     let tableView: UITableView = {
         let tableView = UITableView.standardList()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         return tableView
     }()
-    
+
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -43,19 +40,20 @@ class ProductListViewController: UIViewController, Loggable {
         button.accessibilityIdentifier = "navBarSortProduct"
         return button
     }()
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configure()
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.products()
 
-        tableView.register(ProductPriceTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.productsCell)
+        tableView.register(
+            ProductPriceTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.productsCell)
         tableView.dataSource = self
         tableView.delegate = self
 
@@ -67,18 +65,21 @@ class ProductListViewController: UIViewController, Loggable {
         setConstraints()
 
     }
-    
+
     func configure() {
-        DomainDatabaseService.shared.fetchProductsPrice { productsPrice in
-            self.productsPrice = productsPrice
-            self.applySort()
-            self.tableView.reloadData()
+        Task { [weak self] in
+            let productsPrice = await DomainDatabaseService.shared.fetchProductsPrice()
+            await MainActor.run {
+                self?.productsPrice = productsPrice
+                self?.applySort()
+                self?.tableView.reloadData()
+            }
         }
     }
 
     private func loadSavedSortOrder() {
         if let savedOrder = UserDefaults.standard.string(forKey: "productSortOrder"),
-           let order = ProductSortOrder(rawValue: savedOrder) {
+            let order = ProductSortOrder(rawValue: savedOrder) {
             currentSortOrder = order
         }
     }
@@ -90,9 +91,13 @@ class ProductListViewController: UIViewController, Loggable {
     private func applySort() {
         switch currentSortOrder {
         case .nameAscending:
-            productsPrice.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+            productsPrice.sort {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+            }
         case .nameDescending:
-            productsPrice.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending }
+            productsPrice.sort {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedDescending
+            }
         case .none:
             break
         }
@@ -112,23 +117,26 @@ class ProductListViewController: UIViewController, Loggable {
     }
 
     @objc private func showSortOptions() {
-        let alert = UIAlertController(title: R.string.global.sortBy(), message: nil, preferredStyle: .actionSheet)
+        let alert = UIAlertController(
+            title: R.string.global.sortBy(), message: nil, preferredStyle: .actionSheet)
 
-        alert.addAction(UIAlertAction(title: R.string.global.nameAZ(), style: .default) { [weak self] _ in
-            self?.currentSortOrder = .nameAscending
-            self?.saveSortOrder()
-            self?.applySort()
-            self?.updateSortIcon()
-            self?.tableView.reloadData()
-        })
+        alert.addAction(
+            UIAlertAction(title: R.string.global.nameAZ(), style: .default) { [weak self] _ in
+                self?.currentSortOrder = .nameAscending
+                self?.saveSortOrder()
+                self?.applySort()
+                self?.updateSortIcon()
+                self?.tableView.reloadData()
+            })
 
-        alert.addAction(UIAlertAction(title: R.string.global.nameZA(), style: .default) { [weak self] _ in
-            self?.currentSortOrder = .nameDescending
-            self?.saveSortOrder()
-            self?.applySort()
-            self?.updateSortIcon()
-            self?.tableView.reloadData()
-        })
+        alert.addAction(
+            UIAlertAction(title: R.string.global.nameZA(), style: .default) { [weak self] _ in
+                self?.currentSortOrder = .nameDescending
+                self?.saveSortOrder()
+                self?.applySort()
+                self?.updateSortIcon()
+                self?.tableView.reloadData()
+            })
 
         alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
 
@@ -138,20 +146,20 @@ class ProductListViewController: UIViewController, Loggable {
 
         present(alert, animated: true)
     }
-    
+
     func setConstraints() {
-        
+
         view.addSubview(tableView)
-        
+
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
-        
+
     }
-    
+
     // MARK: - Method
     @objc func performAdd(param: UIBarButtonItem) {
         let model = ProductsPriceModel(id: "", name: "", price: 0.0)
@@ -166,33 +174,38 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return productsPrice.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.productsCell, for: indexPath)
-        as! ProductPriceTableViewCell
+        let cell =
+            tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.productsCell, for: indexPath)
+            as? ProductPriceTableViewCell
+        guard let cell = cell else { return UITableViewCell() }
         cell.configure(productPrice: productsPrice[indexPath.row], indexPath: indexPath)
-        
+
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let model = productsPrice[indexPath.row]
-        
+
         let vm = ProductDetailsViewModel(model: model, dataService: DomainProductPriceDataService())
         let productVC = ProductDetailsViewController(viewModel: vm)
         navigationController?.pushViewController(productVC, animated: true)
     }
-    
+
     func tableView(
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let model = productsPrice[indexPath.row]
-        
-        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) {
-            _, _, _ in
-            DomainDatabaseService.shared.deleteProductsPrice(model: model) { [self] success in
+
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, _ in
+            guard let self else { return }
+            Task { [weak self] in
+                guard let self else { return }
+                let success = await DomainDatabaseService.shared.deleteProductsPrice(model: model)
                 if success {
                     logger.notice("productsPrice type \(model.id) deleted successfully")
                     Task {
@@ -201,14 +214,16 @@ extension ProductListViewController: UITableViewDelegate, UITableViewDataSource 
                         )
                     }
                     self.configure()
-                    
-                    tableView.reloadData()
+
+                    await MainActor.run {
+                        tableView.reloadData()
+                    }
                 } else {
                     logger.error("Failed to delete productsPrice \(model.id)")
                 }
             }
         }
-        
+
         return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

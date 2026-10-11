@@ -168,10 +168,13 @@ final class DemoDataManager: Loggable {
     }
 
     private func deleteBatch(collection: String, ids: [String]) async {
-        await withCheckedContinuation { continuation in
-            FirestoreDatabaseService.shared.deleteDocuments(collection: collection, ids: ids) { _ in
-                continuation.resume()
-            }
+        do {
+            try await FirestoreDatabaseService.shared.deleteDocuments(
+                collection: collection,
+                ids: ids
+            )
+        } catch {
+            logger.error("Failed to delete batch in \(collection): \(error.localizedDescription)")
         }
     }
 }

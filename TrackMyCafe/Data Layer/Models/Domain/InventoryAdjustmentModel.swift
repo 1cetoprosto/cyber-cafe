@@ -7,6 +7,20 @@
 
 import Foundation
 
+// MARK: - InventoryAdjustmentModel
+//
+// Domain model for stock adjustments (waste, surplus, recounts).
+// See `docs/internal/ARCHITECTURE_AND_LOGIC.md` → section 1.4 (InventoryAdjustment).
+//
+// Target shape (spec): id, date, ingredientId, quantityDelta, reason.
+//
+// Intentional v1.x deviations from the target spec:
+// - `reason` is optional (spec lists it as required) to support bulk recounts
+//   where a reason is attached at the session level, not per line.
+// - `source` (manual / bulkCount / system) tracks how the adjustment was made.
+// - `bulkSessionId` groups adjustments from a single inventory-audit session (v1.1.2).
+// - `userId` records who performed the adjustment.
+
 enum InventoryAdjustmentSource: String, CaseIterable, Codable {
     case manual = "manual"
     case bulkCount = "bulkCount"

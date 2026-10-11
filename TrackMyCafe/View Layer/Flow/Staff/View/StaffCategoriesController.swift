@@ -67,7 +67,7 @@ class StaffCategoriesController: UITableViewController {
     
     func setConstraints() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        //view.addSubview(tableView)
+        // view.addSubview(tableView)
 
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
@@ -78,4 +78,3 @@ class StaffCategoriesController: UITableViewController {
 
     }
 }
-

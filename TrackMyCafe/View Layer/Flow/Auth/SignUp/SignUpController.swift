@@ -120,14 +120,14 @@ class SignUpController: UIViewController {
             alertVC.addAction(
                 UIAlertAction(
                     title: R.string.global.cancel(), style: .destructive,
-                    handler: { (action) in
+                    handler: { (_) in
                         cancel()
                     }))
 
             alertVC.addAction(
                 UIAlertAction(
                     title: R.string.global.retry(), style: .destructive,
-                    handler: { handler in
+                    handler: { _ in
                         retry()
                     }))
 

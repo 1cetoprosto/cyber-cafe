@@ -246,7 +246,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
 
     // MARK: - Helpers
     func fetchTypes() {
-        DomainDatabaseService.shared.fetchTypes { [weak self] types in
+        Task { [weak self] in
+            let types = await DomainDatabaseService.shared.fetchTypes()
             self?.types = types
             if let index = types.firstIndex(where: { $0.name == self?.order.type }) {
                 self?.selectedRow = index
@@ -255,12 +256,12 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     }
 
     func verifyRequiredData(completion: @escaping (Bool) -> Void) {
-        DomainDatabaseService.shared.fetchTypes { [weak self] types in
+        Task { [weak self] in
             guard let self = self else { return }
+            let types = await DomainDatabaseService.shared.fetchTypes()
             self.types = types
-            DomainDatabaseService.shared.fetchProductsPrice { productPrices in
-                completion(!types.isEmpty && !productPrices.isEmpty)
-            }
+            let productPrices = await DomainDatabaseService.shared.fetchProductsPrice()
+            completion(!types.isEmpty && !productPrices.isEmpty)
         }
     }
 

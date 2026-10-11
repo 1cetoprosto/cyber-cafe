@@ -101,7 +101,7 @@ class RequestManager: NSObject {
                 _ = await IAPManager.shared.refreshProStatusUsingStoreKit2()
             }
         } else {
-            //db.removeAllObservers()
+            // db.removeAllObservers()
         }
     }
     
@@ -274,8 +274,7 @@ class RequestManager: NSObject {
                 // Checking for subscription expiration
                 if let subscription = self.subscription,
                    let nextPaymentDate = subscription.nextPaymentDate,
-                   nextPaymentDate < Date.subCheckDate()
-                {
+                   nextPaymentDate < Date.subCheckDate() {
                     let controller = SubscriptionController.makeExpired()
                     UIViewController.topMostViewController()?.present(controller, animated: true)
                 }
@@ -296,7 +295,7 @@ class RequestManager: NSObject {
             return
         }
         
-        mainRef.collection(Refs.subscription.rawValue).getDocuments { (snapshot, error) in
+        mainRef.collection(Refs.subscription.rawValue).getDocuments { (snapshot, _) in
             guard let snapshot = snapshot, let document = snapshot.documents.first else {
                 completion(Subscription())
                 return
@@ -309,11 +308,11 @@ class RequestManager: NSObject {
         _ originTransactionId: String, completion: @escaping (SubscriptionPurchaseLinkStatus?) -> Void
     ) {
         let connectedRef = Firestore.firestore().collection(FirebaseCollections.info).document(FirebaseFields.connected)
-        connectedRef.addSnapshotListener { snapshot, error in
+        connectedRef.addSnapshotListener { snapshot, _ in
             if let snapshot = snapshot, snapshot.exists, snapshot.data()?[FirebaseFields.connected] as? Bool ?? false {
                 let subscriptionsRef = Firestore.firestore().collection(FirebaseCollections.subscriptions)
                 subscriptionsRef.whereField("iosOriginTransactionId", isEqualTo: originTransactionId)
-                    .getDocuments { (snapshot, error) in
+                    .getDocuments { (snapshot, _) in
                         if let snapshot = snapshot, let data = snapshot.documents.first {
                             let labKey = data.documentID
                             completion(labKey == UserSession.current.dataRef ? .linkedCurrent : .linkedAnother)

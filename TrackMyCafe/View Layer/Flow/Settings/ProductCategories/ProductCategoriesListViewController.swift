@@ -41,9 +41,12 @@ final class ProductCategoriesListViewController: UIViewController, Loggable {
     }
 
     private func loadData() {
-        DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
-            self?.categories = categories
-            self?.tableView.reloadData()
+        Task { [weak self] in
+            let categories = await DomainDatabaseService.shared.fetchProductCategories()
+            await MainActor.run {
+                self?.categories = categories
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -107,7 +110,9 @@ extension ProductCategoriesListViewController: UITableViewDataSource, UITableVie
             title: R.string.global.delete()
         ) { [weak self] _, _, _ in
             guard let self = self else { return }
-            DomainDatabaseService.shared.deleteProductCategory(model: model) { success in
+            Task { [weak self] in
+                guard let self else { return }
+                let success = await DomainDatabaseService.shared.deleteProductCategory(model: model)
                 if success {
                     self.logger.notice("Product category \(model.id) deleted successfully")
                     Task {

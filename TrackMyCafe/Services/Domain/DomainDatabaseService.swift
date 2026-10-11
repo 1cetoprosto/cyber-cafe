@@ -6,9 +6,10 @@
 //
 
 import Foundation
-import RealmSwift
 import os.log
 
+// swiftlint:disable file_length
+// Domain seeding + CRUD helpers intentionally live in one file; split in a follow-up.
 class DomainDatabaseService: DomainDB {
 
     static let shared = DomainDatabaseService()
@@ -27,142 +28,111 @@ class DomainDatabaseService: DomainDB {
 
     // MARK: - Ingredient Operations
 
-    func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.ingredients, firModel: FIRIngredientModel.self
-        ) { result in
-            switch result {
-            case .success(let firModels):
-                let models = firModels.map { IngredientModel(firebaseModel: $0.1) }
-                completion(models)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching ingredients from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchIngredients() async -> [IngredientModel] {
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.ingredients, firModel: FIRIngredientModel.self)
+            return firModels.map { IngredientModel(firebaseModel: $0.1) }
+        } catch {
+            logger.error(
+                "Error fetching ingredients from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func saveIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void) {
+    func saveIngredient(model: IngredientModel) async -> Bool {
         let firModel = FIRIngredientModel(dataModel: model)
-        FirestoreDatabaseService.shared.update(
-            firModel: firModel, collection: FirebaseCollections.ingredients,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save ingredient to Firestore: \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: firModel, collection: FirebaseCollections.ingredients,
+                documentId: model.id)
+            return true
+        } catch {
+            logger.error(
+                "Failed to save ingredient to Firestore: \(error.localizedDescription)")
+            return false
         }
     }
 
-    func deleteIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.ingredients, documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                self.logger.error("Failed to delete ingredient from Firestore: \(error)")
-                completion(false)
-            }
+    func deleteIngredient(model: IngredientModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.ingredients, documentId: model.id)
+            return true
+        } catch {
+            logger.error("Failed to delete ingredient from Firestore: \(error)")
+            return false
         }
     }
 
     // MARK: - New Methods (Step 4 & Purchase)
 
-    func fetchIngredient(byId id: String, completion: @escaping (IngredientModel?) -> Void) {
-        FirestoreDatabaseService.shared.fetchObjectById(
-            ofType: FIRIngredientModel.self, collection: FirebaseCollections.ingredients, id: id
-        ) { result in
-            switch result {
-            case .success(let firModel):
-                completion(IngredientModel(firebaseModel: firModel))
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching ingredient from Firestore: \(error.localizedDescription)")
-                completion(nil)
-            }
+    func fetchIngredient(byId id: String) async -> IngredientModel? {
+        do {
+            let firModel = try await FirestoreDatabaseService.shared.fetchObjectById(
+                ofType: FIRIngredientModel.self, collection: FirebaseCollections.ingredients,
+                id: id)
+            return IngredientModel(firebaseModel: firModel)
+        } catch {
+            logger.error(
+                "Error fetching ingredient from Firestore: \(error.localizedDescription)")
+            return nil
         }
     }
 
     // Purchases
-    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.purchases, firModel: FIRPurchaseModel.self
-        ) { result in
-            switch result {
-            case .success(let firPurchases):
-                let models = firPurchases.map { PurchaseModel(firebaseModel: $0.1) }
-                completion(models)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching purchases from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchPurchases() async -> [PurchaseModel] {
+        do {
+            let firPurchases = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.purchases, firModel: FIRPurchaseModel.self)
+            return firPurchases.map { PurchaseModel(firebaseModel: $0.1) }
+        } catch {
+            logger.error(
+                "Error fetching purchases from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func savePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void) {
+    func savePurchase(model: PurchaseModel) async -> Bool {
         let firModel = FIRPurchaseModel(dataModel: model)
-        FirestoreDatabaseService.shared.update(
-            firModel: firModel, collection: FirebaseCollections.purchases,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Purchase saved to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save purchase to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: firModel, collection: FirebaseCollections.purchases,
+                documentId: model.id)
+            logger.info("Purchase saved to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to save purchase to Firestore with error: \(error.localizedDescription)")
+            return false
         }
     }
 
-    func deletePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.purchases,
-            documentId: model.id
-        ) { [weak self] result in
-            switch result {
-            case .success:
-                self?.logger.info("Purchase deleted from Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self?.logger.error(
-                    "Failed to delete purchase from Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func deletePurchase(model: PurchaseModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.purchases, documentId: model.id)
+            logger.info("Purchase deleted from Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete purchase from Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
     // Recipes
-    func fetchRecipe(
-        forProductId productId: String, completion: @escaping ([RecipeItemModel]) -> Void
-    ) {
-        FirestoreDatabaseService.shared.fetchObjectById(
-            ofType: FIRProductsPriceModel.self,
-            collection: FirebaseCollections.productsPrice,
-            id: productId
-        ) { result in
-            switch result {
-            case .success(let product):
-                let recipeItems = product.recipe.map { RecipeItemModel(firebaseModel: $0) }
-                completion(recipeItems)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching recipe from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchRecipe(forProductId productId: String) async -> [RecipeItemModel] {
+        do {
+            let product = try await FirestoreDatabaseService.shared.fetchObjectById(
+                ofType: FIRProductsPriceModel.self,
+                collection: FirebaseCollections.productsPrice,
+                id: productId)
+            return product.recipe.map { RecipeItemModel(firebaseModel: $0) }
+        } catch {
+            logger.error("Error fetching recipe from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
@@ -171,7 +141,7 @@ class DomainDatabaseService: DomainDB {
     func updateProduct(
         model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double,
         sum: Double
-    ) {
+    ) async {
         guard !model.id.isEmpty else {
             logger.warning(
                 "updateProduct called with empty documentId for product \(name), using saveProduct instead"
@@ -182,10 +152,9 @@ class DomainDatabaseService: DomainDB {
             product.quantity = quantity
             product.price = price
             product.sum = sum
-            saveProduct(order: product) { [weak self] id in
-                if id == nil {
-                    self?.logger.error("Fallback saveProduct failed for product \(name)")
-                }
+            let id = await saveProduct(order: product)
+            if id == nil {
+                logger.error("Fallback saveProduct failed for product \(name)")
             }
             return
         }
@@ -197,178 +166,128 @@ class DomainDatabaseService: DomainDB {
         updatedModel.price = price
         updatedModel.amount = sum
 
-        FirestoreDatabaseService.shared.update(
-            firModel: updatedModel, collection: FirebaseCollections.productOfOrders,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success():
-                self.logger.info("Order product updated successfully in Firestore database")
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to update order product in Firestore database: \(error.localizedDescription)"
-                )
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: updatedModel, collection: FirebaseCollections.productOfOrders,
+                documentId: model.id)
+            logger.info("Order product updated successfully in Firestore database")
+        } catch {
+            logger.error(
+                "Failed to update order product in Firestore database: \(error.localizedDescription)"
+            )
+        }
+    }
+
+    func fetchProduct(forDate date: Date) async -> [ProductOfOrderModel] {
+        do {
+            let firProducts = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self)
+            return firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+        } catch {
+            logger.error(
+                "Error fetching products from Firestore: \(error.localizedDescription)")
+            return []
+        }
+    }
+
+    func fetchProduct(forDate date: Date, withName name: String) async -> ProductOfOrderModel? {
+        let allProducts = await fetchProduct(forDate: date)
+        return allProducts.first { $0.date == date && $0.name == name }
+    }
+
+    func fetchProduct(withOrderId id: String) async -> [ProductOfOrderModel] {
+        guard !id.isEmpty else { return [] }
+
+        do {
+            let firProducts = try await FirestoreDatabaseService.shared.readWhere(
+                collection: FirebaseCollections.productOfOrders,
+                firModel: FIRProductModel.self,
+                equalTo: ["orderId": id])
+            let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+
+            guard let order = await fetchOrders(forId: id) else {
+                return products
             }
+
+            let repairedSnapshot = orderSnapshotRepairService.repair(
+                order: order, products: products)
+            await persistRepairedSnapshotIfNeeded(repairedSnapshot)
+            return repairedSnapshot.products
+        } catch {
+            logger.error(
+                "Error fetching products from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func fetchProduct(forDate date: Date, completion: @escaping ([ProductOfOrderModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self
-        ) { result in
-            switch result {
-            case .success(let firProducts):
-                let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-                completion(ordersProduct)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching products from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchOrderItems(withOrderId id: String) async -> [OrderItemModel] {
+        let products = await fetchProduct(withOrderId: id)
+        return products.map(\.orderItemSnapshot)
+    }
+
+    func fetchProductsOfOrders(from startDate: Date, to endDate: Date) async
+        -> [ProductOfOrderModel] {
+        do {
+            let firProducts = try await FirestoreDatabaseService.shared.readWhere(
+                collection: FirebaseCollections.productOfOrders,
+                firModel: FIRProductModel.self,
+                equalTo: [:],
+                orderedBy: "date",
+                startAt: startDate,
+                endAt: endDate)
+            return firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+        } catch {
+            logger.error(
+                "Error fetching products in date range from Firestore: \(error.localizedDescription)"
+            )
+            return []
         }
     }
 
-    func fetchProduct(
-        forDate date: Date, withName name: String,
-        completion: @escaping (ProductOfOrderModel?) -> Void
-    ) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self
-        ) { result in
-            switch result {
-            case .success(let firProducts):
-                let ordersProduct = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-                let filteredProduct = ordersProduct.first { $0.date == date && $0.name == name }
-                completion(filteredProduct)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching products from Firestore: \(error.localizedDescription)")
-                completion(nil)
-            }
-        }
-    }
-
-    func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void)
-    {
-        guard !id.isEmpty else {
-            completion([])
-            return
-        }
-
-        FirestoreDatabaseService.shared.readWhere(
-            collection: FirebaseCollections.productOfOrders,
-            firModel: FIRProductModel.self,
-            equalTo: ["orderId": id]
-        ) { result in
-            switch result {
-            case .success(let firProducts):
-                let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-                self.fetchOrders(forId: id) { order in
-                    guard let order else {
-                        completion(products)
-                        return
-                    }
-
-                    let repairedSnapshot = self.orderSnapshotRepairService.repair(
-                        order: order,
-                        products: products
-                    )
-                    self.persistRepairedSnapshotIfNeeded(repairedSnapshot)
-                    completion(repairedSnapshot.products)
-                }
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching products from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
-        }
-    }
-
-    func fetchOrderItems(withOrderId id: String, completion: @escaping ([OrderItemModel]) -> Void) {
-        fetchProduct(withOrderId: id) { products in
-            completion(products.map(\.orderItemSnapshot))
-        }
-    }
-
-    func fetchProductsOfOrders(
-        from startDate: Date, to endDate: Date,
-        completion: @escaping ([ProductOfOrderModel]) -> Void
-    ) {
-        FirestoreDatabaseService.shared.readWhere(
-            collection: FirebaseCollections.productOfOrders,
-            firModel: FIRProductModel.self,
-            equalTo: [:],
-            orderedBy: "date",
-            startAt: startDate,
-            endAt: endDate
-        ) { result in
-            switch result {
-            case .success(let firProducts):
-                let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-                completion(products)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching products in date range from Firestore: \(error.localizedDescription)"
-                )
-                completion([])
-            }
-        }
-    }
-
-    func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void) {
+    func saveProduct(order: ProductOfOrderModel) async -> String? {
         if order.id.isEmpty {
-            FirestoreDatabaseService.shared.create(
-                firModel: FIRProductModel(dataModel: order),
-                collection: FirebaseCollections.productOfOrders
-            ) { result in
-                switch result {
-                case .success(let id):
-                    self.logger.info(
-                        "Order product created in Firestore successfully with ID: \(id)")
-                    completion(id)
-                case .failure(let error):
-                    self.logger.error(
-                        "Failed to create order product in Firestore with error: \(error.localizedDescription)"
-                    )
-                    completion(nil)
-                }
+            do {
+                let id = try await FirestoreDatabaseService.shared.create(
+                    firModel: FIRProductModel(dataModel: order),
+                    collection: FirebaseCollections.productOfOrders)
+                logger.info(
+                    "Order product created in Firestore successfully with ID: \(id)")
+                return id
+            } catch {
+                logger.error(
+                    "Failed to create order product in Firestore with error: \(error.localizedDescription)"
+                )
+                return nil
             }
         } else {
-            FirestoreDatabaseService.shared.update(
-                firModel: FIRProductModel(dataModel: order),
-                collection: FirebaseCollections.productOfOrders,
-                documentId: order.id
-            ) { result in
-                switch result {
-                case .success:
-                    self.logger.info(
-                        "Order product updated in Firestore successfully with ID: \(order.id)")
-                    completion(order.id)
-                case .failure(let error):
-                    self.logger.error(
-                        "Failed to update order product in Firestore with error: \(error.localizedDescription)"
-                    )
-                    completion(nil)
-                }
+            do {
+                try await FirestoreDatabaseService.shared.update(
+                    firModel: FIRProductModel(dataModel: order),
+                    collection: FirebaseCollections.productOfOrders,
+                    documentId: order.id)
+                logger.info(
+                    "Order product updated in Firestore successfully with ID: \(order.id)")
+                return order.id
+            } catch {
+                logger.error(
+                    "Failed to update order product in Firestore with error: \(error.localizedDescription)"
+                )
+                return nil
             }
         }
     }
 
-    func deleteProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.productOfOrders, documentId: order.id
-        ) {
-            result in
-            switch result {
-            case .success:
-                self.logger.info("Order product deleted to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to delete order product to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func deleteProduct(order: ProductOfOrderModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.productOfOrders, documentId: order.id)
+            logger.info("Order product deleted to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete order product to Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
@@ -383,7 +302,7 @@ class DomainDatabaseService: DomainDB {
         cardAmount: Double,
         totalCost: Double,
         note: String?
-    ) {
+    ) async {
         let updatedOrder = OrderModel(
             id: model.id,
             date: date,
@@ -395,304 +314,253 @@ class DomainDatabaseService: DomainDB {
             inventoryTracking: model.inventoryTracking,
             note: note
         )
-        updateOrder(updatedOrder) { _ in }
+        _ = await updateOrder(updatedOrder)
     }
 
-    func updateOrder(_ order: OrderModel, completion: @escaping (Bool) -> Void) {
+    func updateOrder(_ order: OrderModel) async -> Bool {
         let updatedModel = FIROrderModel(dataModel: order)
-        FirestoreDatabaseService.shared.update(
-            firModel: updatedModel, collection: FirebaseCollections.orders, documentId: order.id
-        ) { result in
-            switch result {
-            case .success():
-                self.logger.info("Order updated successfully in Firestore database")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to update order in Firestore database: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: updatedModel, collection: FirebaseCollections.orders, documentId: order.id
+            )
+            logger.info("Order updated successfully in Firestore database")
+            return true
+        } catch {
+            logger.error(
+                "Failed to update order in Firestore database: \(error.localizedDescription)")
+            return false
         }
     }
 
-    func fetchOrders(completion: @escaping ([OrderModel]) -> Void) {
-        let group = DispatchGroup()
-        var fetchedOrders: [OrderModel] = []
-        var fetchedProducts: [ProductOfOrderModel] = []
-        var ordersError: Error?
-        var productsError: Error?
+    func fetchOrders() async -> [OrderModel] {
+        async let firOrders = getFirOrders()
+        async let firProducts = getFirOrderProducts()
 
-        group.enter()
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.orders,
-            firModel: FIROrderModel.self
-        ) { result in
-            defer { group.leave() }
-            switch result {
-            case .success(let firOrders):
-                fetchedOrders = firOrders.map { OrderModel(firebaseModel: $1) }
-            case .failure(let error):
-                ordersError = error
-            }
-        }
+        let (ordersResult, productsResult) = await (firOrders, firProducts)
 
-        group.enter()
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productOfOrders,
-            firModel: FIRProductModel.self
-        ) { result in
-            defer { group.leave() }
-            switch result {
-            case .success(let firProducts):
-                fetchedProducts = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
-            case .failure(let error):
-                productsError = error
-            }
-        }
-
-        group.notify(queue: .main) {
-            if let ordersError {
-                self.logger.error(
-                    "Error fetching orders from Firestore: \(ordersError.localizedDescription)")
-                completion([])
-                return
-            }
-
-            if let productsError {
-                self.logger.error(
-                    "Error fetching order items from Firestore: \(productsError.localizedDescription)"
-                )
+        do {
+            let firOrders = try ordersResult.get()
+            let fetchedOrders = firOrders.map { OrderModel(firebaseModel: $1) }
+            let fetchedProducts: [ProductOfOrderModel]
+            do {
+                fetchedProducts = try productsResult.get().map {
+                    ProductOfOrderModel(firebaseModel: $0.1)
+                }
+            } catch {
+                logger.error(
+                    "Error fetching order items from Firestore: \(error.localizedDescription)")
+                fetchedProducts = []
             }
 
             let productsByOrderId = Dictionary(grouping: fetchedProducts) { $0.orderId }
-            let repairedOrders = fetchedOrders.map { order in
-                let repairResult = self.orderSnapshotRepairService.repair(
+            var repairedOrders: [OrderModel] = []
+            repairedOrders.reserveCapacity(fetchedOrders.count)
+            for order in fetchedOrders {
+                let repairResult = orderSnapshotRepairService.repair(
                     order: order,
-                    products: productsByOrderId[order.id] ?? []
-                )
-                self.persistRepairedSnapshotIfNeeded(repairResult)
-                return repairResult.order
+                    products: productsByOrderId[order.id] ?? [])
+                await persistRepairedSnapshotIfNeeded(repairResult)
+                repairedOrders.append(repairResult.order)
             }
-            completion(repairedOrders)
+            return repairedOrders
+        } catch {
+            logger.error(
+                "Error fetching orders from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void)
-    {
-        fetchOrders { orders in
-            let calendar = Calendar.current
-            let groupedOrders = Dictionary(
-                grouping: orders,
-                by: { order -> Date in
-                    let dateComponents = calendar.dateComponents(
-                        [.year, .month, .day], from: order.date)
-                    return calendar.date(from: dateComponents)
-                        ?? calendar.startOfDay(for: order.date)
-                })
-            let sections = groupedOrders.map { (date: $0.key, items: $0.value) }
-                .sorted { $0.date > $1.date }
-            completion(sections)
+    private func getFirOrders() async -> Result<[(String, FIROrderModel)], Error> {
+        do {
+            let orders = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.orders, firModel: FIROrderModel.self)
+            return .success(orders)
+        } catch {
+            return .failure(error)
         }
     }
 
-    func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void) {
-        FirestoreDatabaseService.shared.fetchObjectById(
-            ofType: FIROrderModel.self,
-            collection: FirebaseCollections.orders,
-            id: id
-        ) { result in
-            switch result {
-            case .success(let firOrder):
-                completion(OrderModel(firebaseModel: firOrder))
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching order by id from Firestore: \(error.localizedDescription)")
-                completion(nil)
-            }
+    private func getFirOrderProducts() async -> Result<[(String, FIRProductModel)], Error> {
+        do {
+            let products = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self)
+            return .success(products)
+        } catch {
+            return .failure(error)
         }
     }
 
-    func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void) {
-        FirestoreDatabaseService.shared.create(
-            firModel: FIROrderModel(dataModel: order), collection: FirebaseCollections.orders
-        ) { result in
-            switch result {
-            case .success(let documentId):
-                self.logger.info("Order saved to Firestore successfully")
-                completion(documentId)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save order to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(nil)
-            }
+    func fetchSectionsOfOrders() async -> [(date: Date, items: [OrderModel])] {
+        let orders = await fetchOrders()
+        let calendar = Calendar.current
+        let groupedOrders = Dictionary(
+            grouping: orders,
+            by: { order -> Date in
+                let dateComponents = calendar.dateComponents(
+                    [.year, .month, .day], from: order.date)
+                return calendar.date(from: dateComponents)
+                    ?? calendar.startOfDay(for: order.date)
+            })
+        return groupedOrders.map { (date: $0.key, items: $0.value) }
+            .sorted { $0.date > $1.date }
+    }
+
+    func fetchOrders(forId id: String) async -> OrderModel? {
+        do {
+            let firOrder = try await FirestoreDatabaseService.shared.fetchObjectById(
+                ofType: FIROrderModel.self,
+                collection: FirebaseCollections.orders,
+                id: id)
+            return OrderModel(firebaseModel: firOrder)
+        } catch {
+            logger.error(
+                "Error fetching order by id from Firestore: \(error.localizedDescription)")
+            return nil
         }
     }
 
-    func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.orders, documentId: order.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Order deleted to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to delete order to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func saveOrder(order: OrderModel) async -> String? {
+        do {
+            let documentId = try await FirestoreDatabaseService.shared.create(
+                firModel: FIROrderModel(dataModel: order), collection: FirebaseCollections.orders)
+            logger.info("Order saved to Firestore successfully")
+            return documentId
+        } catch {
+            logger.error(
+                "Failed to save order to Firestore with error: \(error.localizedDescription)")
+            return nil
+        }
+    }
+
+    func deleteOrder(order: OrderModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.orders, documentId: order.id)
+            logger.info("Order deleted to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete order to Firestore with error: \(error.localizedDescription)")
+            return false
         }
     }
 
     func hasAnyOrderWithInventoryTracking() async -> Bool {
-        await withCheckedContinuation { continuation in
-            FirestoreDatabaseService.shared.read(
+        do {
+            let list = try await FirestoreDatabaseService.shared.read(
                 collection: FirebaseCollections.orders,
-                firModel: FIROrderModel.self
-            ) { result in
-                switch result {
-                case .success(let list):
-                    let hasAny = list.contains { ($0.1.inventoryTracking ?? false) == true }
-                    continuation.resume(returning: hasAny)
-                case .failure:
-                    continuation.resume(returning: false)
-                }
-            }
+                firModel: FIROrderModel.self)
+            return list.contains { ($0.1.inventoryTracking ?? false) == true }
+        } catch {
+            return false
         }
     }
 
     // MARK: - ProductsPrice Operations
 
-    func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double) {
+    func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double) async {
         var updatedModel = FIRProductsPriceModel(dataModel: model)
         updatedModel.name = name
         updatedModel.price = price
-        FirestoreDatabaseService.shared.update(
-            firModel: updatedModel, collection: FirebaseCollections.productsPrice,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success():
-                self.logger.info("Product price updated successfully in Firestore database")
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to update product price in Firestore database: \(error.localizedDescription)"
-                )
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: updatedModel, collection: FirebaseCollections.productsPrice,
+                documentId: model.id)
+            logger.info("Product price updated successfully in Firestore database")
+        } catch {
+            logger.error(
+                "Failed to update product price in Firestore database: \(error.localizedDescription)"
+            )
         }
     }
 
-    func fetchProductsPrice(completion: @escaping ([ProductsPriceModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productsPrice,
-            firModel: FIRProductsPriceModel.self
-        ) { result in
-            switch result {
-            case .success(let firProducts):
-                let products = firProducts.map { ProductsPriceModel(firebaseModel: $1) }
-                completion(products)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching products from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchProductsPrice() async -> [ProductsPriceModel] {
+        do {
+            let firProducts = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.productsPrice,
+                firModel: FIRProductsPriceModel.self)
+            return firProducts.map { ProductsPriceModel(firebaseModel: $1) }
+        } catch {
+            logger.error(
+                "Error fetching products from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func saveProductsPrice(productPrice: ProductsPriceModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.update(
-            firModel: FIRProductsPriceModel(dataModel: productPrice),
-            collection: FirebaseCollections.productsPrice,
-            documentId: productPrice.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Product price saved to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save product price to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func saveProductsPrice(productPrice: ProductsPriceModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: FIRProductsPriceModel(dataModel: productPrice),
+                collection: FirebaseCollections.productsPrice,
+                documentId: productPrice.id)
+            logger.info("Product price saved to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to save product price to Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
-    func deleteProductsPrice(model: ProductsPriceModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.productsPrice, documentId: model.id
-        ) {
-            result in
-            switch result {
-            case .success:
-                self.logger.info("productsPrice deleted to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to productsPrice order to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func deleteProductsPrice(model: ProductsPriceModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.productsPrice, documentId: model.id)
+            logger.info("productsPrice deleted to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to productsPrice order to Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
     // MARK: - Product Categories Operations
 
-    func fetchProductCategories(completion: @escaping ([ProductCategoryModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.productCategories,
-            firModel: FIRProductCategoryModel.self
-        ) { result in
-            switch result {
-            case .success(let firCategories):
-                let categories = firCategories.map { ProductCategoryModel(firebaseModel: $1) }
-                completion(categories.sorted { $0.sortOrder < $1.sortOrder })
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching product categories from Firestore: \(error.localizedDescription)"
-                )
-                completion([])
-            }
+    func fetchProductCategories() async -> [ProductCategoryModel] {
+        do {
+            let firCategories = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.productCategories,
+                firModel: FIRProductCategoryModel.self)
+            let categories = firCategories.map { ProductCategoryModel(firebaseModel: $1) }
+            return categories.sorted { $0.sortOrder < $1.sortOrder }
+        } catch {
+            logger.error(
+                "Error fetching product categories from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func saveProductCategory(category: ProductCategoryModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.update(
-            firModel: FIRProductCategoryModel(dataModel: category),
-            collection: FirebaseCollections.productCategories,
-            documentId: category.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Product category saved to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save product category to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func saveProductCategory(model: ProductCategoryModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: FIRProductCategoryModel(dataModel: model),
+                collection: FirebaseCollections.productCategories,
+                documentId: model.id)
+            logger.info("Product category saved to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to save product category to Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
-    func deleteProductCategory(model: ProductCategoryModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.productCategories,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Product category deleted in Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to delete product category in Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func deleteProductCategory(model: ProductCategoryModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.productCategories,
+                documentId: model.id)
+            logger.info("Product category deleted in Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete product category in Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
@@ -700,146 +568,117 @@ class DomainDatabaseService: DomainDB {
 
     // MARK: - Type Operations
 
-    func updateType(model: TypeModel, type: String) {
+    func updateType(model: TypeModel, type: String) async {
         var updatedModel = FIRTypeModel(dataModel: model)
         updatedModel.name = type
-        FirestoreDatabaseService.shared.update(
-            firModel: updatedModel, collection: FirebaseCollections.types,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success():
-                self.logger.info("Type updated successfully in Firestore database")
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to update type in Firestore database: \(error.localizedDescription)"
-                )
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: updatedModel, collection: FirebaseCollections.types,
+                documentId: model.id)
+            logger.info("Type updated successfully in Firestore database")
+        } catch {
+            logger.error(
+                "Failed to update type in Firestore database: \(error.localizedDescription)")
         }
     }
 
-    func fetchTypes(completion: @escaping ([TypeModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.types, firModel: FIRTypeModel.self
-        ) {
-            result in
-            switch result {
-            case .success(let firTypes):
-                let types = firTypes.map { TypeModel(firebaseModel: $1) }
-                completion(types)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching types from Firestore: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchTypes() async -> [TypeModel] {
+        do {
+            let firTypes = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.types, firModel: FIRTypeModel.self)
+            return firTypes.map { TypeModel(firebaseModel: $1) }
+        } catch {
+            logger.error(
+                "Error fetching types from Firestore: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func saveType(model: TypeModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.create(
-            firModel: FIRTypeModel(dataModel: model), collection: FirebaseCollections.types
-        ) { result in
-            switch result {
-            case .success(_):
-                self.logger.info("Types saved to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save Types to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func saveType(model: TypeModel) async -> Bool {
+        do {
+            _ = try await FirestoreDatabaseService.shared.create(
+                firModel: FIRTypeModel(dataModel: model), collection: FirebaseCollections.types)
+            logger.info("Types saved to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to save Types to Firestore with error: \(error.localizedDescription)")
+            return false
         }
     }
 
-    func setDefaultType(model: TypeModel, isDefault: Bool) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.types, firModel: FIRTypeModel.self
-        ) { result in
-            switch result {
-            case .success(let firTypes):
-                let types = firTypes.map { TypeModel(firebaseModel: $1) }
-                for t in types {
-                    var updated = FIRTypeModel(dataModel: t)
-                    updated.isDefault = (t.id == model.id) ? isDefault : false
-                    FirestoreDatabaseService.shared.update(
-                        firModel: updated, collection: FirebaseCollections.types,
-                        documentId: t.id
-                    ) { _ in }
-                }
-                self.logger.info("Default type updated in Firestore")
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to update default type in Firestore: \(error.localizedDescription)")
+    func setDefaultType(model: TypeModel, isDefault: Bool) async {
+        do {
+            let firTypes = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.types, firModel: FIRTypeModel.self)
+            let types = firTypes.map { TypeModel(firebaseModel: $1) }
+            for type in types {
+                var updated = FIRTypeModel(dataModel: type)
+                updated.isDefault = (type.id == model.id) ? isDefault : false
+                _ = try? await FirestoreDatabaseService.shared.update(
+                    firModel: updated, collection: FirebaseCollections.types,
+                    documentId: type.id)
             }
+            logger.info("Default type updated in Firestore")
+        } catch {
+            logger.error(
+                "Failed to update default type in Firestore: \(error.localizedDescription)")
         }
     }
 
-    func deleteType(model: TypeModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.types, documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Types deleted to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to delete types order to Firestore with error: \(error.localizedDescription)"
-                )
-                completion(false)
-            }
+    func deleteType(model: TypeModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.types, documentId: model.id)
+            logger.info("Types deleted to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete types order to Firestore with error: \(error.localizedDescription)"
+            )
+            return false
         }
     }
 
     // MARK: - Inventory Adjustment Operations
 
-    func saveInventoryAdjustment(
-        model: InventoryAdjustmentModel, completion: @escaping (String?) -> Void
-    ) {
+    func saveInventoryAdjustment(model: InventoryAdjustmentModel) async -> String? {
         let firModel = FIRInventoryAdjustmentModel(dataModel: model)
-        FirestoreDatabaseService.shared.create(
-            firModel: firModel, collection: FirebaseCollections.inventoryAdjustments
-        ) { result in
-            switch result {
-            case .success(let id):
-                self.logger.info("Inventory adjustment saved to Firestore successfully")
-                completion(id)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save inventory adjustment: \(error.localizedDescription)")
-                completion(nil)
-            }
+        do {
+            let id = try await FirestoreDatabaseService.shared.create(
+                firModel: firModel, collection: FirebaseCollections.inventoryAdjustments)
+            logger.info("Inventory adjustment saved to Firestore successfully")
+            return id
+        } catch {
+            logger.error(
+                "Failed to save inventory adjustment: \(error.localizedDescription)")
+            return nil
         }
     }
 
-    func fetchInventoryAdjustments(completion: @escaping ([InventoryAdjustmentModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.inventoryAdjustments,
-            firModel: FIRInventoryAdjustmentModel.self
-        ) { result in
-            switch result {
-            case .success(let firModels):
-                let models = firModels.map {
-                    InventoryAdjustmentModel(
-                        id: $0.1.id ?? "",
-                        date: $0.1.date,
-                        ingredientId: $0.1.ingredientId,
-                        quantityDelta: $0.1.quantityDelta,
-                        reason: $0.1.reason,
-                        source: InventoryAdjustmentSource(
-                            rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
-                        ) ?? .manual,
-                        bulkSessionId: $0.1.bulkSessionId,
-                        userId: $0.1.userId
-                    )
-                }
-                completion(models)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching inventory adjustments: \(error.localizedDescription)")
-                completion([])
+    func fetchInventoryAdjustments() async -> [InventoryAdjustmentModel] {
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.inventoryAdjustments,
+                firModel: FIRInventoryAdjustmentModel.self)
+            return firModels.map {
+                InventoryAdjustmentModel(
+                    id: $0.1.id ?? "",
+                    date: $0.1.date,
+                    ingredientId: $0.1.ingredientId,
+                    quantityDelta: $0.1.quantityDelta,
+                    reason: $0.1.reason,
+                    source: InventoryAdjustmentSource(
+                        rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
+                    ) ?? .manual,
+                    bulkSessionId: $0.1.bulkSessionId,
+                    userId: $0.1.userId
+                )
             }
+        } catch {
+            logger.error(
+                "Error fetching inventory adjustments: \(error.localizedDescription)")
+            return []
         }
     }
 
@@ -847,9 +686,8 @@ class DomainDatabaseService: DomainDB {
         from startDate: Date? = nil,
         to endDate: Date? = nil,
         ingredientId: String? = nil,
-        bulkSessionId: String? = nil,
-        completion: @escaping ([InventoryAdjustmentModel]) -> Void
-    ) {
+        bulkSessionId: String? = nil
+    ) async -> [InventoryAdjustmentModel] {
         var filters: [String: Any] = [:]
         if let ingredientId { filters["ingredientId"] = ingredientId }
         if let bulkSessionId { filters["bulkSessionId"] = bulkSessionId }
@@ -857,218 +695,176 @@ class DomainDatabaseService: DomainDB {
         let hasDateRange = startDate != nil || endDate != nil
         let orderedBy: String? = hasDateRange ? "date" : nil
 
-        FirestoreDatabaseService.shared.readWhere(
-            collection: FirebaseCollections.inventoryAdjustments,
-            firModel: FIRInventoryAdjustmentModel.self,
-            equalTo: filters,
-            orderedBy: orderedBy,
-            startAt: startDate,
-            endAt: endDate
-        ) { result in
-            switch result {
-            case .success(let firModels):
-                let models = firModels.map {
-                    InventoryAdjustmentModel(
-                        id: $0.1.id ?? "",
-                        date: $0.1.date,
-                        ingredientId: $0.1.ingredientId,
-                        quantityDelta: $0.1.quantityDelta,
-                        reason: $0.1.reason,
-                        source: InventoryAdjustmentSource(
-                            rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
-                        ) ?? .manual,
-                        bulkSessionId: $0.1.bulkSessionId,
-                        userId: $0.1.userId
-                    )
-                }
-                .sorted { $0.date > $1.date }
-                completion(models)
-            case .failure(let error):
-                self.logger.error(
-                    "Error fetching filtered inventory adjustments: \(error.localizedDescription)")
-                completion([])
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.readWhere(
+                collection: FirebaseCollections.inventoryAdjustments,
+                firModel: FIRInventoryAdjustmentModel.self,
+                equalTo: filters,
+                orderedBy: orderedBy,
+                startAt: startDate,
+                endAt: endDate)
+            return firModels.map {
+                InventoryAdjustmentModel(
+                    id: $0.1.id ?? "",
+                    date: $0.1.date,
+                    ingredientId: $0.1.ingredientId,
+                    quantityDelta: $0.1.quantityDelta,
+                    reason: $0.1.reason,
+                    source: InventoryAdjustmentSource(
+                        rawValue: $0.1.source ?? InventoryAdjustmentSource.manual.rawValue
+                    ) ?? .manual,
+                    bulkSessionId: $0.1.bulkSessionId,
+                    userId: $0.1.userId
+                )
             }
+            .sorted { $0.date > $1.date }
+        } catch {
+            logger.error(
+                "Error fetching filtered inventory adjustments: \(error.localizedDescription)")
+            return []
         }
     }
 
     // MARK: - Opex Operations
 
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void) {
+    func saveOpexExpense(model: OpexExpenseModel) async -> String? {
         let firModel = FIROpexExpenseModel(dataModel: model)
-        FirestoreDatabaseService.shared.create(
-            firModel: firModel, collection: FirebaseCollections.opexExpenses
-        ) { result in
-            switch result {
-            case .success(let id):
-                self.logger.info("Opex expense saved to Firestore successfully with ID: \(id)")
-                completion(id)
-            case .failure(let error):
-                self.logger.error("Failed to save opex expense: \(error.localizedDescription)")
-                completion(nil)
-            }
+        do {
+            let id = try await FirestoreDatabaseService.shared.create(
+                firModel: firModel, collection: FirebaseCollections.opexExpenses)
+            logger.info("Opex expense saved to Firestore successfully with ID: \(id)")
+            return id
+        } catch {
+            logger.error("Failed to save opex expense: \(error.localizedDescription)")
+            return nil
         }
     }
 
-    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.opexExpenses, firModel: FIROpexExpenseModel.self
-        ) { result in
-            switch result {
-            case .success(let firModels):
-                let models = firModels.map {
-                    OpexExpenseModel(
-                        id: $0.1.id ?? "", date: $0.1.date, categoryId: $0.1.categoryId,
-                        amount: $0.1.amount, paymentAccount: $0.1.paymentAccount, note: $0.1.note)
-                }
-                completion(models)
-            case .failure(let error):
-                self.logger.error("Error fetching opex expenses: \(error.localizedDescription)")
-                completion([])
+    func fetchOpexExpenses() async -> [OpexExpenseModel] {
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.opexExpenses, firModel: FIROpexExpenseModel.self)
+            return firModels.map {
+                OpexExpenseModel(
+                    id: $0.1.id ?? "", date: $0.1.date, categoryId: $0.1.categoryId,
+                    amount: $0.1.amount, paymentAccount: $0.1.paymentAccount, note: $0.1.note)
             }
+        } catch {
+            logger.error("Error fetching opex expenses: \(error.localizedDescription)")
+            return []
         }
     }
 
-    func updateOpexExpense(model: OpexExpenseModel) {
-        updateOpexExpense(model: model) { _ in }
-    }
-
-    func updateOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
+    func updateOpexExpense(model: OpexExpenseModel) async {
         let firModel = FIROpexExpenseModel(dataModel: model)
-        FirestoreDatabaseService.shared.update(
-            firModel: firModel, collection: FirebaseCollections.opexExpenses,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success():
-                self.logger.info("Opex expense updated successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error("Failed to update opex expense: \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: firModel, collection: FirebaseCollections.opexExpenses,
+                documentId: model.id)
+            logger.info("Opex expense updated successfully")
+        } catch {
+            logger.error("Failed to update opex expense: \(error.localizedDescription)")
         }
     }
 
-    func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(
-            collection: FirebaseCollections.opexExpenses, documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Opex expense deleted successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error("Failed to delete opex expense: \(error.localizedDescription)")
-                completion(false)
-            }
+    func deleteOpexExpense(model: OpexExpenseModel) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: FirebaseCollections.opexExpenses, documentId: model.id)
+            logger.info("Opex expense deleted successfully")
+            return true
+        } catch {
+            logger.error("Failed to delete opex expense: \(error.localizedDescription)")
+            return false
         }
     }
 
-    func fetchSectionsOfOpexExpenses(
-        completion: @escaping ([(date: Date, items: [OpexExpenseModel])]) -> Void
-    ) {
-        fetchOpexExpenses { expenses in
-            let calendar = Calendar.current
-            let grouped = Dictionary(grouping: expenses) { expense in
-                let components = calendar.dateComponents([.year, .month, .day], from: expense.date)
-                return calendar.date(from: components)!
-            }
-            let sections = grouped.map { (date: $0.key, items: $0.value) }
-                .sorted { $0.date > $1.date }
-            completion(sections)
+    func fetchSectionsOfOpexExpenses() async -> [(date: Date, items: [OpexExpenseModel])] {
+        let expenses = await fetchOpexExpenses()
+        let calendar = Calendar.current
+        let grouped = Dictionary(grouping: expenses) { expense in
+            let components = calendar.dateComponents([.year, .month, .day], from: expense.date)
+            return calendar.date(from: components) ?? calendar.startOfDay(for: expense.date)
         }
+        return grouped.map { (date: $0.key, items: $0.value) }
+            .sorted { $0.date > $1.date }
     }
 
     // MARK: - Journal Entries
 
-    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void) {
+    func saveJournalEntry(model: JournalEntryModel) async -> String? {
         let firModel = FIRJournalEntryModel(dataModel: model)
-        FirestoreDatabaseService.shared.update(
-            firModel: firModel,
-            collection: FirebaseCollections.journalEntries,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Journal entry saved to Firestore successfully")
-                completion(model.id)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save journal entry to Firestore: \(error.localizedDescription)")
-                completion(nil)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: firModel,
+                collection: FirebaseCollections.journalEntries,
+                documentId: model.id)
+            logger.info("Journal entry saved to Firestore successfully")
+            return model.id
+        } catch {
+            logger.error(
+                "Failed to save journal entry to Firestore: \(error.localizedDescription)")
+            return nil
         }
     }
 
-    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void) {
-        FirestoreDatabaseService.shared.read(
-            collection: FirebaseCollections.journalEntries,
-            firModel: FIRJournalEntryModel.self
-        ) { result in
-            switch result {
-            case .success(let firModels):
-                let models =
-                    firModels
-                    .map { JournalEntryModel(firebaseModel: $0.1) }
-                    .sorted { $0.date < $1.date }
-                completion(models)
-            case .failure(let error):
-                self.logger.error("Error fetching journal entries: \(error.localizedDescription)")
-                completion([])
-            }
+    func fetchJournalEntries() async -> [JournalEntryModel] {
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.read(
+                collection: FirebaseCollections.journalEntries,
+                firModel: FIRJournalEntryModel.self)
+            return
+                firModels
+                .map { JournalEntryModel(firebaseModel: $0.1) }
+                .sorted { $0.date < $1.date }
+        } catch {
+            logger.error("Error fetching journal entries: \(error.localizedDescription)")
+            return []
         }
     }
 
     // MARK: - Daily Balances
 
-    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void) {
+    func saveDailyBalance(model: DailyBalanceModel) async -> Bool {
         let firModel = FIRDailyBalanceModel(dataModel: model)
-        FirestoreDatabaseService.shared.update(
-            firModel: firModel,
-            collection: FirebaseCollections.dailyBalances,
-            documentId: model.id
-        ) { result in
-            switch result {
-            case .success:
-                self.logger.info("Daily balance saved to Firestore successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to save daily balance to Firestore: \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: firModel,
+                collection: FirebaseCollections.dailyBalances,
+                documentId: model.id)
+            logger.info("Daily balance saved to Firestore successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to save daily balance to Firestore: \(error.localizedDescription)")
+            return false
         }
     }
 
     func fetchDailyBalance(
         forAccount account: PaymentAccount,
-        date: Date,
-        completion: @escaping (DailyBalanceModel?) -> Void
-    ) {
+        date: Date
+    ) async -> DailyBalanceModel? {
         let normalizedDate = normalizedDay(date)
         let documentId = DailyBalanceModel.makeDocumentId(for: account, date: normalizedDate)
 
-        FirestoreDatabaseService.shared.fetchObjectById(
-            ofType: FIRDailyBalanceModel.self,
-            collection: FirebaseCollections.dailyBalances,
-            id: documentId
-        ) { result in
-            switch result {
-            case .success(let firModel):
-                completion(DailyBalanceModel(firebaseModel: firModel))
-            case .failure(let error):
-                self.logger.error("Error fetching daily balance: \(error.localizedDescription)")
-                completion(nil)
-            }
+        do {
+            let firModel = try await FirestoreDatabaseService.shared.fetchObjectById(
+                ofType: FIRDailyBalanceModel.self,
+                collection: FirebaseCollections.dailyBalances,
+                id: documentId)
+            return DailyBalanceModel(firebaseModel: firModel)
+        } catch {
+            logger.error("Error fetching daily balance: \(error.localizedDescription)")
+            return nil
         }
     }
 
     func fetchDailyBalances(
         forAccount account: PaymentAccount,
         from startDate: Date,
-        to endDate: Date,
-        completion: @escaping ([DailyBalanceModel]) -> Void
-    ) {
+        to endDate: Date
+    ) async -> [DailyBalanceModel] {
         let normalizedStartDate = normalizedDay(startDate)
         let normalizedEndDate = normalizedDay(endDate)
         let lowerBound = min(normalizedStartDate, normalizedEndDate)
@@ -1077,62 +873,53 @@ class DomainDatabaseService: DomainDB {
         let startId = DailyBalanceModel.makeDocumentId(for: account, date: lowerBound)
         let endId = DailyBalanceModel.makeDocumentId(for: account, date: upperBound)
 
-        FirestoreDatabaseService.shared.readDocumentIdRange(
-            collection: FirebaseCollections.dailyBalances,
-            firModel: FIRDailyBalanceModel.self,
-            startId: startId,
-            endId: endId
-        ) { [weak self] result in
-            switch result {
-            case .success(let firModels):
-                let balances =
-                    firModels
-                    .map { DailyBalanceModel(firebaseModel: $0.1) }
-                    .filter { balance in
-                        balance.date >= lowerBound && balance.date <= upperBound
-                    }
-                    .sorted { lhs, rhs in
-                        lhs.date < rhs.date
-                    }
-                completion(balances)
-            case .failure:
-                self?.logger.error(
-                    "Error fetching daily balances for account \(account.rawValue), range \(lowerBound)–\(upperBound)"
-                )
-                completion([])
-            }
+        do {
+            let firModels = try await FirestoreDatabaseService.shared.readDocumentIdRange(
+                collection: FirebaseCollections.dailyBalances,
+                firModel: FIRDailyBalanceModel.self,
+                startId: startId,
+                endId: endId)
+            return
+                firModels
+                .map { DailyBalanceModel(firebaseModel: $0.1) }
+                .filter { balance in
+                    balance.date >= lowerBound && balance.date <= upperBound
+                }
+                .sorted { lhs, rhs in
+                    lhs.date < rhs.date
+                }
+        } catch {
+            logger.error(
+                "Error fetching daily balances for account \(account.rawValue), range \(lowerBound)–\(upperBound)"
+            )
+            return []
         }
     }
 
     // MARK: - delete Operations
 
-    func deleteActiveDatabaseData(completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.deleteAllData { success in
-            if success {
-                self.logger.log("All data deleted successfully from Firestore database")
-                // Also clear demo data manifest if it exists
-                DemoDataManager.shared.clearManifest()
-                completion(true)
-            } else {
-                self.logger.log("Failed to delete data from Firestore database")
-                completion(false)
-            }
+    func deleteActiveDatabaseData() async -> Bool {
+        let success = await FirestoreDatabaseService.shared.deleteAllData()
+        if success {
+            logger.log("All data deleted successfully from Firestore database")
+            DemoDataManager.shared.clearManifest()
+        } else {
+            logger.log("Failed to delete data from Firestore database")
         }
+        return success
     }
 
     // MARK: - Generic Delete Operation
-    func delete(collection: String, documentId: String, completion: @escaping (Bool) -> Void) {
-        FirestoreDatabaseService.shared.delete(collection: collection, documentId: documentId) {
-            result in
-            switch result {
-            case .success:
-                self.logger.info("Document \(documentId) deleted from \(collection) successfully")
-                completion(true)
-            case .failure(let error):
-                self.logger.error(
-                    "Failed to delete document \(documentId) from \(collection): \(error)")
-                completion(false)
-            }
+    func delete(collection: String, documentId: String) async -> Bool {
+        do {
+            try await FirestoreDatabaseService.shared.delete(
+                collection: collection, documentId: documentId)
+            logger.info("Document \(documentId) deleted from \(collection) successfully")
+            return true
+        } catch {
+            logger.error(
+                "Failed to delete document \(documentId) from \(collection): \(error)")
+            return false
         }
     }
 
@@ -1140,14 +927,10 @@ class DomainDatabaseService: DomainDB {
 
     var orderIdMap: [String: String] = [:]
 
-    // Removed Realm migration methods as we are fully Firestore based now
-    // func transferDataFromFIRToRealm(completion: @escaping () -> Void) { ... }
-    // func transferDataFromRealmToFIR(completion: @escaping () -> Void) { ... }
-
     @MainActor
     func seedTestData(forDays days: Int) async {
         await cleanDatabase()
-        var manifest: DemoDataManifest? = nil
+        var manifest: DemoDataManifest?
         await seedDemoData(days: days, manifest: &manifest)
     }
 
@@ -1156,7 +939,7 @@ class DomainDatabaseService: DomainDB {
         // Clear old manifest if exists before starting new seeding
         DemoDataManager.shared.clearManifest()
 
-        var manifest: DemoDataManifest? = nil  // We don't use this local manifest anymore for persistence, but keep signature
+        var manifest: DemoDataManifest?  // We don't use this local manifest anymore for persistence, but keep signature
         await seedDemoData(days: 14, manifest: &manifest)
     }
 
@@ -1188,33 +971,31 @@ class DomainDatabaseService: DomainDB {
 }
 
 extension DomainDatabaseService {
-    fileprivate func persistRepairedSnapshotIfNeeded(_ snapshot: OrderSnapshotRepairResult) {
+    fileprivate func persistRepairedSnapshotIfNeeded(_ snapshot: OrderSnapshotRepairResult) async {
         if snapshot.didRepairOrder {
-            updateOrder(snapshot.order) { [weak self] success in
-                if !success {
-                    self?.logger.error(
-                        "Failed to persist repaired order snapshot: \(snapshot.order.id)")
-                }
+            let success = await updateOrder(snapshot.order)
+            if !success {
+                logger.error(
+                    "Failed to persist repaired order snapshot: \(snapshot.order.id)")
             }
         }
 
         if snapshot.didRepairProducts {
-            snapshot.products.forEach { product in
-                self.persistRepairedProduct(product)
+            for product in snapshot.products {
+                await persistRepairedProduct(product)
             }
         }
     }
 
-    fileprivate func persistRepairedProduct(_ product: ProductOfOrderModel) {
-        FirestoreDatabaseService.shared.update(
-            firModel: FIRProductModel(dataModel: product),
-            collection: FirebaseCollections.productOfOrders,
-            documentId: product.id
-        ) { [weak self] result in
-            if case .failure(let error) = result {
-                self?.logger.error(
-                    "Failed to persist repaired order item snapshot: \(error.localizedDescription)")
-            }
+    fileprivate func persistRepairedProduct(_ product: ProductOfOrderModel) async {
+        do {
+            try await FirestoreDatabaseService.shared.update(
+                firModel: FIRProductModel(dataModel: product),
+                collection: FirebaseCollections.productOfOrders,
+                documentId: product.id)
+        } catch {
+            logger.error(
+                "Failed to persist repaired order item snapshot: \(error.localizedDescription)")
         }
     }
 }
@@ -1222,11 +1003,7 @@ extension DomainDatabaseService {
 extension DomainDatabaseService {
 
     fileprivate func cleanDatabase() async {
-        await withCheckedContinuation { continuation in
-            self.deleteActiveDatabaseData { _ in
-                continuation.resume()
-            }
-        }
+        _ = await deleteActiveDatabaseData()
     }
 
     fileprivate func seedTypes(manifest: inout DemoDataManifest?) async -> [TypeModel] {
@@ -1239,21 +1016,16 @@ extension DomainDatabaseService {
             TypeModel(id: UUID().uuidString, name: typeDelivery, isDefault: false),
         ]
 
-        for t in types {
-            DemoDataManager.shared.addTypeId(t.id)
-            await withCheckedContinuation { continuation in
-                self.saveType(model: t) { success in
-                    if !success { self.logger.error("Failed to seed type: \(t.name)") }
-                    continuation.resume()
-                }
-            }
+        for type in types {
+            DemoDataManager.shared.addTypeId(type.id)
+            let success = await saveType(model: type)
+            if !success { logger.error("Failed to seed type: \(type.name)") }
         }
         return types
     }
 
     fileprivate func seedProducts(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
-        -> [ProductsPriceModel]
-    {
+        -> [ProductsPriceModel] {
         let catalog: [(uk: String, en: String, price: Double)] = [
             ("Еспресо", "Espresso", 8),
             ("Еспресо з молоком", "Espresso with milk", 10),
@@ -1277,21 +1049,16 @@ extension DomainDatabaseService {
             return ProductsPriceModel(id: UUID().uuidString, name: name, price: entry.price)
         }
 
-        for p in products {
-            DemoDataManager.shared.addProductId(p.id)
-            await withCheckedContinuation { continuation in
-                self.saveProductsPrice(productPrice: p) { success in
-                    if !success { self.logger.error("Failed to seed product: \(p.name)") }
-                    continuation.resume()
-                }
-            }
+        for product in products {
+            DemoDataManager.shared.addProductId(product.id)
+            let success = await saveProductsPrice(productPrice: product)
+            if !success { logger.error("Failed to seed product: \(product.name)") }
         }
         return products
     }
 
     fileprivate func seedIngredients(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
-        -> [IngredientModel]
-    {
+        -> [IngredientModel] {
         let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] =
             [
                 ("Молоко", "Milk", .l, 35.0),
@@ -1316,12 +1083,8 @@ extension DomainDatabaseService {
             createdIngredients.append(ingredient)
             DemoDataManager.shared.addIngredientId(ingredient.id)
 
-            await withCheckedContinuation { continuation in
-                self.saveIngredient(model: ingredient) { success in
-                    if !success { self.logger.error("Failed to seed ingredient: \(name)") }
-                    continuation.resume()
-                }
-            }
+            let success = await saveIngredient(model: ingredient)
+            if !success { logger.error("Failed to seed ingredient: \(name)") }
         }
         return createdIngredients
     }
@@ -1331,83 +1094,85 @@ extension DomainDatabaseService {
     ) async {
         for i in 0..<products.count {
             var product = products[i]
-            var recipe: [RecipeItemModel] = []
-
-            func findIngredient(_ key: String) -> IngredientModel? {
-                return ingredients.first { $0.name.lowercased().contains(key.lowercased()) }
-            }
-
-            let pName = product.name.lowercased()
-
-            // Coffee base
-            if pName.contains("espresso") || pName.contains("еспресо")
-                || pName.contains("americano") || pName.contains("американо")
-                || pName.contains("latte") || pName.contains("лате")
-                || pName.contains("cappuccino") || pName.contains("капучіно")
-                || pName.contains("irish") || pName.contains("айріш")
-            {
-                if let coffee = findIngredient(isUkrainian ? "зерна" : "beans") {
-                    recipe.append(
-                        RecipeItemModel(
-                            id: UUID().uuidString, ingredientId: coffee.id,
-                            ingredientName: coffee.name, quantity: 0.018, unit: .kg))
-                }
-                if let water = findIngredient(isUkrainian ? "вода" : "water") {
-                    recipe.append(
-                        RecipeItemModel(
-                            id: UUID().uuidString, ingredientId: water.id,
-                            ingredientName: water.name, quantity: 0.05, unit: .l))
-                }
-            }
-
-            // Milk based
-            if pName.contains("latte") || pName.contains("лате") || pName.contains("cappuccino")
-                || pName.contains("капучіно") || pName.contains("cocoa") || pName.contains("какао")
-                || pName.contains("chocolate") || pName.contains("шоколад")
-            {
-                if let milk = findIngredient(isUkrainian ? "молоко" : "milk") {
-                    let qty = pName.contains("large") || pName.contains("великий") ? 0.3 : 0.2
-                    recipe.append(
-                        RecipeItemModel(
-                            id: UUID().uuidString, ingredientId: milk.id, ingredientName: milk.name,
-                            quantity: qty, unit: .l))
-                }
-            }
-
-            // Sugar
-            if pName.contains("cocoa") || pName.contains("какао") || pName.contains("chocolate")
-                || pName.contains("шоколад")
-            {
-                if let sugar = findIngredient(isUkrainian ? "цукор" : "sugar") {
-                    recipe.append(
-                        RecipeItemModel(
-                            id: UUID().uuidString, ingredientId: sugar.id,
-                            ingredientName: sugar.name, quantity: 0.01, unit: .kg))
-                }
-            }
-
-            // Cups
-            if let cup = findIngredient(isUkrainian ? "стакан" : "cup") {
-                recipe.append(
-                    RecipeItemModel(
-                        id: UUID().uuidString, ingredientId: cup.id, ingredientName: cup.name,
-                        quantity: 1, unit: .pcs))
-            }
+            let recipe = buildDemoRecipe(
+                productName: product.name, ingredients: ingredients, isUkrainian: isUkrainian
+            )
 
             if !recipe.isEmpty {
                 product.recipe = recipe
                 products[i] = product  // Update in array
 
-                await withCheckedContinuation { continuation in
-                    self.saveProductsPrice(productPrice: product) { success in
-                        if !success {
-                            self.logger.error("Failed to save recipe for: \(product.name)")
-                        }
-                        continuation.resume()
-                    }
+                let success = await saveProductsPrice(productPrice: product)
+                if !success {
+                    logger.error("Failed to save recipe for: \(product.name)")
                 }
             }
         }
+    }
+
+    private func buildDemoRecipe(
+        productName: String, ingredients: [IngredientModel], isUkrainian: Bool
+    ) -> [RecipeItemModel] {
+        var recipe: [RecipeItemModel] = []
+        let pName = productName.lowercased()
+
+        func findIngredient(_ key: String) -> IngredientModel? {
+            ingredients.first { $0.name.lowercased().contains(key.lowercased()) }
+        }
+
+        // Coffee base
+        if pName.contains("espresso") || pName.contains("еспресо")
+            || pName.contains("americano") || pName.contains("американо")
+            || pName.contains("latte") || pName.contains("лате")
+            || pName.contains("cappuccino") || pName.contains("капучіно")
+            || pName.contains("irish") || pName.contains("айріш") {
+            if let coffee = findIngredient(isUkrainian ? "зерна" : "beans") {
+                recipe.append(
+                    RecipeItemModel(
+                        id: UUID().uuidString, ingredientId: coffee.id,
+                        ingredientName: coffee.name, quantity: 0.018, unit: .kg))
+            }
+            if let water = findIngredient(isUkrainian ? "вода" : "water") {
+                recipe.append(
+                    RecipeItemModel(
+                        id: UUID().uuidString, ingredientId: water.id,
+                        ingredientName: water.name, quantity: 0.05, unit: .l))
+            }
+        }
+
+        // Milk based
+        if pName.contains("latte") || pName.contains("лате") || pName.contains("cappuccino")
+            || pName.contains("капучіно") || pName.contains("cocoa") || pName.contains("какао")
+            || pName.contains("chocolate") || pName.contains("шоколад") {
+            if let milk = findIngredient(isUkrainian ? "молоко" : "milk") {
+                let qty = pName.contains("large") || pName.contains("великий") ? 0.3 : 0.2
+                recipe.append(
+                    RecipeItemModel(
+                        id: UUID().uuidString, ingredientId: milk.id, ingredientName: milk.name,
+                        quantity: qty, unit: .l))
+            }
+        }
+
+        // Sugar
+        if pName.contains("cocoa") || pName.contains("какао") || pName.contains("chocolate")
+            || pName.contains("шоколад") {
+            if let sugar = findIngredient(isUkrainian ? "цукор" : "sugar") {
+                recipe.append(
+                    RecipeItemModel(
+                        id: UUID().uuidString, ingredientId: sugar.id,
+                        ingredientName: sugar.name, quantity: 0.01, unit: .kg))
+            }
+        }
+
+        // Cups
+        if let cup = findIngredient(isUkrainian ? "стакан" : "cup") {
+            recipe.append(
+                RecipeItemModel(
+                    id: UUID().uuidString, ingredientId: cup.id, ingredientName: cup.name,
+                    quantity: 1, unit: .pcs))
+        }
+
+        return recipe
     }
 
     fileprivate func generateDailyActivity(
@@ -1466,20 +1231,12 @@ extension DomainDatabaseService {
                         ingredients[index] = randomIngredient
                     }
 
-                    await withCheckedContinuation { continuation in
-                        self.savePurchase(model: purchase) { success in
-                            if !success { self.logger.error("Failed to seed purchase") }
-                            continuation.resume()
-                        }
-                    }
+                    let purchaseSuccess = await savePurchase(model: purchase)
+                    if !purchaseSuccess { logger.error("Failed to seed purchase") }
 
-                    await withCheckedContinuation { continuation in
-                        self.saveIngredient(model: randomIngredient) { success in
-                            if !success {
-                                self.logger.error("Failed to update ingredient after purchase")
-                            }
-                            continuation.resume()
-                        }
+                    let ingredientSuccess = await saveIngredient(model: randomIngredient)
+                    if !ingredientSuccess {
+                        logger.error("Failed to update ingredient after purchase")
                     }
                 }
             }
@@ -1496,17 +1253,13 @@ extension DomainDatabaseService {
                     id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
                     quantityDelta: -1.0, reason: R.string.global.reasonSpoilage()
                 )
-                //* Note: We don't add adjustment.id here, we wait for the real ID from Firestore
+                // * Note: We don't add adjustment.id here, we wait for the real ID from Firestore
 
-                await withCheckedContinuation { continuation in
-                    self.saveInventoryAdjustment(model: adjustment) { id in
-                        if let savedId = id {
-                            DemoDataManager.shared.addInventoryAdjustmentId(savedId)
-                        } else {
-                            self.logger.error("Failed to seed inventory adjustment")
-                        }
-                        continuation.resume()
-                    }
+                let savedId = await saveInventoryAdjustment(model: adjustment)
+                if let savedId = savedId {
+                    DemoDataManager.shared.addInventoryAdjustmentId(savedId)
+                } else {
+                    logger.error("Failed to seed inventory adjustment")
                 }
 
                 if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
@@ -1514,13 +1267,9 @@ extension DomainDatabaseService {
                     ing.stockQuantity -= 1.0
                     ingredients[index] = ing
 
-                    await withCheckedContinuation { continuation in
-                        self.saveIngredient(model: ing) { success in
-                            if !success {
-                                self.logger.error("Failed to update ingredient after adjustment")
-                            }
-                            continuation.resume()
-                        }
+                    let success = await saveIngredient(model: ing)
+                    if !success {
+                        logger.error("Failed to update ingredient after adjustment")
                     }
                 }
             }
@@ -1566,12 +1315,8 @@ extension DomainDatabaseService {
             // Note: We don't add orderId to DemoDataManager here because saveOrder will generate a new ID
             // We will add the actual saved ID later
 
-            let savedOrderId: String? = await withCheckedContinuation { continuation in
-                self.saveOrder(order: order) { id in
-                    if id == nil { self.logger.error("Failed to seed order: \(order.id)") }
-                    continuation.resume(returning: id)
-                }
-            }
+            let savedOrderId = await saveOrder(order: order)
+            if savedOrderId == nil { logger.error("Failed to seed order: \(order.id)") }
 
             if let savedId = savedOrderId {
                 DemoDataManager.shared.addOrderId(savedId)
@@ -1582,15 +1327,11 @@ extension DomainDatabaseService {
                 item.orderId = targetOrderId
                 // Note: We don't add item.id here, we wait for the real ID from Firestore
 
-                await withCheckedContinuation { continuation in
-                    self.saveProduct(order: item) { id in
-                        if let savedId = id {
-                            DemoDataManager.shared.addOrderItemId(savedId)
-                        } else {
-                            self.logger.error("Failed to seed order item")
-                        }
-                        continuation.resume()
-                    }
+                let savedId = await saveProduct(order: item)
+                if let savedId = savedId {
+                    DemoDataManager.shared.addOrderItemId(savedId)
+                } else {
+                    logger.error("Failed to seed order item")
                 }
             }
 
@@ -1636,56 +1377,11 @@ extension DomainDatabaseService {
             )
             // Note: We don't add opex.id here, we wait for the real ID from Firestore
 
-            await withCheckedContinuation { continuation in
-                self.saveOpexExpense(model: opex) { id in
-                    if let savedId = id {
-                        DemoDataManager.shared.addExpenseId(savedId)
-                    } else {
-                        self.logger.error("Failed to seed expense: \(name)")
-                    }
-                    continuation.resume()
-                }
-            }
-        }
-    }
-    fileprivate func transferCollectionToFIR<RealmModel, DomainModel, FIRModel>(
-        collection: String, realmModelType: RealmModel.Type,
-        domainModelInit: @escaping (RealmModel) -> DomainModel,
-        firModelInit: @escaping (DomainModel) -> FIRModel, completion: @escaping () -> Void
-    ) where RealmModel: Object, FIRModel: Encodable {
-
-        DispatchQueue.global().async {
-            let realm = try! Realm()
-            let realmObjects = realm.objects(realmModelType)
-            let internalGroup = DispatchGroup()
-
-            for realmObject in realmObjects {
-                internalGroup.enter()
-                let domainModel = domainModelInit(realmObject)
-                let firModel = firModelInit(domainModel)
-
-                FirestoreDatabaseService.shared.create(firModel: firModel, collection: collection) {
-                    result in
-                    switch result {
-                    case .success(let documentId):
-                        self.logger.info(
-                            "Created document \(collection) with id - \(String(describing: documentId))"
-                        )
-                        if collection == FirebaseCollections.orders {
-                            let model = domainModel as! OrderModel
-                            self.orderIdMap[model.id] = documentId
-                        }
-                    case .failure(let error):
-                        self.logger.error(
-                            "Failed to save document \(collection) to Firestore with error: \(error.localizedDescription)"
-                        )
-                    }
-                    internalGroup.leave()
-                }
-            }
-
-            internalGroup.notify(queue: .global()) {
-                completion()
+            let savedId = await saveOpexExpense(model: opex)
+            if let savedId = savedId {
+                DemoDataManager.shared.addExpenseId(savedId)
+            } else {
+                logger.error("Failed to seed expense: \(name)")
             }
         }
     }

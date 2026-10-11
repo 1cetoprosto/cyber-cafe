@@ -18,16 +18,14 @@ protocol IncomeAggregationServiceProtocol {
 
 final class IncomeAggregationService: IncomeAggregationServiceProtocol {
     func summarize(orders: [OrderModel], period: DashboardPeriod, referenceDate: Date)
-        -> IncomeSummary
-    {
+        -> IncomeSummary {
         let interval = period.interval(for: referenceDate)
         return summarize(
             orders: orders, intervalStart: interval.start, intervalEnd: interval.end)
     }
 
     func summarize(orders: [OrderModel], intervalStart: Date, intervalEnd: Date)
-        -> IncomeSummary
-    {
+        -> IncomeSummary {
         let filtered = orders.filter { order in
             order.date >= intervalStart && order.date < intervalEnd
         }

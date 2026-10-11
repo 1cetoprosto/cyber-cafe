@@ -14,7 +14,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
     let tableView: UITableView = {
         let tableView = UITableView()
         
-        //tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
+        // tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -179,7 +179,7 @@ class AdminDetailsController: UIViewController, UITableViewDataSource, UITableVi
     
     func call() {
         // TODO: розібратись як реалізувати дзвінок, якщо це потрібно
-        //admin.phone?.makeACall()
+        // admin.phone?.makeACall()
     }
     
     func sendMail() {

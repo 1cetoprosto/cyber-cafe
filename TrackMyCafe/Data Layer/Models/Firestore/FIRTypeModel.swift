@@ -19,7 +19,3 @@ struct FIRTypeModel: Codable {
         self.isDefault = dataModel.isDefault
     }
 }
-
-//extension FIRTypeModel {
-//    static var empty = FIRTypeModel(typeModel: RealmTypeModel())
-//}

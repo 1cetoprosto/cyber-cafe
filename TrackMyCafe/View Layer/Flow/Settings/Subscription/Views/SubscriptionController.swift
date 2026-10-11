@@ -34,8 +34,7 @@ class SubscriptionController: UIViewController, Loggable {
         if let icons = Bundle.main.infoDictionary?["CFBundleIcons"] as? [String: Any],
             let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
             let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
-            let lastIcon = iconFiles.last
-        {
+            let lastIcon = iconFiles.last {
             imageView.image = UIImage(named: lastIcon)
         }
 
@@ -532,8 +531,7 @@ class SubscriptionController: UIViewController, Loggable {
                     guard let originTransactionId = receipt.lastAutorenewOriginTransactionId else {
                         return
                     }
-                    RequestManager.shared.isSubscriptionPurchaseLinkedToAccount(originTransactionId)
-                    { (status) in
+                    RequestManager.shared.isSubscriptionPurchaseLinkedToAccount(originTransactionId) { (status) in
                         if status == .linkedCurrent || status == .notLinked {
                             IAPManager.shared.updateSubscriptionInfo(receipt)
                             DispatchQueue.main.async {

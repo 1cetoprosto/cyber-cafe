@@ -31,15 +31,6 @@ struct ProductsPriceModel {
         self.imagePath = imagePath
     }
     
-    init(realmModel: RealmProductsPriceModel) {
-        self.id = realmModel.id
-        self.name = realmModel.name
-        self.price = realmModel.price
-        self.categoryId = nil
-        self.recipe = realmModel.recipe.map { RecipeItemModel(realmModel: $0) }
-        self.imagePath = nil
-    }
-    
     init(firebaseModel: FIRProductsPriceModel) {
         self.id = firebaseModel.id ?? ""
         self.name = firebaseModel.name

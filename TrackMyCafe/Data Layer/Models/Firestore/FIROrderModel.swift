@@ -32,7 +32,3 @@ struct FIROrderModel: Codable {
     }
 
 }
-
-//extension FIROrderModel {
-//    static var empty = FIROrderModel(ordersModel: RealmOrderModel())
-//}

@@ -18,12 +18,6 @@ struct TypeModel {
         self.isDefault = isDefault
     }
     
-    init(realmModel: RealmTypeModel) {
-        self.id = realmModel.id
-        self.name = realmModel.name
-        self.isDefault = realmModel.isDefault
-    }
-    
     init(firebaseModel: FIRTypeModel) {
         self.id = firebaseModel.id ?? ""
         self.name = firebaseModel.name

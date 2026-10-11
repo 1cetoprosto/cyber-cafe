@@ -30,7 +30,9 @@ protocol BalanceJournalServiceProtocol {
         -> Set<BalanceScope>
     func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws
         -> Set<BalanceScope>
-    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<BalanceScope>
+    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<
+        BalanceScope
+    >
 }
 
 protocol DailyBalanceMaterializerProtocol {
@@ -50,26 +52,25 @@ protocol CostDataServiceProtocol {
 }
 
 protocol FinancePersistenceProtocol: AnyObject {
-    func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void)
-    func updateOrder(_ order: OrderModel, completion: @escaping (Bool) -> Void)
-    func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void)
+    func saveOrder(order: OrderModel) async -> String?
+    func updateOrder(_ order: OrderModel) async -> Bool
+    func deleteOrder(order: OrderModel) async -> Bool
 
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void)
-    func updateOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
-    func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
+    func saveOpexExpense(model: OpexExpenseModel) async -> String?
+    func updateOpexExpense(model: OpexExpenseModel) async
+    func deleteOpexExpense(model: OpexExpenseModel) async -> Bool
 
-    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void)
-    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void)
+    func saveJournalEntry(model: JournalEntryModel) async -> String?
+    func fetchJournalEntries() async -> [JournalEntryModel]
 
-    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void)
+    func saveDailyBalance(model: DailyBalanceModel) async -> Bool
     func fetchDailyBalances(
         forAccount account: PaymentAccount,
         from startDate: Date,
-        to endDate: Date,
-        completion: @escaping ([DailyBalanceModel]) -> Void
-    )
+        to endDate: Date
+    ) async -> [DailyBalanceModel]
 
-    func delete(collection: String, documentId: String, completion: @escaping (Bool) -> Void)
+    func delete(collection: String, documentId: String) async -> Bool
 }
 
 extension DomainDatabaseService: FinancePersistenceProtocol {}
@@ -96,8 +97,7 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
     }
 
     func syncOpex(previous: OpexExpenseModel?, current: OpexExpenseModel?) async throws
-        -> Set<BalanceScope>
-    {
+        -> Set<BalanceScope> {
         let sourceId = current?.id ?? previous?.id ?? ""
         guard !sourceId.isEmpty else {
             throw FinanceMutationError.missingIdentifier
@@ -112,8 +112,7 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
     }
 
     func syncPurchase(previous: PurchaseModel?, current: PurchaseModel?) async throws
-        -> Set<BalanceScope>
-    {
+        -> Set<BalanceScope> {
         let sourceId = current?.id ?? previous?.id ?? ""
         guard !sourceId.isEmpty else {
             throw FinanceMutationError.missingIdentifier
@@ -127,8 +126,9 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
         )
     }
 
-    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<BalanceScope>
-    {
+    func syncManual(sourceId: String, newEntries: [JournalEntryModel]) async throws -> Set<
+        BalanceScope
+    > {
         guard !sourceId.isEmpty else {
             throw FinanceMutationError.missingIdentifier
         }
@@ -145,7 +145,7 @@ final class BalanceJournalService: BalanceJournalServiceProtocol, Loggable {
         sourceId: String,
         newEntries: [JournalEntryModel]
     ) async throws -> Set<BalanceScope> {
-        let existingEntries = await database.fetchJournalEntriesAsync()
+        let existingEntries = await database.fetchJournalEntries()
             .filter { $0.sourceType == sourceType && $0.sourceId == sourceId }
         let currentEffects = currentEffects(
             from: existingEntries, sourceType: sourceType, sourceId: sourceId)
@@ -285,7 +285,7 @@ final class DailyBalanceMaterializer: DailyBalanceMaterializerProtocol, Loggable
     func materialize(scopes: Set<BalanceScope>) async throws {
         guard !scopes.isEmpty else { return }
 
-        let journalEntries = await database.fetchJournalEntriesAsync()
+        let journalEntries = await database.fetchJournalEntries()
         let groupedScopes = Dictionary(grouping: scopes, by: \.account)
 
         for (account, accountScopes) in groupedScopes {
@@ -298,7 +298,7 @@ final class DailyBalanceMaterializer: DailyBalanceMaterializerProtocol, Loggable
                 entries.reduce(0) { $0 + $1.amount }
             }.filter { !$0.value.isApproximatelyZero }
 
-            let existingBalances = await database.fetchDailyBalancesAsync(
+            let existingBalances = await database.fetchDailyBalances(
                 forAccount: account,
                 from: startDate,
                 to: upperBoundDate
@@ -445,130 +445,62 @@ final class DomainCostDataService: CostDataServiceProtocol {
 
 extension FinancePersistenceProtocol {
     func saveOrderAsync(order: OrderModel) async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            saveOrder(order: order) { id in
-                if let id {
-                    continuation.resume(returning: id)
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.saveFailed)
-                }
-            }
+        guard let id = await saveOrder(order: order) else {
+            throw FinanceMutationError.saveFailed
         }
+        return id
     }
 
     func updateOrderAsync(_ order: OrderModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            updateOrder(order) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.updateFailed)
-                }
-            }
+        let success = await updateOrder(order)
+        if !success {
+            throw FinanceMutationError.updateFailed
         }
     }
 
     func deleteOrderAsync(order: OrderModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            deleteOrder(order: order) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.deleteFailed)
-                }
-            }
+        let success = await deleteOrder(order: order)
+        if !success {
+            throw FinanceMutationError.deleteFailed
         }
     }
 
     func saveOpexExpenseAsync(model: OpexExpenseModel) async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            saveOpexExpense(model: model) { id in
-                if let id {
-                    continuation.resume(returning: id)
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.saveFailed)
-                }
-            }
+        guard let id = await saveOpexExpense(model: model) else {
+            throw FinanceMutationError.saveFailed
         }
+        return id
     }
 
     func updateOpexExpenseAsync(model: OpexExpenseModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            updateOpexExpense(model: model) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.updateFailed)
-                }
-            }
-        }
+        await updateOpexExpense(model: model)
     }
 
     func deleteOpexExpenseAsync(model: OpexExpenseModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            deleteOpexExpense(model: model) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.deleteFailed)
-                }
-            }
+        let success = await deleteOpexExpense(model: model)
+        if !success {
+            throw FinanceMutationError.deleteFailed
         }
     }
 
     func saveJournalEntryAsync(_ model: JournalEntryModel) async throws -> String {
-        try await withCheckedThrowingContinuation { continuation in
-            saveJournalEntry(model: model) { id in
-                if let id {
-                    continuation.resume(returning: id)
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.saveFailed)
-                }
-            }
+        guard let id = await saveJournalEntry(model: model) else {
+            throw FinanceMutationError.saveFailed
         }
-    }
-
-    func fetchJournalEntriesAsync() async -> [JournalEntryModel] {
-        await withCheckedContinuation { continuation in
-            fetchJournalEntries { entries in
-                continuation.resume(returning: entries)
-            }
-        }
+        return id
     }
 
     func saveDailyBalanceAsync(_ model: DailyBalanceModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            saveDailyBalance(model: model) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.saveFailed)
-                }
-            }
-        }
-    }
-
-    func fetchDailyBalancesAsync(
-        forAccount account: PaymentAccount,
-        from startDate: Date,
-        to endDate: Date
-    ) async -> [DailyBalanceModel] {
-        await withCheckedContinuation { continuation in
-            fetchDailyBalances(forAccount: account, from: startDate, to: endDate) { balances in
-                continuation.resume(returning: balances)
-            }
+        let success = await saveDailyBalance(model: model)
+        if !success {
+            throw FinanceMutationError.saveFailed
         }
     }
 
     func deleteDocumentAsync(collection: String, documentId: String) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            delete(collection: collection, documentId: documentId) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: FinanceMutationError.deleteFailed)
-                }
-            }
+        let success = await delete(collection: collection, documentId: documentId)
+        if !success {
+            throw FinanceMutationError.deleteFailed
         }
     }
 }

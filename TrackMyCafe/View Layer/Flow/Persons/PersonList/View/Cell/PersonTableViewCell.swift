@@ -123,8 +123,7 @@ class PersonTableViewCell: UITableViewCell {
         }
         
         if let imagePath = model.profileImagePath, !imagePath.isEmpty,
-           let imageURL = URL(string: imagePath)
-        {
+           let imageURL = URL(string: imagePath) {
             profileImage.setImage(imageURL, placeholder: UIImage(named: model.placeholderImage ?? ""))
         } else if let placeholderName = model.placeholderImage {
             profileImage.image = UIImage(named: placeholderName)
@@ -147,7 +146,7 @@ class PersonTableViewCell: UITableViewCell {
     // MARK: - Actions
     @objc private func callAction(_ sender: UIButton) {
         // TODO: розібратися як можна подзвонити, якщо дійсно потрібен такий функціонал
-        //phoneLabel.text?.makeACall()
+        // phoneLabel.text?.makeACall()
     }
     
 }

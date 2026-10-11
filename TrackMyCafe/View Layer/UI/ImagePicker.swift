@@ -15,7 +15,7 @@ protocol ImagePickerDelegate: AnyObject {
 class ImagePicker: NSObject {
 
     private weak var controller: UIImagePickerController?
-    weak var delegate: ImagePickerDelegate? = nil
+    weak var delegate: ImagePickerDelegate?
 
     func showPickerOptions(in presenter: UIViewController, sender: UIView) {
         // Functionality disabled as per requirements
@@ -55,8 +55,7 @@ class ImagePicker: NSObject {
         // Functionality disabled
     }
 
-    private func present(in presenter: UIViewController, source: UIImagePickerController.SourceType)
-    {
+    private func present(in presenter: UIViewController, source: UIImagePickerController.SourceType) {
         // Functionality disabled
     }
 
@@ -79,7 +78,7 @@ extension ImagePicker {
                 UIAlertAction(
                     title: R.string.global.menuSettings(),
                     style: .default,
-                    handler: { [weak self] action in
+                    handler: { [weak self] _ in
                         guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
                             UIApplication.shared.canOpenURL(settingsUrl)
                         else {

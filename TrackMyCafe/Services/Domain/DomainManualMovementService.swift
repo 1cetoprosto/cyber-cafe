@@ -27,13 +27,14 @@ final class DomainManualMovementService: ManualMovementServiceProtocol, Loggable
         dailyBalanceMaterializer: DailyBalanceMaterializerProtocol? = nil
     ) {
         self.database = database
-        self.balanceJournalService = balanceJournalService ?? BalanceJournalService(database: database)
+        self.balanceJournalService =
+            balanceJournalService ?? BalanceJournalService(database: database)
         self.dailyBalanceMaterializer =
             dailyBalanceMaterializer ?? DailyBalanceMaterializer(database: database)
     }
 
     func fetchOperations() async -> [ManualMovementOperation] {
-        let entries = await database.fetchJournalEntriesAsync()
+        let entries = await database.fetchJournalEntries()
             .filter { $0.sourceType == .manual }
 
         let grouped = Dictionary(grouping: entries, by: \.sourceId)
@@ -53,65 +54,56 @@ final class DomainManualMovementService: ManualMovementServiceProtocol, Loggable
                 abs(value) >= 0.000_1
             }
 
-            switch kind {
-            case .transfer:
-                let from = netByAccount.first(where: { $0.value < 0 })?.key
-                let to = netByAccount.first(where: { $0.value > 0 })?.key
-                let amount = abs(netByAccount.first(where: { $0.value > 0 })?.value ?? 0)
-                guard amount >= 0.000_1 else { return nil }
-                return ManualMovementOperation(
-                    id: sourceId,
-                    date: day,
-                    kind: kind,
-                    amount: amount,
-                    fromAccount: from,
-                    toAccount: to,
-                    note: note
-                )
-            case .deposit:
-                guard let (account, raw) = netByAccount.first else { return nil }
-                let amount = abs(raw)
-                guard amount >= 0.000_1 else { return nil }
-                return ManualMovementOperation(
-                    id: sourceId,
-                    date: day,
-                    kind: kind,
-                    amount: amount,
-                    fromAccount: nil,
-                    toAccount: account,
-                    note: note
-                )
-            case .withdrawal:
-                guard let (account, raw) = netByAccount.first else { return nil }
-                let amount = abs(raw)
-                guard amount >= 0.000_1 else { return nil }
-                return ManualMovementOperation(
-                    id: sourceId,
-                    date: day,
-                    kind: kind,
-                    amount: amount,
-                    fromAccount: account,
-                    toAccount: nil,
-                    note: note
-                )
-            case .adjustment:
-                guard let (account, raw) = netByAccount.first else { return nil }
-                guard abs(raw) >= 0.000_1 else { return nil }
-                return ManualMovementOperation(
-                    id: sourceId,
-                    date: day,
-                    kind: kind,
-                    amount: raw,
-                    fromAccount: account,
-                    toAccount: nil,
-                    note: note
-                )
-            }
+            return makeOperation(
+                sourceId: sourceId,
+                kind: kind,
+                day: day,
+                note: note,
+                netByAccount: netByAccount
+            )
         }
 
         return operations.sorted { left, right in
             if left.date != right.date { return left.date > right.date }
             return left.id > right.id
+        }
+    }
+
+    private func makeOperation(
+        sourceId: String,
+        kind: ManualMovementKind,
+        day: Date,
+        note: String?,
+        netByAccount: [PaymentAccount: Double]
+    ) -> ManualMovementOperation? {
+        switch kind {
+        case .transfer:
+            let from = netByAccount.first(where: { $0.value < 0 })?.key
+            let to = netByAccount.first(where: { $0.value > 0 })?.key
+            let amount = abs(netByAccount.first(where: { $0.value > 0 })?.value ?? 0)
+            guard amount >= 0.000_1 else { return nil }
+            return ManualMovementOperation(
+                id: sourceId, date: day, kind: kind, amount: amount,
+                fromAccount: from, toAccount: to, note: note
+            )
+        case .deposit:
+            guard let (account, raw) = netByAccount.first, abs(raw) >= 0.000_1 else { return nil }
+            return ManualMovementOperation(
+                id: sourceId, date: day, kind: kind, amount: abs(raw),
+                fromAccount: nil, toAccount: account, note: note
+            )
+        case .withdrawal:
+            guard let (account, raw) = netByAccount.first, abs(raw) >= 0.000_1 else { return nil }
+            return ManualMovementOperation(
+                id: sourceId, date: day, kind: kind, amount: abs(raw),
+                fromAccount: account, toAccount: nil, note: note
+            )
+        case .adjustment:
+            guard let (account, raw) = netByAccount.first, abs(raw) >= 0.000_1 else { return nil }
+            return ManualMovementOperation(
+                id: sourceId, date: day, kind: kind, amount: raw,
+                fromAccount: account, toAccount: nil, note: note
+            )
         }
     }
 
@@ -209,4 +201,3 @@ final class DomainManualMovementService: ManualMovementServiceProtocol, Loggable
         }
     }
 }
-

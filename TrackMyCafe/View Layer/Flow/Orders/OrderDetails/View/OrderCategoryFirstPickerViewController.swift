@@ -158,8 +158,9 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     }
 
     private func loadData() {
-        DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
-            DispatchQueue.main.async {
+        Task { [weak self] in
+            let categories = await DomainDatabaseService.shared.fetchProductCategories()
+            await MainActor.run {
                 self?.allCategories = categories.sorted {
                     if $0.sortOrder != $1.sortOrder { return $0.sortOrder < $1.sortOrder }
                     return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
@@ -168,8 +169,9 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
             }
         }
 
-        DomainDatabaseService.shared.fetchProductsPrice { [weak self] products in
-            DispatchQueue.main.async {
+        Task { [weak self] in
+            let products = await DomainDatabaseService.shared.fetchProductsPrice()
+            await MainActor.run {
                 self?.allProducts = products
             }
         }
@@ -264,11 +266,9 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
 }
 
 extension OrderCategoryFirstPickerViewController: UICollectionViewDataSource,
-    UICollectionViewDelegate
-{
+    UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int
-    {
+        -> Int {
         categories.count
     }
 
