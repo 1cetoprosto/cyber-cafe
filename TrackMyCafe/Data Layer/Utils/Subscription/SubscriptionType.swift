@@ -31,8 +31,7 @@ enum SubscriptionType: String, CaseIterable {
         case .none: return "none"
         case .proMonthly:
             // Check if we are running the Beta app
-            if let bundleID = Bundle.main.bundleIdentifier, bundleID.lowercased().contains(".beta")
-            {
+            if let bundleID = Bundle.main.bundleIdentifier, bundleID.lowercased().contains(".beta") {
                 return SubscriptionType.betaID
             }
             return SubscriptionType.productionID

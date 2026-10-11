@@ -36,16 +36,17 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     }
 
     func getPurchases(completion: @escaping () -> Void) {
-        // 1. Fetch Ingredients for names
-        dbService.fetchIngredients { [weak self] ingredients in
-            ingredients.forEach { self?.ingredientsCache[$0.id] = $0.name }
+        Task { [weak self] in
+            guard let self else { return }
+            // 1. Fetch Ingredients for names
+            let ingredients = await dbService.fetchIngredients()
+            ingredients.forEach { self.ingredientsCache[$0.id] = $0.name }
 
             // 2. Fetch Purchases
-            self?.dbService.fetchPurchases { [weak self] purchases in
-                self?.allPurchases = purchases
-                self?.applyCurrentFilters()
-                completion()
-            }
+            let purchases = await dbService.fetchPurchases()
+            self.allPurchases = purchases
+            self.applyCurrentFilters()
+            completion()
         }
     }
 
@@ -98,11 +99,13 @@ class PurchaseListViewModel: PurchaseListViewModelType {
     func deletePurchase(at indexPath: IndexPath, completion: @escaping (Bool) -> Void) {
         let model = purchase(at: indexPath)
 
-        dbService.deletePurchase(model: model) { [weak self] success in
+        Task { [weak self] in
             guard let self else {
                 completion(false)
                 return
             }
+
+            let success = await dbService.deletePurchase(model: model)
 
             if success {
                 self.allPurchases.removeAll { $0.id == model.id }

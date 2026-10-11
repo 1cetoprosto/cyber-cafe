@@ -52,53 +52,45 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     func getProducts(withIdOrder id: String, completion: @escaping () -> Void) {
-
-        products.removeAll()
-
-        DomainDatabaseService.shared.fetchProduct(withOrderId: id) { [weak self] products in
+        Task { [weak self] in
             guard let self = self else { return }
 
-            if products.isEmpty {
-                DomainDatabaseService.shared.fetchProductsPrice { productsPrice in
-                    let group = DispatchGroup()
-                    var newProducts: [ProductOfOrderModel] = []
+            products.removeAll()
 
-                    for productPrice in productsPrice {
-                        group.enter()
-                        self.costingService.calculateProductCost(productId: productPrice.id) {
-                            cost in
-                            let product = ProductOfOrderModel(
-                                id: "",
-                                productId: productPrice.id,
-                                orderId: id,
-                                date: Date(),
-                                name: productPrice.name,
-                                quantity: 0,
-                                price: productPrice.price,
-                                sum: 0,
-                                costPrice: cost,
-                                costSum: 0)
-                            // Thread-safe append
-                            DispatchQueue.main.async {
-                                newProducts.append(product)
-                                group.leave()
-                            }
-                        }
-                    }
+            let fetchedProducts = await DomainDatabaseService.shared.fetchProduct(withOrderId: id)
 
-                    group.notify(queue: .main) {
-                        self.products = newProducts.sorted { $0.name < $1.name }
-                        self.emitChange(.fullReload)
-                        completion()
-                    }
+            if fetchedProducts.isEmpty {
+                let productsPrice = await DomainDatabaseService.shared.fetchProductsPrice()
+                var newProducts: [ProductOfOrderModel] = []
+
+                for productPrice in productsPrice {
+                    let cost = await costingService.calculateProductCost(productId: productPrice.id)
+                    let product = ProductOfOrderModel(
+                        id: "",
+                        productId: productPrice.id,
+                        orderId: id,
+                        date: Date(),
+                        name: productPrice.name,
+                        quantity: 0,
+                        price: productPrice.price,
+                        sum: 0,
+                        costPrice: cost,
+                        costSum: 0)
+                    newProducts.append(product)
+                }
+
+                await MainActor.run {
+                    self.products = newProducts.sorted { $0.name < $1.name }
+                    self.emitChange(.fullReload)
                 }
             } else {
-                DispatchQueue.main.async {
-                    self.products = products
+                await MainActor.run {
+                    self.products = fetchedProducts
                     self.emitChange(.fullReload)
-                    completion()
                 }
             }
+
+            completion()
         }
     }
 
@@ -160,8 +152,10 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             return
         }
 
-        costingService.calculateProductCost(productId: priceModel.id) { [weak self] cost in
+        Task { [weak self] in
             guard let self = self else { return }
+
+            let cost = await costingService.calculateProductCost(productId: priceModel.id)
 
             let product = ProductOfOrderModel(
                 id: "",
@@ -176,12 +170,12 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 costSum: cost
             )
 
-            DispatchQueue.main.async {
+            await MainActor.run {
                 self.products.append(product)
                 self.products.sort { $0.name < $1.name }
                 self.emitChange(.fullReload)
-                completion()
             }
+            completion()
         }
     }
 
@@ -203,23 +197,28 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     func saveOrder(withOrderId id: String, date: Date, completion: @escaping (Bool) -> Void) {
-        deductStock { [weak self] success in
+        Task { [weak self] in
             guard let self = self else { return }
 
+            let success = await deductStock()
             if !success {
                 self.logger.error("Stock deduction failed")
             }
 
-            self.persistProducts(orderId: id, date: date, completion: completion)
+            await persistProducts(orderId: id, date: date)
+            let persistSuccess = await persistProductsSuccess(orderId: id, date: date)
+            completion(persistSuccess)
         }
     }
 
     func updateOrder(orderId: String, date: Date, completion: @escaping (Bool) -> Void) {
-        DomainDatabaseService.shared.fetchProduct(withOrderId: orderId) { [weak self] oldProducts in
+        Task { [weak self] in
             guard let self = self else {
                 completion(false)
                 return
             }
+
+            let oldProducts = await DomainDatabaseService.shared.fetchProduct(withOrderId: orderId)
 
             self.prepareProducts(for: orderId, date: date)
 
@@ -229,11 +228,8 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             )
 
             if deltaItems.isEmpty {
-                self.persistProducts(
-                    orderId: orderId,
-                    date: date,
-                    completion: completion
-                )
+                let success = await self.persistProductsSuccess(orderId: orderId, date: date)
+                completion(success)
                 return
             }
 
@@ -245,13 +241,13 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                 .filter { $0.quantity > 0 }
                 .map(\.orderItemSnapshot)
 
-            self.applyInventoryUpdates(
+            let success = await self.applyInventoryUpdates(
                 revertItems: revertItems,
                 applyItems: applyItems,
                 orderId: orderId,
-                date: date,
-                completion: completion
+                date: date
             )
+            completion(success)
         }
     }
 
@@ -297,12 +293,12 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         }
     }
 
-    private func persistProducts(
-        orderId: String,
-        date: Date,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let group = DispatchGroup()
+    private func persistProducts(orderId: String, date: Date) async {
+        _ = await persistProductsSuccess(orderId: orderId, date: date)
+    }
+
+    @discardableResult
+    private func persistProductsSuccess(orderId: String, date: Date) async -> Bool {
         var hasError = false
 
         for i in products.indices {
@@ -310,102 +306,68 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             product.orderId = orderId
             product.date = date
 
-            group.enter()
-            let productIndex = i
-            let snapshot = product
-            DomainDatabaseService.shared.saveProduct(order: snapshot) { [weak self] newId in
-                defer { group.leave() }
-                guard let self = self else { return }
-                if let newId {
-                    DispatchQueue.main.async {
-                        var updated = snapshot
-                        updated.id = newId
-                        if self.products.indices.contains(productIndex) {
-                            self.products[productIndex] = updated
-                        }
+            let newId = await DomainDatabaseService.shared.saveProduct(order: product)
+            if let newId = newId {
+                await MainActor.run {
+                    var updated = product
+                    updated.id = newId
+                    if self.products.indices.contains(i) {
+                        self.products[i] = updated
                     }
-                } else {
-                    hasError = true
                 }
+            } else {
+                hasError = true
             }
         }
 
-        group.notify(queue: .main) {
-            completion(!hasError)
-        }
+        return !hasError
     }
 
     private func applyInventoryUpdates(
         revertItems: [OrderItemModel],
         applyItems: [OrderItemModel],
         orderId: String,
-        date: Date,
-        completion: @escaping (Bool) -> Void
-    ) {
-        let finishSaving: () -> Void = { [weak self] in
-            guard let self = self else {
-                completion(false)
-                return
-            }
-            self.persistProducts(
-                orderId: orderId,
-                date: date,
-                completion: completion
-            )
-        }
-
-        let outerGroup = DispatchGroup()
+        date: Date
+    ) async -> Bool {
         var inventoryError = false
 
         if !revertItems.isEmpty {
-            outerGroup.enter()
-            inventoryService.restoreStock(
-                for: revertItems,
-                trackingEnabled: inventoryTrackingMode
-            ) { [weak self] result in
-                if case .failure(let error) = result {
-                    self?.logger.error(
-                        "Stock revert failed on order update: \(error.localizedDescription)"
-                    )
-                    inventoryError = true
-                }
-                outerGroup.leave()
+            do {
+                try await inventoryService.restoreStock(
+                    for: revertItems,
+                    trackingEnabled: inventoryTrackingMode
+                )
+            } catch {
+                logger.error(
+                    "Stock revert failed on order update: \(error.localizedDescription)"
+                )
+                inventoryError = true
             }
         }
 
-        outerGroup.notify(queue: .main) { [weak self] in
-            guard let self = self else { return }
-            if inventoryError {
-                completion(false)
-                return
-            }
+        if inventoryError {
+            return false
+        }
 
-            let applyGroup = DispatchGroup()
-
-            if !applyItems.isEmpty {
-                applyGroup.enter()
-                self.inventoryService.deductStock(
+        if !applyItems.isEmpty {
+            do {
+                try await inventoryService.deductStock(
                     for: applyItems,
-                    trackingEnabled: self.inventoryTrackingMode
-                ) { [weak self] result in
-                    if case .failure(let error) = result {
-                        self?.logger.error(
-                            "Stock apply failed on order update: \(error.localizedDescription)"
-                        )
-                        inventoryError = true
-                    }
-                    applyGroup.leave()
-                }
-            }
-
-            applyGroup.notify(queue: .main) {
-                if inventoryError {
-                    completion(false)
-                    return
-                }
-                finishSaving()
+                    trackingEnabled: inventoryTrackingMode
+                )
+            } catch {
+                logger.error(
+                    "Stock apply failed on order update: \(error.localizedDescription)"
+                )
+                inventoryError = true
             }
         }
+
+        if inventoryError {
+            return false
+        }
+
+        return await persistProductsSuccess(orderId: orderId, date: date)
     }
 
     static func deleteOrder(
@@ -414,35 +376,33 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         trackingEnabled: Bool,
         inventoryService: InventoryServiceProtocol = InventoryService.shared
     ) {
-        DomainDatabaseService.shared.fetchProduct(withOrderId: id) { ordersProducts in
+        Task {
+            let ordersProducts = await DomainDatabaseService.shared.fetchProduct(withOrderId: id)
             let orderItems: [OrderItemModel] =
                 ordersProducts
                 .filter { $0.quantity > 0 }
                 .map(\.orderItemSnapshot)
 
             if !orderItems.isEmpty {
-                inventoryService.restoreStock(
-                    for: orderItems,
-                    trackingEnabled: trackingEnabled
-                ) { result in
-                    switch result {
-                    case .success:
-                        logger.notice("Restored stock for deleted order \(id) successfully")
-                    case .failure(let error):
-                        logger.error(
-                            "Failed to restore stock for deleted order \(id): \(error.localizedDescription)"
-                        )
-                    }
+                do {
+                    try await inventoryService.restoreStock(
+                        for: orderItems,
+                        trackingEnabled: trackingEnabled
+                    )
+                    logger.notice("Restored stock for deleted order \(id) successfully")
+                } catch {
+                    logger.error(
+                        "Failed to restore stock for deleted order \(id): \(error.localizedDescription)"
+                    )
                 }
             }
 
             for product in ordersProducts {
-                DomainDatabaseService.shared.deleteProduct(order: product) { success in
-                    if success {
-                        logger.notice("Delete order \(product.id) successfully")
-                    } else {
-                        logger.error("Failed to delete order \(product.id)")
-                    }
+                let success = await DomainDatabaseService.shared.deleteProduct(order: product)
+                if success {
+                    logger.notice("Delete order \(product.id) successfully")
+                } else {
+                    logger.error("Failed to delete order \(product.id)")
                 }
             }
         }
@@ -461,50 +421,55 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         trackingEnabled: Bool,
         completion: @escaping ([StockWarning]) -> Void
     ) {
+        Task { [weak self] in
+            guard let self = self else { return }
+            let warnings = await validateStock(trackingEnabled: trackingEnabled)
+            completion(warnings)
+        }
+    }
+
+    private func validateStock(trackingEnabled: Bool) async -> [StockWarning] {
         let itemsToCheck = activeOrderItems()
 
         if itemsToCheck.isEmpty {
-            completion([])
-            return
+            return []
         }
 
-        inventoryService.validateStockAvailability(
+        return await inventoryService.validateStockAvailability(
             for: itemsToCheck,
-            trackingEnabled: trackingEnabled,
-            completion: completion
+            trackingEnabled: trackingEnabled
         )
     }
 
     func deductStock(completion: @escaping (Bool) -> Void) {
-        deductStock(
-            trackingEnabled: inventoryTrackingMode,
-            completion: completion
-        )
+        Task { [weak self] in
+            guard let self = self else { return }
+            let success = await self.deductStock(trackingEnabled: inventoryTrackingMode)
+            completion(success)
+        }
     }
 
-    func deductStock(
-        trackingEnabled: Bool,
-        completion: @escaping (Bool) -> Void
-    ) {
+    private func deductStock(trackingEnabled: Bool) async -> Bool {
         let itemsToDeduct = activeOrderItems()
 
         if itemsToDeduct.isEmpty {
-            completion(true)
-            return
+            return true
         }
 
-        inventoryService.deductStock(
-            for: itemsToDeduct,
-            trackingEnabled: trackingEnabled
-        ) { result in
-            switch result {
-            case .success:
-                completion(true)
-            case .failure(let error):
-                self.logger.error("Stock deduction failed: \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            try await inventoryService.deductStock(
+                for: itemsToDeduct,
+                trackingEnabled: trackingEnabled
+            )
+            return true
+        } catch {
+            logger.error("Stock deduction failed: \(error.localizedDescription)")
+            return false
         }
+    }
+
+    private func deductStock() async -> Bool {
+        await deductStock(trackingEnabled: inventoryTrackingMode)
     }
 
     private func activeOrderItems() -> [OrderItemModel] {

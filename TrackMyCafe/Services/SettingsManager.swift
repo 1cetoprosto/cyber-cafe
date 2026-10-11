@@ -34,7 +34,7 @@ class SettingsManager {
         UserDefaults.standard.set([languageCode], forKey: UserDefaultsKeys.appleLanguages)
         UserDefaults.standard.synchronize()
         saveLanguage(languageCode)
-        //Bundle.setLanguage(languageCode: languageCode)
+        // Bundle.setLanguage(languageCode: languageCode)
     }
 
     func saveTheme(_ theme: String) {

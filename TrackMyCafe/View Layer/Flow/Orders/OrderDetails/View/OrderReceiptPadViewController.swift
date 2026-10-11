@@ -357,9 +357,10 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         }
 
         if selectedType.isEmpty, viewModel.isNewModel {
-            DomainDatabaseService.shared.fetchTypes { [weak self] types in
+            Task { [weak self] in
                 guard let self else { return }
-                DispatchQueue.main.async {
+                let types = await DomainDatabaseService.shared.fetchTypes()
+                await MainActor.run {
                     self.availableTypes = types
                     if let def = types.first(where: { $0.isDefault }) {
                         self.selectedType = def.name
@@ -368,8 +369,9 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
                 }
             }
         } else {
-            DomainDatabaseService.shared.fetchTypes { [weak self] types in
-                DispatchQueue.main.async {
+            Task { [weak self] in
+                let types = await DomainDatabaseService.shared.fetchTypes()
+                await MainActor.run {
                     self?.availableTypes = types
                 }
             }
@@ -433,8 +435,7 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
             guard let dataSource else { return }
             let items = dataSource.snapshot().itemIdentifiers
             if let quantity = viewModel.productsViewModel.quantity(forProductId: productId),
-                quantity == 0
-            {
+                quantity == 0 {
                 applySnapshot(animatingDifferences: true)
                 return
             }

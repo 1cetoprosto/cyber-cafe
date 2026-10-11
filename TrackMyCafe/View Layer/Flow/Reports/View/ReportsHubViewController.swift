@@ -2,8 +2,7 @@ import TinyConstraints
 import UIKit
 
 final class ReportsHubViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
-    Loggable
-{
+    Loggable {
 
     private let viewModel: ReportsHubViewModelType
 

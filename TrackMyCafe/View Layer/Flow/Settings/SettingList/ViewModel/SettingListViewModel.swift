@@ -8,39 +8,39 @@
 import Foundation
 
 // Structs moved/duplicated in SettingListViewController.swift - commenting out to avoid redeclaration errors
-//struct Section {
+// struct Section {
 //    let title: String
 //    let option: [SettingsOptionType]
-//}
+// }
 //
-//enum SettingsOptionType {
+// enum SettingsOptionType {
 //    case staticCell(model: SettingsStaticOption)
 //    case switchCell(model: SettingsSwitchOption)
 //    case dataCell(model: SettingsDataOption)
-//}
+// }
 //
-//struct SettingsSwitchOption {
+// struct SettingsSwitchOption {
 //    let title: String
 //    let icon: String //UIImage?
 //    let iconBackgroundColor: String //UIColor
 //    let isOn: Bool
 //    let handler: (() -> Void)
-//}
+// }
 //
-//struct SettingsStaticOption {
+// struct SettingsStaticOption {
 //    let title: String
 //    let icon: String //UIImage?
 //    let iconBackgroundColor: String //UIColor
 //    let handler: (() -> Void)
-//}
+// }
 //
-//struct SettingsDataOption {
+// struct SettingsDataOption {
 //    let title: String
 //    let icon: String //UIImage?
 //    let iconBackgroundColor: String //UIColor
 //    let data: String
 //    //let handler: ((_ dataLabel: UILabel) -> Void)
-//}
+// }
 
 class SettingListViewModel: SettingListViewModelType {
 

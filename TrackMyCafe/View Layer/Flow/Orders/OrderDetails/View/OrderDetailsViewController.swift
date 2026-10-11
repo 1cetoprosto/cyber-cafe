@@ -232,9 +232,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-        if #available(iOS 17.0, *) {
-            // Handled by trait change registration above.
-        } else {
+        if #unavailable(iOS 17.0) {
             handleTraitCollectionUpdate()
         }
     }
@@ -364,9 +362,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         updateChangeLabel()
 
         if (typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
-            DomainDatabaseService.shared.fetchTypes { [weak self] types in
+            Task { [weak self] in
+                let types = await DomainDatabaseService.shared.fetchTypes()
                 if let def = types.first(where: { $0.isDefault }) {
-                    DispatchQueue.main.async { self?.typeInputContainer.text = def.name }
+                    await MainActor.run { self?.typeInputContainer.text = def.name }
                 }
             }
         }
@@ -625,17 +624,14 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
 // MARK: - CollectionView
 extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout
-{
+    UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int
-    {
+        -> Int {
         return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
-        -> UICollectionViewCell
-    {
+        -> UICollectionViewCell {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "OrderCollectionViewCell", for: indexPath)
@@ -683,8 +679,7 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
-        -> String?
-    {
+        -> String? {
         return viewModel?.titleForRow(row: row, component: component)
     }
 

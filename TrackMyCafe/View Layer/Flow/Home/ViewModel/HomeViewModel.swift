@@ -88,43 +88,26 @@ final class HomeViewModel: HomeViewModelType {
 
 extension HomeViewModel {
     fileprivate func fetchOrders() async -> [OrderModel] {
-        await withCheckedContinuation { continuation in
-            database.fetchOrders { models in
-                continuation.resume(returning: models)
-            }
-        }
+        await database.fetchOrders()
     }
 
     fileprivate func fetchExpenses() async -> [OpexExpenseModel] {
-        await withCheckedContinuation { continuation in
-            database.fetchOpexExpenses { models in
-                continuation.resume(returning: models)
-            }
-        }
+        await database.fetchOpexExpenses()
     }
 
     fileprivate func fetchAllProductsOfOrders() async -> [ProductOfOrderModel] {
-        await withCheckedContinuation { continuation in
-            database.fetchProductsOfOrders(
-                from: Self.firestoreSafePast, to: Date()
-            ) { models in
-                continuation.resume(returning: models)
-            }
-        }
+        await database.fetchProductsOfOrders(
+            from: Self.firestoreSafePast, to: Date()
+        )
     }
 
     func fetchDailyBalances(for account: PaymentAccount, through referenceDate: Date) async
-        -> [DailyBalanceModel]
-    {
-        await withCheckedContinuation { continuation in
-            database.fetchDailyBalances(
-                forAccount: account,
-                from: Self.firestoreSafePast,
-                to: referenceDate
-            ) { balances in
-                continuation.resume(returning: balances)
-            }
-        }
+        -> [DailyBalanceModel] {
+        await database.fetchDailyBalances(
+            forAccount: account,
+            from: Self.firestoreSafePast,
+            to: referenceDate
+        )
     }
 
     private static let firestoreSafePast: Date = {

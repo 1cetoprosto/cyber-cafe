@@ -282,11 +282,9 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 }
 
 extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
-    UICollectionViewDelegate
-{
+    UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int
-    {
+        -> Int {
         filteredProducts.count
     }
 

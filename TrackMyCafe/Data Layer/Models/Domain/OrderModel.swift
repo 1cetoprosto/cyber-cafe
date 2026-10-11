@@ -7,6 +7,24 @@
 
 import Foundation
 
+// MARK: - OrderModel
+//
+// Domain model for a sale / order (чек).
+// See `docs/internal/ARCHITECTURE_AND_LOGIC.md` → section 1.3 (Sale / Order).
+//
+// Target shape (spec): id, date, items: [OrderItemModel], totalAmount, totalCost.
+//
+// Intentional v1.x deviations from the target spec:
+// - `sum` is used instead of `totalAmount` (legacy naming; equals Sales total).
+// - `cash` / `card` split the payment for cash/card reporting (v1.1.x).
+// - `type` carries the receipt/order type.
+// - `inventoryTracking` snapshots the Track-Ingredients setting at sale time.
+// - Order line items are NOT embedded here; they are stored as
+//   `ProductOfOrderModel` (linked by `orderId`). The COGS snapshot for each
+//   line is available via `ProductOfOrderModel.orderItemSnapshot` → `OrderItemModel`.
+// - `totalCost` is the frozen COGS snapshot at the moment of sale.
+// - Firebase/dictionary conversion initializers support Firestore round-trip.
+
 struct OrderModel {
     var id: String
     var date: Date
@@ -38,18 +56,6 @@ struct OrderModel {
         self.totalCost = totalCost
         self.inventoryTracking = inventoryTracking
         self.note = note
-    }
-
-    init(realmModel: RealmOrderModel) {
-        self.id = realmModel.id
-        self.date = realmModel.date
-        self.type = realmModel.type
-        self.sum = realmModel.sum
-        self.cash = realmModel.cash
-        self.card = realmModel.card
-        self.totalCost = realmModel.totalCost
-        self.inventoryTracking = realmModel.inventoryTracking
-        self.note = realmModel.note
     }
 
     init(firebaseModel: FIROrderModel) {

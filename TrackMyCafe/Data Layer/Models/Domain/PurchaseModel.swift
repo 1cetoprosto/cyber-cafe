@@ -7,6 +7,20 @@
 
 import Foundation
 
+// MARK: - PurchaseModel
+//
+// Domain model for ingredient purchases (stock replenishment).
+// See `docs/internal/ARCHITECTURE_AND_LOGIC.md` → section 1.1 (Purchase).
+//
+// Target shape (spec): id, date, ingredientId, quantity, price, supplierId?
+//   with computed `totalCost = quantity * price`.
+//
+// Intentional v1.x deviations from the target spec:
+// - `totalAmount` is stored (not only computed) so Firestore records keep the
+//   exact total captured at save time (round-trip safety). `totalCost` aliases it.
+// - `paymentAccount` is added to support cash/card split reporting (v1.1.x).
+// - Firebase conversion initializers support Firestore round-trip.
+
 struct PurchaseModel: Identifiable, Codable {
     let id: String
     let date: Date
@@ -40,17 +54,6 @@ struct PurchaseModel: Identifiable, Codable {
         self.totalAmount = totalAmount ?? (quantity * price)
         self.paymentAccount = paymentAccount
         self.supplierId = supplierId
-    }
-
-    init(realmModel: RealmPurchaseModel) {
-        self.id = realmModel.id
-        self.date = realmModel.date
-        self.ingredientId = realmModel.ingredientId
-        self.quantity = realmModel.quantity
-        self.price = realmModel.price
-        self.totalAmount = realmModel.totalAmount ?? (realmModel.quantity * realmModel.price)
-        self.paymentAccount = realmModel.paymentAccountRaw.flatMap(PaymentAccount.init(rawValue:))
-        self.supplierId = realmModel.supplierId
     }
 
     init(firebaseModel: FIRPurchaseModel) {

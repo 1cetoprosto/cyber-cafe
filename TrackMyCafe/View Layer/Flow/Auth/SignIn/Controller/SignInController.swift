@@ -162,8 +162,7 @@ class SignInController: UIViewController {
         if authLink == nil,
             UserSession.current.isAuth
                 && UserSession.current.useBioAuthUser == UserSession.current.userEmail
-                && (UserSession.current.useBioAuth ?? false)
-        {
+                && (UserSession.current.useBioAuth ?? false) {
             checkByBio()
         }
     }
@@ -175,8 +174,7 @@ class SignInController: UIViewController {
             .deviceOwnerAuthenticationWithBiometrics, error: &authError)
         if canUseBio && UserSession.current.rememberUser
             && (UserSession.current.useBioAuth ?? false)
-            && authLink == nil
-        {
+            && authLink == nil {
             switch context.biometryType {
             case .touchID:
                 bioAuthButton.setImage(
@@ -238,14 +236,14 @@ class SignInController: UIViewController {
             alertVC.addAction(
                 UIAlertAction(
                     title: R.string.global.cancel(), style: .destructive,
-                    handler: { (action) in
+                    handler: { (_) in
                         cancel()
                     }))
 
             alertVC.addAction(
                 UIAlertAction(
                     title: R.string.global.retry(), style: .destructive,
-                    handler: { handler in
+                    handler: { _ in
                         retry()
                     }))
             present(alertVC, animated: true)
@@ -273,7 +271,7 @@ class SignInController: UIViewController {
                 navigationController?.pushViewController(BioAuthController(context), animated: true)
             } else {
                 let controller = MainTabBarController()
-                //AppDelegate.shared.set(root: controller)
+                // AppDelegate.shared.set(root: controller)
                 SceneDelegate.shared.set(root: controller)
             }
             completionHandler?(true)
@@ -416,7 +414,7 @@ class SignInController: UIViewController {
         alertVC.addAction(
             UIAlertAction(
                 title: R.string.auth.signIn(), style: .default,
-                handler: { [weak self] action in
+                handler: { [weak self] _ in
                     self?.waitEmailConfirmation = false
                     if let email = alertVC.textFields?.first?.text, email.isValid(regex: .email) {
                         completion(email)
@@ -498,12 +496,10 @@ extension SignInController: UITextFieldDelegate {
 
 extension SignInController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch)
-        -> Bool
-    {
+        -> Bool {
         if touch.view is UIControl { return false }
         if let view = touch.view,
-            view.isDescendant(of: emailField) || view.isDescendant(of: passwordField)
-        {
+            view.isDescendant(of: emailField) || view.isDescendant(of: passwordField) {
             return false
         }
         return true

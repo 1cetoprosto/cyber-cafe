@@ -9,4 +9,3 @@ enum ImageStoragePaths {
         "productImages/categories/\(categoryId).jpg"
     }
 }
-

@@ -113,12 +113,10 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     ) {
         // 1. Save/Update Order (Parent)
         if self.isNewModel {
-            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) {
-                success in
+            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
                 if success {
                     // 2. Save Products (Children)
-                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) {
-                        productsSaved in
+                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) { productsSaved in
                         if productsSaved {
                             completion(.success(()))
                         } else {
@@ -130,8 +128,7 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
                 }
             }
         } else {
-            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) {
-                success in
+            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) { success in
                 if success {
                     // 2. Update Products (Children)
                     self.productsViewModel.updateOrder(
@@ -246,7 +243,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
 
     // MARK: - Helpers
     func fetchTypes() {
-        DomainDatabaseService.shared.fetchTypes { [weak self] types in
+        Task { [weak self] in
+            let types = await DomainDatabaseService.shared.fetchTypes()
             self?.types = types
             if let index = types.firstIndex(where: { $0.name == self?.order.type }) {
                 self?.selectedRow = index
@@ -255,12 +253,12 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     }
 
     func verifyRequiredData(completion: @escaping (Bool) -> Void) {
-        DomainDatabaseService.shared.fetchTypes { [weak self] types in
+        Task { [weak self] in
             guard let self = self else { return }
+            let types = await DomainDatabaseService.shared.fetchTypes()
             self.types = types
-            DomainDatabaseService.shared.fetchProductsPrice { productPrices in
-                completion(!types.isEmpty && !productPrices.isEmpty)
-            }
+            let productPrices = await DomainDatabaseService.shared.fetchProductsPrice()
+            completion(!types.isEmpty && !productPrices.isEmpty)
         }
     }
 

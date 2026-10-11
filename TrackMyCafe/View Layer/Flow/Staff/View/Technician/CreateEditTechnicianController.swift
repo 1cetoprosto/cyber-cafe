@@ -164,7 +164,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         isEditing: Bool = true, onChange: @escaping (String) -> Void
     ) -> UIView {
         let container = UIView()
-        //container.backgroundColor = UIColor.TableView.cellBackground
+        // container.backgroundColor = UIColor.TableView.cellBackground
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = label
@@ -238,8 +238,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         return container
     }
 
-    private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView
-    {
+    private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
@@ -415,19 +414,16 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 var removeRoles = [RoleConfig]()
                 var addRoles = [RoleConfig]()
                 if let role = roles.first(where: { $0.role == .technician }),
-                    self.technician.role == .moderator
-                {
+                    self.technician.role == .moderator {
                     removeRoles.append(role)
                 }
                 if let role = roles.first(where: { $0.role == .moderator }),
-                    self.technician.role == .technician
-                {
+                    self.technician.role == .technician {
                     removeRoles.append(role)
                 }
 
                 if (self.technician.role == .technician || self.technician.role == .techMod)
-                    && !(roles.contains { $0.role == .technician })
-                {
+                    && !(roles.contains { $0.role == .technician }) {
                     let techRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
                         email: self.technician.email, dataRef: UserSession.current.masterUserRef,
@@ -436,8 +432,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 }
 
                 if (self.technician.role == .moderator || self.technician.role == .techMod)
-                    && !(roles.contains { $0.role == .moderator })
-                {
+                    && !(roles.contains { $0.role == .moderator }) {
                     let techRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
                         email: self.technician.email, dataRef: UserSession.current.masterUserRef,

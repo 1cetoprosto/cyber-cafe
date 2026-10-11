@@ -26,36 +26,22 @@ final class DomainIngredientDataService: IngredientDataServiceProtocol {
     
     @MainActor
     func fetchIngredients() async throws -> [IngredientModel] {
-        return try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.fetchIngredients { ingredients in
-                continuation.resume(returning: ingredients)
-            }
-        }
+        await DomainDatabaseService.shared.fetchIngredients()
     }
     
     @MainActor
     func saveIngredient(_ ingredient: IngredientModel) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.saveIngredient(model: ingredient) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: DomainIngredientError.saveFailed)
-                }
-            }
+        let success = await DomainDatabaseService.shared.saveIngredient(model: ingredient)
+        guard success else {
+            throw DomainIngredientError.saveFailed
         }
     }
     
     @MainActor
     func deleteIngredient(_ ingredient: IngredientModel) async throws {
-        return try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.deleteIngredient(model: ingredient) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: DomainIngredientError.deleteFailed)
-                }
-            }
+        let success = await DomainDatabaseService.shared.deleteIngredient(model: ingredient)
+        guard success else {
+            throw DomainIngredientError.deleteFailed
         }
     }
 }

@@ -227,8 +227,7 @@ final class ManualMovementEditViewController: UIViewController {
         return makeSegmentedContainer(label: label, control: control)
     }
 
-    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView
-    {
+    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = UIConstants.mediumCornerRadius

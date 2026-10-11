@@ -21,7 +21,7 @@ class IAPReceiptAdapterAppleValidation: IAPReceiptAdapterProtocol {
     private var lastSubscriptionPurchase: ReceiptItem? {
         let result = SwiftyStoreKit.verifySubscriptions(productIds: Set(productIdentifiers), inReceipt: receipt)
         switch result {
-            case .purchased(_ , let items), .expired(_, let items):
+            case .purchased(_, let items), .expired(_, let items):
                 return items
                     .filter { $0.subscriptionExpirationDate != nil }
                     .sorted(by: { $0.subscriptionExpirationDate! < $1.subscriptionExpirationDate! })
@@ -75,4 +75,3 @@ class IAPReceiptAdapterAppleValidation: IAPReceiptAdapterProtocol {
         }
     }
 }
-

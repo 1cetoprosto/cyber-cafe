@@ -78,13 +78,13 @@ class StorageService {
                 
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"
-                thumbnailRef.putData(dataThumbnail, metadata: metadata) { (metadata, error) in
+                thumbnailRef.putData(dataThumbnail, metadata: metadata) { (_, error) in
                     guard error == nil else {
                         ref.delete(completion: nil)
                         completion(false, nil, nil)
                         return
                     }
-                    thumbnailRef.downloadURL { (url, error) in
+                    thumbnailRef.downloadURL { (url, _) in
                         guard let thumbnailDownloadURL = url else {
                             ref.delete(completion: nil)
                             thumbnailRef.delete(completion: nil)
@@ -99,4 +99,3 @@ class StorageService {
         }
     }
 }
-

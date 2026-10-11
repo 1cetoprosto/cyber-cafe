@@ -13,4 +13,3 @@ protocol FirestoreDB {
     func update<T: Encodable>(firModel: T, collection: String, documentId: String, completion: @escaping (Result<Void, Error>) -> Void)
     func delete(collection: String, documentId: String, completion: @escaping (Result<Void, Error>) -> Void)
 }
-

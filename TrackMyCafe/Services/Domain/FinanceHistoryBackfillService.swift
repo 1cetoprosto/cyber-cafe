@@ -1,9 +1,9 @@
 import Foundation
 
 protocol FinanceHistorySourceFetching {
-    func fetchOrders(completion: @escaping ([OrderModel]) -> Void)
-    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void)
-    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void)
+    func fetchOrders() async -> [OrderModel]
+    func fetchOpexExpenses() async -> [OpexExpenseModel]
+    func fetchPurchases() async -> [PurchaseModel]
 }
 
 extension DomainDatabaseService: FinanceHistorySourceFetching {}
@@ -56,10 +56,10 @@ final class FinanceHistoryBackfillService: Loggable {
     }
 
     private func makePlan() async -> FinanceHistoryBackfillPlan {
-        async let orders = sourceFetcher.fetchOrdersAsync()
-        async let expenses = sourceFetcher.fetchOpexExpensesAsync()
-        async let purchases = sourceFetcher.fetchPurchasesAsync()
-        async let existingEntries = persistence.fetchJournalEntriesAsync()
+        async let orders = sourceFetcher.fetchOrders()
+        async let expenses = sourceFetcher.fetchOpexExpenses()
+        async let purchases = sourceFetcher.fetchPurchases()
+        async let existingEntries = persistence.fetchJournalEntries()
 
         let expectedEntries =
             makeExpectedEntries(
@@ -242,25 +242,5 @@ private struct FinanceExpectedJournalEntry {
 extension BinaryFloatingPoint {
     fileprivate var isEffectivelyZero: Bool {
         abs(self) < 0.000_1
-    }
-}
-
-extension FinanceHistorySourceFetching {
-    fileprivate func fetchOrdersAsync() async -> [OrderModel] {
-        await withCheckedContinuation { continuation in
-            fetchOrders { continuation.resume(returning: $0) }
-        }
-    }
-
-    fileprivate func fetchOpexExpensesAsync() async -> [OpexExpenseModel] {
-        await withCheckedContinuation { continuation in
-            fetchOpexExpenses { continuation.resume(returning: $0) }
-        }
-    }
-
-    fileprivate func fetchPurchasesAsync() async -> [PurchaseModel] {
-        await withCheckedContinuation { continuation in
-            fetchPurchases { continuation.resume(returning: $0) }
-        }
     }
 }

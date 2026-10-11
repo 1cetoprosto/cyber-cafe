@@ -64,10 +64,10 @@ class UserSession {
     UserSession.current.role = roleConfig.role
     UserSession.current.userRef = roleConfig.userRef
     UserSession.current.dataRef = roleConfig.dataRef
-    //TODO: данні раніше бралися із rememberUser
+    // TODO: данні раніше бралися із rememberUser
     UserSession.current.rememberUser = true  // rememberUser
     UserSession.current.masterUserRef = roleConfig.dataRef
-    //TODO: данні раніше бралися із roleConfig.hasOnlineVersion
+    // TODO: данні раніше бралися із roleConfig.hasOnlineVersion
     // UserSession.current.hasOnlineVersion = true  // roleConfig.hasOnlineVersion
     UserSession.current.save()
 
@@ -139,7 +139,7 @@ class UserSession {
     masterUserRef = nil
     // hasOnlineVersion = false
 
-    //NotificationManager.removeAllScheduledComments() //TODO: розібратися навіщо це потрібно
+    // NotificationManager.removeAllScheduledComments() //TODO: розібратися навіщо це потрібно
   }
 
   func enableBioAuth(_ enable: Bool) {

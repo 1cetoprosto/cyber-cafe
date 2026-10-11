@@ -146,8 +146,7 @@ final class InventoryAdjustmentListViewModel: InventoryAdjustmentListViewModelPr
     // MARK: - Private
 
     private func makeItem(from adjustment: InventoryAdjustmentModel)
-        -> InventoryAdjustmentListItemViewModel
-    {
+        -> InventoryAdjustmentListItemViewModel {
         let ingredient = ingredientsById[adjustment.ingredientId]
         let ingredientName = ingredient?.name ?? R.string.global.inventoryUnknownIngredient()
         let unitText = ingredient?.unit.localizedName ?? ""

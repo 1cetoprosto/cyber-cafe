@@ -6,4 +6,3 @@ enum ManualMovementKind: String, Codable, CaseIterable {
     case transfer
     case adjustment
 }
-

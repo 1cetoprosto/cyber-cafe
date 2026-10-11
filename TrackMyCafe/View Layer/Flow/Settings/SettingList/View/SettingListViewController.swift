@@ -7,7 +7,6 @@
 
 import FirebaseAuth
 import MessageUI
-import RealmSwift
 import SVProgressHUD
 import SafariServices
 import StoreKit
@@ -49,8 +48,7 @@ struct SettingsDataOption {
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
-    MFMailComposeViewControllerDelegate, Loggable
-{
+    MFMailComposeViewControllerDelegate, Loggable {
     private let subscriptionBanner = SubscriptionBannerView()
 
     private let tableView: UITableView = {
@@ -117,8 +115,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 : R.string.global.settings_trackIngredientsFooter()
             let oldSection = self.models[1]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
-            let updatedOptions = oldSection.option.enumerated().map {
-                [weak self] idx, opt -> SettingsOptionType in
+            let updatedOptions = oldSection.option.enumerated().map { [weak self] idx, opt -> SettingsOptionType in
                 guard let self = self else { return opt }
                 switch opt {
                 case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
@@ -604,8 +601,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             UIAlertAction(title: R.string.global.cancel(), style: .cancel)
                         )
                         alert.addAction(
-                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
-                                _ in
+                            UIAlertAction(title: R.string.global.seedAction(), style: .default) { _ in
                                 let daysText = alert.textFields?.first?.text ?? "14"
                                 let days = Int(daysText) ?? 14
                                 SVProgressHUD.show(withStatus: R.string.global.seedingData())
@@ -720,7 +716,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         case .switchCell:
             break
         case .dataCell(let model):
-            let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
+            guard let cell = tableView.cellForRow(at: indexPath) as? SettingsDataTableViewCell
+            else { return }
             model.handler(cell.dataLabel)
         }
     }
@@ -921,10 +918,13 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         )
         alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
         alert.addAction(
-            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+            UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+                guard let self else { return }
                 SVProgressHUD.show(withStatus: R.string.global.deleting())
-                DomainDatabaseService.shared.deleteActiveDatabaseData { success in
-                    DispatchQueue.main.async {
+                Task { [weak self] in
+                    guard let self else { return }
+                    let success = await DomainDatabaseService.shared.deleteActiveDatabaseData()
+                    await MainActor.run {
                         SVProgressHUD.dismiss()
                         if success {
                             self.configure()
@@ -966,11 +966,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         switch type {
         case .privacy:
             return isUkrainian
-                ? "https://leokvit.notion.site/313f9211d4378065b441d8876d169bec?source=copy_link"  // TODO: Replace with actual UA link
+                ? "https://leokvit.notion.site/313f9211d4378065b441d8876d169bec?source=copy_link"
                 : "https://leokvit.notion.site/Privacy-Policy-313f9211d437808aaf71cd2390e4671d?source=copy_link"
         case .terms:
             return isUkrainian
-                ? "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link"  // TODO: Replace with actual UA link
+                ? "https://leokvit.notion.site/Terms-of-Service-313f9211d43780458359c1e9e7bf0076?source=copy_link"
                 : "https://leokvit.notion.site/Terms-of-Service-313f9211d4378018b630fe6d2bfbbe09?source=copy_link"
         }
     }
