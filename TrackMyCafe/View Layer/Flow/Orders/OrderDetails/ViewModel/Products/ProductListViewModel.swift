@@ -79,8 +79,9 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
                     newProducts.append(product)
                 }
 
+                let sortedProducts = newProducts.sorted { $0.name < $1.name }
                 await MainActor.run {
-                    self.products = newProducts.sorted { $0.name < $1.name }
+                    self.products = sortedProducts
                     self.emitChange(.fullReload)
                 }
             } else {
@@ -308,8 +309,9 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
             let newId = await DomainDatabaseService.shared.saveProduct(order: product)
             if let newId = newId {
+                let productCopy = product
                 await MainActor.run {
-                    var updated = product
+                    var updated = productCopy
                     updated.id = newId
                     if self.products.indices.contains(i) {
                         self.products[i] = updated
