@@ -42,7 +42,6 @@ Killer-features - унікальність пропозиції, простот�
 
 - MVVM
 - основне сховище: Firebase Firestore
-- Realm: legacy-кеш / історичний шар, який не є цільовим source of truth для нових фіч
 - AutoLayout
 - верстка кодом
 
