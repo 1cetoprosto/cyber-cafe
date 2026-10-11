@@ -238,7 +238,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         return container
     }
 
-    private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView {
+    private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView
+    {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
@@ -347,7 +348,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
             guard let self else { return }
 
             if isNew {
-                let roles = await FirestoreDatabaseService.getRoles(technician.email.trimmed.lowercased())
+                let roles = await FirestoreDatabaseService.getRoles(
+                    technician.email.trimmed.lowercased())
                 if (roles ?? []).isEmpty {
                     var newRoles = [RoleConfig]()
                     let userRef = Firestore.firestore().collection("users").document()
@@ -393,18 +395,25 @@ class CreateEditTechnicianController: UIViewController, Loggable {
 
                     do {
                         try await batch.commit()
-                        self.log(isNew)
-                        self.sendInviteEmail()
+                        await MainActor.run {
+                            self.log(isNew)
+                            self.sendInviteEmail()
+                        }
                     } catch {
-                        SVProgressHUD.dismiss()
-                        self.showAlert(
-                            R.string.global.error(), body: R.string.global.wentWrong())
+                        await MainActor.run {
+                            SVProgressHUD.dismiss()
+                            self.showAlert(
+                                R.string.global.error(), body: R.string.global.wentWrong())
+                        }
                     }
                 } else {
-                    SVProgressHUD.dismiss()
-                    self.showAlert(
-                        R.string.global.error(), body: R.string.global.technicianEmailAlreadyExist()
-                    )
+                    await MainActor.run {
+                        SVProgressHUD.dismiss()
+                        self.showAlert(
+                            R.string.global.error(),
+                            body: R.string.global.technicianEmailAlreadyExist()
+                        )
+                    }
                 }
             } else {
                 let items = await FirestoreDatabaseService.getTechRoles(technician.email)
@@ -415,16 +424,19 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 var removeRoles = [RoleConfig]()
                 var addRoles = [RoleConfig]()
                 if let role = roles.first(where: { $0.role == .technician }),
-                    technician.role == .moderator {
+                    technician.role == .moderator
+                {
                     removeRoles.append(role)
                 }
                 if let role = roles.first(where: { $0.role == .moderator }),
-                    technician.role == .technician {
+                    technician.role == .technician
+                {
                     removeRoles.append(role)
                 }
 
                 if (technician.role == .technician || technician.role == .techMod)
-                    && !(roles.contains { $0.role == .technician }) {
+                    && !(roles.contains { $0.role == .technician })
+                {
                     let techRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
                         email: technician.email, dataRef: UserSession.current.masterUserRef,
@@ -433,7 +445,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 }
 
                 if (technician.role == .moderator || technician.role == .techMod)
-                    && !(roles.contains { $0.role == .moderator }) {
+                    && !(roles.contains { $0.role == .moderator })
+                {
                     let modeRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
                         email: technician.email, dataRef: UserSession.current.masterUserRef,
@@ -467,12 +480,16 @@ class CreateEditTechnicianController: UIViewController, Loggable {
 
                 do {
                     try await batch.commit()
-                    self.log(isNew)
-                    SVProgressHUD.dismiss()
-                    self.navigationController?.popViewController(animated: true)
+                    await MainActor.run {
+                        self.log(isNew)
+                        SVProgressHUD.dismiss()
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 } catch {
-                    SVProgressHUD.dismiss()
-                    self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
+                    await MainActor.run {
+                        SVProgressHUD.dismiss()
+                        self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
+                    }
                 }
             }
         }

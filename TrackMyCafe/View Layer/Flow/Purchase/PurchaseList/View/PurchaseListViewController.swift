@@ -84,9 +84,11 @@ class PurchaseListViewController: UIViewController, ProGated {
     }
 
     private func fetchData() {
-        viewModel.getPurchases { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
+        Task { [weak self] in
+            guard let self else { return }
+            await viewModel.getPurchases()
+            await MainActor.run {
+                self.tableView.reloadData()
             }
         }
     }
@@ -159,7 +161,7 @@ class PurchaseListViewController: UIViewController, ProGated {
             guard let self = self else { return }
             self.selectedStartDate = Calendar.current.startOfDay(for: start)
             let endOfDay =
-            Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: end) ?? end
+                Calendar.current.date(bySettingHour: 23, minute: 59, second: 59, of: end) ?? end
             self.selectedEndDate = endOfDay
             self.applyFilters()
         }
@@ -169,8 +171,9 @@ class PurchaseListViewController: UIViewController, ProGated {
     }
 
     private func presentIngredientFilter() {
-        viewModel.getPurchases { [weak self] in
+        Task { [weak self] in
             guard let self = self else { return }
+            await viewModel.getPurchases()
             let alert = UIAlertController(
                 title: R.string.global.filterByIngredient(),
                 message: nil,
@@ -228,11 +231,8 @@ class PurchaseListViewController: UIViewController, ProGated {
         viewModel.applyFilter(
             dateRange: range,
             ingredientId: selectedIngredientId
-        ) { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-            }
-        }
+        )
+        tableView.reloadData()
     }
 }
 
@@ -245,7 +245,9 @@ private final class DateRangePickerViewController: UIViewController {
     private var startDate: Date = Date()
     private var endDate: Date = Date()
     private let modeControl: DefaultSegmentedControl = {
-        let control = DefaultSegmentedControl(items: [R.string.global.dateFrom(), R.string.global.dateTo()])
+        let control = DefaultSegmentedControl(items: [
+            R.string.global.dateFrom(), R.string.global.dateTo(),
+        ])
         control.selectedSegmentIndex = 0
         return control
     }()
@@ -399,10 +401,15 @@ extension PurchaseListViewController: UITableViewDelegate {
                         return
                     }
 
-                    self.viewModel.deletePurchase(at: indexPath) { [weak self] success in
-                        DispatchQueue.main.async {
+                    Task { [weak self] in
+                        guard let self else {
+                            completion(false)
+                            return
+                        }
+                        let success = await self.viewModel.deletePurchase(at: indexPath)
+                        await MainActor.run {
                             if success {
-                                self?.tableView.reloadData()
+                                self.tableView.reloadData()
                             }
                             completion(success)
                         }
