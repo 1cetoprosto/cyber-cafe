@@ -53,4 +53,3 @@ actor ImageDataCache {
         return dir.appendingPathComponent(fileName).appendingPathExtension("bin")
     }
 }
-

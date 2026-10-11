@@ -28,10 +28,7 @@ final class SubscriptionPresenter {
             let periodUnit = introPrice.subscriptionPeriod.unit
             var daysCount = 7 // Default
 
-            if periodUnit == .day { daysCount = days }
-            else if periodUnit == .week { daysCount = days * 7 }
-            else if periodUnit == .month { daysCount = days * 30 }
-            else if periodUnit == .year { daysCount = days * 365 }
+            if periodUnit == .day { daysCount = days } else if periodUnit == .week { daysCount = days * 7 } else if periodUnit == .month { daysCount = days * 30 } else if periodUnit == .year { daysCount = days * 365 }
 
             return SubscriptionDisplayInfo(
                 buttonTitle: R.string.global.tryButtonTitle(daysCount),

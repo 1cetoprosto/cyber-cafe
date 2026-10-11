@@ -25,7 +25,3 @@ struct FIRProductsPriceModel: Codable {
     self.imagePath = dataModel.imagePath
   }
 }
-
-//extension FIRProductsPriceModel {
-//    static var empty = FIRProductsPriceModel(productsPriceModel: RealmProductsPriceModel())
-//}

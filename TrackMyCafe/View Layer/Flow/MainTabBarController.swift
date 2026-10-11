@@ -10,8 +10,7 @@ import SVProgressHUD
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
-    UINavigationControllerDelegate
-{
+    UINavigationControllerDelegate {
 
     private var hasAlreadyCheckedSession = false
     private var demoDataButtonSafeAreaBottomConstraint: NSLayoutConstraint?
@@ -121,16 +120,16 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         // Always check if DB is empty on launch.
         // If empty -> AUTOMATICALLY seed demo data (as requested).
 
-        DomainDatabaseService.shared.fetchProductsPrice { [weak self] products in
+        Task { [weak self] in
+            let products = await DomainDatabaseService.shared.fetchProductsPrice()
             guard products.isEmpty else { return }
 
             // Also check ingredients to be sure
-            DomainDatabaseService.shared.fetchIngredients { ingredients in
-                guard ingredients.isEmpty else { return }
+            let ingredients = await DomainDatabaseService.shared.fetchIngredients()
+            guard ingredients.isEmpty else { return }
 
-                DispatchQueue.main.async {
-                    self?.seedDemoData()
-                }
+            await MainActor.run {
+                self?.seedDemoData()
             }
         }
     }

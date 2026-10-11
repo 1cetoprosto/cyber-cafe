@@ -8,30 +8,20 @@
 import Foundation
 
 protocol DomainDB {
-    // Asynchronous method for updating sales data
+    // MARK: - Order Products (ProductOfOrder)
     func updateProduct(
         model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double,
-        sum: Double)
+        sum: Double) async
+    func fetchProduct(forDate date: Date) async -> [ProductOfOrderModel]
+    func fetchProduct(forDate date: Date, withName name: String) async -> ProductOfOrderModel?
+    func fetchProduct(withOrderId id: String) async -> [ProductOfOrderModel]
+    func fetchProductsOfOrders(from startDate: Date, to endDate: Date) async
+        -> [ProductOfOrderModel]
+    func fetchOrderItems(withOrderId id: String) async -> [OrderItemModel]
+    func saveProduct(order: ProductOfOrderModel) async -> String?
+    func deleteProduct(order: ProductOfOrderModel) async -> Bool
 
-    // Asynchronous method for getting a sales list for a specific date
-    func fetchProduct(forDate date: Date, completion: @escaping ([ProductOfOrderModel]) -> Void)
-
-    // Asynchronous method for getting sales for a specific date and title
-    func fetchProduct(
-        forDate date: Date, withName name: String,
-        completion: @escaping (ProductOfOrderModel?) -> Void)
-
-    // Order Products (ProductOfOrder)
-    func fetchProduct(withOrderId id: String, completion: @escaping ([ProductOfOrderModel]) -> Void)
-    func fetchProductsOfOrders(
-        from startDate: Date, to endDate: Date,
-        completion: @escaping ([ProductOfOrderModel]) -> Void
-    )
-    func fetchOrderItems(withOrderId id: String, completion: @escaping ([OrderItemModel]) -> Void)
-    func saveProduct(order: ProductOfOrderModel, completion: @escaping (String?) -> Void)
-    func deleteProduct(order: ProductOfOrderModel, completion: @escaping (Bool) -> Void)
-
-    // Asynchronous methods for updating and retrieving sales data
+    // MARK: - Orders
     func updateOrders(
         model: OrderModel,
         date: Date,
@@ -40,73 +30,80 @@ protocol DomainDB {
         cashAmount: Double,
         cardAmount: Double,
         totalCost: Double,
-        note: String?)
-    func fetchOrders(completion: @escaping ([OrderModel]) -> Void)
-    func fetchSectionsOfOrders(completion: @escaping ([(date: Date, items: [OrderModel])]) -> Void)
-    func fetchOrders(forId id: String, completion: @escaping (OrderModel?) -> Void)
-    func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void)
-    func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void)
+        note: String?) async
+    func fetchOrders() async -> [OrderModel]
+    func fetchSectionsOfOrders() async -> [(date: Date, items: [OrderModel])]
+    func fetchOrders(forId id: String) async -> OrderModel?
+    func saveOrder(order: OrderModel) async -> String?
+    func deleteOrder(order: OrderModel) async -> Bool
     func hasAnyOrderWithInventoryTracking() async -> Bool
 
-    // Asynchronous methods for updating and retrieving product data
-    func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double)
-    func fetchProductsPrice(completion: @escaping ([ProductsPriceModel]) -> Void)
-    func saveProductsPrice(productPrice: ProductsPriceModel, completion: @escaping (Bool) -> Void)
-    func deleteProductsPrice(model: ProductsPriceModel, completion: @escaping (Bool) -> Void)
+    // MARK: - Products Price
+    func updateProductsPrice(model: ProductsPriceModel, name: String, price: Double) async
+    func fetchProductsPrice() async -> [ProductsPriceModel]
+    func saveProductsPrice(productPrice: ProductsPriceModel) async -> Bool
+    func deleteProductsPrice(model: ProductsPriceModel) async -> Bool
 
-    // Asynchronous methods for updating and retrieving purchase data
-    func updateOpexExpense(model: OpexExpenseModel)
-    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void)
-    func fetchSectionsOfOpexExpenses(completion: @escaping ([(date: Date, items: [OpexExpenseModel])]) -> Void)
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void)
-    func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void)
+    // MARK: - Opex Expenses
+    func updateOpexExpense(model: OpexExpenseModel) async
+    func fetchOpexExpenses() async -> [OpexExpenseModel]
+    func fetchSectionsOfOpexExpenses() async -> [(date: Date, items: [OpexExpenseModel])]
+    func saveOpexExpense(model: OpexExpenseModel) async -> String?
+    func deleteOpexExpense(model: OpexExpenseModel) async -> Bool
 
-    // Journal entries
-    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void)
-    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void)
+    // MARK: - Journal entries
+    func saveJournalEntry(model: JournalEntryModel) async -> String?
+    func fetchJournalEntries() async -> [JournalEntryModel]
 
-    // Daily balances
-    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void)
-    func fetchDailyBalance(
-        forAccount account: PaymentAccount,
-        date: Date,
-        completion: @escaping (DailyBalanceModel?) -> Void
-    )
+    // MARK: - Daily balances
+    func saveDailyBalance(model: DailyBalanceModel) async -> Bool
+    func fetchDailyBalance(forAccount account: PaymentAccount, date: Date) async
+        -> DailyBalanceModel?
     func fetchDailyBalances(
         forAccount account: PaymentAccount,
         from startDate: Date,
-        to endDate: Date,
-        completion: @escaping ([DailyBalanceModel]) -> Void
-    )
+        to endDate: Date
+    ) async -> [DailyBalanceModel]
 
-    // Asynchronous methods for updating and retrieving data on income types
-    func updateType(model: TypeModel, type: String)
-    func fetchTypes(completion: @escaping ([TypeModel]) -> Void)
-    func saveType(model: TypeModel, completion: @escaping (Bool) -> Void)
-    func deleteType(model: TypeModel, completion: @escaping (Bool) -> Void)
-    func setDefaultType(model: TypeModel, isDefault: Bool)
+    // MARK: - Types
+    func updateType(model: TypeModel, type: String) async
+    func fetchTypes() async -> [TypeModel]
+    func saveType(model: TypeModel) async -> Bool
+    func deleteType(model: TypeModel) async -> Bool
+    func setDefaultType(model: TypeModel, isDefault: Bool) async
 
-    // Ingredients
-    func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void)
-    func fetchIngredient(byId id: String, completion: @escaping (IngredientModel?) -> Void)
-    func saveIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void)
-    func deleteIngredient(model: IngredientModel, completion: @escaping (Bool) -> Void)
+    // MARK: - Ingredients
+    func fetchIngredients() async -> [IngredientModel]
+    func fetchIngredient(byId id: String) async -> IngredientModel?
+    func saveIngredient(model: IngredientModel) async -> Bool
+    func deleteIngredient(model: IngredientModel) async -> Bool
 
-    // Purchases
-    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void)
-    func savePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void)
-    func deletePurchase(model: PurchaseModel, completion: @escaping (Bool) -> Void)
+    // MARK: - Purchases
+    func fetchPurchases() async -> [PurchaseModel]
+    func savePurchase(model: PurchaseModel) async -> Bool
+    func deletePurchase(model: PurchaseModel) async -> Bool
 
-    // Recipes
-    func fetchRecipe(
-        forProductId productId: String, completion: @escaping ([RecipeItemModel]) -> Void)
+    // MARK: - Recipes
+    func fetchRecipe(forProductId productId: String) async -> [RecipeItemModel]
 
-    // Asynchronous method for deleting data from the active database
-    func deleteActiveDatabaseData(completion: @escaping (Bool) -> Void)
+    // MARK: - Inventory Adjustments
+    func saveInventoryAdjustment(model: InventoryAdjustmentModel) async -> String?
+    func fetchInventoryAdjustments() async -> [InventoryAdjustmentModel]
+    func fetchInventoryAdjustments(
+        from startDate: Date?,
+        to endDate: Date?,
+        ingredientId: String?,
+        bulkSessionId: String?
+    ) async -> [InventoryAdjustmentModel]
 
-    // Test Data & Migration
+    // MARK: - Product Categories
+    func fetchProductCategories() async -> [ProductCategoryModel]
+    func saveProductCategory(model: ProductCategoryModel) async -> Bool
+    func deleteProductCategory(model: ProductCategoryModel) async -> Bool
+
+    // MARK: - Database
+    func deleteActiveDatabaseData() async -> Bool
+
+    // MARK: - Test Data
     func seedTestData(forDays days: Int) async
-    // Removed Realm migration methods
-    // func transferDataFromRealmToFIR(completion: @escaping () -> Void)
-    // func transferDataFromFIRToRealm(completion: @escaping () -> Void)
 }

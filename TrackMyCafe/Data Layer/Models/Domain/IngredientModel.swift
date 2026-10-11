@@ -49,15 +49,6 @@ struct IngredientModel: Identifiable, Codable {
         self.minStockThreshold = minStockThreshold
     }
 
-    init(realmModel: RealmIngredientModel) {
-        self.id = realmModel.id
-        self.name = realmModel.name
-        self.averageCost = realmModel.averageCost
-        self.stockQuantity = realmModel.stockQuantity
-        self.unit = MeasurementUnit(rawValue: realmModel.unit) ?? .pcs
-        self.minStockThreshold = realmModel.minStockThreshold
-    }
-
     init(firebaseModel: FIRIngredientModel) {
         self.id = firebaseModel.id ?? ""
         self.name = firebaseModel.name

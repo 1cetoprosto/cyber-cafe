@@ -7,6 +7,24 @@
 
 import Foundation
 
+// MARK: - ProductOfOrderModel
+//
+// Display + persistence model for a single line of an order (product in a check).
+// Related to `docs/internal/ARCHITECTURE_AND_LOGIC.md` → section 1.3 (Sale / Order).
+//
+// Role split (NOT a duplicate of `OrderItemModel`):
+// - `ProductOfOrderModel` is the UI/persistence line: it carries denormalized
+//   `name`, `orderId`, `date`, `sum`, `costSum` so the order-details product
+//   list can render without extra lookups, and so each line can be saved to
+//   Firestore independently.
+// - `OrderItemModel` is the COGS snapshot: `productId`, `quantity`, `salePrice`,
+//   `costPrice`. It is what `CostingService` / `InventoryService` consume.
+//
+// Bridge: `ProductOfOrderModel.orderItemSnapshot` → `OrderItemModel`
+//         and `OrderItemModel.init(product:)` ← `ProductOfOrderModel`.
+//
+// Firebase conversion initializers support Firestore round-trip.
+
 struct ProductOfOrderModel: Equatable {
     var id: String
     var productId: String
@@ -18,8 +36,11 @@ struct ProductOfOrderModel: Equatable {
     var sum: Double
     var costPrice: Double
     var costSum: Double
-    
-    init(id: String, productId: String = "", orderId: String, date: Date, name: String, quantity: Int, price: Double, sum: Double, costPrice: Double = 0.0, costSum: Double = 0.0) {
+
+    init(
+        id: String, productId: String = "", orderId: String, date: Date, name: String,
+        quantity: Int, price: Double, sum: Double, costPrice: Double = 0.0, costSum: Double = 0.0
+    ) {
         self.id = id
         self.productId = productId
         self.orderId = orderId
@@ -31,20 +52,7 @@ struct ProductOfOrderModel: Equatable {
         self.costPrice = costPrice
         self.costSum = costSum
     }
-    
-    init(realmModel: RealmProductModel) {
-        self.id = realmModel.id
-        self.productId = realmModel.productId
-        self.orderId = realmModel.orderId
-        self.date = realmModel.date
-        self.name = realmModel.name
-        self.quantity = realmModel.quantity
-        self.price = realmModel.price
-        self.sum = realmModel.sum
-        self.costPrice = realmModel.costPrice
-        self.costSum = realmModel.costSum
-    }
-    
+
     init(firebaseModel: FIRProductModel) {
         self.id = firebaseModel.id ?? ""
         self.productId = firebaseModel.productId ?? ""

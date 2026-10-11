@@ -47,8 +47,7 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
         return try await getData(ref: makeReference(path: path), maxSize: maxSize)
     }
 
-    private func putData(ref: StorageReference, data: Data, metadata: StorageMetadata) async throws
-    {
+    private func putData(ref: StorageReference, data: Data, metadata: StorageMetadata) async throws {
         try await withCheckedThrowingContinuation {
             (continuation: CheckedContinuation<Void, Error>) in
             ref.putData(data, metadata: metadata) { _, error in

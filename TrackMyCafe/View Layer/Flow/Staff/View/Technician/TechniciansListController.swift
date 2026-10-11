@@ -9,7 +9,7 @@ import UIKit
 
 enum TechniciansListControllerState {
     case simple
-    //case forCalculation
+    // case forCalculation
 }
 
 class TechniciansListController: PersonsListViewController<Technician> {
@@ -85,4 +85,3 @@ class TechniciansListController: PersonsListViewController<Technician> {
         }
     }
 }
-

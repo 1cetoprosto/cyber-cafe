@@ -6,7 +6,6 @@
 //
 
 import Foundation
-import RealmSwift
 import TinyConstraints
 import UIKit
 
@@ -21,7 +20,7 @@ class TypesListViewController: UIViewController, Loggable {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         configure()
-        //tableView.reloadData()
+        // tableView.reloadData()
     }
 
     override func viewDidLoad() {
@@ -45,9 +44,12 @@ class TypesListViewController: UIViewController, Loggable {
     }
 
     func configure() {
-        DomainDatabaseService.shared.fetchTypes { types in
-            self.types = types
-            self.tableView.reloadData()
+        Task { [weak self] in
+            let types = await DomainDatabaseService.shared.fetchTypes()
+            await MainActor.run {
+                self?.types = types
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -73,7 +75,8 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =
             tableView.dequeueReusableCell(withIdentifier: CellIdentifiers.typesCell, for: indexPath)
-            as! TypeTableViewCell
+            as? TypeTableViewCell
+        guard let cell = cell else { return UITableViewCell() }
         cell.configure(type: types[indexPath.row], indexPath: indexPath)
 
         return cell
@@ -86,7 +89,7 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
         let typeVC = TypeDetailsViewController(type: model)
         //        typeVC.typesModel = model
         //        typeVC.newModel = false
-        //typeVC.type = model
+        // typeVC.type = model
         navigationController?.pushViewController(typeVC, animated: true)
     }
 
@@ -96,16 +99,18 @@ extension TypesListViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> UISwipeActionsConfiguration? {
         let model = types[indexPath.row]
 
-        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete())
-        {
-            _, _, _ in
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, _ in
+            guard let self else { return }
 
-            DomainDatabaseService.shared.deleteType(model: model) { [self] success in
+            Task { [weak self] in
+                guard let self else { return }
+                let success = await DomainDatabaseService.shared.deleteType(model: model)
                 if success {
                     logger.notice("Type \(model.id) deleted successfully")
-                    self.configure()
-
-                    tableView.reloadData()
+                    await MainActor.run {
+                        self.configure()
+                        tableView.reloadData()
+                    }
                 } else {
                     logger.error("Failed to delete type \(model.id)")
                 }

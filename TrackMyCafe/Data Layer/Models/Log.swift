@@ -40,4 +40,3 @@ extension Log {
         return "Date: " + timestamp.asString(showTime: true) + ", action: " + action.rawValue + ", for object: " + object.rawValue + ", description: " + description + additionalInfo
     }
 }
-

@@ -48,4 +48,3 @@ class ModeratorListController: PersonsListViewController<Technician> {
         }
     }
 }
-

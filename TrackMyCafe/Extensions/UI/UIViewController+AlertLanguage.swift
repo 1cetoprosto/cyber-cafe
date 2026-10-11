@@ -33,7 +33,7 @@ extension UIViewController {
     let cansel = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
 
     alert.addAction(english)
-    //alert.addAction(russian)
+    // alert.addAction(russian)
     alert.addAction(ukrainian)
     alert.addAction(cansel)
 

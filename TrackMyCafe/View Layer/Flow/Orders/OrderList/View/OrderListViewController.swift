@@ -5,8 +5,8 @@
 //  Created by Леонід Квіт on 03.11.2021.
 //
 
-import UIKit
 import TinyConstraints
+import UIKit
 
 class OrderListViewController: UIViewController, Loggable, ProGated {
     private var viewModel: OrderListViewModelType?
@@ -83,8 +83,9 @@ class OrderListViewController: UIViewController, Loggable, ProGated {
 
     private func fetchOrdersData() {
         viewModel = OrderListViewModel()
-        viewModel?.getOrders { [weak self] in
-            DispatchQueue.main.async {
+        Task { [weak self] in
+            await self?.viewModel?.getOrders()
+            await MainActor.run {
                 self?.tableView.reloadData()
             }
         }
@@ -109,10 +110,11 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =
-        tableView.dequeueReusableCell(withIdentifier: OrdersTableViewCell.identifier, for: indexPath)
-        as? OrdersTableViewCell
+            tableView.dequeueReusableCell(
+                withIdentifier: OrdersTableViewCell.identifier, for: indexPath)
+            as? OrdersTableViewCell
         guard let tableViewCell = cell,
-              let viewModel = viewModel
+            let viewModel = viewModel
         else { return UITableViewCell() }
 
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
@@ -149,8 +151,11 @@ extension OrderListViewController: UITableViewDelegate, UITableViewDataSource {
                     guard let self else { return }
                     viewModel.deleteOrderModel(atIndexPath: indexPath)
 
-                    viewModel.getOrders { [weak self] in
-                        self?.tableView.reloadData()
+                    Task { [weak self] in
+                        await viewModel.getOrders()
+                        await MainActor.run {
+                            self?.tableView.reloadData()
+                        }
                     }
                     completion(true)
                 },

@@ -95,8 +95,7 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testBalanceJournalService_legacyOpexWithoutPaymentAccount_doesNotAppendEntries()
-        async throws
-    {
+        async throws {
         let persistence = MockFinancePersistence()
         let service = BalanceJournalService(database: persistence)
         let expense = OpexExpenseModel(
@@ -157,8 +156,7 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testBalanceJournalService_legacyPurchaseWithoutPaymentAccount_doesNotAppendEntries()
-        async throws
-    {
+        async throws {
         let persistence = MockFinancePersistence()
         let service = BalanceJournalService(database: persistence)
         let purchase = PurchaseModel(
@@ -273,8 +271,7 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testFinanceHistoryBackfillService_createsOnlyMissingEntriesAndMarksCompleted()
-        async throws
-    {
+        async throws {
         let sourceFetcher = MockFinanceHistorySourceFetcher()
         let persistence = MockFinancePersistence()
         let materializer = MockDailyBalanceMaterializer()
@@ -376,8 +373,7 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testFinanceHistoryBackfillService_existingEntriesDoNotDuplicateAndStillMaterialize()
-        async throws
-    {
+        async throws {
         let sourceFetcher = MockFinanceHistorySourceFetcher()
         let persistence = MockFinancePersistence()
         let materializer = MockDailyBalanceMaterializer()
@@ -680,8 +676,8 @@ final class TrackMyCafeTests: XCTestCase {
         ]
         let expenses: [OpexExpenseModel] = [
             OpexExpenseModel(
-                id: "e1", date: refDate, name: "Rent", note: "", price: 50, paymentAccount: .cash,
-                category: nil)
+                id: "e1", date: refDate, categoryId: "rent", amount: 50, paymentAccount: .cash,
+                note: "")
         ]
 
         let snapshot = facade.makeSnapshot(
@@ -736,9 +732,9 @@ final class TrackMyCafeTests: XCTestCase {
             dailyBalancesByAccount: [:]
         )
 
-        XCTAssertEqual(snapshot.plByPeriod[.day]?.sales, 100, accuracy: 0.01)
-        XCTAssertEqual(snapshot.plByPeriod[.week]?.sales, 300, accuracy: 0.01)
-        XCTAssertEqual(snapshot.plByPeriod[.month]?.sales, 700, accuracy: 0.01)
+        XCTAssertEqual(snapshot.plByPeriod[.day]?.sales ?? 0, 100, accuracy: 0.01)
+        XCTAssertEqual(snapshot.plByPeriod[.week]?.sales ?? 0, 300, accuracy: 0.01)
+        XCTAssertEqual(snapshot.plByPeriod[.month]?.sales ?? 0, 700, accuracy: 0.01)
     }
 
     func testDomainDashboardFacade_periodSelector_switchesLastListsToCorrectPeriod() {
@@ -792,11 +788,11 @@ final class TrackMyCafeTests: XCTestCase {
         let inPeriod = ref.addingTimeInterval(3600)
         let products: [ProductOfOrderModel] = [
             ProductOfOrderModel(
-                id: "p1", orderId: "o", productId: "a", name: "Espresso",
-                price: 30, quantity: 5, costPerUnit: 5, sum: 150, costSum: 25, date: inPeriod),
+                id: "p1", productId: "a", orderId: "o", date: inPeriod, name: "Espresso",
+                quantity: 5, price: 30, sum: 150, costPrice: 5, costSum: 25),
             ProductOfOrderModel(
-                id: "p2", orderId: "o", productId: "b", name: "Tea",
-                price: 20, quantity: 2, costPerUnit: 18, sum: 40, costSum: 36, date: inPeriod),
+                id: "p2", productId: "b", orderId: "o", date: inPeriod, name: "Tea",
+                quantity: 2, price: 20, sum: 40, costPrice: 18, costSum: 36),
         ]
 
         let snapshot = facade.makeSnapshot(
@@ -809,9 +805,9 @@ final class TrackMyCafeTests: XCTestCase {
         )
 
         XCTAssertEqual(snapshot.bestProductInPeriod?.productId, "a")
-        XCTAssertEqual(snapshot.bestProductInPeriod?.grossProfit, 125, accuracy: 0.0001)
+        XCTAssertEqual(snapshot.bestProductInPeriod?.grossProfit ?? 0, 125, accuracy: 0.0001)
         XCTAssertEqual(snapshot.worstProductInPeriod?.productId, "b")
-        XCTAssertEqual(snapshot.worstProductInPeriod?.grossProfit, 4, accuracy: 0.0001)
+        XCTAssertEqual(snapshot.worstProductInPeriod?.grossProfit ?? 0, 4, accuracy: 0.0001)
     }
 
     func testDomainDashboardFacade_productRankingOutsidePeriodIgnored() {
@@ -821,11 +817,11 @@ final class TrackMyCafeTests: XCTestCase {
         let outside = makeDate(year: 2026, month: 8, day: 1)
         let products: [ProductOfOrderModel] = [
             ProductOfOrderModel(
-                id: "p1", orderId: "o1", productId: "a", name: "X",
-                price: 10, quantity: 1, costPerUnit: 1, sum: 10, costSum: 1, date: inside),
+                id: "p1", productId: "a", orderId: "o1", date: inside, name: "X",
+                quantity: 1, price: 10, sum: 10, costPrice: 1, costSum: 1),
             ProductOfOrderModel(
-                id: "p2", orderId: "o2", productId: "b", name: "Y",
-                price: 99, quantity: 1, costPerUnit: 1, sum: 99, costSum: 1, date: outside),
+                id: "p2", productId: "b", orderId: "o2", date: outside, name: "Y",
+                quantity: 1, price: 99, sum: 99, costPrice: 1, costSum: 1),
         ]
 
         let snapshot = facade.makeSnapshot(
@@ -847,13 +843,16 @@ final class TrackMyCafeTests: XCTestCase {
         let balances: [PaymentAccount: [DailyBalanceModel]] = [
             .cash: [
                 DailyBalanceModel(
-                    account: .cash, date: makeDate(year: 2026, month: 8, day: 10), balance: 50),
+                    date: makeDate(year: 2026, month: 8, day: 10), account: .cash, balance: 50,
+                    delta: 0),
                 DailyBalanceModel(
-                    account: .cash, date: makeDate(year: 2026, month: 8, day: 14), balance: 200),
+                    date: makeDate(year: 2026, month: 8, day: 14), account: .cash, balance: 200,
+                    delta: 0),
             ],
             .card: [
                 DailyBalanceModel(
-                    account: .card, date: makeDate(year: 2026, month: 8, day: 12), balance: 300)
+                    date: makeDate(year: 2026, month: 8, day: 12), account: .card, balance: 300,
+                    delta: 0)
             ],
         ]
 
@@ -1028,60 +1027,58 @@ private final class MockFinancePersistence: FinancePersistenceProtocol {
     var deletedDocuments: [DeletedDocument] = []
     var savedOpexModels: [OpexExpenseModel] = []
 
-    func saveOrder(order: OrderModel, completion: @escaping (String?) -> Void) {
-        completion(nextSavedOrderId)
+    func saveOrder(order: OrderModel) async -> String? {
+        nextSavedOrderId
     }
 
-    func updateOrder(_ order: OrderModel, completion: @escaping (Bool) -> Void) {
-        completion(true)
+    func updateOrder(_ order: OrderModel) async -> Bool {
+        true
     }
 
-    func deleteOrder(order: OrderModel, completion: @escaping (Bool) -> Void) {
-        completion(true)
+    func deleteOrder(order: OrderModel) async -> Bool {
+        true
     }
 
-    func saveOpexExpense(model: OpexExpenseModel, completion: @escaping (String?) -> Void) {
+    func saveOpexExpense(model: OpexExpenseModel) async -> String? {
         savedOpexModels.append(model)
-        completion(nextSavedOpexId)
+        return nextSavedOpexId
     }
 
-    func updateOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
-        completion(true)
+    func updateOpexExpense(model: OpexExpenseModel) async {
     }
 
-    func deleteOpexExpense(model: OpexExpenseModel, completion: @escaping (Bool) -> Void) {
-        completion(true)
+    func deleteOpexExpense(model: OpexExpenseModel) async -> Bool {
+        true
     }
 
-    func saveJournalEntry(model: JournalEntryModel, completion: @escaping (String?) -> Void) {
+    func saveJournalEntry(model: JournalEntryModel) async -> String? {
         savedJournalEntries.append(model)
-        completion(model.id)
+        return model.id
     }
 
-    func fetchJournalEntries(completion: @escaping ([JournalEntryModel]) -> Void) {
-        completion(journalEntries)
+    func fetchJournalEntries() async -> [JournalEntryModel] {
+        journalEntries
     }
 
-    func saveDailyBalance(model: DailyBalanceModel, completion: @escaping (Bool) -> Void) {
+    func saveDailyBalance(model: DailyBalanceModel) async -> Bool {
         savedDailyBalances.append(model)
-        completion(true)
+        return true
     }
 
     func fetchDailyBalances(
         forAccount account: PaymentAccount,
         from startDate: Date,
-        to endDate: Date,
-        completion: @escaping ([DailyBalanceModel]) -> Void
-    ) {
+        to endDate: Date
+    ) async -> [DailyBalanceModel] {
         let balances = dailyBalancesByAccount[account] ?? []
-        completion(balances.filter { $0.date >= startDate && $0.date <= endDate })
+        return balances.filter { $0.date >= startDate && $0.date <= endDate }
     }
 
-    func delete(collection: String, documentId: String, completion: @escaping (Bool) -> Void) {
+    func delete(collection: String, documentId: String) async -> Bool {
         deletedDocuments.append(
             DeletedDocument(collection: collection, documentId: documentId)
         )
-        completion(true)
+        return true
     }
 }
 
@@ -1148,15 +1145,15 @@ private final class MockFinanceHistorySourceFetcher: FinanceHistorySourceFetchin
     var expenses: [OpexExpenseModel] = []
     var purchases: [PurchaseModel] = []
 
-    func fetchOrders(completion: @escaping ([OrderModel]) -> Void) {
-        completion(orders)
+    func fetchOrders() async -> [OrderModel] {
+        orders
     }
 
-    func fetchOpexExpenses(completion: @escaping ([OpexExpenseModel]) -> Void) {
-        completion(expenses)
+    func fetchOpexExpenses() async -> [OpexExpenseModel] {
+        expenses
     }
 
-    func fetchPurchases(completion: @escaping ([PurchaseModel]) -> Void) {
-        completion(purchases)
+    func fetchPurchases() async -> [PurchaseModel] {
+        purchases
     }
 }

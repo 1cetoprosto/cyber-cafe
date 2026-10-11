@@ -105,10 +105,9 @@ extension Admin: PersonListModelProtocol {
     }
 }
 
-//extension Admin: SelectItemProtocol {
+// extension Admin: SelectItemProtocol {
 //    
 //    var title: String {
 //        return fullName
 //    }
-//}
-
+// }

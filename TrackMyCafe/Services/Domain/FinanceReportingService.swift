@@ -21,11 +21,14 @@ struct PLReport {
 
 // MARK: - ABC Report DTO
 
+// swiftlint:disable identifier_name
+// a/b/c are standard ABC-analysis bucket names (Pareto 80/95/100)
 enum ABCBucket: String {
     case a
     case b
     case c
 }
+// swiftlint:enable identifier_name
 
 enum ABCRankingKey {
     case sales
@@ -258,36 +261,17 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
         orders: [OrderModel], expenses: [OpexExpenseModel]
     ) {
         _ = (from, to)
-        return await withCheckedContinuation { continuation in
-            var orders: [OrderModel] = []
-            var expenses: [OpexExpenseModel] = []
-            let group = DispatchGroup()
-            group.enter()
-            database.fetchOrders { models in
-                orders = models
-                group.leave()
-            }
-            group.enter()
-            database.fetchOpexExpenses { models in
-                expenses = models
-                group.leave()
-            }
-            group.notify(queue: .main) {
-                continuation.resume(returning: (orders, expenses))
-            }
-        }
+        async let orders = database.fetchOrders()
+        async let expenses = database.fetchOpexExpenses()
+        return await (orders, expenses)
     }
 
     private func fetchProductsOfOrders(from: Date, to: Date) async -> [ProductOfOrderModel] {
         let safeFrom = max(Self.firestoreSafePast, Date.distantPast)
-        return await withCheckedContinuation { continuation in
-            database.fetchProductsOfOrders(
-                from: safeFrom,
-                to: Date.distantFuture
-            ) { models in
-                continuation.resume(returning: models)
-            }
-        }
+        return await database.fetchProductsOfOrders(
+            from: safeFrom,
+            to: Date.distantFuture
+        )
     }
 
     // MARK: - ABC Bucketing (internal for testability)
@@ -340,10 +324,16 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
             let share = (totalSales == 0) ? 0 : (sorted[i].sales / totalSales) * 100
             cumulative += share
             let bucket: ABCBucket
-            switch cumulative {
-            case ..<80: bucket = .a
-            case 80..<95: bucket = .b
-            default: bucket = .c
+            if i == 0 {
+                // The top contributor is always bucket A, even if its share alone
+                // reaches 100 % (single-item edge case of ABC analysis).
+                bucket = .a
+            } else {
+                switch cumulative {
+                case ..<80: bucket = .a
+                case 80..<95: bucket = .b
+                default: bucket = .c
+                }
             }
             sorted[i] = ABCProductRow(
                 productId: sorted[i].productId,
@@ -392,31 +382,31 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
 
     private enum SharedFormatters {
         static let day: DateFormatter = {
-            let f = DateFormatter()
-            f.locale = Locale.current
-            f.setLocalizedDateFormatFromTemplate("dMMM")
-            return f
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("dMMM")
+            return formatter
         }()
 
         private static let weekDayOnly: DateFormatter = {
-            let f = DateFormatter()
-            f.locale = Locale.current
-            f.setLocalizedDateFormatFromTemplate("d")
-            return f
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("d")
+            return formatter
         }()
 
         private static let weekMonthOnly: DateFormatter = {
-            let f = DateFormatter()
-            f.locale = Locale.current
-            f.setLocalizedDateFormatFromTemplate("MMM")
-            return f
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("MMM")
+            return formatter
         }()
 
         private static let weekYear: DateFormatter = {
-            let f = DateFormatter()
-            f.locale = Locale.current
-            f.setLocalizedDateFormatFromTemplate("yy")
-            return f
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("yy")
+            return formatter
         }()
 
         static func weekLabel(start: Date, end: Date) -> String {
@@ -443,10 +433,10 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
         }
 
         static let month: DateFormatter = {
-            let f = DateFormatter()
-            f.locale = Locale.current
-            f.setLocalizedDateFormatFromTemplate("MMMyyyy")
-            return f
+            let formatter = DateFormatter()
+            formatter.locale = Locale.current
+            formatter.setLocalizedDateFormatFromTemplate("MMMyyyy")
+            return formatter
         }()
     }
 

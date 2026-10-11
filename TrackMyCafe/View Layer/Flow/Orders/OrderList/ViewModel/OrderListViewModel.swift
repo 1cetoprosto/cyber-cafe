@@ -17,11 +17,8 @@ class OrderListViewModel: OrderListViewModelType, Loggable {
         self.orderDataService = orderDataService
     }
     
-    func getOrders(completion: @escaping () -> Void) {
-        DomainDatabaseService.shared.fetchSectionsOfOrders { [weak self] sectionsOrders in
-            self?.sectionsOrders = sectionsOrders
-            completion()
-        }
+    func getOrders() async {
+        sectionsOrders = await DomainDatabaseService.shared.fetchSectionsOfOrders()
     }
     
     func numberOfSections() -> Int {

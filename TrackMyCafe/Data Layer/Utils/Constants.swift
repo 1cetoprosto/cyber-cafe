@@ -18,7 +18,7 @@ struct Config {
         #endif
     }
 
-    //MARK: - Android App
+    // MARK: - Android App
     static let androidBundle = "com.kvit.adtd.online"
     static let androidVersion = "62"
 }
@@ -96,7 +96,7 @@ struct UIConstants {
 
     // Border width values
     static let standardBorderWidth: CGFloat = 1
-    //borderWidth
+    // borderWidth
     static let thickBorderWidth: CGFloat = 1.5
 
     // Alpha values

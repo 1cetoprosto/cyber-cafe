@@ -19,14 +19,9 @@ protocol ProductPriceDataServiceProtocol {
 final class DomainProductPriceDataService: ProductPriceDataServiceProtocol {
     @MainActor
     func saveProductPrice(_ productPrice: ProductsPriceModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.saveProductsPrice(productPrice: productPrice) { success in
-                if success {
-                    continuation.resume()
-                } else {
-                    continuation.resume(throwing: DomainProductPriceError.saveFailed)
-                }
-            }
+        let success = await DomainDatabaseService.shared.saveProductsPrice(productPrice: productPrice)
+        guard success else {
+            throw DomainProductPriceError.saveFailed
         }
     }
     
@@ -36,19 +31,10 @@ final class DomainProductPriceDataService: ProductPriceDataServiceProtocol {
         updatedModel.name = name
         updatedModel.price = price
         
-        try await withCheckedThrowingContinuation { continuation in
-            FirestoreDatabaseService.shared.update(
-                firModel: updatedModel,
-                collection: FirebaseCollections.productsPrice,
-                documentId: productPrice.id
-            ) { result in
-                switch result {
-                case .success:
-                    continuation.resume()
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        try await FirestoreDatabaseService.shared.update(
+            firModel: updatedModel,
+            collection: FirebaseCollections.productsPrice,
+            documentId: productPrice.id
+        )
     }
 }

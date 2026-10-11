@@ -172,7 +172,7 @@ class SetPasswordController: UIViewController {
                             BioAuthController(bioContext), animated: true)
                     } else {
                         let controller = MainTabBarController()
-                        //AppDelegate.shared.set(root: controller)
+                        // AppDelegate.shared.set(root: controller)
                         SceneDelegate.shared.set(root: controller)
                     }
                 }
