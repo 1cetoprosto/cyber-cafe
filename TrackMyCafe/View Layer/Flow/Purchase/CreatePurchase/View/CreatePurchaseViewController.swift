@@ -112,7 +112,9 @@ class CreatePurchaseViewController: UIViewController {
     }()
 
     private lazy var paymentMethodSegmentedControl: DefaultSegmentedControl = {
-        let control = DefaultSegmentedControl(items: [R.string.global.cash(), R.string.global.card()])
+        let control = DefaultSegmentedControl(items: [
+            R.string.global.cash(), R.string.global.card(),
+        ])
         control.selectedSegmentIndex = UISegmentedControl.noSegment
         control.addTarget(self, action: #selector(paymentMethodChanged), for: .valueChanged)
         return control
@@ -332,13 +334,18 @@ class CreatePurchaseViewController: UIViewController {
     }
 
     private func loadIngredients() {
-        viewModel.fetchIngredients { [weak self] ingredients in
-            self?.ingredients = ingredients
+        Task { [weak self] in
+            guard let self else { return }
+            let ingredients = await viewModel.fetchIngredients()
+            await MainActor.run {
+                self.ingredients = ingredients
 
-            // Pre-select ingredient if editing
-            if let selectedId = self?.selectedIngredientId,
-                let ingredient = ingredients.first(where: { $0.id == selectedId }) {
-                self?.ingredientInputContainer.text = ingredient.name
+                // Pre-select ingredient if editing
+                if let selectedId = self.selectedIngredientId,
+                    let ingredient = ingredients.first(where: { $0.id == selectedId })
+                {
+                    self.ingredientInputContainer.text = ingredient.name
+                }
             }
         }
     }
@@ -430,19 +437,21 @@ class CreatePurchaseViewController: UIViewController {
             return
         }
 
-        viewModel.savePurchase(
-            date: dateInputContainer.date ?? Date(),
-            ingredientId: ingredientId,
-            quantity: qty,
-            price: price,
-            totalAmount: totalAmount,
-            paymentAccount: paymentAccount
-        ) { [weak self] success, errorMsg in
-            DispatchQueue.main.async {
+        Task { [weak self] in
+            guard let self else { return }
+            let (success, errorMsg) = await viewModel.savePurchase(
+                date: dateInputContainer.date ?? Date(),
+                ingredientId: ingredientId,
+                quantity: qty,
+                price: price,
+                totalAmount: totalAmount,
+                paymentAccount: paymentAccount
+            )
+            await MainActor.run {
                 if success {
-                    self?.navigationController?.popViewController(animated: true)
+                    self.navigationController?.popViewController(animated: true)
                 } else {
-                    self?.showAlert(message: errorMsg ?? R.string.global.wentWrong())
+                    self.showAlert(message: errorMsg ?? R.string.global.wentWrong())
                 }
             }
         }

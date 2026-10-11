@@ -48,12 +48,11 @@ class SettingListViewModel: SettingListViewModelType {
   // Using explicit types from ViewController if needed, or commenting out usage since this VM seems unused
   // private var settings: [Section] = []
 
-  func getSettings(completion: @escaping () -> Void) {
+  func getSettings() async {
     // settings = []
     // settings.append(Section(title: R.string.global.general(), option: [
     //    ...
     // ]))
-    completion()
   }
 
   func numberOfRowInSection(for section: Int) -> Int {

@@ -16,11 +16,8 @@ class CostListViewModel: CostListViewModelType, Loggable {
         self.dataService = dataService
     }
     
-    func getCosts(completion: @escaping () -> Void) {
-        Task { [weak self] in
-            self?.sectionsCosts = await DomainDatabaseService.shared.fetchSectionsOfOpexExpenses()
-            completion()
-        }
+    func getCosts() async {
+        self.sectionsCosts = await DomainDatabaseService.shared.fetchSectionsOfOpexExpenses()
     }
     
     func numberOfSections() -> Int {
