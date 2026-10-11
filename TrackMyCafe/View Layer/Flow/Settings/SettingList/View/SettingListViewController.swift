@@ -48,7 +48,8 @@ struct SettingsDataOption {
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
-    MFMailComposeViewControllerDelegate, Loggable {
+    MFMailComposeViewControllerDelegate, Loggable
+{
     private let subscriptionBanner = SubscriptionBannerView()
 
     private let tableView: UITableView = {
@@ -115,7 +116,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 : R.string.global.settings_trackIngredientsFooter()
             let oldSection = self.models[1]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
-            let updatedOptions = oldSection.option.enumerated().map { [weak self] idx, opt -> SettingsOptionType in
+            let updatedOptions = oldSection.option.enumerated().map {
+                [weak self] idx, opt -> SettingsOptionType in
                 guard let self = self else { return opt }
                 switch opt {
                 case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
@@ -601,7 +603,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             UIAlertAction(title: R.string.global.cancel(), style: .cancel)
                         )
                         alert.addAction(
-                            UIAlertAction(title: R.string.global.seedAction(), style: .default) { _ in
+                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
+                                _ in
                                 let daysText = alert.textFields?.first?.text ?? "14"
                                 let days = Int(daysText) ?? 14
                                 SVProgressHUD.show(withStatus: R.string.global.seedingData())
@@ -716,8 +719,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         case .switchCell:
             break
         case .dataCell(let model):
-            guard let cell = tableView.cellForRow(at: indexPath) as? SettingsDataTableViewCell
-            else { return }
+            let cell = tableView.cellForRow(at: indexPath) as! SettingsDataTableViewCell
             model.handler(cell.dataLabel)
         }
     }
