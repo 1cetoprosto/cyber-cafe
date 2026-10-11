@@ -188,8 +188,7 @@ final class TrendPointCell: UITableViewCell {
 }
 
 final class TrendsReportDetailViewController: UIViewController, UITableViewDelegate,
-    UITableViewDataSource, Loggable
-{
+    UITableViewDataSource, Loggable {
 
     private let sharedViewModel: ReportsHubViewModelType
 
@@ -462,8 +461,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }()
 
     private static func netHeaderTitle(for periodicity: DashboardPeriod, referenceDate: Date)
-        -> String
-    {
+        -> String {
         let ref = Self.netHeaderDayFormatter.string(from: referenceDate)
         switch periodicity {
         case .day:

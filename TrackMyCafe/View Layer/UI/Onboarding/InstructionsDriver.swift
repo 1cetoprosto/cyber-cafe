@@ -5,8 +5,7 @@ import UIKit
 
     final class InstructionsDriver: NSObject, Loggable, CoachMarksDriver,
         CoachMarksControllerDataSource,
-        CoachMarksControllerDelegate
-    {
+        CoachMarksControllerDelegate {
         private let controller = CoachMarksController()
         private weak var host: UIViewController?
         private var steps: [OnboardingStepModel] = []
@@ -206,8 +205,7 @@ import UIKit
             let padding: CGFloat = 20
             if let cell = superview(of: UITableViewCell.self, from: view),
                 let tableView = superview(of: UITableView.self, from: cell),
-                let indexPath = tableView.indexPath(for: cell)
-            {
+                let indexPath = tableView.indexPath(for: cell) {
                 let rectInTable = cell.convert(cell.bounds, to: tableView)
                 let visible = tableView.bounds.inset(
                     by: UIEdgeInsets(
@@ -227,8 +225,7 @@ import UIKit
 
             if let cell = superview(of: UICollectionViewCell.self, from: view),
                 let collectionView = superview(of: UICollectionView.self, from: cell),
-                let indexPath = collectionView.indexPath(for: cell)
-            {
+                let indexPath = collectionView.indexPath(for: cell) {
                 let rectInCollection = cell.convert(cell.bounds, to: collectionView)
                 let visible = collectionView.bounds.inset(
                     by: UIEdgeInsets(
@@ -310,21 +307,18 @@ import UIKit
         private func resolveView(for key: String) -> UIView? {
             // 1) Search in controller's root view hierarchy
             if let container = host?.view,
-                let found = findView(withAccessibilityIdentifier: key, in: container)
-            {
+                let found = findView(withAccessibilityIdentifier: key, in: container) {
                 return found
             }
             // 2) Search in navigation controller's view (includes navigation bar)
             if let navView = host?.navigationController?.view,
-                let found = findView(withAccessibilityIdentifier: key, in: navView)
-            {
+                let found = findView(withAccessibilityIdentifier: key, in: navView) {
                 return found
             }
             // 3) Directly check common bar button custom views
             if key == "navBarAddOrder" || key == "navBarAddCost" || key == "navBarAddProduct" {
                 if let custom = host?.navigationItem.rightBarButtonItem?.customView,
-                    custom.accessibilityIdentifier == key
-                {
+                    custom.accessibilityIdentifier == key {
                     return custom
                 }
             }
@@ -348,8 +342,7 @@ import UIKit
         }
 
         private func preferredArrowOrientation(for view: UIView, host: UIViewController)
-            -> CoachMarkArrowOrientation
-        {
+            -> CoachMarkArrowOrientation {
             guard let window = host.view.window else { return .top }
 
             let frameInWindow = view.convert(view.bounds, to: window)

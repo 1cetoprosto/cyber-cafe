@@ -10,4 +10,3 @@ protocol ProductCategoryDetailsViewModelType: AnyObject {
     func markImageDeleted()
     func save() async throws
 }
-

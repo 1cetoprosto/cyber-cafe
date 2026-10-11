@@ -7,6 +7,18 @@
 
 import Foundation
 
+// MARK: - OrderItemModel
+//
+// COGS snapshot for a single line of an order.
+// See `docs/internal/ARCHITECTURE_AND_LOGIC.md` → section 1.3 (Sale / Order).
+//
+// Target shape (spec): productId, quantity, salePrice, costPrice.
+//
+// This is the canonical snapshot model used by `CostingService`,
+// `InventoryService` and aggregation/reporting. It is intentionally separate
+// from `ProductOfOrderModel` (the display/persistence line model) — see that
+// file's header for the role split.
+
 struct OrderItemModel: Identifiable, Codable {
     let id: String
     let productId: String

@@ -8,64 +8,63 @@
 import Foundation
 
 protocol CostingServiceProtocol {
-    func calculateProductCost(productId: String, completion: @escaping (Double) -> Void)
-    func calculateOrderCOGS(items: [OrderItemModel], completion: @escaping (Double) -> Void)
+    func calculateProductCost(productId: String) async -> Double
+    func calculateOrderCOGS(items: [OrderItemModel]) async -> Double
     func calculateOrderMetrics(items: [OrderItemModel]) -> (totalSale: Double, totalCost: Double)
 }
 
 class CostingService: CostingServiceProtocol {
     static let shared = CostingService()
-    private let databaseService = DomainDatabaseService.shared
-    
-    private init() {}
-    
+    private let databaseService: DomainDB
+
+    private init(databaseService: DomainDB = DomainDatabaseService.shared) {
+        self.databaseService = databaseService
+    }
+
     // MARK: - Product Cost Calculation
-    
-    func calculateProductCost(productId: String, completion: @escaping (Double) -> Void) {
-        // Cost = Sum(Ingredient.avgCost * RecipeItem.qty)
-        
-        databaseService.fetchRecipe(forProductId: productId) { [weak self] recipeItems in
-            guard !recipeItems.isEmpty else {
-                completion(0.0)
-                return
-            }
-            
-            var totalCost: Double = 0.0
-            let group = DispatchGroup()
-            
+
+    func calculateProductCost(productId: String) async -> Double {
+        let recipeItems = await databaseService.fetchRecipe(forProductId: productId)
+        guard !recipeItems.isEmpty else { return 0.0 }
+
+        var totalCost: Double = 0.0
+
+        await withTaskGroup(of: Double.self) { group in
             for item in recipeItems {
-                group.enter()
-                self?.databaseService.fetchIngredient(byId: item.ingredientId) { ingredient in
-                    if let ingredient = ingredient {
-                        totalCost += ingredient.averageCost * item.quantity
-                    }
-                    group.leave()
+                group.addTask {
+                    let ingredient = await self.databaseService.fetchIngredient(
+                        byId: item.ingredientId)
+                    return (ingredient?.averageCost ?? 0.0) * item.quantity
                 }
             }
-            
-            group.notify(queue: .main) {
-                completion(totalCost)
+
+            for await ingredientCost in group {
+                totalCost += ingredientCost
             }
         }
+
+        return totalCost
     }
-    
+
     // MARK: - Order COGS Calculation
-    
-    func calculateOrderCOGS(items: [OrderItemModel], completion: @escaping (Double) -> Void) {
+
+    func calculateOrderCOGS(items: [OrderItemModel]) async -> Double {
         var totalOrderCOGS: Double = 0.0
-        let group = DispatchGroup()
-        
-        for item in items {
-            group.enter()
-            calculateProductCost(productId: item.productId) { unitCost in
-                totalOrderCOGS += unitCost * Double(item.quantity)
-                group.leave()
+
+        await withTaskGroup(of: Double.self) { group in
+            for item in items {
+                group.addTask {
+                    let unitCost = await self.calculateProductCost(productId: item.productId)
+                    return unitCost * Double(item.quantity)
+                }
+            }
+
+            for await itemCOGS in group {
+                totalOrderCOGS += itemCOGS
             }
         }
-        
-        group.notify(queue: .main) {
-            completion(totalOrderCOGS)
-        }
+
+        return totalOrderCOGS
     }
 
     func calculateOrderMetrics(items: [OrderItemModel]) -> (totalSale: Double, totalCost: Double) {

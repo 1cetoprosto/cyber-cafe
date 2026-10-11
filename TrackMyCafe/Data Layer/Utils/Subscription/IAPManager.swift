@@ -77,8 +77,7 @@ class IAPManager: NSObject, Loggable {
         }
 
         if let transaction = bestTransaction, let expirationDate = transaction.expirationDate,
-            expirationDate > now
-        {
+            expirationDate > now {
             logger.debug(
                 "StoreKit2: Active entitlement found. Product: \(transaction.productID), Exp: \(expirationDate)"
             )
@@ -294,8 +293,7 @@ class IAPManager: NSObject, Loggable {
 
         // Debug: Try local validation first to see if receipt exists
         if let receiptUrl = Bundle.main.appStoreReceiptURL,
-            (try? Data(contentsOf: receiptUrl)) != nil
-        {
+            (try? Data(contentsOf: receiptUrl)) != nil {
             self.logger.debug("Receipt exists at: \(receiptUrl)")
         } else {
             self.logger.error("Receipt NOT found locally.")
@@ -306,12 +304,11 @@ class IAPManager: NSObject, Loggable {
         // which fails remote validation on Apple's servers (both Production and Sandbox) with 21002.
         #if DEBUG
             if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1"
-                || ProcessInfo.processInfo.arguments.contains("-com.apple.CoreData.SQLDebug")
-            {  // Just a heuristic, better to check certificate
+                || ProcessInfo.processInfo.arguments.contains("-com.apple.CoreData.SQLDebug") {  // Just a heuristic, better to check certificate
                 // Fallback to local validation for Xcode testing
                 SwiftyStoreKit.fetchReceipt(forceRefresh: false) { (result) in
                     switch result {
-                    case .success(_):
+                    case .success:
                         // In local testing, we might need to trust the local certificate or just assume success if data exists
                         // Since we can't easily parse the receipt path easily, we'll try to parse it
                         // Or just mocking success for development flow if we are sure it's Xcode environment
@@ -356,8 +353,7 @@ class IAPManager: NSObject, Loggable {
                     var isMalformedData = errorCode == 21002
                     if !isMalformedData {
                         if case .receiptInvalid(let receipt, _) = error,
-                            let status = receipt["status"] as? Int, status == 21002
-                        {
+                            let status = receipt["status"] as? Int, status == 21002 {
                             isMalformedData = true
                         }
                     }
@@ -374,7 +370,7 @@ class IAPManager: NSObject, Loggable {
                         // we will try to fetch the receipt locally and assume it's valid for now.
                         SwiftyStoreKit.fetchReceipt(forceRefresh: false) { fetchResult in
                             switch fetchResult {
-                            case .success(_):
+                            case .success:
                                 // Try to verify locally if possible, or just return success
                                 // Using a mock adapter or local adapter if certificate is available
                                 // For this fix, we will try to use the Local Validator if available, otherwise mock it.

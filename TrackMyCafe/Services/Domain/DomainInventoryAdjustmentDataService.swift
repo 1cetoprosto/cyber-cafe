@@ -35,30 +35,19 @@ final class DomainInventoryAdjustmentDataService: InventoryAdjustmentDataService
         ingredientId: String?,
         bulkSessionId: String?
     ) async throws -> [InventoryAdjustmentModel] {
-        try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.fetchInventoryAdjustments(
-                from: startDate,
-                to: endDate,
-                ingredientId: ingredientId,
-                bulkSessionId: bulkSessionId
-            ) { models in
-                continuation.resume(returning: models)
-            }
-        }
+        await DomainDatabaseService.shared.fetchInventoryAdjustments(
+            from: startDate,
+            to: endDate,
+            ingredientId: ingredientId,
+            bulkSessionId: bulkSessionId
+        )
     }
 
     @MainActor
     func saveAdjustment(_ adjustment: InventoryAdjustmentModel) async throws {
-        try await withCheckedThrowingContinuation { continuation in
-            DomainDatabaseService.shared.saveInventoryAdjustment(model: adjustment) { id in
-                if id != nil {
-                    continuation.resume()
-                } else {
-                    continuation.resume(
-                        throwing: DomainInventoryAdjustmentError.saveFailed
-                    )
-                }
-            }
+        let id = await DomainDatabaseService.shared.saveInventoryAdjustment(model: adjustment)
+        guard id != nil else {
+            throw DomainInventoryAdjustmentError.saveFailed
         }
     }
 }

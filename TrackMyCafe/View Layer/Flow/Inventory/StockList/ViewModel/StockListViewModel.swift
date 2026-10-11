@@ -79,16 +79,7 @@ final class StockListViewModel: StockListViewModelProtocol {
         // Wrap legacy completion handler in async
         Task {
             do {
-                try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
-                    inventoryService.processStockAdjustment(adjustment: adjustment) { result in
-                        switch result {
-                        case .success:
-                            continuation.resume()
-                        case .failure(let error):
-                            continuation.resume(throwing: error)
-                        }
-                    }
-                }
+                try await inventoryService.processStockAdjustment(adjustment: adjustment)
                 
                 // Refresh list after update
                 fetchStock()

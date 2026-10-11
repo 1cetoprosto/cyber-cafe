@@ -35,13 +35,15 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
     var initialDate: Date { purchaseToEdit?.date ?? Date() }
     var initialIngredientId: String? { purchaseToEdit?.ingredientId }
     var initialQuantity: String {
-        guard let q = purchaseToEdit?.quantity else { return "" }
+        guard let quantity = purchaseToEdit?.quantity else { return "" }
         // Remove trailing zeros if integer
-        return q.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", q) : String(q)
+        return quantity.truncatingRemainder(dividingBy: 1) == 0
+            ? String(format: "%.0f", quantity) : String(quantity)
     }
     var initialPrice: String {
-        guard let p = purchaseToEdit?.price else { return "" }
-        return p.truncatingRemainder(dividingBy: 1) == 0 ? String(format: "%.0f", p) : String(p)
+        guard let price = purchaseToEdit?.price else { return "" }
+        return price.truncatingRemainder(dividingBy: 1) == 0
+            ? String(format: "%.0f", price) : String(price)
     }
     var initialTotalAmount: Double { purchaseToEdit?.totalAmount ?? 0 }
     var initialPaymentAccount: PaymentAccount? { purchaseToEdit?.paymentAccount }
@@ -57,7 +59,8 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
     }
 
     func fetchIngredients(completion: @escaping ([IngredientModel]) -> Void) {
-        databaseService.fetchIngredients { ingredients in
+        Task {
+            let ingredients = await databaseService.fetchIngredients()
             completion(ingredients)
         }
     }
@@ -82,44 +85,38 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
             return
         }
 
-        if let oldPurchase = purchaseToEdit {
-            let newPurchase = PurchaseModel(
-                id: oldPurchase.id,
-                date: date,
-                ingredientId: ingredientId,
-                quantity: quantity,
-                price: price,
-                totalAmount: totalAmount,
-                paymentAccount: paymentAccount
-            )
+        Task { [weak self] in
+            guard let self = self else { return }
 
-            inventoryService.editPurchase(oldPurchase: oldPurchase, newPurchase: newPurchase) {
-                result in
-                switch result {
-                case .success:
-                    completion(true, nil)
-                case .failure(let error):
-                    completion(false, error.localizedDescription)
-                }
-            }
-        } else {
-            let purchase = PurchaseModel(
-                date: date,
-                ingredientId: ingredientId,
-                quantity: quantity,
-                price: price,
-                totalAmount: totalAmount,
-                paymentAccount: paymentAccount
-            )
+            do {
+                if let oldPurchase = purchaseToEdit {
+                    let newPurchase = PurchaseModel(
+                        id: oldPurchase.id,
+                        date: date,
+                        ingredientId: ingredientId,
+                        quantity: quantity,
+                        price: price,
+                        totalAmount: totalAmount,
+                        paymentAccount: paymentAccount
+                    )
 
-            // Use InventoryService to process purchase (update stock/avgCost)
-            inventoryService.processPurchase(purchase: purchase) { result in
-                switch result {
-                case .success:
-                    completion(true, nil)
-                case .failure(let error):
-                    completion(false, error.localizedDescription)
+                    try await inventoryService.editPurchase(
+                        oldPurchase: oldPurchase, newPurchase: newPurchase)
+                } else {
+                    let purchase = PurchaseModel(
+                        date: date,
+                        ingredientId: ingredientId,
+                        quantity: quantity,
+                        price: price,
+                        totalAmount: totalAmount,
+                        paymentAccount: paymentAccount
+                    )
+
+                    try await inventoryService.processPurchase(purchase: purchase)
                 }
+                completion(true, nil)
+            } catch {
+                completion(false, error.localizedDescription)
             }
         }
     }

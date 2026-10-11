@@ -169,8 +169,7 @@ final class ABCProductCell: UITableViewCell {
 }
 
 final class ABCReportDetailViewController: UIViewController, UITableViewDelegate,
-    UITableViewDataSource, Loggable
-{
+    UITableViewDataSource, Loggable {
 
     private let sharedViewModel: ReportsHubViewModelType
 

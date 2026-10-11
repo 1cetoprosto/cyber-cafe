@@ -15,16 +15,14 @@ protocol OpexAggregationServiceProtocol {
 
 final class OpexAggregationService: OpexAggregationServiceProtocol {
     func summarize(expenses: [OpexExpenseModel], period: DashboardPeriod, referenceDate: Date)
-        -> OpexSummary
-    {
+        -> OpexSummary {
         let interval = period.interval(for: referenceDate)
         return summarize(
             expenses: expenses, intervalStart: interval.start, intervalEnd: interval.end)
     }
 
     func summarize(expenses: [OpexExpenseModel], intervalStart: Date, intervalEnd: Date)
-        -> OpexSummary
-    {
+        -> OpexSummary {
         let filtered = expenses.filter { expense in
             expense.date >= intervalStart && expense.date < intervalEnd
         }

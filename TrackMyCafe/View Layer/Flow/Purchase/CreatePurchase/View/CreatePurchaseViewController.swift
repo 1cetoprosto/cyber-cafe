@@ -337,8 +337,7 @@ class CreatePurchaseViewController: UIViewController {
 
             // Pre-select ingredient if editing
             if let selectedId = self?.selectedIngredientId,
-                let ingredient = ingredients.first(where: { $0.id == selectedId })
-            {
+                let ingredient = ingredients.first(where: { $0.id == selectedId }) {
                 self?.ingredientInputContainer.text = ingredient.name
             }
         }

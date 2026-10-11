@@ -8,13 +8,13 @@
 import Foundation
 
 protocol SettingListViewModelType: AnyObject {
-    func getSettings(completion: @escaping() -> ())
+    func getSettings(completion: @escaping () -> Void)
     
-    //func numberOfSections() -> Int
+    // func numberOfSections() -> Int
     func numberOfRowInSection(for section: Int) -> Int
-    //func titleForHeaderInSection(for section: Int) -> String
+    // func titleForHeaderInSection(for section: Int) -> String
     func cellViewModel(for indexPath: IndexPath) -> SettingListViewModelType?
     
-    //func viewModelForSelectedRow() -> PurchaseDetailsViewModelType?
+    // func viewModelForSelectedRow() -> PurchaseDetailsViewModelType?
     func selectRow(atIndexPath indexPath: IndexPath)
 }

@@ -346,6 +346,132 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
+    // MARK: - Generic CRUD Operations (async)
+
+    func create<T: Encodable>(firModel: T, collection: String) async throws -> String {
+        try await withCheckedThrowingContinuation { continuation in
+            create(firModel: firModel, collection: collection) { result in
+                switch result {
+                case .success(let id):
+                    continuation.resume(returning: id)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func fetchObjectById<T: Decodable>(
+        ofType: T.Type, collection: String, id: String
+    ) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            fetchObjectById(ofType: ofType, collection: collection, id: id) { result in
+                switch result {
+                case .success(let model):
+                    continuation.resume(returning: model)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func read<T: Decodable>(
+        collection: String, firModel: T.Type
+    ) async throws -> [(documentId: String, T)] {
+        try await withCheckedThrowingContinuation { continuation in
+            read(collection: collection, firModel: firModel) { result in
+                switch result {
+                case .success(let models):
+                    continuation.resume(returning: models)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func readWhere<T: Decodable>(
+        collection: String,
+        firModel: T.Type,
+        equalTo filters: [String: Any] = [:],
+        orderedBy orderField: String? = nil,
+        startAt startDate: Date? = nil,
+        endAt endDate: Date? = nil
+    ) async throws -> [(documentId: String, T)] {
+        try await withCheckedThrowingContinuation { continuation in
+            readWhere(
+                collection: collection, firModel: firModel, equalTo: filters,
+                orderedBy: orderField, startAt: startDate, endAt: endDate
+            ) { result in
+                switch result {
+                case .success(let models):
+                    continuation.resume(returning: models)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func readDocumentIdRange<T: Decodable>(
+        collection: String, firModel: T.Type, startId: String, endId: String
+    ) async throws -> [(documentId: String, T)] {
+        try await withCheckedThrowingContinuation { continuation in
+            readDocumentIdRange(
+                collection: collection, firModel: firModel, startId: startId, endId: endId
+            ) { result in
+                switch result {
+                case .success(let models):
+                    continuation.resume(returning: models)
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func update<T: Encodable>(
+        firModel: T, collection: String, documentId: String
+    ) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            update(firModel: firModel, collection: collection, documentId: documentId) { result in
+                switch result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func delete(collection: String, documentId: String) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            delete(collection: collection, documentId: documentId) { result in
+                switch result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
+    func deleteDocuments(collection: String, ids: [String]) async throws {
+        try await withCheckedThrowingContinuation { continuation in
+            deleteDocuments(collection: collection, ids: ids) { result in
+                switch result {
+                case .success:
+                    continuation.resume()
+                case .failure(let error):
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+
     // MARK: - CRUD Operations for Products
 
     func createProduct(
@@ -353,7 +479,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     ) {
         create(firModel: product, collection: FirebaseCollections.productsPrice) { result in
             switch result {
-            case .success(_):
+            case .success:
                 completion(.success(true))
             case .failure(let error):
                 completion(.failure(error))
@@ -374,7 +500,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     func createType(type: FIRTypeModel, completion: @escaping (Result<Bool, Error>) -> Void) {
         create(firModel: type, collection: FirebaseCollections.types) { result in
             switch result {
-            case .success(_):
+            case .success:
                 completion(.success(true))
             case .failure(let error):
                 completion(.failure(error))
@@ -399,7 +525,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     ) {
         create(firModel: order, collection: FirebaseCollections.productOfOrders) { result in
             switch result {
-            case .success(_):
+            case .success:
                 completion(.success(true))
             case .failure(let error):
                 completion(.failure(error))
@@ -428,6 +554,46 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         read(
             collection: FirebaseCollections.orders, firModel: FIROrderModel.self,
             completion: completion)
+    }
+
+    // MARK: - Collection-specific Operations (async)
+
+    func createProduct(product: FIRProductsPriceModel) async throws -> Bool {
+        _ = try await create(firModel: product, collection: FirebaseCollections.productsPrice)
+        return true
+    }
+
+    func readProducts() async throws -> [(documentId: String, FIRProductsPriceModel)] {
+        try await read(
+            collection: FirebaseCollections.productsPrice,
+            firModel: FIRProductsPriceModel.self)
+    }
+
+    func createType(type: FIRTypeModel) async throws -> Bool {
+        _ = try await create(firModel: type, collection: FirebaseCollections.types)
+        return true
+    }
+
+    func readTypes() async throws -> [(documentId: String, FIRTypeModel)] {
+        try await read(collection: FirebaseCollections.types, firModel: FIRTypeModel.self)
+    }
+
+    func createOrdersOfProducts(order: FIRProductModel) async throws -> Bool {
+        _ = try await create(firModel: order, collection: FirebaseCollections.productOfOrders)
+        return true
+    }
+
+    func readOrdersOfProducts() async throws -> [(documentId: String, FIRProductModel)] {
+        try await read(
+            collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self)
+    }
+
+    func createOrder(order: FIROrderModel) async throws -> String {
+        try await create(firModel: order, collection: FirebaseCollections.orders)
+    }
+
+    func readOrder() async throws -> [(documentId: String, FIROrderModel)] {
+        try await read(collection: FirebaseCollections.orders, firModel: FIROrderModel.self)
     }
 
     // MARK: - Delete All Data
@@ -514,6 +680,14 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
+    func deleteAllData() async -> Bool {
+        await withCheckedContinuation { continuation in
+            deleteAllData { success in
+                continuation.resume(returning: success)
+            }
+        }
+    }
+
     func deleteUserAndRoles(completion: @escaping (Result<Void, Error>) -> Void) {
         guard let userId = Auth.auth().currentUser?.uid else {
             completion(
@@ -578,7 +752,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     static func getRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
-            //db.collection("roles")
+            // db.collection("roles")
             .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -597,7 +771,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     static func getTechRoles(_ email: String, completion: @escaping ([RoleConfig]?) -> Void) {
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.roles)
-            //db.collection("roles")
+            // db.collection("roles")
             .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
             .getDocuments { (querySnapshot, error) in
                 if let error = error {
@@ -622,8 +796,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
         // Створюємо посилання на документ в Firestore
         FirestoreDatabaseService.shared.db.collection(FirebaseCollections.users).document(key)
-            .getDocument {
-                (document, error) in
+            .getDocument { (document, error) in
                 if let error = error {
                     self.logger.error("Error getting document: \(error)")
                     completion(false)
@@ -638,7 +811,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         _ id: String, _ email: String, _ completion: @escaping (Result<RoleConfig, Error>) -> Void
     ) {
         // Створення унікального ідентифікатора для користувача
-        //let userKey = db.collection("users").document().documentID
+        // let userKey = db.collection("users").document().documentID
         guard let userKey = Auth.auth().currentUser?.uid else {
             let error = NSError(
                 domain: "Auth", code: 401,

@@ -15,7 +15,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
     let tableView: UITableView = {
         let tableView = UITableView()
         
-        //tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
+        // tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -42,7 +42,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         view.backgroundColor = UIColor.Main.background
         title = R.string.global.edit()
         
-        //tableView = UITableView(frame: view.bounds, style: .grouped)
+        // tableView = UITableView(frame: view.bounds, style: .grouped)
         tableView.dataSource = self
         tableView.delegate = self
         
@@ -296,7 +296,7 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         }
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         picker.dismiss(animated: true, completion: nil)
         if let image = info[.originalImage] as? UIImage {
             newImage = image

@@ -6,7 +6,6 @@
 //
 
 import FirebaseAuth
-import RealmSwift
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
@@ -22,63 +21,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
     var window: UIWindow?
 
-    // MARK: Migration
-    // Функція для налаштування Realm з міграцією
-    func configureRealm() {
-        // Визначте версію схеми як константу
-        let currentSchemaVersion: UInt64 = 3
-
-        // Визначте блок міграції
-        let migrationBlock: MigrationBlock = { migration, oldSchemaVersion in
-            if oldSchemaVersion < currentSchemaVersion {
-                // Приклад: Додавання нової властивості з початковим значенням
-                if oldSchemaVersion < 2 {
-                    migration.enumerateObjects(ofType: RealmProductModel.className()) {
-                        oldObject, newObject in
-                        newObject!["orderId"] = ""  // Initial value for a new property
-                    }
-
-                    // Заповнення поля orderId відповідними значеннями з RealmOrderModel
-                    migration.enumerateObjects(ofType: RealmOrderModel.className()) {
-                        oldObject, newObject in
-                        if let orderId = oldObject!["id"] as? String,
-                            let date = oldObject!["date"] as? Date
-                        {
-                            migration.enumerateObjects(ofType: RealmProductModel.className()) {
-                                productOldObject, productNewObject in
-                                if productOldObject!["date"] as? Date == date {
-                                    productNewObject!["orderId"] = orderId
-                                }
-                            }
-                        }
-                    }
-                }
-                if oldSchemaVersion < 3 {
-                    migration.enumerateObjects(ofType: RealmTypeModel.className()) { _, newObject in
-                        newObject!["isDefault"] = false
-                    }
-                }
-            }
-        }
-
-        // Налаштуйте Realm з новою версією схеми та блоком міграції
-        let config = Realm.Configuration(
-            schemaVersion: currentSchemaVersion,
-            migrationBlock: migrationBlock
-        )
-
-        // Встановіть конфігурацію Realm за замовчуванням
-        Realm.Configuration.defaultConfiguration = config
-    }
-
     // MARK: Scene Lifecycle
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
-
-        // configureRealm() - No longer needed
 
         guard let windowScene = (scene as? UIWindowScene) else { return }
         logger.info("Current system language code: \(Locale.currentLanguageCode ?? "N/A")")
@@ -174,7 +122,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             animations: {
                 overlayView.alpha = 0
             },
-            completion: { finished in
+            completion: { _ in
                 overlayView.removeFromSuperview()
             })
     }
@@ -295,7 +243,9 @@ extension SceneDelegate {
         let key = UserDefaultsKeys.firstLaunch
         let seeded = UserDefaults.standard.bool(forKey: key)
         if seeded { return }
-        DomainDatabaseService.shared.fetchTypes { types in
+
+        Task { @MainActor in
+            let types = await DomainDatabaseService.shared.fetchTypes()
             if !types.isEmpty {
                 UserDefaults.standard.set(true, forKey: key)
                 UserDefaults.standard.synchronize()
@@ -306,18 +256,12 @@ extension SceneDelegate {
                 R.string.global.typeTakeaway(),
                 R.string.global.typeDelivery(),
             ]
-            let group = DispatchGroup()
             for name in names {
-                group.enter()
                 let model = TypeModel(id: UUID().uuidString, name: name)
-                DomainDatabaseService.shared.saveType(model: model) { _ in
-                    group.leave()
-                }
+                _ = await DomainDatabaseService.shared.saveType(model: model)
             }
-            group.notify(queue: .main) {
-                UserDefaults.standard.set(true, forKey: key)
-                UserDefaults.standard.synchronize()
-            }
+            UserDefaults.standard.set(true, forKey: key)
+            UserDefaults.standard.synchronize()
         }
     }
 }

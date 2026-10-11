@@ -24,7 +24,7 @@ extension String {
     }
     
     func onlyDigits() -> String {
-        let filtredUnicodeScalars = unicodeScalars.filter{CharacterSet.decimalDigits.contains($0)}
+        let filtredUnicodeScalars = unicodeScalars.filter {CharacterSet.decimalDigits.contains($0)}
         return String(String.UnicodeScalarView(filtredUnicodeScalars))
     }
 
@@ -99,7 +99,7 @@ extension Optional where Wrapped == String {
 
 extension CustomStringConvertible {
     
-    var description : String {
+    var description: String {
         var description: String = "\n*** ⚠️ \(type(of: self)) ⚠️ ***:\n"
         let selfMirror = Mirror(reflecting: self)
         for child in selfMirror.children {

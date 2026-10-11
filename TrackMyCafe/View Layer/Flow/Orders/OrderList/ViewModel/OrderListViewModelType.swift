@@ -8,7 +8,7 @@
 import Foundation
 
 protocol OrderListViewModelType {
-    func getOrders(completion: @escaping () -> Void)
+    func getOrders() async
     
     func numberOfSections() -> Int
     func numberOfRowInSection(for section: Int) -> Int

@@ -284,8 +284,9 @@ class ProductDetailsViewController: UIViewController {
             await viewModel.fetchIngredients()
         }
 
-        DomainDatabaseService.shared.fetchProductCategories { [weak self] categories in
-            DispatchQueue.main.async {
+        Task { [weak self] in
+            let categories = await DomainDatabaseService.shared.fetchProductCategories()
+            await MainActor.run {
                 self?.categories = categories.sorted { $0.sortOrder < $1.sortOrder }
                 self?.updateCategorySelection()
             }
@@ -317,8 +318,7 @@ class ProductDetailsViewController: UIViewController {
 
         if isImagePresent {
             alert.addAction(
-                UIAlertAction(title: R.string.global.delete(), style: .destructive) {
-                    [weak self] _ in
+                UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
                     self?.viewModel.markImageDeleted()
                     self?.applyInitialImage()
                 }
@@ -444,8 +444,7 @@ class ProductDetailsViewController: UIViewController {
             alert.addAction(
                 UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
             alert.addAction(
-                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) {
-                    [weak self] _ in
+                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) { [weak self] _ in
                     self?.navigationController?.popToRootViewController(animated: true)
                 })
 
@@ -626,8 +625,7 @@ extension ProductDetailsViewController: UITextFieldDelegate {
         // Check if it's the alert text field. Since we don't have a direct reference to the alert text field here easily without storing it,
         // we can check if it is NOT one of our known properties.
         if textField == nameInputContainer.textFieldReference
-            || textField == priceInputContainer.textFieldReference
-        {
+            || textField == priceInputContainer.textFieldReference {
             return true
         }
 

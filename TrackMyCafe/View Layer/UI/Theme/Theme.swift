@@ -95,7 +95,7 @@ enum ThemeOption: CaseIterable {
 
 class Theme {
 
-    //static var currentThemeStyle: ThemeStyle = .light
+    // static var currentThemeStyle: ThemeStyle = .light
 
     private static let kThemeStyle = UserDefaultsKeys.themeStyle
     private static let kFirstLaunch = UserDefaultsKeys.firstLaunch
@@ -119,8 +119,7 @@ class Theme {
             if let a = UserDefaults.standard.value(forKey: kAppearanceStyle) as? Int,
                 let p = UserDefaults.standard.value(forKey: kPaletteStyle) as? Int,
                 let appearance = AppearanceStyle(rawValue: a),
-                let palette = PaletteStyle(rawValue: p)
-            {
+                let palette = PaletteStyle(rawValue: p) {
                 return ThemeSelection(appearance: appearance, palette: palette)
             }
 
@@ -182,8 +181,7 @@ class Theme {
     private static func applySystemTheme(_ themeStyle: ThemeStyle) {
         DispatchQueue.main.async {
             if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                let window = windowScene.windows.first
-            {
+                let window = windowScene.windows.first {
 
                 switch themeStyle {
                 case .light:
@@ -243,8 +241,7 @@ class Theme {
     // Detect current system theme
     private static func detectSystemTheme() -> ThemeStyle {
         if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-            let window = windowScene.windows.first
-        {
+            let window = windowScene.windows.first {
             return window.traitCollection.userInterfaceStyle == .dark ? .dark : .light
         }
         // Fallback to system trait collection if window is not available

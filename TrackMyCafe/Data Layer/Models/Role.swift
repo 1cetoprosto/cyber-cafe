@@ -58,7 +58,7 @@ class RoleConfig: CustomStringConvertible {
       let roleValue = data[FirebaseFields.role] as? Int,
       let role = Role(rawValue: roleValue),
       let firebaseRef = data[FirebaseFields.firebaseRef] as? String
-      //let hasOnlineVersion = data["hasOnlineVersion"] as? Bool
+      // let hasOnlineVersion = data["hasOnlineVersion"] as? Bool
     else { return nil }
     self.timestamp = time.date
     self.email = email

@@ -38,4 +38,3 @@ extension UITableViewHeaderFooterView: BaseReusableView {
 extension UICollectionReusableView: BaseReusableView {
     
 }
-

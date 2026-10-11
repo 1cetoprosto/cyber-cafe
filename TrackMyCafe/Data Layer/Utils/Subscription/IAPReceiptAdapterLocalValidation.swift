@@ -57,4 +57,3 @@ class IAPReceiptAdapterLocalValidation: IAPReceiptAdapterProtocol {
         return receipt.autoRenewablePurchases.contains { $0.transactionIdentifier == transactionId || $0.originalTransactionIdentifier == transactionId }
     }
 }
-

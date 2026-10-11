@@ -70,8 +70,7 @@ final class AuthLogoView: UIImageView {
                 let primaryIcon = icons["CFBundlePrimaryIcon"] as? [String: Any],
                 let iconFiles = primaryIcon["CFBundleIconFiles"] as? [String],
                 let lastIcon = iconFiles.last,
-                let appIcon = UIImage(named: lastIcon)
-            {
+                let appIcon = UIImage(named: lastIcon) {
                 image = appIcon
             } else {
                 // Fallback to appBigLogo if app icon not found

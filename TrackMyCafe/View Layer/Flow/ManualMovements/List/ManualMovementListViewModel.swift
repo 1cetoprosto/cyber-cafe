@@ -54,4 +54,3 @@ final class ManualMovementListViewModel: ManualMovementListViewModelType {
         await reload()
     }
 }
-

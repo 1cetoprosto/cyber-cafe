@@ -109,17 +109,7 @@ final class InventoryAuditService: InventoryAuditServiceProtocol {
             bulkSessionId: bulkSessionId
         )
 
-        try await withCheckedThrowingContinuation {
-            (continuation: CheckedContinuation<Void, Error>) in
-            inventoryService.processStockAdjustment(adjustment: adjustment) { result in
-                switch result {
-                case .success:
-                    continuation.resume()
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            }
-        }
+        try await inventoryService.processStockAdjustment(adjustment: adjustment)
     }
 
     // MARK: - Start bulk session
@@ -176,17 +166,7 @@ final class InventoryAuditService: InventoryAuditServiceProtocol {
         }
 
         for adjustment in adjustments {
-            try await withCheckedThrowingContinuation {
-                (continuation: CheckedContinuation<Void, Error>) in
-                inventoryService.processStockAdjustment(adjustment: adjustment) { result in
-                    switch result {
-                    case .success:
-                        continuation.resume()
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                    }
-                }
-            }
+            try await inventoryService.processStockAdjustment(adjustment: adjustment)
         }
 
         return adjustments
