@@ -32,9 +32,9 @@ protocol OrderDetailsViewModelType {
     var isNewModel: Bool { get set }
     
     // Methods
-    func loadProducts(completion: @escaping () -> Void)
-    func save(date: Date, type: String?, cash: String?, card: String?, note: String?, ignoreStockWarning: Bool, completion: @escaping (Result<Void, OrderSaveError>) -> Void)
-    func deleteOrder(completion: @escaping () -> Void)
+    func loadProducts() async
+    func save(date: Date, type: String?, cash: String?, card: String?, note: String?, ignoreStockWarning: Bool) async throws
+    func deleteOrder() async
     
     // Picker Data Source
     func numberOfRowsInComponent(component: Int) -> Int
@@ -42,5 +42,5 @@ protocol OrderDetailsViewModelType {
     func selectRow(atRow row: Int)
     
     // Helpers
-    func verifyRequiredData(completion: @escaping (Bool) -> Void)
+    func verifyRequiredData() async -> Bool
 }

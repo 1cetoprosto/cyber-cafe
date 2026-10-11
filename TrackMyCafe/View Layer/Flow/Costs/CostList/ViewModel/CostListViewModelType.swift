@@ -8,7 +8,7 @@
 import Foundation
 
 protocol CostListViewModelType: AnyObject {
-    func getCosts(completion: @escaping () -> Void)
+    func getCosts() async
     
     func numberOfSections() -> Int
     func numberOfRowInSection(for section: Int) -> Int

@@ -232,9 +232,11 @@ final class OrderProductPickerViewController: UIViewController, Loggable {
 }
 
 extension OrderProductPickerViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout
+{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int {
+        -> Int
+    {
         if collectionView === categoriesCollectionView {
             return displayedCategories.count
         }
@@ -309,8 +311,9 @@ extension OrderProductPickerViewController: UICollectionViewDelegate, UICollecti
 
         collectionView.deselectItem(at: indexPath, animated: true)
         let priceModel = filteredProducts[indexPath.item]
-        productsViewModel.addProduct(from: priceModel) { [weak self] in
+        Task { [weak self] in
             guard let self else { return }
+            await productsViewModel.addProduct(from: priceModel)
             self.onProductSelected?()
             if self.selectionBehavior == .popOnSelect {
                 self.navigationController?.popViewController(animated: true)
@@ -346,8 +349,9 @@ extension OrderProductPickerViewController: UITableViewDataSource, UITableViewDe
         tableView.deselectRow(at: indexPath, animated: true)
 
         let priceModel = filteredProducts[indexPath.row]
-        productsViewModel.addProduct(from: priceModel) { [weak self] in
+        Task { [weak self] in
             guard let self else { return }
+            await productsViewModel.addProduct(from: priceModel)
             self.onProductSelected?()
             if self.selectionBehavior == .popOnSelect {
                 self.navigationController?.popViewController(animated: true)

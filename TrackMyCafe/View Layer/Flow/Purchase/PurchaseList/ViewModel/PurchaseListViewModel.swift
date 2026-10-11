@@ -8,18 +8,17 @@
 import Foundation
 
 protocol PurchaseListViewModelType {
-    func getPurchases(completion: @escaping () -> Void)
+    func getPurchases() async
     func numberOfSections() -> Int
     func titleForHeaderInSection(for section: Int) -> String
     func numberOfRowInSection(for section: Int) -> Int
     func cellViewModel(for indexPath: IndexPath) -> PurchaseListItemViewModelType?
     func purchase(at indexPath: IndexPath) -> PurchaseModel
-    func deletePurchase(at indexPath: IndexPath, completion: @escaping (Bool) -> Void)
+    func deletePurchase(at indexPath: IndexPath) async -> Bool
     func availableIngredients() -> [(id: String, name: String)]
     func applyFilter(
         dateRange: ClosedRange<Date>?,
-        ingredientId: String?,
-        completion: @escaping () -> Void
+        ingredientId: String?
     )
 }
 
@@ -35,19 +34,15 @@ class PurchaseListViewModel: PurchaseListViewModelType {
         self.dbService = dbService
     }
 
-    func getPurchases(completion: @escaping () -> Void) {
-        Task { [weak self] in
-            guard let self else { return }
-            // 1. Fetch Ingredients for names
-            let ingredients = await dbService.fetchIngredients()
-            ingredients.forEach { self.ingredientsCache[$0.id] = $0.name }
+    func getPurchases() async {
+        // 1. Fetch Ingredients for names
+        let ingredients = await dbService.fetchIngredients()
+        ingredients.forEach { self.ingredientsCache[$0.id] = $0.name }
 
-            // 2. Fetch Purchases
-            let purchases = await dbService.fetchPurchases()
-            self.allPurchases = purchases
-            self.applyCurrentFilters()
-            completion()
-        }
+        // 2. Fetch Purchases
+        let purchases = await dbService.fetchPurchases()
+        self.allPurchases = purchases
+        self.applyCurrentFilters()
     }
 
     private func groupPurchasesByDate(_ purchases: [PurchaseModel]) {
@@ -96,35 +91,26 @@ class PurchaseListViewModel: PurchaseListViewModelType {
         return sectionsPurchases[indexPath.section].items[indexPath.row]
     }
 
-    func deletePurchase(at indexPath: IndexPath, completion: @escaping (Bool) -> Void) {
+    func deletePurchase(at indexPath: IndexPath) async -> Bool {
         let model = purchase(at: indexPath)
 
-        Task { [weak self] in
-            guard let self else {
-                completion(false)
-                return
-            }
+        let success = await dbService.deletePurchase(model: model)
 
-            let success = await dbService.deletePurchase(model: model)
-
-            if success {
-                self.allPurchases.removeAll { $0.id == model.id }
-                self.applyCurrentFilters()
-            }
-
-            completion(success)
+        if success {
+            self.allPurchases.removeAll { $0.id == model.id }
+            self.applyCurrentFilters()
         }
+
+        return success
     }
 
     func applyFilter(
         dateRange: ClosedRange<Date>?,
-        ingredientId: String?,
-        completion: @escaping () -> Void
+        ingredientId: String?
     ) {
         currentDateRange = dateRange
         currentIngredientId = ingredientId
         applyCurrentFilters()
-        completion()
     }
 
     private func applyCurrentFilters() {

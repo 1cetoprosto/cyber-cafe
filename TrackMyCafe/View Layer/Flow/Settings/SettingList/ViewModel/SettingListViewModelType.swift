@@ -8,7 +8,7 @@
 import Foundation
 
 protocol SettingListViewModelType: AnyObject {
-    func getSettings(completion: @escaping () -> Void)
+    func getSettings() async
     
     // func numberOfSections() -> Int
     func numberOfRowInSection(for section: Int) -> Int

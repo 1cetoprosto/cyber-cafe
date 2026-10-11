@@ -22,7 +22,7 @@ class CostListViewController: UIViewController, Loggable, ProGated {
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
-    button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         button.addTarget(self, action: #selector(performAdd(param:)), for: .touchUpInside)
         button.accessibilityIdentifier = "navBarAddCost"
         return button
@@ -32,10 +32,12 @@ class CostListViewController: UIViewController, Loggable, ProGated {
         super.viewWillAppear(animated)
 
         viewModel = CostListViewModel()
-        viewModel?.getCosts { [weak self] in
-      DispatchQueue.main.async {
-        self?.tableView.reloadData()
-      }
+        Task { [weak self] in
+            guard let self, let viewModel = self.viewModel else { return }
+            await viewModel.getCosts()
+            await MainActor.run {
+                self.tableView.reloadData()
+            }
         }
     }
 
@@ -92,12 +94,12 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell =
-        tableView.dequeueReusableCell(
-            withIdentifier: CostsTableViewCell.identifier,
-            for: indexPath) as? CostsTableViewCell
+            tableView.dequeueReusableCell(
+                withIdentifier: CostsTableViewCell.identifier,
+                for: indexPath) as? CostsTableViewCell
 
         guard let tableViewCell = cell,
-              let viewModel = viewModel
+            let viewModel = viewModel
         else { return UITableViewCell() }
 
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
@@ -133,7 +135,8 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
     ) -> UISwipeActionsConfiguration? {
         guard let viewModel = viewModel else { return nil }
 
-        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete()) { [weak self] _, _, completion in
+        let deleteAction = UIContextualAction(style: .destructive, title: R.string.global.delete())
+        { [weak self] _, _, completion in
             guard let self else { return }
 
             self.checkProOrShowPaywall(
@@ -141,10 +144,14 @@ extension CostListViewController: UITableViewDelegate, UITableViewDataSource {
                     guard let self else { return }
                     viewModel.deleteCostModel(atIndexPath: indexPath)
 
-                    viewModel.getCosts { [weak self] in
-                        self?.tableView.reloadData()
+                    Task { [weak self] in
+                        guard let self else { return }
+                        await viewModel.getCosts()
+                        await MainActor.run {
+                            self.tableView.reloadData()
+                            completion(true)
+                        }
                     }
-                    completion(true)
                 },
                 onDenied: {
                     completion(false)
