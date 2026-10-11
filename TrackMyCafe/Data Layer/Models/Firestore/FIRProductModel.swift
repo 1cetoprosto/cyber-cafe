@@ -8,6 +8,12 @@
 import FirebaseFirestoreSwift
 import Foundation
 
+// Firestore persistence shape for an order line item (`OrderItemModel`).
+// Field names are kept stable for backward compatibility with existing data:
+//   - `price`    ↔ domain `salePrice`
+//   - `amount`   ↔ domain `totalSale` (round-tripped snapshot)
+//   - `costSum`  ↔ domain `totalCost` (round-tripped snapshot)
+
 struct FIRProductModel: Codable {
     @DocumentID var id: String?
     var productId: String?
@@ -20,16 +26,16 @@ struct FIRProductModel: Codable {
     var costPrice: Double = 0.0
     var costSum: Double = 0.0
 
-    init(dataModel: ProductOfOrderModel) {
+    init(dataModel: OrderItemModel) {
         self.id = dataModel.id
         self.productId = dataModel.productId
         self.orderId = dataModel.orderId
         self.date = dataModel.date
         self.name = dataModel.name
         self.quantity = dataModel.quantity
-        self.price = dataModel.price
-        self.amount = dataModel.sum
+        self.price = dataModel.salePrice
+        self.amount = dataModel.totalSale
         self.costPrice = dataModel.costPrice
-        self.costSum = dataModel.costSum
+        self.costSum = dataModel.totalCost
     }
 }
