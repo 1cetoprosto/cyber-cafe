@@ -2,13 +2,13 @@ import Foundation
 
 struct OrderSnapshotRepairResult {
     let order: OrderModel
-    let products: [ProductOfOrderModel]
+    let products: [OrderItemModel]
     let didRepairProducts: Bool
     let didRepairOrder: Bool
 }
 
 struct OrderSnapshotRepairService {
-    func repair(order: OrderModel, products: [ProductOfOrderModel]) -> OrderSnapshotRepairResult {
+    func repair(order: OrderModel, products: [OrderItemModel]) -> OrderSnapshotRepairResult {
         let repairedProducts = repairProducts(products, fallbackTotalCost: order.totalCost)
         let resolvedTotalCost = resolvedOrderTotalCost(
             currentTotalCost: order.totalCost,
@@ -36,9 +36,9 @@ struct OrderSnapshotRepairService {
     }
 
     func repairProducts(
-        _ products: [ProductOfOrderModel],
+        _ products: [OrderItemModel],
         fallbackTotalCost: Double
-    ) -> [ProductOfOrderModel] {
+    ) -> [OrderItemModel] {
         guard !products.isEmpty else { return [] }
 
         var repaired = products.map(repairDirectSnapshotGaps)
@@ -47,19 +47,19 @@ struct OrderSnapshotRepairService {
             let product = repaired[index]
             return product.quantity > 0
                 && product.costPrice.isApproximatelyZero
-                && product.costSum.isApproximatelyZero
+                && product.totalCost.isApproximatelyZero
         }
 
         guard !missingIndices.isEmpty else { return repaired }
 
-        let knownCost = repaired.reduce(0) { $0 + max($1.costSum, 0) }
+        let knownCost = repaired.reduce(0) { $0 + max($1.totalCost, 0) }
         let remainingCost = fallbackTotalCost - knownCost
         guard remainingCost > 0 else { return repaired }
 
         let weightedValues = missingIndices.map { index -> Double in
             let product = repaired[index]
-            if !product.sum.isApproximatelyZero {
-                return product.sum
+            if !product.totalSale.isApproximatelyZero {
+                return product.totalSale
             }
             return Double(max(product.quantity, 1))
         }
@@ -76,7 +76,6 @@ struct OrderSnapshotRepairService {
                 : max(remainingCost * (weight / totalWeight), 0)
 
             allocatedCost += costSum
-            repaired[index].costSum = costSum
             repaired[index].costPrice =
                 repaired[index].quantity > 0
                 ? costSum / Double(repaired[index].quantity)
@@ -88,36 +87,30 @@ struct OrderSnapshotRepairService {
 
     func resolvedOrderTotalCost(
         currentTotalCost: Double,
-        products: [ProductOfOrderModel]
+        products: [OrderItemModel]
     ) -> Double {
-        let snapshotTotal = products.reduce(0) { $0 + max($1.costSum, 0) }
+        let snapshotTotal = products.reduce(0) { $0 + max($1.totalCost, 0) }
         if snapshotTotal > 0 {
             return snapshotTotal
         }
         return currentTotalCost
     }
 
-    private func repairDirectSnapshotGaps(_ product: ProductOfOrderModel) -> ProductOfOrderModel {
-        var repaired = product
-
-        if repaired.quantity > 0 && repaired.costSum.isApproximatelyZero && repaired.costPrice > 0 {
-            repaired.costSum = repaired.costPrice * Double(repaired.quantity)
-        }
-
-        if repaired.quantity > 0 && repaired.costPrice.isApproximatelyZero && repaired.costSum > 0 {
-            repaired.costPrice = repaired.costSum / Double(repaired.quantity)
-        }
-
-        return repaired
+    private func repairDirectSnapshotGaps(_ product: OrderItemModel) -> OrderItemModel {
+        // Direct gap repair is handled during FIR → Domain conversion
+        // (`OrderItemModel.init(firebaseModel:)` backfills `costPrice` from the
+        // stored `costSum`). `totalCost` is computed from `costPrice * quantity`,
+        // so there is no separate stored total to backfill here.
+        product
     }
 }
 
-private extension Double {
-    var isApproximatelyZero: Bool {
+extension Double {
+    fileprivate var isApproximatelyZero: Bool {
         abs(self) < 0.000_1
     }
 
-    func isApproximatelyEqual(to other: Double) -> Bool {
+    fileprivate func isApproximatelyEqual(to other: Double) -> Bool {
         abs(self - other) < 0.000_1
     }
 }
