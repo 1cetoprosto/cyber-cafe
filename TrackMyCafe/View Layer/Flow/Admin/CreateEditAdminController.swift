@@ -222,8 +222,9 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
     }
     
     private func saveTechnicianToDatabase() {
-        FirestoreDatabaseService.updateAdmin(admin) {[weak self] (success) in
-            guard let self = self else { return }
+        Task { [weak self] in
+            guard let self else { return }
+            let success = await FirestoreDatabaseService.updateAdmin(admin)
             if success {
                 self.log()
                 SVProgressHUD.dismiss()

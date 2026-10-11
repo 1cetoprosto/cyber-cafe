@@ -341,28 +341,32 @@ class CreateEditTechnicianController: UIViewController, Loggable {
 
     private func saveTechnicianToDatabase() {
         let isNew = self.technician.firebaseRef == ""
+        let technician = self.technician
 
-        if isNew {
-            FirestoreDatabaseService.getRoles(self.technician.email.trimmed.lowercased()) { roles in
+        Task { [weak self] in
+            guard let self else { return }
+
+            if isNew {
+                let roles = await FirestoreDatabaseService.getRoles(technician.email.trimmed.lowercased())
                 if (roles ?? []).isEmpty {
-                    var roles = [RoleConfig]()
+                    var newRoles = [RoleConfig]()
                     let userRef = Firestore.firestore().collection("users").document()
                     if UserSession.current.masterUserRef != nil {
-                        if self.technician.role == .technician || self.technician.role == .techMod {
+                        if technician.role == .technician || technician.role == .techMod {
                             let techRole = RoleConfig(
-                                ref: userRef.documentID, email: self.technician.email,
+                                ref: userRef.documentID, email: technician.email,
                                 dataRef: UserSession.current.masterUserRef,
                                 userRef: userRef.documentID,
                                 role: .technician, onlineVersion: true)
-                            roles.append(techRole)
+                            newRoles.append(techRole)
                         }
-                        if self.technician.role == .moderator || self.technician.role == .techMod {
+                        if technician.role == .moderator || technician.role == .techMod {
                             let modeRole = RoleConfig(
-                                ref: userRef.documentID, email: self.technician.email,
+                                ref: userRef.documentID, email: technician.email,
                                 dataRef: UserSession.current.masterUserRef,
                                 userRef: userRef.documentID,
                                 role: .moderator, onlineVersion: true)
-                            roles.append(modeRole)
+                            newRoles.append(modeRole)
                         }
                     } else {
                         self.logger.error("Error: masterUserRef is nil")
@@ -370,7 +374,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                         return
                     }
                     var updateData = [String: Any]()
-                    roles.forEach {
+                    newRoles.forEach {
                         let key = "roles/\($0.firebaseRef)"
                         updateData[key] = $0.forDatabase()
                     }
@@ -387,16 +391,14 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                         batch.setData(value as! [String: Any], forDocument: ref)
                     }
 
-                    batch.commit { error in
-                        let success = error == nil
-                        if success {
-                            self.log(isNew)
-                            self.sendInviteEmail()
-                        } else {
-                            SVProgressHUD.dismiss()
-                            self.showAlert(
-                                R.string.global.error(), body: R.string.global.wentWrong())
-                        }
+                    do {
+                        try await batch.commit()
+                        self.log(isNew)
+                        self.sendInviteEmail()
+                    } catch {
+                        SVProgressHUD.dismiss()
+                        self.showAlert(
+                            R.string.global.error(), body: R.string.global.wentWrong())
                     }
                 } else {
                     SVProgressHUD.dismiss()
@@ -404,9 +406,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                         R.string.global.error(), body: R.string.global.technicianEmailAlreadyExist()
                     )
                 }
-            }
-        } else {
-            FirestoreDatabaseService.getTechRoles(self.technician.email) { items in
+            } else {
+                let items = await FirestoreDatabaseService.getTechRoles(technician.email)
                 guard let roles = items,
                     let userDataKey = roles.first?.userRef
                 else { return }
@@ -414,30 +415,30 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 var removeRoles = [RoleConfig]()
                 var addRoles = [RoleConfig]()
                 if let role = roles.first(where: { $0.role == .technician }),
-                    self.technician.role == .moderator {
+                    technician.role == .moderator {
                     removeRoles.append(role)
                 }
                 if let role = roles.first(where: { $0.role == .moderator }),
-                    self.technician.role == .technician {
+                    technician.role == .technician {
                     removeRoles.append(role)
                 }
 
-                if (self.technician.role == .technician || self.technician.role == .techMod)
+                if (technician.role == .technician || technician.role == .techMod)
                     && !(roles.contains { $0.role == .technician }) {
                     let techRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
-                        email: self.technician.email, dataRef: UserSession.current.masterUserRef,
+                        email: technician.email, dataRef: UserSession.current.masterUserRef,
                         userRef: userDataKey, role: .technician, onlineVersion: true)
                     addRoles.append(techRole)
                 }
 
-                if (self.technician.role == .moderator || self.technician.role == .techMod)
+                if (technician.role == .moderator || technician.role == .techMod)
                     && !(roles.contains { $0.role == .moderator }) {
-                    let techRole = RoleConfig(
+                    let modeRole = RoleConfig(
                         ref: Firestore.firestore().collection("users").document().documentID,
-                        email: self.technician.email, dataRef: UserSession.current.masterUserRef,
+                        email: technician.email, dataRef: UserSession.current.masterUserRef,
                         userRef: userDataKey, role: .moderator, onlineVersion: true)
-                    addRoles.append(techRole)
+                    addRoles.append(modeRole)
                 }
 
                 var updateData = [String: Any?]()
@@ -451,8 +452,8 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                 }
 
                 let techKey =
-                    "users/\(String(describing: UserSession.current.masterUserRef))/technicians/\(String(describing: self.technician.firebaseRef))"
-                updateData[techKey] = self.technician.forDatabase()
+                    "users/\(String(describing: UserSession.current.masterUserRef))/technicians/\(String(describing: technician.firebaseRef))"
+                updateData[techKey] = technician.forDatabase()
 
                 let batch = Firestore.firestore().batch()
                 updateData.forEach { key, value in
@@ -464,16 +465,14 @@ class CreateEditTechnicianController: UIViewController, Loggable {
                     }
                 }
 
-                batch.commit { error in
-                    let success = error == nil
-                    if success {
-                        self.log(isNew)
-                        SVProgressHUD.dismiss()
-                        self.navigationController?.popViewController(animated: true)
-                    } else {
-                        SVProgressHUD.dismiss()
-                        self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
-                    }
+                do {
+                    try await batch.commit()
+                    self.log(isNew)
+                    SVProgressHUD.dismiss()
+                    self.navigationController?.popViewController(animated: true)
+                } catch {
+                    SVProgressHUD.dismiss()
+                    self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
                 }
             }
         }
