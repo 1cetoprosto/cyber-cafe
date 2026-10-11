@@ -95,7 +95,8 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testBalanceJournalService_legacyOpexWithoutPaymentAccount_doesNotAppendEntries()
-        async throws {
+        async throws
+    {
         let persistence = MockFinancePersistence()
         let service = BalanceJournalService(database: persistence)
         let expense = OpexExpenseModel(
@@ -156,7 +157,8 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testBalanceJournalService_legacyPurchaseWithoutPaymentAccount_doesNotAppendEntries()
-        async throws {
+        async throws
+    {
         let persistence = MockFinancePersistence()
         let service = BalanceJournalService(database: persistence)
         let purchase = PurchaseModel(
@@ -271,7 +273,8 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testFinanceHistoryBackfillService_createsOnlyMissingEntriesAndMarksCompleted()
-        async throws {
+        async throws
+    {
         let sourceFetcher = MockFinanceHistorySourceFetcher()
         let persistence = MockFinancePersistence()
         let materializer = MockDailyBalanceMaterializer()
@@ -373,7 +376,8 @@ final class TrackMyCafeTests: XCTestCase {
     }
 
     func testFinanceHistoryBackfillService_existingEntriesDoNotDuplicateAndStillMaterialize()
-        async throws {
+        async throws
+    {
         let sourceFetcher = MockFinanceHistorySourceFetcher()
         let persistence = MockFinancePersistence()
         let materializer = MockDailyBalanceMaterializer()
@@ -420,7 +424,7 @@ final class TrackMyCafeTests: XCTestCase {
         )
     }
 
-    func testOrderSnapshotRepairService_derivesMissingCostSumFromCostPrice() {
+    func testOrderSnapshotRepairService_totalCostComputedFromCostPrice() {
         let service = OrderSnapshotRepairService()
         let order = OrderModel(
             id: "order-1",
@@ -432,25 +436,25 @@ final class TrackMyCafeTests: XCTestCase {
             totalCost: 30
         )
         let products = [
-            ProductOfOrderModel(
+            OrderItemModel(
                 id: "item-1",
                 productId: "product-1",
+                name: "Latte",
                 orderId: "order-1",
                 date: order.date,
-                name: "Latte",
                 quantity: 3,
-                price: 30,
-                sum: 90,
-                costPrice: 10,
-                costSum: 0
+                salePrice: 30,
+                costPrice: 10
             )
         ]
 
         let result = service.repair(order: order, products: products)
 
-        XCTAssertTrue(result.didRepairProducts)
+        // `totalCost` is a computed property (`costPrice * quantity`), so when
+        // `costPrice` is present no product-level repair is required.
+        XCTAssertFalse(result.didRepairProducts)
         XCTAssertFalse(result.didRepairOrder)
-        XCTAssertEqual(result.products.first?.costSum, 30)
+        XCTAssertEqual(result.products.first?.totalCost, 30)
         XCTAssertEqual(result.order.totalCost, 30)
     }
 
@@ -466,25 +470,23 @@ final class TrackMyCafeTests: XCTestCase {
             totalCost: 40
         )
         let products = [
-            ProductOfOrderModel(
+            OrderItemModel(
                 id: "item-1",
                 productId: "product-1",
+                name: "Espresso",
                 orderId: "order-2",
                 date: order.date,
-                name: "Espresso",
                 quantity: 1,
-                price: 40,
-                sum: 40
+                salePrice: 40
             ),
-            ProductOfOrderModel(
+            OrderItemModel(
                 id: "item-2",
                 productId: "product-2",
+                name: "Latte",
                 orderId: "order-2",
                 date: order.date,
-                name: "Latte",
                 quantity: 2,
-                price: 30,
-                sum: 60
+                salePrice: 30
             ),
         ]
 
@@ -492,9 +494,9 @@ final class TrackMyCafeTests: XCTestCase {
 
         XCTAssertTrue(result.didRepairProducts)
         XCTAssertFalse(result.didRepairOrder)
-        XCTAssertEqual(result.products[0].costSum, 16, accuracy: 0.0001)
+        XCTAssertEqual(result.products[0].totalCost, 16, accuracy: 0.0001)
         XCTAssertEqual(result.products[0].costPrice, 16, accuracy: 0.0001)
-        XCTAssertEqual(result.products[1].costSum, 24, accuracy: 0.0001)
+        XCTAssertEqual(result.products[1].totalCost, 24, accuracy: 0.0001)
         XCTAssertEqual(result.products[1].costPrice, 12, accuracy: 0.0001)
         XCTAssertEqual(result.order.totalCost, 40, accuracy: 0.0001)
     }
@@ -511,29 +513,25 @@ final class TrackMyCafeTests: XCTestCase {
             totalCost: 0
         )
         let products = [
-            ProductOfOrderModel(
+            OrderItemModel(
                 id: "item-1",
                 productId: "product-1",
+                name: "Flat White",
                 orderId: "order-3",
                 date: order.date,
-                name: "Flat White",
                 quantity: 2,
-                price: 25,
-                sum: 50,
-                costPrice: 7,
-                costSum: 14
+                salePrice: 25,
+                costPrice: 7
             ),
-            ProductOfOrderModel(
+            OrderItemModel(
                 id: "item-2",
                 productId: "product-2",
+                name: "Tea",
                 orderId: "order-3",
                 date: order.date,
-                name: "Tea",
                 quantity: 2,
-                price: 25,
-                sum: 50,
-                costPrice: 3,
-                costSum: 6
+                salePrice: 25,
+                costPrice: 3
             ),
         ]
 
@@ -786,13 +784,13 @@ final class TrackMyCafeTests: XCTestCase {
         let facade = DomainDashboardFacade()
         let ref = makeDate(year: 2026, month: 8, day: 15)
         let inPeriod = ref.addingTimeInterval(3600)
-        let products: [ProductOfOrderModel] = [
-            ProductOfOrderModel(
-                id: "p1", productId: "a", orderId: "o", date: inPeriod, name: "Espresso",
-                quantity: 5, price: 30, sum: 150, costPrice: 5, costSum: 25),
-            ProductOfOrderModel(
-                id: "p2", productId: "b", orderId: "o", date: inPeriod, name: "Tea",
-                quantity: 2, price: 20, sum: 40, costPrice: 18, costSum: 36),
+        let products: [OrderItemModel] = [
+            OrderItemModel(
+                id: "p1", productId: "a", name: "Espresso", orderId: "o", date: inPeriod,
+                quantity: 5, salePrice: 30, costPrice: 5),
+            OrderItemModel(
+                id: "p2", productId: "b", name: "Tea", orderId: "o", date: inPeriod,
+                quantity: 2, salePrice: 20, costPrice: 18),
         ]
 
         let snapshot = facade.makeSnapshot(
@@ -815,13 +813,13 @@ final class TrackMyCafeTests: XCTestCase {
         let ref = makeDate(year: 2026, month: 8, day: 15)
         let inside = ref.addingTimeInterval(3600)
         let outside = makeDate(year: 2026, month: 8, day: 1)
-        let products: [ProductOfOrderModel] = [
-            ProductOfOrderModel(
-                id: "p1", productId: "a", orderId: "o1", date: inside, name: "X",
-                quantity: 1, price: 10, sum: 10, costPrice: 1, costSum: 1),
-            ProductOfOrderModel(
-                id: "p2", productId: "b", orderId: "o2", date: outside, name: "Y",
-                quantity: 1, price: 99, sum: 99, costPrice: 1, costSum: 1),
+        let products: [OrderItemModel] = [
+            OrderItemModel(
+                id: "p1", productId: "a", name: "X", orderId: "o1", date: inside,
+                quantity: 1, salePrice: 10, costPrice: 1),
+            OrderItemModel(
+                id: "p2", productId: "b", name: "Y", orderId: "o2", date: outside,
+                quantity: 1, salePrice: 99, costPrice: 1),
         ]
 
         let snapshot = facade.makeSnapshot(
@@ -877,18 +875,18 @@ final class TrackMyCafeTests: XCTestCase {
         let range = DashboardPeriod.month.interval(for: aug15)
 
         // 4 products with sales 60 / 20 / 15 / 5 (total 100)
-        let p1 = ProductOfOrderModel(
-            id: "1", productId: "a", orderId: "o1", date: aug15, name: "Espresso", quantity: 1,
-            price: 60, sum: 60, costPrice: 20, costSum: 20)
-        let p2 = ProductOfOrderModel(
-            id: "2", productId: "b", orderId: "o1", date: aug15, name: "Latte", quantity: 1,
-            price: 20, sum: 20, costPrice: 8, costSum: 8)
-        let p3 = ProductOfOrderModel(
-            id: "3", productId: "c", orderId: "o1", date: aug15, name: "Cake", quantity: 1,
-            price: 15, sum: 15, costPrice: 5, costSum: 5)
-        let p4 = ProductOfOrderModel(
-            id: "4", productId: "d", orderId: "o1", date: aug15, name: "Water", quantity: 1,
-            price: 5, sum: 5, costPrice: 1, costSum: 1)
+        let p1 = OrderItemModel(
+            id: "1", productId: "a", name: "Espresso", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 60, costPrice: 20)
+        let p2 = OrderItemModel(
+            id: "2", productId: "b", name: "Latte", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 20, costPrice: 8)
+        let p3 = OrderItemModel(
+            id: "3", productId: "c", name: "Cake", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 15, costPrice: 5)
+        let p4 = OrderItemModel(
+            id: "4", productId: "d", name: "Water", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 5, costPrice: 1)
 
         let rows = service.buildABCRows(
             productsOfOrders: [p1, p2, p3, p4], range: range, rankingKey: .sales)
@@ -920,15 +918,15 @@ final class TrackMyCafeTests: XCTestCase {
         // Espresso: sales=50 cost=20 -> gross=30
         // Latte:    sales=40 cost=10 -> gross=30
         // Water:    sales=80 cost=70 -> gross=10
-        let p1 = ProductOfOrderModel(
-            id: "1", productId: "a", orderId: "o1", date: aug15, name: "Espresso", quantity: 1,
-            price: 50, sum: 50, costPrice: 20, costSum: 20)
-        let p2 = ProductOfOrderModel(
-            id: "2", productId: "b", orderId: "o1", date: aug15, name: "Latte", quantity: 1,
-            price: 40, sum: 40, costPrice: 10, costSum: 10)
-        let p3 = ProductOfOrderModel(
-            id: "3", productId: "c", orderId: "o1", date: aug15, name: "Water", quantity: 1,
-            price: 80, sum: 80, costPrice: 70, costSum: 70)
+        let p1 = OrderItemModel(
+            id: "1", productId: "a", name: "Espresso", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 50, costPrice: 20)
+        let p2 = OrderItemModel(
+            id: "2", productId: "b", name: "Latte", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 40, costPrice: 10)
+        let p3 = OrderItemModel(
+            id: "3", productId: "c", name: "Water", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 80, costPrice: 70)
 
         let rows = service.buildABCRows(
             productsOfOrders: [p1, p2, p3], range: range, rankingKey: .grossProfit)
@@ -980,15 +978,17 @@ final class TrackMyCafeTests: XCTestCase {
         let aug15 = makeDate(year: 2026, month: 8, day: 15)
         let range = DashboardPeriod.day.interval(for: aug15)
         // 3 items: 1 in day, 2 in other days
-        let inDay = ProductOfOrderModel(
-            id: "1", productId: "a", orderId: "o1", date: aug15, name: "A", quantity: 1, price: 80,
-            sum: 80, costPrice: 20, costSum: 20)
-        let outDay1 = ProductOfOrderModel(
-            id: "2", productId: "b", orderId: "o2", date: aug15.addingTimeInterval(-86400),
-            name: "B", quantity: 1, price: 100, sum: 100, costPrice: 50, costSum: 50)
-        let outDay2 = ProductOfOrderModel(
-            id: "3", productId: "c", orderId: "o3", date: aug15.addingTimeInterval(+86400),
-            name: "C", quantity: 1, price: 200, sum: 200, costPrice: 100, costSum: 100)
+        let inDay = OrderItemModel(
+            id: "1", productId: "a", name: "A", orderId: "o1", date: aug15, quantity: 1,
+            salePrice: 80, costPrice: 20)
+        let outDay1 = OrderItemModel(
+            id: "2", productId: "b", name: "B", orderId: "o2",
+            date: aug15.addingTimeInterval(-86400), quantity: 1,
+            salePrice: 100, costPrice: 50)
+        let outDay2 = OrderItemModel(
+            id: "3", productId: "c", name: "C", orderId: "o3",
+            date: aug15.addingTimeInterval(+86400), quantity: 1,
+            salePrice: 200, costPrice: 100)
 
         let rows = service.buildABCRows(
             productsOfOrders: [inDay, outDay1, outDay2], range: range, rankingKey: .sales)
