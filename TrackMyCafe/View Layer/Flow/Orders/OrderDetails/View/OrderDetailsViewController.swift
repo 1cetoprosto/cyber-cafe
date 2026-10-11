@@ -370,14 +370,16 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
             }
         }
 
-        viewModel.loadProducts { [weak self] in
-            DispatchQueue.main.async {
-                self?.tableView.reloadData()
-                self?.collectionView.reloadData()
-                self?.updateTableHeight()
-                self?.updateCollectionHeight()
-                self?.updateTotalSumLabel()
-                self?.updateChangeLabel()
+        Task { [weak self] in
+            guard let self else { return }
+            await viewModel.loadProducts()
+            await MainActor.run {
+                self.tableView.reloadData()
+                self.collectionView.reloadData()
+                self.updateTableHeight()
+                self.updateCollectionHeight()
+                self.updateTotalSumLabel()
+                self.updateChangeLabel()
             }
         }
 
@@ -385,14 +387,19 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
     }
 
     private func verifyRequiredData() {
-        viewModel?.verifyRequiredData { [weak self] isDataAvailable in
+        Task { [weak self] in
+            guard let self, let viewModel = self.viewModel else { return }
+            let isDataAvailable = await viewModel.verifyRequiredData()
             if !isDataAvailable {
-                let alert = UIAlertController(
-                    title: R.string.global.error(),
-                    message: R.string.global.requiredDataIsMissingInUserSettings(),
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-                self?.present(alert, animated: true)
+                await MainActor.run {
+                    let alert = UIAlertController(
+                        title: R.string.global.error(),
+                        message: R.string.global.requiredDataIsMissingInUserSettings(),
+                        preferredStyle: .alert)
+                    alert.addAction(
+                        UIAlertAction(title: R.string.global.actionOk(), style: .default))
+                    self.present(alert, animated: true)
+                }
             }
         }
     }
@@ -485,21 +492,28 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         let cash = cashInputContainer.text
         let card = cardInputContainer.text
 
-        viewModel.save(
-            date: date, type: type, cash: cash, card: card, note: nil, ignoreStockWarning: false
-        ) { [weak self] result in
-            self?.handleSaveResult(result)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await viewModel.save(
+                    date: date, type: type, cash: cash, card: card, note: nil,
+                    ignoreStockWarning: false
+                )
+                await MainActor.run {
+                    self.onSave?()
+                    self.navigationController?.popToRootViewController(animated: true)
+                }
+            } catch {
+                await MainActor.run {
+                    self.handleSaveError(error)
+                }
+            }
         }
     }
 
-    private func handleSaveResult(_ result: Result<Void, OrderSaveError>) {
-        switch result {
-        case .success:
-            self.onSave?()
-            self.navigationController?.popToRootViewController(animated: true)
-
-        case .failure(let error):
-            switch error {
+    private func handleSaveError(_ error: Error) {
+        if let orderError = error as? OrderSaveError {
+            switch orderError {
             case .stockValidationFailed(let warnings):
                 self.showStockWarning(warnings)
             case .saveFailed, .fetchFailed:
@@ -508,6 +522,11 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                 alert.addAction(UIAlertAction(title: "OK", style: .default))
                 self.present(alert, animated: true)
             }
+        } else {
+            let alert = UIAlertController(
+                title: "Error", message: "Failed to save order", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
         }
     }
 
@@ -539,11 +558,22 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                     let cash = self.cashInputContainer.text
                     let card = self.cardInputContainer.text
 
-                    viewModel.save(
-                        date: date, type: type, cash: cash, card: card, note: nil,
-                        ignoreStockWarning: true
-                    ) { [weak self] result in
-                        self?.handleSaveResult(result)
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            try await viewModel.save(
+                                date: date, type: type, cash: cash, card: card, note: nil,
+                                ignoreStockWarning: true
+                            )
+                            await MainActor.run {
+                                self.onSave?()
+                                self.navigationController?.popToRootViewController(animated: true)
+                            }
+                        } catch {
+                            await MainActor.run {
+                                self.handleSaveError(error)
+                            }
+                        }
                     }
                 }))
         self.present(alert, animated: true)
@@ -624,14 +654,17 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
 
 // MARK: - CollectionView
 extension OrderDetailsViewController: UICollectionViewDelegate, UICollectionViewDataSource,
-    UICollectionViewDelegateFlowLayout {
+    UICollectionViewDelegateFlowLayout
+{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int {
+        -> Int
+    {
         return viewModel?.productsViewModel.numberOfRowInSection(for: section) ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
-        -> UICollectionViewCell {
+        -> UICollectionViewCell
+    {
         guard
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "OrderCollectionViewCell", for: indexPath)
@@ -679,7 +712,8 @@ extension OrderDetailsViewController: UIPickerViewDataSource, UIPickerViewDelega
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int)
-        -> String? {
+        -> String?
+    {
         return viewModel?.titleForRow(row: row, component: component)
     }
 

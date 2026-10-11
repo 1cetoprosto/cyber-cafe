@@ -348,11 +348,13 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
     }
 
     private func loadInitialData() {
-        viewModel.loadProducts { [weak self] in
-            DispatchQueue.main.async {
-                self?.applySnapshot(animatingDifferences: false)
-                self?.updateTotals()
-                self?.updateChangeLabel()
+        Task { [weak self] in
+            guard let self else { return }
+            await viewModel.loadProducts()
+            await MainActor.run {
+                self.applySnapshot(animatingDifferences: false)
+                self.updateTotals()
+                self.updateChangeLabel()
             }
         }
 
@@ -435,7 +437,8 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
             guard let dataSource else { return }
             let items = dataSource.snapshot().itemIdentifiers
             if let quantity = viewModel.productsViewModel.quantity(forProductId: productId),
-                quantity == 0 {
+                quantity == 0
+            {
                 applySnapshot(animatingDifferences: true)
                 return
             }
@@ -548,28 +551,37 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
         let cash = cashInputContainer.text
         let card = cardInputContainer.text
         let note = noteInputContainer.text
-        viewModel.save(
-            date: selectedDate,
-            type: selectedType,
-            cash: cash,
-            card: card,
-            note: note,
-            ignoreStockWarning: false
-        ) { [weak self] result in
-            DispatchQueue.main.async {
-                self?.handleSaveResult(result)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await viewModel.save(
+                    date: selectedDate,
+                    type: selectedType,
+                    cash: cash,
+                    card: card,
+                    note: note,
+                    ignoreStockWarning: false
+                )
+                await MainActor.run {
+                    self.handleSaveSuccess()
+                }
+            } catch {
+                await MainActor.run {
+                    self.handleSaveError(error)
+                }
             }
         }
     }
 
-    private func handleSaveResult(_ result: Result<Void, OrderSaveError>) {
-        switch result {
-        case .success:
-            onSave?()
-            navigationController?.parent?.navigationController?.popToRootViewController(
-                animated: true)
-        case .failure(let error):
-            switch error {
+    private func handleSaveSuccess() {
+        onSave?()
+        navigationController?.parent?.navigationController?.popToRootViewController(
+            animated: true)
+    }
+
+    private func handleSaveError(_ error: Error) {
+        if let orderError = error as? OrderSaveError {
+            switch orderError {
             case .stockValidationFailed(let warnings):
                 showStockWarning(warnings)
             case .saveFailed, .fetchFailed:
@@ -581,6 +593,14 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
                 alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
                 present(alert, animated: true)
             }
+        } else {
+            let alert = UIAlertController(
+                title: R.string.global.error(),
+                message: R.string.global.somethingWentWrong(),
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
+            present(alert, animated: true)
         }
     }
 
@@ -607,16 +627,24 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
                 style: .destructive,
                 handler: { [weak self] _ in
                     guard let self else { return }
-                    self.viewModel.save(
-                        date: self.selectedDate,
-                        type: self.selectedType,
-                        cash: self.cashInputContainer.text,
-                        card: self.cardInputContainer.text,
-                        note: self.noteInputContainer.text,
-                        ignoreStockWarning: true
-                    ) { [weak self] result in
-                        DispatchQueue.main.async {
-                            self?.handleSaveResult(result)
+                    Task { [weak self] in
+                        guard let self else { return }
+                        do {
+                            try await self.viewModel.save(
+                                date: self.selectedDate,
+                                type: self.selectedType,
+                                cash: self.cashInputContainer.text,
+                                card: self.cardInputContainer.text,
+                                note: self.noteInputContainer.text,
+                                ignoreStockWarning: true
+                            )
+                            await MainActor.run {
+                                self.handleSaveSuccess()
+                            }
+                        } catch {
+                            await MainActor.run {
+                                self.handleSaveError(error)
+                            }
                         }
                     }
                 }
