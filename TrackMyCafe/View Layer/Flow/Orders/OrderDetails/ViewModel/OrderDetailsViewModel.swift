@@ -56,19 +56,18 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
     }
 
     // MARK: - Data Loading
-    func loadProducts(completion: @escaping () -> Void) {
+    func loadProducts() async {
         let mode = SettingsManager.shared.loadOrderEntryMode()
         switch mode {
         case .perOrder:
             if isNewModel {
                 productsViewModel.clearProducts()
-                completion()
             } else {
-                productsViewModel.getProducts(withIdOrder: order.id, completion: completion)
+                await productsViewModel.getProducts(withIdOrder: order.id)
             }
         case .openTab:
             let orderId = isNewModel ? "" : order.id
-            productsViewModel.getProducts(withIdOrder: orderId, completion: completion)
+            await productsViewModel.getProducts(withIdOrder: orderId)
         }
     }
 
@@ -79,82 +78,46 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         cash: String?,
         card: String?,
         note: String?,
-        ignoreStockWarning: Bool,
-        completion: @escaping (Result<Void, OrderSaveError>) -> Void
-    ) {
+        ignoreStockWarning: Bool
+    ) async throws {
         let type = type ?? ""
         let cashValue = cash?.double ?? 0.0
         let cardValue = card?.double ?? 0.0
         let note = note?.trimmingCharacters(in: .whitespacesAndNewlines).nilIfEmpty
 
-        if ignoreStockWarning {
-            performSave(
-                date: date, type: type, cash: cashValue, card: cardValue, note: note,
-                completion: completion)
-        } else {
-            productsViewModel.validateStock { [weak self] warnings in
-                guard let self = self else { return }
-
-                if !warnings.isEmpty {
-                    completion(.failure(.stockValidationFailed(warnings)))
-                    return
-                }
-
-                self.performSave(
-                    date: date, type: type, cash: cashValue, card: cardValue, note: note,
-                    completion: completion)
+        if !ignoreStockWarning {
+            let warnings = await productsViewModel.validateStock()
+            if !warnings.isEmpty {
+                throw OrderSaveError.stockValidationFailed(warnings)
             }
         }
+
+        try await performSave(date: date, type: type, cash: cashValue, card: cardValue, note: note)
     }
 
     private func performSave(
-        date: Date, type: String, cash: Double, card: Double, note: String?,
-        completion: @escaping (Result<Void, OrderSaveError>) -> Void
-    ) {
-        // 1. Save/Update Order (Parent)
-        if self.isNewModel {
-            self.createOrder(date: date, type: type, cash: cash, card: card, note: note) {
-                success in
-                if success {
-                    // 2. Save Products (Children)
-                    self.productsViewModel.saveOrder(withOrderId: self.order.id, date: date) {
-                        productsSaved in
-                        if productsSaved {
-                            completion(.success(()))
-                        } else {
-                            completion(.failure(.saveFailed))
-                        }
-                    }
-                } else {
-                    completion(.failure(.saveFailed))
-                }
-            }
+        date: Date, type: String, cash: Double, card: Double, note: String?
+    ) async throws {
+        if isNewModel {
+            let success = await createOrder(
+                date: date, type: type, cash: cash, card: card, note: note)
+            guard success else { throw OrderSaveError.saveFailed }
+
+            let productsSaved = await productsViewModel.saveOrder(withOrderId: order.id, date: date)
+            guard productsSaved else { throw OrderSaveError.saveFailed }
         } else {
-            self.updateOrder(date: date, type: type, cash: cash, card: card, note: note) {
-                success in
-                if success {
-                    // 2. Update Products (Children)
-                    self.productsViewModel.updateOrder(
-                        orderId: self.order.id,
-                        date: date
-                    ) { productsSaved in
-                        if productsSaved {
-                            completion(.success(()))
-                        } else {
-                            completion(.failure(.saveFailed))
-                        }
-                    }
-                } else {
-                    completion(.failure(.saveFailed))
-                }
-            }
+            let success = await updateOrder(
+                date: date, type: type, cash: cash, card: card, note: note)
+            guard success else { throw OrderSaveError.saveFailed }
+
+            let productsSaved = await productsViewModel.updateOrder(orderId: order.id, date: date)
+            guard productsSaved else { throw OrderSaveError.saveFailed }
         }
     }
 
     private func createOrder(
-        date: Date, type: String, cash: Double, card: Double, note: String?,
-        completion: @escaping (Bool) -> Void
-    ) {
+        date: Date, type: String, cash: Double, card: Double, note: String?
+    ) async -> Bool {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
 
@@ -170,29 +133,21 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             note: note
         )
 
-        Task { [weak self] in
-            guard let self else {
-                completion(false)
-                return
-            }
-
-            do {
-                let savedOrder = try await orderDataService.createOrder(newOrder)
-                self.order = savedOrder
-                self.isNewModel = false
-                completion(true)
-            } catch {
-                self.logger.error(
-                    "Failed to create order \(newOrder.id): \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            let savedOrder = try await orderDataService.createOrder(newOrder)
+            order = savedOrder
+            isNewModel = false
+            return true
+        } catch {
+            logger.error(
+                "Failed to create order \(newOrder.id): \(error.localizedDescription)")
+            return false
         }
     }
 
     private func updateOrder(
-        date: Date, type: String, cash: Double, card: Double, note: String?,
-        completion: @escaping (Bool) -> Void
-    ) {
+        date: Date, type: String, cash: Double, card: Double, note: String?
+    ) async -> Bool {
         let sum = productsViewModel.getTotalAmount()
         let totalCost = productsViewModel.getTotalCostAmount()
 
@@ -208,21 +163,14 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             note: note
         )
 
-        Task { [weak self] in
-            guard let self else {
-                completion(false)
-                return
-            }
-
-            do {
-                try await orderDataService.updateOrder(previous: order, current: updatedOrder)
-                self.order = updatedOrder
-                completion(true)
-            } catch {
-                self.logger.error(
-                    "Failed to update order \(updatedOrder.id): \(error.localizedDescription)")
-                completion(false)
-            }
+        do {
+            try await orderDataService.updateOrder(previous: order, current: updatedOrder)
+            order = updatedOrder
+            return true
+        } catch {
+            logger.error(
+                "Failed to update order \(updatedOrder.id): \(error.localizedDescription)")
+            return false
         }
     }
 
@@ -255,38 +203,26 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
         }
     }
 
-    func verifyRequiredData(completion: @escaping (Bool) -> Void) {
-        Task { [weak self] in
-            guard let self = self else { return }
-            let types = await DomainDatabaseService.shared.fetchTypes()
-            self.types = types
-            let productPrices = await DomainDatabaseService.shared.fetchProductsPrice()
-            completion(!types.isEmpty && !productPrices.isEmpty)
-        }
+    func verifyRequiredData() async -> Bool {
+        let types = await DomainDatabaseService.shared.fetchTypes()
+        self.types = types
+        let productPrices = await DomainDatabaseService.shared.fetchProductsPrice()
+        return !types.isEmpty && !productPrices.isEmpty
     }
 
-    func deleteOrder(completion: @escaping () -> Void) {
+    func deleteOrder() async {
         ProductListViewModel.deleteOrder(
             withOrderId: id,
             date: date,
             trackingEnabled: orderTrackingMode
         )
 
-        Task { [weak self] in
-            guard let self else {
-                completion()
-                return
-            }
-
-            do {
-                try await orderDataService.deleteOrder(order)
-                self.logger.notice("Order deleted")
-            } catch {
-                self.logger.error(
-                    "Failed to delete order \(self.order.id): \(error.localizedDescription)")
-            }
-
-            completion()
+        do {
+            try await orderDataService.deleteOrder(order)
+            logger.notice("Order deleted")
+        } catch {
+            logger.error(
+                "Failed to delete order \(order.id): \(error.localizedDescription)")
         }
     }
 }

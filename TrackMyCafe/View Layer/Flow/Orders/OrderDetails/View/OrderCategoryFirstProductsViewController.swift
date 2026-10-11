@@ -321,9 +321,10 @@ extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
         collectionView.deselectItem(at: indexPath, animated: true)
         let product = filteredProducts[indexPath.item]
 
-        productsViewModel.addProduct(from: product) { [weak self] in
+        Task { [weak self] in
             guard let self else { return }
-            DispatchQueue.main.async {
+            await productsViewModel.addProduct(from: product)
+            await MainActor.run {
                 self.collectionView.reloadItems(at: [indexPath])
             }
         }
