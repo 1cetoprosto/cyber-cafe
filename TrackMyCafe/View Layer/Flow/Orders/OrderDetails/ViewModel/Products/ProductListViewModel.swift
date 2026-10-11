@@ -15,7 +15,7 @@ enum ProductListChange {
 class ProductListViewModel: ProductListViewModelType, Loggable {
 
     private var selectedIndexPath: IndexPath?
-    private var products = [ProductOfOrderModel]()
+    private var products = [OrderItemModel]()
     private let costingService: CostingServiceProtocol
     private let inventoryService: InventoryServiceProtocol
     private var inventoryTrackingModeOverride: Bool?
@@ -58,21 +58,19 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
         if fetchedProducts.isEmpty {
             let productsPrice = await DomainDatabaseService.shared.fetchProductsPrice()
-            var newProducts: [ProductOfOrderModel] = []
+            var newProducts: [OrderItemModel] = []
 
             for productPrice in productsPrice {
                 let cost = await costingService.calculateProductCost(productId: productPrice.id)
-                let product = ProductOfOrderModel(
+                let product = OrderItemModel(
                     id: "",
                     productId: productPrice.id,
+                    name: productPrice.name,
                     orderId: id,
                     date: Date(),
-                    name: productPrice.name,
                     quantity: 0,
-                    price: productPrice.price,
-                    sum: 0,
-                    costPrice: cost,
-                    costSum: 0)
+                    salePrice: productPrice.price,
+                    costPrice: cost)
                 newProducts.append(product)
             }
 
@@ -106,8 +104,6 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         guard products.indices.contains(tag) else { return }
         let wasActive = products[tag].quantity > 0
         products[tag].quantity = quantity
-        products[tag].sum = Double(quantity) * products[tag].price
-        products[tag].costSum = Double(quantity) * products[tag].costPrice
         let isActive = quantity > 0
         if wasActive != isActive {
             emitChange(.fullReload)
@@ -140,25 +136,21 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             let existing = products[index]
             let newQuantity = existing.quantity + 1
             products[index].quantity = newQuantity
-            products[index].sum = Double(newQuantity) * existing.price
-            products[index].costSum = Double(newQuantity) * existing.costPrice
             emitChange(.productUpdated(productId: priceModel.id))
             return
         }
 
         let cost = await costingService.calculateProductCost(productId: priceModel.id)
 
-        let product = ProductOfOrderModel(
+        let product = OrderItemModel(
             id: "",
             productId: priceModel.id,
+            name: priceModel.name,
             orderId: "",
             date: Date(),
-            name: priceModel.name,
             quantity: 1,
-            price: priceModel.price,
-            sum: priceModel.price,
-            costPrice: cost,
-            costSum: cost
+            salePrice: priceModel.price,
+            costPrice: cost
         )
 
         await MainActor.run {
@@ -211,11 +203,9 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
         let revertItems: [OrderItemModel] =
             oldProducts
             .filter { $0.quantity > 0 }
-            .map(\.orderItemSnapshot)
         let applyItems: [OrderItemModel] =
             products
             .filter { $0.quantity > 0 }
-            .map(\.orderItemSnapshot)
 
         return await applyInventoryUpdates(
             revertItems: revertItems,
@@ -237,8 +227,8 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     }
 
     private func computeDeltaItems(
-        currentProducts: [ProductOfOrderModel],
-        oldProducts: [ProductOfOrderModel]
+        currentProducts: [OrderItemModel],
+        oldProducts: [OrderItemModel]
     ) -> [OrderItemModel] {
         let allProductIds = Set(currentProducts.map { $0.productId }).union(
             oldProducts.map { $0.productId })
@@ -255,7 +245,7 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
 
             guard deltaQty != 0 else { return nil }
 
-            let salePrice = newProduct?.price ?? oldProduct?.price ?? 0.0
+            let salePrice = newProduct?.salePrice ?? oldProduct?.salePrice ?? 0.0
             let costPrice = newProduct?.costPrice ?? oldProduct?.costPrice ?? 0.0
 
             return OrderItemModel(
@@ -352,7 +342,6 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
             let orderItems: [OrderItemModel] =
                 ordersProducts
                 .filter { $0.quantity > 0 }
-                .map(\.orderItemSnapshot)
 
             if !orderItems.isEmpty {
                 do {
@@ -424,7 +413,6 @@ class ProductListViewModel: ProductListViewModelType, Loggable {
     private func activeOrderItems() -> [OrderItemModel] {
         products
             .filter { $0.quantity > 0 }
-            .map(\.orderItemSnapshot)
     }
 
     private func orderMetrics() -> (totalSale: Double, totalCost: Double) {
