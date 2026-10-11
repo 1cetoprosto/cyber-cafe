@@ -139,7 +139,7 @@ class DomainDatabaseService: DomainDB {
     // MARK: - Product Operations
 
     func updateProduct(
-        model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double,
+        model: OrderItemModel, date: Date, name: String, quantity: Int, price: Double,
         sum: Double
     ) async {
         guard !model.id.isEmpty else {
@@ -150,8 +150,7 @@ class DomainDatabaseService: DomainDB {
             product.date = date
             product.name = name
             product.quantity = quantity
-            product.price = price
-            product.sum = sum
+            product.salePrice = price
             let id = await saveProduct(order: product)
             if id == nil {
                 logger.error("Fallback saveProduct failed for product \(name)")
@@ -178,11 +177,11 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func fetchProduct(forDate date: Date) async -> [ProductOfOrderModel] {
+    func fetchProduct(forDate date: Date) async -> [OrderItemModel] {
         do {
             let firProducts = try await FirestoreDatabaseService.shared.read(
                 collection: FirebaseCollections.productOfOrders, firModel: FIRProductModel.self)
-            return firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+            return firProducts.map { OrderItemModel(firebaseModel: $0.1) }
         } catch {
             logger.error(
                 "Error fetching products from Firestore: \(error.localizedDescription)")
@@ -190,12 +189,12 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func fetchProduct(forDate date: Date, withName name: String) async -> ProductOfOrderModel? {
+    func fetchProduct(forDate date: Date, withName name: String) async -> OrderItemModel? {
         let allProducts = await fetchProduct(forDate: date)
         return allProducts.first { $0.date == date && $0.name == name }
     }
 
-    func fetchProduct(withOrderId id: String) async -> [ProductOfOrderModel] {
+    func fetchProduct(withOrderId id: String) async -> [OrderItemModel] {
         guard !id.isEmpty else { return [] }
 
         do {
@@ -203,7 +202,7 @@ class DomainDatabaseService: DomainDB {
                 collection: FirebaseCollections.productOfOrders,
                 firModel: FIRProductModel.self,
                 equalTo: ["orderId": id])
-            let products = firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+            let products = firProducts.map { OrderItemModel(firebaseModel: $0.1) }
 
             guard let order = await fetchOrders(forId: id) else {
                 return products
@@ -221,12 +220,12 @@ class DomainDatabaseService: DomainDB {
     }
 
     func fetchOrderItems(withOrderId id: String) async -> [OrderItemModel] {
-        let products = await fetchProduct(withOrderId: id)
-        return products.map(\.orderItemSnapshot)
+        await fetchProduct(withOrderId: id)
     }
 
     func fetchProductsOfOrders(from startDate: Date, to endDate: Date) async
-        -> [ProductOfOrderModel] {
+        -> [OrderItemModel]
+    {
         do {
             let firProducts = try await FirestoreDatabaseService.shared.readWhere(
                 collection: FirebaseCollections.productOfOrders,
@@ -235,7 +234,7 @@ class DomainDatabaseService: DomainDB {
                 orderedBy: "date",
                 startAt: startDate,
                 endAt: endDate)
-            return firProducts.map { ProductOfOrderModel(firebaseModel: $0.1) }
+            return firProducts.map { OrderItemModel(firebaseModel: $0.1) }
         } catch {
             logger.error(
                 "Error fetching products in date range from Firestore: \(error.localizedDescription)"
@@ -244,7 +243,7 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func saveProduct(order: ProductOfOrderModel) async -> String? {
+    func saveProduct(order: OrderItemModel) async -> String? {
         if order.id.isEmpty {
             do {
                 let id = try await FirestoreDatabaseService.shared.create(
@@ -277,7 +276,7 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    func deleteProduct(order: ProductOfOrderModel) async -> Bool {
+    func deleteProduct(order: OrderItemModel) async -> Bool {
         do {
             try await FirestoreDatabaseService.shared.delete(
                 collection: FirebaseCollections.productOfOrders, documentId: order.id)
@@ -341,10 +340,10 @@ class DomainDatabaseService: DomainDB {
         do {
             let firOrders = try ordersResult.get()
             let fetchedOrders = firOrders.map { OrderModel(firebaseModel: $1) }
-            let fetchedProducts: [ProductOfOrderModel]
+            let fetchedProducts: [OrderItemModel]
             do {
                 fetchedProducts = try productsResult.get().map {
-                    ProductOfOrderModel(firebaseModel: $0.1)
+                    OrderItemModel(firebaseModel: $0.1)
                 }
             } catch {
                 logger.error(
@@ -987,7 +986,7 @@ extension DomainDatabaseService {
         }
     }
 
-    fileprivate func persistRepairedProduct(_ product: ProductOfOrderModel) async {
+    fileprivate func persistRepairedProduct(_ product: OrderItemModel) async {
         do {
             try await FirestoreDatabaseService.shared.update(
                 firModel: FIRProductModel(dataModel: product),
@@ -1025,7 +1024,8 @@ extension DomainDatabaseService {
     }
 
     fileprivate func seedProducts(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
-        -> [ProductsPriceModel] {
+        -> [ProductsPriceModel]
+    {
         let catalog: [(uk: String, en: String, price: Double)] = [
             ("Еспресо", "Espresso", 8),
             ("Еспресо з молоком", "Espresso with milk", 10),
@@ -1058,7 +1058,8 @@ extension DomainDatabaseService {
     }
 
     fileprivate func seedIngredients(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
-        -> [IngredientModel] {
+        -> [IngredientModel]
+    {
         let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] =
             [
                 ("Молоко", "Milk", .l, 35.0),
@@ -1125,7 +1126,8 @@ extension DomainDatabaseService {
             || pName.contains("americano") || pName.contains("американо")
             || pName.contains("latte") || pName.contains("лате")
             || pName.contains("cappuccino") || pName.contains("капучіно")
-            || pName.contains("irish") || pName.contains("айріш") {
+            || pName.contains("irish") || pName.contains("айріш")
+        {
             if let coffee = findIngredient(isUkrainian ? "зерна" : "beans") {
                 recipe.append(
                     RecipeItemModel(
@@ -1143,7 +1145,8 @@ extension DomainDatabaseService {
         // Milk based
         if pName.contains("latte") || pName.contains("лате") || pName.contains("cappuccino")
             || pName.contains("капучіно") || pName.contains("cocoa") || pName.contains("какао")
-            || pName.contains("chocolate") || pName.contains("шоколад") {
+            || pName.contains("chocolate") || pName.contains("шоколад")
+        {
             if let milk = findIngredient(isUkrainian ? "молоко" : "milk") {
                 let qty = pName.contains("large") || pName.contains("великий") ? 0.3 : 0.2
                 recipe.append(
@@ -1155,7 +1158,8 @@ extension DomainDatabaseService {
 
         // Sugar
         if pName.contains("cocoa") || pName.contains("какао") || pName.contains("chocolate")
-            || pName.contains("шоколад") {
+            || pName.contains("шоколад")
+        {
             if let sugar = findIngredient(isUkrainian ? "цукор" : "sugar") {
                 recipe.append(
                     RecipeItemModel(
@@ -1292,19 +1296,23 @@ extension DomainDatabaseService {
             let orderId = UUID().uuidString
             let itemCount = 3 + (dayIndex % 3)
             let chosen = Array(products.shuffled().prefix(itemCount))
-            var orderItems = [ProductOfOrderModel]()
+            var orderItems = [OrderItemModel]()
 
             for (idx, base) in chosen.enumerated() {
                 let qty = 1 + ((dayIndex + idx) % 4)
-                let sum = Double(qty) * base.price
                 orderItems.append(
-                    ProductOfOrderModel(
-                        id: UUID().uuidString, orderId: orderId, date: date,
-                        name: base.name, quantity: qty, price: base.price, sum: sum
+                    OrderItemModel(
+                        id: UUID().uuidString,
+                        productId: base.id,
+                        name: base.name,
+                        orderId: orderId,
+                        date: date,
+                        quantity: qty,
+                        salePrice: base.price
                     ))
             }
 
-            let total = orderItems.reduce(0) { $0 + $1.sum }
+            let total = orderItems.reduce(0) { $0 + $1.totalSale }
             let cash = total * 0.6
             let card = total - cash
 

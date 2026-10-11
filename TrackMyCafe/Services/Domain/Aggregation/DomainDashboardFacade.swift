@@ -57,7 +57,7 @@ protocol DomainDashboardFacadeProtocol {
         referenceDate: Date,
         orders: [OrderModel],
         expenses: [OpexExpenseModel],
-        productsOfOrders: [ProductOfOrderModel],
+        productsOfOrders: [OrderItemModel],
         dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]]
     ) -> DashboardSnapshot
 }
@@ -83,7 +83,7 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
         referenceDate: Date,
         orders: [OrderModel],
         expenses: [OpexExpenseModel],
-        productsOfOrders: [ProductOfOrderModel],
+        productsOfOrders: [OrderItemModel],
         dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]]
     ) -> DashboardSnapshot {
         var plByPeriod: [DashboardPeriod: DashboardPeriodPL] = [:]
@@ -155,7 +155,7 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
 extension DomainDashboardFacade {
 
     fileprivate func buildProductRanking(
-        productsOfOrders: [ProductOfOrderModel],
+        productsOfOrders: [OrderItemModel],
         interval: DateInterval
     ) -> [DashboardProductRanking] {
         let filtered = productsOfOrders.filter { interval.contains($0.date) }
@@ -163,8 +163,8 @@ extension DomainDashboardFacade {
         for item in filtered {
             let key = item.productId
             var accum = byProduct[key] ?? (name: item.name, sales: 0, cogs: 0, qty: 0)
-            accum.sales += item.sum
-            accum.cogs += item.costSum
+            accum.sales += item.totalSale
+            accum.cogs += item.totalCost
             accum.qty += Double(item.quantity)
             accum.name = item.name
             byProduct[key] = accum
