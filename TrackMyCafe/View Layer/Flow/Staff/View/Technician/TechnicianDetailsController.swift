@@ -310,14 +310,16 @@ class TechnicianDetailsController: UIViewController {
       body: R.string.global.areYouSureYouWantToDeleteThisItem(),
       buttonTitle: R.string.global.delete()
     ) { [weak self] in
-      FirestoreDatabaseService.deleteTechnician(deleteItem) { (success) in
+      Task { [weak self] in
+        guard let self else { return }
+        let success = await FirestoreDatabaseService.deleteTechnician(deleteItem)
         if success {
           RequestManager.shared.log(
             date: Date(), object: .technicians, action: .delete, description: deleteItem.description
           )
-          self?.navigationController?.popViewController(animated: true)
+          self.navigationController?.popViewController(animated: true)
         } else {
-          self?.showAlert(R.string.global.error(), body: R.string.global.somethingWentWrong())
+          self.showAlert(R.string.global.error(), body: R.string.global.somethingWentWrong())
         }
       }
     }

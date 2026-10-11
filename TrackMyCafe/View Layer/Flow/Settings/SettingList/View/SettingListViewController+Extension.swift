@@ -24,27 +24,28 @@ extension SettingListViewController {
     private func performAccountDeletion() {
         SVProgressHUD.show(withStatus: R.string.global.deleting())
 
-        FirestoreDatabaseService.shared.deleteUserAndRoles { [weak self] result in
-            switch result {
-            case .success:
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await FirestoreDatabaseService.shared.deleteUserAndRoles()
                 Auth.auth().currentUser?.delete { error in
                     SVProgressHUD.dismiss()
                     if let error = error as NSError? {
                         // Requires recent login
                         if error.code == AuthErrorCode.requiresRecentLogin.rawValue {
-                            self?.showReauthAlert()
+                            self.showReauthAlert()
                         } else {
-                            self?.showErrorAlert(message: error.localizedDescription)
+                            self.showErrorAlert(message: error.localizedDescription)
                         }
                     } else {
                         // Success
                         UserSession.logOut()
-                        self?.navigateToLogin()
+                        self.navigateToLogin()
                     }
                 }
-            case .failure(let error):
+            } catch {
                 SVProgressHUD.dismiss()
-                self?.showErrorAlert(message: error.localizedDescription)
+                self.showErrorAlert(message: error.localizedDescription)
             }
         }
     }
