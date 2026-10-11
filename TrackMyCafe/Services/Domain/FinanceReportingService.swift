@@ -266,7 +266,7 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
         return await (orders, expenses)
     }
 
-    private func fetchProductsOfOrders(from: Date, to: Date) async -> [ProductOfOrderModel] {
+    private func fetchProductsOfOrders(from: Date, to: Date) async -> [OrderItemModel] {
         let safeFrom = max(Self.firestoreSafePast, Date.distantPast)
         return await database.fetchProductsOfOrders(
             from: safeFrom,
@@ -277,7 +277,7 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
     // MARK: - ABC Bucketing (internal for testability)
 
     func buildABCRows(
-        productsOfOrders: [ProductOfOrderModel],
+        productsOfOrders: [OrderItemModel],
         range: DateInterval,
         rankingKey: ABCRankingKey
     ) -> [ABCProductRow] {
@@ -292,8 +292,8 @@ final class FinanceReportingService: FinanceReportingServiceProtocol, Loggable {
                 return pid
             }()
             var accum = byProduct[key] ?? (name: item.name, sales: 0, cogs: 0, qty: 0)
-            accum.sales += item.sum
-            accum.cogs += item.costSum
+            accum.sales += item.totalSale
+            accum.cogs += item.totalCost
             accum.qty += Double(item.quantity)
             accum.name = item.name
             byProduct[key] = accum
