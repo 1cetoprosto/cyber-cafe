@@ -25,14 +25,12 @@ TrackMyCafe/
 ├── Data Layer/               # Моделі та утиліти
 │   ├── Models/
 │   │   ├── Domain/           # Domain моделі (OrderModel, ProductModel...)
-│   │   ├── Firestore/        # Firebase DTO (FIROrderModel...)
-│   │   └── Realm/            # Realm моделі (історично)
+│   │   └── Firestore/        # Firebase DTO (FIROrderModel...)
 │   ├── Service/              # StorageService
 │   └── Utils/                # Constants, Extensions, RequestManager
 ├── Services/                 # Бізнес-логіка
 │   ├── Domain/               # DomainDatabaseService, DomainDB protocol
-│   ├── FIR/                  # FirestoreDatabaseService, FirestoreDB protocol
-│   └── Realm/                # Realm сервіси (історично)
+│   └── FIR/                  # FirestoreDatabaseService, FirestoreDB protocol
 ├── View Layer/               # UI шар
 │   ├── Flow/                 # Екрани та флоу
 │   │   └── {Feature}/         # Наприклад: Orders, Settings, Costs
@@ -63,7 +61,6 @@ TrackMyCafe/
 | UITableViewCell | `OrdersTableViewCell.swift` |
 | Domain Model | `OrderModel.swift` |
 | Firestore Model | `FIROrderModel.swift` |
-| Realm Model | `RealmOrderModel.swift` |
 
 ### Класи та структури
 
@@ -107,7 +104,6 @@ final class OrderListViewController: UIViewController { }
 ❌ НЕ використовувати SwiftUI для нових екранів
 ❌ НЕ змінювати структуру папок проєкту
 ❌ НЕ переміщувати існуючі файли між папками
-❌ НЕ видаляти Realm моделі/сервіси (історична спадщина)
 ❌ НЕ змінювати існуючі протоколи без згоди з власником
 ❌ НЕ додавати нові бібліотеки (CocoaPods/SPM) без згоди
 ❌ НЕ змінювати Firebase на інший бекенд
@@ -167,14 +163,14 @@ let service = DomainDatabaseService.shared
 ```swift
 // Програмна верстка з TinyConstraints
 final class OrderListViewController: UIViewController {
-    
+
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
         tableView.backgroundColor = UIColor.Main.background
         return tableView
     }()
-    
+
     private func setConstraints() {
         tableView.edgesToSuperview()
     }
@@ -300,24 +296,24 @@ import TinyConstraints
 // MARK: - OrderListViewController
 
 final class OrderListViewController: UIViewController, Loggable, ProGated {
-    
+
     // MARK: - Properties
-    
+
     private var viewModel: OrderListViewModelType?
-    
+
     // MARK: - UI Components
-    
+
     private let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(
-            OrdersTableViewCell.self, 
+            OrdersTableViewCell.self,
             forCellReuseIdentifier: OrdersTableViewCell.identifier
         )
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorColor = UIColor.TableView.separator
         return tableView
     }()
-    
+
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -325,55 +321,55 @@ final class OrderListViewController: UIViewController, Loggable, ProGated {
         button.accessibilityIdentifier = "navBarAddOrder"
         return button
     }()
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setConstraints()
         bindViewModel()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchData()
     }
-    
+
     // MARK: - Setup
-    
+
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
         view.addSubview(tableView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
     }
-    
+
     private func setConstraints() {
         tableView.edgesToSuperview()
     }
-    
+
     private func bindViewModel() {
         viewModel = OrderListViewModel()
         tableView.dataSource = self
         tableView.delegate = self
     }
-    
+
     // MARK: - Actions
-    
+
     @objc private func performAdd() {
         checkProOrShowPaywall { [weak self] in
             self?.navigateToOrderDetails()
         }
     }
-    
+
     // MARK: - Private Methods
-    
+
     private func fetchData() {
         viewModel?.getOrders { [weak self] in
             self?.tableView.reloadData()
         }
     }
-    
+
     private func navigateToOrderDetails() {
         let orderVC = OrderDetailsViewController()
         navigationController?.pushViewController(orderVC, animated: true)
@@ -386,11 +382,11 @@ extension OrderListViewController: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         viewModel?.numberOfSections() ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         viewModel?.numberOfRowInSection(for: section) ?? 0
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // implementation
     }
@@ -421,41 +417,41 @@ import os.log
 // MARK: - OrderListViewModel
 
 final class OrderListViewModel: OrderListViewModelType, Loggable {
-    
+
     // MARK: - Properties
-    
+
     private var sectionsOrders: [(date: Date, items: [OrderModel])]?
     private var selectedIndexPath: IndexPath?
-    
+
     private let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier!, 
+        subsystem: Bundle.main.bundleIdentifier!,
         category: "OrderListViewModel"
     )
-    
+
     // MARK: - OrderListViewModelType
-    
+
     func getOrders(completion: @escaping () -> Void) {
         DomainDatabaseService.shared.fetchSectionsOfOrders { [weak self] sections in
             self?.sectionsOrders = sections
             completion()
         }
     }
-    
+
     func numberOfSections() -> Int {
         sectionsOrders?.count ?? 0
     }
-    
+
     func numberOfRowInSection(for section: Int) -> Int {
         sectionsOrders?[section].items.count ?? 0
     }
-    
+
     func cellViewModel(for indexPath: IndexPath) -> OrderListItemViewModelType? {
         guard let order = sectionsOrders?[indexPath.section].items[indexPath.row] else {
             return nil
         }
         return OrderListItemViewModel(model: order)
     }
-    
+
     func selectRow(atIndexPath indexPath: IndexPath) {
         selectedIndexPath = indexPath
     }

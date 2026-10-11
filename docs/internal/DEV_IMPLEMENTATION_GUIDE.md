@@ -48,7 +48,6 @@
 - Cash/card balances показані на Home, але ще **не вирішено через journal-based `JournalEntry` + materialized `DailyBalance`**. Поки це aggregation-based approximation; для повної фінансової довіри потрібен окремий реліз (target — додасться після 1.1.x, якщо буде явно необхідно).
 - `InventoryAdjustment` існує як модель і persisted event, але ще **немає bulk audit workflow** і audit-focused UI (target v1.1.2, `#144`).
 - Low-stock thresholds ще не повністю інтегровані в UI і моделі (target v1.1.2, `#152`).
-- Realm ще присутній у продукційних кодових шляхах десь (legacy), хоча нові фінансові/репорт-модулі вже не побудовані на ньому (plan v1.1.3, `#141`/`#178`).
 - Деякі FIR/Domain сервіси ще змішують completion blocks і async/await; треба uniform async/await entrance (v1.1.3, `#140`).
 - UI-консистентність: bare UILabel ще зустрічаються; secondaryText ще не ввезено всюди; попапи частини через UIAlertController (v1.1.1 та v1.1.4).
 
@@ -102,7 +101,7 @@
 - Home dashboard summaries → aggregation services + finance facade (UI не рахує)
 - Reports (P&L/ABC/Trends) → finance/reporting facade (використовує aggregation services як нижній шар)
 - Track Ingredients behavior → global setting + enforcement in service layer, not in VC/VM
-- Realm → legacy-шар; нові фінансові/репорт-модулі не повинні будуватись навколо нього
+- Firestore → єдине сховище даних; офлайн через Firebase cache
 
 ## Що важливо не плутати
 

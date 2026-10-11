@@ -84,7 +84,7 @@
 - Issue `#142` refactor / medium: Refine domain models towards target architecture (Purchase/Opex/Sale/InventoryAdjustment).
 - **DoD:**
   - Продукційні flow (Home, Reports, Costs/Purchases/Opex, POS/Orders, Inventory) читають/пишуть тільки Firestore/Firebase + ін-меморі кеш.
-  - Realm залишається тільки як legacy migration-шар (або видалений повністю, якщо це пройшов 178).
+  - Realm повністю видалено з проекту (залежності, моделі, сервіси); офлайн — через Firebase cache.
   - Усі async-точки entrance (ViewModels → Services) використовують uniform async/await, legacy completion blocks із Firebase сервісів приховані всередині.
   - Моделі Purchase/Opex/Sale/InventoryAdjustment чітко розділені, дублювання CostModel зняте.
 
