@@ -45,12 +45,18 @@ platform :ios do
     )
 
     # 4. Build the app
+    # ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION="" disables the
+    # thinned asset-catalog variant. In sandboxed CI the Xcode 26 AssetRuntime
+    # agent (AssetCatalogAgent-AssetRuntime) cannot be spawned, which makes the
+    # thinned-variant compilation fail with "Failed to launch AssetCatalogAgent
+    # -AssetRuntime via AssetRuntime spawn". Clearing the thinning filter lets
+    # actool build the universal variant only.
     build_app(
       workspace: "TrackMyCafe.xcworkspace",
       scheme: scheme,
       clean: true,
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates"
+      xcargs: "-allowProvisioningUpdates ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION="
     )
 
     # 4. Upload to TestFlight and add to "External Testers" group
