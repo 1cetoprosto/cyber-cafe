@@ -56,7 +56,7 @@ platform :ios do
       scheme: scheme,
       clean: true,
       export_method: "app-store",
-      xcargs: "-allowProvisioningUpdates ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION="
+      xcargs: "-allowProvisioningUpdates ASSETCATALOG_FILTER_FOR_THINNING_DEVICE_CONFIGURATION= ENABLE_ON_DEMAND_RESOURCES=NO SUPPORTS_ON_DEMAND_RESOURCES=NO"
     )
 
     # 4. Upload to TestFlight and add to "External Testers" group
