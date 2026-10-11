@@ -8,18 +8,18 @@
 import Foundation
 
 protocol DomainDB {
-    // MARK: - Order Products (ProductOfOrder)
+    // MARK: - Order Products (OrderItemModel)
     func updateProduct(
-        model: ProductOfOrderModel, date: Date, name: String, quantity: Int, price: Double,
+        model: OrderItemModel, date: Date, name: String, quantity: Int, price: Double,
         sum: Double) async
-    func fetchProduct(forDate date: Date) async -> [ProductOfOrderModel]
-    func fetchProduct(forDate date: Date, withName name: String) async -> ProductOfOrderModel?
-    func fetchProduct(withOrderId id: String) async -> [ProductOfOrderModel]
+    func fetchProduct(forDate date: Date) async -> [OrderItemModel]
+    func fetchProduct(forDate date: Date, withName name: String) async -> OrderItemModel?
+    func fetchProduct(withOrderId id: String) async -> [OrderItemModel]
     func fetchProductsOfOrders(from startDate: Date, to endDate: Date) async
-        -> [ProductOfOrderModel]
+        -> [OrderItemModel]
     func fetchOrderItems(withOrderId id: String) async -> [OrderItemModel]
-    func saveProduct(order: ProductOfOrderModel) async -> String?
-    func deleteProduct(order: ProductOfOrderModel) async -> Bool
+    func saveProduct(order: OrderItemModel) async -> String?
+    func deleteProduct(order: OrderItemModel) async -> Bool
 
     // MARK: - Orders
     func updateOrders(

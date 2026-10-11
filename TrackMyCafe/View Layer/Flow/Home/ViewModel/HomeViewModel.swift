@@ -7,7 +7,7 @@ final class HomeViewModel: HomeViewModelType {
     private var currentPeriod: DashboardPeriod = .month
     private var allOrders: [OrderModel] = []
     private var allExpenses: [OpexExpenseModel] = []
-    private var allProductsOfOrders: [ProductOfOrderModel] = []
+    private var allProductsOfOrders: [OrderItemModel] = []
     private var dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]] = [:]
     private var snapshot: DashboardSnapshot?
 
@@ -95,14 +95,15 @@ extension HomeViewModel {
         await database.fetchOpexExpenses()
     }
 
-    fileprivate func fetchAllProductsOfOrders() async -> [ProductOfOrderModel] {
+    fileprivate func fetchAllProductsOfOrders() async -> [OrderItemModel] {
         await database.fetchProductsOfOrders(
             from: Self.firestoreSafePast, to: Date()
         )
     }
 
     func fetchDailyBalances(for account: PaymentAccount, through referenceDate: Date) async
-        -> [DailyBalanceModel] {
+        -> [DailyBalanceModel]
+    {
         await database.fetchDailyBalances(
             forAccount: account,
             from: Self.firestoreSafePast,

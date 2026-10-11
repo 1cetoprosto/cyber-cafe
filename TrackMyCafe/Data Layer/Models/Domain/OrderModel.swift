@@ -16,12 +16,13 @@ import Foundation
 //
 // Intentional v1.x deviations from the target spec:
 // - `sum` is used instead of `totalAmount` (legacy naming; equals Sales total).
+//   `totalAmount` is provided as a computed alias for spec alignment.
 // - `cash` / `card` split the payment for cash/card reporting (v1.1.x).
 // - `type` carries the receipt/order type.
 // - `inventoryTracking` snapshots the Track-Ingredients setting at sale time.
-// - Order line items are NOT embedded here; they are stored as
-//   `ProductOfOrderModel` (linked by `orderId`). The COGS snapshot for each
-//   line is available via `ProductOfOrderModel.orderItemSnapshot` → `OrderItemModel`.
+// - Order line items are NOT embedded here; they are stored as separate
+//   `OrderItemModel` documents (linked by `orderId` in the `productOfOrders`
+//   Firestore collection). `fetchOrderItems(withOrderId:)` retrieves them.
 // - `totalCost` is the frozen COGS snapshot at the moment of sale.
 // - Firebase/dictionary conversion initializers support Firestore round-trip.
 
@@ -35,6 +36,9 @@ struct OrderModel {
     var totalCost: Double
     var inventoryTracking: Bool
     var note: String?
+
+    /// Spec-aligned alias for the sales total (`sum`).
+    var totalAmount: Double { sum }
 
     init(
         id: String,

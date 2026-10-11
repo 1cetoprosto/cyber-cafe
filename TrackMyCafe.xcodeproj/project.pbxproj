@@ -448,7 +448,6 @@
 		F3A640C82C3438D6006BCACD /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C72C3438D6006BCACD /* TPInAppReceipt-Objc */; };
 		F3B036E12B777898009C085D /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
 		F3B339AC2C0B22FE0073F19A /* CostDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* CostDetailsListViewController.swift */; };
-		F3B339AD2C0B22FE0073F19A /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
 		F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA12BDD3AFC0007157B /* String+Extension.swift */; };
 		F3B339AF2C0B22FE0073F19A /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
 		F3B339B12C0B22FE0073F19A /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */; };
@@ -552,7 +551,6 @@
 		F3B33A262C0B22FE0073F19A /* Global.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E942BDD300D0007157B /* Global.strings */; };
 		F3B33A2A2C0B22FE0073F19A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F39A52FD27311FDE00C8F2D3 /* Assets.xcassets */; };
 		F3B33A4B2C0B23450073F19A /* CostDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* CostDetailsListViewController.swift */; };
-		F3B33A4C2C0B23450073F19A /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
 		F3B33A4D2C0B23450073F19A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA12BDD3AFC0007157B /* String+Extension.swift */; };
 		F3B33A4E2C0B23450073F19A /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
 		F3B33A502C0B23450073F19A /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */; };
@@ -681,7 +679,6 @@
 		F3DB41BB2EBDE2270095FBE1 /* UITextField+NumericInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */; };
 		F3E16E922BF89FC20008BD6A /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E16E912BF89FC20008BD6A /* SettingsManager.swift */; };
 		F3E357EB2BEFA26F005050CB /* DomainDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */; };
-		F3E357F52BEFF26E005050CB /* ProductOfOrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */; };
 		F3E357F72BEFF2AB005050CB /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
 		F3E357FB2BEFF8C7005050CB /* ProductsPriceModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */; };
 		F3E357FD2BEFF978005050CB /* TypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357FC2BEFF978005050CB /* TypeModel.swift */; };
@@ -1034,7 +1031,6 @@
 		F3DB41B82EBDE2270095FBE1 /* UITextField+NumericInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+NumericInput.swift"; sourceTree = "<group>"; };
 		F3E16E912BF89FC20008BD6A /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDatabaseService.swift; sourceTree = "<group>"; };
-		F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductOfOrderModel.swift; sourceTree = "<group>"; };
 		F3E357F62BEFF2AB005050CB /* OrderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModel.swift; sourceTree = "<group>"; };
 		F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsPriceModel.swift; sourceTree = "<group>"; };
 		F3E357FC2BEFF978005050CB /* TypeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TypeModel.swift; sourceTree = "<group>"; };
@@ -2608,7 +2604,6 @@
 				F32F838D2FE935AE00F4B4AE /* PaymentAccount.swift */,
 				F35E91A52F49D7950050EB4A /* ProductCategoryModel.swift */,
 				F32B52BB2F2B6F620005E63D /* RecipeItemModel.swift */,
-				F3E357F42BEFF26E005050CB /* ProductOfOrderModel.swift */,
 				F3E357F62BEFF2AB005050CB /* OrderModel.swift */,
 				F3E357FA2BEFF8C7005050CB /* ProductsPriceModel.swift */,
 				F3E357FC2BEFF978005050CB /* TypeModel.swift */,
@@ -3229,7 +3224,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3264983275B334300836077 /* CostDetailsListViewController.swift in Sources */,
-				F3E357F52BEFF26E005050CB /* ProductOfOrderModel.swift in Sources */,
 				F3410EA22BDD3AFC0007157B /* String+Extension.swift in Sources */,
 				F385B4042C1D782500973CAA /* PersonsListViewController.swift in Sources */,
 				F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
@@ -3465,7 +3459,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3B339AC2C0B22FE0073F19A /* CostDetailsListViewController.swift in Sources */,
-				F3B339AD2C0B22FE0073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */,
 				F39D78572C2034E70003B556 /* Subscription.swift in Sources */,
 				F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
@@ -3701,7 +3694,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3B33A4B2C0B23450073F19A /* CostDetailsListViewController.swift in Sources */,
-				F3B33A4C2C0B23450073F19A /* ProductOfOrderModel.swift in Sources */,
 				F3B33A4D2C0B23450073F19A /* String+Extension.swift in Sources */,
 				F39D78582C2034E70003B556 /* Subscription.swift in Sources */,
 				F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */,
