@@ -41,7 +41,6 @@ TrackMyCafe — це мобільний додаток для власників
   - FirebaseFirestore — хмарна база даних
   - FirebaseStorage — зберігання файлів
   - FirebaseFirestoreSwift — Swift розширення для Firestore
-- **Realm (v10+)** — legacy локальна база (планується повне видалення з продукційних шляхів у v1.1.3)
 - **R.swift** — типобезпечні ресурси
 - **TinyConstraints** — programmatic Auto Layout (UIKit only, no Storyboards/SwiftUI)
 - **SVProgressHUD** — індикатори завантаження
@@ -62,14 +61,12 @@ TrackMyCafe/
 ├── Data Layer/           # Шар даних
 │   ├── Models/           # Моделі даних
 │   │   ├── Domain/       # Domain моделі
-│   │   ├── Firestore/    # Firebase моделі
-│   │   └── Realm/        # Realm моделі (legacy)
+│   │   └── Firestore/    # Firebase моделі
 │   ├── Service/          # Сервіси зберігання
 │   └── Utils/            # Утиліти та константи
 ├── Services/             # Бізнес-логіка
 │   ├── Domain/           # Domain сервіси (aggregation, finance/reporting facade)
-│   ├── FIR/              # Firebase сервіси
-│   └── Realm/            # Realm сервіси (legacy)
+│   └── FIR/              # Firebase сервіси
 ├── View Layer/           # UI шар (UIKit + TinyConstraints, programmatic)
 │   ├── Flow/             # Екрани та флоу
 │   │   ├── Auth/         # Авторизація

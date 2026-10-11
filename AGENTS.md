@@ -11,7 +11,7 @@ It should be treated as a contract between developers and AI.
 - **Language:** Swift 5.x
 - **UI Framework:** UIKit (programmatic UI only, no Storyboard/XIB)
 - **Architecture:** MVVM
-- **Databases:** Firebase Firestore + Realm
+- **Databases:** Firebase Firestore
 - **Authentication:** Firebase Auth + Biometric (FaceID/TouchID)
 - **Other Services:** Firebase Storage, KeychainAccess
 - **Dependency Management:** CocoaPods + Swift Package Manager
@@ -118,7 +118,6 @@ Enable in Xcode: `Settings → Intelligence → Model Context Protocol → [✓]
 ### ⚠️ Important reminders for MCP
 
 - **Targets / Schemes:** Prod (Release), Beta, Dev — the build target depends on which scheme is active in Xcode. When in doubt, ask the developer which scheme to use.
-- **Realm status:** Legacy cache-layer. **Do not build new modules on Realm** (see `DEV_IMPLEMENTATION_GUIDE.md` — target v1.1.3 removes Realm from prod paths).
 - **Firebase scope:** Limited to Auth, Firestore, Storage. No Functions, no Crashlytics unless explicitly requested.
 - **Inventory logic:** User always enters **actual quantity**, system calculates delta automatically.
 - **Dynamic Type / Layout:** Never use fixed heights for text. Multiline labels (0/2 lines), auto-shrink numeric amounts, scroll when content overflows. See `.trae/rules/project_rules.md` for the full Dynamic Type checklist.

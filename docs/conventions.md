@@ -58,14 +58,12 @@ TrackMyCafe/
 ├── Data Layer/               # Моделі та робота з даними
 │   ├── Models/
 │   │   ├── Domain/           # Domain моделі
-│   │   ├── Firestore/        # Firebase DTO
-│   │   └── Realm/            # Realm моделі
+│   │   └── Firestore/        # Firebase DTO
 │   ├── Service/              # Сервіси зберігання
 │   └── Utils/                # Утиліти
 ├── Services/                 # Бізнес-логіка
 │   ├── Domain/               # Domain сервіси
-│   ├── FIR/                  # Firebase сервіси
-│   └── Realm/                # Realm сервіси
+│   └── FIR/                  # Firebase сервіси
 ├── View Layer/               # UI шар
 │   ├── Flow/                 # Екрани
 │   │   └── {Feature}/
@@ -88,7 +86,6 @@ OrderListItemViewModel.swift       # Cell ViewModel
 OrdersTableViewCell.swift          # UITableViewCell
 OrderModel.swift                   # Domain Model
 FIROrderModel.swift                # Firestore Model
-RealmOrderModel.swift              # Realm Model
 ```
 
 ## UIKit правила
@@ -99,9 +96,9 @@ RealmOrderModel.swift              # Realm Model
 
 ```swift
 final class OrderListViewController: UIViewController {
-    
+
     // MARK: - UI Components
-    
+
     let tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .insetGrouped)
         tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
@@ -109,30 +106,30 @@ final class OrderListViewController: UIViewController {
         tableView.separatorColor = UIColor.TableView.separator
         return tableView
     }()
-    
+
     private lazy var addButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(systemName: "plus"), for: .normal)
         button.addTarget(self, action: #selector(performAdd), for: .touchUpInside)
         return button
     }()
-    
+
     // MARK: - Lifecycle
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setConstraints()
     }
-    
+
     // MARK: - Setup
-    
+
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
         view.addSubview(tableView)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: addButton)
     }
-    
+
     private func setConstraints() {
         tableView.edgesToSuperview()
     }
@@ -225,7 +222,7 @@ Task {
 ```swift
 // Уникайте force unwrap
 // Погано:
-let id = order.id! 
+let id = order.id!
 
 // Добре:
 let id = order.id ?? ""
@@ -255,10 +252,10 @@ import os.log
 
 class OrderListViewModel: Loggable {
     private let logger = Logger(
-        subsystem: Bundle.main.bundleIdentifier!, 
+        subsystem: Bundle.main.bundleIdentifier!,
         category: "OrderListViewModel"
     )
-    
+
     func fetchOrders() {
         logger.info("Fetching orders...")
         logger.error("Failed to fetch: \(error.localizedDescription)")
@@ -301,32 +298,32 @@ import XCTest
 @testable import TrackMyCafe
 
 final class OrderListViewModelTests: XCTestCase {
-    
+
     var sut: OrderListViewModel!
     var mockService: MockDomainDatabaseService!
-    
+
     override func setUp() {
         super.setUp()
         mockService = MockDomainDatabaseService()
         sut = OrderListViewModel(service: mockService)
     }
-    
+
     override func tearDown() {
         sut = nil
         mockService = nil
         super.tearDown()
     }
-    
+
     func testFetchOrders() {
         // Given
         let expectation = XCTestExpectation(description: "Fetch orders")
         mockService.stubOrders = [OrderModel.mock]
-        
+
         // When
         sut.getOrders {
             expectation.fulfill()
         }
-        
+
         // Then
         wait(for: [expectation], timeout: 1.0)
         XCTAssertEqual(sut.numberOfSections(), 1)
