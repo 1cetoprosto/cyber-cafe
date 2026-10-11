@@ -8,7 +8,7 @@
 import Foundation
 
 protocol ProductListViewModelType {
-    func getProducts(withIdOrder id: String, completion: @escaping () -> Void)
+    func getProducts(withIdOrder id: String) async
     
     func numberOfRowInSection(for section: Int) -> Int
     func cellViewModel(for indexPath: IndexPath) -> ProductListItemViewModelType?
@@ -19,9 +19,9 @@ protocol ProductListViewModelType {
     func getTotalAmount() -> Double
     func totalSum() -> String
     
-    func saveOrder(withOrderId orderId: String, date: Date, completion: @escaping (Bool) -> Void)
-    func updateOrder(orderId: String, date: Date, completion: @escaping (Bool) -> Void)
+    func saveOrder(withOrderId orderId: String, date: Date) async -> Bool
+    func updateOrder(orderId: String, date: Date) async -> Bool
     
-    func validateStock(completion: @escaping ([StockWarning]) -> Void)
-    func deductStock(completion: @escaping (Bool) -> Void)
+    func validateStock() async -> [StockWarning]
+    func deductStock() async -> Bool
 }

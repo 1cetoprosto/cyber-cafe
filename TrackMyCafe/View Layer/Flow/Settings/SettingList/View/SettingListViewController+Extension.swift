@@ -5,9 +5,9 @@
 //  Created by AI Assistant on 29.01.2026.
 //
 
-import UIKit
 import FirebaseAuth
 import SVProgressHUD
+import UIKit
 
 extension SettingListViewController {
 
@@ -24,27 +24,25 @@ extension SettingListViewController {
     private func performAccountDeletion() {
         SVProgressHUD.show(withStatus: R.string.global.deleting())
 
-        FirestoreDatabaseService.shared.deleteUserAndRoles { [weak self] result in
-            switch result {
-            case .success:
-                Auth.auth().currentUser?.delete { error in
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await FirestoreDatabaseService.shared.deleteUserAndRoles()
+                try await Auth.auth().currentUser?.delete()
+                await MainActor.run {
                     SVProgressHUD.dismiss()
-                    if let error = error as NSError? {
-                        // Requires recent login
-                        if error.code == AuthErrorCode.requiresRecentLogin.rawValue {
-                            self?.showReauthAlert()
-                        } else {
-                            self?.showErrorAlert(message: error.localizedDescription)
-                        }
+                    UserSession.logOut()
+                    self.navigateToLogin()
+                }
+            } catch let error as NSError {
+                await MainActor.run {
+                    SVProgressHUD.dismiss()
+                    if error.code == AuthErrorCode.requiresRecentLogin.rawValue {
+                        self.showReauthAlert()
                     } else {
-                        // Success
-                        UserSession.logOut()
-                        self?.navigateToLogin()
+                        self.showErrorAlert(message: error.localizedDescription)
                     }
                 }
-            case .failure(let error):
-                SVProgressHUD.dismiss()
-                self?.showErrorAlert(message: error.localizedDescription)
             }
         }
     }

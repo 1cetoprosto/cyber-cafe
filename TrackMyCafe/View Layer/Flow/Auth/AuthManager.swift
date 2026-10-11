@@ -40,7 +40,7 @@ class AuthModel {
 
     func signIn(email: String, password: String, rememberUser: Bool) {
         send(.loading(true))
-        auth.signIn(withEmail: email, password: password) {[weak self] (authUser, error) in
+        auth.signIn(withEmail: email, password: password) { [weak self] (authUser, error) in
             if let user = authUser {
                 self?.createUserOrLogin(user.user.uid, user.user.email!, rememberUser)
             } else {
@@ -52,7 +52,7 @@ class AuthModel {
 
     func signUp(email: String, password: String) {
         send(.loading(true))
-        auth.createUser(withEmail: email, password: password) {[weak self] (authUser, error) in
+        auth.createUser(withEmail: email, password: password) { [weak self] (authUser, error) in
             if let user = authUser {
                 self?.createUserOrLogin(user.user.uid, user.user.email!)
             } else {
@@ -64,7 +64,7 @@ class AuthModel {
 
     func signInWithLink(_ link: String, email: String) {
         send(.loading(true))
-        auth.signIn(withEmail: email, link: link) {[weak self] (authUser, error) in
+        auth.signIn(withEmail: email, link: link) { [weak self] (authUser, error) in
             if let user = authUser {
                 self?.createUserOrLogin(user.user.uid, user.user.email!, false, true)
             } else {
@@ -80,25 +80,32 @@ class AuthModel {
         actionCodeSettings.url = URL(string: Config.associatedDomain)
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        actionCodeSettings.setAndroidPackageName(Config.androidBundle, installIfNotAvailable: true, minimumVersion: Config.androidVersion)
+        actionCodeSettings.setAndroidPackageName(
+            Config.androidBundle, installIfNotAvailable: true, minimumVersion: Config.androidVersion
+        )
 
-        auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) {[weak self] (error) in
+        auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) {
+            [weak self] (error) in
             self?.send(.loading(false))
             if let error = error {
-                self?.send(.alert(R.string.global.error(),
-                                  error.localizedDescription,
-                                  nil))
+                self?.send(
+                    .alert(
+                        R.string.global.error(),
+                        error.localizedDescription,
+                        nil))
             } else {
-                self?.send(.alert(Bundle.displayName,
-                                  R.string.auth.sentAuthEmail(),
-                                  {
-                                    AuthModel.sentLinkEmail = email
-                                    self?.send(.success(false))
-                }))
+                self?.send(
+                    .alert(
+                        Bundle.displayName,
+                        R.string.auth.sentAuthEmail(),
+                        {
+                            AuthModel.sentLinkEmail = email
+                            self?.send(.success(false))
+                        }))
             }
         }
     }
-    
+
     func sendPasswordReset(_ email: String) {
         send(.loading(true))
         auth.sendPasswordReset(withEmail: email) { [weak self] error in
@@ -106,9 +113,12 @@ class AuthModel {
             if let error {
                 self?.send(.alert(R.string.global.error(), error.localizedDescription, nil))
             } else {
-                self?.send(.alert(Bundle.displayName, R.string.auth.sentResetEmail(), {
-                    self?.send(.success(false))
-                }))
+                self?.send(
+                    .alert(
+                        Bundle.displayName, R.string.auth.sentResetEmail(),
+                        {
+                            self?.send(.success(false))
+                        }))
             }
         }
     }
@@ -118,49 +128,68 @@ class AuthModel {
             signInWithLink(link, email: email)
             AuthModel.sentLinkEmail = nil
         } else {
-            send(.confirmEmail({[weak self] (email) in
-                self?.signInWithLink(link, email: email)
-            }))
+            send(
+                .confirmEmail({ [weak self] (email) in
+                    self?.signInWithLink(link, email: email)
+                }))
         }
     }
 
     func signInWithBio() {
         send(.loading(true))
-        createUserOrLogin(UserSession.current.userId,
-                          UserSession.current.userEmail,
-                          UserSession.current.rememberUser)
+        createUserOrLogin(
+            UserSession.current.userId,
+            UserSession.current.userEmail,
+            UserSession.current.rememberUser)
     }
 
-    private func createUserOrLogin(_ id: String, _ email: String, _ rememberUser: Bool = true, _ setPassword: Bool = false) {
-        FirestoreDatabaseService.getRoles(email) { [weak self] (roles) in
+    private func createUserOrLogin(
+        _ id: String, _ email: String, _ rememberUser: Bool = true, _ setPassword: Bool = false
+    ) {
+        Task { [weak self] in
+            guard let self else { return }
+            let roles = await FirestoreDatabaseService.getRoles(email)
             if let roles = roles, !roles.isEmpty {
-                self?.handleExistingRoles(roles, id: id, email: email, rememberUser: rememberUser, setPassword: setPassword)
+                self.handleExistingRoles(
+                    roles, id: id, email: email, rememberUser: rememberUser,
+                    setPassword: setPassword)
             } else {
-                self?.createNewUserOrCafe(nil, id, email, rememberUser, setPassword)
+                self.createNewUserOrCafe(nil, id, email, rememberUser, setPassword)
             }
         }
     }
 
-    private func handleExistingRoles(_ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool) {
+    private func handleExistingRoles(
+        _ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool
+    ) {
         let userDataKey = roles.first?.userRef
 
-        self.checkData(userDataKey) { [weak self] (existUser) in
+        Task { [weak self] in
+            guard let self else { return }
+            let existUser = await self.checkData(userDataKey)
             if existUser {
-                self?.processExistingUserRoles(roles, id: id, email: email, rememberUser: rememberUser, setPassword: setPassword)
+                self.processExistingUserRoles(
+                    roles, id: id, email: email, rememberUser: rememberUser,
+                    setPassword: setPassword)
             } else {
-                self?.createNewUserOrCafe(roles, id, email, rememberUser, setPassword)
+                self.createNewUserOrCafe(roles, id, email, rememberUser, setPassword)
             }
         }
     }
 
-    private func processExistingUserRoles(_ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool) {
+    private func processExistingUserRoles(
+        _ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool
+    ) {
         if roles.count > 1 {
             self.send(.loading(false))
             let chooseRoles = roles.filter { $0.role != .administrator }
-            self.send(.chooseRole(chooseRoles, { [weak self] (role) in
-                self?.login(id, email, role, rememberUser)
-                self?.send(.success(setPassword))
-            }))
+            self.send(
+                .chooseRole(
+                    chooseRoles,
+                    { [weak self] (role) in
+                        self?.login(id, email, role, rememberUser)
+                        self?.send(.success(setPassword))
+                    }))
         } else {
             self.send(.loading(false))
             self.login(id, email, roles.first!, rememberUser)
@@ -168,38 +197,51 @@ class AuthModel {
         }
     }
 
-    private func createNewUserOrCafe(_ roles: [RoleConfig]?, _ id: String, _ email: String, _ rememberUser: Bool, _ setPassword: Bool) {
-        if let roles = roles, !roles.isEmpty {
-            FirestoreDatabaseService.shared.createNewUser(roles, id, email) { [weak self] result in
-                switch result {
-                case .success:
-                    self?.handleNewUserRoles(roles, id: id, email: email, rememberUser: rememberUser, setPassword: setPassword)
-                case .failure(let error):
-                    self?.handleRetry(error: error.localizedDescription, id: id, email: email, rememberUser: rememberUser, setPassword: setPassword)
+    private func createNewUserOrCafe(
+        _ roles: [RoleConfig]?, _ id: String, _ email: String, _ rememberUser: Bool,
+        _ setPassword: Bool
+    ) {
+        Task { [weak self] in
+            guard let self else { return }
+            if let roles = roles, !roles.isEmpty {
+                do {
+                    try await FirestoreDatabaseService.shared.createNewUser(roles, id, email)
+                    self.handleNewUserRoles(
+                        roles, id: id, email: email, rememberUser: rememberUser,
+                        setPassword: setPassword)
+                } catch {
+                    self.handleRetry(
+                        error: error.localizedDescription, id: id, email: email,
+                        rememberUser: rememberUser, setPassword: setPassword)
                 }
-            }
-        } else {
-            FirestoreDatabaseService.shared.createNewCafe(id, email) { [weak self] result in
-                switch result {
-                case .success(let role):
-                    self?.send(.loading(false))
-                    self?.login(id, email, role, rememberUser)
-                    self?.send(.success(setPassword))
-                case .failure(let error):
-                    self?.handleRetry(error: error.localizedDescription, id: id, email: email, rememberUser: rememberUser, setPassword: setPassword)
+            } else {
+                do {
+                    let role = try await FirestoreDatabaseService.shared.createNewCafe(id, email)
+                    self.send(.loading(false))
+                    self.login(id, email, role, rememberUser)
+                    self.send(.success(setPassword))
+                } catch {
+                    self.handleRetry(
+                        error: error.localizedDescription, id: id, email: email,
+                        rememberUser: rememberUser, setPassword: setPassword)
                 }
             }
         }
     }
 
-    private func handleNewUserRoles(_ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool) {
+    private func handleNewUserRoles(
+        _ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool
+    ) {
         if roles.count > 1 {
             let chooseRoles = roles.filter { $0.role != .administrator }
-            self.send(.chooseRole(chooseRoles, { [weak self] (role) in
-                self?.send(.loading(false))
-                self?.login(id, email, role, true)
-                self?.send(.success(setPassword))
-            }))
+            self.send(
+                .chooseRole(
+                    chooseRoles,
+                    { [weak self] (role) in
+                        self?.send(.loading(false))
+                        self?.login(id, email, role, true)
+                        self?.send(.success(setPassword))
+                    }))
         } else {
             self.send(.loading(false))
             self.login(id, email, roles.first!, rememberUser)
@@ -207,28 +249,29 @@ class AuthModel {
         }
     }
 
-    private func handleRetry(error: String? = nil, id: String, email: String, rememberUser: Bool, setPassword: Bool) {
+    private func handleRetry(
+        error: String? = nil, id: String, email: String, rememberUser: Bool, setPassword: Bool
+    ) {
         self.send(.loading(false))
-        self.send(.retry(error: error, cancel: {
-            self.logOut()
-        }, retry: {
-            self.createUserOrLogin(id, email, rememberUser, setPassword)
-        }))
+        self.send(
+            .retry(
+                error: error,
+                cancel: {
+                    self.logOut()
+                },
+                retry: {
+                    self.createUserOrLogin(id, email, rememberUser, setPassword)
+                }))
     }
 
-    private func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
-        guard let key = key else {
-            completion(false)
-            return
-        }
-        FirestoreDatabaseService.shared.checkData(key) { exists in
-            completion(exists)
-        }
+    private func checkData(_ key: String?) async -> Bool {
+        guard let key = key else { return false }
+        return await FirestoreDatabaseService.shared.checkData(key)
     }
-
 
     private func login(_ id: String, _ email: String, _ role: RoleConfig, _ rememberUser: Bool) {
-        UserSession.createSession(id: id, email: email, roleConfig: role, rememberUser: rememberUser)
+        UserSession.createSession(
+            id: id, email: email, roleConfig: role, rememberUser: rememberUser)
         RequestManager.shared.startListening()
     }
 
@@ -242,59 +285,59 @@ class AuthModel {
         }
     }
 
-//    private func createNewUser(_ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Bool) -> Void) {
-//        guard let newUserRef = reference.child(Refs.users.rawValue).childByAutoId().key,
-//              let userData = userData(newUserRef, id, email) else {
-//            completion(false)
-//            return
-//        }
-//
-//        var updateNodes = [
-//            "\(Refs.users.rawValue)/\(newUserRef)": userData
-//        ] as [String: Any]
-//
-//        roles.forEach { role in
-//            updateNodes["\(Refs.roles.rawValue)/\(role.firebaseRef)/userRef"] = newUserRef
-//            role.userRef = newUserRef
-//        }
-//
-//        Database.database().reference().updateChildValues(updateNodes) { (error, ref) in
-//            completion(error == nil)
-//        }
-//    }
+    //    private func createNewUser(_ roles: [RoleConfig], _ id: String, _ email: String, _ completion: @escaping (Bool) -> Void) {
+    //        guard let newUserRef = reference.child(Refs.users.rawValue).childByAutoId().key,
+    //              let userData = userData(newUserRef, id, email) else {
+    //            completion(false)
+    //            return
+    //        }
+    //
+    //        var updateNodes = [
+    //            "\(Refs.users.rawValue)/\(newUserRef)": userData
+    //        ] as [String: Any]
+    //
+    //        roles.forEach { role in
+    //            updateNodes["\(Refs.roles.rawValue)/\(role.firebaseRef)/userRef"] = newUserRef
+    //            role.userRef = newUserRef
+    //        }
+    //
+    //        Database.database().reference().updateChildValues(updateNodes) { (error, ref) in
+    //            completion(error == nil)
+    //        }
+    //    }
 
-//    private func createNewLab(_ id: String, _ email: String, _ completion: @escaping (RoleConfig?, Bool) -> Void) {
-//        guard let userKey = reference.child(Refs.users.rawValue).childByAutoId().key,
-//            let userData = userData(userKey, id, email) else {
-//            completion(nil, false)
-//            return
-//        }
-//
-//        guard let roleKey = reference.child(Refs.roles.rawValue).childByAutoId().key else { return }
-//        let role = RoleConfig(ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator, onlineVersion: true)
-//
-//        let updateNodes = [
-//            "\(Refs.users.rawValue)/\(userKey)": userData,
-//            "\(Refs.roles.rawValue)/\(roleKey)": role.forDatabase(),
-//            ] as [String : Any]
-//
-//        Database.database().reference().updateChildValues(updateNodes) { (error, ref) in
-//            completion(role, error == nil)
-//        }
-//    }
+    //    private func createNewLab(_ id: String, _ email: String, _ completion: @escaping (RoleConfig?, Bool) -> Void) {
+    //        guard let userKey = reference.child(Refs.users.rawValue).childByAutoId().key,
+    //            let userData = userData(userKey, id, email) else {
+    //            completion(nil, false)
+    //            return
+    //        }
+    //
+    //        guard let roleKey = reference.child(Refs.roles.rawValue).childByAutoId().key else { return }
+    //        let role = RoleConfig(ref: roleKey, email: email, dataRef: userKey, userRef: userKey, role: Role.administrator, onlineVersion: true)
+    //
+    //        let updateNodes = [
+    //            "\(Refs.users.rawValue)/\(userKey)": userData,
+    //            "\(Refs.roles.rawValue)/\(roleKey)": role.forDatabase(),
+    //            ] as [String : Any]
+    //
+    //        Database.database().reference().updateChildValues(updateNodes) { (error, ref) in
+    //            completion(role, error == nil)
+    //        }
+    //    }
 
-//    private func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
-//        guard let key = key else {
-//            completion(false)
-//            return
-//        }
-//        Database.database().reference().child(Refs.users.rawValue).child(key).observeSingleEvent(of: .value) { (snapshot) in
-//            completion(snapshot.exists())
-//        }
-//    }
-//    private func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
-//        FirestoreDatabaseService.shared.checkData(key) { exists in
-//            completion(exists)
-//        }
-//    }
+    //    private func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
+    //        guard let key = key else {
+    //            completion(false)
+    //            return
+    //        }
+    //        Database.database().reference().child(Refs.users.rawValue).child(key).observeSingleEvent(of: .value) { (snapshot) in
+    //            completion(snapshot.exists())
+    //        }
+    //    }
+    //    private func checkData(_ key: String?, completion: @escaping (Bool) -> Void) {
+    //        FirestoreDatabaseService.shared.checkData(key) { exists in
+    //            completion(exists)
+    //        }
+    //    }
 }
