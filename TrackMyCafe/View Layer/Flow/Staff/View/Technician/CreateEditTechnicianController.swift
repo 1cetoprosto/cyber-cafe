@@ -168,7 +168,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.text
+        titleLabel.textColor = UIColor.Main.secondaryText
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let textField = UITextField()
@@ -207,7 +207,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.text
+        titleLabel.textColor = UIColor.Main.secondaryText
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let textView = UITextView()
@@ -244,7 +244,7 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         container.translatesAutoresizingMaskIntoConstraints = false
         let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.text
+        titleLabel.textColor = UIColor.Main.secondaryText
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
 
         let switchControl = UISwitch()

@@ -9,7 +9,7 @@ private struct OrderReceiptItem: Hashable {
 private final class OrderCompactFieldView: UIControl {
     private let titleLabel: AppLabel = {
         let label = AppLabel(style: .footnoteLight)
-        label.textColor = UIColor.Main.text
+        label.textColor = UIColor.Main.secondaryText
         return label
     }()
 
@@ -585,22 +585,16 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
             case .stockValidationFailed(let warnings):
                 showStockWarning(warnings)
             case .saveFailed, .fetchFailed:
-                let alert = UIAlertController(
+                PopupFactory.showPopup(
                     title: R.string.global.error(),
-                    message: R.string.global.somethingWentWrong(),
-                    preferredStyle: .alert
+                    description: R.string.global.somethingWentWrong()
                 )
-                alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-                present(alert, animated: true)
             }
         } else {
-            let alert = UIAlertController(
+            PopupFactory.showPopup(
                 title: R.string.global.error(),
-                message: R.string.global.somethingWentWrong(),
-                preferredStyle: .alert
+                description: R.string.global.somethingWentWrong()
             )
-            alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-            present(alert, animated: true)
         }
     }
 
@@ -614,43 +608,34 @@ final class OrderReceiptPadViewController: UIViewController, UITextFieldDelegate
 
         let prefix = R.string.global.stockWarningMessagePrefix()
         let question = R.string.global.stockWarningProceedQuestion()
-        let alert = UIAlertController(
+        PopupFactory.showDestructivePopup(
             title: R.string.global.stockWarningTitle(),
-            message: "\(prefix)\n\(message)\n\(question)",
-            preferredStyle: .alert
-        )
-        alert.addAction(
-            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.proceed(),
-                style: .destructive,
-                handler: { [weak self] _ in
+            description: "\(prefix)\n\(message)\n\(question)",
+            buttonTitle: R.string.global.proceed(),
+            buttonAction: { [weak self] in
+                guard let self else { return }
+                Task { [weak self] in
                     guard let self else { return }
-                    Task { [weak self] in
-                        guard let self else { return }
-                        do {
-                            try await self.viewModel.save(
-                                date: self.selectedDate,
-                                type: self.selectedType,
-                                cash: self.cashInputContainer.text,
-                                card: self.cardInputContainer.text,
-                                note: self.noteInputContainer.text,
-                                ignoreStockWarning: true
-                            )
-                            await MainActor.run {
-                                self.handleSaveSuccess()
-                            }
-                        } catch {
-                            await MainActor.run {
-                                self.handleSaveError(error)
-                            }
+                    do {
+                        try await self.viewModel.save(
+                            date: self.selectedDate,
+                            type: self.selectedType,
+                            cash: self.cashInputContainer.text,
+                            card: self.cardInputContainer.text,
+                            note: self.noteInputContainer.text,
+                            ignoreStockWarning: true
+                        )
+                        await MainActor.run {
+                            self.handleSaveSuccess()
+                        }
+                    } catch {
+                        await MainActor.run {
+                            self.handleSaveError(error)
                         }
                     }
                 }
-            )
+            }
         )
-        present(alert, animated: true)
     }
 
     @objc private func stepperValueChanged(_ stepper: UIStepper) {

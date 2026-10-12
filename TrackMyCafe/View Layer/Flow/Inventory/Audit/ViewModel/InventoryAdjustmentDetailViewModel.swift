@@ -156,7 +156,9 @@ final class InventoryAdjustmentDetailViewModel: InventoryAdjustmentDetailViewMod
                 }
             } catch {
                 await MainActor.run {
-                    self.onError?(error.localizedDescription)
+                    let message = (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
+                    self.onError?(message)
                 }
             }
         }

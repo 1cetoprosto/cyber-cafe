@@ -106,7 +106,8 @@ class CreatePurchaseViewModel: CreatePurchaseViewModelType {
             }
             return (true, nil)
         } catch {
-            return (false, error.localizedDescription)
+            let message = (error as? LocalizedError)?.errorDescription
+            return (false, message)
         }
     }
 }

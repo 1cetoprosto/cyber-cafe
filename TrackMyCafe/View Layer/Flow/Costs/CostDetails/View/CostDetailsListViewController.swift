@@ -77,7 +77,7 @@ final class CostDetailsListViewController: UIViewController {
     private lazy var paymentMethodLabel: UILabel = {
         let label = AppLabel(style: .footnote)
         label.apply(.footnote)
-        label.textColor = UIColor.Main.text
+        label.textColor = UIColor.Main.secondaryText
         label.text = R.string.global.paymentMethod()
         label.numberOfLines = 0
         return label
@@ -142,8 +142,10 @@ final class CostDetailsListViewController: UIViewController {
 
         priceInputContainer.setDelegate(self)
         priceInputContainer.enableNumericInput(maxFractionDigits: 2)
-        let currencySymbol = RequestManager.shared.settings?.currencySymbol
-        ?? (Locale.isCurrentLanguageUkrainian ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
+        let currencySymbol =
+            RequestManager.shared.settings?.currencySymbol
+            ?? (Locale.isCurrentLanguageUkrainian
+                ? DefaultValues.currencySymbol : DefaultValues.dollarSymbol)
         priceInputContainer.enableCurrencySuffix(symbol: currencySymbol)
         priceInputContainer.setReturnKeyType(.done)
 
@@ -189,7 +191,8 @@ final class CostDetailsListViewController: UIViewController {
                 equalTo: scrollView.contentLayoutGuide.bottomAnchor,
                 constant: -UIConstants.largeSpacing
             ),
-            mainStackView.centerXAnchor.constraint(equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.centerXAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.centerXAnchor),
             mainStackView.leadingAnchor.constraint(
                 greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
                 constant: horizontalInset
@@ -204,7 +207,7 @@ final class CostDetailsListViewController: UIViewController {
 
         // Container heights
         let containerHeight =
-        UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
+            UIConstants.cellHeight + UIConstants.largeSpacing + UIConstants.standardPadding
         dateInputContainer.height(containerHeight)
         nameInputContainer.height(containerHeight)
         paymentMethodContainerView.height(containerHeight)
@@ -251,7 +254,8 @@ final class CostDetailsListViewController: UIViewController {
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
 
-        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let flexSpace = UIBarButtonItem(
+            barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneButton = UIBarButtonItem(
             title: R.string.global.actionOk(),
             style: .done,
@@ -269,7 +273,8 @@ final class CostDetailsListViewController: UIViewController {
         let sumText = priceInputContainer.text
         let paymentAccount = selectedPaymentAccount
 
-        guard viewModel.validate(name: name, sumText: sumText, paymentAccount: paymentAccount) else {
+        guard viewModel.validate(name: name, sumText: sumText, paymentAccount: paymentAccount)
+        else {
             PopupFactory.showPopup(
                 title: R.string.global.error(),
                 description: R.string.global.fillAllFields()
@@ -295,9 +300,12 @@ final class CostDetailsListViewController: UIViewController {
                 }
             } catch {
                 await MainActor.run {
+                    let description =
+                        (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: error.localizedDescription
+                        description: description
                     ) {}
                 }
             }

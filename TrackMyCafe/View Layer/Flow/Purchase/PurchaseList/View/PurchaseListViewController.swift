@@ -104,53 +104,22 @@ class PurchaseListViewController: UIViewController, ProGated {
     }
 
     @objc private func filterButtonTapped() {
-        let alert = UIAlertController(
-            title: R.string.global.filtersTitle(),
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        let dateFilterAction = UIAlertAction(
-            title: R.string.global.filterByDate(),
-            style: .default
-        ) { [weak self] _ in
-            self?.showDateRangePicker()
-        }
-
-        let ingredientFilterAction = UIAlertAction(
-            title: R.string.global.filterByIngredient(),
-            style: .default
-        ) { [weak self] _ in
-            self?.presentIngredientFilter()
-        }
-
-        let clearFiltersAction = UIAlertAction(
-            title: R.string.global.clearFilters(),
-            style: .destructive
-        ) { [weak self] _ in
-            self?.selectedStartDate = nil
-            self?.selectedEndDate = nil
-            self?.selectedIngredientId = nil
-            self?.applyFilters()
-        }
-
-        let cancelAction = UIAlertAction(
-            title: R.string.global.cancel(),
-            style: .cancel
-        )
-
-        alert.addAction(dateFilterAction)
-        alert.addAction(ingredientFilterAction)
-        alert.addAction(clearFiltersAction)
-        alert.addAction(cancelAction)
-
-        if let popover = alert.popoverPresentationController {
-            popover.sourceView = filterButton
-            popover.sourceRect = filterButton.bounds
-            popover.permittedArrowDirections = .any
-        }
-
-        present(alert, animated: true)
+        let actions: [PopupAction] = [
+            PopupAction(title: R.string.global.filterByDate()) { [weak self] in
+                self?.showDateRangePicker()
+            },
+            PopupAction(title: R.string.global.filterByIngredient()) { [weak self] in
+                self?.presentIngredientFilter()
+            },
+            PopupAction(title: R.string.global.clearFilters(), style: .destructive) { [weak self] in
+                self?.selectedStartDate = nil
+                self?.selectedEndDate = nil
+                self?.selectedIngredientId = nil
+                self?.applyFilters()
+            },
+            PopupAction(title: R.string.global.cancel(), style: .cancel),
+        ]
+        PopupFactory.showActionSheet(title: R.string.global.filtersTitle(), actions: actions)
     }
 
     private func showDateRangePicker() {
@@ -174,34 +143,18 @@ class PurchaseListViewController: UIViewController, ProGated {
         Task { [weak self] in
             guard let self = self else { return }
             await viewModel.getPurchases()
-            let alert = UIAlertController(
-                title: R.string.global.filterByIngredient(),
-                message: nil,
-                preferredStyle: .actionSheet
-            )
             let items = self.viewModel.availableIngredients()
-            for item in items {
-                let action = UIAlertAction(
-                    title: item.name,
-                    style: .default
-                ) { [weak self] _ in
+            var actions = items.map { item in
+                PopupAction(title: item.name) { [weak self] in
                     self?.selectedIngredientId = item.id
                     self?.applyFilters()
                 }
-                alert.addAction(action)
             }
-            let cancelAction = UIAlertAction(
-                title: R.string.global.cancel(),
-                style: .cancel
-            )
-            alert.addAction(cancelAction)
+            actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
             DispatchQueue.main.async {
-                if let popover = alert.popoverPresentationController {
-                    popover.sourceView = self.filterButton
-                    popover.sourceRect = self.filterButton.bounds
-                    popover.permittedArrowDirections = .any
-                }
-                self.present(alert, animated: true)
+                PopupFactory.showActionSheet(
+                    title: R.string.global.filterByIngredient(), actions: actions
+                )
             }
         }
     }

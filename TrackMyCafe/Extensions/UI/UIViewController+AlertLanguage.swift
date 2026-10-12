@@ -10,64 +10,28 @@ import UIKit
 extension UIViewController {
 
   func alertLanguage(label: UILabel, completionHandle: @escaping (String) -> Void) {
-    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-    let english = UIAlertAction(title: R.string.global.english(), style: .default) { _ in
-      label.text = R.string.global.english()
-      let typeContact = R.string.global.english()
-      completionHandle(typeContact)
-    }
-
-    //        let russian = UIAlertAction(title: "Русский", style: .default) { _ in
-    //            label.text = "Русский"
-    //            let typeContact = "Русский"
-    //            completionHandle(typeContact)
-    //        }
-
-    let ukrainian = UIAlertAction(title: R.string.global.ukrainian(), style: .default) { _ in
-      label.text = R.string.global.ukrainian()
-      let typeContact = R.string.global.ukrainian()
-      completionHandle(typeContact)
-    }
-
-    let cansel = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-
-    alert.addAction(english)
-    // alert.addAction(russian)
-    alert.addAction(ukrainian)
-    alert.addAction(cansel)
-
-    if let popover = alert.popoverPresentationController {
-      popover.sourceView = label
-      popover.sourceRect = label.bounds
-      popover.permittedArrowDirections = .any
-    }
-
-    present(alert, animated: true)
-
+    let actions: [PopupAction] = [
+      PopupAction(title: R.string.global.english()) {
+        label.text = R.string.global.english()
+        completionHandle(R.string.global.english())
+      },
+      PopupAction(title: R.string.global.ukrainian()) {
+        label.text = R.string.global.ukrainian()
+        completionHandle(R.string.global.ukrainian())
+      },
+      PopupAction(title: R.string.global.cancel(), style: .cancel)
+    ]
+    PopupFactory.showActionSheet(actions: actions)
   }
 
   func alertTheme(label: UILabel, completionHandle: @escaping (ThemeOption) -> Void) {
-    let alert = UIAlertController(
-      title: R.string.global.selectTheme(), message: nil, preferredStyle: .actionSheet)
-
-    for option in ThemeOption.allCases {
-      let action = UIAlertAction(title: option.displayName, style: .default) { _ in
+    var actions = ThemeOption.allCases.map { option in
+      PopupAction(title: option.displayName) {
         label.text = option.displayName
         completionHandle(option)
       }
-      alert.addAction(action)
     }
-
-    let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-    alert.addAction(cancelAction)
-
-    if let popover = alert.popoverPresentationController {
-      popover.sourceView = label
-      popover.sourceRect = label.bounds
-      popover.permittedArrowDirections = .any
-    }
-
-    present(alert, animated: true)
+    actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
+    PopupFactory.showActionSheet(title: R.string.global.selectTheme(), actions: actions)
   }
 }

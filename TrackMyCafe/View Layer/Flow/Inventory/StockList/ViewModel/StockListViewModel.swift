@@ -11,32 +11,32 @@ protocol StockListViewModelProtocol {
     var onDataUpdated: (() -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
     var isLoading: ((Bool) -> Void)? { get set }
-    
+
     var ingredients: [IngredientModel] { get }
-    
+
     func fetchStock()
     func applyAdjustment(for ingredient: IngredientModel, delta: Double, reason: String)
 }
 
 final class StockListViewModel: StockListViewModelProtocol {
-    
+
     // MARK: - Properties
-    
+
     var onDataUpdated: (() -> Void)?
     var onError: ((String) -> Void)?
     var isLoading: ((Bool) -> Void)?
-    
+
     private(set) var ingredients: [IngredientModel] = [] {
         didSet {
             onDataUpdated?()
         }
     }
-    
+
     private let dataService: IngredientDataServiceProtocol
     private let inventoryService: InventoryServiceProtocol
-    
+
     // MARK: - Init
-    
+
     init(
         dataService: IngredientDataServiceProtocol = DomainIngredientDataService.shared,
         inventoryService: InventoryServiceProtocol = InventoryService.shared
@@ -44,9 +44,9 @@ final class StockListViewModel: StockListViewModelProtocol {
         self.dataService = dataService
         self.inventoryService = inventoryService
     }
-    
+
     // MARK: - Methods
-    
+
     func fetchStock() {
         isLoading?(true)
         Task {
@@ -58,35 +58,41 @@ final class StockListViewModel: StockListViewModelProtocol {
                 }
             } catch {
                 await MainActor.run {
-                    self.onError?(error.localizedDescription)
+                    let message =
+                        (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
+                    self.onError?(message)
                     self.isLoading?(false)
                 }
             }
         }
     }
-    
+
     func applyAdjustment(for ingredient: IngredientModel, delta: Double, reason: String) {
         guard delta != 0 else { return }
-        
+
         let adjustment = InventoryAdjustmentModel(
             ingredientId: ingredient.id,
             quantityDelta: delta,
             reason: reason
         )
-        
+
         isLoading?(true)
-        
+
         // Wrap legacy completion handler in async
         Task {
             do {
                 try await inventoryService.processStockAdjustment(adjustment: adjustment)
-                
+
                 // Refresh list after update
                 fetchStock()
-                
+
             } catch {
                 await MainActor.run {
-                    self.onError?("Failed to update stock: \(error.localizedDescription)")
+                    let message =
+                        (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
+                    self.onError?(message)
                     self.isLoading?(false)
                 }
             }

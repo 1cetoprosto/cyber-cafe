@@ -397,24 +397,14 @@ extension Optional where Wrapped == String {
 }
 
 func showAlert(_ title: String, body: String) {
-    let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-    alertController.addAction(
-        UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
-    UIViewController.topMostViewController()?.present(
-        alertController, animated: true, completion: nil)
+    PopupFactory.showPopup(title: title, description: body)
 }
 
 func showWarning(body: String, buttonTitle: String, action: @escaping () -> Void) {
-    let alertController = UIAlertController(
-        title: R.string.global.warning(), message: body, preferredStyle: .alert)
-    alertController.addAction(
-        UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
-    alertController.addAction(
-        UIAlertAction(
-            title: buttonTitle, style: .destructive,
-            handler: { _ in
-                action()
-            }))
-    UIViewController.topMostViewController()?.present(
-        alertController, animated: true, completion: nil)
+    PopupFactory.showPopup(
+        title: R.string.global.warning(),
+        description: body,
+        buttonTitle: buttonTitle,
+        buttonAction: action
+    )
 }

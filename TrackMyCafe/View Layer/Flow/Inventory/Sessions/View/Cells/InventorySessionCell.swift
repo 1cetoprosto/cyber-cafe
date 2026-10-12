@@ -28,7 +28,7 @@ final class InventorySessionCell: BaseListTableViewCell {
 
     private let noteLabel: AppLabel = {
         let label = AppLabel(style: .bodyMultiline)
-        label.textColor = UIColor.TableView.cellLabel
+        label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         return label
     }()

@@ -74,26 +74,57 @@ class PopupFactory {
         return attributes
     }()
 
+    // MARK: - SwiftEntryKit Safety Helpers
+
+    /// Workaround for a SwiftEntryKit crash in multi-scene apps.
+    ///
+    /// During teardown (`displayRollbackWindow`), `entryWindow.windowScene` is
+    /// set to `nil` *before* `entryWindow` itself is nilled. On iOS 13+ that can
+    /// transiently leave `entryWindow` non-nil while its `rootViewController`
+    /// is already `nil`. A concurrent `display(...)` then hits
+    /// `setupWindowAndRootVC()` → `entryVC = rootVC!` → fatalError.
+    ///
+    /// If we detect that broken state we defer the presentation by one run-loop
+    /// cycle so teardown can complete.
+    private static func safeDisplay(entry view: UIView, using attributes: EKAttributes) {
+        if let ekWindow = SwiftEntryKit.window, ekWindow.rootViewController == nil {
+            DispatchQueue.main.async {
+                SwiftEntryKit.display(entry: view, using: attributes)
+            }
+        } else {
+            SwiftEntryKit.display(entry: view, using: attributes)
+        }
+    }
+
+    /// Dismisses the currently displayed entry and runs `handler` only after the
+    /// exit animation has finished. This guarantees the entry window is fully
+    /// torn down before any handler code (which may present another popup) runs.
+    private static func dismissThen(_ handler: @escaping () -> Void) {
+        SwiftEntryKit.dismiss(.displayed) {
+            handler()
+        }
+    }
+
     static func showOrderModePopup(
         selectPerOrder: @escaping () -> Void, selectOpenTab: @escaping () -> Void
     ) {
         let popupView = OrderModePopupView()
         popupView.selectPerOrder = {
-            SwiftEntryKit.dismiss()
-            selectPerOrder()
+            dismissThen { selectPerOrder() }
         }
         popupView.selectOpenTab = {
-            SwiftEntryKit.dismiss()
-            selectOpenTab()
+            dismissThen { selectOpenTab() }
         }
         popupView.cancel = {
             SwiftEntryKit.dismiss()
         }
 
-        SwiftEntryKit.display(entry: popupView, using: PopupFactory.presentAttributes)
+        safeDisplay(entry: popupView, using: PopupFactory.presentAttributes)
     }
 
-    static func showChooseRoleAlert(_ roles: [RoleConfig], completion: @escaping (RoleConfig) -> Void) {
+    static func showChooseRoleAlert(
+        _ roles: [RoleConfig], completion: @escaping (RoleConfig) -> Void
+    ) {
         let kHighlightColor = EKColor(rgb: 0x424242)
 
         let title = EKProperty.LabelContent(
@@ -105,7 +136,9 @@ class PopupFactory {
             )
         )
 
-        let simpleMessage = EKSimpleMessage(title: title, description: .init(text: "", style: .init(font: .systemFont(ofSize: 1), color: .clear)))
+        let simpleMessage = EKSimpleMessage(
+            title: title,
+            description: .init(text: "", style: .init(font: .systemFont(ofSize: 1), color: .clear)))
 
         var buttons: [EKProperty.ButtonContent] = []
 
@@ -121,8 +154,7 @@ class PopupFactory {
                 backgroundColor: .clear,
                 highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
             ) {
-                completion(role)
-                SwiftEntryKit.dismiss()
+                dismissThen { completion(role) }
             }
             buttons.append(button)
         }
@@ -140,7 +172,7 @@ class PopupFactory {
         )
 
         let contentView = EKAlertMessageView(with: alertMessage)
-        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
+        safeDisplay(entry: contentView, using: PopupFactory.presentAttributes)
     }
 
     static func showPopup(title: String, description: String, buttonAction: (() -> Void)? = nil) {
@@ -180,8 +212,7 @@ class PopupFactory {
             backgroundColor: .clear,
             highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
         ) {
-            buttonAction?()
-            SwiftEntryKit.dismiss()
+            dismissThen { buttonAction?() }
         }
 
         let buttonsBarContent = EKProperty.ButtonBarContent(
@@ -195,11 +226,15 @@ class PopupFactory {
             buttonBarContent: buttonsBarContent
         )
         let contentView = EKAlertMessageView(with: alertMessage)
-        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
+        safeDisplay(entry: contentView, using: PopupFactory.presentAttributes)
     }
 
     static func showPopup(
-        title: String, description: String, buttonTitle: String, buttonAction: @escaping () -> Void
+        title: String,
+        description: String,
+        buttonTitle: String,
+        buttonAction: @escaping () -> Void,
+        onCancel: (() -> Void)? = nil
     ) {
         let kHighlightColor = EKColor(rgb: 0x424242)
 
@@ -240,8 +275,7 @@ class PopupFactory {
             backgroundColor: .clear,
             highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
         ) {
-            buttonAction()
-            SwiftEntryKit.dismiss()
+            dismissThen { buttonAction() }
         }
 
         let closeButton = EKProperty.ButtonContent(
@@ -250,7 +284,7 @@ class PopupFactory {
             backgroundColor: .clear,
             highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
         ) {
-            SwiftEntryKit.dismiss()
+            dismissThen { onCancel?() }
         }
 
         let buttonsBarContent = EKProperty.ButtonBarContent(
@@ -264,7 +298,7 @@ class PopupFactory {
             buttonBarContent: buttonsBarContent
         )
         let contentView = EKAlertMessageView(with: alertMessage)
-        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
+        safeDisplay(entry: contentView, using: PopupFactory.presentAttributes)
     }
 
     static func showDestructivePopup(
@@ -309,8 +343,7 @@ class PopupFactory {
             backgroundColor: .clear,
             highlightedBackgroundColor: kHighlightColor.with(alpha: 0.05)
         ) {
-            buttonAction()
-            SwiftEntryKit.dismiss()
+            dismissThen { buttonAction() }
         }
 
         let closeButton = EKProperty.ButtonContent(
@@ -333,149 +366,72 @@ class PopupFactory {
             buttonBarContent: buttonsBarContent
         )
         let contentView = EKAlertMessageView(with: alertMessage)
-        SwiftEntryKit.display(entry: contentView, using: PopupFactory.presentAttributes)
-    }
-}
-
-private class OrderModePopupView: UIView {
-
-    var selectPerOrder: (() -> Void)?
-    var selectOpenTab: (() -> Void)?
-    var cancel: (() -> Void)?
-
-    private let titleLabel: UILabel = {
-        let label = AppLabel(style: .footnote)
-        label.text = R.string.global.orderEntryModeTitle()
-        label.font = .systemFont(ofSize: 17, weight: .medium)
-        label.textColor = .label
-        label.textAlignment = .center
-        label.numberOfLines = 1
-        return label
-    }()
-
-    private let descriptionLabel: UILabel = {
-        let label = AppLabel(style: .footnote)
-        label.numberOfLines = 0
-        label.textAlignment = .center
-        return label
-    }()
-
-    private let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.distribution = .fill
-        stack.alignment = .fill
-        stack.spacing = 0
-        return stack
-    }()
-
-    init() {
-        super.init(frame: .zero)
-        setupUI()
+        safeDisplay(entry: contentView, using: PopupFactory.presentAttributes)
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - Input Popup
 
-    private func setupUI() {
-        backgroundColor = .clear
-
-        addSubview(stackView)
-        stackView.edgesToSuperview()
-
-        // Title Container
-        let titleContainer = UIView()
-        titleContainer.addSubview(titleLabel)
-        titleLabel.edgesToSuperview(insets: .init(top: 20, left: 16, bottom: 10, right: 16))
-        stackView.addArrangedSubview(titleContainer)
-
-        // Description Container
-        let descContainer = UIView()
-        descContainer.addSubview(descriptionLabel)
-        descriptionLabel.edgesToSuperview(insets: .init(top: 0, left: 24, bottom: 24, right: 24))
-        setupDescriptionText()
-        stackView.addArrangedSubview(descContainer)
-
-        // Buttons
-        addSeparator()
-        addButton(title: R.string.global.orderModePerOrder(), action: #selector(handlePerOrder))
-        addSeparator()
-        addButton(title: R.string.global.orderModeOpenTab(), action: #selector(handleOpenTab))
-        addSeparator()
-        addButton(title: R.string.global.cancel(), isBold: true, action: #selector(handleCancel))
-    }
-
-    private func setupDescriptionText() {
-        let text = NSMutableAttributedString()
-
-        // Classic Mode
-        let classicTitle = NSAttributedString(
-            string: R.string.global.orderModePerOrder() + "\n",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14, weight: .bold),
-                .foregroundColor: UIColor.label,
-            ]
+    /// Presents a custom popup with 1+ text fields. Replaces `UIAlertController`
+    /// input alerts for visual consistency across the app.
+    static func showInputPopup(
+        title: String,
+        description: String,
+        fields: [InputFieldConfig],
+        saveTitle: String = R.string.global.save(),
+        onSave: @escaping ([String]) -> Void,
+        onCancel: (() -> Void)? = nil
+    ) {
+        let popupView = InputPopupView(
+            title: title,
+            description: description,
+            fields: fields,
+            saveTitle: saveTitle
         )
-        let classicDesc = NSAttributedString(
-            string: R.string.global.orderModePerOrderDescription() + "\n\n",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14, weight: .regular),
-                .foregroundColor: UIColor.secondaryLabel,
-            ]
+        popupView.onSave = { values in
+            dismissThen { onSave(values) }
+        }
+        popupView.onCancel = {
+            dismissThen { onCancel?() }
+        }
+
+        safeDisplay(entry: popupView, using: PopupFactory.presentAttributes)
+    }
+
+    // MARK: - Action Sheet
+
+    /// Presents a custom action sheet (vertical list of buttons + Cancel).
+    /// Replaces `UIAlertController` `.actionSheet` for visual consistency.
+    static func showActionSheet(
+        title: String? = nil,
+        message: String? = nil,
+        actions: [PopupAction]
+    ) {
+        let popupView = ActionSheetView(title: title, message: message, actions: actions)
+        popupView.onAction = { action in
+            dismissThen { action.handler?() }
+        }
+
+        var attributes = PopupFactory.presentAttributes
+        attributes.position = .bottom
+        attributes.entranceAnimation = .init(
+            translate: .init(
+                duration: 0.3,
+                anchorPosition: .bottom,
+                spring: .init(damping: 1, initialVelocity: 0)
+            )
+        )
+        attributes.exitAnimation = .init(
+            translate: .init(
+                duration: 0.3,
+                anchorPosition: .bottom,
+                spring: .init(damping: 1, initialVelocity: 0)
+            )
+        )
+        attributes.positionConstraints.maxSize = .init(
+            width: .constant(value: UIScreen.main.minEdge),
+            height: .intrinsic
         )
 
-        // Simplified Mode
-        let simpleTitle = NSAttributedString(
-            string: R.string.global.orderModeOpenTab() + "\n",
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14, weight: .bold),
-                .foregroundColor: UIColor.label,
-            ]
-        )
-        let simpleDesc = NSAttributedString(
-            string: R.string.global.orderModeOpenTabDescription(),
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14, weight: .regular),
-                .foregroundColor: UIColor.secondaryLabel,
-            ]
-        )
-
-        text.append(classicTitle)
-        text.append(classicDesc)
-        text.append(simpleTitle)
-        text.append(simpleDesc)
-
-        // Paragraph Style
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.alignment = .center
-        text.addAttribute(
-            .paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: text.length)
-        )
-
-        descriptionLabel.attributedText = text
+        safeDisplay(entry: popupView, using: attributes)
     }
-
-    private func addButton(title: String, isBold: Bool = false, action: Selector) {
-        let button = UIButton(type: .system)
-        button.setTitle(title, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 17, weight: isBold ? .bold : .regular)
-        button.tintColor = .label
-
-        button.addTarget(self, action: action, for: .touchUpInside)
-        button.height(50)  // Increased height for better touch target
-
-        stackView.addArrangedSubview(button)
-    }
-
-    private func addSeparator() {
-        let separator = UIView()
-        separator.backgroundColor = UIColor.separator
-        separator.height(0.5)
-        stackView.addArrangedSubview(separator)
-    }
-
-    @objc private func handlePerOrder() { selectPerOrder?() }
-    @objc private func handleOpenTab() { selectOpenTab?() }
-    @objc private func handleCancel() { cancel?() }
 }
