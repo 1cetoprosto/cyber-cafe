@@ -763,6 +763,12 @@
 		F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
+		F3F87085307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
+		F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
+		F3F87087307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
+		F3F87088307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
+		F3F87089307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
+		F3F8708A307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
 		F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FCF72C2EDF570D00B337BE /* Kingfisher */; };
 		F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */; };
 		F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */; };
@@ -1058,6 +1064,8 @@
 		F3F6A6362C327B83000961C8 /* AdminDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDetailsController.swift; sourceTree = "<group>"; };
 		F3F6A63A2C327BA3000961C8 /* CreateEditAdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAdminController.swift; sourceTree = "<group>"; };
 		F3F6A6432C3280AF000961C8 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
+		F3F87083307CCE80005D106B /* InputPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopupView.swift; sourceTree = "<group>"; };
+		F3F87084307CCE80005D106B /* OrderModePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModePopupView.swift; sourceTree = "<group>"; };
 		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 		FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewModel.swift; path = "View Layer/Flow/Inventory/Bulk/ViewModel/BulkSessionViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1771,6 +1779,8 @@
 		F3410EB82BDD444B0007157B /* Popup */ = {
 			isa = PBXGroup;
 			children = (
+				F3F87083307CCE80005D106B /* InputPopupView.swift */,
+				F3F87084307CCE80005D106B /* OrderModePopupView.swift */,
 				F3410EB62BDD44370007157B /* PopupFactory.swift */,
 			);
 			path = Popup;
@@ -3244,6 +3254,8 @@
 				F3821C8027EAEB80006D40FC /* OrderListItemViewModel.swift in Sources */,
 				F3410E612BDD00C20007157B /* AuthManager.swift in Sources */,
 				F3821C7E27EAEB0F006D40FC /* OrderDetailsViewModel.swift in Sources */,
+				F3F87085307CCE80005D106B /* InputPopupView.swift in Sources */,
+				F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */,
 				F385B4082C1D785E00973CAA /* PersonDetailsViewController.swift in Sources */,
 				F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F385B4212C1D9AFE00973CAA /* Technician.swift in Sources */,
@@ -3479,6 +3491,8 @@
 				F39D78512C2034C80003B556 /* Admin.swift in Sources */,
 				F3B339BD2C0B22FE0073F19A /* AuthManager.swift in Sources */,
 				F3F6A6292C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
+				F3F87089307CCE80005D106B /* InputPopupView.swift in Sources */,
+				F3F8708A307CCE80005D106B /* OrderModePopupView.swift in Sources */,
 				F3B339BE2C0B22FE0073F19A /* OrderDetailsViewModel.swift in Sources */,
 				F3F6A6062C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348A2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
@@ -3714,6 +3728,8 @@
 				F39D78522C2034C90003B556 /* Admin.swift in Sources */,
 				F3B33A5C2C0B23450073F19A /* AuthManager.swift in Sources */,
 				F3F6A62A2C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
+				F3F87087307CCE80005D106B /* InputPopupView.swift in Sources */,
+				F3F87088307CCE80005D106B /* OrderModePopupView.swift in Sources */,
 				F3B33A5D2C0B23450073F19A /* OrderDetailsViewModel.swift in Sources */,
 				F3F6A6072C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348B2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
