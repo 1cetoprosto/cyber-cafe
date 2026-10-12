@@ -392,13 +392,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
             let isDataAvailable = await viewModel.verifyRequiredData()
             if !isDataAvailable {
                 await MainActor.run {
-                    let alert = UIAlertController(
+                    PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        message: R.string.global.requiredDataIsMissingInUserSettings(),
-                        preferredStyle: .alert)
-                    alert.addAction(
-                        UIAlertAction(title: R.string.global.actionOk(), style: .default))
-                    self.present(alert, animated: true)
+                        description: R.string.global.requiredDataIsMissingInUserSettings()
+                    )
                 }
             }
         }
@@ -517,16 +514,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
             case .stockValidationFailed(let warnings):
                 self.showStockWarning(warnings)
             case .saveFailed, .fetchFailed:
-                let alert = UIAlertController(
-                    title: "Error", message: "Failed to save order", preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                self.present(alert, animated: true)
+                PopupFactory.showPopup(title: "Error", description: "Failed to save order")
             }
         } else {
-            let alert = UIAlertController(
-                title: "Error", message: "Failed to save order", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alert, animated: true)
+            PopupFactory.showPopup(title: "Error", description: "Failed to save order")
         }
     }
 
@@ -540,43 +531,37 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
         let prefix = R.string.global.stockWarningMessagePrefix()
         let question = R.string.global.stockWarningProceedQuestion()
-        let alert = UIAlertController(
+        PopupFactory.showDestructivePopup(
             title: R.string.global.stockWarningTitle(),
-            message: "\(prefix)\n\(message)\n\(question)",
-            preferredStyle: .alert)
-        alert.addAction(
-            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.proceed(),
-                style: .destructive,
-                handler: { [weak self] _ in
-                    guard let self = self, let viewModel = self.viewModel else { return }
+            description: "\(prefix)\n\(message)\n\(question)",
+            buttonTitle: R.string.global.proceed(),
+            buttonAction: { [weak self] in
+                guard let self = self, let viewModel = self.viewModel else { return }
 
-                    let date = self.dateInputContainer.date ?? Date()
-                    let type = self.typeInputContainer.text
-                    let cash = self.cashInputContainer.text
-                    let card = self.cardInputContainer.text
+                let date = self.dateInputContainer.date ?? Date()
+                let type = self.typeInputContainer.text
+                let cash = self.cashInputContainer.text
+                let card = self.cardInputContainer.text
 
-                    Task { [weak self] in
-                        guard let self else { return }
-                        do {
-                            try await viewModel.save(
-                                date: date, type: type, cash: cash, card: card, note: nil,
-                                ignoreStockWarning: true
-                            )
-                            await MainActor.run {
-                                self.onSave?()
-                                self.navigationController?.popToRootViewController(animated: true)
-                            }
-                        } catch {
-                            await MainActor.run {
-                                self.handleSaveError(error)
-                            }
+                Task { [weak self] in
+                    guard let self else { return }
+                    do {
+                        try await viewModel.save(
+                            date: date, type: type, cash: cash, card: card, note: nil,
+                            ignoreStockWarning: true
+                        )
+                        await MainActor.run {
+                            self.onSave?()
+                            self.navigationController?.popToRootViewController(animated: true)
+                        }
+                    } catch {
+                        await MainActor.run {
+                            self.handleSaveError(error)
                         }
                     }
-                }))
-        self.present(alert, animated: true)
+                }
+            }
+        )
     }
 
     @objc func stepperValueChanged(_ stepper: UIStepper) {

@@ -308,31 +308,21 @@ class ProductDetailsViewController: UIViewController {
 
     @objc private func imageTapped() {
         guard !isSaving else { return }
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.gallery(), style: .default) { [weak self] _ in
+        var actions: [PopupAction] = [
+            PopupAction(title: R.string.global.gallery()) { [weak self] in
                 self?.presentPhotoPicker()
             }
-        )
-
+        ]
         if isImagePresent {
-            alert.addAction(
-                UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+            actions.append(
+                PopupAction(title: R.string.global.delete(), style: .destructive) { [weak self] in
                     self?.viewModel.markImageDeleted()
                     self?.applyInitialImage()
                 }
             )
         }
-
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-
-        if let popover = alert.popoverPresentationController {
-            popover.sourceView = productImageView
-            popover.sourceRect = productImageView.bounds
-        }
-
-        present(alert, animated: true)
+        actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
+        PopupFactory.showActionSheet(actions: actions)
     }
 
     private func presentPhotoPicker() {
@@ -401,77 +391,38 @@ class ProductDetailsViewController: UIViewController {
     @objc private func categoryTapped() {
         guard !categories.isEmpty else { return }
 
-        let alert = UIAlertController(
-            title: R.string.global.productCategories(),
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        for category in categories {
-            alert.addAction(
-                UIAlertAction(title: category.name, style: .default) { [weak self] _ in
-                    self?.viewModel.setCategoryId(category.id)
-                    self?.categoryInputContainer.text = category.name
-                }
-            )
+        var actions = categories.map { category in
+            PopupAction(title: category.name) { [weak self] in
+                self?.viewModel.setCategoryId(category.id)
+                self?.categoryInputContainer.text = category.name
+            }
         }
-
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.cancel(),
-                style: .cancel,
-                handler: nil
-            )
-        )
-
-        if let popover = alert.popoverPresentationController {
-            popover.sourceView = categoryInputContainer
-            popover.sourceRect = categoryInputContainer.bounds
-        }
-
-        present(alert, animated: true, completion: nil)
+        actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
+        PopupFactory.showActionSheet(title: R.string.global.productCategories(), actions: actions)
     }
 
     @objc func addIngredientAction() {
         let ingredients = viewModel.allIngredients
 
         if ingredients.isEmpty {
-            let alert = UIAlertController(
+            PopupFactory.showPopup(
                 title: R.string.global.noIngredients(),
-                message: R.string.global.pleaseAddIngredients(),
-                preferredStyle: .alert)
-
-            alert.addAction(
-                UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: nil))
-            alert.addAction(
-                UIAlertAction(title: R.string.global.actionGoToSettings(), style: .default) { [weak self] _ in
+                description: R.string.global.pleaseAddIngredients(),
+                buttonTitle: R.string.global.actionGoToSettings(),
+                buttonAction: { [weak self] in
                     self?.navigationController?.popToRootViewController(animated: true)
-                })
-
-            present(alert, animated: true, completion: nil)
+                }
+            )
             return
         }
 
-        let alert = UIAlertController(
-            title: R.string.global.selectIngredient(), message: nil,
-            preferredStyle: .actionSheet)
-
-        for ingredient in ingredients {
-            alert.addAction(
-                UIAlertAction(title: ingredient.name, style: .default) { [weak self] _ in
-                    self?.showQuantityInput(for: ingredient)
-                })
+        var actions = ingredients.map { ingredient in
+            PopupAction(title: ingredient.name) { [weak self] in
+                self?.showQuantityInput(for: ingredient)
+            }
         }
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
-
-        if let popoverController = alert.popoverPresentationController {
-            popoverController.sourceView = addIngredientButton
-            popoverController.sourceRect = addIngredientButton.bounds
-        }
-
-        present(alert, animated: true, completion: nil)
+        actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
+        PopupFactory.showActionSheet(title: R.string.global.selectIngredient(), actions: actions)
     }
 
     private func showQuantityInput(for ingredient: IngredientModel) {
@@ -482,7 +433,7 @@ class ProductDetailsViewController: UIViewController {
             InputFieldConfig(
                 placeholder: "0.0",
                 keyboardType: .decimalPad
-            ),
+            )
         ]
 
         PopupFactory.showInputPopup(
@@ -498,19 +449,15 @@ class ProductDetailsViewController: UIViewController {
             else { return }
 
             if self.viewModel.hasIngredient(ingredient) {
-                let overwriteAlert = UIAlertController(
+                PopupFactory.showDestructivePopup(
                     title: R.string.global.ingredientAlreadyExists(),
-                    message: R.string.global.overwriteIngredientMessage(),
-                    preferredStyle: .alert
-                )
-                overwriteAlert.addAction(
-                    UIAlertAction(title: R.string.global.yes(), style: .destructive) { _ in
+                    description: R.string.global.overwriteIngredientMessage(),
+                    buttonTitle: R.string.global.yes(),
+                    buttonAction: {
                         self.viewModel.addRecipeItem(
                             ingredient: ingredient, quantity: quantity, overwrite: true)
-                    })
-                overwriteAlert.addAction(
-                    UIAlertAction(title: R.string.global.no(), style: .cancel, handler: nil))
-                self.present(overwriteAlert, animated: true)
+                    }
+                )
             } else {
                 self.viewModel.addRecipeItem(
                     ingredient: ingredient, quantity: quantity, overwrite: false)
@@ -549,13 +496,9 @@ class ProductDetailsViewController: UIViewController {
                 }
             } catch {
                 _ = await MainActor.run {
-                    let description =
-                        error.localizedDescription.isEmpty
-                        ? R.string.global.failedToSaveProductPrice()
-                        : error.localizedDescription
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: description
+                        description: R.string.global.failedToSaveProductPrice()
                     ) {}
                 }
             }
@@ -621,7 +564,8 @@ extension ProductDetailsViewController: UITextFieldDelegate {
         // Check if it's the alert text field. Since we don't have a direct reference to the alert text field here easily without storing it,
         // we can check if it is NOT one of our known properties.
         if textField == nameInputContainer.textFieldReference
-            || textField == priceInputContainer.textFieldReference {
+            || textField == priceInputContainer.textFieldReference
+        {
             return true
         }
 

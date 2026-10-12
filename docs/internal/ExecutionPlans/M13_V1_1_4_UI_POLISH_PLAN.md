@@ -248,10 +248,10 @@ static func showInputPopup(
 - Візуальна консистентність попапів у всьому застосунку.
 
 ## Acceptance Criteria
-- [ ] `grep -r "UIAlertController" --include="*.swift" TrackMyCafe/` — 0 збігів (крім закоментованого коду).
-- [ ] `PopupFactory.showActionSheet` існує й використовується для вибору опцій.
-- [ ] Хелпери `UIViewController+Extension`/`AlertLanguage` викликають `PopupFactory`.
-- [ ] Build Dev/Beta/Prod — success.
+- [x] `grep -r "UIAlertController" --include="*.swift" TrackMyCafe/` — 0 збігів (крім закоментованого коду).
+- [x] `PopupFactory.showActionSheet` існує й використовується для вибору опцій.
+- [x] Хелпери `UIViewController+Extension`/`AlertLanguage` викликають `PopupFactory`.
+- [x] Build Dev/Beta/Prod — success.
 
 ---
 
@@ -371,7 +371,7 @@ static func showInputPopup(
 | Етап | Issue | Статус | Дата завершення |
 |------|-------|--------|-----------------|
 | 1 — InputPopupView | #127 | ✅ Done | 2026-10-12 |
-| 2 — Rewrite alerts | #100 | ⬜ Planned | — |
+| 2 — Rewrite alerts | #100 | ✅ Done | 2026-10-12 |
 | 3 — secondaryText | #173 | ⬜ Planned | — |
 | 4 — R.swift → SPM | #164 | ⬜ Planned | — |
 

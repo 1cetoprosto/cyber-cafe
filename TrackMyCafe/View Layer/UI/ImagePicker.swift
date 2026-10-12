@@ -19,32 +19,6 @@ class ImagePicker: NSObject {
 
     func showPickerOptions(in presenter: UIViewController, sender: UIView) {
         // Functionality disabled as per requirements
-        /*
-        let sheetController = UIAlertController(
-            title: nil, message: nil, preferredStyle: .actionSheet)
-        sheetController.addAction(
-            UIAlertAction(
-                title: R.string.global.camera(), style: .default,
-                handler: { [weak self] _ in
-                    self?.showCamera(in: presenter)
-                }))
-
-        sheetController.addAction(
-            UIAlertAction(
-                title: R.string.global.gallery(), style: .default,
-                handler: { [weak self] _ in
-                    self?.showGallery(in: presenter)
-                }))
-
-        sheetController.addAction(
-            UIAlertAction(title: R.string.global.cancel(), style: .cancel, handler: nil))
-
-        sheetController.popoverPresentationController?.sourceView = sender
-        sheetController.popoverPresentationController?.sourceRect = sender.bounds
-        sheetController.popoverPresentationController?.permittedArrowDirections = [.any]
-
-        presenter.present(sheetController, animated: true)
-        */
     }
 
     func showCamera(in presenter: UIViewController) {
@@ -55,7 +29,8 @@ class ImagePicker: NSObject {
         // Functionality disabled
     }
 
-    private func present(in presenter: UIViewController, source: UIImagePickerController.SourceType) {
+    private func present(in presenter: UIViewController, source: UIImagePickerController.SourceType)
+    {
         // Functionality disabled
     }
 
@@ -70,31 +45,25 @@ extension ImagePicker {
     private func showAlert(targetName: String, completion: @escaping (Bool) -> Void) {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            let alertVC = UIAlertController(
+            PopupFactory.showPopup(
                 title: R.string.global.access_image_title(),
-                message: R.string.global.access_image_desc(targetName),
-                preferredStyle: .alert)
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.menuSettings(),
-                    style: .default,
-                    handler: { [weak self] _ in
-                        guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
-                            UIApplication.shared.canOpenURL(settingsUrl)
-                        else {
-                            completion(false)
-                            return
-                        }
-                        UIApplication.shared.open(settingsUrl, options: [:]) { [weak self] _ in
-                            self?.showAlert(targetName: targetName, completion: completion)
-                        }
-                    }))
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.cancel(),
-                    style: .cancel,
-                    handler: { _ in completion(false) }))
-            UIViewController.topMostViewController()?.present(alertVC, animated: true, completion: nil)
+                description: R.string.global.access_image_desc(targetName),
+                buttonTitle: R.string.global.menuSettings(),
+                buttonAction: {
+                    guard let settingsUrl = URL(string: UIApplication.openSettingsURLString),
+                        UIApplication.shared.canOpenURL(settingsUrl)
+                    else {
+                        completion(false)
+                        return
+                    }
+                    UIApplication.shared.open(settingsUrl, options: [:]) { [weak self] _ in
+                        self?.showAlert(targetName: targetName, completion: completion)
+                    }
+                },
+                onCancel: {
+                    completion(false)
+                }
+            )
         }
     }
 

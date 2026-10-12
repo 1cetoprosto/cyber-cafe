@@ -274,12 +274,8 @@ final class CreateIngredientViewController: UIViewController {
             let stockText = stockInputContainer.text,
             let stock = Double(stockText.replacingOccurrences(of: ",", with: "."))
         else {
-            let alert = UIAlertController(
-                title: R.string.global.error(),
-                message: R.string.global.fillAllFields(),
-                preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            present(alert, animated: true)
+            PopupFactory.showPopup(
+                title: R.string.global.error(), description: R.string.global.fillAllFields())
             return
         }
 
@@ -290,22 +286,15 @@ final class CreateIngredientViewController: UIViewController {
             minStockThreshold = nil
         } else {
             guard let parsed = Double(thresholdText.replacingOccurrences(of: ",", with: ".")) else {
-                let alert = UIAlertController(
+                PopupFactory.showPopup(
                     title: R.string.global.error(),
-                    message: R.string.global
-                        .ingredientMinStockThreshold(),
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                present(alert, animated: true)
+                    description: R.string.global.ingredientMinStockThreshold())
                 return
             }
             guard parsed >= 0 else {
-                let alert = UIAlertController(
+                PopupFactory.showPopup(
                     title: R.string.global.error(),
-                    message: R.string.global.ingredientMinStockThreshold(),
-                    preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: "OK", style: .default))
-                present(alert, animated: true)
+                    description: R.string.global.ingredientMinStockThreshold())
                 return
             }
             minStockThreshold = parsed
