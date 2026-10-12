@@ -98,7 +98,9 @@ final class BulkSessionViewModel: BulkSessionViewModelProtocol {
             } catch {
                 await MainActor.run {
                     self.isLoading?(false)
-                    self.onError?(error.localizedDescription)
+                    let message = (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
+                    self.onError?(message)
                 }
             }
         }
@@ -158,7 +160,9 @@ final class BulkSessionViewModel: BulkSessionViewModelProtocol {
             } catch {
                 await MainActor.run {
                     self.isLoading?(false)
-                    self.onError?(error.localizedDescription)
+                    let message = (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
+                    self.onError?(message)
                 }
             }
         }

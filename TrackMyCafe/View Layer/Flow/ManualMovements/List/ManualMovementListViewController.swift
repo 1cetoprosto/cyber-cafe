@@ -66,15 +66,7 @@ final class ManualMovementListViewController: UIViewController, ProGated {
     }
 
     private func showError(_ message: String) {
-        let alert = UIAlertController(
-            title: R.string.global.error(),
-            message: message,
-            preferredStyle: .alert
-        )
-        alert.addAction(
-            UIAlertAction(title: R.string.global.actionOk(), style: .default)
-        )
-        present(alert, animated: true)
+        PopupFactory.showPopup(title: R.string.global.error(), description: message)
     }
 }
 
@@ -147,7 +139,7 @@ extension ManualMovementListViewController: UITableViewDelegate {
                     }
                 } catch {
                     await MainActor.run {
-                        self.showError(error.localizedDescription)
+                        self.showError(R.string.global.somethingWentWrong())
                         completion(false)
                     }
                 }

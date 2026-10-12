@@ -7,8 +7,15 @@
 
 import Foundation
 
-enum DomainProductPriceError: Error {
+enum DomainProductPriceError: LocalizedError {
     case saveFailed
+
+    var errorDescription: String? {
+        switch self {
+        case .saveFailed:
+            return R.string.global.failedToSaveProductPrice()
+        }
+    }
 }
 
 protocol ProductPriceDataServiceProtocol {

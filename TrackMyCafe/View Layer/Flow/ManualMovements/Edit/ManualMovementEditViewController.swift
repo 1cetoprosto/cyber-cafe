@@ -319,9 +319,11 @@ final class ManualMovementEditViewController: UIViewController {
                 }
             } catch {
                 _ = await MainActor.run {
+                    let description = (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: error.localizedDescription
+                        description: description
                     ) {}
                 }
             }
