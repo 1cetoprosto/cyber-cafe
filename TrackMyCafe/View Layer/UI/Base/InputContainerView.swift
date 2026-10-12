@@ -31,7 +31,7 @@ final class InputContainerView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = AppLabel(style: .footnote)
         label.apply(.footnote)
-        label.textColor = UIColor.Main.text
+        label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8

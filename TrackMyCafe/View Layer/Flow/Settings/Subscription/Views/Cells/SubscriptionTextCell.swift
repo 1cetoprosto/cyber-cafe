@@ -22,7 +22,7 @@ final class SubscriptionTextCell: UITableViewCell {
         backgroundColor = .clear
         textLabel?.numberOfLines = 0
         textLabel?.font = .systemFont(ofSize: 14, weight: .light)
-        textLabel?.textColor = UIColor.TableView.cellLabel
+        textLabel?.textColor = UIColor.Main.secondaryText
         selectionStyle = .none
     }
     

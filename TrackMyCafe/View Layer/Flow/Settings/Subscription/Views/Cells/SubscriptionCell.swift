@@ -44,6 +44,7 @@ class SubscriptionCell: UITableViewCell {
     private lazy var infoLabel: UILabel = {
         let label = AppLabel(style: .footnote)
         label.font = .systemFont(ofSize: 14)
+        label.textColor = UIColor.Main.secondaryText
         label.numberOfLines = 0
         return label
     }()

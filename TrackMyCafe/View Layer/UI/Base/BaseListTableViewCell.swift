@@ -16,7 +16,7 @@ class BaseListTableViewCell: UITableViewCell {
         selectionStyle = .default
 
         textLabel?.textColor = UIColor.TableView.cellLabel
-        detailTextLabel?.textColor = UIColor.TableView.cellLabel
+        detailTextLabel?.textColor = UIColor.Main.secondaryText
 
         let selected = UIView()
         selected.backgroundColor = UIColor.TableView.cellSelectionBackground
