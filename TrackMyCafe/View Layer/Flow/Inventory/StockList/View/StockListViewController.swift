@@ -115,35 +115,32 @@ class StockListViewController: UIViewController, ProGated {
     }
 
     private func showAdjustmentAlert(for ingredient: IngredientModel) {
-        let alert = UIAlertController(
-            title: R.string.global.inventoryAdjustStock(),
-            message: String(
-                format: R.string.global.inventoryEnterActualQty(
-                    ingredient.stockQuantity, ingredient.name),
-                ingredient.stockQuantity,
-                ingredient.name
-            ),
-            preferredStyle: .alert
+        let description = String(
+            format: R.string.global.inventoryEnterActualQty(
+                ingredient.stockQuantity, ingredient.name),
+            ingredient.stockQuantity,
+            ingredient.name
         )
 
-        alert.addTextField { textField in
-            textField.keyboardType = UIKeyboardType.decimalPad
-            textField.placeholder = R.string.global.inventoryActualQtyPlaceholder()
-        }
+        let fields: [InputFieldConfig] = [
+            InputFieldConfig(
+                placeholder: R.string.global.inventoryActualQtyPlaceholder(),
+                keyboardType: .decimalPad
+            ),
+            InputFieldConfig(
+                placeholder: R.string.global.inventoryReasonPlaceholder(),
+                keyboardType: .default
+            ),
+        ]
 
-        alert.addTextField { textField in
-            textField.keyboardType = UIKeyboardType.default
-            textField.placeholder = R.string.global.inventoryReasonPlaceholder()
-        }
-
-        let saveAction = UIAlertAction(
-            title: R.string.global.save(), style: UIAlertAction.Style.default
-        ) {
-            [weak self] _ in
+        PopupFactory.showInputPopup(
+            title: R.string.global.inventoryAdjustStock(),
+            description: description,
+            fields: fields
+        ) { [weak self] values in
             guard let self else { return }
-            let actualText = alert.textFields?.first?.text ?? ""
-            let reasonText =
-                (alert.textFields?.count ?? 0) > 1 ? (alert.textFields?[1].text ?? "") : ""
+            let actualText = values.first ?? ""
+            let reasonText = values.count > 1 ? values[1] : ""
 
             let normalizedActualText = actualText.replacingOccurrences(of: ",", with: ".")
             guard let actualQty = Double(normalizedActualText) else {
@@ -167,13 +164,6 @@ class StockListViewController: UIViewController, ProGated {
 
             self.viewModel.applyAdjustment(for: ingredient, delta: delta, reason: trimmedReason)
         }
-
-        let cancelAction = UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-
-        alert.addAction(cancelAction)
-        alert.addAction(saveAction)
-
-        present(alert, animated: true)
     }
 }
 

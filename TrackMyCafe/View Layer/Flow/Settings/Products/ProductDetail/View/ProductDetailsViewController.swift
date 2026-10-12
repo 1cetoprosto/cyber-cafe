@@ -475,51 +475,47 @@ class ProductDetailsViewController: UIViewController {
     }
 
     private func showQuantityInput(for ingredient: IngredientModel) {
-        let message =
+        let description =
             R.string.global.enterQuantityPerUnit() + " (" + ingredient.unit.localizedName + ")"
-        let alert = UIAlertController(
-            title: ingredient.name, message: message, preferredStyle: .alert)
 
-        alert.addTextField { (textField: UITextField) in
-            textField.keyboardType = UIKeyboardType.decimalPad
-            textField.placeholder = "0.0"
-            textField.delegate = self
+        let fields: [InputFieldConfig] = [
+            InputFieldConfig(
+                placeholder: "0.0",
+                keyboardType: .decimalPad
+            ),
+        ]
+
+        PopupFactory.showInputPopup(
+            title: ingredient.name,
+            description: description,
+            fields: fields,
+            saveTitle: R.string.global.add()
+        ) { [weak self] values in
+            guard let self else { return }
+            let text = values.first ?? ""
+            guard
+                let quantity = Double(text.replacingOccurrences(of: ",", with: "."))
+            else { return }
+
+            if self.viewModel.hasIngredient(ingredient) {
+                let overwriteAlert = UIAlertController(
+                    title: R.string.global.ingredientAlreadyExists(),
+                    message: R.string.global.overwriteIngredientMessage(),
+                    preferredStyle: .alert
+                )
+                overwriteAlert.addAction(
+                    UIAlertAction(title: R.string.global.yes(), style: .destructive) { _ in
+                        self.viewModel.addRecipeItem(
+                            ingredient: ingredient, quantity: quantity, overwrite: true)
+                    })
+                overwriteAlert.addAction(
+                    UIAlertAction(title: R.string.global.no(), style: .cancel, handler: nil))
+                self.present(overwriteAlert, animated: true)
+            } else {
+                self.viewModel.addRecipeItem(
+                    ingredient: ingredient, quantity: quantity, overwrite: false)
+            }
         }
-
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.cancel(), style: .cancel,
-                handler: nil))
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.add(), style: .default
-            ) { [weak self] _ in
-                guard let self else { return }
-                guard let text = alert.textFields?.first?.text,
-                    let quantity = Double(text.replacingOccurrences(of: ",", with: "."))
-                else { return }
-
-                if self.viewModel.hasIngredient(ingredient) {
-                    let overwriteAlert = UIAlertController(
-                        title: R.string.global.ingredientAlreadyExists(),
-                        message: R.string.global.overwriteIngredientMessage(),
-                        preferredStyle: .alert
-                    )
-                    overwriteAlert.addAction(
-                        UIAlertAction(title: R.string.global.yes(), style: .destructive) { _ in
-                            self.viewModel.addRecipeItem(
-                                ingredient: ingredient, quantity: quantity, overwrite: true)
-                        })
-                    overwriteAlert.addAction(
-                        UIAlertAction(title: R.string.global.no(), style: .cancel, handler: nil))
-                    self.present(overwriteAlert, animated: true)
-                } else {
-                    self.viewModel.addRecipeItem(
-                        ingredient: ingredient, quantity: quantity, overwrite: false)
-                }
-            })
-
-        present(alert, animated: true, completion: nil)
     }
 
     @objc func saveAction(param: UIButton) {

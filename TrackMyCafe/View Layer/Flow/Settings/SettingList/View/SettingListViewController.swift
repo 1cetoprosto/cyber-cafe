@@ -590,35 +590,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         icon: UIImage(systemName: SystemImages.gearshape),
                         iconBackgroundColor: .systemPurple
                     ) {
-                        let alert = UIAlertController(
+                        let fields: [InputFieldConfig] = [
+                            InputFieldConfig(
+                                placeholder: R.string.global.enterNumberOfDays(),
+                                keyboardType: .numberPad,
+                                initialText: "14"
+                            ),
+                        ]
+                        PopupFactory.showInputPopup(
                             title: R.string.global.seedTestData(),
-                            message: R.string.global.enterNumberOfDays(),
-                            preferredStyle: .alert
-                        )
-                        alert.addTextField { tf in
-                            tf.keyboardType = .numberPad
-                            tf.text = "14"
-                        }
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-                        )
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
-                                _ in
-                                let daysText = alert.textFields?.first?.text ?? "14"
-                                let days = Int(daysText) ?? 14
-                                SVProgressHUD.show(withStatus: R.string.global.seedingData())
-                                Task {
-                                    await DomainDatabaseService.shared.seedTestData(forDays: days)
-                                    await MainActor.run {
-                                        SVProgressHUD.dismiss()
-                                        SVProgressHUD.showSuccess(withStatus: "Done")
-                                        self.tableView.reloadData()
-                                    }
+                            description: R.string.global.enterNumberOfDays(),
+                            fields: fields,
+                            saveTitle: R.string.global.seedAction()
+                        ) { [weak self] values in
+                            let daysText = values.first ?? "14"
+                            let days = Int(daysText) ?? 14
+                            SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                            Task {
+                                await DomainDatabaseService.shared.seedTestData(forDays: days)
+                                await MainActor.run {
+                                    SVProgressHUD.dismiss()
+                                    SVProgressHUD.showSuccess(withStatus: "Done")
+                                    self?.tableView.reloadData()
                                 }
                             }
-                        )
-                        self.present(alert, animated: true)
+                        }
                     }
                 )
             ]
