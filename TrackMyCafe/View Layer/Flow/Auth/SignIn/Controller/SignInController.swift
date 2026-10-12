@@ -228,25 +228,17 @@ class SignInController: UIViewController {
         case .error(let error):
             showAlert(R.string.global.error(), body: error?.localizedDescription)
         case .retry(let error, let cancel, let retry):
-            let alertVC = UIAlertController(
+            PopupFactory.showPopup(
                 title: R.string.global.error(),
-                message: error ?? R.string.global.wentWrong(),
-                preferredStyle: .alert)
-
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.cancel(), style: .destructive,
-                    handler: { (_) in
-                        cancel()
-                    }))
-
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.retry(), style: .destructive,
-                    handler: { _ in
-                        retry()
-                    }))
-            present(alertVC, animated: true)
+                description: error ?? R.string.global.wentWrong(),
+                buttonTitle: R.string.global.retry(),
+                buttonAction: {
+                    retry()
+                },
+                onCancel: {
+                    cancel()
+                }
+            )
         case .chooseRole(let roles, let comletion):
             let chooseRoles = roles.sorted { $0.role.rawValue < $1.role.rawValue }
             PopupFactory.showChooseRoleAlert(chooseRoles) { role in

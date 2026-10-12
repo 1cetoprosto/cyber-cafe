@@ -146,36 +146,21 @@ final class ProductCategoryDetailsViewController: UIViewController, Loggable {
 
     @objc private func imageTapped() {
         guard !isSaving else { return }
-        let alert = UIAlertController(
-            title: nil,
-            message: nil,
-            preferredStyle: .actionSheet
-        )
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.gallery(), style: .default) { [weak self] _ in
+        var actions: [PopupAction] = [
+            PopupAction(title: R.string.global.gallery()) { [weak self] in
                 self?.presentPhotoPicker()
             }
-        )
-
+        ]
         if isImagePresent {
-            alert.addAction(
-                UIAlertAction(title: R.string.global.delete(), style: .destructive) {
-                    [weak self] _ in
+            actions.append(
+                PopupAction(title: R.string.global.delete(), style: .destructive) { [weak self] in
                     self?.viewModel.markImageDeleted()
                     self?.applyInitialImage()
                 }
             )
         }
-
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-
-        if let popover = alert.popoverPresentationController {
-            popover.sourceView = imageView
-            popover.sourceRect = imageView.bounds
-        }
-
-        present(alert, animated: true)
+        actions.append(PopupAction(title: R.string.global.cancel(), style: .cancel))
+        PopupFactory.showActionSheet(actions: actions)
     }
 
     private func presentPhotoPicker() {
@@ -200,13 +185,9 @@ final class ProductCategoryDetailsViewController: UIViewController, Loggable {
                 }
             } catch {
                 _ = await MainActor.run {
-                    let description =
-                        error.localizedDescription.isEmpty
-                        ? R.string.global.failedToSaveProductCategory()
-                        : error.localizedDescription
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: description
+                        description: R.string.global.failedToSaveProductCategory()
                     ) {}
                 }
             }

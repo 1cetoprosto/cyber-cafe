@@ -769,6 +769,11 @@
 		F3F87088307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
 		F3F87089307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
 		F3F8708A307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
+		F3F8712E307CF036005D106B /* ActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F8712D307CF036005D106B /* ActionSheetView.swift */; };
+		F3F8712F307CF036005D106B /* ActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F8712D307CF036005D106B /* ActionSheetView.swift */; };
+		F3F87130307CF036005D106B /* ActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F8712D307CF036005D106B /* ActionSheetView.swift */; };
+		F3F87132307CF2BD005D106B /* Instructions in Frameworks */ = {isa = PBXBuildFile; productRef = F3F87131307CF2BD005D106B /* Instructions */; };
+		F3F87134307CF2CE005D106B /* Instructions in Frameworks */ = {isa = PBXBuildFile; productRef = F3F87133307CF2CE005D106B /* Instructions */; };
 		F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FCF72C2EDF570D00B337BE /* Kingfisher */; };
 		F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */; };
 		F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */; };
@@ -1066,6 +1071,7 @@
 		F3F6A6432C3280AF000961C8 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		F3F87083307CCE80005D106B /* InputPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopupView.swift; sourceTree = "<group>"; };
 		F3F87084307CCE80005D106B /* OrderModePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModePopupView.swift; sourceTree = "<group>"; };
+		F3F8712D307CF036005D106B /* ActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetView.swift; sourceTree = "<group>"; };
 		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 		FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewModel.swift; path = "View Layer/Flow/Inventory/Bulk/ViewModel/BulkSessionViewModel.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1108,6 +1114,7 @@
 				F3F6A61B2C2FED7F000961C8 /* TPInAppReceipt-Objc in Frameworks */,
 				F39B5D222846112F000F7D43 /* FirebaseFirestore in Frameworks */,
 				F3410E9C2BDD34540007157B /* TinyConstraints in Frameworks */,
+				F3F87132307CF2BD005D106B /* Instructions in Frameworks */,
 				F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */,
 				D39D8E83A3B7ABC758122DFD /* Pods_TrackMyCafe_Prod.framework in Frameworks */,
 			);
@@ -1131,6 +1138,7 @@
 				F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */,
 				F3B33A182C0B22FE0073F19A /* FirebaseFirestore in Frameworks */,
 				F3B33A1B2C0B22FE0073F19A /* TinyConstraints in Frameworks */,
+				F3F87134307CF2CE005D106B /* Instructions in Frameworks */,
 				F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */,
 				76451C084FD2628ABEAABCD8 /* Pods_TrackMyCafe_Beta.framework in Frameworks */,
 			);
@@ -1780,6 +1788,7 @@
 			isa = PBXGroup;
 			children = (
 				F3F87083307CCE80005D106B /* InputPopupView.swift */,
+				F3F8712D307CF036005D106B /* ActionSheetView.swift */,
 				F3F87084307CCE80005D106B /* OrderModePopupView.swift */,
 				F3410EB62BDD44370007157B /* PopupFactory.swift */,
 			);
@@ -2743,6 +2752,7 @@
 				F3F6A61A2C2FED7F000961C8 /* TPInAppReceipt-Objc */,
 				F3F6A6212C327849000961C8 /* SwiftyStoreKit */,
 				F3FCF72C2EDF570D00B337BE /* Kingfisher */,
+				F3F87131307CF2BD005D106B /* Instructions */,
 			);
 			productName = "Cyber-coffe";
 			productReference = F39A52F127311FDD00C8F2D3 /* TrackMyCafe Prod.app */;
@@ -2790,6 +2800,7 @@
 				F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */,
 				F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */,
 				F3FED52F2EEF300900C24082 /* Kingfisher */,
+				F3F87133307CF2CE005D106B /* Instructions */,
 			);
 			productName = "Cyber-coffe";
 			productReference = F3B33A2F2C0B22FE0073F19A /* TrackMyCafe Beta.app */;
@@ -3392,6 +3403,7 @@
 				F36217C72EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F316A2F9273805150083E830 /* SalesTableViewCell.swift in Sources */,
 				F316A2FD27380A850083E830 /* UIStackView+Extension.swift in Sources */,
+				F3F8712F307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3F6A6112C2FEBFE000961C8 /* IAPReceiptAdapterAppleValidation.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */,
 				F385B4182C1D8FCC00973CAA /* StaffCategoriesController.swift in Sources */,
@@ -3629,6 +3641,7 @@
 				F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
 				F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */,
+				F3F87130307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33A022C0B22FE0073F19A /* UINavigationBar+Custom.swift in Sources */,
 				F3B33A032C0B22FE0073F19A /* NumberFormatter+Extension.swift in Sources */,
@@ -3866,6 +3879,7 @@
 				F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
 				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,
 				F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */,
+				F3F8712E307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33AA12C0B23450073F19A /* UINavigationBar+Custom.swift in Sources */,
 				F3B33AA22C0B23450073F19A /* NumberFormatter+Extension.swift in Sources */,
@@ -4777,6 +4791,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
 			productName = SwiftyStoreKit;
+		};
+		F3F87131307CF2BD005D106B /* Instructions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */;
+			productName = Instructions;
+		};
+		F3F87133307CF2CE005D106B /* Instructions */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */;
+			productName = Instructions;
 		};
 		F3FCF72C2EDF570D00B337BE /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
