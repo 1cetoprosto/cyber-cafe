@@ -117,34 +117,24 @@ class ProductListViewController: UIViewController, Loggable {
     }
 
     @objc private func showSortOptions() {
-        let alert = UIAlertController(
-            title: R.string.global.sortBy(), message: nil, preferredStyle: .actionSheet)
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.nameAZ(), style: .default) { [weak self] _ in
+        let actions: [PopupAction] = [
+            PopupAction(title: R.string.global.nameAZ()) { [weak self] in
                 self?.currentSortOrder = .nameAscending
                 self?.saveSortOrder()
                 self?.applySort()
                 self?.updateSortIcon()
                 self?.tableView.reloadData()
-            })
-
-        alert.addAction(
-            UIAlertAction(title: R.string.global.nameZA(), style: .default) { [weak self] _ in
+            },
+            PopupAction(title: R.string.global.nameZA()) { [weak self] in
                 self?.currentSortOrder = .nameDescending
                 self?.saveSortOrder()
                 self?.applySort()
                 self?.updateSortIcon()
                 self?.tableView.reloadData()
-            })
-
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-
-        if let popover = alert.popoverPresentationController {
-            popover.barButtonItem = navigationItem.rightBarButtonItems?.last
-        }
-
-        present(alert, animated: true)
+            },
+            PopupAction(title: R.string.global.cancel(), style: .cancel)
+        ]
+        PopupFactory.showActionSheet(title: R.string.global.sortBy(), actions: actions)
     }
 
     func setConstraints() {

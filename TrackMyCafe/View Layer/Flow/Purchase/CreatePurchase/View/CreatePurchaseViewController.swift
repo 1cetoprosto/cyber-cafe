@@ -130,7 +130,7 @@ class CreatePurchaseViewController: UIViewController {
         let titleLabel = AppLabel(style: .footnote)
         titleLabel.text = R.string.global.paymentMethod()
         titleLabel.apply(.footnote)
-        titleLabel.textColor = UIColor.Main.text
+        titleLabel.textColor = UIColor.Main.secondaryText
         titleLabel.numberOfLines = 1
         titleLabel.adjustsFontSizeToFitWidth = true
         titleLabel.minimumScaleFactor = 0.85

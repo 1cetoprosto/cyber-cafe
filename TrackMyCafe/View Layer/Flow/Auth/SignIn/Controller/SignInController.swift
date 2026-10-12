@@ -228,25 +228,17 @@ class SignInController: UIViewController {
         case .error(let error):
             showAlert(R.string.global.error(), body: error?.localizedDescription)
         case .retry(let error, let cancel, let retry):
-            let alertVC = UIAlertController(
+            PopupFactory.showPopup(
                 title: R.string.global.error(),
-                message: error ?? R.string.global.wentWrong(),
-                preferredStyle: .alert)
-
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.cancel(), style: .destructive,
-                    handler: { (_) in
-                        cancel()
-                    }))
-
-            alertVC.addAction(
-                UIAlertAction(
-                    title: R.string.global.retry(), style: .destructive,
-                    handler: { _ in
-                        retry()
-                    }))
-            present(alertVC, animated: true)
+                description: error ?? R.string.global.wentWrong(),
+                buttonTitle: R.string.global.retry(),
+                buttonAction: {
+                    retry()
+                },
+                onCancel: {
+                    cancel()
+                }
+            )
         case .chooseRole(let roles, let comletion):
             let chooseRoles = roles.sorted { $0.role.rawValue < $1.role.rawValue }
             PopupFactory.showChooseRoleAlert(chooseRoles) { role in
@@ -393,43 +385,36 @@ class SignInController: UIViewController {
 
     // MARK: - Public
     func showConfirmEmail(_ completion: @escaping (String) -> Void) {
-        let alertVC = UIAlertController(
-            title: R.string.auth.signIn(),
-            message: R.string.auth.confirmEmail(),
-            preferredStyle: .alert)
+        let fields: [InputFieldConfig] = [
+            InputFieldConfig(
+                placeholder: R.string.auth.enterEmail(),
+                keyboardType: .emailAddress
+            ),
+        ]
 
-        alertVC.addTextField { (textField) in
-            textField.placeholder = R.string.auth.enterEmail()
-            textField.autocapitalizationType = .none
-            textField.keyboardType = .emailAddress
+        PopupFactory.showInputPopup(
+            title: R.string.auth.signIn(),
+            description: R.string.auth.confirmEmail(),
+            fields: fields,
+            saveTitle: R.string.auth.signIn()
+        ) { [weak self] values in
+            guard let self else { return }
+            self.waitEmailConfirmation = false
+            let email = values.first ?? ""
+            if email.isValid(regex: .email) {
+                completion(email)
+            } else {
+                self.showAlert(
+                    R.string.global.error(), body: R.string.global.emailInvalid(),
+                    action: {
+                        self.showConfirmEmail(completion)
+                    })
+            }
+        } onCancel: { [weak self] in
+            self?.waitEmailConfirmation = false
         }
 
-        alertVC.addAction(
-            UIAlertAction(
-                title: R.string.global.cancel(), style: .destructive,
-                handler: { [weak self] (_) in
-                    self?.waitEmailConfirmation = false
-                }))
-
-        alertVC.addAction(
-            UIAlertAction(
-                title: R.string.auth.signIn(), style: .default,
-                handler: { [weak self] _ in
-                    self?.waitEmailConfirmation = false
-                    if let email = alertVC.textFields?.first?.text, email.isValid(regex: .email) {
-                        completion(email)
-                    } else {
-                        self?.showAlert(
-                            R.string.global.error(), body: R.string.global.emailInvalid(),
-                            action: {
-                                self?.showConfirmEmail(completion)
-                            })
-                    }
-
-                }))
-
         waitEmailConfirmation = true
-        present(alertVC, animated: true, completion: nil)
     }
 
     // MARK: - Keyboard Handling

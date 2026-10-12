@@ -227,7 +227,8 @@ final class ManualMovementEditViewController: UIViewController {
         return makeSegmentedContainer(label: label, control: control)
     }
 
-    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView {
+    private func makeSegmentedContainer(label: AppLabel, control: DefaultSegmentedControl) -> UIView
+    {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
         view.layer.cornerRadius = UIConstants.mediumCornerRadius
@@ -319,9 +320,12 @@ final class ManualMovementEditViewController: UIViewController {
                 }
             } catch {
                 _ = await MainActor.run {
+                    let description =
+                        (error as? LocalizedError)?.errorDescription
+                        ?? R.string.global.somethingWentWrong()
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
-                        description: error.localizedDescription
+                        description: description
                     ) {}
                 }
             }

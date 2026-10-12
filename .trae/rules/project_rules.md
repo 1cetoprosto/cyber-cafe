@@ -8,6 +8,7 @@
 - Reviews: Do not include diffs in assistant responses unless explicitly requested.
 - Layout (Dynamic Type): Avoid fixed heights for text; allow multiline (0/2 lines) for titles/descriptions; use auto-shrink (adjustsFontSizeToFitWidth + minimumScaleFactor) for numeric amounts where wrapping is undesired; set hugging/compression priorities intentionally; prefer scroll when content can overflow on small screens or Accessibility text sizes.
 - Files: No manual .pbxproj/Info.plist edits.
+- **New files:** When the assistant creates new `.swift` files, it MUST explicitly tell the developer which files were created and ask them to add them to the Xcode project (all 3 targets: Prod, Beta, Dev). The assistant must NOT embed new types into existing files just to avoid pbxproj edits — create separate files and notify the developer.
 - Commits: English, Conventional (feat/fix/refactor).
 - PRs: Use .github/pull_request_template.md.
 

@@ -159,48 +159,34 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func presentTrackIngredientsEnableConfirmation() {
-        let alert = UIAlertController(
+        PopupFactory.showPopup(
             title: R.string.global.settings_trackIngredientsConfirmTitle(),
-            message: R.string.global.settings_trackIngredientsConfirmMessage(),
-            preferredStyle: .alert
+            description: R.string.global.settings_trackIngredientsConfirmMessage(),
+            buttonTitle: R.string.global.settings_action_enable(),
+            buttonAction: { [weak self] in
+                guard let self = self else { return }
+                SettingsManager.shared.saveTrackIngredients(true)
+                self.refreshInventoryTrackingFooter()
+            },
+            onCancel: { [weak self] in
+                guard let self = self else { return }
+                SettingsManager.shared.saveTrackIngredients(false)
+                self.rollbackTrackIngredientsSwitchToOff()
+            }
         )
-        let cancel = UIAlertAction(
-            title: R.string.global.settings_action_cancel(),
-            style: .cancel
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            SettingsManager.shared.saveTrackIngredients(false)
-            self.rollbackTrackIngredientsSwitchToOff()
-        }
-        let enable = UIAlertAction(
-            title: R.string.global.settings_action_enable(),
-            style: .default
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            SettingsManager.shared.saveTrackIngredients(true)
-            self.refreshInventoryTrackingFooter()
-        }
-        alert.addAction(cancel)
-        alert.addAction(enable)
-        present(alert, animated: true)
     }
 
     private func presentTrackIngredientsLockedAlertAndRollbackSwitch() {
-        let alert = UIAlertController(
+        PopupFactory.showPopup(
             title: R.string.global.settings_trackIngredientsLockedTitle(),
-            message: R.string.global.settings_trackIngredientsLockedMessage(),
-            preferredStyle: .alert
+            description: R.string.global.settings_trackIngredientsLockedMessage(),
+            buttonTitle: R.string.global.settings_action_ok(),
+            buttonAction: { [weak self] in
+                guard let self = self else { return }
+                SettingsManager.shared.saveTrackIngredients(true)
+                self.rollbackTrackIngredientsSwitchToOn()
+            }
         )
-        let ok = UIAlertAction(
-            title: R.string.global.settings_action_ok(),
-            style: .default
-        ) { [weak self] _ in
-            guard let self = self else { return }
-            SettingsManager.shared.saveTrackIngredients(true)
-            self.rollbackTrackIngredientsSwitchToOn()
-        }
-        alert.addAction(ok)
-        present(alert, animated: true)
     }
 
     private func rollbackTrackIngredientsSwitchToOn() {
@@ -492,13 +478,10 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     iconBackgroundColor: .systemMint
                 ) {
                     OnboardingManager.shared.resetForCurrentAppVersion()
-                    let alert = UIAlertController(
+                    PopupFactory.showPopup(
                         title: R.string.global.onboardingResetTitle(),
-                        message: R.string.global.onboardingResetMessage(),
-                        preferredStyle: .alert
-                    )
-                    alert.addAction(
-                        UIAlertAction(title: R.string.global.actionOk(), style: .default) { _ in
+                        description: R.string.global.onboardingResetMessage(),
+                        buttonAction: {
                             OnboardingManager.shared.startIfNeeded(
                                 for: .settingsPriceList, on: self
                             )
@@ -508,7 +491,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             )
                         }
                     )
-                    self.present(alert, animated: true)
                 }
             ),
             .staticCell(
@@ -590,35 +572,31 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         icon: UIImage(systemName: SystemImages.gearshape),
                         iconBackgroundColor: .systemPurple
                     ) {
-                        let alert = UIAlertController(
+                        let fields: [InputFieldConfig] = [
+                            InputFieldConfig(
+                                placeholder: R.string.global.enterNumberOfDays(),
+                                keyboardType: .numberPad,
+                                initialText: "14"
+                            )
+                        ]
+                        PopupFactory.showInputPopup(
                             title: R.string.global.seedTestData(),
-                            message: R.string.global.enterNumberOfDays(),
-                            preferredStyle: .alert
-                        )
-                        alert.addTextField { tf in
-                            tf.keyboardType = .numberPad
-                            tf.text = "14"
-                        }
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.cancel(), style: .cancel)
-                        )
-                        alert.addAction(
-                            UIAlertAction(title: R.string.global.seedAction(), style: .default) {
-                                _ in
-                                let daysText = alert.textFields?.first?.text ?? "14"
-                                let days = Int(daysText) ?? 14
-                                SVProgressHUD.show(withStatus: R.string.global.seedingData())
-                                Task {
-                                    await DomainDatabaseService.shared.seedTestData(forDays: days)
-                                    await MainActor.run {
-                                        SVProgressHUD.dismiss()
-                                        SVProgressHUD.showSuccess(withStatus: "Done")
-                                        self.tableView.reloadData()
-                                    }
+                            description: R.string.global.enterNumberOfDays(),
+                            fields: fields,
+                            saveTitle: R.string.global.seedAction()
+                        ) { [weak self] values in
+                            let daysText = values.first ?? "14"
+                            let days = Int(daysText) ?? 14
+                            SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                            Task {
+                                await DomainDatabaseService.shared.seedTestData(forDays: days)
+                                await MainActor.run {
+                                    SVProgressHUD.dismiss()
+                                    SVProgressHUD.showSuccess(withStatus: "Done")
+                                    self?.tableView.reloadData()
                                 }
                             }
-                        )
-                        self.present(alert, animated: true)
+                        }
                     }
                 )
             ]
@@ -803,9 +781,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func showErrorAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default))
-        present(alert, animated: true)
+        PopupFactory.showPopup(title: title, description: message)
     }
 
     // MARK: - Feedback Email
@@ -869,29 +845,18 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func showSuccessAlert() {
-        let alert = UIAlertController(
+        PopupFactory.showPopup(
             title: R.string.global.feedbackSuccessTitle(),
-            message: R.string.global.feedbackSuccessMessage(),
-            preferredStyle: .alert
+            description: R.string.global.feedbackSuccessMessage()
         )
-        alert.addAction(
-            UIAlertAction(
-                title: R.string.global.okButton(),
-                style: .default
-            )
-        )
-        present(alert, animated: true)
     }
 
     private func confirmDeleteDemoData() {
-        let alert = UIAlertController(
+        PopupFactory.showDestructivePopup(
             title: R.string.global.deleteDemoDataTitle(),
-            message: R.string.global.deleteDemoDataMessage(),
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(
-            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+            description: R.string.global.deleteDemoDataMessage(),
+            buttonTitle: R.string.global.delete(),
+            buttonAction: {
                 SVProgressHUD.show(
                     withStatus: R.string.global.deleting()
                 )
@@ -909,18 +874,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         )
-        present(alert, animated: true)
     }
 
     private func confirmDeleteAllData() {
-        let alert = UIAlertController(
+        PopupFactory.showDestructivePopup(
             title: R.string.global.deleteAllData(),
-            message: R.string.global.deleteAllDataMessage(),
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(
-            UIAlertAction(title: R.string.global.delete(), style: .destructive) { [weak self] _ in
+            description: R.string.global.deleteAllDataMessage(),
+            buttonTitle: R.string.global.delete(),
+            buttonAction: { [weak self] in
                 guard let self else { return }
                 SVProgressHUD.show(withStatus: R.string.global.deleting())
                 Task { [weak self] in
@@ -942,7 +903,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             }
         )
-        present(alert, animated: true)
     }
 
     // MARK: - Safari

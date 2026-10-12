@@ -187,14 +187,11 @@ final class HomeViewController: UIViewController, ProGated {
     }
 
     private func confirmDeleteDemoData() {
-        let alert = UIAlertController(
+        PopupFactory.showDestructivePopup(
             title: R.string.global.deleteDemoDataTitle(),
-            message: R.string.global.deleteDemoDataMessage(),
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: R.string.global.cancel(), style: .cancel))
-        alert.addAction(
-            UIAlertAction(title: R.string.global.delete(), style: .destructive) { _ in
+            description: R.string.global.deleteDemoDataMessage(),
+            buttonTitle: R.string.global.delete(),
+            buttonAction: {
                 SVProgressHUD.show(withStatus: R.string.global.deleting())
                 DemoDataManager.shared.deleteDemoData { success in
                     DispatchQueue.main.async {
@@ -207,8 +204,8 @@ final class HomeViewController: UIViewController, ProGated {
                         }
                     }
                 }
-            })
-        present(alert, animated: true)
+            }
+        )
     }
 
     private func applyPeriodChange(index: Int) {

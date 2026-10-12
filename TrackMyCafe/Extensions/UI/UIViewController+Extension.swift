@@ -11,53 +11,31 @@ import UIKit
 extension UIViewController {
 
     func showAlert(_ title: String?, body: String?) {
-        let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-        
-        let action = UIAlertAction(title: R.string.global.actionOk(), style: .default) { (_: UIAlertAction) in
-            print("You've pressed default")
-        }
-        
-        alertController.addAction(action)
-        present(alertController, animated: true, completion: nil)
+        PopupFactory.showPopup(title: title ?? "", description: body ?? "")
     }
-    
+
     func showAlert(_ title: String?, body: String?, action: (() -> Void)? = nil) {
-        let alertController = UIAlertController(title: title, message: body, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: R.string.global.actionOk(), style: .default, handler: { (_) in
-            action?()
-        }))
-        present(alertController, animated: true, completion: nil)
+        PopupFactory.showPopup(title: title ?? "", description: body ?? "", buttonAction: action)
     }
-    
+
     func showWarning(body: String?, buttonTitle: String, action: @escaping () -> Void) {
-        let alertVC = UIAlertController(title: R.string.global.attention(),
-                                        message: body,
-                                        preferredStyle: .alert)
-        
-        alertVC.addAction(UIAlertAction(title: R.string.global.cancel(), style: .destructive, handler: { (_) in
-            return
-        }))
-        
-        alertVC.addAction(UIAlertAction(title: buttonTitle, style: .default, handler: { _ in
-            action()
-        }))
-        
-        present(alertVC, animated: true, completion: nil)
+        PopupFactory.showPopup(
+            title: R.string.global.attention(),
+            description: body ?? "",
+            buttonTitle: buttonTitle,
+            buttonAction: action
+        )
     }
-    
+
     func askConfirmOperation(_ info: String, action: @escaping () -> Void) {
-        let alertVC = UIAlertController(title: R.string.global.attention(),
-                                        message: info,
-                                        preferredStyle: .alert)
-        
-        alertVC.addAction(UIAlertAction(title: R.string.global.cancel(), style: .destructive))
-        alertVC.addAction(UIAlertAction(title: R.string.global.confirm(), style: .default, handler: { _ in
-            action()
-        }))
-        
-        present(alertVC, animated: true, completion: nil)
+        PopupFactory.showPopup(
+            title: R.string.global.attention(),
+            description: info,
+            buttonTitle: R.string.global.confirm(),
+            buttonAction: action
+        )
     }
-    
+
     static func topMostViewController(base: UIViewController? = UIApplication.shared.activeKeyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topMostViewController(base: nav.visibleViewController)
