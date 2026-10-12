@@ -2,7 +2,7 @@
 
 > **Milestone:** [Release v1.1.4](https://github.com/1cetoprosto/cyber-cafe/milestone/13)
 > **Date created:** 2026-10-12
-> **Status:** In Progress (1/4 issues complete)
+> **Status:** Complete (4/4 issues complete)
 > **Type:** Refactor / UI Polish — no external behavior changes
 
 ---
@@ -372,8 +372,8 @@ static func showInputPopup(
 |------|-------|--------|-----------------|
 | 1 — InputPopupView | #127 | ✅ Done | 2026-10-12 |
 | 2 — Rewrite alerts | #100 | ✅ Done | 2026-10-12 |
-| 3 — secondaryText | #173 | ⬜ Planned | — |
-| 4 — R.swift → SPM | #164 | ⬜ Planned | — |
+| 3 — secondaryText | #173 | ✅ Done | 2026-10-12 |
+| 4 — R.swift → SPM | #164 | ✅ Done | 2026-10-12 |
 
 ---
 

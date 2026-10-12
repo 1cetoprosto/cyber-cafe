@@ -1,5 +1,5 @@
 {
-  "originHash" : "17c3f731ee9dea511d62aa850116409f1bc6b8fd744176acdf367b6af2ca08cd",
+  "originHash" : "021a2de8256d4df82d765346e27337e1d401bde7d4dc8abb7c82abdb1d2b034f",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -146,12 +146,12 @@
       }
     },
     {
-      "identity" : "stevia",
+      "identity" : "r.swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/freshOS/Stevia",
+      "location" : "https://github.com/mac-cain13/R.swift",
       "state" : {
-        "revision" : "090ffddd48f2f64f5c17a74f0cc61fe9387d71a5",
-        "version" : "5.1.4"
+        "revision" : "a9abc6b0afe0fc4a5a71e1d7d2872143dff2d2f1",
+        "version" : "7.8.0"
       }
     },
     {
@@ -161,6 +161,15 @@
       "state" : {
         "revision" : "c33f7c775ba7feea6047a1fc3257f2e5863b44f7",
         "version" : "2.3.1"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "6a52f3251125d74daf04fcbd5e6f08a75d074382",
+        "version" : "1.8.2"
       }
     },
     {
@@ -206,6 +215,15 @@
       "state" : {
         "revision" : "e135055eaeba5a52874b7f9b290f42890cbe981f",
         "version" : "3.4.1"
+      }
+    },
+    {
+      "identity" : "xcodeedit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tomlokhorst/XcodeEdit",
+      "state" : {
+        "revision" : "0e550cdee72844b35431afc3a1e176042be6d0f0",
+        "version" : "2.13.0"
       }
     }
   ],

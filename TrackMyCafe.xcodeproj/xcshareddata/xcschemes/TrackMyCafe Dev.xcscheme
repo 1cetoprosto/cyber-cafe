@@ -71,7 +71,7 @@
          </EnvironmentVariable>
       </EnvironmentVariables>
       <StoreKitConfigurationFileReference
-         identifier = "../TrackMyCafe/Resources/TrackMyCafe.storekit">
+         identifier = "../../TrackMyCafe/Resources/TrackMyCafe.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
