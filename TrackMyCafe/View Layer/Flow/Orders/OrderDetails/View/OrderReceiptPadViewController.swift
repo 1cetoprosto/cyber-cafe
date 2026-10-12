@@ -9,7 +9,7 @@ private struct OrderReceiptItem: Hashable {
 private final class OrderCompactFieldView: UIControl {
     private let titleLabel: AppLabel = {
         let label = AppLabel(style: .footnoteLight)
-        label.textColor = UIColor.Main.text
+        label.textColor = UIColor.Main.secondaryText
         return label
     }()
 
