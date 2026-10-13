@@ -45,8 +45,10 @@ platform :ios do
     )
 
     # 4. Build the app
+    # NOTE: Migrated from CocoaPods to SPM, so .xcworkspace no longer exists.
+    # Build directly against the .xcodeproj.
     build_app(
-      workspace: "TrackMyCafe.xcworkspace",
+      project: "TrackMyCafe.xcodeproj",
       scheme: scheme,
       clean: true,
       export_method: "app-store",
