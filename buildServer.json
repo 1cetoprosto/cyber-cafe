@@ -12,7 +12,7 @@
 	"argv": [
 		"/opt/homebrew/bin/xcode-build-server"
 	],
-	"workspace": "/Users/leonidkvit/Documents/Swift/Projekts/Freelance/cyber-coffe/TrackMyCafe.xcworkspace",
+	"workspace": "/Users/leonidkvit/Documents/Swift/Projekts/Freelance/cyber-coffe/TrackMyCafe.xcodeproj",
 	"build_root": "/Users/leonidkvit/Library/Developer/Xcode/DerivedData/TrackMyCafe-dcpynomxyvvvjdeygaozhyieugnh",
 	"scheme": "TrackMyCafe Dev",
 	"kind": "xcode"
