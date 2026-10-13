@@ -114,7 +114,7 @@ pod install
 
 ### 4. Збірка та запуск
 
-Відкрийте `TrackMyCafe.xcworkspace` в Xcode та оберіть схему:
+Відкрийте `TrackMyCafe.xcodeproj` в Xcode та оберіть схему:
 
 - **TrackMyCafe Dev** — для розробки
 - **TrackMyCafe Beta** — для тестування
