@@ -5,34 +5,111 @@
 //  Created by Леонід Квіт on 01.07.2024.
 //
 
-import FirebaseDatabase
-import Kingfisher
+import PhotosUI
 import SVProgressHUD
+import TinyConstraints
 import UIKit
 
-class CreateEditAdminController: UIViewController, UITableViewDataSource, UITableViewDelegate,
-    UITextFieldDelegate, UITextViewDelegate, UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate
-{
+final class CreateEditAdminController: UIViewController, Loggable {
 
-    let tableView: UITableView = {
-        let tableView = UITableView()
+    // MARK: - Properties
 
-        // tableView.register(OrdersTableViewCell.self, forCellReuseIdentifier: OrdersTableViewCell.identifier)
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-
-        return tableView
-    }()
-
+    private var profileImageView: UIImageView!
     private var newImage: UIImage?
-    private var imageView: UIImageView!
 
     private let admin: Admin
 
+    // Container to center the avatar in the stack view (which uses .fill alignment)
+    private lazy var avatarContainer: UIView = {
+        let view = UIView()
+        return view
+    }()
+
+    // MARK: - UI Elements
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.keyboardDismissMode = .onDrag
+        return scrollView
+    }()
+
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = UIConstants.standardPadding
+        stackView.alignment = .fill
+        return stackView
+    }()
+
+    private lazy var lastNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.lastName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var firstNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.firstName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.required()
+        )
+    }()
+
+    private lazy var middleNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.middleName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var phoneInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.phone(),
+            inputType: .text(keyboardType: .phonePad),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var emailInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.email(),
+            inputType: .text(keyboardType: .emailAddress),
+            isEditable: false,
+            placeholder: R.string.global.required()
+        )
+    }()
+
+    private lazy var addressInput: MultilineInputContainerView = {
+        MultilineInputContainerView(
+            labelText: R.string.global.address(),
+            placeholder: R.string.global.noRequired(),
+            height: 70
+        )
+    }()
+
+    private lazy var noteInput: MultilineInputContainerView = {
+        MultilineInputContainerView(
+            labelText: R.string.global.note(),
+            placeholder: R.string.global.noRequired(),
+            height: 110
+        )
+    }()
+
+    private lazy var saveButton: UIButton = {
+        let button = DefaultButton()
+        button.setTitle(R.string.global.save(), for: .normal)
+        button.addTarget(self, action: #selector(saveAdmin), for: .touchUpInside)
+        return button
+    }()
+
+    // MARK: - Init
+
     init() {
-        admin = RequestManager.shared.admin.copy()
+        self.admin = RequestManager.shared.admin.copy()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -40,178 +117,150 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.Main.background
+
         title = R.string.global.edit()
 
-        // tableView = UITableView(frame: view.bounds, style: .grouped)
-        tableView.dataSource = self
-        tableView.delegate = self
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .save, target: self, action: #selector(saveTechnician))
-
-        setConstraints()
+        setupUI()
+        setupConstraints()
+        populateFields()
+        setupCallbacks()
     }
 
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+    // MARK: - Setup
+
+    private func setupUI() {
+        view.backgroundColor = UIColor.Main.background
+
+        // Profile image
+        profileImageView = UIImageView()
+        profileImageView.isUserInteractionEnabled = true
+        profileImageView.contentMode = .scaleAspectFill
+        profileImageView.clipsToBounds = true
+        profileImageView.layer.cornerRadius = UIConstants.profileImageCornerRadius
+        profileImageView.layer.borderWidth = UIConstants.standardBorderWidth
+        profileImageView.layer.borderColor = UIColor.Main.secondaryText.alpha(0.3).cgColor
+        profileImageView.addGestureRecognizer(
+            UITapGestureRecognizer(target: self, action: #selector(changeImage)))
+
+        view.addSubview(scrollView)
+        view.addSubview(saveButton)
+        scrollView.addSubview(mainStackView)
+
+        avatarContainer.addSubview(profileImageView)
+        mainStackView.addArrangedSubview(avatarContainer)
+        mainStackView.addArrangedSubview(lastNameInput)
+        mainStackView.addArrangedSubview(firstNameInput)
+        mainStackView.addArrangedSubview(middleNameInput)
+        mainStackView.addArrangedSubview(phoneInput)
+        mainStackView.addArrangedSubview(emailInput)
+        mainStackView.addArrangedSubview(addressInput)
+        mainStackView.addArrangedSubview(noteInput)
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch section {
-        case 0:
-            return 1
-        case 1:
-            return 3
-        case 2:
-            return 2
-        case 3:
-            return 1
-        default:
-            return 0
+    private func setupConstraints() {
+        scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+        scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
+
+        let horizontalInset = UIConstants.standardPadding
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        let fillWidth = mainStackView.widthAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.widthAnchor,
+            constant: -2 * horizontalInset
+        )
+        fillWidth.priority = .defaultHigh
+
+        NSLayoutConstraint.activate([
+            mainStackView.topAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.topAnchor,
+                constant: UIConstants.standardPadding
+            ),
+            mainStackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                constant: -UIConstants.standardPadding
+            ),
+            mainStackView.centerXAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+                constant: horizontalInset
+            ),
+            mainStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -horizontalInset
+            ),
+            fillWidth,
+            mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 560),
+        ])
+
+        profileImageView.height(150)
+        profileImageView.width(150)
+        profileImageView.centerXToSuperview()
+        profileImageView.centerYToSuperview()
+        avatarContainer.height(150)
+
+        saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+        saveButton.height(UIConstants.buttonHeight)
+        saveButton.bottomToSuperview(
+            offset: -UIConstants.standardPadding, usingSafeArea: true
+        )
+    }
+
+    private func populateFields() {
+        lastNameInput.text = admin.lastName
+        firstNameInput.text = admin.firstName
+        middleNameInput.text = admin.middleName
+        phoneInput.text = admin.phone
+        emailInput.text = admin.email
+        addressInput.text = admin.address ?? ""
+        noteInput.text = admin.comment ?? ""
+
+        if let path = admin.avatarThumbnailUrl ?? admin.avatarUrl, let url = URL(string: path) {
+            profileImageView.setImage(url, placeholder: R.image.profilePlaceholder())
+        } else {
+            profileImageView.image = R.image.profilePlaceholder()
         }
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch section {
-        case 1:
-            return R.string.global.names()
-        case 2:
-            return R.string.global.contactInfo()
-        case 3:
-            return R.string.global.note()
-        default:
-            return nil
-        }
+    private func setupCallbacks() {
+        lastNameInput.onTextChange = { [weak self] in self?.admin.lastName = $0 }
+        firstNameInput.onTextChange = { [weak self] in self?.admin.firstName = $0 }
+        middleNameInput.onTextChange = { [weak self] in self?.admin.middleName = $0 }
+        phoneInput.onTextChange = { [weak self] in self?.admin.phone = $0 }
+        emailInput.onTextChange = { [weak self] in self?.admin.email = $0 }
+        addressInput.onTextChange = { [weak self] in self?.admin.address = $0 }
+        noteInput.onTextChange = { [weak self] in self?.admin.comment = $0 }
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        switch (indexPath.section, indexPath.row) {
-        case (0, 0):
-            return 150.0
-        case (2, 1), (3, 0):
-            return 70.0
-        default:
-            return 44.0
-        }
+    // MARK: - Actions
+
+    @objc private func changeImage(_ sender: UITapGestureRecognizer) {
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.selectionLimit = 1
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        switch (indexPath.section, indexPath.row) {
-        case (0, 0):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.Main.background
-            imageView = UIImageView(
-                frame: CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 150))
-            imageView.contentMode = .scaleAspectFit
-            if let url = admin.avatarThumbnailUrl?.url {
-                imageView.kf.setImage(with: url, placeholder: R.image.profilePlaceholder())
-            } else {
-                imageView.image = R.image.profilePlaceholder()
-            }
-            imageView.isUserInteractionEnabled = true
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(changeImage))
-            imageView.addGestureRecognizer(tapGesture)
-            cell.contentView.addSubview(imageView)
-            return cell
-        case (1, 0):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textField = createTextField(
-                placeholder: R.string.global.lastName(), text: admin.lastName)
-            textField.tag = 1
-            cell.contentView.addSubview(textField)
-            return cell
-        case (1, 1):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textField = createTextField(
-                placeholder: R.string.global.firstName(), text: admin.firstName)
-            textField.tag = 2
-            cell.contentView.addSubview(textField)
-            return cell
-        case (1, 2):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textField = createTextField(
-                placeholder: R.string.global.middleName(), text: admin.middleName)
-            textField.tag = 3
-            cell.contentView.addSubview(textField)
-            return cell
-        case (2, 0):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textField = createTextField(placeholder: R.string.global.phone(), text: admin.phone)
-            textField.keyboardType = .phonePad
-            textField.tag = 4
-            cell.contentView.addSubview(textField)
-            return cell
-        case (2, 1):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textView = createTextView(
-                placeholder: R.string.global.address(), text: admin.address)
-            textView.tag = 5
-            cell.contentView.addSubview(textView)
-            return cell
-        case (3, 0):
-            let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-            cell.backgroundColor = UIColor.TableView.cellBackground
-            cell.layer.cornerRadius = UIConstants.largeCornerRadius
-            let textView = createTextView(placeholder: R.string.global.note(), text: admin.comment)
-            textView.tag = 6
-            cell.contentView.addSubview(textView)
-            return cell
-        default:
-            return UITableViewCell()
-        }
-    }
-
-    private func createTextField(placeholder: String, text: String?) -> UITextField {
-        let textField = UITextField(
-            frame: CGRect(x: 15, y: 0, width: view.bounds.width - 30, height: 44))
-        textField.placeholder = placeholder
-        textField.text = text
-        textField.font = UIFont.systemFont(ofSize: 16)
-        textField.textColor = UIColor.Main.text
-        textField.delegate = self
-        return textField
-    }
-
-    private func createTextView(placeholder: String, text: String?) -> UITextView {
-        let textView = UITextView(
-            frame: CGRect(x: 10, y: 0, width: view.bounds.width - 40, height: 70))
-        textView.backgroundColor = UIColor.TableView.cellBackground
-        textView.text = text ?? placeholder
-        textView.font = UIFont.systemFont(ofSize: 16)
-        textView.textColor = text == nil ? UIColor.lightGray : UIColor.Main.text
-        textView.delegate = self
-        return textView
-    }
-
-    @objc private func changeImage() {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        present(imagePicker, animated: true)
-    }
-
-    @objc private func saveTechnician() {
+    @objc private func saveAdmin() {
         view.endEditing(true)
-        guard validate() else { return }
+
+        if admin.firstName.isEmpty {
+            showAlert(
+                R.string.global.error(),
+                body: R.string.global.firstNameRequired())
+            return
+        }
+
         SVProgressHUD.show()
 
         if let image = newImage {
-            let fileName = [admin.firstName, admin.lastName, Date().interval.string].compactMap {
-                $0
-            }.joined(separator: "_")
+            let fileName = [admin.firstName, admin.lastName, Date().interval.string]
+                .compactMap { $0 }.joined(separator: "_")
             StorageService.uploadAvatar(image, name: fileName) {
                 [weak self] (success, filePath, thumbnailPath) in
                 guard let self = self else { return }
@@ -219,28 +268,21 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
                     self.newImage = nil
                     self.admin.avatarUrl = filePath
                     self.admin.avatarThumbnailUrl = thumbnailPath
-                    RequestManager.shared.log(
-                        date: Date(),
-                        object: .technicians,
-                        action: .add,
-                        description: "Uploaded new technician image at \(filePath.emptyIfNil)")
-                    self.saveTechnicianToDatabase()
+                    self.performSave()
                 } else {
                     SVProgressHUD.dismiss()
-                    self.showAlert(
-                        R.string.global.error(),
-                        body: R.string.global.wentWrong())
+                    self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
                 }
             }
         } else {
-            saveTechnicianToDatabase()
+            performSave()
         }
     }
 
-    private func saveTechnicianToDatabase() {
+    private func performSave() {
         Task { [weak self] in
             guard let self else { return }
-            let success = await FirestoreDatabaseService.updateAdmin(admin)
+            let success = await FirestoreDatabaseService.updateAdmin(self.admin)
             await MainActor.run {
                 if success {
                     self.log()
@@ -261,90 +303,26 @@ class CreateEditAdminController: UIViewController, UITableViewDataSource, UITabl
             date: Date(),
             object: .technicians,
             action: .update,
-            description: self.admin.description)
-    }
-
-    private func validate() -> Bool {
-        if admin.firstName.isEmpty {
-            showAlert(
-                R.string.global.error(),
-                body: R.string.global.firstNameRequired())
-            return false
-        }
-        return true
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        switch textField.tag {
-        case 1:
-            admin.lastName = textField.text ?? ""
-        case 2:
-            admin.firstName = textField.text ?? ""
-        case 3:
-            admin.middleName = textField.text ?? ""
-        case 4:
-            admin.phone = textField.text ?? ""
-        default:
-            break
-        }
-    }
-
-    func textViewDidBeginEditing(_ textView: UITextView) {
-        switch textView.tag {
-        case 5, 6:
-            textView.text = nil
-            textView.textColor = UIColor.Main.text
-        default:
-            break
-        }
-    }
-
-    func textViewDidEndEditing(_ textView: UITextView) {
-        switch textView.tag {
-        case 5:
-            admin.address = textView.text
-            if textView.text.isEmpty {
-                textView.text = R.string.global.address()
-                textView.textColor = UIColor.lightGray
-            }
-        case 6:
-            admin.comment = textView.text
-            if textView.text.isEmpty {
-                textView.text = R.string.global.note()
-                textView.textColor = UIColor.lightGray
-            }
-        default:
-            break
-        }
-    }
-
-    func imagePickerController(
-        _ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]
-    ) {
-        picker.dismiss(animated: true, completion: nil)
-        if let image = info[.originalImage] as? UIImage {
-            newImage = image
-            imageView.image = image
-        }
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
+            description: self.admin.description
+        )
     }
 }
 
-// MARK: Constraints
-extension CreateEditAdminController {
-    func setConstraints() {
+// MARK: - PHPickerViewControllerDelegate
 
-        view.addSubview(tableView)
+extension CreateEditAdminController: PHPickerViewControllerDelegate {
 
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
-        ])
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
+
+        guard let result = results.first else { return }
+
+        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (object, _) in
+            guard let self = self, let image = object as? UIImage else { return }
+            DispatchQueue.main.async {
+                self.newImage = image
+                self.profileImageView.image = image
+            }
+        }
     }
 }

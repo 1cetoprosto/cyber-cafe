@@ -311,7 +311,8 @@ class DomainDatabaseService: DomainDB {
             card: cardAmount,
             totalCost: totalCost,
             inventoryTracking: model.inventoryTracking,
-            note: note
+            note: note,
+            createdBy: model.createdBy
         )
         _ = await updateOrder(updatedOrder)
     }
@@ -361,12 +362,22 @@ class DomainDatabaseService: DomainDB {
                 await persistRepairedSnapshotIfNeeded(repairResult)
                 repairedOrders.append(repairResult.order)
             }
-            return repairedOrders
+            return Self.filterByRole(repairedOrders)
         } catch {
             logger.error(
                 "Error fetching orders from Firestore: \(error.localizedDescription)")
             return []
         }
+    }
+
+    /// Role-based order filtering.
+    /// - Waiters see only orders they created (`createdBy == employeeRef`).
+    ///   Legacy orders with `createdBy == nil` are treated as owner-created and hidden.
+    /// - Owners / Managers / techMod see all orders.
+    private static func filterByRole(_ orders: [OrderModel]) -> [OrderModel] {
+        guard UserSession.current.role == .waiter else { return orders }
+        let employeeRef = UserSession.current.employeeRef
+        return orders.filter { $0.createdBy == employeeRef }
     }
 
     private func getFirOrders() async -> Result<[(String, FIROrderModel)], Error> {

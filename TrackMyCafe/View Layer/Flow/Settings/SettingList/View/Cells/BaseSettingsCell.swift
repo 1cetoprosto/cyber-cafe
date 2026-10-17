@@ -8,11 +8,11 @@
 import UIKit
 
 class BaseSettingsCell: UITableViewCell {
-    
+
     static var identifier: String {
         return String(describing: self)
     }
-    
+
     let iconContainer: UIView = {
         let view = UIView()
         view.clipsToBounds = true
@@ -21,7 +21,7 @@ class BaseSettingsCell: UITableViewCell {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.tintColor = .white
@@ -29,46 +29,54 @@ class BaseSettingsCell: UITableViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
-    
+
     let label: AppLabel = {
         let label = AppLabel(style: .body)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
+    /// The trailing constraint of the title label. Subclasses may deactivate it
+    /// to make room for additional trailing views (e.g. an info button).
+    private(set) var labelTrailingConstraint: NSLayoutConstraint?
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+
         backgroundColor = UIColor.TableView.cellBackground
         accessoryType = .disclosureIndicator
         selectionStyle = .none
-        
+
         setConstraints()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setConstraints() {
         contentView.addSubview(iconContainer)
         iconContainer.addSubview(iconImageView)
         contentView.addSubview(label)
-        
+
+        labelTrailingConstraint = label.trailingAnchor.constraint(
+            equalTo: contentView.trailingAnchor, constant: -15)
+
         NSLayoutConstraint.activate([
             iconContainer.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            iconContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 15),
+            iconContainer.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor, constant: 15),
             iconContainer.widthAnchor.constraint(equalToConstant: 30),
             iconContainer.heightAnchor.constraint(equalToConstant: 30),
-            
+
             iconImageView.centerYAnchor.constraint(equalTo: iconContainer.centerYAnchor),
             iconImageView.centerXAnchor.constraint(equalTo: iconContainer.centerXAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 20),
             iconImageView.heightAnchor.constraint(equalToConstant: 20),
-            
+
             label.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             label.leadingAnchor.constraint(equalTo: iconContainer.trailingAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -15)
+            labelTrailingConstraint!,
         ])
     }
 }

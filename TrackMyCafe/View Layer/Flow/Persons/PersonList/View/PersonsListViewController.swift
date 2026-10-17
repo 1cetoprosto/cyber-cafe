@@ -26,11 +26,24 @@ class PersonsListViewController<ItemType: PersonListModelProtocol>: UITableViewC
     
     internal var filteredItems = [ItemType]()
     internal var searchController = UISearchController(searchResultsController: nil)
+
+    override init(style: UITableView.Style) {
+        super.init(style: .insetGrouped)
+    }
+
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(style: .insetGrouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reload), name: updateNotification, object: nil)
+        tableView.applyStandardListAppearance()
         tableView.register(PersonTableViewCell.self, forCellReuseIdentifier: CellIdentifiers.personCell)
         tableView.tableFooterView = UIView()
         

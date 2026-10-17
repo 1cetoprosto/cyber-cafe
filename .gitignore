@@ -110,3 +110,7 @@ iOSInjectionProject/
 .env
 .env.secret
 fastlane/.env.secret
+
+# Node.js (Hosting migration scripts)
+node_modules/
+.firebase/

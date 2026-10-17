@@ -5,7 +5,7 @@
 //  Created by Леонід Квіт on 06.06.2022.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 struct FIROrderModel: Codable {
@@ -18,6 +18,8 @@ struct FIROrderModel: Codable {
     var totalCost: Double?
     var inventoryTracking: Bool?
     var note: String?
+    /// Firebase ref of the employee who created the order. `nil` for legacy orders.
+    var createdBy: String?
 
     init(dataModel: OrderModel) {
         self.id = dataModel.id
@@ -29,6 +31,7 @@ struct FIROrderModel: Codable {
         self.totalCost = dataModel.totalCost
         self.inventoryTracking = dataModel.inventoryTracking
         self.note = dataModel.note
+        self.createdBy = dataModel.createdBy
     }
 
 }

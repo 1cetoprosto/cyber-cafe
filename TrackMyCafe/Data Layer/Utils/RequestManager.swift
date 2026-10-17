@@ -19,20 +19,20 @@ enum SubscriptionPurchaseLinkStatus {
 }
 
 class RequestManager: NSObject {
-    
+
     static let shared = RequestManager()
     var db: Firestore!
     var mainRef: DocumentReference!
-    
+
     // TODO: - Add observer
     private var _userAvatarPath: String?
     var userAvatarPath: String? {
         if UserSession.current.isAdmin { return admin.avatarThumbnailUrl }
-        return RequestManager.shared.technicians.first {
-            $0.firebaseRef == UserSession.current.techRef
+        return RequestManager.shared.employees.first {
+            $0.firebaseRef == UserSession.current.employeeRef
         }?.avatarThumbnailUrl
     }
-    
+
     private var _orders = [OrderModel]()
     var orders: [OrderModel] {
         get {
@@ -42,88 +42,105 @@ class RequestManager: NSObject {
             _orders = newValue
         }
     }
-    
+
     var admin = Admin() {
         didSet {
             NotificationCenter.default.post(name: .adminInfoReload, object: nil)
         }
     }
-    var technicians = [Technician]()
+    var employees = [Employee]()
     var logs = [Log]()
     var users = [User]()
     var roles = [RoleConfig]()
     var settings: Settings?
     var subscription: Subscription?
-    
-    private let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "RequestManager")
-    
+
+    /// Prevents `startListening()` from registering duplicate snapshot listeners
+    /// when called from both the fresh-login path (`AuthManager`) and the
+    /// session-restore path (`SceneDelegate`).
+    private var hasStartedListening = false
+
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!, category: "RequestManager")
+
     override init() {
         super.init()
         db = Firestore.firestore()
         admin.firebaseRef = UserSession.current.masterUserRef
     }
-    
+
     // MARK: - Listeners
-    
+
     func resetData() {
         orders = []
-        technicians = []
+        employees = []
         logs = []
         users = []
         roles = []
         settings = nil
+        hasStartedListening = false
     }
-    
+
     func startListening() {
-        if Auth.auth().currentUser != nil {
-            if let masterRef = UserSession.current.masterUserRef {
-                mainRef = db.collection(Refs.users.rawValue).document(masterRef)
-            }
-            self.listenTo(.technicians)
-            self.listenTo(.logs)
-            self.listenToSettings()
-            self.listenToSubscription()
-            self.listenTo(.orders)
-            self.listenToAdmin {
-                // Обробка після завантаження даних адміністратора
-                NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+        guard !hasStartedListening else {
+            logger.warning("startListening: already started, skipping")
+            return
+        }
+        guard Auth.auth().currentUser != nil else {
+            logger.error("startListening: no authenticated user, aborting")
+            return
+        }
+        guard let masterRef = UserSession.current.masterUserRef else {
+            logger.error("startListening: masterUserRef is nil, aborting")
+            return
+        }
+        hasStartedListening = true
+        logger.notice("startListening: called, masterUserRef=\(masterRef)")
 
-            }
+        mainRef = db.collection(Refs.users.rawValue).document(masterRef)
+        logger.notice("startListening: mainRef set to \(self.mainRef.path)")
 
-            IAPManager.shared.verifySubscription { receipt in
-                if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
-                    IAPManager.shared.isProPlan = true
-                    NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
-                }
+        self.listenTo(.technicians)
+        self.listenTo(.logs)
+        self.listenToSettings()
+        self.listenToSubscription()
+        self.listenTo(.orders)
+        self.listenToAdmin {
+            // Обробка після завантаження даних адміністратора
+            NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+        }
+
+        IAPManager.shared.verifySubscription { receipt in
+            if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
+                IAPManager.shared.isProPlan = true
+                NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
             }
 
             Task {
                 _ = await IAPManager.shared.refreshProStatusUsingStoreKit2()
             }
-        } else {
-            // db.removeAllObservers()
         }
     }
-    
+
     // MARK: - Doctors
-    
+
     func listenTo(_ refId: Refs) {
         if Auth.auth().currentUser != nil {
-            
+
             var items: [AnyObject] = []
             var notifName = NSNotification.Name("")
-            
+
             switch refId {
             case .orders:
                 notifName = .ordersInfoReload
             case .technicians:
-                notifName = .techniciansInfoReload
+                notifName = .employeesInfoReload
             case .logs:
                 notifName = .logsInfoReload
             default:
                 logger.log("should not be here")
             }
-            
+
             mainRef.collection(refId.rawValue).addSnapshotListener { (snapshot, error) in
                 guard let snapshot = snapshot else {
                     self.logger.log(
@@ -131,33 +148,53 @@ class RequestManager: NSObject {
                     )
                     return
                 }
-                
+
+                if refId == .technicians {
+                    self.logger.notice(
+                        "Technicians snapshot: \(snapshot.documents.count) document(s)"
+                    )
+                }
+
                 items.removeAll()
-                
+
                 for document in snapshot.documents {
-                    guard let item = self.map(document.data() as [String: AnyObject], refId) else { continue }
+                    guard let item = self.map(document.data() as [String: AnyObject], refId) else {
+                        if refId == .technicians {
+                            let data = document.data()
+                            self.logger.error(
+                                "Failed to parse employee doc \(document.documentID): keys=\(Array(data.keys)), createdDate=\(String(describing: data[FirebaseFields.createdDate])), type=\(String(describing: type(of: data[FirebaseFields.createdDate])))"
+                            )
+                        }
+                        continue
+                    }
                     items.append(item)
                 }
-                
+
+                if refId == .technicians {
+                    self.logger.notice(
+                        "Technicians parsed: \(items.count) employee(s)"
+                    )
+                }
+
                 switch refId {
                 case .orders:
                     self.orders = items as! [OrderModel]
                 case .technicians:
-                    self.technicians = items as! [Technician]
+                    self.employees = items as! [Employee]
                 case .logs:
                     self.logs = items as! [Log]
                 default:
                     print(items)
                 }
-                
+
                 NotificationCenter.default.post(name: notifName, object: nil)
             }
         }
     }
-    
+
     func map(_ object: [String: AnyObject], _ refId: Refs) -> AnyObject? {
         if refId == .technicians {
-            return Technician(object)
+            return Employee(object)
         } else if refId == .orders {
             return OrderModel(object) as AnyObject
         } else if refId == .logs {
@@ -170,12 +207,12 @@ class RequestManager: NSObject {
             element.objectRef = object["objectRef"] as? String
             return element
         }
-        
+
         return nil
     }
-    
+
     // MARK: - Settings
-    
+
     func listenToSettings() {
         if Auth.auth().currentUser != nil {
             mainRef.collection(Refs.settings.rawValue).addSnapshotListener { (snapshot, error) in
@@ -185,9 +222,10 @@ class RequestManager: NSObject {
                     )
                     return
                 }
-                
+
                 if !snapshot.documents.isEmpty {
-                    self.settings = Settings(snapshot.documents.first!.data() as [String: AnyObject])
+                    self.settings = Settings(
+                        snapshot.documents.first!.data() as [String: AnyObject])
                     NotificationCenter.default.post(name: .settingsInfoReload, object: nil)
                 } else {
                     self.settings = Settings()
@@ -195,7 +233,7 @@ class RequestManager: NSObject {
             }
         }
     }
-    
+
     func listenToAdmin(completion: @escaping () -> Void) {
         guard let mainRef = mainRef else {
             logger.log("mainRef is nil")
@@ -218,9 +256,11 @@ class RequestManager: NSObject {
                     )
                     return
                 }
-                
-                guard let value = snapshot.documents.first?.data()["value"] as? String else { return }
-                
+
+                guard let value = snapshot.documents.first?.data()["value"] as? String else {
+                    return
+                }
+
                 switch field {
                 case FirebaseFields.email:
                     self.admin.email = value
@@ -243,7 +283,7 @@ class RequestManager: NSObject {
                 default:
                     break
                 }
-                
+
                 pendingFields.remove(field)
                 if pendingFields.isEmpty {
                     completion()
@@ -251,50 +291,52 @@ class RequestManager: NSObject {
             }
         }
     }
-    
+
     // MARK: - Subscription
-    
+
     func listenToSubscription() {
         if Auth.auth().currentUser != nil {
-            mainRef.collection(Refs.subscription.rawValue).addSnapshotListener { (snapshot, error) in
+            mainRef.collection(Refs.subscription.rawValue).addSnapshotListener {
+                (snapshot, error) in
                 guard let snapshot = snapshot else {
                     self.logger.log(
                         "Error listening to Subscriptions collection: \(error?.localizedDescription ?? "No error description")"
                     )
                     return
                 }
-                
+
                 if let document = snapshot.documents.first {
                     self.subscription = Subscription(document.data() as [String: AnyObject])
                 } else {
                     self.subscription = Subscription()
                 }
                 IAPManager.shared.updateInfo(self.subscription!)
-                
+
                 // Checking for subscription expiration
                 if let subscription = self.subscription,
-                   let nextPaymentDate = subscription.nextPaymentDate,
-                   nextPaymentDate < Date.subCheckDate() {
+                    let nextPaymentDate = subscription.nextPaymentDate,
+                    nextPaymentDate < Date.subCheckDate()
+                {
                     let controller = SubscriptionController.makeExpired()
                     UIViewController.topMostViewController()?.present(controller, animated: true)
                 }
-                
+
                 NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
             }
         }
     }
-    
+
     func getSubscriptionInfo(_ completion: @escaping (Subscription) -> Void) {
         guard Auth.auth().currentUser != nil else {
             completion(Subscription())
             return
         }
-        
+
         guard let mainRef = mainRef else {
             completion(Subscription())
             return
         }
-        
+
         mainRef.collection(Refs.subscription.rawValue).getDocuments { (snapshot, _) in
             guard let snapshot = snapshot, let document = snapshot.documents.first else {
                 completion(Subscription())
@@ -303,29 +345,37 @@ class RequestManager: NSObject {
             completion(Subscription(document.data() as [String: AnyObject]))
         }
     }
-    
+
     func isSubscriptionPurchaseLinkedToAccount(
-        _ originTransactionId: String, completion: @escaping (SubscriptionPurchaseLinkStatus?) -> Void
+        _ originTransactionId: String,
+        completion: @escaping (SubscriptionPurchaseLinkStatus?) -> Void
     ) {
-        let connectedRef = Firestore.firestore().collection(FirebaseCollections.info).document(FirebaseFields.connected)
+        let connectedRef = Firestore.firestore().collection(FirebaseCollections.info).document(
+            FirebaseFields.connected)
         connectedRef.addSnapshotListener { snapshot, _ in
-            if let snapshot = snapshot, snapshot.exists, snapshot.data()?[FirebaseFields.connected] as? Bool ?? false {
-                let subscriptionsRef = Firestore.firestore().collection(FirebaseCollections.subscriptions)
-                subscriptionsRef.whereField("iosOriginTransactionId", isEqualTo: originTransactionId)
-                    .getDocuments { (snapshot, _) in
-                        if let snapshot = snapshot, let data = snapshot.documents.first {
-                            let labKey = data.documentID
-                            completion(labKey == UserSession.current.dataRef ? .linkedCurrent : .linkedAnother)
-                        } else {
-                            completion(.notLinked)
-                        }
+            if let snapshot = snapshot, snapshot.exists,
+                snapshot.data()?[FirebaseFields.connected] as? Bool ?? false
+            {
+                let subscriptionsRef = Firestore.firestore().collection(
+                    FirebaseCollections.subscriptions)
+                subscriptionsRef.whereField(
+                    "iosOriginTransactionId", isEqualTo: originTransactionId
+                )
+                .getDocuments { (snapshot, _) in
+                    if let snapshot = snapshot, let data = snapshot.documents.first {
+                        let labKey = data.documentID
+                        completion(
+                            labKey == UserSession.current.dataRef ? .linkedCurrent : .linkedAnother)
+                    } else {
+                        completion(.notLinked)
                     }
+                }
             } else {
                 completion(nil)
             }
         }
     }
-    
+
     func updateSubInfo(
         _ productId: String, transactionId: String, originTransactionId: String, paymentDate: Date,
         nextPaymentDate: Date
@@ -334,7 +384,8 @@ class RequestManager: NSObject {
             "providerId": "ios",
             "iosProductId": productId,
             "iosTransactionId": transactionId,
-            "iosOriginTransactionId": originTransactionId.isEmpty ? transactionId : originTransactionId,
+            "iosOriginTransactionId": originTransactionId.isEmpty
+                ? transactionId : originTransactionId,
             "paymentDate": paymentDate.timeIntervalSince1970,
             "nextPaymentDate": nextPaymentDate.timeIntervalSince1970,
             "premiumPlan": true,
@@ -342,10 +393,13 @@ class RequestManager: NSObject {
         if let subscriptionId = SubscriptionType(rawValue: productId)?.subscriptionId {
             data["subscriptionId"] = subscriptionId
         }
-        
+
         if let ref = mainRef {
-            ref.collection(Refs.subscription.rawValue).document(UserSession.current.dataRef).setData(data)
-            Firestore.firestore().collection(FirebaseCollections.subscriptions).document(UserSession.current.dataRef).setData(data)
+            ref.collection(Refs.subscription.rawValue).document(UserSession.current.dataRef)
+                .setData(data)
+            Firestore.firestore().collection(FirebaseCollections.subscriptions).document(
+                UserSession.current.dataRef
+            ).setData(data)
             // Also update IAPManager state directly so UI reflects changes immediately
             IAPManager.shared.isProPlan = true
             IAPManager.shared.nextPaymentDate = nextPaymentDate
@@ -361,7 +415,7 @@ class RequestManager: NSObject {
             NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
         }
     }
-    
+
     // MARK: - Logs
     func log(
         date: Date, object: Refs, action: ActionType, description: String, objectRef: String? = ""
@@ -369,7 +423,7 @@ class RequestManager: NSObject {
         if Auth.auth().currentUser != nil {
             let db = Firestore.firestore()
             let logsRef = db.collection(Refs.logs.rawValue).document()
-            
+
             let data: [String: Any] = [
                 FirebaseFields.timestamp: date.interval as Int,
                 "object": object.rawValue as String,
@@ -378,7 +432,7 @@ class RequestManager: NSObject {
                 FirebaseFields.firebaseRef: logsRef.documentID,
                 "objectRef": objectRef ?? "",
             ]
-            
+
             logsRef.setData(data) { error in
                 if let error = error {
                     self.logger.log("LOG: FIRESTORE ERROR - \(error.localizedDescription)!")

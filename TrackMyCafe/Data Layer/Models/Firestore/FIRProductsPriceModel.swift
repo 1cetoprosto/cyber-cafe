@@ -5,7 +5,7 @@
 //  Created by Леонід Квіт on 06.06.2022.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 struct FIRProductsPriceModel: Codable {

@@ -24,7 +24,8 @@ struct OrderSnapshotRepairService {
             card: order.card,
             totalCost: resolvedTotalCost,
             inventoryTracking: order.inventoryTracking,
-            note: order.note
+            note: order.note,
+            createdBy: order.createdBy
         )
 
         return OrderSnapshotRepairResult(

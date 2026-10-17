@@ -76,13 +76,3 @@ enum SubscriptionType: String, CaseIterable {
         return Set(allProducts)
     }
 }
-
-extension SubscriptionType {
-
-    var staffCount: Int {
-        switch self {
-        case .none: return 0
-        case .proMonthly: return 1000  // Unlimited/High limit
-        }
-    }
-}
