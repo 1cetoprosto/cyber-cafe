@@ -97,14 +97,14 @@ class RequestManager: NSObject {
         hasStartedListening = true
         logger.notice("startListening: called, masterUserRef=\(masterRef)")
 
-        mainRef = db.collection(Refs.users.rawValue).document(masterRef)
+        mainRef = db.collection(FirebaseCollections.legacyUsers).document(masterRef)
         logger.notice("startListening: mainRef set to \(self.mainRef.path)")
 
-        self.listenTo(.technicians)
-        self.listenTo(.logs)
+        self.listenTo(FirebaseCollections.legacyTechnicians)
+        self.listenTo(FirebaseCollections.legacyLogs)
         self.listenToSettings()
         self.listenToSubscription()
-        self.listenTo(.orders)
+        self.listenTo(FirebaseCollections.legacyOrders)
         self.listenToAdmin {
             // Обробка після завантаження даних адміністратора
             NotificationCenter.default.post(name: .adminInfoReload, object: nil)
@@ -124,32 +124,32 @@ class RequestManager: NSObject {
 
     // MARK: - Doctors
 
-    func listenTo(_ refId: Refs) {
+    func listenTo(_ collection: String) {
         if Auth.auth().currentUser != nil {
 
             var items: [AnyObject] = []
             var notifName = NSNotification.Name("")
 
-            switch refId {
-            case .orders:
+            switch collection {
+            case FirebaseCollections.legacyOrders:
                 notifName = .ordersInfoReload
-            case .technicians:
+            case FirebaseCollections.legacyTechnicians:
                 notifName = .employeesInfoReload
-            case .logs:
+            case FirebaseCollections.legacyLogs:
                 notifName = .logsInfoReload
             default:
                 logger.log("should not be here")
             }
 
-            mainRef.collection(refId.rawValue).addSnapshotListener { (snapshot, error) in
+            mainRef.collection(collection).addSnapshotListener { (snapshot, error) in
                 guard let snapshot = snapshot else {
                     self.logger.log(
-                        "Error listening to collection \(refId.rawValue): \(error?.localizedDescription ?? "No error description")"
+                        "Error listening to collection \(collection): \(error?.localizedDescription ?? "No error description")"
                     )
                     return
                 }
 
-                if refId == .technicians {
+                if collection == FirebaseCollections.legacyTechnicians {
                     self.logger.notice(
                         "Technicians snapshot: \(snapshot.documents.count) document(s)"
                     )
@@ -158,8 +158,11 @@ class RequestManager: NSObject {
                 items.removeAll()
 
                 for document in snapshot.documents {
-                    guard let item = self.map(document.data() as [String: AnyObject], refId) else {
-                        if refId == .technicians {
+                    guard
+                        let item = self.map(
+                            document.data() as [String: AnyObject], collection)
+                    else {
+                        if collection == FirebaseCollections.legacyTechnicians {
                             let data = document.data()
                             self.logger.error(
                                 "Failed to parse employee doc \(document.documentID): keys=\(Array(data.keys)), createdDate=\(String(describing: data[FirebaseFields.createdDate])), type=\(String(describing: type(of: data[FirebaseFields.createdDate])))"
@@ -170,21 +173,21 @@ class RequestManager: NSObject {
                     items.append(item)
                 }
 
-                if refId == .technicians {
+                if collection == FirebaseCollections.legacyTechnicians {
                     self.logger.notice(
                         "Technicians parsed: \(items.count) employee(s)"
                     )
                 }
 
-                switch refId {
-                case .orders:
+                switch collection {
+                case FirebaseCollections.legacyOrders:
                     self.orders = items as! [OrderModel]
-                case .technicians:
+                case FirebaseCollections.legacyTechnicians:
                     self.employees = items as! [Employee]
-                case .logs:
+                case FirebaseCollections.legacyLogs:
                     self.logs = items as! [Log]
                 default:
-                    print(items)
+                    self.logger.log("Unhandled collection: \(collection)")
                 }
 
                 NotificationCenter.default.post(name: notifName, object: nil)
@@ -192,15 +195,15 @@ class RequestManager: NSObject {
         }
     }
 
-    func map(_ object: [String: AnyObject], _ refId: Refs) -> AnyObject? {
-        if refId == .technicians {
+    func map(_ object: [String: AnyObject], _ collection: String) -> AnyObject? {
+        if collection == FirebaseCollections.legacyTechnicians {
             return Employee(object)
-        } else if refId == .orders {
+        } else if collection == FirebaseCollections.legacyOrders {
             return OrderModel(object) as AnyObject
-        } else if refId == .logs {
+        } else if collection == FirebaseCollections.legacyLogs {
             let element = Log(
                 date: Date(timeIntervalSince1970: object[FirebaseFields.timestamp] as! Double),
-                object: Refs(rawValue: object["object"] as! String)!,
+                object: object["object"] as! String,
                 action: ActionType(rawValue: object["action"] as! String)!,
                 description: object["description"] as! String)
             element.firebaseRef = object[FirebaseFields.firebaseRef] as? String
@@ -215,7 +218,8 @@ class RequestManager: NSObject {
 
     func listenToSettings() {
         if Auth.auth().currentUser != nil {
-            mainRef.collection(Refs.settings.rawValue).addSnapshotListener { (snapshot, error) in
+            mainRef.collection(FirebaseCollections.legacySettings).addSnapshotListener {
+                (snapshot, error) in
                 guard let snapshot = snapshot else {
                     self.logger.log(
                         "Error listening to Settings collection: \(error?.localizedDescription ?? "No error description")"
@@ -296,7 +300,7 @@ class RequestManager: NSObject {
 
     func listenToSubscription() {
         if Auth.auth().currentUser != nil {
-            mainRef.collection(Refs.subscription.rawValue).addSnapshotListener {
+            mainRef.collection(FirebaseCollections.legacySubscription).addSnapshotListener {
                 (snapshot, error) in
                 guard let snapshot = snapshot else {
                     self.logger.log(
@@ -337,7 +341,7 @@ class RequestManager: NSObject {
             return
         }
 
-        mainRef.collection(Refs.subscription.rawValue).getDocuments { (snapshot, _) in
+        mainRef.collection(FirebaseCollections.legacySubscription).getDocuments { (snapshot, _) in
             guard let snapshot = snapshot, let document = snapshot.documents.first else {
                 completion(Subscription())
                 return
@@ -395,8 +399,10 @@ class RequestManager: NSObject {
         }
 
         if let ref = mainRef {
-            ref.collection(Refs.subscription.rawValue).document(UserSession.current.dataRef)
-                .setData(data)
+            ref.collection(FirebaseCollections.legacySubscription).document(
+                UserSession.current.dataRef
+            )
+            .setData(data)
             Firestore.firestore().collection(FirebaseCollections.subscriptions).document(
                 UserSession.current.dataRef
             ).setData(data)
@@ -418,15 +424,15 @@ class RequestManager: NSObject {
 
     // MARK: - Logs
     func log(
-        date: Date, object: Refs, action: ActionType, description: String, objectRef: String? = ""
+        date: Date, object: String, action: ActionType, description: String, objectRef: String? = ""
     ) {
         if Auth.auth().currentUser != nil {
             let db = Firestore.firestore()
-            let logsRef = db.collection(Refs.logs.rawValue).document()
+            let logsRef = db.collection(FirebaseCollections.legacyLogs).document()
 
             let data: [String: Any] = [
                 FirebaseFields.timestamp: date.interval as Int,
-                "object": object.rawValue as String,
+                "object": object as String,
                 "action": action.rawValue as String,
                 "description": description as String,
                 FirebaseFields.firebaseRef: logsRef.documentID,

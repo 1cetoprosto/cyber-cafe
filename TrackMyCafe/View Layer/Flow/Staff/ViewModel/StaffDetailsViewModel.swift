@@ -103,7 +103,7 @@ final class StaffDetailsViewModel: Loggable {
 
     func logDeletion() {
         RequestManager.shared.log(
-            date: Date(), object: .technicians, action: .delete,
+            date: Date(), object: FirebaseCollections.legacyTechnicians, action: .delete,
             description: employee.description
         )
     }

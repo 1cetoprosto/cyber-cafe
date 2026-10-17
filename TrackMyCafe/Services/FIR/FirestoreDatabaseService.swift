@@ -8,7 +8,6 @@
 import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
-import FirebaseFirestore
 import os.log
 
 class FirestoreDatabaseService: FirestoreDB, Loggable {
@@ -503,7 +502,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
 
         let db = Firestore.firestore()
-        let mainRef = db.collection(Refs.users.rawValue).document(masterRef)
+        let mainRef = db.collection(FirebaseCollections.legacyUsers).document(masterRef)
 
         // Admin fields are stored as subcollections under Users/{masterRef}/{field}
         // each containing a single document with a "value" field.
@@ -560,7 +559,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
         let userRef = Firestore.firestore().collection(FirebaseCollections.users)
             .document(UserSession.current.masterUserRef)
-            .collection(item.ref.rawValue)
+            .collection(item.ref)
             .document(item.firebaseRef)
 
         batch.updateData([FirebaseFields.enabled: false], forDocument: userRef)
