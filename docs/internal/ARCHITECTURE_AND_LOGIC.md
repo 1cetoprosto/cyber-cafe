@@ -90,6 +90,7 @@ struct OrderModel {
     let items: [OrderItemModel]
     let totalAmount: Double  // Сума чеку (Sales)
     let totalCost: Double    // Сума собівартості (COGS) - фіксується в момент продажу!
+    let createdBy: String?   // employeeRef співробітника, що створив замовлення (v1.2.0)
 }
 
 struct OrderItemModel {
@@ -97,6 +98,53 @@ struct OrderItemModel {
     let quantity: Int
     let salePrice: Double    // Ціна продажу за одиницю
     let costPrice: Double    // Собівартість за одиницю (розрахована на момент продажу)
+}
+```
+
+> **`createdBy` (v1.2.0):** при створенні замовлення записується `UserSession.current.employeeRef`. Офіціант бачить тільки замовлення з `createdBy == свій employeeRef`; старі замовлення (`createdBy == nil`) приховуються від офіціанта. Власник/менеджер бачать усі замовлення.
+
+### 1.5. Співробітник (Employee) та Ролі (v1.2.0)
+
+Модель співробітника кафе з роллю та контактними даними.
+
+```swift
+struct Employee {
+    var firebaseRef: String      // ID документа в колекції technicians
+    var firstName: String
+    var lastName: String?
+    var middleName: String?
+    var phone: String?
+    var email: String
+    var address: String?
+    var comment: String?
+    var role: Role               // .administrator / .moderator / .waiter
+    var enabled: Bool
+    var avatarUrl: String?
+    var avatarThumbnailUrl: String?
+}
+
+enum Role: Int {
+    case administrator = 0  // Власник
+    case moderator = 1      // Менеджер
+    case waiter = 2         // Офіціант
+    case techMod = 3        // Залишено для сумісності БД, не показується в UI
+}
+```
+
+> **Важливо:** колекція Firestore називається `technicians` (історична назва, не міняється). `RoleConfig` зберігається в колекції `roles` і пов'язує email співробітника з `dataRef` (masterUserRef) та роллю.
+
+### 1.6. RoleConfig (v1.2.0)
+
+Конфігурація ролі користувача в межах закладу.
+
+```swift
+struct RoleConfig {
+    var ref: String        // ID документа ролі
+    var email: String      // Email співробітника
+    var dataRef: String    // masterUserRef (заклад)
+    var userRef: String    // ID користувача
+    var role: Role         // Роль
+    var onlineVersion: Bool
 }
 ```
 
@@ -210,8 +258,14 @@ struct InventoryAdjustmentModel {
    - Інгредієнти (довідник складу).
    - Inventory: `Track Ingredients` (global on/off для автоматичних списань за рецептом).
    - Типи чеків/оплат (Receipt Types).
-   - Персонал (опціонально).
+   - **Персонал (v1.2.0, Owner only):** список співробітників за ролями, створення/редагування/видалення, resend invite.
    - Загальні: мова, тема, біометрія, onboarding, feedback.
+
+> **RBAC (v1.2.0):** доступ до табів та секцій налаштувань фільтрується за роллю:
+> - **Власник (administrator):** усі 5 табів + усі секції (включно з Персоналом, Підпискою).
+> - **Менеджер (moderator):** усі 5 табів, але без Персоналу та Підписки в налаштуваннях.
+> - **Офіціант (waiter):** тільки таби Orders + Settings; в налаштуваннях — тільки Account (logout).
+> - Захист екранів: `requiresRole(_:)` guard показує "Access Denied" при прямому переході.
 
 ### 3.2. Екрани складського обліку (Inventory)
 - **Залишки:** Інгредієнти, поточні залишки та середня ціна.

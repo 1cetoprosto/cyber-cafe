@@ -8,7 +8,7 @@
 import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import os.log
 
 class FirestoreDatabaseService: FirestoreDB, Loggable {
@@ -22,10 +22,10 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
 
     // MARK: - Lifecycle
     private init() {
-        let settings = FirestoreSettings()
-        // Persistence setting updated
-        settings.cacheSettings = PersistentCacheSettings()
-        db.settings = settings
+        // Firestore settings (cache, etc.) are configured once in
+        // `AppDelegate.configureFirebase()` right after `FirebaseApp.configure()`.
+        // Assigning `db.settings` here would crash with `FIRIllegalState` if the
+        // default Firestore instance has already been used by listeners/services.
     }
 
     // MARK: - User-specific Operations
@@ -365,7 +365,7 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
     }
 
-    static func getTechRoles(_ email: String) async -> [RoleConfig]? {
+    static func getEmployeeRoles(_ email: String) async -> [RoleConfig]? {
         do {
             let querySnapshot = try await FirestoreDatabaseService.shared.db
                 .collection(FirebaseCollections.roles)
@@ -497,19 +497,59 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     static func updateAdmin(_ item: Admin) async -> Bool {
+        guard let masterRef = UserSession.current.masterUserRef else {
+            logger.error("updateAdmin: masterUserRef is nil")
+            return false
+        }
+
         let db = Firestore.firestore()
-        let adminRef = db.collection(FirebaseCollections.admins).document(item.firebaseRef)
+        let mainRef = db.collection(Refs.users.rawValue).document(masterRef)
+
+        // Admin fields are stored as subcollections under Users/{masterRef}/{field}
+        // each containing a single document with a "value" field.
+        let fields: [String: String] = [
+            FirebaseFields.email: item.email,
+            FirebaseFields.firstName: item.firstName,
+            FirebaseFields.lastName: item.lastName ?? "",
+            FirebaseFields.middleName: item.middleName ?? "",
+            FirebaseFields.phone: item.phone ?? "",
+            FirebaseFields.address: item.address ?? "",
+            FirebaseFields.comment: item.comment ?? "",
+            FirebaseFields.avatarUrl: item.avatarUrl ?? "",
+            FirebaseFields.avatarThumbnailUrl: item.avatarThumbnailUrl ?? "",
+        ]
+
+        let batch = db.batch()
+
+        for (field, value) in fields {
+            let collectionRef = mainRef.collection(field)
+            do {
+                let snapshot = try await collectionRef.getDocuments()
+                if let doc = snapshot.documents.first {
+                    batch.updateData(
+                        [FirebaseFields.value: value], forDocument: doc.reference)
+                } else {
+                    batch.setData(
+                        [FirebaseFields.value: value],
+                        forDocument: collectionRef.document())
+                }
+            } catch {
+                logger.error("updateAdmin: failed to read \(field): \(error.localizedDescription)")
+                return false
+            }
+        }
 
         do {
-            try await adminRef.updateData(item.forDatabase())
+            try await batch.commit()
             return true
         } catch {
+            logger.error("updateAdmin: batch commit failed: \(error.localizedDescription)")
             return false
         }
     }
 
-    static func deleteTechnician(_ item: Technician) async -> Bool {
-        let roles = await getTechRoles(item.email.trimmed.lowercased())
+    static func deleteEmployee(_ item: Employee) async -> Bool {
+        let roles = await getEmployeeRoles(item.email.trimmed.lowercased())
         let batch = Firestore.firestore().batch()
 
         roles?.forEach { role in

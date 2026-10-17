@@ -151,6 +151,8 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        guard requiresRole([.administrator, .moderator]) else { return }
+
         view.backgroundColor = Theme.current.primaryBackground
         title = R.string.global.reportsTitle()
         navigationController?.navigationBar.prefersLargeTitles = true

@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appID": "Q9843C43NA.ICSOFT.TrackMyCafe.dev",
+        "paths": ["NOT /_/*", "/*"]
+      }
+    ]
+  }
+}

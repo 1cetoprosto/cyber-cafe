@@ -97,6 +97,8 @@ class SignInController: UIViewController {
     var waitEmailConfirmation = false
     private let model = AuthModel()
     private var authLink: String?
+    private var resolvedEmailLinkEmail: String?
+    private var hasStartedEmailLinkSignIn = false
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -127,7 +129,12 @@ class SignInController: UIViewController {
 
         setupBio()
 
-        if authLink != nil { return }
+        if let authLink {
+            resolvedEmailLinkEmail = AuthModel.resolvedPendingEmailLinkEmail(from: authLink)
+            emailField.text = resolvedEmailLinkEmail
+            applyEmailLinkMode()
+            return
+        }
 
         if UserSession.current.rememberUser {
             emailField.text = UserSession.current.userEmail
@@ -153,18 +160,46 @@ class SignInController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if let link = authLink {
-            model.signInWithLink(link)
-            authLink = nil
+        if authLink != nil {
+            startEmailLinkSignInIfPossible()
             return
         }
 
         if authLink == nil,
             UserSession.current.isAuth
                 && UserSession.current.useBioAuthUser == UserSession.current.userEmail
-                && (UserSession.current.useBioAuth ?? false) {
+                && (UserSession.current.useBioAuth ?? false)
+        {
             checkByBio()
         }
+    }
+
+    private func applyEmailLinkMode() {
+        passwordField.isHidden = true
+        passwordField.text = nil
+        rememberButton.isHidden = true
+        signUpButton.isHidden = true
+        forgotButton.isHidden = true
+        bioAuthButton.superview?.isHidden = true
+        emailField.returnKeyType = .done
+        let hasResolvedEmail = resolvedEmailLinkEmail?.isValid(regex: .email) == true
+        emailField.isHidden = hasResolvedEmail
+        loginButton.isHidden = hasResolvedEmail
+    }
+
+    private func startEmailLinkSignInIfPossible() {
+        guard !hasStartedEmailLinkSignIn, let authLink else { return }
+
+        if let resolvedEmail = resolvedEmailLinkEmail, resolvedEmail.isValid(regex: .email) {
+            hasStartedEmailLinkSignIn = true
+            model.signInWithLink(authLink, email: resolvedEmail)
+        }
+    }
+
+    private func revealManualEmailLinkFallbackIfNeeded() {
+        guard authLink != nil else { return }
+        emailField.isHidden = false
+        loginButton.isHidden = false
     }
 
     private func setupBio() {
@@ -174,7 +209,8 @@ class SignInController: UIViewController {
             .deviceOwnerAuthenticationWithBiometrics, error: &authError)
         if canUseBio && UserSession.current.rememberUser
             && (UserSession.current.useBioAuth ?? false)
-            && authLink == nil {
+            && authLink == nil
+        {
             switch context.biometryType {
             case .touchID:
                 bioAuthButton.setImage(
@@ -226,6 +262,8 @@ class SignInController: UIViewController {
         case .loading(let show):
             SVProgressHUD.show(show)
         case .error(let error):
+            hasStartedEmailLinkSignIn = false
+            revealManualEmailLinkFallbackIfNeeded()
             showAlert(R.string.global.error(), body: error?.localizedDescription)
         case .retry(let error, let cancel, let retry):
             PopupFactory.showPopup(
@@ -350,6 +388,25 @@ class SignInController: UIViewController {
 
     // MARK: - Actions
     @objc private func loginAction(_ sender: UIButton) {
+        if let authLink {
+            if let typedEmail = emailField.text?.trimmed.lowercased(),
+                typedEmail.isValid(regex: String.RegularExpressions.email)
+            {
+                resolvedEmailLinkEmail = typedEmail
+                model.signInWithLink(authLink, email: typedEmail)
+                return
+            }
+
+            if let resolvedEmail = AuthModel.resolvedPendingEmailLinkEmail(from: authLink) {
+                resolvedEmailLinkEmail = resolvedEmail
+                emailField.text = resolvedEmail
+                model.signInWithLink(authLink, email: resolvedEmail)
+                return
+            }
+
+            model.signInWithLink(authLink)
+            return
+        }
 
         #if DEBUG
             if Bundle.main.bundleIdentifier == "ICSOFT.TrackMyCafe.dev" {
@@ -389,7 +446,7 @@ class SignInController: UIViewController {
             InputFieldConfig(
                 placeholder: R.string.auth.enterEmail(),
                 keyboardType: .emailAddress
-            ),
+            )
         ]
 
         PopupFactory.showInputPopup(
@@ -481,10 +538,12 @@ extension SignInController: UITextFieldDelegate {
 
 extension SignInController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch)
-        -> Bool {
+        -> Bool
+    {
         if touch.view is UIControl { return false }
         if let view = touch.view,
-            view.isDescendant(of: emailField) || view.isDescendant(of: passwordField) {
+            view.isDescendant(of: emailField) || view.isDescendant(of: passwordField)
+        {
             return false
         }
         return true

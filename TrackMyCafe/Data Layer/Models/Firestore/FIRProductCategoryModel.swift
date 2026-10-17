@@ -1,4 +1,4 @@
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 struct FIRProductCategoryModel: Codable {

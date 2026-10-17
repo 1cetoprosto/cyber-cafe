@@ -5,7 +5,7 @@
 //  Created by AI Assistant on 10.02.2026.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 struct FIRPurchaseModel: Codable, Identifiable {

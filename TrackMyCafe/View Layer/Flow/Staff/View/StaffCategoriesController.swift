@@ -8,73 +8,149 @@
 import UIKit
 
 class StaffCategoriesController: UITableViewController {
-    
+
     enum Category: CaseIterable {
         case waiter
         case seniorWaiter
-        
+
         var name: String {
             switch self {
-                case .waiter: return R.string.global.staff_sectionWaiter()
-                case .seniorWaiter: return R.string.global.staff_sectionSeniorWaiter()
+            case .waiter: return R.string.global.staff_sectionWaiter()
+            case .seniorWaiter: return R.string.global.staff_sectionSeniorWaiter()
+            }
+        }
+
+        var icon: UIImage? {
+            switch self {
+            case .waiter: return UIImage(systemName: SystemImages.person2Fill)
+            case .seniorWaiter: return UIImage(systemName: "person.3.fill")
+            }
+        }
+
+        var iconBackgroundColor: UIColor {
+            switch self {
+            case .waiter: return .systemBlue
+            case .seniorWaiter: return .systemOrange
             }
         }
     }
-    
+
+    override init(style: UITableView.Style) {
+        super.init(style: .insetGrouped)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         title = R.string.global.menuStaff()
-        
-        tableView.backgroundColor = UIColor.Main.background
-        tableView.separatorStyle = .none
-        
-        tableView.register(baseCell: PersonTableViewCell.self)
+
+        tableView.applyStandardListAppearance()
+        tableView.register(
+            SettingsStaticTableViewCell.self,
+            forCellReuseIdentifier: SettingsStaticTableViewCell.identifier
+        )
         tableView.tableFooterView = UIView()
-        
-        setConstraints()
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .add, target: self, action: #selector(addEmployee(_:)))
     }
-    
+
+    @objc private func addEmployee(_ sender: UIBarButtonItem) {
+        let controller = CreateEditTechnicianController(moderType: false)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Category.allCases.count + 1
     }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueBaseCell(PersonTableViewCell.self, for: indexPath)
-        if indexPath.item == 0 {
-            cell.setup(RequestManager.shared.admin)
-            return cell
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell
+    {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: SettingsStaticTableViewCell.identifier,
+                for: indexPath
+            ) as? SettingsStaticTableViewCell
+        else {
+            return UITableViewCell()
         }
-        cell.textLabel?.text = Category.allCases[indexPath.row - 1].name
-        cell.textLabel?.textColor = UIColor.Main.text
+
+        var option: SettingsStaticOption
+
+        if indexPath.row == 0 {
+            let admin = RequestManager.shared.admin
+            option = SettingsStaticOption(
+                title: admin.fullName.isEmpty
+                    ? R.string.global.roleAdmin()
+                    : admin.fullName,
+                icon: UIImage(systemName: "person.crop.circle.fill"),
+                iconBackgroundColor: .systemIndigo
+            ) {}
+            option.infoHandler = { [weak self] in
+                self?.showInfo(
+                    title: R.string.global.staff_infoOwnerTitle(),
+                    message: R.string.global.staff_infoOwnerMessage()
+                )
+            }
+        } else {
+            let category = Category.allCases[indexPath.row - 1]
+            option = SettingsStaticOption(
+                title: category.name,
+                icon: category.icon,
+                iconBackgroundColor: category.iconBackgroundColor
+            ) {}
+            switch category {
+            case .waiter:
+                option.infoHandler = { [weak self] in
+                    self?.showInfo(
+                        title: R.string.global.staff_infoWaiterTitle(),
+                        message: R.string.global.staff_infoWaiterMessage()
+                    )
+                }
+            case .seniorWaiter:
+                option.infoHandler = { [weak self] in
+                    self?.showInfo(
+                        title: R.string.global.staff_infoSeniorWaiterTitle(),
+                        message: R.string.global.staff_infoSeniorWaiterMessage()
+                    )
+                }
+            }
+        }
+
+        cell.configure(with: option)
         return cell
     }
-    
+
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.item == 0 {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        if indexPath.row == 0 {
             let controller = AdminDetailsController()
             navigationController?.pushViewController(controller, animated: true)
             return
         }
+
         switch Category.allCases[indexPath.row - 1] {
-            case .waiter:
-                let controller = TechniciansListController()
-                navigationController?.pushViewController(controller, animated: true)
-            case .seniorWaiter:
-                let controller = ModeratorListController()
-                navigationController?.pushViewController(controller, animated: true)
+        case .waiter:
+            let controller = TechniciansListController()
+            navigationController?.pushViewController(controller, animated: true)
+        case .seniorWaiter:
+            let controller = ModeratorListController()
+            navigationController?.pushViewController(controller, animated: true)
         }
     }
-    
-    func setConstraints() {
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        // view.addSubview(tableView)
 
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
-        ])
+    // MARK: - Info
 
+    private func showInfo(title: String, message: String) {
+        showAlert(title, body: message)
     }
 }

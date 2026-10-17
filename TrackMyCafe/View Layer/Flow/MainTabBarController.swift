@@ -265,13 +265,29 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
 
         // Update: Removed separate Purchases tab (now in Tab 3)
         // Added Reports as Tab 4
-        viewControllers = [
+        let allTabs = [
             homeViewController,
             ordersViewController,
             costsTabViewController,
             reportsViewController,
             settingsViewController,
         ]
+
+        // RBAC: filter visible tabs by role.
+        // Owner: all tabs.
+        // Manager: Home, Orders, Costs, Reports, Settings (Subscription/Staff hidden in Settings).
+        // Waiter: Orders + Settings (Account section only).
+        let role = UserSession.current.role
+        switch role {
+        case .administrator:
+            viewControllers = allTabs
+        case .moderator:
+            viewControllers = allTabs
+        case .waiter, .techMod:
+            viewControllers = [ordersViewController, settingsViewController]
+        case .none:
+            viewControllers = allTabs
+        }
     }
 
     func createNavController(

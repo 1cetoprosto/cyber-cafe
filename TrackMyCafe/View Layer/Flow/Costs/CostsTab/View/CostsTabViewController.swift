@@ -30,6 +30,7 @@ class CostsTabViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        guard requiresRole([.administrator, .moderator]) else { return }
         setupUI()
         displayChild(inventoryContainerVC)  // Default
     }

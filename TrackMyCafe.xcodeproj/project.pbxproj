@@ -102,6 +102,24 @@
 		F302C7D42EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F302C7D52EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
 		F302C7D62EB3DE2A00632E5F /* InputContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */; };
+		F30BEBFA307E3CE70063CF35 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEBF9307E3CE70063CF35 /* Employee.swift */; };
+		F30BEBFB307E3CE70063CF35 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEBF9307E3CE70063CF35 /* Employee.swift */; };
+		F30BEBFC307E3CE70063CF35 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEBF9307E3CE70063CF35 /* Employee.swift */; };
+		F30BEC61307E49910063CF35 /* StaffServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC60307E49910063CF35 /* StaffServiceProtocol.swift */; };
+		F30BEC62307E49910063CF35 /* StaffService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC5F307E49910063CF35 /* StaffService.swift */; };
+		F30BEC63307E49910063CF35 /* StaffServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC60307E49910063CF35 /* StaffServiceProtocol.swift */; };
+		F30BEC64307E49910063CF35 /* StaffService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC5F307E49910063CF35 /* StaffService.swift */; };
+		F30BEC65307E49910063CF35 /* StaffServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC60307E49910063CF35 /* StaffServiceProtocol.swift */; };
+		F30BEC66307E49910063CF35 /* StaffService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC5F307E49910063CF35 /* StaffService.swift */; };
+		F30BEC6F307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */; };
+		F30BEC70307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */; };
+		F30BEC71307E49F00063CF35 /* StaffListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */; };
+		F30BEC72307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */; };
+		F30BEC73307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */; };
+		F30BEC74307E49F00063CF35 /* StaffListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */; };
+		F30BEC75307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */; };
+		F30BEC76307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */; };
+		F30BEC77307E49F00063CF35 /* StaffListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */; };
 		F30E1D842F65DF6300425DFF /* AppLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30E1D832F65DF6300425DFF /* AppLabel.swift */; };
 		F30E1D852F65DF6300425DFF /* AppLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30E1D832F65DF6300425DFF /* AppLabel.swift */; };
 		F30E1D862F65DF6300425DFF /* AppLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F30E1D832F65DF6300425DFF /* AppLabel.swift */; };
@@ -307,7 +325,6 @@
 		F385B41B2C1D900100973CAA /* TechniciansListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41A2C1D900100973CAA /* TechniciansListController.swift */; };
 		F385B41D2C1D902A00973CAA /* ModeratorListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41C2C1D902A00973CAA /* ModeratorListController.swift */; };
 		F385B41F2C1D904700973CAA /* TechnicianDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41E2C1D904700973CAA /* TechnicianDetailsController.swift */; };
-		F385B4212C1D9AFE00973CAA /* Technician.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4202C1D9AFE00973CAA /* Technician.swift */; };
 		F385B4232C1D9B3000973CAA /* BaseDatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */; };
 		F385B4252C1D9F0C00973CAA /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4242C1D9F0C00973CAA /* Admin.swift */; };
 		F385B4272C1DA01B00973CAA /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4262C1DA01B00973CAA /* Log.swift */; };
@@ -336,16 +353,12 @@
 		F39B5D1A2846112F000F7D43 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D192846112F000F7D43 /* FirebaseAnalytics */; };
 		F39B5D1C2846112F000F7D43 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D1B2846112F000F7D43 /* FirebaseAuth */; };
 		F39B5D1E2846112F000F7D43 /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D1D2846112F000F7D43 /* FirebaseDatabase */; };
-		F39B5D202846112F000F7D43 /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D1F2846112F000F7D43 /* FirebaseDatabaseSwift */; };
 		F39B5D222846112F000F7D43 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D212846112F000F7D43 /* FirebaseFirestore */; };
-		F39B5D242846112F000F7D43 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D232846112F000F7D43 /* FirebaseFirestoreSwift */; };
 		F39B5D262846112F000F7D43 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F39B5D252846112F000F7D43 /* FirebaseStorage */; };
 		F39B5D2F28472EAF000F7D43 /* FirestoreDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D2E28472EAE000F7D43 /* FirestoreDB.swift */; };
 		F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */; };
 		F39D78512C2034C80003B556 /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4242C1D9F0C00973CAA /* Admin.swift */; };
 		F39D78522C2034C90003B556 /* Admin.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4242C1D9F0C00973CAA /* Admin.swift */; };
-		F39D78532C2034DD0003B556 /* Technician.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4202C1D9AFE00973CAA /* Technician.swift */; };
-		F39D78542C2034DE0003B556 /* Technician.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4202C1D9AFE00973CAA /* Technician.swift */; };
 		F39D78552C2034E30003B556 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4262C1DA01B00973CAA /* Log.swift */; };
 		F39D78562C2034E30003B556 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4262C1DA01B00973CAA /* Log.swift */; };
 		F39D78572C2034E70003B556 /* Subscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4282C1DA60A00973CAA /* Subscription.swift */; };
@@ -529,11 +542,9 @@
 		F3B33A092C0B22FE0073F19A /* OrderListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C8127EAEB97006D40FC /* OrderListItemViewModelType.swift */; };
 		F3B33A0A2C0B22FE0073F19A /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont+Extension.swift */; };
 		F3B33A0B2C0B22FE0073F19A /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */; };
-		F3B33A0E2C0B22FE0073F19A /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339972C0B22FE0073F19A /* FirebaseDatabaseSwift */; };
 		F3B33A0F2C0B22FE0073F19A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339932C0B22FE0073F19A /* FirebaseAnalytics */; };
 		F3B33A102C0B22FE0073F19A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3B3399E2C0B22FE0073F19A /* SVProgressHUD */; };
 		F3B33A112C0B22FE0073F19A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339952C0B22FE0073F19A /* FirebaseAuth */; };
-		F3B33A122C0B22FE0073F19A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339992C0B22FE0073F19A /* FirebaseFirestoreSwift */; };
 		F3B33A132C0B22FE0073F19A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339A22C0B22FE0073F19A /* KeychainAccess */; };
 		F3B33A142C0B22FE0073F19A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339962C0B22FE0073F19A /* FirebaseDatabase */; };
 		F3B33A152C0B22FE0073F19A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F3B3399A2C0B22FE0073F19A /* FirebaseStorage */; };
@@ -631,11 +642,9 @@
 		F3B33AA82C0B23450073F19A /* OrderListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C8127EAEB97006D40FC /* OrderListItemViewModelType.swift */; };
 		F3B33AA92C0B23450073F19A /* UIFont+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FA273808100083E830 /* UIFont+Extension.swift */; };
 		F3B33AAA2C0B23450073F19A /* OrderListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C5E27E9FC13006D40FC /* OrderListViewModel.swift */; };
-		F3B33AAD2C0B23450073F19A /* FirebaseDatabaseSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A362C0B23450073F19A /* FirebaseDatabaseSwift */; };
 		F3B33AAE2C0B23450073F19A /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A322C0B23450073F19A /* FirebaseAnalytics */; };
 		F3B33AAF2C0B23450073F19A /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A3D2C0B23450073F19A /* SVProgressHUD */; };
 		F3B33AB02C0B23450073F19A /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A342C0B23450073F19A /* FirebaseAuth */; };
-		F3B33AB12C0B23450073F19A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A382C0B23450073F19A /* FirebaseFirestoreSwift */; };
 		F3B33AB22C0B23450073F19A /* KeychainAccess in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A412C0B23450073F19A /* KeychainAccess */; };
 		F3B33AB32C0B23450073F19A /* FirebaseDatabase in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A352C0B23450073F19A /* FirebaseDatabase */; };
 		F3B33AB42C0B23450073F19A /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A392C0B23450073F19A /* FirebaseStorage */; };
@@ -837,6 +846,12 @@
 		E567E902F1262269FAB4A454 /* InfoPlist.strings */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.strings; name = InfoPlist.strings; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		E7B2AE517E5F3C5428F24613 /* PurchaseListItemViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseListItemViewModel.swift; sourceTree = "<group>"; };
 		F302C7D32EB3DE2A00632E5F /* InputContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputContainerView.swift; sourceTree = "<group>"; };
+		F30BEBF9307E3CE70063CF35 /* Employee.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Employee.swift; sourceTree = "<group>"; };
+		F30BEC5F307E49910063CF35 /* StaffService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffService.swift; sourceTree = "<group>"; };
+		F30BEC60307E49910063CF35 /* StaffServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffServiceProtocol.swift; sourceTree = "<group>"; };
+		F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffCreateEditViewModel.swift; sourceTree = "<group>"; };
+		F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffDetailsViewModel.swift; sourceTree = "<group>"; };
+		F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffListViewModel.swift; sourceTree = "<group>"; };
 		F30E1D832F65DF6300425DFF /* AppLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLabel.swift; sourceTree = "<group>"; };
 		F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationBar+Custom.swift"; sourceTree = "<group>"; };
 		F316A2F2273803CE0083E830 /* ProductListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewController.swift; sourceTree = "<group>"; };
@@ -951,7 +966,6 @@
 		F385B41A2C1D900100973CAA /* TechniciansListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechniciansListController.swift; sourceTree = "<group>"; };
 		F385B41C2C1D902A00973CAA /* ModeratorListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeratorListController.swift; sourceTree = "<group>"; };
 		F385B41E2C1D904700973CAA /* TechnicianDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TechnicianDetailsController.swift; sourceTree = "<group>"; };
-		F385B4202C1D9AFE00973CAA /* Technician.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Technician.swift; sourceTree = "<group>"; };
 		F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDatabaseModel.swift; sourceTree = "<group>"; };
 		F385B4242C1D9F0C00973CAA /* Admin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Admin.swift; sourceTree = "<group>"; };
 		F385B4262C1DA01B00973CAA /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -1082,13 +1096,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F39B5D202846112F000F7D43 /* FirebaseDatabaseSwift in Frameworks */,
 				F3F6A6222C327849000961C8 /* SwiftyStoreKit in Frameworks */,
 				F3F6A6192C2FED7F000961C8 /* TPInAppReceipt in Frameworks */,
 				F39B5D1A2846112F000F7D43 /* FirebaseAnalytics in Frameworks */,
 				F3410E642BDD0AAC0007157B /* SVProgressHUD in Frameworks */,
 				F39B5D1C2846112F000F7D43 /* FirebaseAuth in Frameworks */,
-				F39B5D242846112F000F7D43 /* FirebaseFirestoreSwift in Frameworks */,
 				F3410EA72BDD3D5E0007157B /* KeychainAccess in Frameworks */,
 				F39B5D1E2846112F000F7D43 /* FirebaseDatabase in Frameworks */,
 				F39B5D262846112F000F7D43 /* FirebaseStorage in Frameworks */,
@@ -1106,12 +1118,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F3B33A0E2C0B22FE0073F19A /* FirebaseDatabaseSwift in Frameworks */,
 				F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */,
 				F3B33A0F2C0B22FE0073F19A /* FirebaseAnalytics in Frameworks */,
 				F3B33A102C0B22FE0073F19A /* SVProgressHUD in Frameworks */,
 				F3B33A112C0B22FE0073F19A /* FirebaseAuth in Frameworks */,
-				F3B33A122C0B22FE0073F19A /* FirebaseFirestoreSwift in Frameworks */,
 				F3B33A132C0B22FE0073F19A /* KeychainAccess in Frameworks */,
 				F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */,
 				F3B33A142C0B22FE0073F19A /* FirebaseDatabase in Frameworks */,
@@ -1131,14 +1141,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3A640C42C3438A8006BCACD /* SwiftyStoreKit in Frameworks */,
-				F3B33AAD2C0B23450073F19A /* FirebaseDatabaseSwift in Frameworks */,
 				F385B4112C1D854700973CAA /* Kingfisher in Frameworks */,
 				F3B33AAE2C0B23450073F19A /* FirebaseAnalytics in Frameworks */,
 				F3B33AAF2C0B23450073F19A /* SVProgressHUD in Frameworks */,
 				F3A640C62C3438D6006BCACD /* TPInAppReceipt in Frameworks */,
 				F3B7A83C2EE224E4007BF216 /* Instructions in Frameworks */,
 				F3B33AB02C0B23450073F19A /* FirebaseAuth in Frameworks */,
-				F3B33AB12C0B23450073F19A /* FirebaseFirestoreSwift in Frameworks */,
 				F3B33AB22C0B23450073F19A /* KeychainAccess in Frameworks */,
 				F3B33AB32C0B23450073F19A /* FirebaseDatabase in Frameworks */,
 				F3B33AB42C0B23450073F19A /* FirebaseStorage in Frameworks */,
@@ -1470,6 +1478,16 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		F30BEC6E307E49F00063CF35 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */,
+				F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */,
+				F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -1488,9 +1506,9 @@
 				F31BD827284DF3FE00B8FD3B /* Firestore */,
 				F3410EAD2BDD3F930007157B /* Role.swift */,
 				F3410EB12BDD408B0007157B /* Settings.swift */,
-				F385B4202C1D9AFE00973CAA /* Technician.swift */,
 				F385B4242C1D9F0C00973CAA /* Admin.swift */,
 				F385B4262C1DA01B00973CAA /* Log.swift */,
+				F30BEBF9307E3CE70063CF35 /* Employee.swift */,
 				F385B4282C1DA60A00973CAA /* Subscription.swift */,
 				F385B4222C1D9B3000973CAA /* BaseDatabaseModel.swift */,
 			);
@@ -2102,6 +2120,7 @@
 		F385B4162C1D8FA700973CAA /* Staff */ = {
 			isa = PBXGroup;
 			children = (
+				F30BEC6E307E49F00063CF35 /* ViewModel */,
 				F38EE5132C39395600933E67 /* View */,
 			);
 			path = Staff;
@@ -2546,6 +2565,8 @@
 			isa = PBXGroup;
 			children = (
 				F3A54D4830307AA8002B0C00 /* FinanceReportingService.swift */,
+				F30BEC5F307E49910063CF35 /* StaffService.swift */,
+				F30BEC60307E49910063CF35 /* StaffServiceProtocol.swift */,
 				F3A35EF3303EE148001FBCFF /* DomainInventoryAdjustmentDataService.swift */,
 				F3A35EF4303EE148001FBCFF /* InventoryAuditService.swift */,
 				F363F45D2FF11C2800910F20 /* OrderSnapshotRepairService.swift */,
@@ -2690,9 +2711,7 @@
 				F39B5D192846112F000F7D43 /* FirebaseAnalytics */,
 				F39B5D1B2846112F000F7D43 /* FirebaseAuth */,
 				F39B5D1D2846112F000F7D43 /* FirebaseDatabase */,
-				F39B5D1F2846112F000F7D43 /* FirebaseDatabaseSwift */,
 				F39B5D212846112F000F7D43 /* FirebaseFirestore */,
-				F39B5D232846112F000F7D43 /* FirebaseFirestoreSwift */,
 				F39B5D252846112F000F7D43 /* FirebaseStorage */,
 				F3410E632BDD0AAC0007157B /* SVProgressHUD */,
 				F3410E9B2BDD34540007157B /* TinyConstraints */,
@@ -2737,9 +2756,7 @@
 				F3B339932C0B22FE0073F19A /* FirebaseAnalytics */,
 				F3B339952C0B22FE0073F19A /* FirebaseAuth */,
 				F3B339962C0B22FE0073F19A /* FirebaseDatabase */,
-				F3B339972C0B22FE0073F19A /* FirebaseDatabaseSwift */,
 				F3B339982C0B22FE0073F19A /* FirebaseFirestore */,
-				F3B339992C0B22FE0073F19A /* FirebaseFirestoreSwift */,
 				F3B3399A2C0B22FE0073F19A /* FirebaseStorage */,
 				F3B3399E2C0B22FE0073F19A /* SVProgressHUD */,
 				F3B339A02C0B22FE0073F19A /* TinyConstraints */,
@@ -2784,9 +2801,7 @@
 				F3B33A322C0B23450073F19A /* FirebaseAnalytics */,
 				F3B33A342C0B23450073F19A /* FirebaseAuth */,
 				F3B33A352C0B23450073F19A /* FirebaseDatabase */,
-				F3B33A362C0B23450073F19A /* FirebaseDatabaseSwift */,
 				F3B33A372C0B23450073F19A /* FirebaseFirestore */,
-				F3B33A382C0B23450073F19A /* FirebaseFirestoreSwift */,
 				F3B33A392C0B23450073F19A /* FirebaseStorage */,
 				F3B33A3D2C0B23450073F19A /* SVProgressHUD */,
 				F3B33A3F2C0B23450073F19A /* TinyConstraints */,
@@ -3011,7 +3026,6 @@
 				F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */,
 				F385B4082C1D785E00973CAA /* PersonDetailsViewController.swift in Sources */,
 				F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
-				F385B4212C1D9AFE00973CAA /* Technician.swift in Sources */,
 				F3F6A60D2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
 				F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */,
 				F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */,
@@ -3079,6 +3093,8 @@
 				F32F838E2FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
 				F32F838F2FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
 				F32F83902FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F30BEC65307E49910063CF35 /* StaffServiceProtocol.swift in Sources */,
+				F30BEC66307E49910063CF35 /* StaffService.swift in Sources */,
 				F32F83912FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F363F2902FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
 				F3410EAA2BDD3E230007157B /* MainNavigationController.swift in Sources */,
@@ -3129,6 +3145,9 @@
 				F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */,
 				F3410EA42BDD3C8E0007157B /* UserSession.swift in Sources */,
 				F3410E602BDD00C20007157B /* SignUpController.swift in Sources */,
+				F30BEC72307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
+				F30BEC73307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
+				F30BEC74307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
 				F3988AED27EB19C300215976 /* CostDetailsViewModel.swift in Sources */,
 				F3D8DC112F52C83000898100 /* ProGated.swift in Sources */,
 				F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */,
@@ -3147,6 +3166,7 @@
 				F3F8712F307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3F6A6112C2FEBFE000961C8 /* IAPReceiptAdapterAppleValidation.swift in Sources */,
 				F310CFA6274B70360052E481 /* UINavigationBar+Custom.swift in Sources */,
+				F30BEBFA307E3CE70063CF35 /* Employee.swift in Sources */,
 				F385B4182C1D8FCC00973CAA /* StaffCategoriesController.swift in Sources */,
 				F3410E912BDD2EAE0007157B /* NumberFormatter+Extension.swift in Sources */,
 				F3410EB72BDD44370007157B /* PopupFactory.swift in Sources */,
@@ -3315,6 +3335,8 @@
 				F32F83962FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
 				F32F83972FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
 				F32F83982FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F30BEC63307E49910063CF35 /* StaffServiceProtocol.swift in Sources */,
+				F30BEC64307E49910063CF35 /* StaffService.swift in Sources */,
 				F32F83992FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D78592C2034EB0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F363F28E2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
@@ -3347,7 +3369,6 @@
 				F3F6A6022C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F32B52B82F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
 				F3F205442FD8313B007249FB /* ImageStorageService.swift in Sources */,
-				F39D78532C2034DD0003B556 /* Technician.swift in Sources */,
 				F3B339EF2C0B22FE0073F19A /* RememberMeButton.swift in Sources */,
 				F36217CE2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
 				F3B339F02C0B22FE0073F19A /* OrderDetailsViewController.swift in Sources */,
@@ -3366,6 +3387,9 @@
 				F3B339F82C0B22FE0073F19A /* ProductListItemViewModelType.swift in Sources */,
 				F3B339FA2C0B22FE0073F19A /* UserSession.swift in Sources */,
 				F39D78552C2034E30003B556 /* Log.swift in Sources */,
+				F30BEC6F307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
+				F30BEC70307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
+				F30BEC71307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
 				F3B339FB2C0B22FE0073F19A /* SignUpController.swift in Sources */,
 				F3D8DC0F2F52C83000898100 /* ProGated.swift in Sources */,
 				F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */,
@@ -3384,6 +3408,7 @@
 				F3F87130307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33A022C0B22FE0073F19A /* UINavigationBar+Custom.swift in Sources */,
+				F30BEBFC307E3CE70063CF35 /* Employee.swift in Sources */,
 				F3B33A032C0B22FE0073F19A /* NumberFormatter+Extension.swift in Sources */,
 				F3F6A60A2C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift in Sources */,
 				F3B33A042C0B22FE0073F19A /* PopupFactory.swift in Sources */,
@@ -3552,6 +3577,8 @@
 				F32F83922FE935AE00F4B4AE /* JournalSourceType.swift in Sources */,
 				F32F83932FE935AE00F4B4AE /* DailyBalanceModel.swift in Sources */,
 				F32F83942FE935AE00F4B4AE /* PaymentAccount.swift in Sources */,
+				F30BEC61307E49910063CF35 /* StaffServiceProtocol.swift in Sources */,
+				F30BEC62307E49910063CF35 /* StaffService.swift in Sources */,
 				F32F83952FE935AE00F4B4AE /* JournalEntryModel.swift in Sources */,
 				F39D785A2C2034EC0003B556 /* BaseDatabaseModel.swift in Sources */,
 				F363F28F2FEE7C1800910F20 /* UITableView+StandardList.swift in Sources */,
@@ -3584,7 +3611,6 @@
 				F3F6A6032C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
 				F32B52B72F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */,
 				F3F205422FD8313B007249FB /* ImageStorageService.swift in Sources */,
-				F39D78542C2034DE0003B556 /* Technician.swift in Sources */,
 				F3B33A8E2C0B23450073F19A /* RememberMeButton.swift in Sources */,
 				F36217CD2EC04E5300965886 /* DomainProductPriceDataService.swift in Sources */,
 				F3B33A8F2C0B23450073F19A /* OrderDetailsViewController.swift in Sources */,
@@ -3603,6 +3629,9 @@
 				F3B33A972C0B23450073F19A /* ProductListItemViewModelType.swift in Sources */,
 				F3B33A992C0B23450073F19A /* UserSession.swift in Sources */,
 				F39D78562C2034E30003B556 /* Log.swift in Sources */,
+				F30BEC75307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
+				F30BEC76307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
+				F30BEC77307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
 				F3B33A9A2C0B23450073F19A /* SignUpController.swift in Sources */,
 				F3D8DC102F52C83000898100 /* ProGated.swift in Sources */,
 				F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */,
@@ -3621,6 +3650,7 @@
 				F3F8712E307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */,
 				F3B33AA12C0B23450073F19A /* UINavigationBar+Custom.swift in Sources */,
+				F30BEBFB307E3CE70063CF35 /* Employee.swift in Sources */,
 				F3B33AA22C0B23450073F19A /* NumberFormatter+Extension.swift in Sources */,
 				F3F6A60B2C2FEBC0000961C8 /* IAPReceiptAdapterProtocol.swift in Sources */,
 				F3B33AA32C0B23450073F19A /* PopupFactory.swift in Sources */,
@@ -3957,6 +3987,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG PROD";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3991,6 +4022,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = PROD;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4023,6 +4055,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG BETA";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4054,6 +4087,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.beta;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = BETA;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4066,6 +4100,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TrackMyCafe/Entitlements/Cyber-coffe.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
@@ -4086,6 +4121,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG DEV";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4098,6 +4134,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "TrackMyCafe/Entitlements/Cyber-coffe.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 68;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -4117,6 +4154,7 @@
 				MARKETING_VERSION = 1.1.4;
 				PRODUCT_BUNDLE_IDENTIFIER = ICSOFT.TrackMyCafe.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEV;
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -4228,7 +4266,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.0.0;
+				minimumVersion = 11.8.0;
 			};
 		};
 		F3B339942C0B22FE0073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
@@ -4408,20 +4446,10 @@
 			package = F39B5D182846112F000F7D43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
 		};
-		F39B5D1F2846112F000F7D43 /* FirebaseDatabaseSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F39B5D182846112F000F7D43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
-		};
 		F39B5D212846112F000F7D43 /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F39B5D182846112F000F7D43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		F39B5D232846112F000F7D43 /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F39B5D182846112F000F7D43 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
 		};
 		F39B5D252846112F000F7D43 /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4458,20 +4486,10 @@
 			package = F3B339942C0B22FE0073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
 		};
-		F3B339972C0B22FE0073F19A /* FirebaseDatabaseSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B339942C0B22FE0073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
-		};
 		F3B339982C0B22FE0073F19A /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F3B339942C0B22FE0073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		F3B339992C0B22FE0073F19A /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B339942C0B22FE0073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
 		};
 		F3B3399A2C0B22FE0073F19A /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4513,20 +4531,10 @@
 			package = F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseDatabase;
 		};
-		F3B33A362C0B23450073F19A /* FirebaseDatabaseSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseDatabaseSwift;
-		};
 		F3B33A372C0B23450073F19A /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		F3B33A382C0B23450073F19A /* FirebaseFirestoreSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F3B33A332C0B23450073F19A /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseFirestoreSwift;
 		};
 		F3B33A392C0B23450073F19A /* FirebaseStorage */ = {
 			isa = XCSwiftPackageProductDependency;
