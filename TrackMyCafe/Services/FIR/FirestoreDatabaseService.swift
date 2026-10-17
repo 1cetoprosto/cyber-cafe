@@ -557,17 +557,24 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             batch.deleteDocument(roleRef)
         }
 
-        let userRef = Firestore.firestore().collection(FirebaseCollections.users)
+        // Employees live in the legacy PascalCase subtree `Users/{uid}/Technicians`,
+        // NOT `users/{uid}` (lowercase). Using the wrong root makes updateData fail
+        // with NOT_FOUND, which rolls back the whole batch (roles included).
+        let userRef = Firestore.firestore().collection(FirebaseCollections.legacyUsers)
             .document(UserSession.current.masterUserRef)
             .collection(item.ref)
             .document(item.firebaseRef)
 
-        batch.updateData([FirebaseFields.enabled: false], forDocument: userRef)
+        // `merge: true` keeps this a soft-delete that also succeeds when the
+        // document is missing, instead of rejecting the whole batch with NOT_FOUND.
+        batch.setData([FirebaseFields.enabled: false], forDocument: userRef, merge: true)
 
         do {
             try await batch.commit()
             return true
         } catch {
+            logger.error(
+                "deleteEmployee failed for \(item.email): \(error.localizedDescription)")
             return false
         }
     }
