@@ -12,9 +12,17 @@ struct Config {
 
     static var associatedDomain: String {
         #if DEV
-            return "https://kvit1.page.link"
+            return "https://trackmycafe-develop.firebaseapp.com"
         #else
-            return "https://kvit.page.link"
+            return "https://trackmycafe-prod.firebaseapp.com"
+        #endif
+    }
+
+    static var emailLinkDomain: String {
+        #if DEV
+            return "trackmycafe-develop.firebaseapp.com"
+        #else
+            return "trackmycafe-prod.firebaseapp.com"
         #endif
     }
 
@@ -33,7 +41,7 @@ struct Links {
 // notifications
 extension Notification.Name {
     static let adminInfoReload = Notification.Name("adminInfoReloadNotification")
-    static let techniciansInfoReload = Notification.Name("techniciansInfoReloadNotification")
+    static let employeesInfoReload = Notification.Name("employeesInfoReloadNotification")
     static let settingsInfoReload = Notification.Name("settingsInfoReload")
     static let subscriptionInfoReload = Notification.Name("subscriptionInfoReload")
     static let ordersInfoReload = Notification.Name("ordersInfoReloadNotification")
@@ -45,6 +53,8 @@ extension Notification.Name {
 // Firebase refs
 enum Refs: String {
     case users = "Users"
+    // Historical collection name inherited from DTLab. Stores cafe employees
+    // (managers + waiters). Do NOT rename without a full Firestore migration.
     case technicians = "Technicians"
     case avatars = "Avatars"
     case comments = "Comments"
@@ -112,6 +122,10 @@ struct KeychainKeys {
     static let useBioUser = "KeychainSessionUserUseBioUser"
     static let useBio = "KeychainSessionUserUseBio"
     static let hasOnlineVersion = "KeychainSessionUserHasOnlineVersion"
+    static let role = "KeychainSessionRole"
+    static let userRef = "KeychainSessionUserRef"
+    static let dataRef = "KeychainSessionDataRef"
+    static let masterUserRef = "KeychainSessionMasterUserRef"
 }
 
 // MARK: - UserDefaults Keys
@@ -157,6 +171,7 @@ struct FirebaseCollections {
     static let users = "users"
     static let roles = "roles"
     static let admins = "admins"
+    // Historical collection name (see Refs.technicians). Stores cafe employees.
     static let technicians = "technicians"
     static let productOfOrders = "productOfOrders"
     static let orders = "orders"
@@ -195,6 +210,7 @@ struct FirebaseFields {
     static let userRef = "userRef"
     static let dataRef = "dataRef"
     static let uid = "uid"
+    static let value = "value"
 }
 
 // MARK: - Cell Identifiers

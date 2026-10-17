@@ -5,7 +5,7 @@
 //  Created by AI Assistant on 20.06.2026.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 struct FIRJournalEntryModel: Codable, Identifiable {

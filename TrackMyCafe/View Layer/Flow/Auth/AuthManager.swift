@@ -8,9 +8,127 @@
 
 import FirebaseAuth
 import FirebaseDatabase
+import Foundation
 
 class AuthModel {
     private static var sentLinkEmail: String?
+    private static let pendingEmailLinkStorageKey = "AuthModel.pendingEmailLinkEmail"
+    private static let emailLinkQueryItemName = "email"
+
+    static func pendingEmailLinkEmail() -> String? {
+        sentLinkEmail ?? UserDefaults.standard.string(forKey: pendingEmailLinkStorageKey)
+    }
+
+    static func emailLinkContinueURL(for email: String) -> URL? {
+        let normalizedEmail = email.trimmed.lowercased()
+        var components = URLComponents(string: Config.associatedDomain)
+        let basePath =
+            components?.path.trimmingCharacters(in: CharacterSet(charactersIn: "/")) ?? ""
+        let emailPath = "email-link/\(normalizedEmail)"
+        components?.path = basePath.isEmpty ? "/\(emailPath)" : "/\(basePath)/\(emailPath)"
+        components?.queryItems = [
+            URLQueryItem(name: emailLinkQueryItemName, value: normalizedEmail)
+        ]
+        return components?.url
+    }
+
+    static func resolvedPendingEmailLinkEmail(from link: String? = nil) -> String? {
+        if let storedEmail = pendingEmailLinkEmail()?.trimmed.lowercased(),
+            storedEmail.isValid(regex: .email)
+        {
+            return storedEmail
+        }
+
+        guard let link, let extractedEmail = extractEmail(from: link) else {
+            return nil
+        }
+
+        rememberPendingEmailLinkEmail(extractedEmail)
+        return extractedEmail
+    }
+
+    private static func storePendingEmailLinkEmail(_ email: String?) {
+        sentLinkEmail = email
+        if let email {
+            UserDefaults.standard.set(email, forKey: pendingEmailLinkStorageKey)
+        } else {
+            UserDefaults.standard.removeObject(forKey: pendingEmailLinkStorageKey)
+        }
+    }
+
+    static func clearPendingEmailLinkState() {
+        storePendingEmailLinkEmail(nil)
+    }
+
+    static func rememberPendingEmailLinkEmail(_ email: String) {
+        storePendingEmailLinkEmail(email.trimmed.lowercased())
+    }
+
+    private static func extractEmail(from link: String) -> String? {
+        guard let components = URLComponents(string: link) else { return nil }
+
+        if let email = components.queryItems?
+            .first(where: { $0.name.caseInsensitiveCompare(emailLinkQueryItemName) == .orderedSame }
+            )?
+            .value?
+            .trimmed
+            .lowercased(),
+            email.isValid(regex: .email)
+        {
+            return email
+        }
+
+        let nestedURLKeys = ["continueUrl", "continueURL"]
+        for key in nestedURLKeys {
+            guard
+                let nestedValue = components.queryItems?
+                    .first(where: { $0.name.caseInsensitiveCompare(key) == .orderedSame })?.value
+            else {
+                continue
+            }
+
+            if let nestedEmail = extractEmail(from: nestedValue) {
+                return nestedEmail
+            }
+
+            if let decodedNestedValue = nestedValue.removingPercentEncoding,
+                let nestedEmail = extractEmail(from: decodedNestedValue)
+            {
+                return nestedEmail
+            }
+        }
+
+        let candidates = [link, link.removingPercentEncoding].compactMap { $0 }
+        for candidate in candidates {
+            if let detectedEmail = firstEmailMatch(in: candidate) {
+                return detectedEmail
+            }
+        }
+
+        return nil
+    }
+
+    private static func firstEmailMatch(in text: String) -> String? {
+        let pattern = #"[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}"#
+        guard
+            let regex = try? NSRegularExpression(
+                pattern: pattern,
+                options: [.caseInsensitive]
+            )
+        else {
+            return nil
+        }
+
+        let range = NSRange(text.startIndex..<text.endIndex, in: text)
+        guard let match = regex.firstMatch(in: text, options: [], range: range),
+            let matchRange = Range(match.range, in: text)
+        else {
+            return nil
+        }
+
+        let email = String(text[matchRange]).trimmed.lowercased()
+        return email.isValid(regex: .email) ? email : nil
+    }
 
     enum AuthModelAction {
         case loading(Bool)
@@ -27,7 +145,13 @@ class AuthModel {
     var actionHandler: ((AuthModelAction) -> Void)?
 
     private func send(_ action: AuthModelAction) {
-        actionHandler?(action)
+        if Thread.isMainThread {
+            actionHandler?(action)
+        } else {
+            DispatchQueue.main.async { [weak self] in
+                self?.actionHandler?(action)
+            }
+        }
     }
 
     private var auth: Auth {
@@ -64,8 +188,10 @@ class AuthModel {
 
     func signInWithLink(_ link: String, email: String) {
         send(.loading(true))
-        auth.signIn(withEmail: email, link: link) { [weak self] (authUser, error) in
+        let normalizedEmail = email.trimmed.lowercased()
+        auth.signIn(withEmail: normalizedEmail, link: link) { [weak self] (authUser, error) in
             if let user = authUser {
+                AuthModel.clearPendingEmailLinkState()
                 self?.createUserOrLogin(user.user.uid, user.user.email!, false, true)
             } else {
                 self?.send(.loading(false))
@@ -76,15 +202,16 @@ class AuthModel {
 
     func sendSignInLink(_ email: String) {
         send(.loading(true))
+        let normalizedEmail = email.trimmed.lowercased()
         let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.url = URL(string: Config.associatedDomain)
+        actionCodeSettings.url = AuthModel.emailLinkContinueURL(for: normalizedEmail)
         actionCodeSettings.handleCodeInApp = true
         actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
         actionCodeSettings.setAndroidPackageName(
             Config.androidBundle, installIfNotAvailable: true, minimumVersion: Config.androidVersion
         )
 
-        auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings) {
+        auth.sendSignInLink(toEmail: normalizedEmail, actionCodeSettings: actionCodeSettings) {
             [weak self] (error) in
             self?.send(.loading(false))
             if let error = error {
@@ -99,7 +226,7 @@ class AuthModel {
                         Bundle.displayName,
                         R.string.auth.sentAuthEmail(),
                         {
-                            AuthModel.sentLinkEmail = email
+                            AuthModel.storePendingEmailLinkEmail(normalizedEmail)
                             self?.send(.success(false))
                         }))
             }
@@ -124,9 +251,8 @@ class AuthModel {
     }
 
     func signInWithLink(_ link: String) {
-        if let email = AuthModel.sentLinkEmail {
+        if let email = AuthModel.resolvedPendingEmailLinkEmail(from: link) {
             signInWithLink(link, email: email)
-            AuthModel.sentLinkEmail = nil
         } else {
             send(
                 .confirmEmail({ [weak self] (email) in
@@ -182,7 +308,7 @@ class AuthModel {
     ) {
         if roles.count > 1 {
             self.send(.loading(false))
-            let chooseRoles = roles.filter { $0.role != .administrator }
+            let chooseRoles = roles.filter { $0.role != .administrator && $0.role != .techMod }
             self.send(
                 .chooseRole(
                     chooseRoles,
@@ -233,7 +359,7 @@ class AuthModel {
         _ roles: [RoleConfig], id: String, email: String, rememberUser: Bool, setPassword: Bool
     ) {
         if roles.count > 1 {
-            let chooseRoles = roles.filter { $0.role != .administrator }
+            let chooseRoles = roles.filter { $0.role != .administrator && $0.role != .techMod }
             self.send(
                 .chooseRole(
                     chooseRoles,

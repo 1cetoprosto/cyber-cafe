@@ -29,10 +29,12 @@
   solo-dev execution playbook, anti-rework правила, DoR/DoD, release discipline.
 - `REPORTS.md`:
   специфікація Reports Hub, яка вже відповідає поточному shipped стану v1.1.0+.
+- `STAFF_AND_ROLES.md`:
+  повний опис системи персоналу та ролей (v1.2.0): ролі, RBAC, потоки створення/запрошення/входу/видалення, `createdBy` в замовленнях.
 
-## Поточний стан на **shipped v1.1.0** (baseline для 1.1.x)
+## Поточний стан на **shipped v1.2.0** (baseline для 1.2.x)
 
-### Що вже є в додатку (reality після v1.1.0)
+### Що вже є в додатку (reality після v1.2.0)
 
 - Є 5 основних табів: `Home (Dashboard)`, `Income (Sales/POS + Order History)`, `Costs (Inventory / Opex)`, `Reports Hub`, `Settings`.
 - Reports Hub (tab 4) вже увімкнений і містить: P&L, ABC-аналіз, Trends (Динаміка).
@@ -42,6 +44,7 @@
 - **Track Ingredients**: глобальний toggle (on/off) для автоматичного списання/відновлення складу при продажу/поверненні (v1.0.10).
 - **COGS snapshot**: на рівні `OrderModel.totalCost` + `OrderItemModel.costPrice` стабільно фіксується в момент продажу (v1.0.9).
 - **Finance/reporting layer**: centralized aggregation (`IncomeAggregationService`, `OpexAggregationService`, `FinanceAggregationService`) + facade для reports DTO (v1.1.0).
+- **Multi-user & Staff Management (v1.2.0)**: ролі `administrator` (Власник), `moderator` (Менеджер), `waiter` (Офіціант); розділ «Персонал» в налаштуваннях (Owner only); RBAC на таби/секції; `createdBy` в замовленнях для фільтрації офіціанта. Деталі в `STAFF_AND_ROLES.md`.
 
 ### Що реалізовано частково (in progress / next patches)
 
@@ -51,11 +54,11 @@
 - Деякі FIR/Domain сервіси ще змішують completion blocks і async/await; треба uniform async/await entrance (v1.1.3, `#140`).
 - UI-консистентність: bare UILabel ще зустрічаються; secondaryText ще не ввезено всюди; попапи частини через UIAlertController (v1.1.1 та v1.1.4).
 
-### Що ще не реалізовано явно (за потреби після 1.1.x)
+### Що ще не реалізовано явно (за потреби після 1.2.x)
 
 - Journal-based `cash/card balances` + `DailyBalance` як materialized джерело істини;
 - Додаткові Reports drill-down (CSV export, фільтри по receipt types, payment methods breakdown — доки немає явного user ask);
-- Multi-location / roles / permissions;
+- Multi-location support;
 - OCR/сканування чеків для закупівель.
 
 ## Поточні межі модулів
@@ -92,6 +95,15 @@
 - Reports Hub UI: P&L / ABC / Trends.
 - Reports Hub використовує готові reporting DTO з finance/reporting facade; UI не рахує фінанси сам.
 
+### Персонал (Staff) — v1.2.0
+
+- `Employee` модель (раніше `Technician`) з полем `role` (`administrator` / `moderator` / `waiter`, `techMod` залишено для сумісності БД, не показується в UI).
+- Firestore-колекція `technicians` (історична назва, не міняється) + `roles` для `RoleConfig`.
+- RBAC: фільтрація табів (`MainTabBarController`) та секцій налаштувань за роллю; `requiresRole(_:)` guard для захисту екранів.
+- `OrderModel.createdBy` = `employeeRef` творця; офіціант бачить тільки свої замовлення.
+- Staff-модуль на MVVM: `StaffListViewModel`, `StaffDetailsViewModel`, `StaffCreateEditViewModel` + `StaffServiceProtocol`.
+- Повний опис: `STAFF_AND_ROLES.md`.
+
 ## Джерела істини по зонах
 
 - inventory quantities → `IngredientModel.stockQuantity` + `PurchaseModel` + `InventoryAdjustmentModel`
@@ -101,6 +113,8 @@
 - Home dashboard summaries → aggregation services + finance facade (UI не рахує)
 - Reports (P&L/ABC/Trends) → finance/reporting facade (використовує aggregation services як нижній шар)
 - Track Ingredients behavior → global setting + enforcement in service layer, not in VC/VM
+- employees & roles → Firestore collections `technicians` (Employee) + `roles` (RoleConfig); кеш в `RequestManager.shared.employees`
+- order ownership → `OrderModel.createdBy` (employeeRef); фільтр за роллю в `DomainDatabaseService.fetchOrders()`
 - Firestore → єдине сховище даних; офлайн через Firebase cache
 
 ## Що важливо не плутати
@@ -112,17 +126,15 @@
 - `DailyClose` у майбутньому може існувати лише як derived business snapshot, але не окреме джерело фінансової істини.
 - Якщо метрика вже порахована в сервісі, її не треба перераховувати в ViewModel; UI тільки відображає DTO.
 - Зміни рецепта **не переписують** історичний COGS; історичний COGS = snapshot.
+- `Employee` (не `Technician`) — поточна модель; колекція Firestore `technicians` не перейменовується (історична назва). `techMod` існує в enum лише для сумісності зі старими записами, в UI не показується.
+- `UserSession.current.employeeRef` для адміністратора = `masterUserRef`, для менеджера/офіціанта = `firebaseRef` співробітника.
 
-## Поточний target після shipped v1.1.0
+## Поточний target після shipped v1.2.0
 
-Релізна лінія 1.1.x (див. `ROADMAP.md`):
+Релізна лінія 1.2.x (див. `ROADMAP.md`):
 
-1. v1.1.1 — UI stability (UILabel → AppLabel, Dynamic Type) + docs sync.
-2. v1.1.2 — Inventory audit/bulk count workflow + per-ingredient low-stock thresholds.
-3. v1.1.3 — Architecture cleanup (Realm removal from prod paths, async/await uniform, domain models refine).
-4. v1.1.4 — UI polish (secondaryText, PopupFactory/InputPopupView, R.swift SPM migration).
-
-Після v1.1.4 вирішуємо, чи потрібен next minor (v1.2) для великих фіч типу journal balances / multi-location / roles / CSV export reports.
+1. v1.2.0 — Multi-user & Staff Management (ролі, Персонал, RBAC, `createdBy`). ✅ shipped.
+2. v1.2.x — journal-based cash/card balances, multi-location, CSV export (за потребою).
 
 ## Мінімальні правила консистентності
 

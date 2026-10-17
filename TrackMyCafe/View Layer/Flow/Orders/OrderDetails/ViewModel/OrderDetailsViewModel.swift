@@ -130,7 +130,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             card: card,
             totalCost: totalCost,
             inventoryTracking: orderTrackingMode,
-            note: note
+            note: note,
+            createdBy: UserSession.current.employeeRef
         )
 
         do {
@@ -160,7 +161,8 @@ class OrderDetailsViewModel: OrderDetailsViewModelType, Loggable {
             card: card,
             totalCost: totalCost,
             inventoryTracking: orderTrackingMode,
-            note: note
+            note: note,
+            createdBy: order.createdBy
         )
 
         do {

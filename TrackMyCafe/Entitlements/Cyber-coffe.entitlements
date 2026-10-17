@@ -6,8 +6,8 @@
 	<string>development</string>
 	<key>com.apple.developer.associated-domains</key>
 	<array>
-		<string>applinks:kvit.page.link</string>
-		<string>applinks:kvit1.page.link</string>
+		<string>applinks:trackmycafe-prod.firebaseapp.com</string>
+		<string>applinks:trackmycafe-develop.firebaseapp.com</string>
 	</array>
 </dict>
 </plist>

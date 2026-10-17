@@ -54,6 +54,8 @@
 "warning" = "Увага";
 "success" = "Успіх";
 "attention" = "Увага";
+"accessDenied" = "Доступ заборонено";
+"noPermissionMessage" = "У вас немає прав для доступу до цього розділу.";
 "wentWrong" = "Щось пішло не так";
 "wentWrongTryAgain" = "Щось пішло не так, будь ласка, спробуйте пізніше";
 "printForWhom" = "Для кого друкувати?";
@@ -76,31 +78,34 @@
 "requiredDataIsMissingInUserSettings" = "Необхідні дані відсутні в налаштуваннях користувача";
 
 // MARK: - Staff Management
-"newModerator" = "Новий модератор";
-"newTechnician" = "Новий офіціант";
+"newModerator" = "Новий менеджер";
+"newWaiter" = "Новий офіціант";
 "addTechnician" = "Додати офіціанта";
 "editTechnician" = "Редагувати офіціанта";
 "addAdmin" = "Додати адміністратора";
 "editAdmin" = "Редагувати адміністратора";
-"addTechnicianPrivilege" = "Додати обов'язки офіціанта";
-"addModerationPrivilege" = "Додати обов'язки модератора";
 "adminPrivilege" = "Має обов'язки адміністратора";
-"isAllowCalculationForAdministrator" = "Надати доступ";
-"allowCalculation" = "Дозволити розрахунки";
-"failedSentTechnicianEmail" = "Щось пішло не так, будь ласка, повторіть спробу пізніше\nВи можете надіслати електронний лист із запрошенням із екрана деталей техніка";
-"successSentTechnicianEmail" = "Посилання для входу надіслано на електронну адресу техніка: %@";
+"failedSentEmployeeEmail" = "Щось пішло не так, будь ласка, повторіть спробу пізніше\nВи можете надіслати запрошення знову з екрана деталей співробітника";
+"successSentEmployeeEmail" = "Посилання для входу надіслано на електронну адресу співробітника: %@";
 
 // MARK: - Staff Sections
 "staff_sectionWaiter" = "Офіціанти";
 "staff_sectionSeniorWaiter" = "Старші офіціанти";
-"uploadedNewTechnicianImageAt" = "Завантажено нове зображення офіціанта о %@";
+"uploadedNewEmployeeImageAt" = "Завантажено нове зображення співробітника о %@";
 
 // MARK: - Roles
-"roleAdmin" = "Адміністратор";
-"roleModerator" = "Модератор";
-"roleTechnician" = "Офіціант";
-"roleTechMod" = "Офіціант & Модератор";
-"choseSignInRole" = "Офіціант має декілька ролей, виберіть роль для авторизації:";
+"roleAdmin" = "Власник";
+"roleModerator" = "Менеджер";
+"roleWaiter" = "Офіціант";
+"choseSignInRole" = "Співробітник має декілька ролей, виберіть роль для авторизації:";
+
+// MARK: - Staff Info
+"staff_infoOwnerTitle" = "Власник закладу";
+"staff_infoOwnerMessage" = "Це ваш профіль власника закладу. Ви маєте повний доступ до всіх функцій додатка: створення продуктів, керування персоналом, перегляд звітів та налаштувань. Натисніть на рядок, щоб переглянути або відредагувати ваші контактні дані.";
+"staff_infoWaiterTitle" = "Офіціанти";
+"staff_infoWaiterMessage" = "Офіціанти — це співробітники, які приймають замовлення від відвідувачів. Вони мають обмежений доступ: можуть створювати та закривати замовлення, але не бачать фінансові звіти та налаштування. Натисніть на рядок, щоб переглянути список офіціантів.";
+"staff_infoSeniorWaiterTitle" = "Старші офіціанти";
+"staff_infoSeniorWaiterMessage" = "Старші офіціанти — це старші співробітники з розширеними правами. Окрім прийому замовлень, вони можуть керувати списком офіціантів та переглядати частину звітів. Натисніть на рядок, щоб переглянути список старших офіціантів.";
 
 // MARK: - Menu
 "home" = "Головна";
@@ -123,9 +128,8 @@
 "allArrow" = "Всі ->";
 
 // MARK: - Staff Alerts & Details
-"technicianLimitReached" = "Ліміт офіціантів досягнуто";
 "changeSub" = "Змінити підписку";
-"technicianNoteGoesHere" = "Нотатка про офіціанта";
+"employeeNoteGoesHere" = "Нотатка про співробітника";
 "allOrders" = "Всі чеки";
 "prices" = "Ціни";
 "printPrices" = "Друк цін";
@@ -133,8 +137,8 @@
 "areYouSureYouWantToDeleteThisItem" = "Ви впевнені, що хочете видалити цей елемент?";
 "somethingWentWrong" = "Щось пішло не так";
 
-// MARK: - Technician
-"technicianEmailAlreadyExist" = "Офіціант з такою поштою вже існує";
+// MARK: - Employee
+"employeeEmailAlreadyExist" = "Співробітник з такою поштою вже існує";
 
 // MARK: - Settings
 "theme" = "Тема";
@@ -186,7 +190,6 @@
 "error" = "Помилка";
 "subscription" = "Підписка";
 "subscriptionDefaultHeader" = "Ви в будь-який час можете змінити підписку на ту, яка краще підходить для вашого закладу";
-"subscriptionReachedHeader" = "Ваша поточна підписка не дозволяє додати більше персоналу у вашу лабораторію. Ви можете змінити підписку на ту яка краще підходить для вашого закладу";
 "subscriptionExpiredHeader" = "Термін дії вашої підписки закінчився. Щоб продовжити користуватися додатком потрібно купити підписку, якщо у вас вже є куплена підписка, натисність кнопку \"Відновити покупки\"";
 "purchaseRestored" = "Покупку відновлено";
 "subscriptionNeedSubHeader" = "Вам потрібна підписка для доступу до цієї функції";
@@ -472,6 +475,8 @@
 "onboardingSettingsTypesMessage" = "Налаштуйте різні типи чеків тут.";
 "onboardingSettingsTrackIngredientsTitle" = "Слідкувати за інгредієнтами";
 "onboardingSettingsTrackIngredientsMessage" = "Увімкни, щоб автоматично списувати залишки інгредієнтів за рецептом при збереженні чека.";
+"onboardingStaffTitle" = "Персонал";
+"onboardingStaffMessage" = "Додавай співробітників, призначай ролі (Власник, Менеджер, Офіціант) та надсилай запрошення для входу в застосунок.";
 "logout" = "Вийти";
 "account" = "Акаунт";
 

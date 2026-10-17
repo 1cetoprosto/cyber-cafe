@@ -5,7 +5,7 @@
 //  Created by Леонід Квіт on 30.04.2022.
 //
 
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 import Foundation
 
 // Firestore persistence shape for an order line item (`OrderItemModel`).

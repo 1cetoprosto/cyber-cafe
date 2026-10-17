@@ -54,6 +54,8 @@
 "warning" = "Warning";
 "success" = "Success";
 "attention" = "Attention";
+"accessDenied" = "Access Denied";
+"noPermissionMessage" = "You don't have permission to access this section.";
 "wentWrong" = "Something went wrong";
 "wentWrongTryAgain" = "Something went wrong, please try again later";
 "printForWhom" = "For whom to print?";
@@ -76,31 +78,34 @@
 "requiredDataIsMissingInUserSettings" = "Required data is missing in user settings.";
 
 // MARK: - Staff Management
-"newModerator" = "New moderator";
-"newTechnician" = "New waiter";
+"newModerator" = "New Manager";
+"newWaiter" = "New Waiter";
 "addTechnician" = "Add waiter";
 "editTechnician" = "Edit wainer";
 "addAdmin" = "Add admin";
 "editAdmin" = "Edit admin";
-"addTechnicianPrivilege" = "Add waiter responsibilities";
-"addModerationPrivilege" = "Add moderator responsibilities";
 "adminPrivilege" = "Has administrator responsibilities";
-"isAllowCalculationForAdministrator" = "Provide access";
-"allowCalculation" = "Allow Calculation";
-"failedSentTechnicianEmail" = "Something went wrong, please try again later\nYou can send invite email from technician details screen";
-"successSentTechnicianEmail" = "Sign-in link has been sent to technician's email: %@";
+"failedSentEmployeeEmail" = "Something went wrong, please try again later\nYou can resend the invite from the employee details screen";
+"successSentEmployeeEmail" = "Sign-in link has been sent to employee's email: %@";
 
 // MARK: - Staff Sections
 "staff_sectionWaiter" = "Waiters";
 "staff_sectionSeniorWaiter" = "Senior waiters";
-"uploadedNewTechnicianImageAt" = "Uploaded new technician image at %@";
+"uploadedNewEmployeeImageAt" = "Uploaded new employee image at %@";
 
 // MARK: - Roles
-"roleAdmin" = "Admin";
-"roleModerator" = "Moderator";
-"roleTechnician" = "Waiter";
-"roleTechMod" = "Waiter & Moderator";
-"choseSignInRole" = "The waiter has several roles, select a role for authorization:";
+"roleAdmin" = "Owner";
+"roleModerator" = "Manager";
+"roleWaiter" = "Waiter";
+"choseSignInRole" = "The employee has several roles, select a role for authorization:";
+
+// MARK: - Staff Info
+"staff_infoOwnerTitle" = "Establishment Owner";
+"staff_infoOwnerMessage" = "This is your establishment owner profile. You have full access to all app features: creating products, managing staff, viewing reports and settings. Tap the row to view or edit your contact details.";
+"staff_infoWaiterTitle" = "Waiters";
+"staff_infoWaiterMessage" = "Waiters are employees who take orders from customers. They have limited access: they can create and close orders, but cannot see financial reports and settings. Tap the row to view the list of waiters.";
+"staff_infoSeniorWaiterTitle" = "Senior Waiters";
+"staff_infoSeniorWaiterMessage" = "Senior waiters are senior employees with extended permissions. In addition to taking orders, they can manage the waiters list and view some reports. Tap the row to view the list of senior waiters.";
 
 // MARK: - Menu
 "home" = "Home";
@@ -123,9 +128,8 @@
 "allArrow" = "All ->";
 
 // MARK: - Staff Alerts & Details
-"technicianLimitReached" = "Technician limit reached";
 "changeSub" = "Change Subscription";
-"technicianNoteGoesHere" = "Technician note goes here";
+"employeeNoteGoesHere" = "Employee note goes here";
 "allOrders" = "All Receipts";
 "prices" = "Prices";
 "printPrices" = "Print Prices";
@@ -133,8 +137,8 @@
 "areYouSureYouWantToDeleteThisItem" = "Are you sure you want to delete this item?";
 "somethingWentWrong" = "Something went wrong";
 
-// MARK: - Technician
-"technicianEmailAlreadyExist" = "Technician with this email already exists";
+// MARK: - Employee
+"employeeEmailAlreadyExist" = "Employee with this email already exists";
 
 // MARK: - Settings
 "theme" = "Theme";
@@ -186,7 +190,6 @@
 "error" = "Error";
 "subscription" = "Subscription";
 "subscriptionDefaultHeader" = "You can change your subscription to one that is best for your cafe at any time";
-"subscriptionReachedHeader" = "Your current subscription does not allow more staff to be added to your cafe. You can change the subscription to the one that best suits your cafe";
 "subscriptionExpiredHeader" = "Your subscription has expired. To continue using the application you need to buy a subscription, if you already have a costd subscription, click \"Restore costs\"";
 "purchaseRestored" = "Purchase restored";
 "subscriptionNeedSubHeader" = "You need a subscription to access this feature";
@@ -473,6 +476,8 @@
 "onboardingSettingsTypesMessage" = "Configure different receipt types here.";
 "onboardingSettingsTrackIngredientsTitle" = "Track Ingredients";
 "onboardingSettingsTrackIngredientsMessage" = "Enable to automatically deduct ingredient stock by recipe when saving a receipt.";
+"onboardingStaffTitle" = "Staff";
+"onboardingStaffMessage" = "Add employees, assign roles (Owner, Manager, Waiter) and send invitations to sign in to the app.";
 "logout" = "Logout";
 "account" = "Account";
 
