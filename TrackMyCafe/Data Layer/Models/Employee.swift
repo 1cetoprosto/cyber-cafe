@@ -8,12 +8,13 @@
 import Foundation
 
 /// Cafe staff member (owner's employees: managers and waiters).
-/// Note: stored in the historical Firestore collection `technicians` (kept to
-/// avoid a risky data migration). The model name reflects the cafe domain.
+/// Note: stored in `Users/{masterUserRef}/Technicians` — a legacy PascalCase
+/// collection kept to avoid a risky data migration. The model name reflects
+/// the cafe domain.
 class Employee: BaseDatabaseModel, CustomStringConvertible {
 
-    var ref: Refs {
-        return Refs.technicians
+    var ref: String {
+        return FirebaseCollections.legacyTechnicians
     }
 
     var firebaseRef: String!

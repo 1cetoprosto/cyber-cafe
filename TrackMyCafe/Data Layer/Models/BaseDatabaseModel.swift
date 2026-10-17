@@ -8,7 +8,8 @@
 import Foundation
 
 protocol BaseDatabaseModel: AnyObject {
-    var ref: Refs { get }
+    /// Firestore collection name this model is stored in (see `FirebaseCollections`).
+    var ref: String { get }
     
     var firebaseRef: String! { get set }
     

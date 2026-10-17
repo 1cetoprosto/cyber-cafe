@@ -301,7 +301,7 @@ final class CreateEditAdminController: UIViewController, Loggable {
     private func log() {
         RequestManager.shared.log(
             date: Date(),
-            object: .technicians,
+            object: FirebaseCollections.legacyTechnicians,
             action: .update,
             description: self.admin.description
         )
