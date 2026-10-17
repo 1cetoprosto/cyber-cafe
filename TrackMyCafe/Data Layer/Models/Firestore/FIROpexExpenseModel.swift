@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import FirebaseFirestoreSwift
+import FirebaseFirestore
 
 struct FIROpexExpenseModel: Codable, Identifiable {
     @DocumentID var id: String?

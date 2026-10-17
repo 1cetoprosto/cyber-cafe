@@ -10,7 +10,9 @@ import Foundation
 enum Role: Int {
   case administrator = 0
   case moderator
-  case technician
+  case waiter
+  // Historical role from DTLab (waiter + moderator). Kept in enum for Firestore
+  // backward compatibility (rawValue = 3), but never offered in the UI.
   case techMod
 
   var name: String {
@@ -19,10 +21,11 @@ enum Role: Int {
       return R.string.global.roleAdmin()
     case .moderator:
       return R.string.global.roleModerator()
-    case .technician:
-      return R.string.global.roleTechnician()
+    case .waiter:
+      return R.string.global.roleWaiter()
     case .techMod:
-      return R.string.global.roleTechMod()
+      // Not shown in the role picker; return waiter label for safety.
+      return R.string.global.roleWaiter()
     }
   }
 }

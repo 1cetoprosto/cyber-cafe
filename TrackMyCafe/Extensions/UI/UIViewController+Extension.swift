@@ -36,6 +36,26 @@ extension UIViewController {
         )
     }
 
+    /// RBAC guard: dismisses/pops the screen if the current user's role is not
+    /// in the allowed set. Returns `true` when access is granted.
+    @discardableResult
+    func requiresRole(_ allowedRoles: Set<Role>) -> Bool {
+        guard let role = UserSession.current.role, allowedRoles.contains(role) else {
+            showAlert(
+                R.string.global.accessDenied(),
+                body: R.string.global.noPermissionMessage()
+            ) { [weak self] in
+                if let nav = self?.navigationController {
+                    nav.popViewController(animated: true)
+                } else {
+                    self?.dismiss(animated: true)
+                }
+            }
+            return false
+        }
+        return true
+    }
+
     static func topMostViewController(base: UIViewController? = UIApplication.shared.activeKeyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topMostViewController(base: nav.visibleViewController)

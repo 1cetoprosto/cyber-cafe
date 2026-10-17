@@ -36,6 +36,9 @@ struct OrderModel {
     var totalCost: Double
     var inventoryTracking: Bool
     var note: String?
+    /// Firebase ref of the employee who created the order (employeeRef).
+    /// `nil` for legacy orders created before v1.2 — treated as owner-created.
+    var createdBy: String?
 
     /// Spec-aligned alias for the sales total (`sum`).
     var totalAmount: Double { sum }
@@ -49,7 +52,8 @@ struct OrderModel {
         card: Double,
         totalCost: Double = 0.0,
         inventoryTracking: Bool = false,
-        note: String? = nil
+        note: String? = nil,
+        createdBy: String? = nil
     ) {
         self.id = id
         self.date = date
@@ -60,6 +64,7 @@ struct OrderModel {
         self.totalCost = totalCost
         self.inventoryTracking = inventoryTracking
         self.note = note
+        self.createdBy = createdBy
     }
 
     init(firebaseModel: FIROrderModel) {
@@ -72,6 +77,7 @@ struct OrderModel {
         self.totalCost = firebaseModel.totalCost ?? 0.0
         self.inventoryTracking = firebaseModel.inventoryTracking ?? false
         self.note = firebaseModel.note
+        self.createdBy = firebaseModel.createdBy
     }
 
     init?(_ data: [String: Any]) {
@@ -85,5 +91,6 @@ struct OrderModel {
         self.totalCost = data["totalCost"] as? Double ?? 0.0
         self.inventoryTracking = data["inventoryTracking"] as? Bool ?? false
         self.note = (data["note"] as? String)?.nilIfEmpty
+        self.createdBy = (data["createdBy"] as? String)?.nilIfEmpty
     }
 }

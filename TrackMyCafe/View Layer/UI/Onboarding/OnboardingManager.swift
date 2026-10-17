@@ -8,6 +8,7 @@ enum OnboardingFeature: String, CaseIterable {
     case settingsPriceList
     case settingsTypes
     case settingsTrackIngredients
+    case staff
 }
 
 struct OnboardingStepModel {
@@ -215,4 +216,18 @@ func buildDefaultOnboardingRegistry() {
     OnboardingManager.shared.register(flow: settingsPriceFlow)
     OnboardingManager.shared.register(flow: settingsTypesFlow)
     OnboardingManager.shared.register(flow: settingsTrackIngredientsFlow)
+
+    let staffFlow = OnboardingFlow(
+        feature: .staff,
+        versionTag: "1.2.0",
+        steps: [
+            OnboardingStepModel(
+                targetKey: "staffCell",
+                title: R.string.global.onboardingStaffTitle(),
+                message: R.string.global.onboardingStaffMessage(),
+                order: 1
+            )
+        ]
+    )
+    OnboardingManager.shared.register(flow: staffFlow)
 }

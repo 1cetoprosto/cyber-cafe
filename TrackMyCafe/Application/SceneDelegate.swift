@@ -21,6 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
     var window: UIWindow?
 
+    /// Email sign-in Universal Link received at cold launch, handled after `start()`.
+    private var pendingEmailLink: String?
+
     // MARK: Scene Lifecycle
     func scene(
         _ scene: UIScene,
@@ -33,6 +36,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
 
         // Check for fresh install
         checkFreshInstall()
+
+        // Capture an email sign-in Universal Link received at cold launch.
+        pendingEmailLink =
+            connectionOptions.urlContexts.first?.url.absoluteString
+            ?? connectionOptions.userActivities
+            .first { $0.activityType == NSUserActivityTypeBrowsingWeb }?
+            .webpageURL?.absoluteString
 
         window = UIWindow(windowScene: windowScene)
         guard let window else { return }
@@ -76,6 +86,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // Set onboarding as seen implicitly to avoid showing it later if re-enabled
         // UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
+        // 3. Complete an email-link sign-in that launched the app
+        if let link = pendingEmailLink {
+            pendingEmailLink = nil
+            presentEmailLinkSignIn(link, animated: false)
+            return
+        }
+
         // 2. Check Subscription (Moved to inside app via ProGated)
         /*
         let isPro = IAPManager.shared.isProPlan == true
@@ -106,6 +123,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
             window?.rootViewController = navigationController
         } else {
             // Якщо сесія дійсна, переходимо на головний екран додатку
+            // Firestore snapshot listeners are normally started from AuthManager.login().
+            // On a cold launch with a restored Keychain session that path is skipped,
+            // so start them here — otherwise cached lists (employees, orders, etc.)
+            // stay empty and newly created documents won't appear until re-login.
+            RequestManager.shared.startListening()
             window?.rootViewController = MainTabBarController()
             runFinanceHistoryBackfillIfNeeded()
         }
@@ -271,3 +293,52 @@ extension SceneDelegate {
 // buildDefaultOnboardingRegistry() is declared in View Layer/UI/Onboarding/OnboardingManager.swift
 
 // InstructionsDriver is declared in View Layer/UI/Onboarding/InstructionsDriver.swift
+
+// MARK: - Email link (Universal Link) handling
+extension SceneDelegate {
+
+    func scene(_ scene: UIScene, continue userActivity: NSUserActivity) {
+        handle(userActivity: userActivity)
+    }
+
+    func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+        for context in URLContexts {
+            handle(url: context.url)
+        }
+    }
+
+    private func handle(userActivity: NSUserActivity) {
+        guard userActivity.activityType == NSUserActivityTypeBrowsingWeb,
+            let url = userActivity.webpageURL
+        else { return }
+        handle(url: url)
+    }
+
+    private func handle(url: URL) {
+        guard Auth.auth().isSignIn(withEmailLink: url.absoluteString) else {
+            return
+        }
+        presentEmailLinkSignIn(url.absoluteString, animated: true)
+    }
+
+    private func presentEmailLinkSignIn(_ link: String, animated: Bool) {
+        if Auth.auth().currentUser != nil || UserSession.current.isAuth {
+            do {
+                try Auth.auth().signOut()
+            } catch {
+                logger.error("Failed to sign out before email link sign-in: \(error)")
+            }
+            UserSession.deleteSession()
+        }
+
+        let signInController = SignInController(link: link)
+        let navigationController = UINavigationController(rootViewController: signInController)
+        navigationController.setNavigationBarHidden(true, animated: false)
+
+        if animated {
+            set(root: navigationController)
+        } else {
+            window?.rootViewController = navigationController
+        }
+    }
+}

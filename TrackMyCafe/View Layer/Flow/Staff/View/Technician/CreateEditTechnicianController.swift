@@ -5,35 +5,116 @@
 //  Created by Леонід Квіт on 02.07.2024.
 //
 
-import FirebaseAuth
-import FirebaseFirestore
-import FirebaseFirestoreSwift
-import ObjectiveC
+import PhotosUI
 import SVProgressHUD
+import TinyConstraints
 import UIKit
 
-class CreateEditTechnicianController: UIViewController, Loggable {
+final class CreateEditTechnicianController: UIViewController, Loggable {
+
+    // MARK: - Properties
 
     private var profileImageView: UIImageView!
     private var newImage: UIImage?
 
-    private lazy var imagePicker = ImagePicker()
+    private let viewModel: StaffCreateEditViewModel
 
-    private let technician: Technician
-    private let moderType: Bool
+    // Container to center the avatar in the stack view (which uses .fill alignment)
+    private lazy var avatarContainer: UIView = {
+        let view = UIView()
+        return view
+    }()
 
-    init(_ technician: Technician, moderType: Bool) {
-        self.technician = technician.copy()
-        self.moderType = moderType
+    // MARK: - UI Elements
+
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.keyboardDismissMode = .onDrag
+        return scrollView
+    }()
+
+    private lazy var mainStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.spacing = UIConstants.standardPadding
+        stackView.alignment = .fill
+        return stackView
+    }()
+
+    private lazy var lastNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.lastName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var firstNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.firstName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.required()
+        )
+    }()
+
+    private lazy var middleNameInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.middleName(),
+            inputType: .text(keyboardType: .default),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var phoneInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.phone(),
+            inputType: .text(keyboardType: .phonePad),
+            placeholder: R.string.global.noRequired()
+        )
+    }()
+
+    private lazy var emailInput: InputContainerView = {
+        InputContainerView(
+            labelText: R.string.global.email(),
+            inputType: .text(keyboardType: .emailAddress),
+            isEditable: viewModel.isEmailEditable,
+            placeholder: R.string.global.required()
+        )
+    }()
+
+    private lazy var addressInput: MultilineInputContainerView = {
+        MultilineInputContainerView(
+            labelText: R.string.global.address(),
+            placeholder: R.string.global.noRequired(),
+            height: 70
+        )
+    }()
+
+    private lazy var noteInput: MultilineInputContainerView = {
+        MultilineInputContainerView(
+            labelText: R.string.global.note(),
+            placeholder: R.string.global.noRequired(),
+            height: 110
+        )
+    }()
+
+    private lazy var saveButton: UIButton = {
+        let button = DefaultButton()
+        button.setTitle(R.string.global.save(), for: .normal)
+        button.addTarget(self, action: #selector(saveTechnician), for: .touchUpInside)
+        return button
+    }()
+
+    // MARK: - Init
+
+    init(_ employee: Employee, moderType: Bool) {
+        self.viewModel = StaffCreateEditViewModel(employee: employee, isModerator: moderType)
         super.init(nibName: nil, bundle: nil)
     }
 
     init(moderType: Bool) {
-        self.technician = Technician()
-        if moderType {
-            self.technician.role = .moderator
-        }
-        self.moderType = moderType
+        self.viewModel = StaffCreateEditViewModel(isModerator: moderType)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -41,580 +122,322 @@ class CreateEditTechnicianController: UIViewController, Loggable {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        imagePicker.delegate = self
-
-        if technician.firebaseRef != "" {
-            title = R.string.global.edit()
-        } else {
-            title = moderType ? R.string.global.newModerator() : R.string.global.newTechnician()
-        }
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .save, target: self, action: #selector(saveTechnician))
+        title = viewModel.title
 
         setupUI()
+        setupConstraints()
         populateFields()
+        setupCallbacks()
     }
+
+    // MARK: - Setup
 
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
 
-        // Profile Image
+        // Profile image
         profileImageView = UIImageView()
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
         profileImageView.isUserInteractionEnabled = true
         profileImageView.contentMode = .scaleAspectFill
         profileImageView.clipsToBounds = true
         profileImageView.layer.cornerRadius = UIConstants.profileImageCornerRadius
         profileImageView.layer.borderWidth = UIConstants.standardBorderWidth
-        profileImageView.layer.borderColor = UIColor.lightGray.cgColor
+        profileImageView.layer.borderColor = UIColor.Main.secondaryText.alpha(0.3).cgColor
         profileImageView.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(changeImage)))
-        view.addSubview(profileImageView)
 
-        // Other fields and sections
-        let fieldsStackView = UIStackView()
-        fieldsStackView.translatesAutoresizingMaskIntoConstraints = false
-        fieldsStackView.axis = .vertical
-        fieldsStackView.spacing = UIConstants.standardSpacing
-        view.addSubview(fieldsStackView)
+        view.addSubview(scrollView)
+        view.addSubview(saveButton)
+        scrollView.addSubview(mainStackView)
 
-        // Add subviews for fields
-        let fields = [
-            makeField(
-                label: R.string.global.lastName(), placeholder: R.string.global.noRequired(),
-                value: technician.lastName ?? ""
-            ) { self.technician.lastName = $0 },
-            makeField(
-                label: R.string.global.firstName(), placeholder: R.string.global.required(),
-                value: technician.firstName
-            ) { self.technician.firstName = $0 },
-            makeField(
-                label: R.string.global.middleName(), placeholder: R.string.global.noRequired(),
-                value: technician.middleName ?? ""
-            ) { self.technician.middleName = $0 },
-            makeField(
-                label: R.string.global.phone(), placeholder: R.string.global.noRequired(),
-                value: technician.phone ?? "", keyboardType: .phonePad
-            ) { self.technician.phone = $0 },
-            makeField(
-                label: R.string.global.email(), placeholder: R.string.global.required(),
-                value: technician.email, keyboardType: .emailAddress,
-                isEditing: technician.firebaseRef == ""
-            ) { self.technician.email = $0 },
-            makeTextViewField(
-                label: R.string.global.address(), placeholder: R.string.global.noRequired(),
-                value: technician.address ?? "", height: 70
-            ) { self.technician.address = $0 },
-        ]
-
-        fields.forEach { fieldsStackView.addArrangedSubview($0) }
-
-        // Add switches
-        let techModSwitch = makeSwitch(
-            label: moderType
-                ? R.string.global.addTechnicianPrivilege()
-                : R.string.global.addModerationPrivilege(),
-            isOn: technician.role == .techMod
-        ) { isOn in
-            if self.moderType {
-                self.technician.role = isOn ? .techMod : .moderator
-            } else {
-                self.technician.role = isOn ? .techMod : .technician
-            }
-        }
-
-        let calcSwitch = makeSwitch(
-            label: R.string.global.isAllowCalculationForAdministrator(),
-            isOn: technician.isAllowedCalculationsForAdministrator
-        ) { isOn in
-            self.technician.isAllowedCalculationsForAdministrator = isOn
-        }
-
-        fieldsStackView.addArrangedSubview(techModSwitch)
-        fieldsStackView.addArrangedSubview(calcSwitch)
-
-        // Add note
-        let noteField = makeTextViewField(
-            label: R.string.global.note(), placeholder: R.string.global.noRequired(),
-            value: technician.comment ?? "", height: 110
-        ) { self.technician.comment = $0 }
-        fieldsStackView.addArrangedSubview(noteField)
-
-        // Layout constraints
-        NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(
-                equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            profileImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImageView.widthAnchor.constraint(equalToConstant: 150),
-            profileImageView.heightAnchor.constraint(equalToConstant: 150),
-
-            fieldsStackView.topAnchor.constraint(
-                equalTo: profileImageView.bottomAnchor, constant: 20),
-            fieldsStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            fieldsStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-        ])
+        avatarContainer.addSubview(profileImageView)
+        mainStackView.addArrangedSubview(avatarContainer)
+        mainStackView.addArrangedSubview(lastNameInput)
+        mainStackView.addArrangedSubview(firstNameInput)
+        mainStackView.addArrangedSubview(middleNameInput)
+        mainStackView.addArrangedSubview(phoneInput)
+        mainStackView.addArrangedSubview(emailInput)
+        mainStackView.addArrangedSubview(addressInput)
+        mainStackView.addArrangedSubview(noteInput)
     }
 
-    private func makeField(
-        label: String, placeholder: String, value: String, keyboardType: UIKeyboardType = .default,
-        isEditing: Bool = true, onChange: @escaping (String) -> Void
-    ) -> UIView {
-        let container = UIView()
-        // container.backgroundColor = UIColor.TableView.cellBackground
-        container.translatesAutoresizingMaskIntoConstraints = false
-        let titleLabel = AppLabel(style: .footnote)
-        titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.secondaryText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+    private func setupConstraints() {
+        scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+        scrollView.bottomToTop(of: saveButton, offset: -UIConstants.standardPadding)
 
-        let textField = UITextField()
-        textField.backgroundColor = UIColor.TableView.cellBackground
-        textField.placeholder = placeholder
-        textField.text = value
-        textField.keyboardType = keyboardType
-        textField.borderStyle = .roundedRect
-        textField.isUserInteractionEnabled = isEditing
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
-        textField.onChange = onChange
-
-        container.addSubview(titleLabel)
-        container.addSubview(textField)
+        let horizontalInset = UIConstants.standardPadding
+        mainStackView.translatesAutoresizingMaskIntoConstraints = false
+        let fillWidth = mainStackView.widthAnchor.constraint(
+            equalTo: scrollView.frameLayoutGuide.widthAnchor,
+            constant: -2 * horizontalInset
+        )
+        fillWidth.priority = .defaultHigh
 
         NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-
-            textField.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            textField.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            textField.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            textField.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+            mainStackView.topAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.topAnchor,
+                constant: UIConstants.standardPadding
+            ),
+            mainStackView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor,
+                constant: -UIConstants.standardPadding
+            ),
+            mainStackView.centerXAnchor.constraint(
+                equalTo: scrollView.frameLayoutGuide.centerXAnchor),
+            mainStackView.leadingAnchor.constraint(
+                greaterThanOrEqualTo: scrollView.frameLayoutGuide.leadingAnchor,
+                constant: horizontalInset
+            ),
+            mainStackView.trailingAnchor.constraint(
+                lessThanOrEqualTo: scrollView.frameLayoutGuide.trailingAnchor,
+                constant: -horizontalInset
+            ),
+            fillWidth,
+            mainStackView.widthAnchor.constraint(lessThanOrEqualToConstant: 560),
         ])
 
-        return container
-    }
+        profileImageView.height(150)
+        profileImageView.width(150)
+        profileImageView.centerXToSuperview()
+        profileImageView.centerYToSuperview()
+        avatarContainer.height(150)
 
-    private func makeTextViewField(
-        label: String?, placeholder: String, value: String, height: CGFloat,
-        onChange: @escaping (String) -> Void
-    ) -> UIView {
-        let container = UIView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-        let titleLabel = AppLabel(style: .footnote)
-        titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.secondaryText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let textView = UITextView()
-        textView.backgroundColor = UIColor.TableView.cellBackground
-        textView.text = value
-        textView.layer.borderColor = UIColor.lightGray.cgColor
-        textView.layer.borderWidth = UIConstants.standardBorderWidth
-        textView.layer.cornerRadius = UIConstants.standardCornerRadius
-        textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.heightAnchor.constraint(equalToConstant: height).isActive = true
-        textView.delegate = self
-        textView.onChange = onChange
-
-        container.addSubview(titleLabel)
-        container.addSubview(textView)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-
-            textView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 5),
-            textView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            textView.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            textView.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-        ])
-
-        return container
-    }
-
-    private func makeSwitch(label: String, isOn: Bool, onChange: @escaping (Bool) -> Void) -> UIView
-    {
-        let container = UIView()
-        container.translatesAutoresizingMaskIntoConstraints = false
-        let titleLabel = AppLabel(style: .footnote)
-        titleLabel.text = label
-        titleLabel.textColor = UIColor.Main.secondaryText
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-
-        let switchControl = UISwitch()
-        switchControl.isOn = isOn
-        switchControl.translatesAutoresizingMaskIntoConstraints = false
-        switchControl.addTarget(self, action: #selector(switchChanged(_:)), for: .valueChanged)
-        switchControl.onChange = onChange
-        switchControl.onTintColor = UIColor.Button.background
-        switchControl.thumbTintColor = UIColor.NavBar.text
-
-        container.addSubview(titleLabel)
-        container.addSubview(switchControl)
-
-        NSLayoutConstraint.activate([
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor),
-            titleLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor),
-            titleLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor),
-
-            switchControl.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            switchControl.leadingAnchor.constraint(
-                equalTo: titleLabel.trailingAnchor, constant: 10),
-            switchControl.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-        ])
-
-        return container
+        saveButton.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+        saveButton.height(UIConstants.buttonHeight)
+        saveButton.bottomToSuperview(
+            offset: -UIConstants.standardPadding, usingSafeArea: true
+        )
     }
 
     private func populateFields() {
-        if let url = technician.avatarThumbnailUrl?.url {
+        lastNameInput.text = viewModel.lastName
+        firstNameInput.text = viewModel.firstName
+        middleNameInput.text = viewModel.middleName
+        phoneInput.text = viewModel.phone
+        emailInput.text = viewModel.email
+        addressInput.text = viewModel.address
+        noteInput.text = viewModel.note
+
+        if let url = viewModel.avatarUrl {
             profileImageView.setImage(url, placeholder: R.image.profilePlaceholder())
+        } else {
+            profileImageView.image = R.image.profilePlaceholder()
         }
     }
+
+    private func setupCallbacks() {
+        lastNameInput.onTextChange = { [weak self] in self?.viewModel.updateLastName($0) }
+        firstNameInput.onTextChange = { [weak self] in self?.viewModel.updateFirstName($0) }
+        middleNameInput.onTextChange = { [weak self] in self?.viewModel.updateMiddleName($0) }
+        phoneInput.onTextChange = { [weak self] in self?.viewModel.updatePhone($0) }
+        emailInput.onTextChange = { [weak self] in self?.viewModel.updateEmail($0) }
+        addressInput.onTextChange = { [weak self] in self?.viewModel.updateAddress($0) }
+        noteInput.onTextChange = { [weak self] in self?.viewModel.updateNote($0) }
+    }
+
+    // MARK: - Actions
 
     @objc private func changeImage(_ sender: UITapGestureRecognizer) {
-        guard let view = sender.view else { return }
-        imagePicker.showPickerOptions(in: self, sender: view)
-    }
-
-    @objc private func textFieldDidChange(_ textField: UITextField) {
-        textField.onChange?(textField.text ?? "")
-    }
-
-    @objc private func switchChanged(_ switchControl: UISwitch) {
-        switchControl.onChange?(switchControl.isOn)
-    }
-
-    private func validate() -> Bool {
-        if technician.firstName.isEmpty {
-            showAlert(R.string.global.error(), body: R.string.global.firstNameRequired())
-            return false
-        }
-
-        if technician.email.nilIfEmpty == nil {
-            showAlert(R.string.global.error(), body: R.string.global.emailRequired())
-            return false
-        }
-
-        if let email = technician.email.nilIfEmpty, !email.isValid(regex: .email) {
-            showAlert(R.string.global.error(), body: R.string.global.emailNotValid())
-            return false
-        }
-
-        return true
+        var config = PHPickerConfiguration(photoLibrary: .shared())
+        config.selectionLimit = 1
+        config.filter = .images
+        let picker = PHPickerViewController(configuration: config)
+        picker.delegate = self
+        present(picker, animated: true)
     }
 
     @objc private func saveTechnician() {
         view.endEditing(true)
-        guard validate() else { return }
+
+        if let errorMessage = viewModel.validate() {
+            showAlert(R.string.global.error(), body: errorMessage)
+            return
+        }
+
         SVProgressHUD.show()
 
         if let image = newImage {
-            let fileName = [technician.firstName, technician.lastName, Date().interval.string]
+            let fileName = [viewModel.firstName, viewModel.lastName, Date().interval.string]
                 .compactMap { $0 }.joined(separator: "_")
             StorageService.uploadAvatar(image, name: fileName) {
                 [weak self] (success, filePath, thumbnailPath) in
                 guard let self = self else { return }
                 if success {
                     self.newImage = nil
-                    self.technician.avatarUrl = filePath
-                    self.technician.avatarThumbnailUrl = thumbnailPath
-                    RequestManager.shared.log(
-                        date: Date(), object: .technicians, action: .add,
-                        description: R.string.global.uploadedNewTechnicianImageAt(
-                            filePath.emptyIfNil))
-                    self.saveTechnicianToDatabase()
+                    self.viewModel.updateAvatar(filePath: filePath, thumbnailPath: thumbnailPath)
+                    self.viewModel.logAvatarUpload(filePath: filePath ?? "")
+                    self.performSave()
                 } else {
                     SVProgressHUD.dismiss()
                     self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
                 }
             }
         } else {
-            saveTechnicianToDatabase()
+            performSave()
         }
     }
 
-    private func saveTechnicianToDatabase() {
-        let isNew = self.technician.firebaseRef == ""
-        let technician = self.technician
-
+    private func performSave() {
         Task { [weak self] in
             guard let self else { return }
-
-            if isNew {
-                let roles = await FirestoreDatabaseService.getRoles(
-                    technician.email.trimmed.lowercased())
-                if (roles ?? []).isEmpty {
-                    var newRoles = [RoleConfig]()
-                    let userRef = Firestore.firestore().collection("users").document()
-                    if UserSession.current.masterUserRef != nil {
-                        if technician.role == .technician || technician.role == .techMod {
-                            let techRole = RoleConfig(
-                                ref: userRef.documentID, email: technician.email,
-                                dataRef: UserSession.current.masterUserRef,
-                                userRef: userRef.documentID,
-                                role: .technician, onlineVersion: true)
-                            newRoles.append(techRole)
-                        }
-                        if technician.role == .moderator || technician.role == .techMod {
-                            let modeRole = RoleConfig(
-                                ref: userRef.documentID, email: technician.email,
-                                dataRef: UserSession.current.masterUserRef,
-                                userRef: userRef.documentID,
-                                role: .moderator, onlineVersion: true)
-                            newRoles.append(modeRole)
-                        }
-                    } else {
-                        self.logger.error("Error: masterUserRef is nil")
-                        self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
-                        return
-                    }
-                    var updateData = [String: Any]()
-                    newRoles.forEach {
-                        let key = "roles/\($0.firebaseRef)"
-                        updateData[key] = $0.forDatabase()
-                    }
-
-                    let newTechRef = Firestore.firestore().collection("technicians").document()
-                    self.technician.firebaseRef = newTechRef.documentID
-                    let newTechKey =
-                        "users/\(String(describing: UserSession.current.masterUserRef))/technicians/\(newTechRef.documentID)"
-                    updateData[newTechKey] = self.technician.forDatabase()
-
-                    let batch = Firestore.firestore().batch()
-                    updateData.forEach { key, value in
-                        let ref = Firestore.firestore().document(key)
-                        batch.setData(value as! [String: Any], forDocument: ref)
-                    }
-
-                    do {
-                        try await batch.commit()
-                        await MainActor.run {
-                            self.log(isNew)
-                            self.sendInviteEmail()
-                        }
-                    } catch {
-                        await MainActor.run {
-                            SVProgressHUD.dismiss()
-                            self.showAlert(
-                                R.string.global.error(), body: R.string.global.wentWrong())
-                        }
-                    }
+            let errorMessage = await self.viewModel.save()
+            await MainActor.run {
+                if let errorMessage {
+                    SVProgressHUD.dismiss()
+                    self.showAlert(R.string.global.error(), body: errorMessage)
                 } else {
-                    await MainActor.run {
-                        SVProgressHUD.dismiss()
-                        self.showAlert(
-                            R.string.global.error(),
-                            body: R.string.global.technicianEmailAlreadyExist()
-                        )
-                    }
-                }
-            } else {
-                let items = await FirestoreDatabaseService.getTechRoles(technician.email)
-                guard let roles = items,
-                    let userDataKey = roles.first?.userRef
-                else { return }
-
-                var removeRoles = [RoleConfig]()
-                var addRoles = [RoleConfig]()
-                if let role = roles.first(where: { $0.role == .technician }),
-                    technician.role == .moderator
-                {
-                    removeRoles.append(role)
-                }
-                if let role = roles.first(where: { $0.role == .moderator }),
-                    technician.role == .technician
-                {
-                    removeRoles.append(role)
-                }
-
-                if (technician.role == .technician || technician.role == .techMod)
-                    && !(roles.contains { $0.role == .technician })
-                {
-                    let techRole = RoleConfig(
-                        ref: Firestore.firestore().collection("users").document().documentID,
-                        email: technician.email, dataRef: UserSession.current.masterUserRef,
-                        userRef: userDataKey, role: .technician, onlineVersion: true)
-                    addRoles.append(techRole)
-                }
-
-                if (technician.role == .moderator || technician.role == .techMod)
-                    && !(roles.contains { $0.role == .moderator })
-                {
-                    let modeRole = RoleConfig(
-                        ref: Firestore.firestore().collection("users").document().documentID,
-                        email: technician.email, dataRef: UserSession.current.masterUserRef,
-                        userRef: userDataKey, role: .moderator, onlineVersion: true)
-                    addRoles.append(modeRole)
-                }
-
-                var updateData = [String: Any?]()
-                addRoles.forEach {
-                    let key = "roles/\($0.firebaseRef)"
-                    updateData[key] = $0.forDatabase()
-                }
-                removeRoles.forEach {
-                    let key = "roles/\($0.firebaseRef)"
-                    updateData[key] = nil
-                }
-
-                let techKey =
-                    "users/\(String(describing: UserSession.current.masterUserRef))/technicians/\(String(describing: technician.firebaseRef))"
-                updateData[techKey] = technician.forDatabase()
-
-                let batch = Firestore.firestore().batch()
-                updateData.forEach { key, value in
-                    let ref = Firestore.firestore().document(key)
-                    if let value = value {
-                        batch.setData(value as! [String: Any], forDocument: ref)
-                    } else {
-                        ref.delete()
-                    }
-                }
-
-                do {
-                    try await batch.commit()
-                    await MainActor.run {
-                        self.log(isNew)
-                        SVProgressHUD.dismiss()
-                        self.navigationController?.popViewController(animated: true)
-                    }
-                } catch {
-                    await MainActor.run {
-                        SVProgressHUD.dismiss()
-                        self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
-                    }
+                    self.afterSave()
                 }
             }
+        }
+    }
+
+    private func afterSave() {
+        if viewModel.isEditing {
+            SVProgressHUD.dismiss()
+            navigationController?.popViewController(animated: true)
+        } else {
+            sendInviteEmail()
         }
     }
 
     private func sendInviteEmail() {
-        let actionCodeSettings = ActionCodeSettings()
-        actionCodeSettings.url = URL(string: Config.associatedDomain)
-        actionCodeSettings.handleCodeInApp = true
-        actionCodeSettings.setIOSBundleID(Bundle.main.bundleIdentifier!)
-        actionCodeSettings.setAndroidPackageName(
-            Config.androidBundle, installIfNotAvailable: true, minimumVersion: Config.androidVersion
-        )
-
-        Auth.auth().sendSignInLink(
-            toEmail: self.technician.email, actionCodeSettings: actionCodeSettings
-        ) { (error) in
-            SVProgressHUD.dismiss()
-            if error != nil {
-                self.showAlert(
-                    R.string.global.error(), body: R.string.global.failedSentTechnicianEmail()
-                ) {
-                    self.navigationController?.popViewController(animated: true)
+        Task { [weak self] in
+            guard let self else { return }
+            do {
+                try await self.viewModel.sendInviteEmail()
+                await MainActor.run {
+                    SVProgressHUD.dismiss()
+                    self.showAlert(
+                        R.string.global.success(),
+                        body: R.string.global.successSentEmployeeEmail(self.viewModel.email)
+                    ) {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
-            } else {
-                self.showAlert(
-                    R.string.global.success(),
-                    body: R.string.global.successSentTechnicianEmail(self.technician.email)
-                ) {
-                    self.navigationController?.popViewController(animated: true)
+            } catch {
+                await MainActor.run {
+                    SVProgressHUD.dismiss()
+                    self.showAlert(
+                        R.string.global.error(), body: R.string.global.failedSentEmployeeEmail()
+                    ) {
+                        self.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
     }
-
-    private func log(_ isNew: Bool) {
-        RequestManager.shared.log(
-            date: Date(), object: .technicians, action: isNew ? .add : .update,
-            description: self.technician.description)
-    }
 }
 
-extension CreateEditTechnicianController: ImagePickerDelegate {
+// MARK: - PHPickerViewControllerDelegate
 
-    func imagePicker(_ picker: ImagePicker, didSelect image: UIImage) {
-        imagePicker.dismiss()
-        newImage = image
-        profileImageView.image = image
-    }
+extension CreateEditTechnicianController: PHPickerViewControllerDelegate {
 
-    func imagePickerDidCancel(_ picker: ImagePicker) {
-        imagePicker.dismiss()
-    }
-}
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        picker.dismiss(animated: true)
 
-// MARK: - UITextField Extension
-extension UITextField {
-    private enum AssociatedKeys {
-        nonisolated(unsafe) static var onChangeKey: ObjCBool = false
-    }
+        guard let result = results.first else { return }
 
-    var onChange: ((String) -> Void)? {
-        get {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_getAssociatedObject(self, UnsafeMutableRawPointer(mutating: key))
-                    as? ((String) -> Void)
+        result.itemProvider.loadObject(ofClass: UIImage.self) { [weak self] (object, _) in
+            guard let self = self, let image = object as? UIImage else { return }
+            DispatchQueue.main.async {
+                self.newImage = image
+                self.profileImageView.image = image
             }
         }
+    }
+}
+
+// MARK: - Multiline Input Container
+
+/// A card-styled multiline text input matching `InputContainerView`'s visual style.
+final class MultilineInputContainerView: UIView {
+
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.TableView.cellBackground
+        view.layer.cornerRadius = 12
+        return view
+    }()
+
+    private lazy var titleLabel: UILabel = {
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
+        label.textColor = UIColor.Main.secondaryText
+        label.numberOfLines = 1
+        return label
+    }()
+
+    private lazy var textView: UITextView = {
+        let textView = UITextView()
+        textView.backgroundColor = .clear
+        textView.font = Typography.title3
+        textView.textColor = UIColor.Main.text
+        textView.textContainerInset = .zero
+        textView.textContainer.lineFragmentPadding = 0
+        textView.delegate = self
+        return textView
+    }()
+
+    private lazy var placeholderLabel: UILabel = {
+        let label = UILabel()
+        label.font = Typography.title3
+        label.textColor = UIColor.Main.secondaryText.alpha(0.5)
+        label.numberOfLines = 0
+        return label
+    }()
+
+    var text: String {
+        get { textView.text }
         set {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_setAssociatedObject(
-                    self, UnsafeMutableRawPointer(mutating: key), newValue,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
+            textView.text = newValue
+            placeholderLabel.isHidden = !newValue.isEmpty
         }
+    }
+
+    var onTextChange: ((String) -> Void)?
+
+    init(labelText: String, placeholder: String?, height: CGFloat) {
+        super.init(frame: .zero)
+        titleLabel.text = labelText
+        placeholderLabel.text = placeholder
+        setupUI(height: height)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    private func setupUI(height: CGFloat) {
+        addSubview(containerView)
+        containerView.addSubview(titleLabel)
+        containerView.addSubview(textView)
+        containerView.addSubview(placeholderLabel)
+
+        containerView.edgesToSuperview()
+
+        titleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
+        titleLabel.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+
+        textView.topToBottom(of: titleLabel, offset: UIConstants.smallSpacing)
+        textView.horizontalToSuperview(insets: .horizontal(UIConstants.standardPadding))
+        textView.bottomToSuperview(offset: -UIConstants.mediumSpacing)
+        textView.height(height)
+
+        placeholderLabel.top(to: textView, offset: 0)
+        placeholderLabel.leading(to: textView)
+        placeholderLabel.trailing(to: textView)
     }
 }
 
-// MARK: - UITextView Extension
-extension UITextView {
-    private enum AssociatedKeys {
-        nonisolated(unsafe) static var onChangeKey: ObjCBool = false
-    }
-
-    var onChange: ((String) -> Void)? {
-        get {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_getAssociatedObject(self, UnsafeMutableRawPointer(mutating: key))
-                    as? ((String) -> Void)
-            }
-        }
-        set {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_setAssociatedObject(
-                    self, UnsafeMutableRawPointer(mutating: key), newValue,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
-    }
-}
-
-extension CreateEditTechnicianController: UITextViewDelegate {
+extension MultilineInputContainerView: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        textView.onChange?(textView.text)
-    }
-}
-
-extension UISwitch {
-    private enum AssociatedKeys {
-        nonisolated(unsafe) static var onChangeKey: ObjCBool = false
-    }
-
-    var onChange: ((Bool) -> Void)? {
-        get {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_getAssociatedObject(self, UnsafeMutableRawPointer(mutating: key))
-                    as? ((Bool) -> Void)
-            }
-        }
-        set {
-            withUnsafePointer(to: &AssociatedKeys.onChangeKey) { key in
-                objc_setAssociatedObject(
-                    self, UnsafeMutableRawPointer(mutating: key), newValue,
-                    .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-            }
-        }
+        placeholderLabel.isHidden = !textView.text.isEmpty
+        onTextChange?(textView.text)
     }
 }

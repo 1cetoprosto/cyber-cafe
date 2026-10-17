@@ -369,7 +369,8 @@ final class DomainOrderDataService: OrderDataServiceProtocol {
             card: order.card,
             totalCost: order.totalCost,
             inventoryTracking: order.inventoryTracking,
-            note: order.note
+            note: order.note,
+            createdBy: order.createdBy
         )
 
         let scopes = try await balanceJournalService.syncOrder(previous: nil, current: savedOrder)

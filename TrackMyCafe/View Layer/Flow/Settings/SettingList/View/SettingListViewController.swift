@@ -37,6 +37,7 @@ struct SettingsStaticOption {
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let handler: () -> Void
+    var infoHandler: (() -> Void)? = nil
 }
 
 struct SettingsDataOption {
@@ -104,17 +105,24 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     private var inventoryTrackingLocked = false
     private let trackIngredientsOptionIndex = 3
 
+    /// Returns the index of the Menu & Inventory section, which varies by role.
+    private var menuInventorySectionIndex: Int? {
+        models.firstIndex { $0.title == R.string.global.settingsSectionMenuInventory() }
+    }
+
     private func refreshInventoryTrackingFooter() {
         Task { @MainActor [weak self] in
             guard let self = self else { return }
             let isLocked = await DomainDatabaseService.shared.hasAnyOrderWithInventoryTracking()
             self.inventoryTrackingLocked = isLocked
-            guard self.models.count > 1 else { return }
+            // Locate the Menu & Inventory section by title instead of hardcoding
+            // its index — the section order depends on the user's role.
+            guard let sectionIndex = self.menuInventorySectionIndex else { return }
             let footer =
                 isLocked
                 ? R.string.global.settings_trackIngredientsFooterLocked()
                 : R.string.global.settings_trackIngredientsFooter()
-            let oldSection = self.models[1]
+            let oldSection = self.models[sectionIndex]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
             let updatedOptions = oldSection.option.enumerated().map {
                 [weak self] idx, opt -> SettingsOptionType in
@@ -140,8 +148,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 footer: footer,
                 option: updatedOptions
             )
-            self.models[1] = newSection
-            self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+            self.models[sectionIndex] = newSection
+            self.tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
         }
     }
 
@@ -190,8 +198,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func rollbackTrackIngredientsSwitchToOn() {
-        guard self.models.count > 1 else { return }
-        let oldSection = self.models[1]
+        guard let sectionIndex = menuInventorySectionIndex else { return }
+        let oldSection = self.models[sectionIndex]
         let updatedOptions = oldSection.option.enumerated().map { idx, opt -> SettingsOptionType in
             switch opt {
             case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
@@ -209,17 +217,17 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 return opt
             }
         }
-        self.models[1] = Section(
+        self.models[sectionIndex] = Section(
             title: oldSection.title,
             footer: oldSection.footer,
             option: updatedOptions
         )
-        self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+        self.tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
     }
 
     private func rollbackTrackIngredientsSwitchToOff() {
-        guard self.models.count > 1 else { return }
-        let oldSection = self.models[1]
+        guard let sectionIndex = menuInventorySectionIndex else { return }
+        let oldSection = self.models[sectionIndex]
         let updatedOptions = oldSection.option.enumerated().map { idx, opt -> SettingsOptionType in
             switch opt {
             case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
@@ -237,12 +245,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 return opt
             }
         }
-        self.models[1] = Section(
+        self.models[sectionIndex] = Section(
             title: oldSection.title,
             footer: oldSection.footer,
             option: updatedOptions
         )
-        self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+        self.tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
     }
 
     private func presentOrderModeSelection(
@@ -261,6 +269,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         OnboardingManager.shared.startIfNeeded(for: .settingsPriceList, on: self)
         OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
         OnboardingManager.shared.startIfNeeded(for: .settingsTrackIngredients, on: self)
+        OnboardingManager.shared.startIfNeeded(for: .staff, on: self)
     }
 
     @available(iOS, deprecated: 17.0, message: "Use registerForTraitChanges")
@@ -309,10 +318,28 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     func configure() {
         models.removeAll()
-        models.append(makeEstablishmentSection())
-        models.append(makeMenuInventorySection())
-        models.append(contentsOf: makeOrdersAndAppearanceSections())
-        models.append(contentsOf: makeAppInfoDevAndAccountSections())
+
+        switch UserSession.current.role {
+        case .administrator:
+            models.append(makeEstablishmentSection())
+            models.append(makeStaffSection())
+            models.append(makeMenuInventorySection())
+            models.append(contentsOf: makeOrdersAndAppearanceSections())
+            models.append(contentsOf: makeAppInfoDevAndAccountSections())
+        case .moderator:
+            // Manager: no Subscription, no Staff management.
+            models.append(makeMenuInventorySection())
+            models.append(contentsOf: makeOrdersAndAppearanceSections())
+            models.append(contentsOf: makeAppInfoDevAndAccountSections())
+        case .waiter, .techMod:
+            // Waiter: only Account section (logout, security).
+            models.append(makeAccountSection())
+        case .none:
+            models.append(makeEstablishmentSection())
+            models.append(makeMenuInventorySection())
+            models.append(contentsOf: makeOrdersAndAppearanceSections())
+            models.append(contentsOf: makeAppInfoDevAndAccountSections())
+        }
     }
 
     // MARK: - Section builders
@@ -335,6 +362,25 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             title: R.string.global.settingsSectionEstablishment(),
             footer: nil,
             option: establishmentOptions)
+    }
+
+    private func makeStaffSection() -> Section {
+        let staffOptions: [SettingsOptionType] = [
+            .staticCell(
+                model: SettingsStaticOption(
+                    title: R.string.global.menuStaff(),
+                    icon: UIImage(systemName: SystemImages.person2Fill),
+                    iconBackgroundColor: .systemIndigo
+                ) {
+                    let controller = StaffCategoriesController(style: .insetGrouped)
+                    self.navigationController?.pushViewController(controller, animated: true)
+                }
+            )
+        ]
+        return Section(
+            title: R.string.global.menuStaff(),
+            footer: nil,
+            option: staffOptions)
     }
 
     private func makeMenuInventorySection() -> Section {
@@ -489,6 +535,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             OnboardingManager.shared.startIfNeeded(
                                 for: .settingsTrackIngredients, on: self
                             )
+                            OnboardingManager.shared.startIfNeeded(for: .staff, on: self)
                         }
                     )
                 }
@@ -617,6 +664,19 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         return sections
     }
 
+    private func makeAccountSection() -> Section {
+        let logout = SettingsOptionType.staticCell(
+            model: SettingsStaticOption(
+                title: R.string.global.logout(),
+                icon: UIImage(systemName: "rectangle.portrait.and.arrow.right"),
+                iconBackgroundColor: .systemRed
+            ) { [weak self] in
+                self?.handleUserLogOut()
+            }
+        )
+        return Section(title: R.string.global.account(), footer: nil, option: [logout])
+    }
+
     func tableView(_: UITableView, titleForHeaderInSection section: Int) -> String? {
         let section = models[section]
         return section.title
@@ -653,6 +713,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 cell.accessibilityIdentifier = "priceListCell"
             } else if model.title == R.string.global.receiptTypes() {
                 cell.accessibilityIdentifier = "typesCell"
+            } else if model.title == R.string.global.menuStaff() {
+                cell.accessibilityIdentifier = "staffCell"
             }
             return cell
         case .switchCell(let model):
