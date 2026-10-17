@@ -153,13 +153,13 @@ final class StaffCreateEditViewModel: Loggable {
 
     func logSave(isNew: Bool) {
         RequestManager.shared.log(
-            date: Date(), object: .technicians, action: isNew ? .add : .update,
-            description: employee.description)
+            date: Date(), object: FirebaseCollections.legacyTechnicians,
+            action: isNew ? .add : .update, description: employee.description)
     }
 
     func logAvatarUpload(filePath: String) {
         RequestManager.shared.log(
-            date: Date(), object: .technicians, action: .add,
+            date: Date(), object: FirebaseCollections.legacyTechnicians, action: .add,
             description: R.string.global.uploadedNewEmployeeImageAt(filePath))
     }
 }
