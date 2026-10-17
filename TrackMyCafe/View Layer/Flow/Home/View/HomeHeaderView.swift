@@ -392,33 +392,36 @@ extension HomeHeaderView {
         if expenseButton.layer.borderColor == nil {
             updateExpenseButtonBorder()
         }
+    }
 
-        let width = bounds.width
+    /// Arranges the KPI cards for the given width.
+    /// Called before the header is measured, so the layout never resolves at a zero size.
+    func prepareLayout(forWidth width: CGFloat) {
         let spacing = UIConstants.standardPadding
         let cardWidth = (width - 2 * spacing) / 3
         let shouldBeThree = cardWidth >= 140
-        if shouldBeThree != isThreeInRow {
-            isThreeInRow = shouldBeThree
+        guard shouldBeThree != isThreeInRow else { return }
 
-            // Clear existing views
-            kpiRow1.arrangedSubviews.forEach {
-                kpiRow1.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
-            kpiRow2.arrangedSubviews.forEach {
-                kpiRow2.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
+        isThreeInRow = shouldBeThree
 
-            if shouldBeThree {
-                kpiRow1.addArrangedSubview(summaryCard)
-                kpiRow1.addArrangedSubview(expensesCard)
-                kpiRow1.addArrangedSubview(profitCard)
-            } else {
-                kpiRow1.addArrangedSubview(summaryCard)
-                kpiRow1.addArrangedSubview(expensesCard)
-                kpiRow2.addArrangedSubview(profitCard)
-            }
+        // Clear existing views
+        kpiRow1.arrangedSubviews.forEach {
+            kpiRow1.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+        kpiRow2.arrangedSubviews.forEach {
+            kpiRow2.removeArrangedSubview($0)
+            $0.removeFromSuperview()
+        }
+
+        if shouldBeThree {
+            kpiRow1.addArrangedSubview(summaryCard)
+            kpiRow1.addArrangedSubview(expensesCard)
+            kpiRow1.addArrangedSubview(profitCard)
+        } else {
+            kpiRow1.addArrangedSubview(summaryCard)
+            kpiRow1.addArrangedSubview(expensesCard)
+            kpiRow2.addArrangedSubview(profitCard)
         }
     }
 }

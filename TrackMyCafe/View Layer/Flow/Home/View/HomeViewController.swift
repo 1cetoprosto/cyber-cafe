@@ -108,7 +108,10 @@ final class HomeViewController: UIViewController, ProGated {
             headerContainer.addSubview(headerView)
             headerView.edgesToSuperview()
         }
-        headerContainer.layoutIfNeeded()
+
+        // Decide the KPI arrangement for the current width before measuring.
+        // Laying the container out at a zero size would log unsatisfiable-constraint conflicts.
+        headerView.prepareLayout(forWidth: width)
 
         let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
         let height = headerContainer.systemLayoutSizeFitting(
