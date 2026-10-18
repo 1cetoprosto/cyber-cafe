@@ -695,6 +695,9 @@
 		F3EB27DB27F30ED800BB2D93 /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */; };
 		F3EB27DF27F30F0700BB2D93 /* ProductListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DE27F30F0700BB2D93 /* ProductListItemViewModel.swift */; };
+		F3F078A9308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F078A8308490C3002940EF /* StaffCategoriesViewModel.swift */; };
+		F3F078AA308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F078A8308490C3002940EF /* StaffCategoriesViewModel.swift */; };
+		F3F078AB308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F078A8308490C3002940EF /* StaffCategoriesViewModel.swift */; };
 		F3F2036B2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */; };
 		F3F2036C2FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */; };
 		F3F2036D2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */; };
@@ -1050,6 +1053,7 @@
 		F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListViewModel.swift; sourceTree = "<group>"; };
 		F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemViewModelType.swift; sourceTree = "<group>"; };
 		F3EB27DE27F30F0700BB2D93 /* ProductListItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListItemViewModel.swift; sourceTree = "<group>"; };
+		F3F078A8308490C3002940EF /* StaffCategoriesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffCategoriesViewModel.swift; sourceTree = "<group>"; };
 		F3F203692FD521A5007249FB /* OrderCategoryFirstPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCategoryFirstPickerViewController.swift; sourceTree = "<group>"; };
 		F3F2036A2FD521A5007249FB /* OrderCategoryFirstProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderCategoryFirstProductsViewController.swift; sourceTree = "<group>"; };
 		F3F203712FD521B5007249FB /* OrderPickerCategoryGridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPickerCategoryGridCell.swift; sourceTree = "<group>"; };
@@ -1482,6 +1486,7 @@
 			isa = PBXGroup;
 			children = (
 				F30BEC6B307E49F00063CF35 /* StaffCreateEditViewModel.swift */,
+				F3F078A8308490C3002940EF /* StaffCategoriesViewModel.swift */,
 				F30BEC6C307E49F00063CF35 /* StaffDetailsViewModel.swift */,
 				F30BEC6D307E49F00063CF35 /* StaffListViewModel.swift */,
 			);
@@ -3136,6 +3141,7 @@
 				F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */,
 				F3264981275B32AA00836077 /* CostTableViewCell.swift in Sources */,
 				F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */,
+				F3F078AB308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D22F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3988AF127EB310900215976 /* CostListItemViewModel.swift in Sources */,
@@ -3378,6 +3384,7 @@
 				F3B339F42C0B22FE0073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6332C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
 				F3B339F52C0B22FE0073F19A /* ForgotPassController.swift in Sources */,
+				F3F078A9308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D02F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D12F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B339F62C0B22FE0073F19A /* CostListItemViewModel.swift in Sources */,
@@ -3620,6 +3627,7 @@
 				F3B33A932C0B23450073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6342C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
 				F3B33A942C0B23450073F19A /* ForgotPassController.swift in Sources */,
+				F3F078AA308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D42F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
 				F3B33A952C0B23450073F19A /* CostListItemViewModel.swift in Sources */,

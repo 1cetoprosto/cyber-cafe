@@ -9,6 +9,8 @@ import UIKit
 
 class StaffCategoriesController: UITableViewController {
 
+    private let viewModel = StaffCategoriesViewModel()
+
     enum Category: CaseIterable {
         case waiter
         case seniorWaiter
@@ -86,11 +88,8 @@ class StaffCategoriesController: UITableViewController {
         var option: SettingsStaticOption
 
         if indexPath.row == 0 {
-            let admin = RequestManager.shared.admin
             option = SettingsStaticOption(
-                title: admin.fullName.isEmpty
-                    ? R.string.global.roleAdmin()
-                    : admin.fullName,
+                title: viewModel.ownerDisplayName,
                 icon: UIImage(systemName: "person.crop.circle.fill"),
                 iconBackgroundColor: .systemIndigo
             ) {}
