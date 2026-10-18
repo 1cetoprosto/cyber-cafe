@@ -16,15 +16,15 @@ enum ActionType: String {
 }
 
 class Log {
-    
+
     var timestamp: Date
     var firebaseRef: String?
     var description: String
-    var object: Refs // doctor, caster, etc
-    var objectRef: String? // ref to object
+    var object: String  // collection name the action was performed on
+    var objectRef: String?  // ref to object
     var action: ActionType
-    
-    init(date: Date, object: Refs, action: ActionType, description: String) {
+
+    init(date: Date, object: String, action: ActionType, description: String) {
         self.timestamp = date
         self.object = object
         self.action = action
@@ -37,6 +37,7 @@ class Log {
 extension Log {
     func logEntry() -> String {
         let additionalInfo = ", (object Id: \(objectRef!), log Id: \(firebaseRef!).\n\n"
-        return "Date: " + timestamp.asString(showTime: true) + ", action: " + action.rawValue + ", for object: " + object.rawValue + ", description: " + description + additionalInfo
+        return "Date: " + timestamp.asString(showTime: true) + ", action: " + action.rawValue
+            + ", for object: " + object + ", description: " + description + additionalInfo
     }
 }
