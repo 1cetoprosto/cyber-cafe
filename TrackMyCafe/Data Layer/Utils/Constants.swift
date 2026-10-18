@@ -50,20 +50,15 @@ extension Notification.Name {
     static let productListDidChange = Notification.Name("productListDidChange")
 }
 
-// Firebase refs
+// MARK: - Firebase Storage refs
+/// Firebase Storage folder names. Uppercase naming inherited from the original
+/// project; kept as-is because Storage paths are already part of uploaded data.
+/// Firestore collection names live in `FirebaseCollections` only.
 enum Refs: String {
-    case users = "Users"
-    // Historical collection name inherited from DTLab. Stores cafe employees
-    // (managers + waiters). Do NOT rename without a full Firestore migration.
-    case technicians = "Technicians"
     case avatars = "Avatars"
     case comments = "Comments"
     case photos = "Photo"
     case audio = "Audio"
-    case settings = "Settings"
-    case subscription = "Subscription"
-    case logs = "Logs"
-    case orders = "Orders"
 }
 
 // MARK: - UI Constants
@@ -167,11 +162,17 @@ struct SettingsFields {
 }
 
 // MARK: - Firebase Collections
+/// Single source of truth for every Firestore collection name used by the app.
+///
+/// Firestore names are case-sensitive. Two families coexist here and their exact
+/// string values must NOT change without a coordinated data migration:
+///   - Modern (lowercase): `users/{uid}` profile + inventory subcollections.
+///   - Legacy (PascalCase): the cafe business-data subtree under `Users/{uid}`,
+///     inherited from the old Firebase Realtime Database schema.
 struct FirebaseCollections {
     static let users = "users"
     static let roles = "roles"
     static let admins = "admins"
-    // Historical collection name (see Refs.technicians). Stores cafe employees.
     static let technicians = "technicians"
     static let productOfOrders = "productOfOrders"
     static let orders = "orders"
@@ -187,6 +188,18 @@ struct FirebaseCollections {
     static let subscriptions = "Subscriptions"
     static let info = ".info"
     static let productCategories = "productCategories"
+
+    // MARK: Legacy (PascalCase)
+    // Cafe business data lives under `Users/{uid}` (capital U) with PascalCase
+    // subcollections. Do NOT rename these without migrating existing data.
+    /// Business-data root document: `Users/{masterUserRef}`.
+    static let legacyUsers = "Users"
+    static let legacyOrders = "Orders"
+    /// Cafe staff (managers + waiters): `Users/{masterUserRef}/Technicians`.
+    static let legacyTechnicians = "Technicians"
+    static let legacyLogs = "Logs"
+    static let legacySettings = "Settings"
+    static let legacySubscription = "Subscription"
 }
 
 // MARK: - Firebase Document Fields

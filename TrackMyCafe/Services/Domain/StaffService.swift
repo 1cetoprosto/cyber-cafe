@@ -17,7 +17,7 @@ import Foundation
 /// making them unit-testable with a mock service.
 final class StaffService: StaffServiceProtocol, Loggable {
 
-    /// The establishment's Firestore document reference (`users/{masterUserRef}`).
+    /// The establishment's Firestore document reference (`Users/{masterUserRef}`).
     ///
     /// Built from `UserSession.current.masterUserRef` rather than relying on
     /// `RequestManager.shared.mainRef` (an implicitly-unwrapped optional that may
@@ -25,7 +25,7 @@ final class StaffService: StaffServiceProtocol, Loggable {
     private var mainRef: DocumentReference? {
         guard let masterUserRef = UserSession.current.masterUserRef else { return nil }
         return Firestore.firestore()
-            .collection(Refs.users.rawValue)
+            .collection(FirebaseCollections.legacyUsers)
             .document(masterUserRef)
     }
 
@@ -73,10 +73,10 @@ final class StaffService: StaffServiceProtocol, Loggable {
         )
 
         // Generate the employee document ID and assign it back to the model.
-        // Use `Refs.technicians.rawValue` ("Technicians") to match the path
+        // Use the legacy PascalCase name ("Technicians") to match the path
         // `RequestManager` listens on — NOT `FirebaseCollections.technicians`
-        // ("technicians"), which would write to a different collection.
-        let employeeRef = mainRef.collection(Refs.technicians.rawValue).document()
+        // ("technicians"), which is a different collection.
+        let employeeRef = mainRef.collection(FirebaseCollections.legacyTechnicians).document()
         employee.firebaseRef = employeeRef.documentID
 
         let batch = db.batch()
@@ -124,7 +124,7 @@ final class StaffService: StaffServiceProtocol, Loggable {
         }
 
         let db = Firestore.firestore()
-        let employeeRef = mainRef.collection(Refs.technicians.rawValue).document(
+        let employeeRef = mainRef.collection(FirebaseCollections.legacyTechnicians).document(
             employee.firebaseRef)
         let batch = db.batch()
 
