@@ -117,7 +117,9 @@ class RequestManager: NSObject {
             }
 
             Task {
-                _ = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+                // Prefer cafe-level Firebase Pro so staff devices keep access
+                // even without a local App Store purchase.
+                _ = await IAPManager.shared.resolveProAccess()
             }
         }
     }
@@ -384,6 +386,15 @@ class RequestManager: NSObject {
         _ productId: String, transactionId: String, originTransactionId: String, paymentDate: Date,
         nextPaymentDate: Date
     ) {
+        // Staff must never mutate the cafe subscription document.
+        // Allow writes only for the owner, or for a pre-login pending sync.
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            logger.notice(
+                "Skipping subscription write for non-admin role: \(String(describing: UserSession.current.role))"
+            )
+            return
+        }
+
         var data: [String: Any] = [
             "providerId": "ios",
             "iosProductId": productId,
