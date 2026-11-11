@@ -33,6 +33,11 @@ class UserSession {
         return role! == .moderator
     }
 
+    /// Only the cafe owner may purchase, restore, or sync App Store subscription.
+    var canManageSubscription: Bool {
+        SubscriptionAccessPolicy.canManageSubscription(role: role)
+    }
+
     public private(set) var userId: String!
     public private(set) var userEmail: String!
     public private(set) var role: Role!
