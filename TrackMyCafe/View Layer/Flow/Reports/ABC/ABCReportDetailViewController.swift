@@ -8,7 +8,7 @@ final class ABCProductCell: UITableViewCell {
     private let containerView: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
-        v.layer.cornerRadius = UIConstants.mediumCornerRadius
+        v.applyCafeListCardStyle()
         return v
     }()
 
@@ -74,7 +74,11 @@ final class ABCProductCell: UITableViewCell {
 
     private func setup() {
         backgroundColor = .clear
+        contentView.backgroundColor = .clear
         selectionStyle = .none
+        if #available(iOS 14.0, *) {
+            backgroundConfiguration = UIBackgroundConfiguration.clear()
+        }
 
         contentView.addSubview(containerView)
         containerView.edgesToSuperview(
@@ -291,7 +295,7 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
         // Ranking card container
         let rankingCard = UIView()
         rankingCard.backgroundColor = Theme.current.cellBackground
-        rankingCard.layer.cornerRadius = UIConstants.mediumCornerRadius
+        rankingCard.applyCafeSoftCardStyle()
         rankingCard.addSubview(rankingTitleLabel)
         rankingCard.addSubview(rankingControl)
         rankingTitleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
@@ -396,20 +400,18 @@ final class ABCReportDetailViewController: UIViewController, UITableViewDelegate
     ) {
         let card = UIView()
         card.backgroundColor = Theme.current.cellBackground
-        card.layer.cornerRadius = UIConstants.mediumCornerRadius
+        card.applyCafeSoftCardStyle()
 
-        let titleL = AppLabel(style: .footnote)
-        titleL.apply(.footnote)
-        titleL.textColor = Theme.current.secondaryText
+        let titleL = AppLabel(style: .kpiTitle)
+        titleL.apply(.kpiTitle)
         titleL.text = title
         titleL.numberOfLines = 1
         titleL.adjustsFontSizeToFitWidth = true
         titleL.minimumScaleFactor = 0.55
         titleL.allowsDefaultTighteningForTruncation = true
 
-        let countL = AppLabel(style: .footnote)
-        countL.apply(.footnoteLight)
-        countL.textColor = Theme.current.secondaryText
+        let countL = AppLabel(style: .kpiTitle)
+        countL.apply(.kpiTitle)
         countL.text = R.string.global.abcProductCountFormat(count)
         countL.adjustsFontSizeToFitWidth = true
         countL.minimumScaleFactor = 0.75

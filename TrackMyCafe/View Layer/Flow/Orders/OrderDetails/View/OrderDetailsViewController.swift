@@ -627,6 +627,8 @@ extension OrderDetailsViewController: UITableViewDelegate, UITableViewDataSource
         else { return UITableViewCell() }
 
         cell.viewModel = cellViewModel
+        let totalRows = viewModel?.productsViewModel.numberOfRowInSection(for: indexPath.section) ?? 0
+        cell.applyListStyle(row: indexPath.row, totalRows: totalRows)
         cell.productStepper.addTarget(
             self, action: #selector(stepperValueChanged(_:)), for: UIControl.Event.valueChanged)
         return cell

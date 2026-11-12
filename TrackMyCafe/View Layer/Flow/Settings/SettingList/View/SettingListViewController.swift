@@ -619,11 +619,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         icon: UIImage(systemName: SystemImages.gearshape),
                         iconBackgroundColor: .systemPurple
                     ) {
+                        let defaultDays = DomainDatabaseService.defaultDemoSeedDays
                         let fields: [InputFieldConfig] = [
                             InputFieldConfig(
                                 placeholder: R.string.global.enterNumberOfDays(),
                                 keyboardType: .numberPad,
-                                initialText: "14"
+                                initialText: "\(defaultDays)"
                             )
                         ]
                         PopupFactory.showInputPopup(
@@ -632,8 +633,8 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                             fields: fields,
                             saveTitle: R.string.global.seedAction()
                         ) { [weak self] values in
-                            let daysText = values.first ?? "14"
-                            let days = Int(daysText) ?? 14
+                            let daysText = values.first ?? "\(defaultDays)"
+                            let days = Int(daysText) ?? defaultDays
                             SVProgressHUD.show(withStatus: R.string.global.seedingData())
                             Task {
                                 await DomainDatabaseService.shared.seedTestData(forDays: days)

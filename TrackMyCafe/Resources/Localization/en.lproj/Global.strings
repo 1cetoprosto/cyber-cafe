@@ -126,6 +126,19 @@
 "recentIncomes" = "Recent Incomes";
 "recentExpenses" = "Recent Expenses";
 "allArrow" = "All ->";
+"homeProfitTitle" = "Net Profit";
+"homeProfitPeriodDay" = "Today";
+"homeProfitPeriodWeek" = "This Week";
+"homeProfitPeriodMonth" = "This Month";
+"homeProfitCompareDay" = "Today vs yesterday";
+"homeProfitCompareWeek" = "This week vs last week";
+"homeProfitCompareMonth" = "This month vs last month";
+"homeProfitDeltaFormat" = "%@ %.0f%%";
+"homeProfitDeltaUnavailable" = "No comparison with the previous period";
+"homeProfitInfoTitle" = "How profit is calculated";
+"homeProfitInfoBody" = "Sales minus product cost and all other expenses for the selected period — what’s left.";
+"homeProfitInfoAccessibility" = "How profit is calculated";
+"homeProfitCardAccessibility" = "Open profit report";
 
 // MARK: - Staff Alerts & Details
 "changeSub" = "Change Subscription";

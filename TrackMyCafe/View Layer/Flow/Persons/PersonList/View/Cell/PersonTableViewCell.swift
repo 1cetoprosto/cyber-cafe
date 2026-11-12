@@ -36,8 +36,8 @@ class PersonTableViewCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        self.backgroundColor = UIColor.TableView.cellBackground
-        self.contentView.backgroundColor = UIColor.TableView.cellBackground
+        backgroundColor = UIColor.TableView.cellBackground
+        contentView.backgroundColor = UIColor.TableView.cellBackground
         selectionStyle = .none
         accessoryType = .disclosureIndicator
         setupLayout()
@@ -59,7 +59,6 @@ class PersonTableViewCell: UITableViewCell {
 
         contentView.addSubview(hStack)
 
-        // Constraints
         profileImage.height(40)
         profileImage.width(40)
 

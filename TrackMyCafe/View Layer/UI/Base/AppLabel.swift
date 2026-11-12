@@ -232,40 +232,41 @@ final class AppLabel: UILabel {
             adjustsFontSizeToFitWidth: true,
             minimumScaleFactor: 0.85
         ),
+        // Card captions — medium weight, readable size (not thin footnote)
         .kpiTitle: Configuration(
-            font: Typography.footnote,
+            font: Typography.calloutDemi,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
-            textColor: UIColor.Main.text.alpha(0.7),
+            textColor: UIColor.Semantic.kpiLabel,
             adjustsFontSizeToFitWidth: true,
-            minimumScaleFactor: 0.7,
+            minimumScaleFactor: 0.75,
             allowsDefaultTighteningForTruncation: true
         ),
         .kpiValue: Configuration(
-            font: Typography.title3DemiBold,
+            font: Typography.title2DemiBold,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
             textColor: UIColor.Main.text,
             adjustsFontSizeToFitWidth: true,
-            minimumScaleFactor: 0.6,
+            minimumScaleFactor: 0.65,
             allowsDefaultTighteningForTruncation: true
         ),
         .kpiFooter: Configuration(
-            font: Typography.footnote,
-            numberOfLines: 1,
+            font: Typography.callout,
+            numberOfLines: 2,
             lineBreakMode: .byTruncatingTail,
-            textColor: UIColor.Main.text.alpha(0.7),
+            textColor: UIColor.Semantic.kpiLabel,
             adjustsFontSizeToFitWidth: true,
-            minimumScaleFactor: 0.85
+            minimumScaleFactor: 0.8
         ),
         .balanceTitle: Configuration(
-            font: Typography.footnote,
+            font: Typography.calloutDemi,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
-            textColor: UIColor.Main.text.alpha(0.7)
+            textColor: UIColor.Semantic.kpiLabel
         ),
         .balanceValue: Configuration(
-            font: Typography.title3DemiBold,
+            font: Typography.title2DemiBold,
             numberOfLines: 1,
             lineBreakMode: .byTruncatingTail,
             textColor: UIColor.Main.text,

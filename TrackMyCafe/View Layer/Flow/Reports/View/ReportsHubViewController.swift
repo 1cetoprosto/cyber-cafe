@@ -29,7 +29,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     private let heroCardView: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
-        v.layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        v.applyCafeSoftCardStyle()
         return v
     }()
 
@@ -47,7 +47,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     private let heroNetTitleLabel: UILabel = {
         let l = AppLabel(style: .footnote)
         l.apply(.footnote)
-        l.textColor = Theme.current.secondaryText
+        l.textColor = UIColor.Semantic.kpiLabel
         l.numberOfLines = 1
         l.text = R.string.global.kpiBigNet()
         return l
@@ -66,21 +66,21 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
 
     private let heroSalesBadge: UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
+        v.backgroundColor = UIColor.Semantic.positiveFill
         v.layer.cornerRadius = 14
         return v
     }()
     private let heroSalesIcon: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(systemName: "arrow.up.right")
-        iv.tintColor = .systemGreen
+        iv.image = UIColor.Semantic.kpiSymbol("arrow.up.right")
+        iv.tintColor = UIColor.Semantic.positive
         iv.contentMode = .scaleAspectFit
         return iv
     }()
     private let heroSalesTitleLabel: UILabel = {
         let l = AppLabel(style: .footnoteLight)
         l.apply(.footnoteLight)
-        l.textColor = Theme.current.secondaryText
+        l.textColor = UIColor.Semantic.kpiLabel
         l.text = R.string.global.hubBigSalesLabel()
         l.numberOfLines = 1
         return l
@@ -97,21 +97,21 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
 
     private let heroCostsBadge: UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor.systemOrange.withAlphaComponent(0.15)
+        v.backgroundColor = UIColor.Semantic.costFill
         v.layer.cornerRadius = 14
         return v
     }()
     private let heroCostsIcon: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(systemName: "arrow.down.right")
-        iv.tintColor = .systemOrange
+        iv.image = UIColor.Semantic.kpiSymbol("arrow.down.right")
+        iv.tintColor = UIColor.Semantic.cost
         iv.contentMode = .scaleAspectFit
         return iv
     }()
     private let heroCostsTitleLabel: UILabel = {
         let l = AppLabel(style: .footnoteLight)
         l.apply(.footnoteLight)
-        l.textColor = Theme.current.secondaryText
+        l.textColor = UIColor.Semantic.kpiLabel
         l.text = R.string.global.hubBigCostsLabel()
         l.numberOfLines = 1
         return l
@@ -119,7 +119,7 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
     private let heroCostsValueLabel: UILabel = {
         let l = AppLabel(style: .footnote)
         l.apply(.calloutDemi)
-        l.textColor = .systemOrange
+        l.textColor = UIColor.Semantic.cost
         l.adjustsFontSizeToFitWidth = true
         l.minimumScaleFactor = 0.7
         l.numberOfLines = 1
@@ -165,13 +165,18 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         apply(viewModel.currentPeriod)
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        heroCardView.updateCafeSoftCardShadowPath()
+    }
+
     private func setupLayout() {
         // Hero card layout (unified badge-icon + title + value pattern, same as Home)
         heroNetIconBadge.addSubview(heroNetIconView)
         heroNetIconView.size(
-            CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+            CGSize(width: UIConstants.kpiIconSize, height: UIConstants.kpiIconSize))
         heroNetIconView.centerInSuperview()
-        let badgeSize = UIConstants.badgeSize
+        let badgeSize = UIConstants.kpiBadgeSize
         heroNetIconBadge.size(CGSize(width: badgeSize, height: badgeSize))
 
         heroCardView.addSubview(heroNetIconBadge)
@@ -319,12 +324,11 @@ final class ReportsHubViewController: UIViewController, UITableViewDelegate, UIT
         heroCostsValueLabel.text = Self.currencyString(value: totalCosts, currency: currency)
         heroNetValueLabel.text = Self.currencyString(value: netProfit, currency: currency)
         let isPositive = netProfit >= 0
-        heroNetValueLabel.textColor = isPositive ? .systemGreen : .systemRed
-        heroNetIconView.image = UIImage(
-            systemName: isPositive ? "arrow.up.right" : "arrow.down.right")
-        heroNetIconView.tintColor = isPositive ? .systemGreen : .systemRed
-        heroNetIconBadge.backgroundColor =
-            (isPositive ? UIColor.systemGreen : UIColor.systemRed).withAlphaComponent(0.15)
+        heroNetValueLabel.textColor = UIColor.Semantic.profit(netProfit)
+        heroNetIconView.image = UIColor.Semantic.kpiSymbol(
+            isPositive ? "arrow.up.right" : "arrow.down.right")
+        heroNetIconView.tintColor = UIColor.Semantic.profit(netProfit)
+        heroNetIconBadge.backgroundColor = UIColor.Semantic.profitFill(netProfit)
     }
 
     private static func currencyString(value: Double, currency: String) -> String {

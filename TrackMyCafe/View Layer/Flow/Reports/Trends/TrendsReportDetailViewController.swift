@@ -20,7 +20,7 @@ final class TrendPointCell: UITableViewCell {
     private let containerView: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
-        v.layer.cornerRadius = UIConstants.mediumCornerRadius
+        v.applyCafeListCardStyle()
         return v
     }()
 
@@ -78,7 +78,11 @@ final class TrendPointCell: UITableViewCell {
 
     private func setup() {
         backgroundColor = .clear
+        contentView.backgroundColor = .clear
         selectionStyle = .none
+        if #available(iOS 14.0, *) {
+            backgroundConfiguration = UIBackgroundConfiguration.clear()
+        }
 
         contentView.addSubview(containerView)
         containerView.edgesToSuperview(
@@ -127,7 +131,7 @@ final class TrendPointCell: UITableViewCell {
         let fCurrency = TrendPointCell.currencyFormatter(currency: currency)
 
         netLabel.text = fCurrency.string(for: point.netProfit) ?? ""
-        netLabel.textColor = point.netProfit >= 0 ? .systemGreen : .systemRed
+        netLabel.textColor = UIColor.Semantic.profit(point.netProfit)
 
         deltaLabel.text = ""
         deltaLabel.isHidden = true
@@ -347,18 +351,17 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         segmentedControl.rightToSuperview(offset: -UIConstants.standardPadding)
         let netCard = UIView()
         netCard.backgroundColor = Theme.current.cellBackground
-        netCard.layer.cornerRadius = UIConstants.mediumCornerRadius
+        netCard.applyCafeSoftCardStyle()
 
-        let netTitleL = AppLabel(style: .footnote)
-        netTitleL.apply(.footnote)
-        netTitleL.textColor = Theme.current.secondaryText
+        let netTitleL = AppLabel(style: .kpiTitle)
+        netTitleL.apply(.kpiTitle)
         netTitleL.numberOfLines = 2
         netTitleL.text = Self.netHeaderTitle(
             for: periodicity, referenceDate: lastPoint?.startDate ?? Date())
 
         let netValueL = AppLabel(style: .footnote)
         netValueL.apply(.largeTitleBold)
-        netValueL.textColor = totalNet >= 0 ? .systemGreen : .systemRed
+        netValueL.textColor = UIColor.Semantic.profit(totalNet)
         netValueL.adjustsFontSizeToFitWidth = true
         netValueL.minimumScaleFactor = 0.6
         netValueL.numberOfLines = 1
@@ -382,7 +385,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
                 ? R.string.global.trendsNetDeltaBetter()
                 : R.string.global.trendsNetDeltaWorse()
             netDeltaL.text = R.string.global.trendsNetDeltaPreviousFormat(sign, deltaValue, metric)
-            netDeltaL.textColor = deltaValue >= 0 ? .systemGreen : .systemRed
+            netDeltaL.textColor = UIColor.Semantic.profit(deltaValue)
         } else if lastPoint == nil {
             netDeltaL.text = ""
         } else {
@@ -419,7 +422,7 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
         smallSV.addArrangedSubview(
             makeSmallSummary(
                 title: R.string.global.hubBigCostsLabel(),
-                valueStr: f.string(for: totalCosts) ?? "0", color: .systemOrange))
+                valueStr: f.string(for: totalCosts) ?? "0", color: UIColor.Semantic.cost))
 
         netCard.addSubview(smallSV)
         smallSV.topToBottom(
@@ -481,9 +484,8 @@ final class TrendsReportDetailViewController: UIViewController, UITableViewDeleg
     }
 
     private func makeSmallSummary(title: String, valueStr: String, color: UIColor) -> UIView {
-        let titleL = AppLabel(style: .footnote)
-        titleL.apply(.footnoteLight)
-        titleL.textColor = Theme.current.secondaryText
+        let titleL = AppLabel(style: .kpiTitle)
+        titleL.apply(.kpiTitle)
         titleL.text = title
 
         let valueL = AppLabel(style: .footnote)

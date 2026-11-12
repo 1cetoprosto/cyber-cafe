@@ -51,6 +51,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
             constant: -12
         )
         demoDataButtonTabBarTopConstraint?.priority = .required
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        guard demoDataButtonTabBarTopConstraint?.isActive != true, tabBar.superview === view else {
+            return
+        }
         demoDataButtonTabBarTopConstraint?.isActive = true
     }
 

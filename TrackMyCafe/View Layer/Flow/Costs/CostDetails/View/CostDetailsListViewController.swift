@@ -70,7 +70,7 @@ final class CostDetailsListViewController: UIViewController {
     private lazy var paymentMethodContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = UIConstants.mediumCornerRadius
+        view.applyCafeSoftCardStyle()
         return view
     }()
 

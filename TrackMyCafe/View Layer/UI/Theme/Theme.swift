@@ -453,57 +453,52 @@ struct CoffeeWithMilkTheme: ThemeProtocol {
         return color
     }
 
-    // Deep coffee for primary text
+    private func rgb(_ r: CGFloat, _ g: CGFloat, _ b: CGFloat) -> UIColor {
+        UIColor(red: r / 255.0, green: g / 255.0, blue: b / 255.0, alpha: 1.0)
+    }
+
+    // Espresso text (mock-aligned)
     var primaryText: UIColor {
-        color("PrimaryTextCoffeeMilk", fallback: UIColor(red: 62, green: 39, blue: 35))
+        color("PrimaryTextCoffeeMilk", fallback: rgb(62, 39, 35))  // #3E2723
     }
 
-    // Creamy milk background
+    // Warm cream background
     var primaryBackground: UIColor {
-        color("PrimaryBackgroundCoffeeMilk", fallback: UIColor(red: 255, green: 248, blue: 231))
+        color("PrimaryBackgroundCoffeeMilk", fallback: rgb(251, 246, 240))  // #FBF6F0
     }
 
-    // Medium latte accent for secondary text
+    // Taupe secondary labels
     var secondaryText: UIColor {
-        color("SecondaryTextCoffeeMilk", fallback: UIColor(red: 109, green: 76, blue: 65))
+        color("SecondaryTextCoffeeMilk", fallback: rgb(141, 110, 99))  // #8D6E63
     }
 
-    // Light beige for grouped backgrounds
+    // Espresso brown accent (buttons / fills) — replaces former green
     var secondaryBackground: UIColor {
-        color("SecondaryBackgroundCoffeeMilk", fallback: UIColor(red: 245, green: 238, blue: 230))
+        color("SecondaryBackgroundCoffeeMilk", fallback: rgb(93, 64, 55))  // #5D4037
     }
 
-    // Cappuccino accent for controls
     var tabBarTint: UIColor {
-        // Use asset-defined deep coffee tone to ensure visibility
-        color("TabBarTintCoffeeMilk", fallback: UIColor(red: 62, green: 39, blue: 35))
+        color("TabBarTintCoffeeMilk", fallback: rgb(62, 39, 35))  // #3E2723
     }
 
     var tabBarUnselectedTint: UIColor {
-        // Visible, but less prominent than selected
-        let asset =
-            UIColor(named: "TabBarUnselectedTintCoffeeMilk")
-            ?? UIColor(red: 109, green: 76, blue: 65)
-        return asset
+        color("TabBarUnselectedTintCoffeeMilk", fallback: rgb(161, 136, 127))  // #A1887F
     }
 
     var cellBackground: UIColor {
-        color("CellBackgroundCoffeeMilk", fallback: UIColor(red: 255, green: 252, blue: 245))
+        color("CellBackgroundCoffeeMilk", fallback: .white)  // white cards on cream bg
     }
 
     var navBarBackground: UIColor {
-        color("NavBarBackgroundCoffeeMilk", fallback: UIColor(red: 255, green: 253, blue: 247))
+        color("NavBarBackgroundCoffeeMilk", fallback: rgb(251, 246, 240))  // #FBF6F0
     }
 
     var navBarText: UIColor {
-        color("NavBarTextCoffeeMilk", fallback: UIColor(red: 62, green: 39, blue: 35))
+        color("NavBarTextCoffeeMilk", fallback: rgb(62, 39, 35))  // #3E2723
     }
 
     var buttonBackground: UIColor {
-        color(
-            "SecondaryBackgroundCoffeeMilk",
-            fallback: UIColor(
-                red: 0x2A / 255.0, green: 0x61 / 255.0, blue: 0x46 / 255.0, alpha: 1.0))  // #2A6146
+        color("SecondaryBackgroundCoffeeMilk", fallback: rgb(93, 64, 55))  // #5D4037
     }
 
     var buttonText: UIColor {

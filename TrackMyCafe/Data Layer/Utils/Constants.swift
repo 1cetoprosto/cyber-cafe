@@ -87,21 +87,27 @@ struct UIConstants {
     static let iconContainerSize: CGFloat = 30
     static let maxLabelWidth: CGFloat = 150
     static let largeIconSize: CGFloat = 40
+    /// Compact KPI badge (thin arrow inside, not a 40pt block glyph)
+    static let kpiIconSize: CGFloat = 20
     static let badgeSize: CGFloat = 44
+    static let kpiBadgeSize: CGFloat = 36
 
     // Corner radius values
     static let smallCornerRadius: CGFloat = 4
     static let standardCornerRadius: CGFloat = 5
-    static let mediumCornerRadius: CGFloat = 8
-    static let largeCornerRadius: CGFloat = 10
-    static let extraLargeCornerRadius: CGFloat = 15
-    static let buttonCornerRadius: CGFloat = 20
+    /// Compact chips / icon wells (not full content cards)
+    static let mediumCornerRadius: CGFloat = 14
+    /// Buttons, inputs, secondary surfaces
+    static let largeCornerRadius: CGFloat = 16
+    /// Canonical content-card radius (Home / Reports / KPI / list cards)
+    static let cardCornerRadius: CGFloat = 20
+    static let extraLargeCornerRadius: CGFloat = cardCornerRadius
+    static let buttonCornerRadius: CGFloat = cardCornerRadius
     static let profileImageCornerRadius: CGFloat = 75
-    static let badgeCornerRadius: CGFloat = 12
+    static let badgeCornerRadius: CGFloat = 14
 
     // Border width values
     static let standardBorderWidth: CGFloat = 1
-    // borderWidth
     static let thickBorderWidth: CGFloat = 1.5
 
     // Alpha values

@@ -126,6 +126,19 @@
 "recentIncomes" = "Останні доходи";
 "recentExpenses" = "Останні витрати";
 "allArrow" = "Всі ->";
+"homeProfitTitle" = "Прибуток";
+"homeProfitPeriodDay" = "Сьогодні";
+"homeProfitPeriodWeek" = "Цей тиждень";
+"homeProfitPeriodMonth" = "Цей місяць";
+"homeProfitCompareDay" = "Сьогодні vs вчора";
+"homeProfitCompareWeek" = "Цей тиждень vs попередній";
+"homeProfitCompareMonth" = "Цей місяць vs попередній";
+"homeProfitDeltaFormat" = "%@ %.0f%%";
+"homeProfitDeltaUnavailable" = "Немає порівняння з попереднім періодом";
+"homeProfitInfoTitle" = "Як рахується прибуток";
+"homeProfitInfoBody" = "Це виручка мінус собівартість товарів і всі інші витрати за обраний період. Тобто те, що реально залишилось.";
+"homeProfitInfoAccessibility" = "Як рахується прибуток";
+"homeProfitCardAccessibility" = "Відкрити звіт про прибуток";
 
 // MARK: - Staff Alerts & Details
 "changeSub" = "Змінити підписку";

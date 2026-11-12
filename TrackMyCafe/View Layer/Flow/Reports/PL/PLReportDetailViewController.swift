@@ -175,24 +175,23 @@ final class PLReportDetailViewController: UIViewController, Loggable {
             valueStr: Self.currencyString(value: report.sales, currency: currency),
             accent: Theme.current.primaryText, huge: false,
             badgeIcon: "arrow.up.right",
-            badgeTint: UIColor.systemGreen.withAlphaComponent(0.15),
-            iconTint: .systemGreen)
+            badgeTint: UIColor.Semantic.positiveFill,
+            iconTint: UIColor.Semantic.positive)
         let bigCosts = makeBigKPI(
             title: R.string.global.kpiBigCosts(),
             valueStr: Self.currencyString(value: report.cogs + report.opex, currency: currency),
-            accent: .systemOrange, huge: false,
+            accent: UIColor.Semantic.cost, huge: false,
             badgeIcon: "cart.fill",
-            badgeTint: UIColor.systemOrange.withAlphaComponent(0.15),
-            iconTint: .systemOrange)
+            badgeTint: UIColor.Semantic.costFill,
+            iconTint: UIColor.Semantic.cost)
         let isNetPositive = report.netProfit >= 0
         let bigNet = makeBigKPI(
             title: R.string.global.kpiBigNet(),
             valueStr: Self.currencyString(value: report.netProfit, currency: currency),
-            accent: isNetPositive ? .systemGreen : .systemRed, huge: true,
+            accent: UIColor.Semantic.profit(report.netProfit), huge: true,
             badgeIcon: isNetPositive ? "arrow.up.right" : "arrow.down.right",
-            badgeTint: (isNetPositive ? UIColor.systemGreen : UIColor.systemRed).withAlphaComponent(
-                0.15),
-            iconTint: isNetPositive ? .systemGreen : .systemRed)
+            badgeTint: UIColor.Semantic.profitFill(report.netProfit),
+            iconTint: UIColor.Semantic.profit(report.netProfit))
         let kpiWrapper = UIStackView(arrangedSubviews: [bigSales, bigCosts, bigNet])
         kpiWrapper.axis = .vertical
         kpiWrapper.spacing = UIConstants.standardSpacing
@@ -270,23 +269,22 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     ) -> UIView {
         let container = UIView()
         container.backgroundColor = Theme.current.cellBackground
-        container.layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        container.applyCafeSoftCardStyle()
 
         let badgeView = UIView()
         badgeView.backgroundColor = badgeTint
         badgeView.layer.cornerRadius = UIConstants.badgeCornerRadius
         let iconView = UIImageView()
-        iconView.image = UIImage(systemName: badgeIcon)
+        iconView.image = UIColor.Semantic.kpiSymbol(badgeIcon)
         iconView.tintColor = iconTint
         iconView.contentMode = .scaleAspectFit
         badgeView.addSubview(iconView)
-        iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+        iconView.size(CGSize(width: UIConstants.kpiIconSize, height: UIConstants.kpiIconSize))
         iconView.centerInSuperview()
-        badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
+        badgeView.size(CGSize(width: UIConstants.kpiBadgeSize, height: UIConstants.kpiBadgeSize))
 
-        let titleL = AppLabel(style: .footnote)
-        titleL.apply(.footnote)
-        titleL.textColor = Theme.current.secondaryText
+        let titleL = AppLabel(style: .kpiTitle)
+        titleL.apply(.kpiTitle)
         titleL.numberOfLines = 2
         titleL.text = title
 
@@ -325,10 +323,9 @@ final class PLReportDetailViewController: UIViewController, Loggable {
     // MARK: - Helpers (details)
 
     private func addDetailsSectionHeader(title: String) {
-        let label = AppLabel(style: .footnote)
+        let label = AppLabel(style: .kpiTitle)
+        label.apply(.kpiTitle)
         label.text = title.uppercased()
-        label.apply(.footnote)
-        label.textColor = Theme.current.secondaryText
         detailsWrapperStack.addArrangedSubview(label)
     }
 
@@ -400,13 +397,12 @@ final class PLKPIView: UIView {
     private let container: UIView = {
         let v = UIView()
         v.backgroundColor = Theme.current.cellBackground
-        v.layer.cornerRadius = UIConstants.mediumCornerRadius
+        v.applyCafeSoftCardStyle()
         return v
     }()
     private let titleLabel: UILabel = {
-        let l = AppLabel(style: .bodyMultiline)
-        l.apply(.body)
-        l.textColor = Theme.current.secondaryText
+        let l = AppLabel(style: .kpiTitle)
+        l.apply(.kpiTitle)
         l.numberOfLines = 2
         l.adjustsFontForContentSizeCategory = true
         return l
@@ -432,14 +428,19 @@ final class PLKPIView: UIView {
         container.addSubview(titleLabel)
         container.addSubview(valueLabel)
         titleLabel.topToSuperview(offset: UIConstants.mediumSpacing)
-        titleLabel.leftToSuperview(offset: UIConstants.mediumSpacing)
-        titleLabel.rightToSuperview(offset: -UIConstants.mediumSpacing)
+        titleLabel.leftToSuperview(offset: UIConstants.standardPadding)
+        titleLabel.rightToSuperview(offset: -UIConstants.standardPadding)
 
         valueLabel.topToBottom(
             of: titleLabel, offset: UIConstants.smallSpacing, relation: .equalOrGreater)
         valueLabel.left(to: titleLabel)
         valueLabel.right(to: titleLabel)
         valueLabel.bottomToSuperview(offset: -UIConstants.mediumSpacing, relation: .equalOrLess)
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        container.updateCafeSoftCardShadowPath()
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) not implemented") }

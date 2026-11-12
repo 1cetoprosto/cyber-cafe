@@ -10,18 +10,19 @@ import UIKit
 
 class OrderTableViewCell: UITableViewCell {
 
+    /// Matches system `insetGrouped` section corner radius.
+    private static let groupedCornerRadius: CGFloat = 10
+
     let backgroundViewCell: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = 10
         view.translatesAutoresizingMaskIntoConstraints = false
-
         return view
     }()
 
     private let separatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor.separator
+        view.backgroundColor = UIColor.TableView.separator
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -34,7 +35,6 @@ class OrderTableViewCell: UITableViewCell {
         label.apply(.body)
         label.numberOfLines = 1
         label.lineBreakMode = .byTruncatingTail
-
         return label
     }()
 
@@ -44,25 +44,25 @@ class OrderTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textColor = UIColor.TableView.cellLabel
         label.apply(.body)
-
         return label
     }()
 
     let productStepper: UIStepper = {
         let stepper = UIStepper()
         stepper.translatesAutoresizingMaskIntoConstraints = false
-
         return stepper
     }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        self.backgroundColor = UIColor.Main.background
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        selectionStyle = .none
         directionalLayoutMargins = .zero
         contentView.directionalLayoutMargins = .zero
-        preservesSuperviewLayoutMargins = true
-        contentView.preservesSuperviewLayoutMargins = true
+        preservesSuperviewLayoutMargins = false
+        contentView.preservesSuperviewLayoutMargins = false
         setConstraints()
     }
 
@@ -81,29 +81,29 @@ class OrderTableViewCell: UITableViewCell {
     }
 
     func setConstraints() {
-
         contentView.addSubview(backgroundViewCell)
-        backgroundViewCell.topToSuperview(offset: 0)
-        backgroundViewCell.leftToSuperview(offset: 0)
-        backgroundViewCell.rightToSuperview(offset: 0)
-        backgroundViewCell.bottomToSuperview(offset: -1)
+        backgroundViewCell.topToSuperview()
+        backgroundViewCell.bottomToSuperview()
+        backgroundViewCell.leftToSuperview(offset: UIConstants.standardPadding)
+        backgroundViewCell.rightToSuperview(offset: -UIConstants.standardPadding)
 
-        contentView.addSubview(productLabel)
-        productLabel.centerYToSuperview()
-        productLabel.leftToSuperview(offset: 12, usingSafeArea: false)
-
-        contentView.addSubview(productStepper)
-        productStepper.centerYToSuperview()
-        productStepper.rightToSuperview(offset: -12, usingSafeArea: false)
-
-        contentView.addSubview(quantityLabel)
-        quantityLabel.centerYToSuperview()
-        quantityLabel.rightToLeft(of: productStepper, offset: -12)
-        productLabel.rightToLeft(of: quantityLabel, offset: -8, relation: .equalOrLess)
-
+        backgroundViewCell.addSubview(productLabel)
+        backgroundViewCell.addSubview(quantityLabel)
+        backgroundViewCell.addSubview(productStepper)
         backgroundViewCell.addSubview(separatorView)
-        separatorView.leftToSuperview(offset: 12)
-        separatorView.rightToSuperview(offset: -12)
+
+        productLabel.centerYToSuperview()
+        productLabel.leftToSuperview(offset: UIConstants.standardPadding)
+
+        productStepper.centerYToSuperview()
+        productStepper.rightToSuperview(offset: -UIConstants.standardPadding)
+
+        quantityLabel.centerYToSuperview()
+        quantityLabel.rightToLeft(of: productStepper, offset: -UIConstants.mediumSpacing)
+        productLabel.rightToLeft(of: quantityLabel, offset: -UIConstants.smallSpacing, relation: .equalOrLess)
+
+        separatorView.leftToSuperview(offset: UIConstants.standardPadding)
+        separatorView.rightToSuperview()
         separatorView.bottomToSuperview()
         separatorView.height(1 / UIScreen.main.scale)
 
@@ -113,8 +113,9 @@ class OrderTableViewCell: UITableViewCell {
         productStepper.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
+    /// Settings-like insetGrouped section: one white block with rounded ends + hairline separators.
     func applyListStyle(row: Int, totalRows: Int) {
-        let radius: CGFloat = 12
+        let radius = Self.groupedCornerRadius
         backgroundViewCell.layer.masksToBounds = true
 
         if totalRows <= 1 {
