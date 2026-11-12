@@ -15,7 +15,8 @@
 
 - Основний фокус: дати власнику маленької кав'ярні простий контроль над продажами, витратами, складом і прибутком.
 - Killer feature: радикальна простота. Мінімум полів, автоматичні розрахунки, швидкі щоденні дії без "ERP-ваги".
-- Головна цінність не в самих графіках, а в довірі до цифр: користувач відкриває додаток і швидко розуміє, що відбувається з грошима.
+- **Зовнішнє позиціонування (канон):** «Знаєш, що залишилось після закупок, оренди і зарплат?» — повний copy-пакет у `docs/product/POSITIONING_AND_COPY.md`.
+- **Внутрішній критерій якості:** цифри, яким можна вірити (COGS snapshot, P&L, склад). Це engineering north star, не App Store slogan.
 
 ## Карта документації
 
@@ -31,6 +32,10 @@
   специфікація Reports Hub, яка вже відповідає поточному shipped стану v1.1.0+.
 - `STAFF_AND_ROLES.md`:
   повний опис системи персоналу та ролей (v1.2.0): ролі, RBAC, потоки створення/запрошення/входу/видалення, `createdBy` в замовленнях.
+- `docs/product/POSITIONING_AND_COPY.md`:
+  зовнішнє позиціонування, App Store / onboarding / paywall copy (UK+EN), наступні GTM-кроки.
+- `docs/product/app-store/LISTING.md` + `screenshots/current/`:
+  ASC metadata + iPhone/iPad screenshots (UK+EN) залиті 2026-11-12 для v1.2.0; in-app strings ще pending.
 
 ## Поточний стан на **shipped v1.2.0** (baseline для 1.2.x)
 
@@ -134,7 +139,15 @@
 Релізна лінія 1.2.x (див. `ROADMAP.md`):
 
 1. v1.2.0 — Multi-user & Staff Management (ролі, Персонал, RBAC, `createdBy`). ✅ shipped.
-2. v1.2.x — journal-based cash/card balances, multi-location, CSV export (за потребою).
+2. v1.2.x monetization — Retention Messaging `#291` (без нового binary).
+3. v1.2.x structure cleanup — `#293`–`#299` (Main/Auth/IAP/Storage/Extensions; milestone `v1.2.0`).
+4. Далі за потребою — journal-based cash/card balances, multi-location, CSV export.
+
+### Repo hygiene (операційні правила)
+
+- `fastlane/.env` **не в git** (історію scrub’нуто з `main` і feature-гілок). Локально: скопіюй `fastlane/.env.example` → `fastlane/.env`.
+- Не комітити `.ipa` / `.dSYM.zip`, `buildServer.json`, `.vscode/mcp.json`.
+- Канон App Store listing: `docs/product/app-store/LISTING.md` (кореневий `APP_STORE_READINESS.md` видалено).
 
 ## Мінімальні правила консистентності
 

@@ -165,6 +165,31 @@
   - Staff-модуль відповідає MVVM (ViewModels, без прямого доступу до RequestManager у ViewControllers).
   - Немає обмежень за кількістю персоналу.
 
+### `v1.2.x` — Monetization & follow-ups (після shipped v1.2.0)
+
+**Слоган:** утримуємо Pro-підписників у системному cancel flow App Store, без змін у бінарнику; паралельно гасимо structure tech-debt.
+
+- Issue `#291` feat / medium: App Store Connect Retention Messaging для Pro monthly (текст + зображення + retention offer).
+  - Prod: `icsoft.trackmycafe.pro.monthly` (beta product у ASC відсутній).
+  - Спека / ASC IDs: `docs/product/app-store/retention-messaging.md`.
+  - **Статус:** submitted — message version **WAITING_FOR_REVIEW** (2026-11-12).
+  - **Не** потребує нового App Store binary; Real-time Retention Messaging API не використовуємо.
+- **Structure cleanup** (milestone [`v1.2.0`](https://github.com/1cetoprosto/cyber-cafe/milestone/15), tech-debt; без зміни user-facing поведінки):
+  - `#293` chore: `MainTabBarController` → `Flow/Main/View`
+  - `#294` chore: нормалізація feature-папок `View/` / `ViewModel/`
+  - `#295` chore: Extensions — Foundation vs UI
+  - `#296` refactor: IAP/Subscription з `Data Layer/Utils` → `Services/`
+  - `#297` refactor: один FIR image storage API
+  - `#298` refactor: Auth folder layout + `*ViewController` naming
+  - `#299` refactor: Auth MVVM + `AuthManager` → `Services` (**після** `#298`)
+  - Поза цією пачкою (окремі issues пізніше): Persons/Staff/Admin naming, `RequestManager` decomposition.
+- Інші follow-ups за потребою (journal balances, multi-location, CSV export) — див. `DEV_IMPLEMENTATION_GUIDE.md`.
+
+- **DoD (`#291`):**
+  - Retention message затверджений App Review (EN + UK).
+  - Image 3840×2160 в Asset Library і прив’язаний до message. ✅ uploaded + placed.
+  - Offer `retention_50_3m` (50% × 3 міс.) прив’язаний. ✅ (Sandbox check після approve).
+
 ## Залежності між задачами
 
 - `#190` і `#240` незалежні; можна робити паралельно в межах v1.1.1.
@@ -184,6 +209,12 @@
 - `#278` (фільтрація для Офіціанта) — залежить від `#275` та `#274`.
 - `#279` (MVVM) — залежить від `#272`, `#273`, `#277` (UI має стабілізуватися).
 - `#280` (доки) — залежить від `#272`, `#274`; робити наприкінці.
+
+### Залежності structure cleanup (post-1.2.0)
+
+- `#293`–`#295`, `#297` — незалежні; можна паралельно / окремими PR.
+- `#296` (IAP → Services) — перед глибшими ProGated/IAP змінами.
+- `#299` залежить від `#298` (спочатку Auth naming/layout, потім MVVM).
 
 **Рекомендована черга всередині v1.2:**
 1. `#271` (ролі) — перший крок

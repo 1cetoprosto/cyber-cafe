@@ -1,8 +1,8 @@
 # TrackMyCafe (Cyber Cafe)
 
 iOS додаток для обліку доходів та витрат в кафе.
-Поточний релізний baseline: **v1.1.0** (Reports Hub / P&L / ABC / Trends вже присутні в коді та таббарі).
-Ближчі stability/feature-patch релізи: `v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4` (див. `internal/ROADMAP.md`).
+Поточний релізний baseline: **v1.2.0** (Staff / RBAC shipped; Reports Hub уже з v1.1.0).
+Follow-ups: `v1.2.x` — Retention Messaging `#291`, structure cleanup `#293`–`#299` (див. `internal/ROADMAP.md`).
 
 ## Опис
 
@@ -28,9 +28,9 @@ TrackMyCafe — це мобільний додаток для власників
 ## Вимоги
 
 - **iOS**: 15.0+
-- **Xcode**: 14.0+
+- **Xcode**: 26.3+ (рекомендовано для Xcode MCP / SPM workflow)
 - **Swift**: 5.x
-- **CocoaPods**: 1.12+ (планується міграція R.swift на SPM у v1.1.4)
+- **Залежності**: Swift Package Manager через `TrackMyCafe.xcodeproj` (CocoaPods / `.xcworkspace` прибрано)
 
 ## Залежності
 
@@ -92,13 +92,21 @@ git clone <repository-url>
 cd cyber-coffe
 ```
 
-### 2. Встановлення залежностей
+### 2. Залежності
+
+Відкрий `TrackMyCafe.xcodeproj` — SPM-пакети підтягнуться Xcode автоматично (`File → Packages → Resolve Package Versions` за потреби).  
+Для Firebase Hosting-скриптів у корені: `npm ci` (див. `package.json`).
+
+### 3. Fastlane / секрети
 
 ```bash
-pod install
+cp fastlane/.env.example fastlane/.env
+# заповни ASC_KEY_ID, ASC_KEY_PATH, ASC_ISSUER_ID тощо локально
 ```
 
-### 3. Налаштування Firebase
+`fastlane/.env` у git **не трекається**. Не коміть `.ipa` / `.dSYM`.
+
+### 4. Налаштування Firebase
 
 Додаток використовує Firebase для бекенду. Для кожного середовища (Dev, Beta, Prod) потрібен власний `GoogleService-Info.plist`:
 
@@ -112,7 +120,7 @@ pod install
    - `TrackMyCafe/Configuration/TrackMyCafe Beta/`
    - `TrackMyCafe/Configuration/TrackMyCafe Prod/`
 
-### 4. Збірка та запуск
+### 5. Збірка та запуск
 
 Відкрийте `TrackMyCafe.xcodeproj` в Xcode та оберіть схему:
 
@@ -163,10 +171,15 @@ pod install
 Детальна продуктова/дев-документація лежить у `docs/internal/` та сусідніх підпапках:
 
 - [DEV_IMPLEMENTATION_GUIDE.md](internal/DEV_IMPLEMENTATION_GUIDE.md) — канонічний поточний стан продукту (shipped vs planned), межі модулів, джерела істини.
-- [ROADMAP.md](internal/ROADMAP.md) — релізна карта: v1.1.1 → v1.1.2 → v1.1.3 → v1.1.4 після shipped v1.1.0.
+- [ROADMAP.md](internal/ROADMAP.md) — релізна карта: 1.1.x patches, shipped v1.2.0 Staff, v1.2.x follow-ups (`#291`, structure `#293`–`#299`).
+- [STAFF_AND_ROLES.md](internal/STAFF_AND_ROLES.md) — ролі, RBAC, потоки персоналу (v1.2.0).
 - [ARCHITECTURE_AND_LOGIC.md](internal/ARCHITECTURE_AND_LOGIC.md) — цільова архітектура, доменні моделі, сервіси, бізнес-правила.
 - [REPORTS.md](internal/REPORTS.md) — специфікація Reports Hub (P&L / ABC / Trends) — вже відповідає shipped стану v1.1.0+.
 - [V1_1_IMPLEMENTATION_GUIDE.md](internal/V1_1_IMPLEMENTATION_GUIDE.md) — execution playbook, anti-rework правила, DoR/DoD, release discipline.
+- [POSITIONING_AND_COPY.md](product/POSITIONING_AND_COPY.md) — зовнішнє позиціонування, onboarding / paywall copy (UK+EN), GTM-кроки.
+- [app-store/LISTING.md](product/app-store/LISTING.md) — канон App Store Connect (description, keywords; скріни залиті 2026-11-12).
+- [app-store/README.md](product/app-store/README.md) — карта ASC-асетів і `screenshots/current/`.
+- [UserFlow.md](product/UserFlow.md) — основні user flows.
 
 ## Ліцензія
 
