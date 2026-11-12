@@ -16,6 +16,8 @@ final class HomeViewModel: HomeViewModelType {
     private(set) var monthSum: Double = 0
     private(set) var periodExpenses: Double = 0
     private(set) var periodProfit: Double = 0
+    private(set) var previousPeriodProfit: Double?
+    private(set) var periodProfitDeltaPercent: Double?
     private(set) var dateToday: Date = Date()
     private(set) var cashBalance: Double = 0
     private(set) var cardBalance: Double = 0
@@ -78,11 +80,43 @@ final class HomeViewModel: HomeViewModelType {
         periodExpenses = currentPL?.opex ?? 0
         periodProfit = currentPL?.netProfit ?? 0
 
+        // Same-length windows (month = MTD vs same days last month) so Δ% is meaningful mid-month.
+        if let windows = currentPeriod.comparisonIntervals(for: refDate) {
+            let currentComparable = facade.makePeriodPL(
+                period: currentPeriod,
+                intervalStart: windows.currentStart,
+                intervalEnd: windows.currentEnd,
+                orders: allOrders,
+                expenses: allExpenses
+            )
+            let previousComparable = facade.makePeriodPL(
+                period: currentPeriod,
+                intervalStart: windows.previousStart,
+                intervalEnd: windows.previousEnd,
+                orders: allOrders,
+                expenses: allExpenses
+            )
+            previousPeriodProfit = previousComparable.netProfit
+            periodProfitDeltaPercent = Self.deltaPercent(
+                current: currentComparable.netProfit,
+                previous: previousComparable.netProfit
+            )
+        } else {
+            previousPeriodProfit = nil
+            periodProfitDeltaPercent = nil
+        }
+
         cashBalance = snapshot?.balances.cash ?? 0
         cardBalance = snapshot?.balances.card ?? 0
 
         lastIncome = snapshot?.lastOrdersInPeriod ?? []
         lastExpense = snapshot?.lastExpensesInPeriod ?? []
+    }
+
+    /// Percent change vs previous period. `nil` when previous is zero/unavailable.
+    static func deltaPercent(current: Double, previous: Double) -> Double? {
+        guard previous != 0 else { return nil }
+        return ((current - previous) / abs(previous)) * 100
     }
 }
 

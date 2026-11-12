@@ -6,6 +6,8 @@ final class HomeHeaderView: UIView {
     var onAddExpense: (() -> Void)?
     var onPeriodChanged: ((Int) -> Void)?
     var onDeleteDemoData: (() -> Void)?
+    var onProfitTap: (() -> Void)?
+    var onProfitInfoTap: (() -> Void)?
     var onManualOperations: (() -> Void)? {
         didSet { balanceCard.onManualOperations = onManualOperations }
     }
@@ -41,8 +43,8 @@ final class HomeHeaderView: UIView {
     private let summaryCard = TodayCardView()
     private let expensesCard = SimpleKpiCard(
         iconSystemName: "arrow.down.right",
-        tint: UIColor.systemRed.withAlphaComponent(0.15),
-        iconTint: UIColor.systemRed
+        tint: UIColor.Semantic.negativeFill,
+        iconTint: UIColor.Semantic.negative
     )
     private let profitCard = ProfitCard()
     private let balanceCard = BalanceCard()
@@ -53,9 +55,7 @@ final class HomeHeaderView: UIView {
         control.selectedSegmentIndex = 2
         return control
     }()
-    private let kpiRow1 = UIStackView()
-    private let kpiRow2 = UIStackView()
-    private var isThreeInRow = true
+    private let kpiRow = UIStackView()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -73,6 +73,7 @@ final class HomeHeaderView: UIView {
         sales: Double,
         expenses: Double,
         profit: Double,
+        profitDeltaPercent: Double?,
         cash: Double,
         card: Double,
         showDeleteDemoData: Bool = false
@@ -103,7 +104,10 @@ final class HomeHeaderView: UIView {
             value: NumberFormatter.currencyInteger.string(expenses)
         )
         profitCard.configure(
-            periodTitle: periodTitle.lowercased(), expenses: expenses, profit: profit)
+            period: period,
+            profit: profit,
+            deltaPercent: profitDeltaPercent
+        )
         balanceCard.configure(
             cash: NumberFormatter.currencyInteger.string(cash),
             card: NumberFormatter.currencyInteger.string(card)
@@ -145,22 +149,20 @@ final class HomeHeaderView: UIView {
 
         periodControl.addTarget(self, action: #selector(periodChanged), for: .valueChanged)
 
-        kpiRow1.axis = .horizontal
-        kpiRow1.spacing = UIConstants.standardPadding
-        kpiRow1.distribution = .fillEqually
-        kpiRow2.axis = .horizontal
-        kpiRow2.spacing = UIConstants.standardPadding
-        kpiRow2.distribution = .fillEqually
+        profitCard.onTap = { [weak self] in self?.onProfitTap?() }
+        profitCard.onInfoTap = { [weak self] in self?.onProfitInfoTap?() }
 
-        kpiRow1.addArrangedSubview(summaryCard)
-        kpiRow1.addArrangedSubview(expensesCard)
-        kpiRow1.addArrangedSubview(profitCard)
+        kpiRow.axis = .horizontal
+        kpiRow.spacing = UIConstants.standardPadding
+        kpiRow.distribution = .fillEqually
+        kpiRow.addArrangedSubview(summaryCard)
+        kpiRow.addArrangedSubview(expensesCard)
 
         deleteDemoDataButton.height(UIConstants.buttonHeight)
 
         let contentStack = UIStackView(
             arrangedSubviews: [
-                deleteDemoDataButton, headerStack, actionsStack, periodControl, kpiRow1, kpiRow2,
+                deleteDemoDataButton, headerStack, actionsStack, periodControl, profitCard, kpiRow,
                 balanceCard,
             ]
         )
@@ -207,50 +209,64 @@ final class HomeHeaderView: UIView {
 // Summary mini-cards now use InputContainerView for consistent styling
 
 private final class ProfitCard: UIView {
-    private let iconView = UIImageView()
-    private let badgeView = UIView()
+    var onTap: (() -> Void)?
+    var onInfoTap: (() -> Void)?
+
     private let titleLabel = AppLabel(style: .kpiTitle)
-    private let valueLabel = AppLabel(style: .kpiValue)
-    private let divider = UIView()
-    private let footerLabel = AppLabel(style: .kpiFooter)
+    private let valueLabel = AppLabel(style: .footnote)
+    private let compareLabel = AppLabel(style: .kpiFooter)
+    private let infoButton = UIButton(type: .system)
+    private let chevronView = UIImageView()
+    private let deltaFont = Typography.calloutDemi
 
     init() {
         super.init(frame: .zero)
         backgroundColor = UIColor.TableView.cellBackground
-        layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        applyCafeSoftCardStyle()
+        isAccessibilityElement = false
 
-        badgeView.backgroundColor = UIColor.systemPink.withAlphaComponent(0.2)
-        badgeView.layer.cornerRadius = UIConstants.badgeCornerRadius
-        iconView.image = UIImage(systemName: "arrow.down.right")
-        iconView.tintColor = UIColor.systemPink
-        iconView.contentMode = .scaleAspectFit
         titleLabel.apply(.kpiTitle)
-        valueLabel.apply(.kpiValue)
-        valueLabel.textColor = UIColor.systemRed
-        divider.backgroundColor = UIColor.Main.text.alpha(0.1)
-        footerLabel.apply(.kpiFooter)
+        titleLabel.text = R.string.global.homeProfitTitle()
+        titleLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
-        badgeView.addSubview(iconView)
-        iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
-        iconView.centerInSuperview()
-        badgeView.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
+        valueLabel.font = Typography.largeTitleBold
+        valueLabel.adjustsFontForContentSizeCategory = true
+        valueLabel.textColor = Theme.current.primaryText
+        valueLabel.adjustsFontSizeToFitWidth = true
+        valueLabel.minimumScaleFactor = 0.6
+        valueLabel.numberOfLines = 1
 
-        let vStack = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
-        vStack.axis = .vertical
-        vStack.spacing = UIConstants.smallSpacing
+        compareLabel.apply(.kpiFooter)
+        compareLabel.numberOfLines = 2
 
-        let hStack = UIStackView(arrangedSubviews: [badgeView, vStack])
-        hStack.axis = .horizontal
-        hStack.spacing = UIConstants.smallSpacing
-        hStack.alignment = .center
+        let infoImage = UIImage(
+            systemName: "info.circle",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+        )
+        infoButton.setImage(infoImage, for: .normal)
+        infoButton.tintColor = Theme.current.secondaryText
+        infoButton.accessibilityLabel = R.string.global.homeProfitInfoAccessibility()
+        infoButton.addTarget(self, action: #selector(infoTapped), for: .touchUpInside)
+        infoButton.setContentHuggingPriority(.required, for: .horizontal)
+        infoButton.width(28)
+        infoButton.height(28)
 
-        //    let header = UIStackView(arrangedSubviews: [badgeView, titleLabel])
-        //    header.axis = .horizontal
-        //    header.spacing = UIConstants.smallSpacing
+        chevronView.image = UIImage(systemName: SystemImages.chevronRight)
+        chevronView.tintColor = Theme.current.secondaryText
+        chevronView.contentMode = .scaleAspectFit
+        chevronView.setContentHuggingPriority(.required, for: .horizontal)
+        chevronView.width(14)
+        chevronView.height(18)
 
-        let stack = UIStackView(arrangedSubviews: [hStack, footerLabel])
+        let titleRow = UIStackView(arrangedSubviews: [titleLabel, infoButton, UIView(), chevronView])
+        titleRow.axis = .horizontal
+        titleRow.alignment = .center
+        titleRow.spacing = UIConstants.smallSpacing
+
+        let stack = UIStackView(arrangedSubviews: [titleRow, valueLabel, compareLabel])
         stack.axis = .vertical
-        stack.spacing = UIConstants.standardSpacing
+        stack.spacing = UIConstants.smallSpacing
+        stack.alignment = .fill
 
         addSubview(stack)
         stack.edgesToSuperview(
@@ -261,27 +277,76 @@ private final class ProfitCard: UIView {
                 right: UIConstants.standardPadding
             )
         )
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(cardTapped))
+        tap.cancelsTouchesInView = false
+        tap.delegate = self
+        addGestureRecognizer(tap)
+        accessibilityTraits = .button
+        accessibilityLabel = R.string.global.homeProfitCardAccessibility()
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
-    func configure(periodTitle: String, expenses: Double, profit: Double) {
-        titleLabel.text = R.string.global.monthlyProfit(periodTitle.lowercased())
-        let profitText = NumberFormatter.currencyInteger.string(profit)
-        valueLabel.text = profitText
-        if profit >= 0 {
-            iconView.image = UIImage(systemName: "arrow.up.right")
-            iconView.tintColor = UIColor.systemGreen
-            badgeView.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
-            valueLabel.textColor = UIColor.systemGreen
-        } else {
-            iconView.image = UIImage(systemName: "arrow.down.right")
-            iconView.tintColor = UIColor.systemRed
-            badgeView.backgroundColor = UIColor.systemRed.withAlphaComponent(0.2)
-            valueLabel.textColor = UIColor.systemRed
+    func configure(period: DashboardPeriod, profit: Double, deltaPercent: Double?) {
+        valueLabel.text = NumberFormatter.currencyInteger.string(profit)
+        valueLabel.textColor = UIColor.Semantic.profit(profit)
+
+        let compareBase: String
+        switch period {
+        case .day:
+            compareBase = R.string.global.homeProfitCompareDay()
+        case .week:
+            compareBase = R.string.global.homeProfitCompareWeek()
+        case .month:
+            compareBase = R.string.global.homeProfitCompareMonth()
         }
-        let expensesText = NumberFormatter.currencyInteger.string(expenses)
-        footerLabel.text = R.string.global.expensesPrefix() + expensesText
+
+        if let deltaPercent {
+            let arrow = deltaPercent >= 0 ? "↑" : "↓"
+            let deltaText = R.string.global.homeProfitDeltaFormat(arrow, abs(deltaPercent))
+            let full = "\(compareBase)  \(deltaText)"
+            let attributed = NSMutableAttributedString(
+                string: full,
+                attributes: [
+                    .font: Typography.callout,
+                    .foregroundColor: UIColor.Semantic.kpiLabel,
+                ]
+            )
+            if let range = full.range(of: deltaText) {
+                let nsRange = NSRange(range, in: full)
+                attributed.addAttributes(
+                    [
+                        .foregroundColor: UIColor.Semantic.profit(deltaPercent),
+                        .font: deltaFont,
+                    ],
+                    range: nsRange
+                )
+            }
+            compareLabel.attributedText = attributed
+        } else {
+            compareLabel.attributedText = nil
+            compareLabel.text = "\(compareBase)  ·  \(R.string.global.homeProfitDeltaUnavailable())"
+            compareLabel.textColor = UIColor.Semantic.kpiLabel
+        }
+    }
+
+    @objc private func cardTapped() { onTap?() }
+    @objc private func infoTapped() { onInfoTap?() }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateCafeSoftCardShadowPath()
+    }
+}
+
+extension ProfitCard: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch)
+        -> Bool
+    {
+        if touch.view is UIControl { return false }
+        if let view = touch.view, view.isDescendant(of: infoButton) { return false }
+        return true
     }
 }
 
@@ -295,12 +360,12 @@ private final class TodayCardView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = UIColor.TableView.cellBackground
-        layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        applyCafeSoftCardStyle()
 
-        iconBadge.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.15)
+        iconBadge.backgroundColor = UIColor.Semantic.positiveFill
         iconBadge.layer.cornerRadius = UIConstants.badgeCornerRadius
-        iconView.image = UIImage(systemName: "arrow.up.right")
-        iconView.tintColor = UIColor.systemGreen
+        iconView.image = UIColor.Semantic.kpiSymbol("arrow.up.right")
+        iconView.tintColor = UIColor.Semantic.positive
         iconView.contentMode = .scaleAspectFit
         titleLabel.apply(.kpiTitle)
         titleLabel.text = R.string.global.today()
@@ -308,9 +373,9 @@ private final class TodayCardView: UIView {
         valueLabel.textColor = UIColor.Main.text
 
         iconBadge.addSubview(iconView)
-        iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+        iconView.size(CGSize(width: UIConstants.kpiIconSize, height: UIConstants.kpiIconSize))
         iconView.centerInSuperview()
-        iconBadge.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
+        iconBadge.size(CGSize(width: UIConstants.kpiBadgeSize, height: UIConstants.kpiBadgeSize))
 
         let header = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
         header.axis = .vertical
@@ -346,20 +411,20 @@ private final class SimpleKpiCard: UIView {
     init(iconSystemName: String, tint: UIColor, iconTint: UIColor) {
         super.init(frame: .zero)
         backgroundColor = UIColor.TableView.cellBackground
-        layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        applyCafeSoftCardStyle()
 
         iconBadge.backgroundColor = tint
         iconBadge.layer.cornerRadius = UIConstants.badgeCornerRadius
-        iconView.image = UIImage(systemName: iconSystemName)
+        iconView.image = UIColor.Semantic.kpiSymbol(iconSystemName)
         iconView.tintColor = iconTint
         iconView.contentMode = .scaleAspectFit
         titleLabel.apply(.kpiTitle)
         valueLabel.apply(.kpiValue)
 
         iconBadge.addSubview(iconView)
-        iconView.size(CGSize(width: UIConstants.largeIconSize, height: UIConstants.largeIconSize))
+        iconView.size(CGSize(width: UIConstants.kpiIconSize, height: UIConstants.kpiIconSize))
         iconView.centerInSuperview()
-        iconBadge.size(CGSize(width: UIConstants.badgeSize, height: UIConstants.badgeSize))
+        iconBadge.size(CGSize(width: UIConstants.kpiBadgeSize, height: UIConstants.kpiBadgeSize))
 
         let header = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
         header.axis = .vertical
@@ -388,37 +453,12 @@ private final class SimpleKpiCard: UIView {
 extension HomeHeaderView {
     override func layoutSubviews() {
         super.layoutSubviews()
-        // Ensure color is set initially if not already
         if expenseButton.layer.borderColor == nil {
             updateExpenseButtonBorder()
         }
 
-        let width = bounds.width
-        let spacing = UIConstants.standardPadding
-        let cardWidth = (width - 2 * spacing) / 3
-        let shouldBeThree = cardWidth >= 140
-        if shouldBeThree != isThreeInRow {
-            isThreeInRow = shouldBeThree
-
-            // Clear existing views
-            kpiRow1.arrangedSubviews.forEach {
-                kpiRow1.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
-            kpiRow2.arrangedSubviews.forEach {
-                kpiRow2.removeArrangedSubview($0)
-                $0.removeFromSuperview()
-            }
-
-            if shouldBeThree {
-                kpiRow1.addArrangedSubview(summaryCard)
-                kpiRow1.addArrangedSubview(expensesCard)
-                kpiRow1.addArrangedSubview(profitCard)
-            } else {
-                kpiRow1.addArrangedSubview(summaryCard)
-                kpiRow1.addArrangedSubview(expensesCard)
-                kpiRow2.addArrangedSubview(profitCard)
-            }
+        [summaryCard, expensesCard, profitCard, balanceCard].forEach {
+            $0.updateCafeSoftCardShadowPath()
         }
     }
 }
@@ -440,13 +480,15 @@ private final class BalanceCard: UIView {
     init() {
         super.init(frame: .zero)
         backgroundColor = UIColor.TableView.cellBackground
-        layer.cornerRadius = UIConstants.extraLargeCornerRadius
+        applyCafeSoftCardStyle()
 
-        iconCash.image = UIImage(systemName: SystemImages.banknoteFill)
-        iconCash.tintColor = UIColor.systemGreen
+        iconCash.image = UIColor.Semantic.kpiSymbol(SystemImages.banknoteFill)
+            ?? UIImage(systemName: SystemImages.banknoteFill)
+        iconCash.tintColor = Theme.current.secondaryText
         iconCash.contentMode = .scaleAspectFit
-        iconCard.image = UIImage(systemName: SystemImages.creditCardCircleFill)
-        iconCard.tintColor = UIColor.systemBlue
+        iconCard.image = UIColor.Semantic.kpiSymbol(SystemImages.creditCardCircleFill)
+            ?? UIImage(systemName: SystemImages.creditCardCircleFill)
+        iconCard.tintColor = Theme.current.secondaryText
         iconCard.contentMode = .scaleAspectFit
 
         cashLabel.apply(.balanceTitle)

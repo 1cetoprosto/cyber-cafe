@@ -6,6 +6,10 @@ protocol HomeViewModelType {
     var monthSum: Double { get }
     var periodExpenses: Double { get }
     var periodProfit: Double { get }
+    /// Net profit for the previous day / week / month. `nil` if interval cannot be resolved.
+    var previousPeriodProfit: Double? { get }
+    /// `((current - previous) / |previous|) * 100`. `nil` when comparison is unavailable.
+    var periodProfitDeltaPercent: Double? { get }
     var dateToday: Date { get }
     var cashBalance: Double { get }
     var cardBalance: Double { get }

@@ -937,11 +937,14 @@ class DomainDatabaseService: DomainDB {
 
     var orderIdMap: [String: String] = [:]
 
+    /// Default demo horizon: ≥2 months so Home can compare current vs previous period.
+    static let defaultDemoSeedDays = 60
+
     @MainActor
     func seedTestData(forDays days: Int) async {
         await cleanDatabase()
         var manifest: DemoDataManifest?
-        await seedDemoData(days: days, manifest: &manifest)
+        await seedDemoData(days: max(1, days), manifest: &manifest)
     }
 
     @MainActor
@@ -950,7 +953,7 @@ class DomainDatabaseService: DomainDB {
         DemoDataManager.shared.clearManifest()
 
         var manifest: DemoDataManifest?  // We don't use this local manifest anymore for persistence, but keep signature
-        await seedDemoData(days: 14, manifest: &manifest)
+        await seedDemoData(days: Self.defaultDemoSeedDays, manifest: &manifest)
     }
 
     @MainActor
@@ -1037,22 +1040,23 @@ extension DomainDatabaseService {
     fileprivate func seedProducts(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
         -> [ProductsPriceModel]
     {
+        // Street-cafe UAH price list (approx. 2025–2026 Ukraine)
         let catalog: [(uk: String, en: String, price: Double)] = [
-            ("Еспресо", "Espresso", 8),
-            ("Еспресо з молоком", "Espresso with milk", 10),
-            ("Американо", "Americano", 8),
-            ("Американо з молоком", "Americano with milk", 12),
-            ("Капучіно", "Cappuccino", 15),
-            ("Лате", "Latte", 20),
-            ("Лате макіато", "Latte macchiato", 20),
-            ("Айріш", "Irish", 14),
-            ("Айріш великий", "Irish large", 16),
-            ("Гарячий шоколад", "Hot chocolate", 12),
-            ("Гарячий шоколад великий", "Hot chocolate large", 16),
-            ("Какао", "Cocoa", 10),
-            ("Дитяче лате", "Kids latte", 15),
-            ("Чай", "Tea", 5),
-            ("Айс лате", "Ice latte", 15),
+            ("Еспресо", "Espresso", 45),
+            ("Еспресо з молоком", "Espresso with milk", 55),
+            ("Американо", "Americano", 50),
+            ("Американо з молоком", "Americano with milk", 60),
+            ("Капучіно", "Cappuccino", 65),
+            ("Лате", "Latte", 70),
+            ("Лате макіато", "Latte macchiato", 75),
+            ("Айріш", "Irish", 80),
+            ("Айріш великий", "Irish large", 90),
+            ("Гарячий шоколад", "Hot chocolate", 60),
+            ("Гарячий шоколад великий", "Hot chocolate large", 70),
+            ("Какао", "Cocoa", 55),
+            ("Дитяче лате", "Kids latte", 50),
+            ("Чай", "Tea", 40),
+            ("Айс лате", "Ice latte", 75),
         ]
 
         let products: [ProductsPriceModel] = catalog.map { entry in
@@ -1071,14 +1075,15 @@ extension DomainDatabaseService {
     fileprivate func seedIngredients(isUkrainian: Bool, manifest: inout DemoDataManifest?) async
         -> [IngredientModel]
     {
+        // Ingredient costs in UAH (small-cafe purchase reality)
         let ingredientCatalog: [(uk: String, en: String, unit: MeasurementUnit, baseCost: Double)] =
             [
-                ("Молоко", "Milk", .l, 35.0),
-                ("Кавові зерна", "Coffee Beans", .kg, 600.0),
-                ("Цукор", "Sugar", .kg, 30.0),
-                ("Стаканчики", "Cups", .pcs, 3.5),
-                ("Сироп Карамель", "Caramel Syrup", .ml, 0.5),
-                ("Вода", "Water", .l, 2.0),
+                ("Молоко", "Milk", .l, 32.0),
+                ("Кавові зерна", "Coffee Beans", .kg, 650.0),
+                ("Цукор", "Sugar", .kg, 28.0),
+                ("Стаканчики", "Cups", .pcs, 2.5),
+                ("Сироп Карамель", "Caramel Syrup", .ml, 0.35),
+                ("Вода", "Water", .l, 1.5),
             ]
 
         var createdIngredients: [IngredientModel] = []
@@ -1199,61 +1204,168 @@ extension DomainDatabaseService {
         manifest: inout DemoDataManifest?
     ) async {
         let calendar = Calendar.current
-        for i in 0..<max(1, days) {
-            guard let date = calendar.date(byAdding: .day, value: -i, to: Date()) else { continue }
+        let today = calendar.startOfDay(for: Date())
+        let dayCount = max(1, days)
 
-            await processPurchases(date: date, ingredients: &ingredients, manifest: &manifest)
-            await processInventoryAdjustments(
-                date: date, ingredients: &ingredients, isUkrainian: isUkrainian, manifest: &manifest
-            )
+        // Fixed opex once per calendar rules (rent/salary once a month — never daily spam).
+        await seedCalendarOpex(
+            days: dayCount, referenceDate: today, isUkrainian: isUkrainian, manifest: &manifest)
+
+        for i in 0..<dayCount {
+            guard let date = calendar.date(byAdding: .day, value: -i, to: today) else { continue }
+
+            // Weekly restocks (Mon) — not random purchases every day.
+            if calendar.component(.weekday, from: date) == 2 {
+                await processPurchases(date: date, ingredients: &ingredients, manifest: &manifest)
+            }
+            // Rare spoilage (~1–2× / month)
+            if i % 17 == 5 {
+                await processInventoryAdjustments(
+                    date: date, ingredients: &ingredients, isUkrainian: isUkrainian,
+                    manifest: &manifest)
+            }
             await processOrders(
-                date: date, dayIndex: i, products: products, types: types, isUkrainian: isUkrainian,
-                manifest: &manifest)
+                date: date, dayIndex: i, products: products, ingredients: ingredients, types: types,
+                isUkrainian: isUkrainian, manifest: &manifest)
+        }
+    }
+
+    /// Calendar-based opex for a small UA café: one rent/salary/utilities/internet per month,
+    /// light weekly packaging, occasional maintenance — so monthly Net Profit stays positive.
+    fileprivate func seedCalendarOpex(
+        days: Int, referenceDate: Date, isUkrainian: Bool, manifest: inout DemoDataManifest?
+    ) async {
+        let calendar = Calendar.current
+        guard
+            let rangeStart = calendar.date(byAdding: .day, value: -(days - 1), to: referenceDate)
+        else { return }
+        let rangeEnd = referenceDate
+
+        var monthCursor = calendar.date(
+            from: calendar.dateComponents([.year, .month], from: rangeStart))
+        let lastMonth = calendar.date(
+            from: calendar.dateComponents([.year, .month], from: rangeEnd))
+
+        while let monthStart = monthCursor, let lastMonth, monthStart <= lastMonth {
+            // Rent early; payroll/taxes near month end — mid-month MTD stays profitable for demos.
+            let monthly: [(day: Int, uk: String, en: String, amount: Double)] = [
+                (1, "Оренда приміщення", "Rent", 15_000),
+                (8, "Комунальні послуги", "Utilities", 2_800),
+                (12, "Інтернет", "Internet", 350),
+                (25, "Податки (ЄП)", "Taxes", 2_200),
+                (28, "Заробітна плата", "Payroll", 14_000),
+            ]
+
+            for entry in monthly {
+                var comps = calendar.dateComponents([.year, .month], from: monthStart)
+                comps.day = entry.day
+                guard let date = calendar.date(from: comps),
+                    date >= rangeStart, date <= rangeEnd
+                else { continue }
+                await saveSeedOpex(
+                    date: date,
+                    amount: entry.amount,
+                    note: isUkrainian ? entry.uk : entry.en,
+                    manifest: &manifest
+                )
+            }
+
+            // Weekly packaging / consumables (Mondays in this month, within range)
+            var weekCursor = monthStart
+            if let nextMonth = calendar.date(byAdding: .month, value: 1, to: monthStart) {
+                while weekCursor < nextMonth {
+                    if calendar.component(.weekday, from: weekCursor) == 2,
+                        weekCursor >= rangeStart, weekCursor <= rangeEnd
+                    {
+                        await saveSeedOpex(
+                            date: weekCursor,
+                            amount: 450,
+                            note: isUkrainian ? "Пакування / витратні" : "Packaging / supplies",
+                            manifest: &manifest
+                        )
+                    }
+                    guard let next = calendar.date(byAdding: .day, value: 1, to: weekCursor)
+                    else { break }
+                    weekCursor = next
+                }
+            }
+
+            monthCursor = calendar.date(byAdding: .month, value: 1, to: monthStart)
+        }
+
+        // One-off maintenance roughly in the middle of the seeded window
+        if let mid = calendar.date(byAdding: .day, value: -(days / 2), to: referenceDate) {
+            await saveSeedOpex(
+                date: mid,
+                amount: 1_500,
+                note: isUkrainian ? "Обслуговування обладнання" : "Equipment maintenance",
+                manifest: &manifest
+            )
+        }
+    }
+
+    fileprivate func saveSeedOpex(
+        date: Date, amount: Double, note: String, manifest: inout DemoDataManifest?
+    ) async {
+        let opex = OpexExpenseModel(
+            id: UUID().uuidString,
+            date: date,
+            categoryId: R.string.global.categoryGeneral(),
+            amount: amount,
+            note: note
+        )
+        let savedId = await saveOpexExpense(model: opex)
+        if let savedId {
+            DemoDataManager.shared.addExpenseId(savedId)
+        } else {
+            logger.error("Failed to seed expense: \(note)")
         }
     }
 
     fileprivate func processPurchases(
         date: Date, ingredients: inout [IngredientModel], manifest: inout DemoDataManifest?
     ) async {
-        if !ingredients.isEmpty && Int.random(in: 0...100) < 30 {
-            let purchaseCount = Int.random(in: 1...3)
-            for _ in 0..<purchaseCount {
-                if var randomIngredient = ingredients.randomElement() {
-                    let qty = Double(Int.random(in: 5...50))
-                    let priceVariation = Double.random(in: 0.9...1.1)
-                    let price = (randomIngredient.averageCost * priceVariation).round(to: 2)
+        guard !ingredients.isEmpty else { return }
+        let purchaseCount = min(ingredients.count, Int.random(in: 2...4))
+        for ingredient in ingredients.shuffled().prefix(purchaseCount) {
+            var randomIngredient = ingredient
+            let qty: Double
+            switch randomIngredient.unit {
+            case .kg: qty = Double(Int.random(in: 2...5))
+            case .g: qty = Double(Int.random(in: 200...500))
+            case .l: qty = Double(Int.random(in: 10...20))
+            case .pcs: qty = Double(Int.random(in: 50...100))
+            case .ml: qty = Double(Int.random(in: 500...1000))
+            }
+            let priceVariation = Double.random(in: 0.95...1.05)
+            let price = (randomIngredient.averageCost * priceVariation).round(to: 2)
 
-                    let purchase = PurchaseModel(
-                        id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
-                        quantity: qty, price: price, supplierId: nil
-                    )
-                    DemoDataManager.shared.addPurchaseId(purchase.id)
+            let purchase = PurchaseModel(
+                id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
+                quantity: qty, price: price, supplierId: nil
+            )
+            DemoDataManager.shared.addPurchaseId(purchase.id)
 
-                    // Update stock and avg cost
-                    let oldTotalValue =
-                        randomIngredient.stockQuantity * randomIngredient.averageCost
-                    let newPurchaseValue = qty * price
-                    let newTotalQuantity = randomIngredient.stockQuantity + qty
-                    let newAverageCost =
-                        newTotalQuantity > 0
-                        ? (oldTotalValue + newPurchaseValue) / newTotalQuantity : price
+            let oldTotalValue = randomIngredient.stockQuantity * randomIngredient.averageCost
+            let newPurchaseValue = qty * price
+            let newTotalQuantity = randomIngredient.stockQuantity + qty
+            let newAverageCost =
+                newTotalQuantity > 0
+                ? (oldTotalValue + newPurchaseValue) / newTotalQuantity : price
 
-                    randomIngredient.stockQuantity = newTotalQuantity
-                    randomIngredient.averageCost = newAverageCost
+            randomIngredient.stockQuantity = newTotalQuantity
+            randomIngredient.averageCost = newAverageCost
 
-                    // Update local array
-                    if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
-                        ingredients[index] = randomIngredient
-                    }
+            if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
+                ingredients[index] = randomIngredient
+            }
 
-                    let purchaseSuccess = await savePurchase(model: purchase)
-                    if !purchaseSuccess { logger.error("Failed to seed purchase") }
+            let purchaseSuccess = await savePurchase(model: purchase)
+            if !purchaseSuccess { logger.error("Failed to seed purchase") }
 
-                    let ingredientSuccess = await saveIngredient(model: randomIngredient)
-                    if !ingredientSuccess {
-                        logger.error("Failed to update ingredient after purchase")
-                    }
-                }
+            let ingredientSuccess = await saveIngredient(model: randomIngredient)
+            if !ingredientSuccess {
+                logger.error("Failed to update ingredient after purchase")
             }
         }
     }
@@ -1262,55 +1374,83 @@ extension DomainDatabaseService {
         date: Date, ingredients: inout [IngredientModel], isUkrainian: Bool,
         manifest: inout DemoDataManifest?
     ) async {
-        if !ingredients.isEmpty && Int.random(in: 0...100) < 10 {
-            if let randomIngredient = ingredients.randomElement() {
-                let adjustment = InventoryAdjustmentModel(
-                    id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
-                    quantityDelta: -1.0, reason: R.string.global.reasonSpoilage()
-                )
-                // * Note: We don't add adjustment.id here, we wait for the real ID from Firestore
+        guard let randomIngredient = ingredients.randomElement() else { return }
+        let adjustment = InventoryAdjustmentModel(
+            id: UUID().uuidString, date: date, ingredientId: randomIngredient.id,
+            quantityDelta: -1.0, reason: R.string.global.reasonSpoilage()
+        )
 
-                let savedId = await saveInventoryAdjustment(model: adjustment)
-                if let savedId = savedId {
-                    DemoDataManager.shared.addInventoryAdjustmentId(savedId)
-                } else {
-                    logger.error("Failed to seed inventory adjustment")
-                }
+        let savedId = await saveInventoryAdjustment(model: adjustment)
+        if let savedId {
+            DemoDataManager.shared.addInventoryAdjustmentId(savedId)
+        } else {
+            logger.error("Failed to seed inventory adjustment")
+        }
 
-                if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
-                    var ing = ingredients[index]
-                    ing.stockQuantity -= 1.0
-                    ingredients[index] = ing
+        if let index = ingredients.firstIndex(where: { $0.id == randomIngredient.id }) {
+            var ing = ingredients[index]
+            ing.stockQuantity -= 1.0
+            ingredients[index] = ing
 
-                    let success = await saveIngredient(model: ing)
-                    if !success {
-                        logger.error("Failed to update ingredient after adjustment")
-                    }
-                }
+            let success = await saveIngredient(model: ing)
+            if !success {
+                logger.error("Failed to update ingredient after adjustment")
             }
         }
     }
 
+    /// Deterministic traffic so Home Δ% is ↑ for day / week / month after re-seed.
+    /// `dayIndex` = 0 today, 1 yesterday, …
+    fileprivate func demoOrderCount(dayIndex: Int, date: Date) -> Int {
+        let calendar = Calendar.current
+        let today = Date()
+        let isWeekend =
+            calendar.component(.weekday, from: date) == 1
+            || calendar.component(.weekday, from: date) == 7
+
+        // ~4.5–6.5k ₴/day — enough for mid-month profit after rent, without looking inflated.
+        let base = isWeekend ? 12 : 10
+        switch dayIndex {
+        case 0: return base + 4  // today strongest
+        case 1: return base - 1  // yesterday weaker → day Δ% ↑
+        case 2...6: return base + 2  // rest of this week
+        case 7...13: return base - 2  // previous week weaker → week Δ% ↑
+        default:
+            if calendar.isDate(date, equalTo: today, toGranularity: .month) {
+                return base + 1
+            }
+            if let prev = calendar.date(byAdding: .month, value: -1, to: today),
+                calendar.isDate(date, equalTo: prev, toGranularity: .month)
+            {
+                return base - 1  // previous month softer → month Δ% ↑
+            }
+            return base
+        }
+    }
+
     fileprivate func processOrders(
-        date: Date, dayIndex: Int, products: [ProductsPriceModel], types: [TypeModel],
+        date: Date, dayIndex: Int, products: [ProductsPriceModel],
+        ingredients: [IngredientModel], types: [TypeModel],
         isUkrainian: Bool, manifest: inout DemoDataManifest?
     ) async {
-        let typeCount = (dayIndex % 3) + 1
-        var rotated = types
-        let shift = dayIndex % max(1, rotated.count)
-        if shift > 0 {
-            rotated = Array(rotated[shift...]) + Array(rotated[..<shift])
-        }
-        let dayTypes = Array(rotated.prefix(typeCount))
+        let orderCount = demoOrderCount(dayIndex: dayIndex, date: date)
+        // Stable catalog rotation (no shuffle) so re-seeds are predictable.
+        let catalog = products
 
-        for type in dayTypes {
+        for orderIndex in 0..<orderCount {
+            let type = types[(dayIndex + orderIndex) % max(1, types.count)]
             let orderId = UUID().uuidString
-            let itemCount = 3 + (dayIndex % 3)
-            let chosen = Array(products.shuffled().prefix(itemCount))
+            let itemCount = 2 + ((dayIndex + orderIndex) % 2)
+            var chosen: [ProductsPriceModel] = []
+            for offset in 0..<itemCount {
+                let idx = (dayIndex * 3 + orderIndex * 2 + offset) % max(1, catalog.count)
+                chosen.append(catalog[idx])
+            }
             var orderItems = [OrderItemModel]()
 
             for (idx, base) in chosen.enumerated() {
-                let qty = 1 + ((dayIndex + idx) % 4)
+                let qty = 1 + ((dayIndex + orderIndex + idx) % 2)
+                let unitCost = demoUnitCost(product: base, ingredients: ingredients)
                 orderItems.append(
                     OrderItemModel(
                         id: UUID().uuidString,
@@ -1319,20 +1459,20 @@ extension DomainDatabaseService {
                         orderId: orderId,
                         date: date,
                         quantity: qty,
-                        salePrice: base.price
+                        salePrice: base.price,
+                        costPrice: unitCost.round(to: 2)
                     ))
             }
 
             let total = orderItems.reduce(0) { $0 + $1.totalSale }
-            let cash = total * 0.6
-            let card = total - cash
+            let totalCost = orderItems.reduce(0) { $0 + $1.totalCost }
+            let cash = (total * 0.55).round(to: 2)
+            let card = (total - cash).round(to: 2)
 
             let order = OrderModel(
                 id: orderId, date: date, type: type.name, sum: total,
-                cash: cash, card: card
+                cash: cash, card: card, totalCost: totalCost.round(to: 2)
             )
-            // Note: We don't add orderId to DemoDataManager here because saveOrder will generate a new ID
-            // We will add the actual saved ID later
 
             let savedOrderId = await saveOrder(order: order)
             if savedOrderId == nil { logger.error("Failed to seed order: \(order.id)") }
@@ -1344,64 +1484,23 @@ extension DomainDatabaseService {
             let targetOrderId = savedOrderId ?? orderId
             for var item in orderItems {
                 item.orderId = targetOrderId
-                // Note: We don't add item.id here, we wait for the real ID from Firestore
-
                 let savedId = await saveProduct(order: item)
-                if let savedId = savedId {
+                if let savedId {
                     DemoDataManager.shared.addOrderItemId(savedId)
                 } else {
                     logger.error("Failed to seed order item")
                 }
             }
-
-            // Opex expenses linked to orders/types logic? No, just daily expenses but calculated here in original code
-            // Actually, in original code, expenses loop was inside dayTypes loop.
-            // Let's verify logic. Original: `for type in dayTypes { ... process orders ... process expenses }`
-            // So for EACH type iteration, it generated expenses.
-            await processExpenses(
-                date: date, dayIndex: dayIndex,
-                loopIndex: dayTypes.firstIndex(where: { $0.id == type.id }) ?? 0,
-                count: dayTypes.count, isUkrainian: isUkrainian, manifest: &manifest)
         }
     }
 
-    fileprivate func processExpenses(
-        date: Date, dayIndex: Int, loopIndex: Int, count: Int, isUkrainian: Bool,
-        manifest: inout DemoDataManifest?
-    ) async {
-        let costCatalog: [(uk: String, en: String, base: Double)] = [
-            ("Оренда", "Rent", 1200),
-            ("Комунальні послуги", "Utilities", 300),
-            ("Електроенергія", "Electricity", 400),
-            ("Вода (офіс)", "Water (office)", 60),
-            ("Інтернет", "Internet", 25),
-            ("Заробітна плата", "Salary", 800),
-            ("Податки", "Taxes", 350),
-            ("Маркетинг", "Marketing", 200),
-            ("Пакування", "Packaging", 70),
-            ("Прибирання", "Cleaning", 50),
-            ("Обслуговування обладнання", "Equipment maintenance", 150),
-        ]
-
-        let costCount = 2 + ((dayIndex + count) % 3)
-        for j in 0..<costCount {
-            let entry = costCatalog[(dayIndex + j) % costCatalog.count]
-            let name = isUkrainian ? entry.uk : entry.en
-            let variance = Double(((dayIndex * 17) + (j * 11)) % 120)
-            let amount = (entry.base + variance).rounded(.toNearestOrAwayFromZero)
-
-            let opex = OpexExpenseModel(
-                id: UUID().uuidString, date: date, categoryId: R.string.global.categoryGeneral(),
-                amount: amount, note: name
-            )
-            // Note: We don't add opex.id here, we wait for the real ID from Firestore
-
-            let savedId = await saveOpexExpense(model: opex)
-            if let savedId = savedId {
-                DemoDataManager.shared.addExpenseId(savedId)
-            } else {
-                logger.error("Failed to seed expense: \(name)")
-            }
+    fileprivate func demoUnitCost(
+        product: ProductsPriceModel, ingredients: [IngredientModel]
+    ) -> Double {
+        product.recipe.reduce(0) { partial, item in
+            let unitCost =
+                ingredients.first(where: { $0.id == item.ingredientId })?.averageCost ?? 0
+            return partial + (unitCost * item.quantity)
         }
     }
 

@@ -60,6 +60,21 @@ protocol DomainDashboardFacadeProtocol {
         productsOfOrders: [OrderItemModel],
         dailyBalancesByAccount: [PaymentAccount: [DailyBalanceModel]]
     ) -> DashboardSnapshot
+
+    func makePeriodPL(
+        period: DashboardPeriod,
+        referenceDate: Date,
+        orders: [OrderModel],
+        expenses: [OpexExpenseModel]
+    ) -> DashboardPeriodPL
+
+    func makePeriodPL(
+        period: DashboardPeriod,
+        intervalStart: Date,
+        intervalEnd: Date,
+        orders: [OrderModel],
+        expenses: [OpexExpenseModel]
+    ) -> DashboardPeriodPL
 }
 
 final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
@@ -91,32 +106,19 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
         var lastExpenses: [OpexExpenseModel] = []
 
         for period in [DashboardPeriod.day, .week, .month] {
-            let income = incomeService.summarize(
+            let pl = makePeriodPL(
+                period: period,
+                referenceDate: referenceDate,
                 orders: orders,
-                period: period,
-                referenceDate: referenceDate
-            )
-            let opex = opexService.summarize(
-                expenses: expenses,
-                period: period,
-                referenceDate: referenceDate
-            )
-            let profit = financeService.summarize(income: income, opex: opex)
-
-            let pl = DashboardPeriodPL(
-                period: period,
-                sales: profit.sales,
-                cogs: profit.cogs,
-                opex: profit.opex,
-                grossProfit: profit.grossProfit,
-                netProfit: profit.netProfit,
-                grossMarginPercent: profit.grossMarginPercent,
-                ordersCount: income.count,
-                expensesCount: opex.count
+                expenses: expenses
             )
             plByPeriod[period] = pl
 
             if period == currentPeriod {
+                let income = incomeService.summarize(
+                    orders: orders, period: period, referenceDate: referenceDate)
+                let opex = opexService.summarize(
+                    expenses: expenses, period: period, referenceDate: referenceDate)
                 lastOrders = income.last
                 lastExpenses = opex.last
             }
@@ -148,6 +150,49 @@ final class DomainDashboardFacade: DomainDashboardFacadeProtocol {
             lastExpensesInPeriod: lastExpenses,
             bestProductInPeriod: best,
             worstProductInPeriod: worst
+        )
+    }
+
+    func makePeriodPL(
+        period: DashboardPeriod,
+        referenceDate: Date,
+        orders: [OrderModel],
+        expenses: [OpexExpenseModel]
+    ) -> DashboardPeriodPL {
+        let interval = period.interval(for: referenceDate)
+        let exclusiveEnd =
+            Calendar.current.date(byAdding: .second, value: 1, to: interval.end) ?? interval.end
+        return makePeriodPL(
+            period: period,
+            intervalStart: interval.start,
+            intervalEnd: exclusiveEnd,
+            orders: orders,
+            expenses: expenses
+        )
+    }
+
+    func makePeriodPL(
+        period: DashboardPeriod,
+        intervalStart: Date,
+        intervalEnd: Date,
+        orders: [OrderModel],
+        expenses: [OpexExpenseModel]
+    ) -> DashboardPeriodPL {
+        let income = incomeService.summarize(
+            orders: orders, intervalStart: intervalStart, intervalEnd: intervalEnd)
+        let opex = opexService.summarize(
+            expenses: expenses, intervalStart: intervalStart, intervalEnd: intervalEnd)
+        let profit = financeService.summarize(income: income, opex: opex)
+        return DashboardPeriodPL(
+            period: period,
+            sales: profit.sales,
+            cogs: profit.cogs,
+            opex: profit.opex,
+            grossProfit: profit.grossProfit,
+            netProfit: profit.netProfit,
+            grossMarginPercent: profit.grossMarginPercent,
+            ordersCount: income.count,
+            expensesCount: opex.count
         )
     }
 }
