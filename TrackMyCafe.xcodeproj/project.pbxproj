@@ -457,7 +457,6 @@
 		F3A640C42C3438A8006BCACD /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C32C3438A8006BCACD /* SwiftyStoreKit */; };
 		F3A640C62C3438D6006BCACD /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C52C3438D6006BCACD /* TPInAppReceipt */; };
 		F3A640C82C3438D6006BCACD /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3A640C72C3438D6006BCACD /* TPInAppReceipt-Objc */; };
-		F3B036E12B777898009C085D /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
 		F3B339AC2C0B22FE0073F19A /* CostDetailsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264982275B334300836077 /* CostDetailsListViewController.swift */; };
 		F3B339AE2C0B22FE0073F19A /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA12BDD3AFC0007157B /* String+Extension.swift */; };
 		F3B339AF2C0B22FE0073F19A /* TypeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2532806D9F600DF5C2B /* TypeTableViewCell.swift */; };
@@ -553,7 +552,6 @@
 		F3B33A1B2C0B22FE0073F19A /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = F3B339A02C0B22FE0073F19A /* TinyConstraints */; };
 		F3B33A1F2C0B22FE0073F19A /* Auth.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E7F2BDD2B540007157B /* Auth.strings */; };
 		F3B33A202C0B22FE0073F19A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
-		F3B33A212C0B22FE0073F19A /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
 		F3B33A232C0B22FE0073F19A /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
 		F3B33A252C0B22FE0073F19A /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3410E982BDD31840007157B /* Icons.xcassets */; };
 		F3B33A262C0B22FE0073F19A /* Global.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E942BDD300D0007157B /* Global.strings */; };
@@ -653,7 +651,6 @@
 		F3B33ABA2C0B23450073F19A /* TinyConstraints in Frameworks */ = {isa = PBXBuildFile; productRef = F3B33A3F2C0B23450073F19A /* TinyConstraints */; };
 		F3B33ABE2C0B23450073F19A /* Auth.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E7F2BDD2B540007157B /* Auth.strings */; };
 		F3B33ABF2C0B23450073F19A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = F31D5885291230AE0047EB44 /* README.md */; };
-		F3B33AC02C0B23450073F19A /* Additional materials in Resources */ = {isa = PBXBuildFile; fileRef = F3B036E02B777898009C085D /* Additional materials */; };
 		F3B33AC22C0B23450073F19A /* Config.plist in Resources */ = {isa = PBXBuildFile; fileRef = F3583B9E2BE8D4680079441F /* Config.plist */; };
 		F3B33AC42C0B23450073F19A /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F3410E982BDD31840007157B /* Icons.xcassets */; };
 		F3B33AC52C0B23450073F19A /* Global.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E942BDD300D0007157B /* Global.strings */; };
@@ -1023,7 +1020,6 @@
 		F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionReuseView.swift; sourceTree = "<group>"; };
 		F3A640BB2C341994006BCACD /* CreateEditTechnicianController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditTechnicianController.swift; sourceTree = "<group>"; };
 		F3A640BF2C34243F006BCACD /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		F3B036E02B777898009C085D /* Additional materials */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Additional materials"; sourceTree = "<group>"; };
 		F3B33A2F2C0B22FE0073F19A /* TrackMyCafe Beta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TrackMyCafe Beta.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B33ACE2C0B23450073F19A /* TrackMyCafe Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "TrackMyCafe Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3B33AD02C0B26080073F19A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -2171,7 +2167,6 @@
 		F39A52E827311FDD00C8F2D3 = {
 			isa = PBXGroup;
 			children = (
-				F3B036E02B777898009C085D /* Additional materials */,
 				F31D5885291230AE0047EB44 /* README.md */,
 				F39A52F327311FDD00C8F2D3 /* TrackMyCafe */,
 				F32F83A72FE98B9300F4B4AE /* TrackMyCafeTests */,
@@ -2891,7 +2886,6 @@
 				F39B5D1728460A06000F7D43 /* GoogleService-Info.plist in Resources */,
 				F3410E802BDD2B540007157B /* Auth.strings in Resources */,
 				F31D5886291230AE0047EB44 /* README.md in Resources */,
-				F3B036E12B777898009C085D /* Additional materials in Resources */,
 				F3583B9F2BE8D4680079441F /* Config.plist in Resources */,
 				F3410E992BDD31840007157B /* Icons.xcassets in Resources */,
 				F3410E962BDD300D0007157B /* Global.strings in Resources */,
@@ -2907,7 +2901,6 @@
 			files = (
 				F3B33A1F2C0B22FE0073F19A /* Auth.strings in Resources */,
 				F3B33A202C0B22FE0073F19A /* README.md in Resources */,
-				F3B33A212C0B22FE0073F19A /* Additional materials in Resources */,
 				F3B33A232C0B22FE0073F19A /* Config.plist in Resources */,
 				F3B33ADA2C0B29500073F19A /* GoogleService-Info.plist in Resources */,
 				F3B33A252C0B22FE0073F19A /* Icons.xcassets in Resources */,
@@ -2924,7 +2917,6 @@
 			files = (
 				F3B33ABE2C0B23450073F19A /* Auth.strings in Resources */,
 				F3B33ABF2C0B23450073F19A /* README.md in Resources */,
-				F3B33AC02C0B23450073F19A /* Additional materials in Resources */,
 				F3B33AD32C0B26080073F19A /* GoogleService-Info.plist in Resources */,
 				F3B33AC22C0B23450073F19A /* Config.plist in Resources */,
 				F3B33AC42C0B23450073F19A /* Icons.xcassets in Resources */,
