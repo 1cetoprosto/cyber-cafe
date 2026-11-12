@@ -52,6 +52,8 @@ Killer-features - унікальність пропозиції, простот�
 
 ## Як використовувати
 
+Локальні артефакти збірки (`.ipa`, `.dSYM.zip`) і `fastlane/.env` не комітити — див. `.gitignore` і `fastlane/.env.example`. Скрипти для Firebase Hosting у `Hosting/` за потреби підтягують залежності через `npm ci` у корені репозиторію.
+
 ### Деплой PROD
 
 ```sh
@@ -59,7 +61,7 @@ Killer-features - унікальність пропозиції, простот�
 ```
 
 Скрипт запускає `bundle exec fastlane ios prod` з кореня репозиторію.
-Для авторизації використовується `App Store Connect API key`, тому `app-specific password` для цього сценарію не потрібен.
+Для авторизації використовується `App Store Connect API key`, тому `app-specific password` для цього сценарію не потрібен. Скопіюй `fastlane/.env.example` → `fastlane/.env` і заповни локально (файл у git не трекається).
 
 [Наверх](#cyber-cafe)
 
