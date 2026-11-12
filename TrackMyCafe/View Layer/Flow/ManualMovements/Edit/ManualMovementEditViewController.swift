@@ -231,7 +231,7 @@ final class ManualMovementEditViewController: UIViewController {
     {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = UIConstants.mediumCornerRadius
+        view.applyCafeSoftCardStyle()
 
         view.addSubview(label)
         view.addSubview(control)

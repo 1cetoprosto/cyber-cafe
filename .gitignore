@@ -126,5 +126,6 @@ node_modules/
 # App Store Connect deliver downloads (may contain review credentials)
 fastlane/metadata/review_information/
 
-# Regenerable ASC screenshot working copies (canonical art lives under docs/product/app-store/screenshots/)
+# Regenerable ASC screenshot working copies (keep locally; do not push PNGs to GitHub)
 fastlane/screenshots/
+docs/product/app-store/screenshots/

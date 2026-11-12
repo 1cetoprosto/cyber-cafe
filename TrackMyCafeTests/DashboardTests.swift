@@ -49,6 +49,68 @@ final class DashboardTests: XCTestCase {
         XCTAssertLessThanOrEqual(dayCount, 7)
     }
 
+    func testDashboardPeriod_previousReferenceDate_shiftsByPeriod() {
+        let cal = Calendar.current
+        let ref = makeDate(year: 2026, month: 6, day: 15)
+        let prevDay = DashboardPeriod.day.previousReferenceDate(from: ref)
+        let prevWeek = DashboardPeriod.week.previousReferenceDate(from: ref)
+        let prevMonth = DashboardPeriod.month.previousReferenceDate(from: ref)
+        XCTAssertEqual(
+            cal.dateComponents([.year, .month, .day], from: prevDay ?? .distantPast).day, 14)
+        XCTAssertEqual(
+            cal.dateComponents([.year, .month, .day], from: prevWeek ?? .distantPast).day, 8)
+        XCTAssertEqual(
+            cal.dateComponents([.year, .month, .day], from: prevMonth ?? .distantPast).month, 5)
+    }
+
+    func testHomeViewModel_deltaPercent_handlesZeroPrevious() {
+        XCTAssertNil(HomeViewModel.deltaPercent(current: 100, previous: 0))
+        XCTAssertEqual(HomeViewModel.deltaPercent(current: 120, previous: 100) ?? 0, 20, accuracy: 0.001)
+        XCTAssertEqual(HomeViewModel.deltaPercent(current: 50, previous: 100) ?? 0, -50, accuracy: 0.001)
+    }
+
+    func testDashboardPeriod_monthComparisonIntervals_matchDayOfMonth() {
+        let cal = Calendar.current
+        let ref = makeDate(year: 2026, month: 11, day: 12)
+        let windows = DashboardPeriod.month.comparisonIntervals(for: ref, calendar: cal)
+        XCTAssertNotNil(windows)
+        guard let windows else { return }
+
+        let curStart = cal.dateComponents([.year, .month, .day], from: windows.currentStart)
+        XCTAssertEqual(curStart.year, 2026)
+        XCTAssertEqual(curStart.month, 11)
+        XCTAssertEqual(curStart.day, 1)
+
+        let curEnd = cal.dateComponents([.year, .month, .day], from: windows.currentEnd)
+        XCTAssertEqual(curEnd.day, 13)  // exclusive end = next day
+
+        let prevStart = cal.dateComponents([.year, .month, .day], from: windows.previousStart)
+        XCTAssertEqual(prevStart.month, 10)
+        XCTAssertEqual(prevStart.day, 1)
+
+        let prevEnd = cal.dateComponents([.year, .month, .day], from: windows.previousEnd)
+        XCTAssertEqual(prevEnd.month, 10)
+        XCTAssertEqual(prevEnd.day, 13)
+    }
+
+    func testDashboardPeriod_weekComparisonIntervals_areSameLength() {
+        let cal = Calendar.current
+        // Thursday 12 Nov 2026
+        let ref = makeDate(year: 2026, month: 11, day: 12)
+        let windows = DashboardPeriod.week.comparisonIntervals(for: ref, calendar: cal)
+        XCTAssertNotNil(windows)
+        guard let windows else { return }
+
+        let curDays =
+            cal.dateComponents([.day], from: windows.currentStart, to: windows.currentEnd).day ?? -1
+        let prevDays =
+            cal.dateComponents([.day], from: windows.previousStart, to: windows.previousEnd).day
+            ?? -1
+        XCTAssertEqual(curDays, prevDays)
+        XCTAssertGreaterThan(curDays, 0)
+        XCTAssertLessThanOrEqual(curDays, 7)
+    }
+
     // MARK: - DomainDashboardFacade
 
     func testDomainDashboardFacade_basicPLComputedCorrectly() {

@@ -168,6 +168,27 @@ button.tintColor = UIColor.Button.primary
 view.backgroundColor = UIColor(red: 0.95, green: 0.95, blue: 0.97, alpha: 1.0) // Погано
 ```
 
+### Content cards (єдиний стиль)
+
+Не вигадуйте локальні `cornerRadius` / `shadow` для карток контенту.
+
+```swift
+// Standalone / scroll-stack (Home KPI, P&L, forms)
+card.applyCafeSoftCardStyle()
+
+// Custom row cards only (Reports Hub, Home transactions, Trends/ABC) — без drop shadow
+rowCard.applyCafeListCardStyle()
+
+// Контентні списки (Orders, Costs, Stock, Products…) — як Settings
+let tableView = UITableView.standardList() // insetGrouped + separators
+// Cells: BaseListTableViewCell (solid fill, system grouped look)
+
+// Підписи на картках
+titleLabel.apply(.kpiTitle)  // Semantic.kpiLabel
+```
+
+Радіус elevated-карток: `UIConstants.cardCornerRadius` (20). Деталі палітри — `docs/engineering/ThemeColors.md`.
+
 ## Асинхронний код
 
 ### Completion Handlers

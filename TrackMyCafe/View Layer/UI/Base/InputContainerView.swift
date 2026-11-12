@@ -24,14 +24,13 @@ final class InputContainerView: UIView {
     private lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
-        view.layer.cornerRadius = 12
+        view.applyCafeSoftCardStyle()
         return view
     }()
 
     private lazy var titleLabel: UILabel = {
-        let label = AppLabel(style: .footnote)
-        label.apply(.footnote)
-        label.textColor = UIColor.Main.secondaryText
+        let label = AppLabel(style: .kpiTitle)
+        label.apply(.kpiTitle)
         label.numberOfLines = 1
         label.adjustsFontSizeToFitWidth = true
         label.minimumScaleFactor = 0.8

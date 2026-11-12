@@ -41,6 +41,12 @@ final class HomeViewController: UIViewController, ProGated {
         headerView.onDeleteDemoData = { [weak self] in
             self?.confirmDeleteDemoData()
         }
+        headerView.onProfitTap = { [weak self] in
+            self?.openProfitReport()
+        }
+        headerView.onProfitInfoTap = { [weak self] in
+            self?.showProfitInfo()
+        }
 
         view.addSubview(tableView)
         tableView.edgesToSuperview(
@@ -186,6 +192,21 @@ final class HomeViewController: UIViewController, ProGated {
         }
     }
 
+    private func openProfitReport() {
+        let reportsVM = ReportsHubViewModel()
+        reportsVM.selectPeriod(at: reportsVM.segmentIndex(for: currentPeriod))
+        let vc = PLReportDetailViewController(viewModel: reportsVM)
+        vc.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    private func showProfitInfo() {
+        PopupFactory.showPopup(
+            title: R.string.global.homeProfitInfoTitle(),
+            description: R.string.global.homeProfitInfoBody()
+        )
+    }
+
     private func confirmDeleteDemoData() {
         PopupFactory.showDestructivePopup(
             title: R.string.global.deleteDemoDataTitle(),
@@ -238,6 +259,7 @@ final class HomeViewController: UIViewController, ProGated {
             sales: sales,
             expenses: viewModel.periodExpenses,
             profit: viewModel.periodProfit,
+            profitDeltaPercent: viewModel.periodProfitDeltaPercent,
             cash: viewModel.cashBalance,
             card: viewModel.cardBalance,
             showDeleteDemoData: DemoDataManager.shared.isDemoDataPresent

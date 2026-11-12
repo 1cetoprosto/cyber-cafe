@@ -8,7 +8,7 @@ final class TransactionTableViewCell: UITableViewCell {
   private let cardView: UIView = {
     let v = UIView()
     v.backgroundColor = UIColor.TableView.cellBackground
-    v.layer.cornerRadius = UIConstants.extraLargeCornerRadius
+    v.applyCafeListCardStyle()
     return v
   }()
 
@@ -64,6 +64,9 @@ final class TransactionTableViewCell: UITableViewCell {
   }
 
   private func setupLayout() {
+    if #available(iOS 14.0, *) {
+      backgroundConfiguration = UIBackgroundConfiguration.clear()
+    }
     contentView.addSubview(cardView)
     cardView.edgesToSuperview(
       insets: .init(

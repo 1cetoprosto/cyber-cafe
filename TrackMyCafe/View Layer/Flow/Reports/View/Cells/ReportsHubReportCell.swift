@@ -8,17 +8,13 @@ final class ReportsHubReportCell: UITableViewCell {
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = Theme.current.cellBackground
-        view.layer.cornerRadius = UIConstants.mediumCornerRadius
-        view.layer.shadowColor = UIColor.black.cgColor
-        view.layer.shadowOpacity = 0.06
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowRadius = 8
+        view.applyCafeListCardStyle()
         return view
     }()
 
     private let iconContainerView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = UIConstants.mediumCornerRadius
+        view.layer.cornerRadius = UIConstants.badgeCornerRadius
         return view
     }()
 
@@ -38,9 +34,8 @@ final class ReportsHubReportCell: UITableViewCell {
     }()
 
     private let subtitleLabel: UILabel = {
-        let label = AppLabel(style: .footnote)
-        label.apply(.footnote)
-        label.textColor = Theme.current.secondaryText
+        let label = AppLabel(style: .kpiTitle)
+        label.apply(.kpiTitle)
         label.numberOfLines = 0
         return label
     }()
@@ -62,14 +57,6 @@ final class ReportsHubReportCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        containerView.layer.shadowPath =
-            UIBezierPath(
-                roundedRect: containerView.bounds, cornerRadius: UIConstants.mediumCornerRadius
-            ).cgPath
-    }
-
     override func setHighlighted(_ highlighted: Bool, animated: Bool) {
         super.setHighlighted(highlighted, animated: animated)
         UIView.animate(withDuration: animated ? 0.15 : 0) {
@@ -81,7 +68,11 @@ final class ReportsHubReportCell: UITableViewCell {
 
     private func setupViews() {
         backgroundColor = .clear
+        contentView.backgroundColor = .clear
         selectionStyle = .none
+        if #available(iOS 14.0, *) {
+            backgroundConfiguration = UIBackgroundConfiguration.clear()
+        }
 
         contentView.addSubview(containerView)
         containerView.addSubview(iconContainerView)
@@ -127,9 +118,9 @@ final class ReportsHubReportCell: UITableViewCell {
 
         let accent: UIColor
         switch kind {
-        case .pl: accent = .systemGreen
+        case .pl: accent = UIColor.Semantic.positive
         case .abc: accent = Theme.current.tabBarTint
-        case .trends: accent = .systemOrange
+        case .trends: accent = UIColor.Semantic.cost
         }
         iconContainerView.backgroundColor = accent.withAlphaComponent(0.15)
         iconImageView.tintColor = accent

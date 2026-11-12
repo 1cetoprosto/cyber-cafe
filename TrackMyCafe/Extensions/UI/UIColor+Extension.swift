@@ -38,6 +38,40 @@ extension UIColor {
     static var text: UIColor { Theme.current.navBarText }
   }
 
+  /// Calm KPI semantics for cream/coffee UI (readable, not neon system colors).
+  struct Semantic {
+    /// Olive — income / positive
+    static let positive = UIColor(red: 79, green: 122, blue: 85)  // #4F7A55
+    /// Warm amber — costs / opex
+    static let cost = UIColor(red: 184, green: 112, blue: 64)  // #B87040
+    /// Terracotta — negative / loss
+    static let negative = UIColor(red: 176, green: 84, blue: 70)  // #B05446
+
+    /// Soft tinted badge (visible wash, not neon block)
+    static var badgeFill: UIColor { Theme.current.primaryText.withAlphaComponent(0.06) }
+    static var positiveFill: UIColor { positive.withAlphaComponent(0.14) }
+    static var costFill: UIColor { cost.withAlphaComponent(0.14) }
+    static var negativeFill: UIColor { negative.withAlphaComponent(0.14) }
+
+    /// KPI / card captions — near-primary (readable, not washed-out secondary)
+    static var kpiLabel: UIColor { Theme.current.primaryText.withAlphaComponent(0.88) }
+
+    static var cardStroke: UIColor { Theme.current.primaryText.withAlphaComponent(0.10) }
+
+    static func profit(_ value: Double) -> UIColor {
+      value >= 0 ? positive : negative
+    }
+
+    static func profitFill(_ value: Double) -> UIColor {
+      value >= 0 ? positiveFill : negativeFill
+    }
+
+    static func kpiSymbol(_ systemName: String) -> UIImage? {
+      let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
+      return UIImage(systemName: systemName, withConfiguration: config)
+    }
+  }
+
   //    fileprivate struct HEX {
   //        // main colors
   //        static let h1C3209 = UIColor(hex: 0x1C3209)

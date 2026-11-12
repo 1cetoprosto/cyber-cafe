@@ -20,7 +20,7 @@ final class ProductCategoriesListViewController: UIViewController, Loggable {
         title = R.string.global.products()
 
         tableView.register(
-            UITableViewCell.self,
+            BaseListTableViewCell.self,
             forCellReuseIdentifier: "CategoryCell"
         )
         tableView.dataSource = self
@@ -81,16 +81,20 @@ extension ProductCategoriesListViewController: UITableViewDataSource, UITableVie
         _ tableView: UITableView,
         cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
+        guard let cell = tableView.dequeueReusableCell(
             withIdentifier: "CategoryCell",
             for: indexPath
-        )
+        ) as? BaseListTableViewCell else {
+            return UITableViewCell()
+        }
         let category = categories[indexPath.row]
         var content = cell.defaultContentConfiguration()
         content.text = category.name
+        content.textProperties.color = UIColor.TableView.cellLabel
         let placeholder = AppImagePlaceholder.category()
         content.image = placeholder
         cell.contentConfiguration = content
+        cell.accessoryType = .disclosureIndicator
 
         cell.imageView?.contentMode = .scaleAspectFill
         cell.imageView?.clipsToBounds = true
