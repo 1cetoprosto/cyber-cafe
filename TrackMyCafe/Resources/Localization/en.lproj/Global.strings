@@ -205,6 +205,7 @@
 "successPurchase" = "Purchase successful";
 "appleIDReserved" = "This Apple ID is already linked to another account.";
 "labReserved" = "This subscription is already linked to another lab.";
+"subscriptionAskOwner" = "Ask the cafe owner to activate a PRO subscription. Staff members use the owner's plan and cannot purchase separately.";
 
 "subscriptionBannerTitle" = "TrackMyCafe";
 "subscriptionBannerDescription" = "Control expenses and income, track sales, and get a complete financial picture of your business.";

@@ -7,6 +7,13 @@
 
 import Foundation
 
+enum SubscriptionAccessPolicy {
+    /// Only the cafe owner may purchase, restore, or sync App Store subscription.
+    static func canManageSubscription(role: Role?) -> Bool {
+        role == .administrator
+    }
+}
+
 class Subscription: CustomStringConvertible {
 
     enum Provider: String {
@@ -41,6 +48,12 @@ class Subscription: CustomStringConvertible {
         // For trial periods, we should consider them active even if they haven't started charging yet
         // The expireDate for trials represents when the trial ends, not when billing starts
         return expireDate > Date.subCheckDate()
+    }
+
+    /// Cafe-level Pro access from the master account subscription document.
+    /// Shared by owner, managers, and waiters of the same cafe.
+    var grantsProAccess: Bool {
+        proPlan || (hasIOSSub && isActive)
     }
 
     init() {

@@ -108,6 +108,15 @@ class SubscriptionController: UIViewController, Loggable {
     }()
 
     private let footerStackView = UIStackView()
+    private weak var restorePurchasesButton: UIButton?
+
+    private var canManageSubscription: Bool {
+        // Pre-login paywall may still offer purchase; staff sessions cannot.
+        if UserSession.current.isAuth {
+            return UserSession.current.canManageSubscription
+        }
+        return true
+    }
 
     // MARK: - Init
 
@@ -131,7 +140,7 @@ class SubscriptionController: UIViewController, Loggable {
 
         Task { [weak self] in
             guard let self else { return }
-            let isPro = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            let isPro = await IAPManager.shared.resolveProAccess()
             await MainActor.run {
                 self.logger.debug("SubscriptionController refreshed isPro: \(isPro)")
                 if isPro {
@@ -140,8 +149,10 @@ class SubscriptionController: UIViewController, Loggable {
                         return
                     }
                     self.setupActiveSubscriptionUI()
-                } else {
+                } else if self.canManageSubscription {
                     self.fetchProducts()
+                } else {
+                    self.setupStaffNeedsOwnerUI()
                 }
             }
         }
@@ -264,6 +275,7 @@ class SubscriptionController: UIViewController, Loggable {
 
         let restoreButton = createFooterButton(
             title: R.string.global.restorePurchases(), action: #selector(restoreAction))
+        restorePurchasesButton = restoreButton
 
         let policyStack = UIStackView()
         policyStack.axis = .horizontal
@@ -387,6 +399,7 @@ class SubscriptionController: UIViewController, Loggable {
     private func setupInactiveSubscriptionUI() {
         featuresContainer.isHidden = false
         termsLabel.isHidden = false
+        restorePurchasesButton?.isHidden = false
 
         if let expireDate = IAPManager.shared.nextPaymentDate, expireDate < Date() {
             let formatter = DateFormatter()
@@ -398,6 +411,25 @@ class SubscriptionController: UIViewController, Loggable {
             subtitleLabel.text = R.string.global.subscriptionSubtitle()
             subtitleLabel.textColor = UIColor.Main.secondaryText
         }
+    }
+
+    private func setupStaffNeedsOwnerUI() {
+        featuresContainer.isHidden = false
+        termsLabel.isHidden = true
+        skipButton.isHidden = true
+        restorePurchasesButton?.isHidden = true
+
+        subtitleLabel.text = R.string.global.subscriptionAskOwner()
+        subtitleLabel.textColor = UIColor.Main.secondaryText
+        subtitleLabel.numberOfLines = 0
+
+        actionButton.setTitle(R.string.global.cancel(), for: .normal)
+        actionButton.isEnabled = true
+        actionButton.backgroundColor = UIColor.Button.background
+        actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
+        actionButton.removeTarget(
+            self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+        actionButton.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
     }
 
     private func setupActiveSubscriptionUI() {
@@ -420,12 +452,25 @@ class SubscriptionController: UIViewController, Loggable {
         subtitleLabel.text = subtitleText
         subtitleLabel.numberOfLines = 0
 
-        actionButton.setTitle(R.string.global.subscriptionManage(), for: .normal)
-        actionButton.isEnabled = true
-        actionButton.backgroundColor = UIColor.Button.background
-        actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
-        actionButton.addTarget(
-            self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+        if canManageSubscription {
+            restorePurchasesButton?.isHidden = false
+            actionButton.setTitle(R.string.global.subscriptionManage(), for: .normal)
+            actionButton.isEnabled = true
+            actionButton.backgroundColor = UIColor.Button.background
+            actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
+            actionButton.removeTarget(self, action: #selector(skipAction), for: .touchUpInside)
+            actionButton.addTarget(
+                self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+        } else {
+            restorePurchasesButton?.isHidden = true
+            actionButton.setTitle(R.string.global.cancel(), for: .normal)
+            actionButton.isEnabled = true
+            actionButton.backgroundColor = UIColor.Button.background
+            actionButton.removeTarget(self, action: #selector(purchaseAction), for: .touchUpInside)
+            actionButton.removeTarget(
+                self, action: #selector(manageSubscriptionAction), for: .touchUpInside)
+            actionButton.addTarget(self, action: #selector(skipAction), for: .touchUpInside)
+        }
     }
 
     @objc private func manageSubscriptionAction() {
@@ -457,6 +502,14 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     @objc private func purchaseAction() {
+        guard canManageSubscription else {
+            showAlert(
+                R.string.global.subscription(),
+                body: R.string.global.subscriptionAskOwner()
+            )
+            return
+        }
+
         guard let product = selectedProduct else {
             fetchProducts()
             return
@@ -515,6 +568,14 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     @objc private func restoreAction() {
+        guard canManageSubscription else {
+            showAlert(
+                R.string.global.subscription(),
+                body: R.string.global.subscriptionAskOwner()
+            )
+            return
+        }
+
         IAPManager.shared.restorePurchases { [weak self] in
             IAPManager.shared.verifySubscription { (receipt) in
                 guard let self = self else { return }

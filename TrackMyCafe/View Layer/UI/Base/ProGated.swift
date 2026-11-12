@@ -24,25 +24,42 @@ extension ProGated {
 
     @discardableResult
     func checkProOrShowPaywall(onSuccess: @escaping () -> Void, onDenied: @escaping () -> Void) -> Bool {
-        let isPro = IAPManager.shared.isProPlan == true
-        if isPro {
+        // Cafe-level Pro from the owner's Firebase subscription is enough —
+        // staff must not be blocked by a missing local App Store purchase.
+        if IAPManager.shared.isProPlan == true
+            || IAPManager.shared.hasActiveAccountSubscription
+        {
+            IAPManager.shared.isProPlan = true
             onSuccess()
             return true
         }
 
         Task { [weak self] in
             guard let self else { return }
-            let refreshedIsPro = await IAPManager.shared.refreshProStatusUsingStoreKit2()
+            let refreshedIsPro = await IAPManager.shared.resolveProAccess()
             await MainActor.run {
                 if refreshedIsPro {
                     onSuccess()
                 } else {
                     onDenied()
-                    self.presentPaywall(onSuccess: onSuccess)
+                    self.presentSubscriptionRequired(onSuccess: onSuccess)
                 }
             }
         }
         return false
+    }
+
+    private func presentSubscriptionRequired(onSuccess: (() -> Void)?) {
+        // Only the cafe owner can buy/restore. Staff get a clear message instead.
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            showAlert(
+                R.string.global.subscription(),
+                body: R.string.global.subscriptionAskOwner()
+            )
+            return
+        }
+
+        presentPaywall(onSuccess: onSuccess)
     }
 
     private func presentPaywall(onSuccess: (() -> Void)?) {

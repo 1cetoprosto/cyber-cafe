@@ -52,6 +52,27 @@ class IAPManager: NSObject, Loggable {
     @AppDefaults<Bool>(key: UserDefaultsKeys.subscriptionIsProPlan)
     var isProPlan: Bool?
 
+    /// Pro status of the cafe account (Firebase under the owner / master user).
+    /// Staff share this status — they do not need their own App Store purchase.
+    var hasActiveAccountSubscription: Bool {
+        RequestManager.shared.subscription?.grantsProAccess == true
+    }
+
+    /// Resolves Pro access for the current cafe session.
+    /// Prefer account-level Firebase subscription; fall back to local StoreKit entitlement.
+    func resolveProAccess() async -> Bool {
+        if hasActiveAccountSubscription {
+            await MainActor.run {
+                self.isProPlan = true
+            }
+            return true
+        }
+        if isProPlan == true {
+            return true
+        }
+        return await refreshProStatusUsingStoreKit2()
+    }
+
     func refreshProStatusUsingStoreKit2() async -> Bool {
         let now = Date.subCheckDate()
         var bestTransaction: StoreKit.Transaction?
@@ -90,11 +111,20 @@ class IAPManager: NSObject, Loggable {
             return true
         }
 
-        logger.debug("StoreKit2: No active entitlements found.")
+        // No local App Store entitlement on this device. Keep cafe Pro if the
+        // owner's Firebase subscription is still active (staff devices).
+        let accountPro = hasActiveAccountSubscription
+        logger.debug(
+            "StoreKit2: No active entitlements found. Account Pro: \(accountPro)"
+        )
         await MainActor.run {
-            self.isProPlan = false
+            if accountPro {
+                self.isProPlan = true
+            } else {
+                self.isProPlan = false
+            }
         }
-        return false
+        return accountPro
     }
 
     func hasAnySubscriptionPurchaseUsingStoreKit2() async -> Bool {
@@ -153,6 +183,12 @@ class IAPManager: NSObject, Loggable {
     }
 
     private func updateSubscriptionInfoFromStoreKit2(_ transaction: StoreKit.Transaction) {
+        // Only the owner may sync a device purchase into the cafe subscription.
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            logger.notice("Skipping StoreKit2 subscription sync for non-admin session")
+            return
+        }
+
         guard let expirationDate = transaction.expirationDate else { return }
         let productId = transaction.productID
         let transactionId = String(transaction.id)
@@ -176,7 +212,7 @@ class IAPManager: NSObject, Loggable {
             "IAPManager: Updating subscription info from RequestManager. Pro: \(subscription.proPlan), Active by Date: \(isActive), Has iOS Sub: \(hasActiveSubscription), Next Payment: \(String(describing: subscription.nextPaymentDate))"
         )
         nextPaymentDate = subscription.nextPaymentDate
-        let newProStatus = subscription.proPlan || (hasActiveSubscription && isActive)
+        let newProStatus = subscription.grantsProAccess
         if newProStatus {
             isProPlan = true
         } else if isProPlan == true {
@@ -184,6 +220,15 @@ class IAPManager: NSObject, Loggable {
                 "IAPManager: Firebase says not pro, but local state is pro. Keeping local state until receipt verification."
             )
         } else {
+            isProPlan = false
+        }
+    }
+
+    /// Applies receipt Pro flag without wiping cafe-level Pro for staff devices.
+    private func applyLocalReceiptProStatus(_ hasLocalActiveSubscription: Bool) {
+        if hasLocalActiveSubscription {
+            isProPlan = true
+        } else if !hasActiveAccountSubscription {
             isProPlan = false
         }
     }
@@ -202,6 +247,11 @@ class IAPManager: NSObject, Loggable {
     }
 
     func purchaseProduct(_ product: SKProduct, completion: ((Bool, String?) -> Void)? = nil) {
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            logger.notice("Blocked purchaseProduct for non-admin session")
+            completion?(false, R.string.global.subscriptionAskOwner())
+            return
+        }
         guard SwiftyStoreKit.canMakePayments else {
             completion?(false, nil)
             return
@@ -236,6 +286,11 @@ class IAPManager: NSObject, Loggable {
     }
 
     func restorePurchases(_ completion: (() -> Void)? = nil) {
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            logger.notice("Blocked restorePurchases for non-admin session")
+            completion?()
+            return
+        }
         guard SwiftyStoreKit.canMakePayments else {
             completion?()
             return
@@ -331,7 +386,7 @@ class IAPManager: NSObject, Loggable {
             case .success(let receipt):
                 self.logger.debug("Verify success (Production)")
                 let receiptAdapter = IAPReceiptAdapterAppleValidation(receipt)
-                self.isProPlan = receiptAdapter.hasActiveAutorenewSubscription
+                self.applyLocalReceiptProStatus(receiptAdapter.hasActiveAutorenewSubscription)
                 self.updateSubscriptionInfo(receiptAdapter)
                 completion?(receiptAdapter)
             case .error(let error):
@@ -459,6 +514,13 @@ class IAPManager: NSObject, Loggable {
 
     func updateSubscriptionInfo(_ receipt: IAPReceiptAdapterProtocol) {
         self.logger.debug("Updating subscription info with receipt...")
+
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            self.logger.notice(
+                "Skipping receipt subscription sync for non-admin session"
+            )
+            return
+        }
 
         // Even if we can't extract all info, we should still update the pro status if there's an active subscription
         if receipt.hasActiveAutorenewSubscription {
