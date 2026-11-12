@@ -85,6 +85,8 @@ When you need specific information, consult these files in priority order:
 | Reports Hub shipped spec (P&L / ABC / Trends) | `docs/internal/REPORTS.md` |
 | Solo-dev execution playbook, DoR/DoD, anti-rework rules | `docs/internal/V1_1_IMPLEMENTATION_GUIDE.md` |
 | Product user flows | `docs/product/UserFlow.md` |
+| **External positioning & copy pack** (onboarding, paywall) + GTM next steps | `docs/product/POSITIONING_AND_COPY.md` |
+| **App Store Connect listing** (description, keywords, live screenshots status) | `docs/product/app-store/LISTING.md` (+ `docs/product/app-store/README.md`) |
 | Theme & color palette | `docs/engineering/ThemeColors.md` |
 | Pull Request template | `.github/pull_request_template.md` |
 | Project overview + deploy instructions | `README.md` |
