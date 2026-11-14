@@ -76,7 +76,8 @@ When you need specific information, consult these files in priority order:
 
 | Question / Context | File to read |
 |---|---|
-| AI contract, coding rules, Xcode MCP setup (this file) | `AGENTS.md` (this file) |
+| AI contract, coding rules, dual-stack tooling (this file) | `AGENTS.md` (this file) |
+| Dual-stack always-apply rule (`xcode-tools` vs MobileBuildMCP) | `.cursor/rules/trackmycafe-xcode-tooling.mdc` |
 | Trae workspace-rules (auto-injected into every request) | `.trae/rules/project_rules.md` |
 | **Code conventions with concrete examples** — naming, UIKit + TinyConstraints, async/await, Logger, testing patterns, pre-commit checklist | `docs/conventions.md` |
 | **Canonical shipped product state (v1.1.0+)** — what exists today, module boundaries, sources of truth, 1.1.x roadmap, what NOT to mix up | `docs/internal/DEV_IMPLEMENTATION_GUIDE.md` |
@@ -93,33 +94,46 @@ When you need specific information, consult these files in priority order:
 
 ---
 
-## 🛠️ Xcode MCP Tools Integration
+## 🛠️ Build tooling (dual-stack)
 
-**Prerequisite for MCP:** Xcode ≥ 26.3 must be running with `TrackMyCafe.xcodeproj` open (migrated from CocoaPods to SPM — no `.xcworkspace`).
-Enable in Xcode: `Settings → Intelligence → Model Context Protocol → [✓] Xcode Tools`.
+Це **два способи керувати проєктом**, не два конкуруючі білдери. Деталі — у `.cursor/rules/trackmycafe-xcode-tooling.mdc`.
 
-### ✅ Priority — use these tools FIRST
+- **`xcode-tools`** — міст у відкритий Xcode (`TrackMyCafe.xcodeproj`, SPM; без `.xcworkspace`). Xcode ≥ 26.3, MCP Xcode Tools увімкнені.
+- **MobileBuildMCP** — headless sim build/run/test / UI automation без відкритого Xcode (скіл `mobilebuildmcp`, дефолти `.mobilebuildmcp/config.yaml`).
+
+Правило: Xcode уже з TrackMyCafe → `xcode-tools`; sim/UI без IDE → MobileBuildMCP. Не дублюй збірку обома. Не shell `xcodebuild`, якщо є MCP.
+
+| Потрібно | Береш |
+|---|---|
+| Compile у відкритому Xcode | `BuildProject` |
+| Логіка | `RunSomeTests` (не `ExecuteSnippet`) |
+| Sim + app + taps / скрін | MobileBuildMCP |
+| Xcode закритий | MobileBuildMCP |
+| Apple API / WWDC | `DocumentationSearch` |
+| Firebase / сторонні SDK | Context7 |
+
+### ✅ Priority — xcode-tools FIRST when Xcode is open
 
 | Tool | When to use |
 |---|---|
-| **`DocumentationSearch`** | **Always prefer this** for any Apple API question. Semantically searches Apple Docs + WWDC video transcripts. Use for UIKit, Swift Concurrency, Combine, OSLog, etc. — anything Apple-native. |
-| **`BuildProject`** | Build the project after generating code. Do NOT use shell `xcodebuild` — MCP uses the same Xcode build system as the developer, with the correct scheme/target (Prod / Beta / Dev). |
-| **`RunAllTests` / `RunSomeTests`** | Run tests after code changes. Prefer `RunSomeTests` with a specific test class when validating a single module. |
-| **`XcodeListNavigatorIssues` + `XcodeRefreshCodeIssuesInFile`** | Use these for **live Xcode-native diagnostics** when a build fails or you suspect type issues. More authoritative than standalone LSP (they see Xcode's full compiler state). |
-| **`XcodeUpdate`** | Use `str_replace`-style edits when modifying large files (e.g., big ViewControllers). Less risky than rewriting the whole file. |
+| **`DocumentationSearch`** | Apple-native APIs (UIKit, Concurrency, Combine, OSLog…). |
+| **`BuildProject`** | After code changes. Same Xcode build system as the developer (`TrackMyCafe Prod` / `Beta` / `Dev`). |
+| **`RunAllTests` / `RunSomeTests`** | Prefer `RunSomeTests` for a single module. |
+| **`XcodeListNavigatorIssues` + `XcodeRefreshCodeIssuesInFile`** | Live Xcode diagnostics after build failures. |
+| **`XcodeUpdate`** | `str_replace`-style edits on large ViewControllers. |
 
 ### ❌ Skip / ignore — do not use
 
 | Tool | Why skip |
 |---|---|
-| **`RenderPreview`** | TrackMyCafe is **UIKit-only**, no SwiftUI. Preview rendering is useless for this codebase. |
-| `XcodeRead` / `XcodeGrep` / `XcodeGlob` / `XcodeLS` / `XcodeMakeDir` / `XcodeRM` / `XcodeMV` / `XcodeWrite` | Standard filesystem tools (Read, Grep, Glob, LS, Write, Edit, DeleteFile) are faster and more capable. Use Xcode file tools **only** if you explicitly need Xcode-specific project context. |
-| `ExecuteSnippet` | Rarely useful in a production app context. If you need to validate logic, write a unit test instead. |
-| `XcodeListWindows` | Internal plumbing for MCP tab discovery — the agent framework manages this automatically. |
+| **`RenderPreview`** | **UIKit-only** — no SwiftUI previews. |
+| `XcodeRead` / `XcodeGrep` / `XcodeGlob` / `XcodeLS` / `XcodeMakeDir` / `XcodeRM` / `XcodeMV` / `XcodeWrite` | Prefer standard FS tools unless you need IDE project context. |
+| `ExecuteSnippet` | Prefer a unit test. |
+| `XcodeListWindows` | Tab discovery plumbing — use only when multiple Xcode windows are open. |
 
-### ⚠️ Important reminders for MCP
+### ⚠️ Important reminders
 
-- **Targets / Schemes:** Prod (Release), Beta, Dev — the build target depends on which scheme is active in Xcode. When in doubt, ask the developer which scheme to use.
-- **Firebase scope:** Limited to Auth, Firestore, Storage. No Functions, no Crashlytics unless explicitly requested.
-- **Inventory logic:** User always enters **actual quantity**, system calculates delta automatically.
-- **Dynamic Type / Layout:** Never use fixed heights for text. Multiline labels (0/2 lines), auto-shrink numeric amounts, scroll when content overflows. See `.trae/rules/project_rules.md` for the full Dynamic Type checklist.
+- **Targets / Schemes:** `TrackMyCafe Prod`, `TrackMyCafe Beta`, `TrackMyCafe Dev` — ask when in doubt.
+- **Firebase scope:** Auth, Firestore, Storage only (no Functions / Crashlytics unless requested).
+- **Inventory logic:** User enters **actual quantity**; system calculates delta.
+- **Dynamic Type / Layout:** No fixed heights for text. See `.trae/rules/project_rules.md`.

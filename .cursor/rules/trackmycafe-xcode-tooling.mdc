@@ -1,0 +1,65 @@
+---
+description: TrackMyCafe — dual-stack tooling (xcode-tools vs MobileBuildMCP) і docs
+alwaysApply: true
+---
+
+# TrackMyCafe — build і tooling
+
+Проєкт: `TrackMyCafe.xcodeproj` (SPM, без `.xcworkspace`). Schemes: **`TrackMyCafe Prod`** / **`TrackMyCafe Beta`** / **`TrackMyCafe Dev`** — коли неясно, питай розробника.
+
+## Dual-stack: що це
+
+Це **два способи керувати Xcode-проєктом з Cursor**, не два конкуруючі білдери.
+
+- **`xcode-tools` (`xcrun mcpbridge`)** — міст у **живий Xcode**. Агент бачить той самий проєкт, що відкритий в IDE: збірка як у Xcode, issues з navigator, Apple docs/WWDC. Мінус: Xcode має бути запущений і з **правильним** проєктом (якщо відкритий інший `.xcodeproj` — інструменти ціляться туди).
+- **MobileBuildMCP** — **headless** CLI-шлях: simulator build/run/test, install/launch, screenshots, UI automation, LLDB. Не залежить від відкритого вікна Xcode. Мінус: немає IDE issues / WWDC search через bridge.
+
+Практичне правило: **якщо Xcode уже з TrackMyCafe — спочатку xcode-tools; якщо треба sim/UI без IDE — MobileBuildMCP.** Не ганяй обидва білди підряд «про всяк випадок». Не викликай сирий shell `xcodebuild` / `xcrun` / `simctl`, якщо доступний відповідний MCP.
+
+| Потрібно | Береш |
+|---|---|
+| Швидкий compile після правок у відкритому Xcode | `BuildProject` (`xcode-tools`) |
+| Перевірити логіку | unit test (`RunSomeTests`) — не `ExecuteSnippet` |
+| Підняти sim, прогнати app, тапнути UI, скрін | MobileBuildMCP |
+| Xcode закритий / CI-подібний цикл | MobileBuildMCP |
+| Apple API / WWDC | `DocumentationSearch` |
+| Firebase / сторонні SDK | Context7 |
+
+| Контекст | Інструмент |
+|---|---|
+| Xcode відкритий з `TrackMyCafe` | `xcode-tools` |
+| Headless simulator build / run / test / UI automation | MobileBuildMCP (спочатку скіл `mobilebuildmcp`; дефолти — `.mobilebuildmcp/config.yaml`) |
+
+### xcode-tools (IDE bridge)
+
+Потрібні: Xcode ≥ 26.3, MCP Xcode Tools увімкнені (`Settings → Intelligence → Model Context Protocol`), відкритий саме `TrackMyCafe.xcodeproj`.
+
+- Збірка — **`BuildProject`** (не shell)
+- Логи / issues — `GetBuildLog`, `XcodeListNavigatorIssues`, `XcodeRefreshCodeIssuesInFile`
+- Тести в IDE — `RunAllTests` / `RunSomeTests`
+- Перед викликами з’ясуй workspace / tab (`XcodeListWindows` / `XcodeOpenWorkspace`), особливо якщо відкрито кілька проєктів
+
+**Не використовувати для цього репо:**
+- **`RenderPreview`** — UIKit-only, SwiftUI preview непотрібний
+- FS-операції через Xcode (`XcodeRead` / `XcodeGrep` / …) — звичайні Read/Grep/Glob швидші; Xcode file tools лише якщо потрібен IDE-контекст
+- `ExecuteSnippet` — краще unit test
+
+### MobileBuildMCP (headless)
+
+Спочатку скіл `mobilebuildmcp`, потім `session_show_defaults`.
+
+- `build_sim` / `build_run_sim` / `test_sim`
+- Boot / install / launch на симуляторі
+- Screenshots, `snapshot_ui`, taps / gestures / UI automation
+- Коли Xcode не відкритий або потрібен повний sim workflow
+
+## Документація
+
+- Apple frameworks / WWDC / нативні API (UIKit, Concurrency, Combine, OSLog…) — **`DocumentationSearch`** (`xcode-tools`)
+- Firebase SDK і сторонні бібліотеки — **Context7** MCP
+- Не вгадуй актуальний API: спочатку docs, потім код
+
+## Out of scope MCP / skills
+
+- Не чіпай `mcp-1c`, Notion, Gmail, Calendar, Postman, Origin, Computer Use для цього репо
+- Ігноруй 1C / HyperFrames / Postman / Notion skills

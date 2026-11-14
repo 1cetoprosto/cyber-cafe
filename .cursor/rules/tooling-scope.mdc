@@ -1,0 +1,19 @@
+---
+description: TrackMyCafe tooling scope — GitHub MCP + out-of-scope servers
+alwaysApply: true
+---
+
+# Tooling scope extras (TrackMyCafe)
+
+Dual-stack build/docs — у `trackmycafe-xcode-tooling.mdc`.
+
+## GitHub
+
+- `github` MCP — через project `.cursor/mcp.json` (не marketplace Project-install).
+- Потрібен `GITHUB_PERSONAL_ACCESS_TOKEN` у env. Якщо токен/MCP недоступні — `gh` CLI.
+- `GitKraken` — git/PR helpers за потреби.
+
+## Out of scope
+
+- `mcp-1c`, Notion, Gmail, Google Calendar, Postman, Origin, Computer Use
+- Skills: ігноруй 1C / HyperFrames / Postman / Notion для цього репо

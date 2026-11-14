@@ -115,6 +115,12 @@ fastlane/.env.secret
 buildServer.json
 .abacusai/
 .vscode/mcp.json
+.cursor/*
+!.cursor/rules/
+!.cursor/rules/**
+
+# Local deliver working copy (listing canon lives in docs/product/app-store/)
+fastlane/metadata/
 
 # Legacy design dump (do not re-add)
 Additional materials/
