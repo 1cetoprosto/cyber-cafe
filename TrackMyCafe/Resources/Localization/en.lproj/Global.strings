@@ -221,15 +221,16 @@
 "subscriptionAskOwner" = "Ask the cafe owner to activate a PRO subscription. Staff members use the owner's plan and cannot purchase separately.";
 
 "subscriptionBannerTitle" = "TrackMyCafe";
-"subscriptionBannerDescription" = "Control expenses and income, track sales, and get a complete financial picture of your business.";
+"subscriptionBannerDescription" = "See what’s left after food, rent, and wages.";
 "subscriptionBannerAction" = "Try for Free";
 
-"subscriptionSubtitle" = "Unlock full potential";
-"subscriptionFeature1" = "Quick expense tracking in two clicks";
-"subscriptionFeature2" = "Automatic ingredient write-off";
-"subscriptionFeature3" = "Flexible income categories (dine-in, delivery, etc.)";
-"subscriptionFeature4" = "Full financial statistics";
-"subscriptionFeature5" = "Convenient interface: business at a glance";
+"subscriptionPaywallHeadline" = "What’s left — on your numbers";
+"subscriptionSubtitle" = "Profit isn’t the same as sales";
+"subscriptionFeature1" = "See what’s left for any period";
+"subscriptionFeature2" = "Food cost and stock write-offs";
+"subscriptionFeature3" = "Rent, wages, and other costs";
+"subscriptionFeature4" = "Which menu items actually earn";
+"subscriptionFeature5" = "Staff with roles in one cafe";
 
 "trialBadgeText" = "%d days FREE";
 "subscribeButtonFormat" = "Activate for %@/mo";
@@ -540,15 +541,23 @@
 "orderPicker_noResults" = "No results";
 
 // MARK: - Onboarding Slides
-"onboardingSlide1Title" = "Expenses Tracking";
-"onboardingSlide1Desc" = "Easily log and categorize your daily expenses to keep track of your spending.";
-"onboardingSlide2Title" = "Income Management";
-"onboardingSlide2Desc" = "Monitor all your income streams in one place for better financial planning.";
-"onboardingSlide3Title" = "Detailed Analytics";
-"onboardingSlide3Desc" = "Visualize your financial data with comprehensive charts and reports.";
+"onboardingSlide1Title" = "Lots of sales?";
+"onboardingSlide1Desc" = "Here’s a full shift’s sales. Every receipt lands in the total — no spreadsheet.";
+"onboardingSlide2Title" = "But less cash in hand";
+"onboardingSlide2Desc" = "Food, rent, and wages already took their cut. Big sales aren’t money in your pocket.";
+"onboardingSlide3Title" = "Here’s what’s actually yours";
+"onboardingSlide3Desc" = "%@ in sales, %@ left after costs. That’s profit.";
 "onboardingSlide4Title" = "Cloud Sync & Backup";
 "onboardingSlide4Desc" = "Create an account to securely save your data in the cloud and access it from any device.";
-"onboardingGetStarted" = "Get Started";
+"onboardingGetStarted" = "Try it on your numbers";
+"onboardingShowWhatsLeft" = "Show what’s left";
+"onboardingDemoCoffeeCroissant" = "Coffee & croissant";
+"onboardingDemoSalesToday" = "Shift sales";
+"onboardingDemoSupplies" = "Food & supplies";
+"onboardingDemoRentDay" = "Rent for the day";
+"onboardingDemoPayroll" = "Wages";
+"onboardingDemoOneSale" = "One sale";
+"onboardingDemoWasSales" = "Sales were";
 
 // MARK: - Sorting
 "sortBy" = "Sort by";

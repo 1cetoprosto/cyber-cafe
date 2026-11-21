@@ -1,5 +1,10 @@
-import UIKit
+//
+//  OnboardingViewController.swift
+//  TrackMyCafe
+//
+
 import TinyConstraints
+import UIKit
 
 protocol OnboardingViewControllerDelegate: AnyObject {
     func didFinishOnboarding()
@@ -39,18 +44,13 @@ final class OnboardingViewController: UIViewController {
         pc.numberOfPages = viewModel.slides.count
         pc.currentPage = 0
         pc.currentPageIndicatorTintColor = UIColor.Button.background
-        pc.pageIndicatorTintColor = UIColor.Main.secondaryText
+        pc.pageIndicatorTintColor = Theme.current.secondaryText.withAlphaComponent(0.35)
         pc.isUserInteractionEnabled = false
         return pc
     }()
 
-    private lazy var nextButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle(R.string.global.actionNext(), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = UIColor.Button.background
-        button.setTitleColor(UIColor.Button.title, for: .normal)
-        button.layer.cornerRadius = UIConstants.largeCornerRadius
+    private lazy var nextButton: DefaultButton = {
+        let button = DefaultButton()
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -71,32 +71,33 @@ final class OnboardingViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        updateButtonTitle()
     }
 
     // MARK: - Setup
 
     private func setupUI() {
-        view.backgroundColor = UIColor.Main.background
+        view.backgroundColor = Theme.current.primaryBackground
 
         view.addSubview(collectionView)
         view.addSubview(pageControl)
         view.addSubview(nextButton)
 
         collectionView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
-        collectionView.bottomToTop(of: pageControl, offset: -20)
+        collectionView.bottomToTop(of: pageControl, offset: -12)
 
         pageControl.centerXToSuperview()
-        pageControl.bottomToTop(of: nextButton, offset: -20)
+        pageControl.bottomToTop(of: nextButton, offset: -16)
 
         nextButton.leftToSuperview(offset: 24)
         nextButton.rightToSuperview(offset: -24)
         nextButton.bottomToSuperview(offset: -20, usingSafeArea: true)
-        nextButton.height(50)
+        nextButton.height(56)
     }
 
     private func updateButtonTitle() {
-        let title = (currentPage == viewModel.slides.count - 1) ? R.string.global.onboardingGetStarted() : R.string.global.actionNext()
-        nextButton.setTitle(title, for: .normal)
+        guard viewModel.slides.indices.contains(currentPage) else { return }
+        nextButton.setTitle(viewModel.slides[currentPage].buttonTitle, for: .normal)
     }
 
     // MARK: - Actions
@@ -114,24 +115,42 @@ final class OnboardingViewController: UIViewController {
 
 // MARK: - UICollectionViewDelegate & DataSource
 
-extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension OnboardingViewController: UICollectionViewDelegate, UICollectionViewDataSource,
+    UICollectionViewDelegateFlowLayout
+{
 
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.slides.count
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
+        -> Int
+    {
+        viewModel.slides.count
     }
 
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: OnboardingCell.reuseId, for: indexPath) as! OnboardingCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath)
+        -> UICollectionViewCell
+    {
+        guard
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: OnboardingCell.reuseId,
+                for: indexPath
+            ) as? OnboardingCell
+        else {
+            return UICollectionViewCell()
+        }
         cell.configure(with: viewModel.slides[indexPath.item])
         return cell
     }
 
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return collectionView.frame.size
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        collectionView.frame.size
     }
 
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         let width = scrollView.frame.width
+        guard width > 0 else { return }
         currentPage = Int(scrollView.contentOffset.x / width)
     }
 }
