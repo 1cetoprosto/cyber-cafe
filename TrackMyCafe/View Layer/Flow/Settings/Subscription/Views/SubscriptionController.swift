@@ -48,7 +48,7 @@ class SubscriptionController: UIViewController, Loggable {
     private let titleLabel: UILabel = {
         let label = AppLabel(style: .footnote)
         label.text = R.string.global.appName()
-        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.font = .systemFont(ofSize: 22, weight: .bold)
         label.textAlignment = .center
         return label
     }()
@@ -58,25 +58,45 @@ class SubscriptionController: UIViewController, Loggable {
         label.text = "PRO"
         label.font = .systemFont(ofSize: 14, weight: .bold)
         label.textColor = .white
-        label.backgroundColor = .systemOrange
+        label.backgroundColor = UIColor.Button.background
         label.textAlignment = .center
         label.layer.cornerRadius = 6
         label.clipsToBounds = true
         return label
     }()
 
+    private let headlineLabel: UILabel = {
+        let label = AppLabel(style: .largeTitleBold)
+        label.apply(.largeTitleBold)
+        label.text = R.string.global.subscriptionPaywallHeadline()
+        label.textColor = Theme.current.primaryText
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        return label
+    }()
+
     private let subtitleLabel: UILabel = {
-        let label = AppLabel(style: .footnote)
+        let label = AppLabel(style: .bodyMultiline)
+        label.apply(.bodyMultiline)
         label.text = R.string.global.subscriptionSubtitle()
-        label.font = .systemFont(ofSize: 17, weight: .medium)
+        label.textColor = Theme.current.secondaryText
         label.textAlignment = .center
         return label
     }()
 
+    private let summaryCard: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.current.cellBackground
+        view.applyCafeSoftCardStyle()
+        return view
+    }()
+
+    private let summaryStackView = UIStackView()
+
     private let featuresContainer: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = 20
-        view.clipsToBounds = true
+        view.backgroundColor = Theme.current.cellBackground
+        view.applyCafeSoftCardStyle()
         return view
     }()
 
@@ -158,15 +178,19 @@ class SubscriptionController: UIViewController, Loggable {
         }
     }
 
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        summaryCard.updateCafeSoftCardShadowPath()
+        featuresContainer.updateCafeSoftCardShadowPath()
+    }
+
     // MARK: - Setup UI
 
     private func setupUI() {
-        view.backgroundColor = UIColor.Main.background
-        titleLabel.textColor = UIColor.Main.text
-        subtitleLabel.textColor = UIColor.Main.secondaryText
-        featuresContainer.backgroundColor = UIColor.TableView.cellBackground
-        skipButton.setTitleColor(UIColor.Main.secondaryText, for: .normal)
-        termsLabel.textColor = UIColor.Main.secondaryText
+        view.backgroundColor = Theme.current.primaryBackground
+        titleLabel.textColor = Theme.current.primaryText
+        skipButton.setTitleColor(Theme.current.secondaryText, for: .normal)
+        termsLabel.textColor = Theme.current.secondaryText
 
         title = ""
 
@@ -175,7 +199,7 @@ class SubscriptionController: UIViewController, Loggable {
 
         contentView.addSubview(mainStackView)
         mainStackView.axis = .vertical
-        mainStackView.spacing = 24
+        mainStackView.spacing = 20
         mainStackView.alignment = .fill
 
         let titleStack = UIStackView(arrangedSubviews: [titleLabel, proTagLabel])
@@ -187,12 +211,15 @@ class SubscriptionController: UIViewController, Loggable {
         proTagLabel.height(24)
 
         let headerStack = UIStackView(arrangedSubviews: [
-            headerImageView, titleStack, subtitleLabel,
+            headerImageView, titleStack, headlineLabel, subtitleLabel,
         ])
         headerStack.axis = .vertical
         headerStack.spacing = 8
         headerStack.alignment = .center
+        headerStack.setCustomSpacing(16, after: titleStack)
+        headerStack.setCustomSpacing(6, after: headlineLabel)
 
+        setupSummaryCard()
         setupFeatures()
 
         featuresContainer.addSubview(featuresStackView)
@@ -201,43 +228,134 @@ class SubscriptionController: UIViewController, Loggable {
         setupFooterLinks()
 
         mainStackView.addArrangedSubview(headerStack)
+        mainStackView.addArrangedSubview(summaryCard)
         mainStackView.addArrangedSubview(featuresContainer)
         mainStackView.addArrangedSubview(actionButton)
         mainStackView.addArrangedSubview(skipButton)
         mainStackView.addArrangedSubview(termsLabel)
         mainStackView.addArrangedSubview(footerStackView)
 
-        mainStackView.setCustomSpacing(40, after: headerStack)
-        mainStackView.setCustomSpacing(30, after: featuresContainer)
+        mainStackView.setCustomSpacing(24, after: headerStack)
+        mainStackView.setCustomSpacing(16, after: summaryCard)
+        mainStackView.setCustomSpacing(24, after: featuresContainer)
         mainStackView.setCustomSpacing(10, after: actionButton)
         mainStackView.setCustomSpacing(10, after: skipButton)
     }
 
+    private func setupSummaryCard() {
+        let summary = CafeDemoMoneyScenario.resolve().formattedSummary()
+
+        summaryStackView.axis = .vertical
+        summaryStackView.spacing = 10
+        summaryStackView.alignment = .fill
+
+        let comparison = AppLabel(style: .bodyDemiBold)
+        comparison.apply(.bodyDemiBold)
+        comparison.text = summary.comparison
+        comparison.textAlignment = .center
+        comparison.textColor = Theme.current.secondaryText
+
+        let leftoverCaption = AppLabel(style: .kpiTitle)
+        leftoverCaption.apply(.kpiTitle)
+        leftoverCaption.text = R.string.global.hubBigNetLabel()
+        leftoverCaption.textAlignment = .center
+        leftoverCaption.textColor = UIColor.Semantic.kpiLabel
+
+        let leftoverValue = UILabel()
+        leftoverValue.text = summary.left
+        leftoverValue.font = .systemFont(ofSize: 36, weight: .bold)
+        leftoverValue.textAlignment = .center
+        leftoverValue.textColor = UIColor.Semantic.positive
+        leftoverValue.adjustsFontSizeToFitWidth = true
+        leftoverValue.minimumScaleFactor = 0.5
+
+        let divider = UIView()
+        divider.backgroundColor = UIColor.Semantic.cardStroke
+        divider.height(1 / UIScreen.main.scale)
+
+        summaryStackView.addArrangedSubview(comparison)
+        summaryStackView.addArrangedSubview(leftoverCaption)
+        summaryStackView.addArrangedSubview(leftoverValue)
+        summaryStackView.addArrangedSubview(divider)
+        summaryStackView.addArrangedSubview(
+            makePaywallAmountRow(
+                title: R.string.global.hubBigSalesLabel(),
+                value: "+\(summary.sales)",
+                color: UIColor.Semantic.positive
+            )
+        )
+        summaryStackView.addArrangedSubview(
+            makePaywallAmountRow(
+                title: R.string.global.hubBigCostsLabel(),
+                value: "−\(summary.costsTotal)",
+                color: UIColor.Semantic.cost
+            )
+        )
+
+        let afterCostsDivider = UIView()
+        afterCostsDivider.backgroundColor = UIColor.Semantic.cardStroke
+        afterCostsDivider.height(1 / UIScreen.main.scale)
+        summaryStackView.addArrangedSubview(afterCostsDivider)
+
+        summaryStackView.addArrangedSubview(
+            makePaywallAmountRow(
+                title: R.string.global.hubBigNetLabel(),
+                value: summary.left,
+                color: UIColor.Semantic.positive
+            )
+        )
+
+        summaryStackView.setCustomSpacing(4, after: leftoverCaption)
+        summaryStackView.setCustomSpacing(14, after: leftoverValue)
+        summaryStackView.setCustomSpacing(12, after: divider)
+
+        summaryCard.addSubview(summaryStackView)
+        summaryStackView.edgesToSuperview(insets: .uniform(16))
+    }
+
+    private func makePaywallAmountRow(title: String, value: String, color: UIColor) -> UIView {
+        let titleLabel = AppLabel(style: .body)
+        titleLabel.apply(.body)
+        titleLabel.text = title
+        titleLabel.textColor = Theme.current.secondaryText
+
+        let valueLabel = AppLabel(style: .bodyDemiBold)
+        valueLabel.apply(.bodyDemiBold)
+        valueLabel.text = value
+        valueLabel.textAlignment = .right
+        valueLabel.textColor = color
+        valueLabel.setContentHuggingPriority(.required, for: .horizontal)
+
+        let row = UIStackView(arrangedSubviews: [titleLabel, valueLabel])
+        row.axis = .horizontal
+        row.spacing = 8
+        return row
+    }
+
     private func setupFeatures() {
         featuresStackView.axis = .vertical
-        featuresStackView.spacing = 16
+        featuresStackView.spacing = 14
 
+        // Outcome-first: max 3 benefits (not a full feature catalog).
         let features = [
             R.string.global.subscriptionFeature1(),
             R.string.global.subscriptionFeature2(),
             R.string.global.subscriptionFeature3(),
-            R.string.global.subscriptionFeature4(),
-            R.string.global.subscriptionFeature5(),
         ]
 
-        for (index, feature) in features.enumerated() {
+        for feature in features {
             let row = UIStackView()
             row.axis = .horizontal
             row.spacing = 12
             row.alignment = .center
 
             let iconContainer = UIView()
-            iconContainer.backgroundColor = .systemOrange
+            iconContainer.backgroundColor = UIColor.Semantic.positiveFill
             iconContainer.layer.cornerRadius = 10
             iconContainer.clipsToBounds = true
 
             let icon = UIImageView(image: UIImage(systemName: "checkmark"))
-            icon.tintColor = .white
+            icon.tintColor = UIColor.Semantic.positive
             icon.contentMode = .scaleAspectFit
 
             iconContainer.addSubview(icon)
@@ -248,23 +366,15 @@ class SubscriptionController: UIViewController, Loggable {
             iconContainer.width(20)
             iconContainer.height(20)
 
-            let label = AppLabel(style: .footnote)
+            let label = AppLabel(style: .body)
+            label.apply(.body)
             label.text = feature
-            label.font = .systemFont(ofSize: 16)
-            label.textColor = UIColor.Main.text
+            label.textColor = Theme.current.primaryText
             label.numberOfLines = 0
 
             row.addArrangedSubview(iconContainer)
             row.addArrangedSubview(label)
-
             featuresStackView.addArrangedSubview(row)
-
-            if index < features.count - 1 {
-                let separator = UIView()
-                separator.backgroundColor = UIColor.lightGray.withAlphaComponent(0.3)
-                separator.height(0.5)
-                featuresStackView.addArrangedSubview(separator)
-            }
         }
     }
 
@@ -390,6 +500,12 @@ class SubscriptionController: UIViewController, Loggable {
         termsLabel.text = displayInfo.termsText
 
         if IAPManager.shared.isProPlan == true {
+            // First-run / gated flows pass onSubscriptionSuccess — leave instead of
+            // showing the empty “Manage Subscription” status screen.
+            if let onSuccess = onSubscriptionSuccess {
+                onSuccess()
+                return
+            }
             setupActiveSubscriptionUI()
         } else {
             setupInactiveSubscriptionUI()
@@ -397,6 +513,8 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     private func setupInactiveSubscriptionUI() {
+        headlineLabel.isHidden = false
+        summaryCard.isHidden = false
         featuresContainer.isHidden = false
         termsLabel.isHidden = false
         restorePurchasesButton?.isHidden = false
@@ -414,6 +532,8 @@ class SubscriptionController: UIViewController, Loggable {
     }
 
     private func setupStaffNeedsOwnerUI() {
+        headlineLabel.isHidden = false
+        summaryCard.isHidden = true
         featuresContainer.isHidden = false
         termsLabel.isHidden = true
         skipButton.isHidden = true
@@ -434,6 +554,13 @@ class SubscriptionController: UIViewController, Loggable {
 
     private func setupActiveSubscriptionUI() {
         logger.debug("setupActiveSubscriptionUI called")
+        if let onSuccess = onSubscriptionSuccess {
+            onSuccess()
+            return
+        }
+
+        headlineLabel.isHidden = true
+        summaryCard.isHidden = true
         featuresContainer.isHidden = true
         termsLabel.isHidden = true
         skipButton.isHidden = true

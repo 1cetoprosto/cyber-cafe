@@ -103,6 +103,7 @@ class RequestManager: NSObject {
         self.listenTo(FirebaseCollections.legacyTechnicians)
         self.listenTo(FirebaseCollections.legacyLogs)
         self.listenToSettings()
+        self.flushPendingSubscriptionSyncIfNeeded()
         self.listenToSubscription()
         self.listenTo(FirebaseCollections.legacyOrders)
         self.listenToAdmin {
@@ -318,17 +319,56 @@ class RequestManager: NSObject {
                 }
                 IAPManager.shared.updateInfo(self.subscription!)
 
-                // Checking for subscription expiration
-                if let subscription = self.subscription,
-                    let nextPaymentDate = subscription.nextPaymentDate,
-                    nextPaymentDate < Date.subCheckDate()
-                {
-                    let controller = SubscriptionController.makeExpired()
-                    UIViewController.topMostViewController()?.present(controller, animated: true)
-                }
-
                 NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+                self.presentExpiredPaywallIfNeeded()
             }
+        }
+    }
+
+    /// Trial bought before login is stored locally; push it once `mainRef` exists.
+    private func flushPendingSubscriptionSyncIfNeeded() {
+        guard let ref = mainRef else { return }
+        guard
+            let data = UserDefaults.standard.dictionary(
+                forKey: UserDefaultsKeys.pendingSubscriptionSync)
+        else { return }
+        guard let docId = UserSession.current.dataRef else { return }
+
+        if UserSession.current.isAuth, !UserSession.current.canManageSubscription {
+            return
+        }
+
+        ref.collection(FirebaseCollections.legacySubscription).document(docId).setData(data)
+        Firestore.firestore().collection(FirebaseCollections.subscriptions).document(docId)
+            .setData(data)
+
+        if let ts = data["nextPaymentDate"] as? Double {
+            IAPManager.shared.nextPaymentDate = Date(timeIntervalSince1970: ts)
+        }
+        IAPManager.shared.isProPlan = true
+        UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.pendingSubscriptionSync)
+        NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+        logger.notice("Flushed pending subscription sync to Firebase")
+    }
+
+    /// Shows the expired paywall only when cafe access is truly gone — not when
+    /// StoreKit still has an active trial and Firebase is stale/empty.
+    private func presentExpiredPaywallIfNeeded() {
+        guard let subscription = subscription,
+            let nextPaymentDate = subscription.nextPaymentDate,
+            nextPaymentDate < Date.subCheckDate()
+        else { return }
+
+        Task { @MainActor in
+            let isPro = await IAPManager.shared.resolveProAccess()
+            guard !isPro else { return }
+
+            guard let top = UIViewController.topMostViewController() else { return }
+            if top is SubscriptionController { return }
+            if top.presentedViewController is SubscriptionController { return }
+
+            let controller = SubscriptionController.makeExpired()
+            top.present(controller, animated: true)
         }
     }
 

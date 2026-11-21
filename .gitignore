@@ -135,3 +135,6 @@ fastlane/metadata/review_information/
 # Regenerable ASC screenshot working copies (keep locally; do not push PNGs to GitHub)
 fastlane/screenshots/
 docs/product/app-store/screenshots/
+
+# Local ASO research dump (drafts, PDF duplicates, spreadsheets). Canon lives in docs/product/app-store/
+docs/product/app-store/research/

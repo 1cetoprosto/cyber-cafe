@@ -15,7 +15,8 @@ It should be treated as a contract between developers and AI.
 - **Authentication:** Firebase Auth + Biometric (FaceID/TouchID)
 - **Other Services:** Firebase Storage, KeychainAccess
 - **Dependency Management:** CocoaPods + Swift Package Manager
-- **Localization:** English and Ukrainian (via R.swift)
+- **Localization:** English and Ukrainian (via R.swift). Write each locale **natively** (no EN↔UK calques). See `.cursor/rules/trackmycafe-native-copy.mdc`.
+- **Schemes:** `TrackMyCafe Prod` / `Beta` / `Dev` — ask when unsure
 
 ---
 

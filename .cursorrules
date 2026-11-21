@@ -277,6 +277,7 @@ view.backgroundColor = .white // ПОГАНО
 - Всі рядки в `Localizable.strings`
 - Використання через R.swift: `R.string.global.orders()`
 - Не хардкодьте рядки в коді
+- **Нативний copy:** кожну мову (uk / en) пиши окремо, без дослівної кальки EN↔UK. Не використовуй «Бач» / «Побач» у UI. Деталі: `.cursor/rules/trackmycafe-native-copy.mdc`
 
 ## Приклади коду
 

@@ -252,11 +252,30 @@ extension SceneDelegate: OnboardingViewControllerDelegate {
     func didFinishOnboarding() {
         UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
 
-        let signInController = SignInController()
-        let navigationController = UINavigationController(rootViewController: signInController)
-        navigationController.setNavigationBarHidden(true, animated: false)
+        // Resolve StoreKit/Firebase Pro before choosing the next root — a sync
+        // `isProPlan` read is often still nil on first launch and used to leave
+        // testers stuck on the “You are a PRO member” manage screen.
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let isPro = await IAPManager.shared.resolveProAccess()
+            if isPro {
+                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+                self.start()
+                return
+            }
 
-        set(root: navigationController)
+            let paywallVC = SubscriptionController.makeDefault()
+            paywallVC.enableReadOnlyMode()
+            paywallVC.onSubscriptionSuccess = { [weak self] in
+                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+                self?.start()
+            }
+            paywallVC.onSkip = { [weak self] in
+                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenInitialPaywall)
+                self?.start()
+            }
+            self.set(root: paywallVC)
+        }
     }
 }
 

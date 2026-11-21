@@ -11,7 +11,7 @@
 - «Цифри, яким можна вірити» — внутрішній критерій якості в `docs/internal/`, не slogan ASC.
 - Reports Hub уже в тоні канону: `reportsPLTitle` = «Скільки залишилось» / «What's left».
 
-Останнє оновлення: 2026-11-12.
+Останнє оновлення: 2026-11-21.
 
 ---
 
@@ -78,34 +78,114 @@
 
 ---
 
+## First-run onboarding (канон)
+
+**Тип:** утиліта + ідея. Без квизу / питань.  
+**Джоб:** показати цикл **чек → витрати → що залишилось**, потім trial.  
+**Правило:** кожен екран або рухає цей цикл, або веде до trial. Немає «онбордингу заради онбордингу».
+
+### Психологічна дуга → підписка
+
+| # | Екран | Механіка | Результат |
+|---|---|---|---|
+| 1 | Чек → підсумок зміни | Впізнавання + звичка «продажі = успіх» | Людина бачить знайому картину зміни |
+| 2 | Витрати | Loss aversion / контраст | Виручка вже не виглядає як «гроші в кишені» |
+| 3 | Що залишилось | Clarity + endowment («ага») | Отримана відповідь, заради якої відкрили апку |
+| 4 | Trial / paywall | Зняття ризику; той самий меседж | Купують контроль, який щойно відчули — не список фіч |
+
+Paywall **продає те, що вже показали на екрані 3**, не нову історію і не «хмару / ролі».
+
+### Валюта і демо-цифри (обов’язково)
+
+- Суми **форматувати** через `NumberFormatter` + символ валюти (settings / `Locale.current`), не хардкод `₴` / `$` у copy.
+- **Один чек ≠ підсумок зміни.** Чек (кава + круасан) і виручка за зміну — різні числа на одному екрані.
+- **Не калькувати US з UA** (не підставляти `$` замість `₴` на ті самі тисячі).
+
+| Ринок | 1 чек (кава + круасан) | Виручка за зміну | Витрати (ілюстрація) | Залишилось |
+|---|---|---|---|---|
+| UA (`uk` / UAH) | ₴220 | ₴12 400 | продукти ₴4 800 · оренда (день) ₴1 200 · зарплата ₴3 500 | **₴2 900** |
+| US / EN default (`en` / USD) | $9.50 | $980 | supplies $320 · rent (day) $95 · payroll $280 | **$285** |
+
+Інші валюти: той самий **порядок величин**, що для локального ринку кав’ярні; символ з locale/settings.
+
+### Екран 1 — Чек → зміна
+
+| | UK | EN |
+|---|---|---|
+| Title | Продажів багато? | Lots of sales? |
+| Sub | Ось виручка за зміну. Кожен чек одразу потрапляє в підсумок — без Excel. | Here’s a full shift’s sales. Every receipt lands in the total — no spreadsheet. |
+| Visual | Один продаж (кава й круасан) → велика **виручка за зміну** |
+| CTA | Далі | Continue |
+
+### Екран 2 — Витрати
+
+| | UK | EN |
+|---|---|---|
+| Title | Але грошей менше | But less cash in hand |
+| Sub | Продукти, оренда й зарплата вже забрали своє. Велика виручка — ще не твої гроші. | Food, rent, and wages already took their cut. Big sales aren’t money in your pocket. |
+| Visual | Виручка **перекреслена** + мінус продукти / оренда / зарплата |
+| CTA | Показати, що лишилось | Show what’s left |
+
+### Екран 3 — Що залишилось
+
+| | UK | EN |
+|---|---|---|
+| Title | Ось що насправді твоє | Here’s what’s actually yours |
+| Sub | З %@ виручки після витрат лишилось %@. Це і є прибуток. | From %@ in sales, %@ is left after costs. That’s profit. |
+| Visual | Порівняння `виручка → залишок` + велика цифра прибутку |
+| CTA | Спробувати на своїх цифрах | Try it on your numbers |
+
+### Екран 4 — Trial / paywall (не окремий «онбординг»)
+
+| Блок | UK | EN |
+|---|---|---|
+| Headline | Скільки лишається — на ваших цифрах | What’s left — on your numbers |
+| Sub | Пробний період: чек → витрати → що залишилось | Free trial: sale → costs → what’s left |
+| Features (макс. 3 на першому екрані) | Скільки залишилось · Собівартість · Усі витрати в одному місці | What’s left · Food cost · All costs in one place |
+| Primary CTA | Спробувати безплатно | Try for free |
+| Secondary | Пізніше / режим перегляду (як зараз у продукті) | Later / read-only (as today) |
+
+### Чого свідомо немає в first-run
+
+- Питань / квизу (відповіді не персоналізують пейволл).
+- Окремих слайдів «хмара», «ролі», «продажі без хаосу» як feature tour.
+- Соціальних доказів без реальних цифр.
+- Фейкового сценарію «один чек = виручка зміни».
+
+---
+
 ## In-app copy (цільові рядки для `Global.strings`)
 
-Ключі існують; поточні рядки онбордингу/paywall ще загальні — синхронізувати окремим кроком.
+Ключі можуть лишатися `onboardingSlide1…`; **зміст** = канон вище. Поточні рядки в бінарнику ще старі — синхронізувати окремим кроком. Числа в UI брати з демо-таблиці + formatter, не з рядків локалізації.
 
-### Onboarding slides
+### Onboarding slides (тексти)
 
 | Key | UK | EN |
 |---|---|---|
-| `onboardingSlide1Title` | Багато продажів? | Lots of sales? |
-| `onboardingSlide1Desc` | А що залишилось після закупок, оренди і зарплат? TrackMyCafe покаже прибуток — не лише виручку. | What’s left after supplies, rent, and payroll? See profit — not just revenue. |
-| `onboardingSlide2Title` | Продажі без хаосу | Sales without chaos |
-| `onboardingSlide2Desc` | Швидкі чеки на зміні. Цифри одразу в підсумку. | Fast receipts on shift. Numbers flow straight into your totals. |
-| `onboardingSlide3Title` | Витрати під контролем | Costs under control |
-| `onboardingSlide3Desc` | Продукти, оренда, зарплати та інші витрати — в одному місці. | Supplies, rent, payroll, and other expenses — in one place. |
-| `onboardingSlide4Title` | Твої дані в хмарі | Your data in the cloud |
-| `onboardingSlide4Desc` | Синхронізація між пристроями. Власник і команда — з різними ролями. | Sync across devices. Owner and staff with different roles. |
+| `onboardingSlide1Title` | Продажів багато? | Lots of sales? |
+| `onboardingSlide1Desc` | Ось виручка за зміну. Кожен чек одразу потрапляє в підсумок — без Excel. | Here’s a full shift’s sales. Every receipt lands in the total — no spreadsheet. |
+| `onboardingSlide2Title` | Але грошей менше | But less cash in hand |
+| `onboardingSlide2Desc` | Продукти, оренда й зарплата вже забрали своє. Велика виручка — ще не твої гроші. | Food, rent, and wages already took their cut. Big sales aren’t money in your pocket. |
+| `onboardingSlide3Title` | Ось що насправді твоє | Here’s what’s actually yours |
+| `onboardingSlide3Desc` | З %@ виручки після витрат лишилось %@. Це і є прибуток. | From %@ in sales, %@ is left after costs. That’s profit. |
+| `onboardingSlide4Title` | _(deprecated / не показувати в first-run)_ | _(deprecated / hide from first-run)_ |
+| `onboardingSlide4Desc` | _(deprecated)_ | _(deprecated)_ |
+
+> Екран 4 у старому feature-tour («хмара») **не** входить у новий first-run. Ключ можна лишити в strings до cleanup, але не показувати.  
+> UK і EN пишемо **окремо нативно**, не калькуємо одне з одного.
 
 ### Paywall / banner
 
 | Key | UK | EN |
 |---|---|---|
-| `subscriptionBannerDescription` | Бач, що залишилось після закупок, оренди і зарплат. | See what’s left after supplies, rent, and payroll. |
-| `subscriptionSubtitle` | Прибуток — не виручка | Profit isn’t revenue |
-| `subscriptionFeature1` | Чистий прибуток за період | Net profit for any period |
-| `subscriptionFeature2` | Собівартість і автосписання | Food cost & auto write-off |
-| `subscriptionFeature3` | Оренда, зарплати, інші витрати | Rent, payroll, other expenses |
-| `subscriptionFeature4` | Що з меню робить гроші | What on the menu makes money |
-| `subscriptionFeature5` | Команда з ролями в одному закладі | Team roles in one cafe |
+| `subscriptionPaywallHeadline` | Скільки лишається — на ваших цифрах | What’s left — on your numbers |
+| `subscriptionBannerDescription` | Скільки лишається після продуктів, оренди й зарплат. | See what’s left after food, rent, and wages. |
+| `subscriptionSubtitle` | Прибуток — це не виручка | Profit isn’t the same as sales |
+| `subscriptionFeature1` | Скільки реально залишилось за період | See what’s left for any period |
+| `subscriptionFeature2` | Собівартість і списання зі складу | Food cost and stock write-offs |
+| `subscriptionFeature3` | Оренда, зарплата та інші витрати | Rent, wages, and other costs |
+| `subscriptionFeature4` | Які позиції меню реально заробляють | Which menu items actually earn |
+| `subscriptionFeature5` | Працівники з різними ролями в одному закладі | Staff with roles in one cafe |
 
 ### Вже в каноні (не змінювати без потреби)
 
@@ -134,11 +214,13 @@
 - [ ] (Опційно) Перезняти iPad Home з додатним прибутком; EN seed у `$`.
 - [ ] App Preview 15–30 сек.
 
-### B. In-app strings — **наступний пріоритет**
+### B. In-app onboarding + strings
 
-- [ ] Оновити `uk.lproj/Global.strings` і `en.lproj/Global.strings` (onboarding + paywall) з таблиць вище.
-- [ ] Не чіпати `R.generated.swift`.
-- [ ] Перевірити UI на UK/EN + Dynamic Type.
+- [x] Зібрати first-run UI під канон «First-run onboarding» (3 екрани демо-циклу → trial; без slide 4 «хмара»).
+- [x] Демо-суми з таблиці UA/US + `NumberFormatter` / currency symbol (settings або `Locale`).
+- [x] Оновити `uk.lproj/Global.strings` і `en.lproj/Global.strings` (onboarding + paywall) з таблиць вище.
+- [x] Не чіпати `R.generated.swift`.
+- [ ] Перевірити UI на UK/EN + Dynamic Type + обидві валютні демо-гілки (ручний прогін на симі).
 
 ### C. Валідація
 
