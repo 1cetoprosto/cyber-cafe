@@ -123,6 +123,10 @@
 - `moderator` → Menu & Inventory, Orders & Appearance, AppInfo/Dev/Account
 - `waiter`, `techMod` → тільки Account (logout)
 
+**Підписка / демо (owner-only):**
+- Subscription banner у Settings — лише якщо `canManageSubscription` (роль `administrator`) і план не Pro.
+- Авто-сід демо-даних і FAB / пункт «Видалити демо-дані» — лише для `administrator`. Staff ніколи не сіє демо в кафе власника.
+
 ### 5.3. Захист екранів
 
 Хелпер `UIViewController.requiresRole(_:)` показує alert "Access Denied" та pop/dismiss, якщо поточна роль не в дозволеному наборі. Застосовано в:

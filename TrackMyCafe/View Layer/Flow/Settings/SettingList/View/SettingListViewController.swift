@@ -289,9 +289,11 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
 
     private func updateBannerVisibility() {
         let isPro = IAPManager.shared.isProPlan == true
-        logger.debug("Subscription status isPro: \(isPro)")
+        let canManage = UserSession.current.canManageSubscription
+        logger.debug("Subscription status isPro: \(isPro) canManage: \(canManage)")
 
-        if isPro {
+        // Paywall banner is owner-only; staff must not see subscription upsell.
+        if isPro || !canManage {
             tableView.tableHeaderView = nil
         } else {
             tableView.tableHeaderView = subscriptionBanner
@@ -580,7 +582,9 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             ),
         ]
 
-        if DemoDataManager.shared.isDemoDataPresent {
+        if UserSession.current.role == .administrator,
+            DemoDataManager.shared.isDemoDataPresent
+        {
             appInfoOptions.append(
                 .staticCell(
                     model: SettingsStaticOption(

@@ -262,7 +262,8 @@ final class HomeViewController: UIViewController, ProGated {
             profitDeltaPercent: viewModel.periodProfitDeltaPercent,
             cash: viewModel.cashBalance,
             card: viewModel.cardBalance,
-            showDeleteDemoData: DemoDataManager.shared.isDemoDataPresent
+            showDeleteDemoData: UserSession.current.role == .administrator
+                && DemoDataManager.shared.isDemoDataPresent
         )
     }
 }

@@ -81,8 +81,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         // Run on main thread to be safe
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
+            let isOwner = UserSession.current.role == .administrator
             let hasData = DemoDataManager.shared.isDemoDataPresent
-            let shouldShow = hasData && self.shouldShowDemoDataButtonInCurrentContext()
+            let shouldShow =
+                isOwner && hasData && self.shouldShowDemoDataButtonInCurrentContext()
             self.demoDataButton.isHidden = !shouldShow
             if shouldShow {
                 self.view.bringSubviewToFront(self.demoDataButton)
@@ -120,9 +122,10 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         hasAlreadyCheckedSession = true
 
         guard Auth.auth().currentUser?.uid != nil else { return }
+        // Demo seed is owner-only — staff must never write demo rows into the cafe DB.
+        guard UserSession.current.role == .administrator else { return }
 
-        // Always check if DB is empty on launch.
-        // If empty -> AUTOMATICALLY seed demo data (as requested).
+        // If the owner's cafe is empty on launch, seed demo data automatically.
 
         Task { [weak self] in
             let products = await DomainDatabaseService.shared.fetchProductsPrice()
