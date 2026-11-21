@@ -81,6 +81,7 @@ class SubscriptionController: UIViewController, Loggable {
         label.text = R.string.global.subscriptionSubtitle()
         label.textColor = Theme.current.secondaryText
         label.textAlignment = .center
+        label.numberOfLines = 0
         return label
     }()
 
@@ -526,9 +527,18 @@ class SubscriptionController: UIViewController, Loggable {
             subtitleLabel.text = "\(expiredText) \(formatter.string(from: expireDate))"
             subtitleLabel.textColor = .systemRed
         } else {
-            subtitleLabel.text = R.string.global.subscriptionSubtitle()
+            subtitleLabel.text = inactiveSubtitleText()
             subtitleLabel.textColor = UIColor.Main.secondaryText
         }
+    }
+
+    /// First-run / gated paywall keeps the trial arc; Settings keeps the insight line.
+    private func inactiveSubtitleText() -> String {
+        let isFirstRunOrGated = onSubscriptionSuccess != nil || onSkip != nil
+        if isFirstRunOrGated {
+            return R.string.global.subscriptionPaywallTrialSubtitle()
+        }
+        return R.string.global.subscriptionSubtitle()
     }
 
     private func setupStaffNeedsOwnerUI() {

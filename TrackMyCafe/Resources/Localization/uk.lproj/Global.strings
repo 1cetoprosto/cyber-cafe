@@ -225,6 +225,7 @@
 "subscriptionBannerAction" = "Спробувати безплатно";
 
 "subscriptionPaywallHeadline" = "Скільки лишається — на ваших цифрах";
+"subscriptionPaywallTrialSubtitle" = "Пробний період: чек → витрати → що залишилось";
 "subscriptionSubtitle" = "Прибуток — це не виручка";
 "subscriptionFeature1" = "Скільки реально лишилось за період";
 "subscriptionFeature2" = "Собівартість і списання зі складу";
@@ -545,7 +546,7 @@
 "onboardingSlide2Title" = "Але грошей менше";
 "onboardingSlide2Desc" = "Продукти, оренда й зарплата вже забрали своє. Велика виручка — ще не твої гроші.";
 "onboardingSlide3Title" = "Ось що насправді твоє";
-"onboardingSlide3Desc" = "Виручка %@, після витрат лишилось %@. Це і є прибуток.";
+"onboardingSlide3Desc" = "З %@ виручки після витрат лишилось %@. Це і є прибуток.";
 "onboardingSlide4Title" = "Хмарна синхронізація";
 "onboardingSlide4Desc" = "Створіть акаунт, щоб безпечно зберігати дані в хмарі та мати доступ з будь-якого пристрою.";
 "onboardingGetStarted" = "Спробувати на своїх цифрах";

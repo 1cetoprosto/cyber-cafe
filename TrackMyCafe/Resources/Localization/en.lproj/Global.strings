@@ -225,6 +225,7 @@
 "subscriptionBannerAction" = "Try for Free";
 
 "subscriptionPaywallHeadline" = "What’s left — on your numbers";
+"subscriptionPaywallTrialSubtitle" = "Free trial: sale → costs → what’s left";
 "subscriptionSubtitle" = "Profit isn’t the same as sales";
 "subscriptionFeature1" = "See what’s left for any period";
 "subscriptionFeature2" = "Food cost and stock write-offs";
@@ -546,7 +547,7 @@
 "onboardingSlide2Title" = "But less cash in hand";
 "onboardingSlide2Desc" = "Food, rent, and wages already took their cut. Big sales aren’t money in your pocket.";
 "onboardingSlide3Title" = "Here’s what’s actually yours";
-"onboardingSlide3Desc" = "%@ in sales, %@ left after costs. That’s profit.";
+"onboardingSlide3Desc" = "From %@ in sales, %@ is left after costs. That’s profit.";
 "onboardingSlide4Title" = "Cloud Sync & Backup";
 "onboardingSlide4Desc" = "Create an account to securely save your data in the cloud and access it from any device.";
 "onboardingGetStarted" = "Try it on your numbers";
