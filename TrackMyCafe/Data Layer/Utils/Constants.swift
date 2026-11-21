@@ -170,11 +170,12 @@ struct SettingsFields {
 // MARK: - Firebase Collections
 /// Single source of truth for every Firestore collection name used by the app.
 ///
-/// Firestore names are case-sensitive. Two families coexist here and their exact
-/// string values must NOT change without a coordinated data migration:
-///   - Modern (lowercase): `users/{uid}` profile + inventory subcollections.
-///   - Legacy (PascalCase): the cafe business-data subtree under `Users/{uid}`,
-///     inherited from the old Firebase Realtime Database schema.
+/// Cafe root is lowercase `users/{uid}` (profile, Settings map, staff, inventory…).
+/// Top-level `Subscriptions/{uid}` is the canonical Pro entitlement document.
+///
+/// `legacyUsers` (`Users`) remains only for one-release read fallbacks / cleanup;
+/// do not write new cafe data there. Subcollection *names* like `Technicians`
+/// stay PascalCase under `users/{uid}` for backward compatibility.
 struct FirebaseCollections {
     static let users = "users"
     static let roles = "roles"
@@ -191,20 +192,21 @@ struct FirebaseCollections {
     static let opexExpenses = "opexExpenses"
     static let journalEntries = "journal_entries"
     static let dailyBalances = "daily_balances"
+    /// Canonical Pro entitlement: `Subscriptions/{uid}`.
     static let subscriptions = "Subscriptions"
     static let info = ".info"
     static let productCategories = "productCategories"
 
-    // MARK: Legacy (PascalCase)
-    // Cafe business data lives under `Users/{uid}` (capital U) with PascalCase
-    // subcollections. Do NOT rename these without migrating existing data.
-    /// Business-data root document: `Users/{masterUserRef}`.
+    // MARK: Legacy names (do not use for new writes to cafe root)
+    /// Deprecated cafe root (`Users/{uid}`). Prefer `users`. Kept for cleanup/fallback.
     static let legacyUsers = "Users"
     static let legacyOrders = "Orders"
-    /// Cafe staff (managers + waiters): `Users/{masterUserRef}/Technicians`.
+    /// Staff subcollection name under cafe root: `users/{uid}/Technicians`.
     static let legacyTechnicians = "Technicians"
     static let legacyLogs = "Logs"
+    /// Legacy Settings *subcollection* name; modern Settings is a map on `users/{uid}`.
     static let legacySettings = "Settings"
+    /// Legacy nested subscription path; prefer top-level `subscriptions`.
     static let legacySubscription = "Subscription"
 }
 

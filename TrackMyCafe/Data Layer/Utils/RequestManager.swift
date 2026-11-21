@@ -97,19 +97,16 @@ class RequestManager: NSObject {
         hasStartedListening = true
         logger.notice("startListening: called, masterUserRef=\(masterRef)")
 
-        mainRef = db.collection(FirebaseCollections.legacyUsers).document(masterRef)
+        // Cafe root is lowercase `users/{uid}` (profile + staff + Settings map).
+        mainRef = db.collection(FirebaseCollections.users).document(masterRef)
         logger.notice("startListening: mainRef set to \(self.mainRef.path)")
 
         self.listenTo(FirebaseCollections.legacyTechnicians)
         self.listenTo(FirebaseCollections.legacyLogs)
-        self.listenToSettings()
+        self.listenToUserProfileDocument()
         self.flushPendingSubscriptionSyncIfNeeded()
         self.listenToSubscription()
         self.listenTo(FirebaseCollections.legacyOrders)
-        self.listenToAdmin {
-            // Обробка після завантаження даних адміністратора
-            NotificationCenter.default.post(name: .adminInfoReload, object: nil)
-        }
 
         IAPManager.shared.verifySubscription { receipt in
             if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
@@ -217,117 +214,130 @@ class RequestManager: NSObject {
         return nil
     }
 
-    // MARK: - Settings
+    // MARK: - Profile (admin + Settings map on `users/{uid}`)
 
-    func listenToSettings() {
-        if Auth.auth().currentUser != nil {
-            mainRef.collection(FirebaseCollections.legacySettings).addSnapshotListener {
-                (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    self.logger.log(
-                        "Error listening to Settings collection: \(error?.localizedDescription ?? "No error description")"
-                    )
-                    return
-                }
+    /// Listens to the cafe root document for admin profile fields and the nested
+    /// `Settings` map. Replaces the old `Users/{uid}/{field}` subcollection layout.
+    func listenToUserProfileDocument() {
+        guard Auth.auth().currentUser != nil, let mainRef = mainRef else { return }
 
-                if !snapshot.documents.isEmpty {
-                    self.settings = Settings(
-                        snapshot.documents.first!.data() as [String: AnyObject])
-                    NotificationCenter.default.post(name: .settingsInfoReload, object: nil)
-                } else {
-                    self.settings = Settings()
-                }
+        mainRef.addSnapshotListener { [weak self] snapshot, error in
+            guard let self = self else { return }
+            if let error {
+                self.logger.error(
+                    "Error listening to user profile: \(error.localizedDescription)")
+                return
             }
+            guard let snapshot, snapshot.exists, let data = snapshot.data() else {
+                self.settings = Settings()
+                NotificationCenter.default.post(name: .settingsInfoReload, object: nil)
+                NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+                return
+            }
+
+            self.applyAdminFields(from: data)
+            if let settingsMap = data[FirebaseCollections.legacySettings] as? [String: Any] {
+                self.settings = Settings(settingsMap as [String: AnyObject])
+            } else {
+                self.settings = Settings()
+            }
+
+            NotificationCenter.default.post(name: .settingsInfoReload, object: nil)
+            NotificationCenter.default.post(name: .adminInfoReload, object: nil)
         }
     }
 
+    /// Public entry used by Admin UI; profile is already live via
+    /// `listenToUserProfileDocument()`, so this just re-posts current state.
     func listenToAdmin(completion: @escaping () -> Void) {
-        guard let mainRef = mainRef else {
+        guard mainRef != nil else {
             logger.log("mainRef is nil")
             completion()
             return
         }
-        debugPrint(mainRef)
-        let fields = [
-            FirebaseFields.email, FirebaseFields.firstName, FirebaseFields.lastName,
-            FirebaseFields.middleName, FirebaseFields.phone, FirebaseFields.address,
-            FirebaseFields.avatarThumbnailUrl, FirebaseFields.avatarUrl, FirebaseFields.comment,
-        ]
-        var pendingFields = Set(fields)
-        for field in fields {
-            mainRef.collection(field).addSnapshotListener { [weak self] (snapshot, error) in
-                guard let self = self else { return }
-                guard let snapshot = snapshot else {
-                    logger.log(
-                        "Error listening to Admin \(field): \(error?.localizedDescription ?? "No error description")"
-                    )
-                    return
-                }
+        NotificationCenter.default.post(name: .adminInfoReload, object: nil)
+        completion()
+    }
 
-                guard let value = snapshot.documents.first?.data()["value"] as? String else {
-                    return
-                }
-
-                switch field {
-                case FirebaseFields.email:
-                    self.admin.email = value
-                case FirebaseFields.firstName:
-                    self.admin.firstName = value
-                case FirebaseFields.lastName:
-                    self.admin.lastName = value
-                case FirebaseFields.middleName:
-                    self.admin.middleName = value
-                case FirebaseFields.phone:
-                    self.admin.phone = value
-                case FirebaseFields.address:
-                    self.admin.address = value
-                case FirebaseFields.avatarThumbnailUrl:
-                    self.admin.avatarThumbnailUrl = value
-                case FirebaseFields.avatarUrl:
-                    self.admin.avatarUrl = value
-                case FirebaseFields.comment:
-                    self.admin.comment = value
-                default:
-                    break
-                }
-
-                pendingFields.remove(field)
-                if pendingFields.isEmpty {
-                    completion()
-                }
-            }
-        }
+    private func applyAdminFields(from data: [String: Any]) {
+        admin.firebaseRef = mainRef?.documentID ?? admin.firebaseRef
+        admin.email = data[FirebaseFields.email] as? String ?? admin.email
+        admin.firstName = data[FirebaseFields.firstName] as? String ?? admin.firstName
+        admin.lastName = data[FirebaseFields.lastName] as? String
+        admin.middleName = data[FirebaseFields.middleName] as? String
+        admin.phone = data[FirebaseFields.phone] as? String
+        admin.address = data[FirebaseFields.address] as? String
+        admin.avatarThumbnailUrl = data[FirebaseFields.avatarThumbnailUrl] as? String
+        admin.avatarUrl = data[FirebaseFields.avatarUrl] as? String
+        admin.comment = data[FirebaseFields.comment] as? String
     }
 
     // MARK: - Subscription
 
+    /// Canonical path: `Subscriptions/{uid}`. Falls back once to legacy
+    /// `Users/{uid}/Subscription` if the top-level doc is missing (pre-cleanup).
     func listenToSubscription() {
-        if Auth.auth().currentUser != nil {
-            mainRef.collection(FirebaseCollections.legacySubscription).addSnapshotListener {
-                (snapshot, error) in
-                guard let snapshot = snapshot else {
-                    self.logger.log(
-                        "Error listening to Subscriptions collection: \(error?.localizedDescription ?? "No error description")"
-                    )
+        guard Auth.auth().currentUser != nil else { return }
+        guard let docId = UserSession.current.dataRef, !docId.isEmpty else {
+            logger.error("listenToSubscription: dataRef is nil")
+            return
+        }
+
+        db.collection(FirebaseCollections.subscriptions).document(docId)
+            .addSnapshotListener { [weak self] snapshot, error in
+                guard let self = self else { return }
+                if let error {
+                    self.logger.error(
+                        "Error listening to Subscriptions/\(docId): \(error.localizedDescription)")
                     return
                 }
 
-                if let document = snapshot.documents.first {
-                    self.subscription = Subscription(document.data() as [String: AnyObject])
-                } else {
-                    self.subscription = Subscription()
+                if let snapshot, snapshot.exists, let data = snapshot.data() {
+                    self.applySubscription(data)
+                    return
                 }
-                IAPManager.shared.updateInfo(self.subscription!)
 
-                NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
-                self.presentExpiredPaywallIfNeeded()
+                self.loadLegacySubscriptionFallback(docId: docId)
             }
-        }
     }
 
-    /// Trial bought before login is stored locally; push it once `mainRef` exists.
+    private func applySubscription(_ data: [String: Any]) {
+        subscription = data.isEmpty ? Subscription() : Subscription(data)
+        if let subscription {
+            IAPManager.shared.updateInfo(subscription)
+        }
+        NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
+        presentExpiredPaywallIfNeeded()
+    }
+
+    private func loadLegacySubscriptionFallback(docId: String) {
+        db.collection(FirebaseCollections.legacyUsers)
+            .document(docId)
+            .collection(FirebaseCollections.legacySubscription)
+            .document(docId)
+            .getDocument { [weak self] snapshot, error in
+                guard let self = self else { return }
+                if let error {
+                    self.logger.error(
+                        "Legacy subscription fallback failed: \(error.localizedDescription)")
+                    self.applySubscription([:])
+                    return
+                }
+                if let snapshot, snapshot.exists, let data = snapshot.data() {
+                    self.logger.notice(
+                        "Subscription loaded from legacy Users/\(docId)/Subscription")
+                    // Heal canonical doc so next launch does not need fallback.
+                    self.db.collection(FirebaseCollections.subscriptions).document(docId)
+                        .setData(data, merge: true)
+                    self.applySubscription(data)
+                } else {
+                    self.applySubscription([:])
+                }
+            }
+    }
+
+    /// Trial bought before login is stored locally; push it once session exists.
     private func flushPendingSubscriptionSyncIfNeeded() {
-        guard let ref = mainRef else { return }
         guard
             let data = UserDefaults.standard.dictionary(
                 forKey: UserDefaultsKeys.pendingSubscriptionSync)
@@ -338,9 +348,7 @@ class RequestManager: NSObject {
             return
         }
 
-        ref.collection(FirebaseCollections.legacySubscription).document(docId).setData(data)
-        Firestore.firestore().collection(FirebaseCollections.subscriptions).document(docId)
-            .setData(data)
+        db.collection(FirebaseCollections.subscriptions).document(docId).setData(data)
 
         if let ts = data["nextPaymentDate"] as? Double {
             IAPManager.shared.nextPaymentDate = Date(timeIntervalSince1970: ts)
@@ -348,7 +356,7 @@ class RequestManager: NSObject {
         IAPManager.shared.isProPlan = true
         UserDefaults.standard.removeObject(forKey: UserDefaultsKeys.pendingSubscriptionSync)
         NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
-        logger.notice("Flushed pending subscription sync to Firebase")
+        logger.notice("Flushed pending subscription sync to Subscriptions/\(docId)")
     }
 
     /// Shows the expired paywall only when cafe access is truly gone — not when
@@ -377,18 +385,30 @@ class RequestManager: NSObject {
             completion(Subscription())
             return
         }
-
-        guard let mainRef = mainRef else {
+        guard let docId = UserSession.current.dataRef, !docId.isEmpty else {
             completion(Subscription())
             return
         }
 
-        mainRef.collection(FirebaseCollections.legacySubscription).getDocuments { (snapshot, _) in
-            guard let snapshot = snapshot, let document = snapshot.documents.first else {
-                completion(Subscription())
+        db.collection(FirebaseCollections.subscriptions).document(docId).getDocument {
+            snapshot, _
+            in
+            if let snapshot, snapshot.exists, let data = snapshot.data() {
+                completion(Subscription(data))
                 return
             }
-            completion(Subscription(document.data() as [String: AnyObject]))
+            // One-shot legacy fallback.
+            self.db.collection(FirebaseCollections.legacyUsers)
+                .document(docId)
+                .collection(FirebaseCollections.legacySubscription)
+                .document(docId)
+                .getDocument { legacySnap, _ in
+                    if let legacySnap, legacySnap.exists, let data = legacySnap.data() {
+                        completion(Subscription(data))
+                    } else {
+                        completion(Subscription())
+                    }
+                }
         }
     }
 
@@ -449,14 +469,8 @@ class RequestManager: NSObject {
             data["subscriptionId"] = subscriptionId
         }
 
-        if let ref = mainRef {
-            ref.collection(FirebaseCollections.legacySubscription).document(
-                UserSession.current.dataRef
-            )
-            .setData(data)
-            Firestore.firestore().collection(FirebaseCollections.subscriptions).document(
-                UserSession.current.dataRef
-            ).setData(data)
+        if let docId = UserSession.current.dataRef, !docId.isEmpty {
+            db.collection(FirebaseCollections.subscriptions).document(docId).setData(data)
             // Also update IAPManager state directly so UI reflects changes immediately
             IAPManager.shared.isProPlan = true
             IAPManager.shared.nextPaymentDate = nextPaymentDate

@@ -32,6 +32,8 @@
   специфікація Reports Hub, яка вже відповідає поточному shipped стану v1.1.0+.
 - `STAFF_AND_ROLES.md`:
   повний опис системи персоналу та ролей (v1.2.0): ролі, RBAC, потоки створення/запрошення/входу/видалення, `createdBy` в замовленнях.
+- `USERS_LEGACY_CLEANUP.md`:
+  міграція з PascalCase `Users` → lowercase `users` + канон `Subscriptions/{uid}`; cleanup після релізу апки.
 - `docs/product/POSITIONING_AND_COPY.md`:
   зовнішнє позиціонування, App Store / onboarding / paywall copy (UK+EN), наступні GTM-кроки.
 - `docs/product/app-store/LISTING.md` + `screenshots/current/`:
