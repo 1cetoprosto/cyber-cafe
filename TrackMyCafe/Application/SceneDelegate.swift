@@ -74,6 +74,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
     }
 
     func start() {
+        // Prefer email-link invite completion over onboarding/paywall on cold start.
+        if let link = pendingEmailLink {
+            pendingEmailLink = nil
+            if Auth.auth().isSignIn(withEmailLink: link) {
+                logger.notice("Cold start email-link sign-in URL received")
+                presentEmailLinkSignIn(link, animated: false)
+                return
+            }
+            logger.error(
+                "Cold start URL is not a Firebase email sign-in link: \(link)"
+            )
+        }
+
         // 1. Check Onboarding
         let hasSeenOnboarding = UserDefaults.standard.bool(
             forKey: UserDefaultsKeys.hasSeenOnboarding)
@@ -85,13 +98,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         }
         // Set onboarding as seen implicitly to avoid showing it later if re-enabled
         // UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasSeenOnboarding)
-
-        // 3. Complete an email-link sign-in that launched the app
-        if let link = pendingEmailLink {
-            pendingEmailLink = nil
-            presentEmailLinkSignIn(link, animated: false)
-            return
-        }
 
         // 2. Check Subscription (Moved to inside app via ProGated)
         /*
@@ -334,13 +340,17 @@ extension SceneDelegate {
     }
 
     private func handle(url: URL) {
-        guard Auth.auth().isSignIn(withEmailLink: url.absoluteString) else {
+        let link = url.absoluteString
+        logger.notice("Handling incoming URL host=\(url.host ?? "nil") path=\(url.path)")
+        guard Auth.auth().isSignIn(withEmailLink: link) else {
+            logger.error("Incoming URL is not a Firebase email sign-in link: \(link)")
             return
         }
-        presentEmailLinkSignIn(url.absoluteString, animated: true)
+        presentEmailLinkSignIn(link, animated: true)
     }
 
     private func presentEmailLinkSignIn(_ link: String, animated: Bool) {
+        logger.notice("Presenting email-link sign-in UI")
         if Auth.auth().currentUser != nil || UserSession.current.isAuth {
             do {
                 try Auth.auth().signOut()

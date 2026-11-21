@@ -53,12 +53,40 @@
 3. `StaffCreateEditViewModel.validate()` — перевіряє firstName, email (required + regex)
 4. Перевіряється, що email ще не існує (`getRoles`)
 5. Створюється `RoleConfig` + документ `Employee` в одному batch
-6. Надсилається email-запрошення через `Auth.auth().sendSignInLink`
-7. Співробітник проходить за посиланням, встановлює пароль, входить
+6. Надсилається email-запрошення через `StaffService.sendInvite` → `Auth.auth().sendSignInLink`
+7. Співробітник відкриває лінк → встановлює пароль → входить (див. §4.1.1)
+
+#### 4.1.1. Invite email-link → відкриття апки → sign-in
+
+**Схеми / Firebase:** Beta + Prod → `trackmycafe-prod`; Dev → `trackmycafe-develop`.
+
+**Як формується лінк**
+1. `ActionCodeSettings.url` = `AuthModel.emailLinkContinueURL` →  
+   `https://<project>.firebaseapp.com/email-link/<email>?email=<email>`
+2. `handleCodeInApp = true`, iOS bundle id поточної схеми
+3. Firebase Auth генерує Hosting-based mobile link (не Dynamic Links). Домен має бути `HOSTING_DOMAIN` (`Hosting/set-mobile-links-domain.mjs`).
+
+**Як відкривається апка**
+1. Associated Domains: `applinks:trackmycafe-prod.firebaseapp.com` / `applinks:trackmycafe-develop.firebaseapp.com`
+2. AASA: `Hosting/{prod|develop}/public/.well-known/apple-app-site-association` (Team ID `Q9843C43NA`)
+3. Cold start: `SceneDelegate.willConnect` зберігає URL у `pendingEmailLink` → `start()` одразу відкриває `SignInController(link:)` (до onboarding)
+4. Warm start: `scene(_:continue:)` / `openURLContexts` → `Auth.isSignIn(withEmailLink:)` → той самий UI
+5. Якщо апки немає або UL не спрацював: Hosting віддає `index.html` / `404.html` з інструкцією UA/EN + App Store (не сирий Firebase «Page Not Found»)
+
+**Після відкриття в апці**
+1. `SignInController(link:)` підставляє email (зі storage / query)
+2. `Auth.signIn(withEmail:link:)` → за потреби set password
+3. Далі звичайний логін через `RoleConfig` (§4.2)
+
+**Verify (TestFlight Beta)**
+1. Надіслати invite з Beta-збірки
+2. На iPhone з встановленою Beta: клік по лінку з Mail → має відкритись TrackMyCafe → set password / sign-in
+3. Без апки (або в Safari): замість 404 — сторінка «Відкрийте запрошення в застосунку»
+4. Перевірити AASA: `https://trackmycafe-prod.firebaseapp.com/.well-known/apple-app-site-association`
 
 ### 4.2. Вхід співробітника
 
-1. Співробітник входить через email/password
+1. Співробітник входить через email/password (або завершує email-link з §4.1.1)
 2. `AuthManager` визначає роль через `RoleConfig` (знаходить `dataRef` = masterUserRef)
 3. `UserSession.current.employeeRef` = `firebaseRef` співробітника
 4. UI фільтрується за роллю (таби, секції налаштувань)
@@ -78,7 +106,7 @@
 ### 4.5. Resend invite
 
 1. Власник → деталі → "Надіслати запрошення"
-2. `Auth.auth().sendSignInLink(toEmail:actionCodeSettings:)`
+2. `StaffService.sendInvite` → той самий email-link флоу, що в §4.1.1
 
 ## 5. RBAC (Role-Based Access Control)
 
