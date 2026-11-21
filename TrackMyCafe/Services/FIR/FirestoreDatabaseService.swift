@@ -501,48 +501,16 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             return false
         }
 
-        let db = Firestore.firestore()
-        let mainRef = db.collection(FirebaseCollections.legacyUsers).document(masterRef)
+        let userRef = Firestore.firestore()
+            .collection(FirebaseCollections.users)
+            .document(masterRef)
 
-        // Admin fields are stored as subcollections under Users/{masterRef}/{field}
-        // each containing a single document with a "value" field.
-        let fields: [String: String] = [
-            FirebaseFields.email: item.email,
-            FirebaseFields.firstName: item.firstName,
-            FirebaseFields.lastName: item.lastName ?? "",
-            FirebaseFields.middleName: item.middleName ?? "",
-            FirebaseFields.phone: item.phone ?? "",
-            FirebaseFields.address: item.address ?? "",
-            FirebaseFields.comment: item.comment ?? "",
-            FirebaseFields.avatarUrl: item.avatarUrl ?? "",
-            FirebaseFields.avatarThumbnailUrl: item.avatarThumbnailUrl ?? "",
-        ]
-
-        let batch = db.batch()
-
-        for (field, value) in fields {
-            let collectionRef = mainRef.collection(field)
-            do {
-                let snapshot = try await collectionRef.getDocuments()
-                if let doc = snapshot.documents.first {
-                    batch.updateData(
-                        [FirebaseFields.value: value], forDocument: doc.reference)
-                } else {
-                    batch.setData(
-                        [FirebaseFields.value: value],
-                        forDocument: collectionRef.document())
-                }
-            } catch {
-                logger.error("updateAdmin: failed to read \(field): \(error.localizedDescription)")
-                return false
-            }
-        }
-
+        // Admin profile fields live on `users/{uid}` (same document as Settings map).
         do {
-            try await batch.commit()
+            try await userRef.setData(item.forDatabase(), merge: true)
             return true
         } catch {
-            logger.error("updateAdmin: batch commit failed: \(error.localizedDescription)")
+            logger.error("updateAdmin: setData failed: \(error.localizedDescription)")
             return false
         }
     }
@@ -557,10 +525,8 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             batch.deleteDocument(roleRef)
         }
 
-        // Employees live in the legacy PascalCase subtree `Users/{uid}/Technicians`,
-        // NOT `users/{uid}` (lowercase). Using the wrong root makes updateData fail
-        // with NOT_FOUND, which rolls back the whole batch (roles included).
-        let userRef = Firestore.firestore().collection(FirebaseCollections.legacyUsers)
+        // Staff lives under `users/{uid}/Technicians` (PascalCase subcollection name).
+        let userRef = Firestore.firestore().collection(FirebaseCollections.users)
             .document(UserSession.current.masterUserRef)
             .collection(item.ref)
             .document(item.firebaseRef)

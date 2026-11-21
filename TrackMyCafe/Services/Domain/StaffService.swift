@@ -17,7 +17,7 @@ import Foundation
 /// making them unit-testable with a mock service.
 final class StaffService: StaffServiceProtocol, Loggable {
 
-    /// The establishment's Firestore document reference (`Users/{masterUserRef}`).
+    /// The establishment's Firestore document reference (`users/{masterUserRef}`).
     ///
     /// Built from `UserSession.current.masterUserRef` rather than relying on
     /// `RequestManager.shared.mainRef` (an implicitly-unwrapped optional that may
@@ -25,7 +25,7 @@ final class StaffService: StaffServiceProtocol, Loggable {
     private var mainRef: DocumentReference? {
         guard let masterUserRef = UserSession.current.masterUserRef else { return nil }
         return Firestore.firestore()
-            .collection(FirebaseCollections.legacyUsers)
+            .collection(FirebaseCollections.users)
             .document(masterUserRef)
     }
 
@@ -73,9 +73,8 @@ final class StaffService: StaffServiceProtocol, Loggable {
         )
 
         // Generate the employee document ID and assign it back to the model.
-        // Use the legacy PascalCase name ("Technicians") to match the path
-        // `RequestManager` listens on — NOT `FirebaseCollections.technicians`
-        // ("technicians"), which is a different collection.
+        // Subcollection name stays PascalCase `Technicians` under `users/{uid}`
+        // (not lowercase `technicians`, which is a different collection).
         let employeeRef = mainRef.collection(FirebaseCollections.legacyTechnicians).document()
         employee.firebaseRef = employeeRef.documentID
 
