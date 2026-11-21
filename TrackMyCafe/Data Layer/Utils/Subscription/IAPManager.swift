@@ -211,7 +211,17 @@ class IAPManager: NSObject, Loggable {
         logger.debug(
             "IAPManager: Updating subscription info from RequestManager. Pro: \(subscription.proPlan), Active by Date: \(isActive), Has iOS Sub: \(hasActiveSubscription), Next Payment: \(String(describing: subscription.nextPaymentDate))"
         )
-        nextPaymentDate = subscription.nextPaymentDate
+        // Never clobber a newer local StoreKit expiry (e.g. trial bought pre-login)
+        // with an older or missing Firebase value.
+        if let firebaseDate = subscription.nextPaymentDate {
+            if let local = nextPaymentDate, local > firebaseDate {
+                logger.debug(
+                    "IAPManager: Keeping newer local nextPaymentDate \(local) over Firebase \(firebaseDate)"
+                )
+            } else {
+                nextPaymentDate = firebaseDate
+            }
+        }
         let newProStatus = subscription.grantsProAccess
         if newProStatus {
             isProPlan = true
