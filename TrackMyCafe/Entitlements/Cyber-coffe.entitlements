@@ -7,7 +7,9 @@
 	<key>com.apple.developer.associated-domains</key>
 	<array>
 		<string>applinks:trackmycafe-prod.firebaseapp.com</string>
+		<string>applinks:trackmycafe-prod.web.app</string>
 		<string>applinks:trackmycafe-develop.firebaseapp.com</string>
+		<string>applinks:trackmycafe-develop.web.app</string>
 	</array>
 </dict>
 </plist>
