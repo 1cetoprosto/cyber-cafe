@@ -4,7 +4,11 @@
     "details": [
       {
         "appID": "Q9843C43NA.ICSOFT.TrackMyCafe.dev",
-        "paths": ["NOT /_/*", "/*"]
+        "paths": [
+          "/__/auth/*",
+          "/email-link/*",
+          "/*"
+        ]
       }
     ]
   }

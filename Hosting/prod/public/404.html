@@ -15,8 +15,6 @@
       --accent: #2f5d50;
       --accent-ink: #ffffff;
       --line: #d9d0c3;
-      --warn: #8a5a00;
-      --warn-bg: #fff6e5;
     }
     * { box-sizing: border-box; }
     body {
@@ -55,20 +53,7 @@
       line-height: 1.25;
       font-weight: 700;
     }
-    p, ol { color: var(--muted); line-height: 1.5; font-size: 16px; }
-    p { margin: 0 0 12px; }
-    ol { margin: 0 0 16px; padding-left: 20px; font-size: 15px; }
-    ol li { margin-bottom: 8px; }
-    .note {
-      background: var(--warn-bg);
-      color: var(--warn);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 14px;
-      line-height: 1.45;
-      margin: 0 0 16px;
-    }
-    .actions { display: grid; gap: 10px; }
+    p { margin: 0 0 16px; color: var(--muted); line-height: 1.5; font-size: 16px; }
     a.button {
       display: block;
       text-align: center;
@@ -79,14 +64,6 @@
       padding: 14px 16px;
       font-weight: 600;
       font-size: 16px;
-    }
-    a.secondary {
-      display: block;
-      text-align: center;
-      color: var(--accent);
-      text-decoration: none;
-      font-size: 14px;
-      padding: 8px;
     }
     .lang-switch {
       margin-top: 18px;
@@ -109,33 +86,16 @@
 <body>
   <main>
     <p class="brand">TrackMyCafe</p>
-
     <section id="copy-uk">
-      <h1>Відкрийте лінк у застосунку</h1>
-      <p class="note">Банер «Відкрити» зверху лише запускає апку <strong>без</strong> коду з листа. Щоб увійти — треба відкрити <strong>оригінальний лінк з листа</strong> в TrackMyCafe.</p>
-      <ol>
-        <li>Поверніться в «Пошта».</li>
-        <li>Утримуйте синій лінк запрошення → <strong>Відкрити в TrackMyCafe</strong>.</li>
-        <li>Якщо пункту немає — встановіть TrackMyCafe з App Store / TestFlight і повторіть.</li>
-      </ol>
-      <div class="actions">
-        <a class="button" href="https://apps.apple.com/app/id6753102351">Завантажити в App Store</a>
-      </div>
+      <h1>Відкрийте лінк у TrackMyCafe</h1>
+      <p>Це запрошення для входу. Відкрийте його на iPhone з установленим TrackMyCafe — застосунок підхопить лінк сам.</p>
+      <a class="button" href="https://apps.apple.com/app/id6753102351">Завантажити в App Store</a>
     </section>
-
     <section id="copy-en" hidden>
-      <h1>Open the link in the app</h1>
-      <p class="note">The “Open” banner above only launches the app <strong>without</strong> the email sign-in code. To finish invite sign-in, open the <strong>original link from the email</strong> in TrackMyCafe.</p>
-      <ol>
-        <li>Go back to Mail.</li>
-        <li>Long-press the blue invite link → <strong>Open in TrackMyCafe</strong>.</li>
-        <li>If that option is missing — install TrackMyCafe from the App Store / TestFlight, then try again.</li>
-      </ol>
-      <div class="actions">
-        <a class="button" href="https://apps.apple.com/app/id6753102351">Get it on the App Store</a>
-      </div>
+      <h1>Open this link in TrackMyCafe</h1>
+      <p>This invite signs you in. Open it on an iPhone with TrackMyCafe installed — the app should open automatically.</p>
+      <a class="button" href="https://apps.apple.com/app/id6753102351">Get it on the App Store</a>
     </section>
-
     <p class="lang-switch">
       <span id="switch-uk"><button type="button" data-lang="en">English</button></span>
       <span id="switch-en" hidden><button type="button" data-lang="uk">Українська</button></span>

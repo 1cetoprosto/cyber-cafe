@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex">
-  <!-- No App Store Smart Banner on develop: that opens Prod, while this domain only Universal-Links to ICSOFT.TrackMyCafe.dev -->
   <title>TrackMyCafe Dev</title>
   <style>
     :root {
@@ -54,10 +53,7 @@
       line-height: 1.25;
       font-weight: 700;
     }
-    p, ol { color: var(--muted); line-height: 1.5; font-size: 16px; }
-    p { margin: 0 0 12px; }
-    ol { margin: 0 0 16px; padding-left: 20px; font-size: 15px; }
-    ol li { margin-bottom: 8px; }
+    p { margin: 0 0 12px; color: var(--muted); line-height: 1.5; font-size: 16px; }
     .note {
       background: var(--warn-bg);
       color: var(--warn);
@@ -65,7 +61,7 @@
       padding: 12px 14px;
       font-size: 14px;
       line-height: 1.45;
-      margin: 0 0 16px;
+      margin: 0;
     }
     .lang-switch {
       margin-top: 18px;
@@ -88,31 +84,14 @@
 <body>
   <main>
     <p class="brand">TrackMyCafe · Dev</p>
-
     <section id="copy-uk">
-      <h1>Потрібна Dev-збірка</h1>
-      <p class="note">Цей лінк з <strong>develop</strong>. App Store / TestFlight Beta його не відкриють автоматично — лише збірка <strong>TrackMyCafe Dev</strong> з Xcode.</p>
-      <p>Якщо Dev уже встановлений, але відкрився Safari:</p>
-      <ol>
-        <li>Поверніться в лист у «Пошта».</li>
-        <li>Утримуйте синій лінк → <strong>Відкрити в TrackMyCafe</strong>.</li>
-        <li>Не натискайте лінк звичайним тапом — iOS тоді знову відкриє браузер.</li>
-      </ol>
-      <p>Після redirect у браузері код з листа вже «згорів» для цієї вкладки — потрібен саме long-press на оригінальний лінк у листі.</p>
+      <h1>Відкрийте лінк у Dev-збірці</h1>
+      <p class="note">Цей лінк для develop. Потрібна збірка TrackMyCafe Dev з Xcode — тоді тап по лінку в «Пошта» відкриє апку.</p>
     </section>
-
     <section id="copy-en" hidden>
-      <h1>You need the Dev build</h1>
-      <p class="note">This link is for <strong>develop</strong>. The App Store / TestFlight Beta app will not open it automatically — only the <strong>TrackMyCafe Dev</strong> build from Xcode will.</p>
-      <p>If Dev is already installed but Safari opened:</p>
-      <ol>
-        <li>Go back to the email in Mail.</li>
-        <li>Long-press the blue link → <strong>Open in TrackMyCafe</strong>.</li>
-        <li>Don’t tap the link normally — iOS will open Safari again.</li>
-      </ol>
-      <p>Once Safari has redirected here, this tab no longer carries the sign-in code — use long-press on the original email link.</p>
+      <h1>Open this link in the Dev build</h1>
+      <p class="note">This link is for develop. Install TrackMyCafe Dev from Xcode — then tapping the link in Mail should open the app.</p>
     </section>
-
     <p class="lang-switch">
       <span id="switch-uk"><button type="button" data-lang="en">English</button></span>
       <span id="switch-en" hidden><button type="button" data-lang="uk">Українська</button></span>
