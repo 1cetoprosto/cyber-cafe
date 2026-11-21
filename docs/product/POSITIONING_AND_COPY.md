@@ -179,6 +179,7 @@ Paywall **продає те, що вже показали на екрані 3**,
 | Key | UK | EN |
 |---|---|---|
 | `subscriptionPaywallHeadline` | Скільки лишається — на ваших цифрах | What’s left — on your numbers |
+| `subscriptionPaywallTrialSubtitle` | Пробний період: чек → витрати → що залишилось | Free trial: sale → costs → what’s left |
 | `subscriptionBannerDescription` | Скільки лишається після продуктів, оренди й зарплат. | See what’s left after food, rent, and wages. |
 | `subscriptionSubtitle` | Прибуток — це не виручка | Profit isn’t the same as sales |
 | `subscriptionFeature1` | Скільки реально залишилось за період | See what’s left for any period |
@@ -219,6 +220,7 @@ Paywall **продає те, що вже показали на екрані 3**,
 - [x] Зібрати first-run UI під канон «First-run onboarding» (3 екрани демо-циклу → trial; без slide 4 «хмара»).
 - [x] Демо-суми з таблиці UA/US + `NumberFormatter` / currency symbol (settings або `Locale`).
 - [x] Оновити `uk.lproj/Global.strings` і `en.lproj/Global.strings` (onboarding + paywall) з таблиць вище.
+- [x] First-run paywall subtitle: `subscriptionPaywallTrialSubtitle` (Settings лишає `subscriptionSubtitle`).
 - [x] Не чіпати `R.generated.swift`.
 - [ ] Перевірити UI на UK/EN + Dynamic Type + обидві валютні демо-гілки (ручний прогін на симі).
 

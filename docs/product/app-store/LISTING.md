@@ -16,7 +16,7 @@
 | Screenshots iPhone (6) | ✅ В ASC | `screenshots/current/{uk,en}/` |
 | Screenshots iPad (6) | ✅ В ASC | `screenshots/current/ipad/{uk,en}/` |
 | Product (v1.2.0) | Узгоджено зі скрінами | 5 табів, Home/P&L/Costs/ABC/Staff |
-| In-app onboarding/paywall | ⏳ Не зроблено | Синхрон з `POSITIONING_AND_COPY.md` — окремий крок |
+| In-app onboarding/paywall | ✅ First-run канон у коді | QA на симі; ASO — [`ASO_NEXT.md`](ASO_NEXT.md) |
 | App Preview | ❌ Немає | Опційно, не блокує |
 | Submit for review | ❌ Не цей скоуп | Лише metadata/screenshots |
 
