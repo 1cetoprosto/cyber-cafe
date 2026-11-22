@@ -1,33 +1,141 @@
 rules_version = '2';
 
+// TrackMyCafe Firestore security rules
+// Tenant root: users/{cafeId} where cafeId == owner's Auth UID (masterUserRef).
+// Membership:
+//   - users/{cafeId}/members/{uid}          (written on login / cafe create)
+//   - users/{cafeId}/memberEmails/{email}   (written on invite; email as in Auth token)
+// Global index: roles (email → dataRef + role). Entitlement: Subscriptions/{cafeId}.
+
 service cloud.firestore {
   match /databases/{database}/documents {
-    
-    // Allow authenticated users to read and write to all documents
-    // This is suitable for development/beta but should be restricted for production
-    match /{document=**} {
-      allow read, write: if request.auth != null;
+
+    function isSignedIn() {
+      return request.auth != null;
     }
-    
-    // Alternatively, for more granular control (commented out):
-    
-    // Users collection: Allow users to read/write only their own data
-    // match /users/{userId} {
-    //   allow read, write: if request.auth != null && request.auth.uid == userId;
-    //   
-    //   // Subcollections under users (e.g. products, orders)
-    //   match /{subcollection}/{document=**} {
-    //      allow read, write: if request.auth != null && request.auth.uid == userId;
-    //   }
-    // }
-    
-    // Roles collection: Needed for initial sign up / role assignment
-    // match /roles/{roleId} {
-    //   allow read, write: if request.auth != null;
-    // }
-    
-    // Other collections
-    // match /admins/{adminId} { allow read, write: if request.auth != null; }
-    // match /technicians/{techId} { allow read, write: if request.auth != null; }
+
+    function authEmail() {
+      return request.auth.token.email;
+    }
+
+    function isCafeOwner(cafeId) {
+      return isSignedIn() && request.auth.uid == cafeId;
+    }
+
+    function isCafeMember(cafeId) {
+      return isCafeOwner(cafeId)
+        || (isSignedIn()
+            && exists(/databases/$(database)/documents/users/$(cafeId)/members/$(request.auth.uid)))
+        || (isSignedIn()
+            && authEmail() != null
+            && exists(/databases/$(database)/documents/users/$(cafeId)/memberEmails/$(authEmail())));
+    }
+
+    function roleDoc(roleId) {
+      return get(/databases/$(database)/documents/roles/$(roleId)).data;
+    }
+
+    // Prove membership via an existing RoleConfig. Email is compared case-
+    // sensitively to the Auth token; clients normalize emails to lowercase.
+    function provesRoleForCafe(cafeId) {
+      return request.resource.data.keys().hasAll(['roleRef'])
+        && roleDoc(request.resource.data.roleRef).dataRef == cafeId
+        && (roleDoc(request.resource.data.roleRef).email == authEmail()
+            || roleDoc(request.resource.data.roleRef).userRef == request.auth.uid);
+    }
+
+    // Connectivity probe used by IAP / link checks (collection id is ".info")
+    match /{infoCol}/{document=**} {
+      allow read: if isSignedIn() && infoCol == '.info';
+      allow write: if false;
+    }
+
+    // Global role index (login routing).
+    // Read: any signed-in user (needed for email case-insensitive login + owner
+    // uniqueness checks). Cafe business data stays tenant-scoped below.
+    match /roles/{roleId} {
+      allow read: if isSignedIn();
+
+      // Owner signup: admin role for own cafe
+      allow create: if isSignedIn()
+        && request.resource.data.dataRef == request.auth.uid
+        && request.resource.data.userRef == request.auth.uid
+        && request.resource.data.role == 0;
+
+      // Owner invites staff into their cafe
+      allow create: if isCafeOwner(request.resource.data.dataRef)
+        && request.resource.data.email is string
+        && request.resource.data.dataRef is string;
+
+      // Staff bootstrap updates userRef on own role
+      allow update: if isSignedIn()
+        && resource.data.email == authEmail()
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.dataRef == resource.data.dataRef;
+
+      allow update, delete: if isCafeOwner(resource.data.dataRef);
+
+      allow delete: if isSignedIn()
+        && resource.data.email == authEmail();
+    }
+
+    // Pro entitlement — cafe-scoped document id.
+    // Read: any signed-in user (IAP link check queries by iosOriginTransactionId
+    // across cafes). Write: owner only.
+    match /Subscriptions/{cafeId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isCafeOwner(cafeId);
+    }
+
+    // Cafe root + staff profile stubs under users/{id}
+    match /users/{userId} {
+      allow read: if isCafeMember(userId)
+        || (isSignedIn() && resource.data.email == authEmail());
+
+      allow create: if isSignedIn()
+        && (userId == request.auth.uid
+            || request.resource.data.email == authEmail());
+
+      allow update: if isCafeMember(userId)
+        || (isSignedIn()
+            && resource.data.email == authEmail()
+            && request.resource.data.email == resource.data.email);
+
+      allow delete: if isCafeOwner(userId);
+
+      // UID-based membership (preferred for rules)
+      match /members/{memberUid} {
+        allow read: if isCafeMember(userId)
+          || (isSignedIn() && request.auth.uid == memberUid);
+
+        allow create, update: if isCafeOwner(userId)
+          || (isSignedIn()
+              && request.auth.uid == memberUid
+              && provesRoleForCafe(userId));
+
+        allow delete: if isCafeOwner(userId)
+          || (isSignedIn() && request.auth.uid == memberUid);
+      }
+
+      // Email-based membership (invite-time index)
+      match /memberEmails/{email} {
+        allow read: if isCafeMember(userId)
+          || (isSignedIn() && authEmail() == email);
+
+        allow create, update: if isCafeOwner(userId)
+          || (isSignedIn()
+              && authEmail() == email
+              && provesRoleForCafe(userId));
+
+        allow delete: if isCafeOwner(userId);
+      }
+
+      // All cafe business data (Technicians, orders, ingredients, …)
+      match /{subcollection}/{document=**} {
+        allow read, write: if isCafeMember(userId)
+          && subcollection != 'members'
+          && subcollection != 'memberEmails';
+      }
+    }
   }
 }

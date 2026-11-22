@@ -1,0 +1,7 @@
+{
+  "projects": {
+    "default": "trackmycafe-prod",
+    "prod": "trackmycafe-prod",
+    "develop": "trackmycafe-develop"
+  }
+}
