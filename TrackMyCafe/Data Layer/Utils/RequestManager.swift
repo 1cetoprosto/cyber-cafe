@@ -106,7 +106,8 @@ class RequestManager: NSObject {
         self.listenToUserProfileDocument()
         self.flushPendingSubscriptionSyncIfNeeded()
         self.listenToSubscription()
-        self.listenTo(FirebaseCollections.legacyOrders)
+        // Orders CRUD uses lowercase `orders` via DomainDatabaseService; the
+        // legacy PascalCase `Orders` listener is removed (unused dual path).
 
         IAPManager.shared.verifySubscription { receipt in
             if let receipt = receipt, receipt.hasActiveAutorenewSubscription {
@@ -131,8 +132,6 @@ class RequestManager: NSObject {
             var notifName = NSNotification.Name("")
 
             switch collection {
-            case FirebaseCollections.legacyOrders:
-                notifName = .ordersInfoReload
             case FirebaseCollections.legacyTechnicians:
                 notifName = .employeesInfoReload
             case FirebaseCollections.legacyLogs:
@@ -180,8 +179,6 @@ class RequestManager: NSObject {
                 }
 
                 switch collection {
-                case FirebaseCollections.legacyOrders:
-                    self.orders = items as! [OrderModel]
                 case FirebaseCollections.legacyTechnicians:
                     self.employees = items as! [Employee]
                 case FirebaseCollections.legacyLogs:
@@ -198,8 +195,6 @@ class RequestManager: NSObject {
     func map(_ object: [String: AnyObject], _ collection: String) -> AnyObject? {
         if collection == FirebaseCollections.legacyTechnicians {
             return Employee(object)
-        } else if collection == FirebaseCollections.legacyOrders {
-            return OrderModel(object) as AnyObject
         } else if collection == FirebaseCollections.legacyLogs {
             let element = Log(
                 date: Date(timeIntervalSince1970: object[FirebaseFields.timestamp] as! Double),

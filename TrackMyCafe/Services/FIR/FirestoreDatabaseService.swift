@@ -30,12 +30,50 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     // MARK: - User-specific Operations
 
     private func getUserCollection(collection: String) -> CollectionReference? {
-        guard let userId = Auth.auth().currentUser?.uid else {
-            logger.error("No authenticated user found")
+        // Cafe data lives under `users/{masterUserRef}`. For the owner this equals
+        // Auth.uid; for staff it must be the establishment id from the session.
+        let cafeId = UserSession.current.masterUserRef ?? Auth.auth().currentUser?.uid
+        guard let cafeId, !cafeId.isEmpty else {
+            logger.error("No cafe id (masterUserRef / auth uid) for collection \(collection)")
             return nil
         }
-        return db.collection(FirebaseCollections.users).document(userId).collection(
-            collection)
+        return db.collection(FirebaseCollections.users).document(cafeId).collection(collection)
+    }
+
+    /// Writes security-rules membership docs so staff can access `users/{cafeId}/**`.
+    func ensureCafeMembership(for role: RoleConfig) async {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let cafeId = role.dataRef
+        guard !cafeId.isEmpty else { return }
+
+        let email = (Auth.auth().currentUser?.email ?? role.email).trimmed.lowercased()
+        let payload: [String: Any] = [
+            FirebaseFields.roleRef: role.firebaseRef,
+            FirebaseFields.email: email,
+            FirebaseFields.role: role.role.rawValue,
+            FirebaseFields.uid: uid,
+        ]
+
+        let cafeRef = db.collection(FirebaseCollections.users).document(cafeId)
+        let batch = db.batch()
+        batch.setData(
+            payload,
+            forDocument: cafeRef.collection(FirebaseCollections.members).document(uid),
+            merge: true
+        )
+        if !email.isEmpty {
+            batch.setData(
+                payload,
+                forDocument: cafeRef.collection(FirebaseCollections.memberEmails).document(email),
+                merge: true
+            )
+        }
+
+        do {
+            try await batch.commit()
+        } catch {
+            logger.error("ensureCafeMembership failed: \(error.localizedDescription)")
+        }
     }
 
     // MARK: - Generic CRUD Operations (async)
@@ -342,20 +380,32 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     private func deleteRoles(userId: String) async throws {
-        let snapshot = try await db.collection(FirebaseCollections.roles).whereField(
-            FirebaseFields.userRef, isEqualTo: userId
-        ).getDocuments()
+        // Owner wipe: all roles for this cafe (dataRef == cafe id). Also remove
+        // roles where userRef == uid (owner's own admin role / stubs).
+        let byCafe = try await db.collection(FirebaseCollections.roles)
+            .whereField(FirebaseFields.dataRef, isEqualTo: userId)
+            .getDocuments()
+        let byUser = try await db.collection(FirebaseCollections.roles)
+            .whereField(FirebaseFields.userRef, isEqualTo: userId)
+            .getDocuments()
+
+        var refs: [String: DocumentReference] = [:]
+        for doc in byCafe.documents + byUser.documents {
+            refs[doc.documentID] = doc.reference
+        }
+        guard !refs.isEmpty else { return }
 
         let batch = db.batch()
-        snapshot.documents.forEach { batch.deleteDocument($0.reference) }
+        refs.values.forEach { batch.deleteDocument($0) }
         try await batch.commit()
     }
 
     static func getRoles(_ email: String) async -> [RoleConfig]? {
         do {
+            let normalizedEmail = email.trimmed.lowercased()
             let querySnapshot = try await FirestoreDatabaseService.shared.db
                 .collection(FirebaseCollections.roles)
-                .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
+                .whereField(FirebaseFields.email, isEqualTo: normalizedEmail)
                 .getDocuments()
             return querySnapshot.documents.compactMap { RoleConfig($0.data()) }
         } catch {
@@ -365,13 +415,20 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     static func getEmployeeRoles(_ email: String) async -> [RoleConfig]? {
+        guard let cafeId = UserSession.current.masterUserRef, !cafeId.isEmpty else {
+            Self.shared.logger.error("getEmployeeRoles: masterUserRef is nil")
+            return nil
+        }
         do {
+            let normalizedEmail = email.trimmed.lowercased()
+            // Query must include dataRef so security rules can authorize owner reads
+            // (list rules require the query to constrain to readable docs).
             let querySnapshot = try await FirestoreDatabaseService.shared.db
                 .collection(FirebaseCollections.roles)
-                .whereField(FirebaseFields.email, isEqualTo: email.trimmed.lowercased())
+                .whereField(FirebaseFields.email, isEqualTo: normalizedEmail)
+                .whereField(FirebaseFields.dataRef, isEqualTo: cafeId)
                 .getDocuments()
             return querySnapshot.documents.compactMap { RoleConfig($0.data()) }
-                .filter { $0.dataRef == UserSession.current.masterUserRef }
         } catch {
             Self.shared.logger.error("Error getting tech roles: \(error.localizedDescription)")
             return nil
@@ -405,9 +462,10 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
                 userInfo: [NSLocalizedDescriptionKey: "Failed to generate user data"])
         }
 
+        let normalizedEmail = email.trimmed.lowercased()
         let roleKey = db.collection(FirebaseCollections.roles).document().documentID
         let role = RoleConfig(
-            ref: roleKey, email: email, dataRef: userKey, userRef: userKey,
+            ref: roleKey, email: normalizedEmail, dataRef: userKey, userRef: userKey,
             role: Role.administrator,
             onlineVersion: true)
 
@@ -426,6 +484,25 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
             roleData[FirebaseFields.userRef] = userKey
             batch.setData(roleData, forDocument: roleRef)
         }
+
+        // Security-rules membership so owner (and later staff) can access cafe data.
+        let membership: [String: Any] = [
+            FirebaseFields.roleRef: roleKey,
+            FirebaseFields.email: normalizedEmail,
+            FirebaseFields.role: Role.administrator.rawValue,
+            FirebaseFields.uid: userKey,
+        ]
+        batch.setData(
+            membership,
+            forDocument: userRef.collection(FirebaseCollections.members).document(userKey),
+            merge: true
+        )
+        batch.setData(
+            membership,
+            forDocument: userRef.collection(FirebaseCollections.memberEmails).document(
+                normalizedEmail),
+            merge: true
+        )
 
         try await batch.commit()
         return role
@@ -516,7 +593,13 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
     }
 
     static func deleteEmployee(_ item: Employee) async -> Bool {
-        let roles = await getEmployeeRoles(item.email.trimmed.lowercased())
+        guard let masterRef = UserSession.current.masterUserRef else {
+            logger.error("deleteEmployee: masterUserRef is nil")
+            return false
+        }
+
+        let normalizedEmail = item.email.trimmed.lowercased()
+        let roles = await getEmployeeRoles(normalizedEmail)
         let batch = Firestore.firestore().batch()
 
         roles?.forEach { role in
@@ -526,14 +609,23 @@ class FirestoreDatabaseService: FirestoreDB, Loggable {
         }
 
         // Staff lives under `users/{uid}/Technicians` (PascalCase subcollection name).
-        let userRef = Firestore.firestore().collection(FirebaseCollections.users)
-            .document(UserSession.current.masterUserRef)
+        let employeeDoc = Firestore.firestore().collection(FirebaseCollections.users)
+            .document(masterRef)
             .collection(item.ref)
             .document(item.firebaseRef)
 
         // `merge: true` keeps this a soft-delete that also succeeds when the
         // document is missing, instead of rejecting the whole batch with NOT_FOUND.
-        batch.setData([FirebaseFields.enabled: false], forDocument: userRef, merge: true)
+        batch.setData([FirebaseFields.enabled: false], forDocument: employeeDoc, merge: true)
+
+        // Drop email membership so rules revoke cafe access after invite removal.
+        batch.deleteDocument(
+            Firestore.firestore()
+                .collection(FirebaseCollections.users)
+                .document(masterRef)
+                .collection(FirebaseCollections.memberEmails)
+                .document(normalizedEmail)
+        )
 
         do {
             try await batch.commit()

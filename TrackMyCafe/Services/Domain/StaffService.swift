@@ -61,11 +61,14 @@ final class StaffService: StaffServiceProtocol, Loggable {
 
         let db = Firestore.firestore()
 
+        let normalizedEmail = employee.email.trimmed.lowercased()
+        employee.email = normalizedEmail
+
         // Generate a role config linking the employee's email to the establishment.
         let roleRef = db.collection(FirebaseCollections.users).document()
         let roleConfig = RoleConfig(
             ref: roleRef.documentID,
-            email: employee.email,
+            email: normalizedEmail,
             dataRef: masterUserRef,
             userRef: roleRef.documentID,
             role: employee.role,
@@ -86,6 +89,19 @@ final class StaffService: StaffServiceProtocol, Loggable {
         batch.setData(
             employee.forDatabase(),
             forDocument: employeeRef
+        )
+
+        // Invite-time membership so staff can access the cafe after first login
+        // (UID membership is written in AuthManager via ensureCafeMembership).
+        batch.setData(
+            [
+                FirebaseFields.roleRef: roleConfig.firebaseRef,
+                FirebaseFields.email: normalizedEmail,
+                FirebaseFields.role: employee.role.rawValue,
+            ],
+            forDocument: mainRef.collection(FirebaseCollections.memberEmails).document(
+                normalizedEmail),
+            merge: true
         )
 
         try await batch.commit()
@@ -141,6 +157,25 @@ final class StaffService: StaffServiceProtocol, Loggable {
             employee.forDatabase(),
             forDocument: employeeRef
         )
+
+        // Keep / restore email membership used by Firestore security rules.
+        let normalizedEmail = employee.email.trimmed.lowercased()
+        if let roleRef =
+            addRoles.first?.firebaseRef
+            ?? existingRoles.first(where: { $0.role == employee.role })?.firebaseRef
+            ?? existingRoles.first?.firebaseRef
+        {
+            batch.setData(
+                [
+                    FirebaseFields.roleRef: roleRef,
+                    FirebaseFields.email: normalizedEmail,
+                    FirebaseFields.role: employee.role.rawValue,
+                ],
+                forDocument: mainRef.collection(FirebaseCollections.memberEmails).document(
+                    normalizedEmail),
+                merge: true
+            )
+        }
 
         try await batch.commit()
     }

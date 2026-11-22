@@ -109,7 +109,7 @@ struct OrderItemModel {
 
 ```swift
 struct Employee {
-    var firebaseRef: String      // ID документа в колекції technicians
+    var firebaseRef: String      // ID документа в колекції Technicians (PascalCase)
     var firstName: String
     var lastName: String?
     var middleName: String?
@@ -131,7 +131,7 @@ enum Role: Int {
 }
 ```
 
-> **Важливо:** колекція Firestore називається `technicians` (історична назва, не міняється). `RoleConfig` зберігається в колекції `roles` і пов'язує email співробітника з `dataRef` (masterUserRef) та роллю.
+> **Важливо:** колекція Firestore називається `Technicians` (PascalCase під `users/{masterUserRef}`; історична назва, не міняється). `RoleConfig` зберігається в колекції `roles` і пов'язує email співробітника з `dataRef` (masterUserRef) та роллю. Membership для Security Rules: `users/{cafeId}/members/{uid}` та `users/{cafeId}/memberEmails/{email}`.
 
 ### 1.6. RoleConfig (v1.2.0)
 

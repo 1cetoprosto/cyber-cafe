@@ -4,6 +4,12 @@
 
 Система багатокористувацького доступу для кафе. Власник додає співробітників, призначає їм ролі та надсилає запрошення для входу в застосунок. Кожна роль має обмежений набір доступних екранів та дій.
 
+**Security Rules (server):** доступ до `users/{cafeId}/**` лише для власника (`cafeId == auth.uid`) або членів кафе. Membership пишеться в:
+- `users/{cafeId}/memberEmails/{email}` — при invite / create / update співробітника;
+- `users/{cafeId}/members/{uid}` — при логіні (`ensureCafeMembership`).
+
+Деплой rules: з кореня репо `firebase deploy --only firestore,storage --project trackmycafe-develop|trackmycafe-prod` (див. кореневі `firebase.json` / `.firebaserc`).
+
 ## 2. Ролі
 
 | Роль | Значення | Назва в UI | Доступ |
@@ -21,7 +27,7 @@
 
 Файл: `Data Layer/Models/Employee.swift`
 
-Колекція Firestore: `technicians` (історична назва, **не перейменовувати**).
+Колекція Firestore: `Technicians` (PascalCase під `users/{masterUserRef}`, **не перейменовувати**; lowercase `technicians` — інша/legacy колекція).
 
 Ключові поля:
 - `firebaseRef` — ID документа
@@ -175,13 +181,13 @@ ViewModels приймають `StaffServiceProtocol` через init (DI для 
 
 ## 8. Сумісність з БД
 
-- Колекція `technicians` **не перейменовується** (міграція небезпечна)
+- Колекція `Technicians` (PascalCase) **не перейменовується** (міграція небезпечна)
 - `techMod` (role = 3) залишено в enum; фільтри списків (`TechniciansListController`, `ModeratorListController`) включають `techMod` для показу старих записів
-- `technician` → `employee` перейменування на рівні Swift-моделі; Firestore-шляхи (`users/{masterRef}/technicians/{id}`) не змінено
+- `technician` → `employee` перейменування на рівні Swift-моделі; Firestore-шляхи (`users/{masterRef}/Technicians/{id}`) не змінено
 
 ## 9. Джерела істини
 
-- Список співробітників → `RequestManager.shared.employees` (кеш з Firestore `technicians`)
+- Список співробітників → `RequestManager.shared.employees` (кеш з Firestore `Technicians`)
 - Ролі → `FirestoreDatabaseService.getEmployeeRoles(email)` (фільтр за `dataRef == masterUserRef`)
 - Приналежність замовлення → `OrderModel.createdBy`
 - Поточна роль → `UserSession.current.role`
