@@ -1,118 +1,86 @@
 # Submit checklist — TrackMyCafe **1.2.0**
 
-Дата: 2026-11-14.  
-Мета: вивести на live нові скріни + metadata (щоб UA/US перестали бачити стару вітрину).
+Дата чеклиста: 2026-11-14.  
+**Статус: ✅ RELEASED — 2026-11-21** (перевірено live US/UA 2026-11-22).
+
+Мета була: вивести на live нові скріни + metadata (щоб UA/US перестали бачити стару вітрину).
+
+Далі: [`NEXT_ACTIONS.md`](NEXT_ACTIONS.md).
 
 ---
 
-## Стан зараз (перевірено в ASC)
+## Live після релізу (2026-11-22)
 
-| Елемент | Стан |
+| Елемент | Live |
+|---|---|
+| Version | **1.2.0** (App Store, ~2026-11-21 20:58 UTC) |
+| UA Name / Subtitle | `TrackMyCafe: Легкий Облік` / `Прибуток після всіх витрат` |
+| US Name / Subtitle | `TrackMyCafe: Easy Cafe Book` / `Profit after all expenses` |
+| Description | Канон LISTING (без offline / export) |
+| What’s New | Про прибуток / дашборд |
+
+---
+
+## Стан ASC на момент чеклиста (2026-11-14) — архів
+
+| Елемент | Стан тоді |
 |---|---|
 | Version **1.2.0** | Prepare for Submission |
-| **Build на версії** | ❌ порожньо — треба **Add Build** |
-| TestFlight builds **1.2.0** | ✅ **71** Ready to Submit (Internal, 2 installs); також 69 |
-| Locales | ✅ English (U.S.) + **Ukrainian** (і інші) |
-| UK Promo / Description / What’s New | ✅ заповнені (опенер «Багато продажів…») |
-| Screenshots | ✅ залиті в ASC 2026-11-12 (див. `LISTING.md`) — **на live ще старі**, бо версія не released |
-| Retention Messaging `#291` | окремо WAITING_FOR_REVIEW (не блокує 1.2.0) |
+| **Build на версії** | ❌ порожньо — треба було **Add Build** |
+| TestFlight builds **1.2.0** | ✅ **71** Ready to Submit (також 69) |
+| Screenshots | ✅ залиті в ASC 2026-11-12 — на live ще старі, бо версія не released |
+| Retention Messaging `#291` | окремо WAITING_FOR_REVIEW (не блокувало) |
 
-Головний блокер submit: **не вибраний build**.
+Головний блокер тоді: **не вибраний build**.
 
 ---
 
-## Кроки в ASC (15–25 хв)
+## Кроки в ASC (архів — уже зроблено)
 
 ### 1. Прив’язати binary
 
-1. [App Store Connect](https://appstoreconnect.apple.com) → **Apps** → TrackMyCafe → **Distribution**
-2. Версія **iOS 1.2.0**
-3. Секція **Build** → **Add Build**
-4. Обрати **1.2.0 (71)** (новіший за 69)
-5. **Done** / зберегти
+1. App Store Connect → TrackMyCafe → Distribution
+2. Версія iOS 1.2.0
+3. Build → Add Build → **1.2.0 (71)** (або новіший)
+4. Save
 
-### 2. Швидка перевірка Product Page (обидві мови)
+### 2. Product Page (EN + UK)
 
-Перемкнути **English (U.S.)** і **Ukrainian**:
-
-| Поле | Очікуємо |
+| Поле | Очікували |
 |---|---|
 | Name | EN: `TrackMyCafe: Easy Cafe Book` · UK: `TrackMyCafe: Легкий Облік` |
-| Subtitle | EN: expenses/profit · UK: `Витрати й Прибуток Кафе` або канон з `LISTING.md` |
-| Description | Без offline / export / «No credit card» (якщо раптом research CLEAN) |
-| Keywords | ≤100, без дубля з Title |
-| What’s New | Коротко про прибуток / дашборд (уже є UK текст) |
-| Screenshots | iPhone 6 + iPad 6, UK і EN — **нові** overlays (Home / P&L / …) |
+| Subtitle | EN: `Profit after all expenses` · UK: `Прибуток після всіх витрат` |
+| Description | Без offline / export / «No credit card» |
+| Screenshots | iPhone 6 + iPad 6, UK і EN — нові overlays |
 
-Якщо Description ще research CLEAN з офлайн/експортом — **замінити** на канон з `LISTING.md` / `fastlane/metadata/` **перед** review.
+### 3–5. Review info → Manual release → Submit
 
-### 3. App Review Information
+(виконано при релізі)
 
-- [ ] **Sign-in required** — увімкнути, якщо без логіну немає демо
-- [ ] Demo Apple ID / пароль (або пояснення як увійти)
-- [ ] Notes: демо-дані при першому запуску (у полі вже є англ. текст — ок)
-- [ ] Contact — актуальний email/телефон
+### 6. Після Release — ще зробити
 
-### 4. Release options
-
-Рекомендація для ASO-експерименту скрінів:
-
-- [ ] **Manually release this version** — після Approve сам натиснеш Release, щоб зафіксувати дату для метрик  
-  *або* Automatically, якщо хочеш швидше на live
-
-- [ ] **Не** Reset Summary Rating (лише 1 оцінка — скидати сенсу немає)
-
-### 5. Відправка
-
-1. **Add for Review**
-2. Пройти Compliance / Export / Advertising ID, якщо спитає
-3. **Submit to App Review**
-4. Дочекатись **Waiting for Review → In Review → Pending Developer Release / Ready for Sale**
-
-### 6. Після Approve / Release
-
-1. Перевірити live:  
-   - [UA uk](https://apps.apple.com/ua/app/id6753102351?l=uk) — нові скріни  
-   - [US](https://apps.apple.com/us/app/id6753102351) — нові скріни
-2. У `baseline_ASC_2026-11-14.md` / Metrics Tracker записати **дату релізу**
-3. Через **14 днів** зняти знову US + UA: Impr / Views / DL / CVR
-4. Очікування: UA **Impr→View** лишається ок, **Views→DL** має вирости
-
----
-
-## Якщо треба новий binary (не обов’язково)
-
-У TestFlight уже є **71**. Новий upload потрібен лише якщо:
-
-- хочеш інший код, ніж у 71, або
-- 71 застарілий / з багом
-
-Тоді локально (чистий git):
-
-```bash
-bin/deploy          # TrackMyCafe Prod → TestFlight
-```
-
-Після processing: Add Build → новий номер → Review.
-
----
-
-## Не блокує цей submit
-
-- In-app onboarding/paywall sync (`POSITIONING_AND_COPY`) — окремий PR
-- App Preview video
-- pl-PL / en-GB локалізації
-- Keywords A/B
-- Retention Messaging (вже в окремому review)
+1. [x] Live UA/US показують 1.2.0
+2. [ ] Візуально підтвердити **нові скріни** (не splash 2023)
+3. [ ] Записати дату релізу в baseline / Metrics Tracker → **2026-11-21**
+4. [ ] Через **14 днів** зняти US + UA: Impr / Views / DL / CVR
 
 ---
 
 ## DoD
 
-- [ ] Build **71** (або новіший) на 1.2.0
-- [ ] EN + UK metadata без overclaim
-- [ ] Нові скріни на версії (iPhone+iPad)
-- [ ] Review info заповнено
-- [ ] Submitted
-- [ ] Released → live скріни ≠ грудень 2023
+- [x] Build на 1.2.0
+- [x] EN + UK metadata без overclaim
+- [x] Нові скріни на версії (iPhone+iPad) — були в ASC
+- [x] Submitted + Released
+- [ ] Візуальний confirmation скрінів на store URL
 - [ ] Дата релізу записана для ASO baseline
+- [ ] +14 днів метрики
+
+---
+
+## Не блокувало / не блокує зараз
+
+- Keywords A/B → після +14 днів (`NEXT_ACTIONS` Фаза 4)
+- App Preview video
+- pl-PL / en-GB
+- In-app onboarding polish → окремий 1.2.1 лише якщо на live немає канону
