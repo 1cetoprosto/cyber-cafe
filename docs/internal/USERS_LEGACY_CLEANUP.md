@@ -1,31 +1,35 @@
 # Legacy `Users` cleanup
 
-## Status (2026-11-21)
+## Status (2026-11-22)
 
 Cafe root is **`users/{uid}`** (lowercase). Top-level **`Subscriptions/{uid}`** is the Pro entitlement source of truth.
 
-Prod inventory showed only 4 phantom `Users/{uid}` shells:
+App Store build with the migration shipped. Code no longer reads/writes the top-level **`Users`** collection (PascalCase). Subscription fallback to `Users/.../Subscription` has been removed.
 
-| UID | Was under `Users` | Action taken |
+### Prod inventory (historical)
+
+| UID | Was under `Users` | Status |
 |---|---|---|
-| `0WaDDack…` | `Subscription` only (dup of `Subscriptions`) | Keep until post-release delete |
-| `In8OOHZk…` | `Subscription` only; **no** `users/{uid}` profile | Keep; orphan — do not invent a profile |
-| `N91wibC9…` | `Subscription` only | Keep until post-release delete |
-| `xVQB28bY…` | `Technicians` (Аня, Марго) | **Copied** → `users/xVQB…/Technicians` (same IDs) |
+| `0WaDDack…` | `Subscription` only (dup of `Subscriptions`) | Safe to delete shell |
+| `In8OOHZk…` | `Subscription` only; **no** `users/{uid}` profile | Orphan — delete shell; keep `Subscriptions/{uid}` if still needed |
+| `N91wibC9…` | `Subscription` only | Safe to delete shell |
+| `xVQB28bY…` | `Technicians` (Аня, Марго) | Copied → `users/xVQB…/Technicians`; delete shell |
 
-## Code (this PR / branch)
+## Remaining PascalCase names (not `Users` root)
 
-- `RequestManager.mainRef` → `users/{masterUserRef}`
-- Admin + Settings map: listen/update on the `users/{uid}` document
-- Subscription: read/write `Subscriptions/{uid}` only; one-release fallback from `Users/.../Subscription`
-- Staff: create/update/delete under `users/{uid}/Technicians`
+These stay under **`users/{uid}`** on purpose:
 
-## Do NOT delete `Users` yet
+- `Technicians` — staff subcollection
+- `Settings` — map field on the user document
+- `Orders` / `Logs` — still referenced by `RequestManager` listeners / logging
 
-1. Ship the app build that contains the code above (Beta → Prod).
-2. Smoke-test: staff list, Pro entitlement, admin profile, currency symbol.
-3. Then delete the four `Users/{uid}` trees in Console (or script).
-4. After one stable release: remove `legacyUsers` / fallback reads from code.
+Do **not** confuse them with the removed top-level `Users` collection.
+
+## Console cleanup (manual)
+
+1. Confirm staff + Pro work on the shipped build.
+2. In Firebase Console (prod): delete the four `Users/{uid}` document trees.
+3. Optionally delete empty top-level `Users` collection afterward.
 
 ## MCP note
 

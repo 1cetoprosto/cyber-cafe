@@ -274,8 +274,7 @@ class RequestManager: NSObject {
 
     // MARK: - Subscription
 
-    /// Canonical path: `Subscriptions/{uid}`. Falls back once to legacy
-    /// `Users/{uid}/Subscription` if the top-level doc is missing (pre-cleanup).
+    /// Canonical path: `Subscriptions/{uid}`.
     func listenToSubscription() {
         guard Auth.auth().currentUser != nil else { return }
         guard let docId = UserSession.current.dataRef, !docId.isEmpty else {
@@ -294,10 +293,9 @@ class RequestManager: NSObject {
 
                 if let snapshot, snapshot.exists, let data = snapshot.data() {
                     self.applySubscription(data)
-                    return
+                } else {
+                    self.applySubscription([:])
                 }
-
-                self.loadLegacySubscriptionFallback(docId: docId)
             }
     }
 
@@ -308,32 +306,6 @@ class RequestManager: NSObject {
         }
         NotificationCenter.default.post(name: .subscriptionInfoReload, object: nil)
         presentExpiredPaywallIfNeeded()
-    }
-
-    private func loadLegacySubscriptionFallback(docId: String) {
-        db.collection(FirebaseCollections.legacyUsers)
-            .document(docId)
-            .collection(FirebaseCollections.legacySubscription)
-            .document(docId)
-            .getDocument { [weak self] snapshot, error in
-                guard let self = self else { return }
-                if let error {
-                    self.logger.error(
-                        "Legacy subscription fallback failed: \(error.localizedDescription)")
-                    self.applySubscription([:])
-                    return
-                }
-                if let snapshot, snapshot.exists, let data = snapshot.data() {
-                    self.logger.notice(
-                        "Subscription loaded from legacy Users/\(docId)/Subscription")
-                    // Heal canonical doc so next launch does not need fallback.
-                    self.db.collection(FirebaseCollections.subscriptions).document(docId)
-                        .setData(data, merge: true)
-                    self.applySubscription(data)
-                } else {
-                    self.applySubscription([:])
-                }
-            }
     }
 
     /// Trial bought before login is stored locally; push it once session exists.
@@ -395,20 +367,9 @@ class RequestManager: NSObject {
             in
             if let snapshot, snapshot.exists, let data = snapshot.data() {
                 completion(Subscription(data))
-                return
+            } else {
+                completion(Subscription())
             }
-            // One-shot legacy fallback.
-            self.db.collection(FirebaseCollections.legacyUsers)
-                .document(docId)
-                .collection(FirebaseCollections.legacySubscription)
-                .document(docId)
-                .getDocument { legacySnap, _ in
-                    if let legacySnap, legacySnap.exists, let data = legacySnap.data() {
-                        completion(Subscription(data))
-                    } else {
-                        completion(Subscription())
-                    }
-                }
         }
     }
 
