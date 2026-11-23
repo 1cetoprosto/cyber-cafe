@@ -1,16 +1,15 @@
 //
-//  SignUpController.swift
-//  DTLab
+//  SignUpViewController.swift
+//  Cyber-coffe
 //
 //  Created by Alexander Momotiuk on 26.07.2020.
-//  Copyright © 2020 DTLab. All rights reserved.
 //
 
 import LocalAuthentication
 import SVProgressHUD
 import UIKit
 
-class SignUpController: UIViewController {
+class SignUpViewController: UIViewController {
 
     private lazy var logoView = AuthLogoView()
 
@@ -136,7 +135,7 @@ class SignUpController: UIViewController {
             let canUseBio = context.canEvaluatePolicy(
                 .deviceOwnerAuthenticationWithBiometrics, error: &authError)
             if canUseBio && authError == nil {
-                navigationController?.pushViewController(BioAuthController(context), animated: true)
+                navigationController?.pushViewController(BioAuthViewController(context), animated: true)
             } else {
                 SceneDelegate.shared.set(root: MainTabBarController())
             }
@@ -246,7 +245,7 @@ class SignUpController: UIViewController {
     }
 }
 
-extension SignUpController: UITextFieldDelegate {
+extension SignUpViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         switch textField {

@@ -860,7 +860,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         UserSession.logOut()
 
         DispatchQueue.main.async {
-            let signInController = SignInController()
+            let signInController = SignInViewController()
             let navigationController = UINavigationController(rootViewController: signInController)
             navigationController.setNavigationBarHidden(true, animated: false)
             SceneDelegate.shared.set(root: navigationController)
@@ -872,7 +872,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     func authenticateUser(completion: @escaping (Bool) -> Void) {
         if Auth.auth().currentUser == nil {
             // User is not authenticated, present the sign-in screen
-            let signInController = SignInController()
+            let signInController = SignInViewController()
             signInController.completionHandler = { success in
                 DispatchQueue.main.async {
                     if success {

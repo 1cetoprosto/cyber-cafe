@@ -1,15 +1,14 @@
 //
-//  BioAuthController.swift
-//  DTLab
+//  BioAuthViewController.swift
+//  Cyber-coffe
 //
 //  Created by Alexander Momotiuk on 27.07.2020.
-//  Copyright © 2020 DTLab. All rights reserved.
 //
 
 import UIKit
 import LocalAuthentication
 
-class BioAuthController: UIViewController {
+class BioAuthViewController: UIViewController {
     
     private lazy var iconView = UIImageView()
     private lazy var titleLabel: UILabel = {

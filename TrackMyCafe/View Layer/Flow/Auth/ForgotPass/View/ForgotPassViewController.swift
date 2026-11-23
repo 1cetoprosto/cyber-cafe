@@ -1,16 +1,15 @@
 //
-//  ForgotPassController.swift
-//  DTLab
+//  ForgotPassViewController.swift
+//  Cyber-coffe
 //
 //  Created by Alexander Momotiuk on 26.07.2020.
-//  Copyright © 2020 DTLab. All rights reserved.
 //
 
 import LocalAuthentication
 import SVProgressHUD
 import UIKit
 
-class ForgotPassController: UIViewController {
+class ForgotPassViewController: UIViewController {
 
     private lazy var logoView = AuthLogoView()
 
@@ -140,7 +139,7 @@ class ForgotPassController: UIViewController {
     }
 }
 
-extension ForgotPassController: UITextFieldDelegate {
+extension ForgotPassViewController: UITextFieldDelegate {
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if textField == emailField {
