@@ -620,9 +620,29 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
+    /// Seeds dine-in / takeaway / delivery when the cafe has no types yet (first-run choice).
+    @MainActor
+    func ensureCommonReceiptTypesIfNeeded() async {
+        let existing = await fetchTypes()
+        if !existing.isEmpty { return }
+
+        let starter: [(String, Bool)] = [
+            (R.string.global.typeHall(), true),
+            (R.string.global.typeTakeaway(), false),
+            (R.string.global.typeDelivery(), false),
+        ]
+        for (name, isDefault) in starter {
+            let model = TypeModel(id: UUID().uuidString, name: name, isDefault: isDefault)
+            let success = await saveType(model: model)
+            if !success {
+                logger.error("Failed to seed receipt type: \(name)")
+            }
+        }
+    }
+
     /// Ensures a single localized default receipt type exists when the cafe has none.
-    /// Does **not** auto-seed Hall / Takeaway / Delivery — those stay for DEBUG demo seed
-    /// or manual Settings. First-run creates this type on first sale, or on skip of that step.
+    /// Does **not** auto-seed Hall / Takeaway / Delivery — those stay for DEBUG demo seed,
+    /// first-run «several types», or manual Settings.
     @MainActor
     func ensureDefaultOrderTypeIfNeeded() async {
         if let inFlight = ensureDefaultOrderTypeInFlight {

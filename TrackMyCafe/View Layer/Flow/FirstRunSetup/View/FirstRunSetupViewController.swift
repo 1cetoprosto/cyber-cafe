@@ -168,7 +168,9 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         return button
     }()
 
-    private let preferencesSection = UIStackView()
+    private let stockSection = UIStackView()
+    private let receiptSection = UIStackView()
+    private let typesSection = UIStackView()
     private let menuSection = UIStackView()
     private let saleSection = UIStackView()
     private let expenseSection = UIStackView()
@@ -193,6 +195,16 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         title: R.string.global.firstRunPreferencesSimplifiedTitle(),
         body: R.string.global.firstRunPreferencesSimplifiedBody(),
         action: #selector(simplifiedReceiptTapped)
+    )
+    private lazy var typesSingleCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesTypesSingleTitle(),
+        body: R.string.global.firstRunPreferencesTypesSingleBody(),
+        action: #selector(typesSingleTapped)
+    )
+    private lazy var typesMultipleCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesTypesMultipleTitle(),
+        body: R.string.global.firstRunPreferencesTypesMultipleBody(),
+        action: #selector(typesMultipleTapped)
     )
 
     private lazy var categoryFirstSwitch: UISwitch = {
@@ -263,7 +275,9 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         contentStack.addArrangedSubview(stepLabel)
         contentStack.addArrangedSubview(titleLabel)
         contentStack.addArrangedSubview(subtitleLabel)
-        contentStack.addArrangedSubview(preferencesSection)
+        contentStack.addArrangedSubview(stockSection)
+        contentStack.addArrangedSubview(receiptSection)
+        contentStack.addArrangedSubview(typesSection)
         contentStack.addArrangedSubview(menuSection)
         contentStack.addArrangedSubview(saleSection)
         contentStack.addArrangedSubview(expenseSection)
@@ -275,14 +289,12 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
     }
 
     private func configureSectionStacks() {
-        [preferencesSection, menuSection, saleSection, expenseSection, leftoverSection].forEach {
-            stack in
+        [stockSection, receiptSection, typesSection, menuSection, saleSection, expenseSection,
+            leftoverSection
+        ].forEach { stack in
             stack.axis = .vertical
-            stack.spacing = 12
+            stack.spacing = 14
         }
-
-        let stockHeader = sectionHeader(R.string.global.firstRunPreferencesStockSection())
-        let receiptHeader = sectionHeader(R.string.global.firstRunPreferencesReceiptSection())
 
         let categoryTitle = AppLabel(style: .body)
         categoryTitle.apply(.body)
@@ -296,14 +308,16 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         categoryFirstRow.addArrangedSubview(categoryTitle)
         categoryFirstRow.addArrangedSubview(categoryFirstSwitch)
 
-        preferencesSection.addArrangedSubview(stockHeader)
-        preferencesSection.addArrangedSubview(stockNoCard)
-        preferencesSection.addArrangedSubview(stockYesCard)
-        preferencesSection.addArrangedSubview(receiptHeader)
-        preferencesSection.addArrangedSubview(classicCard)
-        preferencesSection.addArrangedSubview(simplifiedCard)
-        preferencesSection.addArrangedSubview(categoryFirstRow)
-        preferencesSection.addArrangedSubview(categoryFirstHintLabel)
+        stockSection.addArrangedSubview(stockNoCard)
+        stockSection.addArrangedSubview(stockYesCard)
+
+        receiptSection.addArrangedSubview(classicCard)
+        receiptSection.addArrangedSubview(simplifiedCard)
+        receiptSection.addArrangedSubview(categoryFirstRow)
+        receiptSection.addArrangedSubview(categoryFirstHintLabel)
+
+        typesSection.addArrangedSubview(typesSingleCard)
+        typesSection.addArrangedSubview(typesMultipleCard)
 
         menuSection.addArrangedSubview(productNameField)
         menuSection.addArrangedSubview(productPriceField)
@@ -379,17 +393,22 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func renderStep() {
         let step = viewModel.currentStep
-        if viewModel.isPreferencesOnly {
-            stepLabel.isHidden = true
+        stepLabel.isHidden = false
+        if viewModel.isPreferencesOnly, let prefNumber = step.preferencesDisplayNumber {
+            stepLabel.text = R.string.global.firstRunStepProgress(
+                String(prefNumber),
+                String(FirstRunSetupStep.preferencesStepCount)
+            )
         } else {
-            stepLabel.isHidden = false
             stepLabel.text = R.string.global.firstRunStepProgress(
                 String(step.displayNumber),
                 String(FirstRunSetupStep.totalCount)
             )
         }
 
-        preferencesSection.isHidden = step != .preferences
+        stockSection.isHidden = step != .preferencesStock
+        receiptSection.isHidden = step != .preferencesReceipt
+        typesSection.isHidden = step != .preferencesTypes
         menuSection.isHidden = step != .menu
         saleSection.isHidden = step != .firstSale
         expenseSection.isHidden = step != .expense
@@ -402,9 +421,19 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         }
 
         switch step {
-        case .preferences:
-            titleLabel.text = R.string.global.firstRunPreferencesTitle()
-            subtitleLabel.text = R.string.global.firstRunPreferencesSubtitle()
+        case .preferencesStock:
+            titleLabel.text = R.string.global.firstRunPreferencesStockTitle()
+            subtitleLabel.text = R.string.global.firstRunPreferencesStockSubtitle()
+            primaryButton.setTitle(R.string.global.firstRunContinue(), for: .normal)
+            renderPreferencesSelection()
+        case .preferencesReceipt:
+            titleLabel.text = R.string.global.firstRunPreferencesReceiptTitle()
+            subtitleLabel.text = R.string.global.firstRunPreferencesReceiptSubtitle()
+            primaryButton.setTitle(R.string.global.firstRunContinue(), for: .normal)
+            renderPreferencesSelection()
+        case .preferencesTypes:
+            titleLabel.text = R.string.global.firstRunPreferencesTypesTitle()
+            subtitleLabel.text = R.string.global.firstRunPreferencesTypesSubtitle()
             primaryButton.setTitle(R.string.global.firstRunContinue(), for: .normal)
             renderPreferencesSelection()
         case .menu:
@@ -455,6 +484,8 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         stylePreferenceCard(stockYesCard, selected: viewModel.tracksIngredients)
         stylePreferenceCard(classicCard, selected: viewModel.orderEntryMode == .perOrder)
         stylePreferenceCard(simplifiedCard, selected: viewModel.orderEntryMode == .openTab)
+        stylePreferenceCard(typesSingleCard, selected: !viewModel.wantsMultipleReceiptTypes)
+        stylePreferenceCard(typesMultipleCard, selected: viewModel.wantsMultipleReceiptTypes)
 
         let showCategory = viewModel.orderEntryMode == .perOrder
         categoryFirstRow.isHidden = !showCategory
@@ -508,7 +539,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func updatePrimaryEnabled() {
         switch viewModel.currentStep {
-        case .preferences, .expense, .leftover:
+        case .preferencesStock, .preferencesReceipt, .preferencesTypes, .expense, .leftover:
             primaryButton.isEnabled = true
             primaryButton.alpha = 1
         case .menu, .firstSale:
@@ -519,30 +550,21 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     // MARK: - Preference UI helpers
 
-    private func sectionHeader(_ text: String) -> UILabel {
-        let label = AppLabel(style: .bodyDemiBold)
-        label.apply(.bodyDemiBold)
-        label.text = text
-        label.textColor = UIColor.Main.text
-        label.numberOfLines = 0
-        return label
-    }
-
     private func makePreferenceCard(title: String, body: String, action: Selector) -> UIControl {
         let control = UIControl()
         control.backgroundColor = UIColor.TableView.cellBackground
         control.applyCafeSoftCardStyle()
         control.addTarget(self, action: action, for: .touchUpInside)
 
-        let titleLabel = AppLabel(style: .bodyDemiBold)
-        titleLabel.apply(.bodyDemiBold)
+        let titleLabel = AppLabel(style: .title3DemiBold)
+        titleLabel.apply(.title3DemiBold)
         titleLabel.text = title
         titleLabel.textColor = UIColor.Main.text
         titleLabel.numberOfLines = 0
         titleLabel.isUserInteractionEnabled = false
 
-        let bodyLabel = AppLabel(style: .footnote)
-        bodyLabel.apply(.footnote)
+        let bodyLabel = AppLabel(style: .body)
+        bodyLabel.apply(.body)
         bodyLabel.text = body
         bodyLabel.textColor = Theme.current.secondaryText
         bodyLabel.numberOfLines = 0
@@ -550,12 +572,12 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
         let stack = UIStackView(arrangedSubviews: [titleLabel, bodyLabel])
         stack.axis = .vertical
-        stack.spacing = 6
+        stack.spacing = 8
         stack.isUserInteractionEnabled = false
 
         control.addSubview(stack)
         stack.edgesToSuperview(
-            insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+            insets: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         )
         return control
     }
@@ -670,6 +692,14 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         viewModel.setChooseCategoryFirst(sender.isOn)
     }
 
+    @objc private func typesSingleTapped() {
+        viewModel.setWantsMultipleReceiptTypes(false)
+    }
+
+    @objc private func typesMultipleTapped() {
+        viewModel.setWantsMultipleReceiptTypes(true)
+    }
+
     @objc private func addProductTapped() {
         Task { [weak self] in
             guard let self else { return }
@@ -686,9 +716,14 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     @objc private func primaryTapped() {
         switch viewModel.currentStep {
-        case .preferences:
-            viewModel.commitOperatingPreferences()
+        case .preferencesStock, .preferencesReceipt:
             viewModel.advanceAfterSuccessfulAction()
+        case .preferencesTypes:
+            Task { [weak self] in
+                guard let self else { return }
+                await self.viewModel.commitOperatingPreferencesAndTypes()
+                self.viewModel.advanceAfterSuccessfulAction()
+            }
         case .menu:
             guard viewModel.canContinueFromCurrentStep() else { return }
             viewModel.advanceAfterSuccessfulAction()

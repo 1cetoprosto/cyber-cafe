@@ -10,15 +10,36 @@ import Foundation
 // MARK: - FirstRunSetupStep
 
 enum FirstRunSetupStep: Int, CaseIterable {
-    /// Operating profile: stock + receipt mode (before any sample data).
-    case preferences = 0
-    case menu = 1
-    case firstSale = 2
-    case expense = 3
-    case leftover = 4
+    case preferencesStock = 0
+    case preferencesReceipt = 1
+    case preferencesTypes = 2
+    case menu = 3
+    case firstSale = 4
+    case expense = 5
+    case leftover = 6
 
     var displayNumber: Int { rawValue + 1 }
     static var totalCount: Int { allCases.count }
+
+    static let preferencesStepCount = 3
+
+    var isPreferencesStep: Bool {
+        switch self {
+        case .preferencesStock, .preferencesReceipt, .preferencesTypes:
+            return true
+        default:
+            return false
+        }
+    }
+
+    var preferencesDisplayNumber: Int? {
+        switch self {
+        case .preferencesStock: return 1
+        case .preferencesReceipt: return 2
+        case .preferencesTypes: return 3
+        default: return nil
+        }
+    }
 }
 
 // MARK: - FirstRunSetupSaleLine
@@ -38,13 +59,14 @@ protocol FirstRunSetupViewModelType: AnyObject {
     var costsTotal: Double { get }
     var leftoverTotal: Double { get }
     var minimumProductsToContinue: Int { get }
-    /// When true, only the operating-profile step is shown, then the flow finishes.
+    /// When true, only the three operating-profile steps are shown, then the flow finishes.
     var isPreferencesOnly: Bool { get }
 
-    /// Draft operating choices (applied when leaving preferences).
+    /// Draft operating choices (applied when leaving the types step).
     var tracksIngredients: Bool { get }
     var orderEntryMode: OrderEntryMode { get }
     var chooseCategoryFirst: Bool { get }
+    var wantsMultipleReceiptTypes: Bool { get }
 
     var onStepChanged: (() -> Void)? { get set }
     var onProductsChanged: (() -> Void)? { get set }
@@ -58,7 +80,8 @@ protocol FirstRunSetupViewModelType: AnyObject {
     func setTracksIngredients(_ enabled: Bool)
     func setOrderEntryMode(_ mode: OrderEntryMode)
     func setChooseCategoryFirst(_ enabled: Bool)
-    func commitOperatingPreferences()
+    func setWantsMultipleReceiptTypes(_ enabled: Bool)
+    func commitOperatingPreferencesAndTypes() async
     func addProduct(name: String, priceText: String) async -> Bool
     func setSaleQuantity(productId: String, quantity: Int)
     func saveFirstSale() async -> Bool

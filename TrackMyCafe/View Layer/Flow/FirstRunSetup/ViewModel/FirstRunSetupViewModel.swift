@@ -13,7 +13,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     // MARK: - Properties
 
-    private(set) var currentStep: FirstRunSetupStep = .preferences
+    private(set) var currentStep: FirstRunSetupStep = .preferencesStock
     private(set) var addedProducts: [ProductsPriceModel] = []
     private(set) var saleLines: [FirstRunSetupSaleLine] = []
     private(set) var salesTotal: Double = 0
@@ -23,6 +23,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     private(set) var tracksIngredients = false
     private(set) var orderEntryMode: OrderEntryMode = .perOrder
     private(set) var chooseCategoryFirst = true
+    private(set) var wantsMultipleReceiptTypes = false
     let isPreferencesOnly: Bool
 
     let minimumProductsToContinue = 2
@@ -46,17 +47,23 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     ) {
         self.isPreferencesOnly = preferencesOnly
         self.database = database
-        // Prefill from current Settings so returning owners see their live values.
         self.tracksIngredients = SettingsManager.shared.loadTrackIngredients()
         self.orderEntryMode = SettingsManager.shared.loadOrderEntryMode()
         self.chooseCategoryFirst = SettingsManager.shared.loadChooseCategoryFirstProductSelection()
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let types = await self.database.fetchTypes()
+            self.wantsMultipleReceiptTypes = types.count > 1
+            self.onPreferencesChanged?()
+        }
     }
 
     // MARK: - FirstRunSetupViewModelType
 
     func canContinueFromCurrentStep() -> Bool {
         switch currentStep {
-        case .preferences:
+        case .preferencesStock, .preferencesReceipt, .preferencesTypes:
             return true
         case .menu:
             return addedProducts.count >= minimumProductsToContinue
@@ -91,12 +98,23 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
         onPreferencesChanged?()
     }
 
-    func commitOperatingPreferences() {
+    func setWantsMultipleReceiptTypes(_ enabled: Bool) {
+        wantsMultipleReceiptTypes = enabled
+        onPreferencesChanged?()
+    }
+
+    @MainActor
+    func commitOperatingPreferencesAndTypes() async {
         SettingsManager.shared.applyOperatingPreferences(
             trackIngredients: tracksIngredients,
             orderMode: orderEntryMode,
             chooseCategoryFirst: orderEntryMode == .perOrder ? chooseCategoryFirst : false
         )
+        if wantsMultipleReceiptTypes {
+            await DomainDatabaseService.shared.ensureCommonReceiptTypesIfNeeded()
+        } else {
+            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+        }
         didCommitPreferences = true
     }
 
@@ -170,7 +188,6 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             cash: sum,
             card: 0,
             totalCost: 0,
-            // No recipes yet in the wizard — write-off starts after ingredients are set up.
             inventoryTracking: false,
             note: nil,
             createdBy: UserSession.current.employeeRef
@@ -235,7 +252,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     func advanceAfterSuccessfulAction() {
-        if currentStep == .preferences, isPreferencesOnly {
+        if currentStep == .preferencesTypes, isPreferencesOnly {
             finishSetup()
             return
         }
@@ -251,18 +268,32 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     func skipCurrentStep() {
-        if currentStep == .preferences {
-            applyFinanceOnlyDefaultsAndCommit()
-            if isPreferencesOnly {
-                finishSetup()
-                return
+        switch currentStep {
+        case .preferencesStock:
+            tracksIngredients = false
+            onPreferencesChanged?()
+        case .preferencesReceipt:
+            orderEntryMode = .perOrder
+            chooseCategoryFirst = true
+            onPreferencesChanged?()
+        case .preferencesTypes:
+            wantsMultipleReceiptTypes = false
+            onPreferencesChanged?()
+            Task { @MainActor in
+                await commitOperatingPreferencesAndTypes()
+                if isPreferencesOnly {
+                    finishSetup()
+                } else {
+                    advanceAfterSuccessfulAction()
+                }
             }
-        }
-        let skippedSale = currentStep == .firstSale
-        if skippedSale {
+            return
+        case .firstSale:
             Task { @MainActor in
                 await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
             }
+        default:
+            break
         }
         advanceAfterSuccessfulAction()
     }
@@ -270,7 +301,8 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     func skipEntireSetup() {
         Task { @MainActor in
             if !didCommitPreferences {
-                applyFinanceOnlyDefaultsAndCommit()
+                applyFinanceOnlyDefaults()
+                await commitOperatingPreferencesAndTypes()
             }
             if !isPreferencesOnly {
                 await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
@@ -283,7 +315,8 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     func finishSetup() {
         Task { @MainActor in
             if !didCommitPreferences {
-                applyFinanceOnlyDefaultsAndCommit()
+                applyFinanceOnlyDefaults()
+                await commitOperatingPreferencesAndTypes()
             }
             let types = await database.fetchTypes()
             if types.isEmpty {
@@ -301,11 +334,11 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     // MARK: - Private
 
-    private func applyFinanceOnlyDefaultsAndCommit() {
+    private func applyFinanceOnlyDefaults() {
         tracksIngredients = false
         orderEntryMode = .perOrder
         chooseCategoryFirst = true
-        commitOperatingPreferences()
+        wantsMultipleReceiptTypes = false
     }
 
     private func rebuildSaleLinesPreservingQuantities() {

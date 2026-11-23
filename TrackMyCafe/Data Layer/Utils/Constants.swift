@@ -183,8 +183,9 @@ struct UserDefaultsKeys {
         UserDefaults.standard.set(dismissed, forKey: hasDismissedPostSetupInsightKey(for: dataRef))
     }
 
-    /// Per-cafe: owner confirmed stock/receipt operating profile (full wizard or preferences-only).
-    static let hasCompletedOperatingPreferences = "hasCompletedOperatingPreferences"
+    /// Per-cafe: owner confirmed stock/receipt/types profile (3-step wizard).
+    /// Suffix bumped when preference steps change so owners reconfirm once.
+    static let hasCompletedOperatingPreferences = "hasCompletedOperatingPreferences.v2"
 
     static func hasCompletedOperatingPreferencesKey(for dataRef: String) -> String {
         "\(hasCompletedOperatingPreferences).\(dataRef)"
