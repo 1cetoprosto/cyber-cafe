@@ -66,7 +66,17 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
         title = R.string.global.orderPicker_allProducts()
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.largeTitleDisplayMode = .never
+        // Keep search under the nav title. Automatic/toolbar placement on recent iOS
+        // puts the bar under the return button and makes push transitions hitch.
+        if #available(iOS 16.0, *) {
+            navigationItem.preferredSearchBarPlacement = .stacked
+        }
+        if #available(iOS 26.0, *) {
+            navigationItem.searchBarPlacementAllowsToolbarIntegration = false
+        }
 
+        applyNavigationBarAppearance()
         configureNavigationItems()
         setupCollectionView()
         setupLayout()
@@ -83,6 +93,27 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         configureNavigationItems()
         updateReturnToOrderButtonVisibility()
+    }
+
+    private func applyNavigationBarAppearance() {
+        guard let navigationController else { return }
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.NavBar.background
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text
+        ]
+
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
+        navigationController.navigationBar.tintColor = UIColor.NavBar.text
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.view.backgroundColor = UIColor.NavBar.background
     }
 
     private func configureNavigationItems() {
@@ -159,20 +190,18 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
 
     private func loadData() {
         Task { [weak self] in
-            let categories = await DomainDatabaseService.shared.fetchProductCategories()
+            async let categoriesResult = DomainDatabaseService.shared.fetchProductCategories()
+            async let productsResult = DomainDatabaseService.shared.fetchProductsPrice()
+            let (categories, products) = await (categoriesResult, productsResult)
+
             await MainActor.run {
-                self?.allCategories = categories.sorted {
+                guard let self else { return }
+                self.allProducts = products
+                self.allCategories = categories.sorted {
                     if $0.sortOrder != $1.sortOrder { return $0.sortOrder < $1.sortOrder }
                     return $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
                 }
-                self?.applyFilter()
-            }
-        }
-
-        Task { [weak self] in
-            let products = await DomainDatabaseService.shared.fetchProductsPrice()
-            await MainActor.run {
-                self?.allProducts = products
+                self.applyFilter()
             }
         }
     }
@@ -211,20 +240,28 @@ final class OrderCategoryFirstPickerViewController: UIViewController {
     private func makeLayout() -> UICollectionViewLayout {
         let spacing = UIConstants.standardPadding
         let minItemWidth: CGFloat = 140
+        // Match OrderPickerCategoryGridCell: 12 inset + image (2/3 width) + 10 + ~40 title + 12
+        let verticalChrome: CGFloat = 12 + 10 + 40 + 12
+        let imageAspectRatio: CGFloat = 2.0 / 3.0
 
         return UICollectionViewCompositionalLayout { _, environment in
             let contentWidth = environment.container.effectiveContentSize.width
-            let columns = max(2, Int((contentWidth + spacing) / (minItemWidth + spacing)))
+            let availableWidth = max(0, contentWidth - spacing * 2)
+            let columns = max(1, Int((availableWidth + spacing) / (minItemWidth + spacing)))
+            let interItemTotal = spacing * CGFloat(max(0, columns - 1))
+            let itemWidth = floor((availableWidth - interItemTotal) / CGFloat(columns))
+            let imageHeight = (itemWidth - 24) * imageAspectRatio
+            let itemHeight = ceil(verticalChrome + imageHeight)
 
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(160)
+                widthDimension: .absolute(itemWidth),
+                heightDimension: .absolute(itemHeight)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(160)
+                heightDimension: .absolute(itemHeight)
             )
             let group: NSCollectionLayoutGroup
             if #available(iOS 16.0, *) {
@@ -289,6 +326,7 @@ extension OrderCategoryFirstPickerViewController: UICollectionViewDataSource,
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // Push immediately — never await network on the tap path (that caused the visible hang).
         let category = categories[indexPath.item]
         let productsVC = OrderCategoryFirstProductsViewController(
             productsViewModel: productsViewModel,

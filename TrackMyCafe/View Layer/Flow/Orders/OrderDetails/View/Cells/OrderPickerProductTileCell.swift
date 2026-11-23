@@ -157,7 +157,10 @@ final class OrderPickerProductTileCell: UICollectionViewCell {
         if let imagePath, !imagePath.isEmpty {
             imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.12)
             photoImageView.setImage(
-                pathOrURL: imagePath, placeholder: AppImagePlaceholder.product())
+                pathOrURL: imagePath,
+                placeholder: AppImagePlaceholder.product(),
+                maxPixelSize: 600
+            )
             imageView.isHidden = true
         } else {
             imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.12)

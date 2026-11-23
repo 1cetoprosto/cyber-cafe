@@ -96,7 +96,10 @@ final class OrderPickerCategoryGridCell: UICollectionViewCell {
         if let imagePath, !imagePath.isEmpty {
             imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.14)
             photoImageView.setImage(
-                pathOrURL: imagePath, placeholder: AppImagePlaceholder.category())
+                pathOrURL: imagePath,
+                placeholder: AppImagePlaceholder.category(),
+                maxPixelSize: 600
+            )
             placeholderImageView.isHidden = true
         } else {
             imageContainer.backgroundColor = UIColor.TabBar.tint.alpha(0.14)

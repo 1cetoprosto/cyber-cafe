@@ -453,6 +453,7 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                 productsViewModel: viewModel.productsViewModel
             )
             let nav = UINavigationController(rootViewController: categoriesVC)
+            nav.view.backgroundColor = UIColor.NavBar.background
             nav.modalPresentationStyle = UIDevice.isIpad ? .formSheet : .fullScreen
             present(nav, animated: true)
             return

@@ -4,7 +4,7 @@ import UIKit
 final class OrderCategoryFirstProductsViewController: UIViewController {
     private let productsViewModel: ProductListViewModel
     private let category: ProductCategoryModel
-    private let allProducts: [ProductsPriceModel]
+    private var catalogProducts: [ProductsPriceModel]
 
     private var products: [ProductsPriceModel] = []
     private var filteredProducts: [ProductsPriceModel] = []
@@ -13,8 +13,11 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         didSet { applyFilter() }
     }
 
+    /// Prefer list unless we are clearly in a regular-width (iPad) context.
+    /// During push, `horizontalSizeClass` can briefly be `.unspecified` — treating that
+    /// as compact avoids spinning up the heavy tile grid + image loads on iPhone.
     private var usesCompactList: Bool {
-        traitCollection.horizontalSizeClass == .compact
+        traitCollection.horizontalSizeClass != .regular
     }
 
     private var tableBottomConstraint: Constraint?
@@ -77,7 +80,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     ) {
         self.productsViewModel = productsViewModel
         self.category = category
-        self.allProducts = allProducts
+        self.catalogProducts = allProducts
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -91,7 +94,15 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         title = category.name
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
+        navigationItem.largeTitleDisplayMode = .never
+        if #available(iOS 16.0, *) {
+            navigationItem.preferredSearchBarPlacement = .stacked
+        }
+        if #available(iOS 26.0, *) {
+            navigationItem.searchBarPlacementAllowsToolbarIntegration = false
+        }
 
+        applyNavigationBarAppearance()
         configureNavigationItems()
         setupCollectionView()
         setupTableView()
@@ -104,7 +115,6 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateChromeForSizeClass()
-        reloadVisibleList()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -119,6 +129,27 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         super.traitCollectionDidChange(previousTraitCollection)
         configureNavigationItems()
         updateChromeForSizeClass()
+    }
+
+    private func applyNavigationBarAppearance() {
+        guard let navigationController else { return }
+
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = UIColor.NavBar.background
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.NavBar.text
+        ]
+
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
+        navigationController.navigationBar.tintColor = UIColor.NavBar.text
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.view.backgroundColor = UIColor.NavBar.background
     }
 
     private func configureNavigationItems() {
@@ -203,8 +234,26 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     }
 
     private func setupData() {
-        products = allProducts.filter { $0.categoryId == category.id }
-        products.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        applyCatalog(catalogProducts)
+
+        // Rare race: user tapped before the parent finished loading the price list.
+        // Fetch in the background — never block the push animation.
+        guard catalogProducts.isEmpty else { return }
+        Task { [weak self] in
+            let products = await DomainDatabaseService.shared.fetchProductsPrice()
+            await MainActor.run {
+                self?.applyCatalog(products)
+            }
+        }
+    }
+
+    private func applyCatalog(_ allProducts: [ProductsPriceModel]) {
+        catalogProducts = allProducts
+        products = allProducts
+            .filter { $0.categoryId == category.id }
+            .sorted {
+                $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending
+            }
         applyFilter()
     }
 
@@ -231,6 +280,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 
     private func updateChromeForSizeClass() {
         let compact = usesCompactList
+        let listChanged = tableView.isHidden == compact
         tableView.isHidden = !compact
         collectionView.isHidden = compact
 
@@ -243,7 +293,10 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         tableBottomConstraint?.constant = bottomInset
         collectionBottomConstraint?.constant = 0
         view.setNeedsLayout()
-        reloadVisibleList()
+
+        if listChanged {
+            reloadVisibleList()
+        }
     }
 
     private func reloadVisibleList() {
@@ -257,20 +310,28 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     private func makeLayout() -> UICollectionViewLayout {
         let spacing = UIConstants.standardPadding
         let minItemWidth: CGFloat = 180
+        // Match OrderPickerProductTileCell: 12 inset + image (2/3 width) + 10 + ~56 text + 12
+        let verticalChrome: CGFloat = 12 + 10 + 56 + 12
+        let imageAspectRatio: CGFloat = 2.0 / 3.0
 
         return UICollectionViewCompositionalLayout { _, environment in
             let contentWidth = environment.container.effectiveContentSize.width
-            let columns = max(2, Int((contentWidth + spacing) / (minItemWidth + spacing)))
+            let availableWidth = max(0, contentWidth - spacing * 2)
+            let columns = max(1, Int((availableWidth + spacing) / (minItemWidth + spacing)))
+            let interItemTotal = spacing * CGFloat(max(0, columns - 1))
+            let itemWidth = floor((availableWidth - interItemTotal) / CGFloat(columns))
+            let imageHeight = (itemWidth - 24) * imageAspectRatio
+            let itemHeight = ceil(verticalChrome + imageHeight)
 
             let itemSize = NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(220)
+                widthDimension: .absolute(itemWidth),
+                heightDimension: .absolute(itemHeight)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
             let groupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1.0),
-                heightDimension: .estimated(220)
+                heightDimension: .absolute(itemHeight)
             )
             let group: NSCollectionLayoutGroup
             if #available(iOS 16.0, *) {
