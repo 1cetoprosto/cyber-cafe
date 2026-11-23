@@ -1587,7 +1587,7 @@
 			path = Firestore;
 			sourceTree = "<group>";
 		};
-		F33D348E2DCF9C69001DBA6C /* Views */ = {
+		F33D348E2DCF9C69001DBA6C /* View */ = {
 			isa = PBXGroup;
 			children = (
 				F33D34922DCF9C9A001DBA6C /* Cells */,
@@ -1596,7 +1596,7 @@
 				F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */,
 				DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */,
 			);
-			path = Views;
+			path = View;
 			sourceTree = "<group>";
 		};
 		F33D34922DCF9C9A001DBA6C /* Cells */ = {
@@ -1788,7 +1788,6 @@
 			isa = PBXGroup;
 			children = (
 				F371BEC62FED426D00D72C3A /* ManualMovementEditViewController.swift */,
-				F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */,
 			);
 			path = Edit;
 			sourceTree = "<group>";
@@ -1797,17 +1796,34 @@
 			isa = PBXGroup;
 			children = (
 				F371BEC92FED426D00D72C3A /* ManualMovementListViewController.swift */,
-				F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */,
 				F371BECB2FED426D00D72C3A /* ManualMovementTableViewCell.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
 		};
-		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
+		F371BECF2FED426D00D72C3B /* View */ = {
 			isa = PBXGroup;
 			children = (
 				F371BEC82FED426D00D72C3A /* Edit */,
 				F371BECC2FED426D00D72C3A /* List */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F371BED02FED426D00D72C3B /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F371BEC72FED426D00D72C3A /* ManualMovementEditViewModel.swift */,
+				F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
+			isa = PBXGroup;
+			children = (
+				F371BECF2FED426D00D72C3B /* View */,
+				F371BED02FED426D00D72C3B /* ViewModel */,
 			);
 			path = ManualMovements;
 			sourceTree = "<group>";
@@ -2430,7 +2446,7 @@
 		F3A54D9E30308325002B0C00 /* ABC */ = {
 			isa = PBXGroup;
 			children = (
-				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
+				F3A54DBC30308325002B0C0A /* View */,
 			);
 			path = ABC;
 			sourceTree = "<group>";
@@ -2438,7 +2454,7 @@
 		F3A54DA030308325002B0C00 /* PL */ = {
 			isa = PBXGroup;
 			children = (
-				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
+				F3A54DBD30308325002B0C0A /* View */,
 			);
 			path = PL;
 			sourceTree = "<group>";
@@ -2446,9 +2462,41 @@
 		F3A54DA230308325002B0C00 /* Trends */ = {
 			isa = PBXGroup;
 			children = (
-				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
+				F3A54DBE30308325002B0C0A /* View */,
 			);
 			path = Trends;
+			sourceTree = "<group>";
+		};
+		F3A54DBC30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DBD30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DBE30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DBB30308325002B0C0A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		F3A54DA430308325002B0C00 /* Cells */ = {
@@ -2475,7 +2523,7 @@
 				F3A54DA030308325002B0C00 /* PL */,
 				F3A54DA230308325002B0C00 /* Trends */,
 				F3A54DA630308325002B0C00 /* View */,
-				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
+				F3A54DBB30308325002B0C0A /* ViewModel */,
 			);
 			path = Reports;
 			sourceTree = "<group>";
@@ -2483,7 +2531,7 @@
 		F3A640AE2C340888006BCACD /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
-				F33D348E2DCF9C69001DBA6C /* Views */,
+				F33D348E2DCF9C69001DBA6C /* View */,
 			);
 			path = Subscription;
 			sourceTree = "<group>";
