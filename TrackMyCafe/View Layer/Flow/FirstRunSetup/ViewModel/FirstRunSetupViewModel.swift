@@ -233,7 +233,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     private func markCompleted() {
-        defaults.set(true, forKey: UserDefaultsKeys.hasCompletedFirstRunSetup)
+        UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: UserSession.current.dataRef)
     }
 
     private func parsedAmount(from text: String) -> Double? {

@@ -124,15 +124,15 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         guard Auth.auth().currentUser?.uid != nil else { return }
         // Guided setup is owner-only — staff must never see the cafe bootstrap wizard.
         guard UserSession.current.role == .administrator else { return }
-        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.hasCompletedFirstRunSetup)
-        else { return }
+        let dataRef = UserSession.current.dataRef
+        guard !UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef) else { return }
         guard presentedViewController == nil else { return }
 
         Task { [weak self] in
             let products = await DomainDatabaseService.shared.fetchProductsPrice()
             guard products.isEmpty else {
                 // Cafe already has a menu (returning user / manual seed) — never show wizard.
-                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.hasCompletedFirstRunSetup)
+                UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: dataRef)
                 return
             }
 

@@ -146,7 +146,25 @@ struct UserDefaultsKeys {
     static let trackIngredients = "settings.trackIngredients"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
+    /// Legacy device-wide flag (pre–per-cafe). Do not write; cleared once during migration.
     static let hasCompletedFirstRunSetup = "hasCompletedFirstRunSetup"
+
+    /// Per-cafe key so Sign Up on the same simulator is not blocked by another account.
+    static func hasCompletedFirstRunSetupKey(for dataRef: String) -> String {
+        "\(hasCompletedFirstRunSetup).\(dataRef)"
+    }
+
+    static func hasCompletedFirstRunSetup(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return false }
+        return UserDefaults.standard.bool(forKey: hasCompletedFirstRunSetupKey(for: dataRef))
+    }
+
+    static func setHasCompletedFirstRunSetup(_ completed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(completed, forKey: hasCompletedFirstRunSetupKey(for: dataRef))
+        // Drop legacy device-wide flag so it cannot block other cafes on this device.
+        UserDefaults.standard.removeObject(forKey: hasCompletedFirstRunSetup)
+    }
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
     static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"
