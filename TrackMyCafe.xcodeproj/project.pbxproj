@@ -205,7 +205,7 @@
 		F3410E612BDD00C20007157B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E582BDD00C20007157B /* AuthManager.swift */; };
 		F3410E642BDD0AAC0007157B /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3410E632BDD0AAC0007157B /* SVProgressHUD */; };
 		F3410E6B2BDD23E60007157B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6A2BDD23E60007157B /* Constants.swift */; };
-		F3410E6D2BDD24710007157B /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor.swift */; };
+		F3410E6D2BDD24710007157B /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor+Hex.swift */; };
 		F3410E802BDD2B540007157B /* Auth.strings in Resources */ = {isa = PBXBuildFile; fileRef = F3410E7F2BDD2B540007157B /* Auth.strings */; };
 		F3410E8B2BDD2D610007157B /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8A2BDD2D600007157B /* Theme.swift */; };
 		F3410E8F2BDD2E770007157B /* Types+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8E2BDD2E770007157B /* Types+Extension.swift */; };
@@ -491,7 +491,7 @@
 		F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8E2BDD2E770007157B /* Types+Extension.swift */; };
 		F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
-		F3B339D42C0B22FE0073F19A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor.swift */; };
+		F3B339D42C0B22FE0073F19A /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor+Hex.swift */; };
 		F3B339D52C0B22FE0073F19A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6A2BDD23E60007157B /* Constants.swift */; };
 		F3B339D62C0B22FE0073F19A /* CostListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADB27EB111600215976 /* CostListViewModelType.swift */; };
 		F3B339D72C0B22FE0073F19A /* SVProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9D2BDD3A5A0007157B /* SVProgressHUD+Extension.swift */; };
@@ -591,7 +591,7 @@
 		F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DA27F30ED800BB2D93 /* ProductListViewModel.swift */; };
 		F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E8E2BDD2E770007157B /* Types+Extension.swift */; };
 		F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357F62BEFF2AB005050CB /* OrderModel.swift */; };
-		F3B33A732C0B23450073F19A /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor.swift */; };
+		F3B33A732C0B23450073F19A /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6C2BDD24710007157B /* UIColor+Hex.swift */; };
 		F3B33A742C0B23450073F19A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6A2BDD23E60007157B /* Constants.swift */; };
 		F3B33A752C0B23450073F19A /* CostListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADB27EB111600215976 /* CostListViewModelType.swift */; };
 		F3B33A762C0B23450073F19A /* SVProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9D2BDD3A5A0007157B /* SVProgressHUD+Extension.swift */; };
@@ -901,7 +901,7 @@
 		F3410E562BDD00C20007157B /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
 		F3410E582BDD00C20007157B /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F3410E6A2BDD23E60007157B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
-		F3410E6C2BDD24710007157B /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
+		F3410E6C2BDD24710007157B /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		F3410E7E2BDD2B540007157B /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Auth.strings; sourceTree = "<group>"; };
 		F3410E812BDD2B960007157B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Auth.strings; sourceTree = "<group>"; };
 		F3410E8A2BDD2D600007157B /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -1525,10 +1525,22 @@
 		F316A2F62738048F0083E830 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F3EXT295A295000000829501 /* Foundation */,
 				F316A2F7273804AB0083E830 /* UI */,
-				F3410E6C2BDD24710007157B /* UIColor.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F3EXT295A295000000829501 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				F3410EA12BDD3AFC0007157B /* String+Extension.swift */,
+				F3410EAF2BDD40410007157B /* Date+Extension.swift */,
+				F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */,
+				F3410E902BDD2EAE0007157B /* NumberFormatter+Extension.swift */,
+				F3410E8E2BDD2E770007157B /* Types+Extension.swift */,
+			);
+			path = Foundation;
 			sourceTree = "<group>";
 		};
 		F316A2F7273804AB0083E830 /* UI */ = {
@@ -1544,17 +1556,13 @@
 				F32FDC7E275C862C0035767E /* UILabel+Extension.swift */,
 				F316A2FA273808100083E830 /* UIFont+Extension.swift */,
 				F3BBB1B12748D6C000744C3B /* UIColor+Extension.swift */,
-				F3410E902BDD2EAE0007157B /* NumberFormatter+Extension.swift */,
-				F3410E8E2BDD2E770007157B /* Types+Extension.swift */,
+				F3410E6C2BDD24710007157B /* UIColor+Hex.swift */,
 				F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */,
 				F3410E9D2BDD3A5A0007157B /* SVProgressHUD+Extension.swift */,
 				F3410E9F2BDD3A950007157B /* UIViewController+Extension.swift */,
-				F3410EA12BDD3AFC0007157B /* String+Extension.swift */,
 				F3410EAB2BDD3E8E0007157B /* UIImage+Extension.swift */,
-				F3410EAF2BDD40410007157B /* Date+Extension.swift */,
 				F3410EB92BDD45AA0007157B /* UIDevice+Extension.swift */,
 				F38707D82BE5FBB900B6F313 /* UIView+Extension.swift */,
-				F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */,
 				F385B40D2C1D822B00973CAA /* UIImageView+Extension.swift */,
 			);
 			path = UI;
@@ -3086,7 +3094,7 @@
 				F34BC9B72F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3F203772FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,
 				F3F203782FD521B5007249FB /* OrderPickerProductTileCell.swift in Sources */,
-				F3410E6D2BDD24710007157B /* UIColor.swift in Sources */,
+				F3410E6D2BDD24710007157B /* UIColor+Hex.swift in Sources */,
 				F3410E6B2BDD23E60007157B /* Constants.swift in Sources */,
 				F385B40A2C1D78BF00973CAA /* PersonListModelProtocol.swift in Sources */,
 				F3988ADC27EB111600215976 /* CostListViewModelType.swift in Sources */,
@@ -3325,7 +3333,7 @@
 				F3B339D12C0B22FE0073F19A /* ProductListViewModel.swift in Sources */,
 				F3B339D22C0B22FE0073F19A /* Types+Extension.swift in Sources */,
 				F3B339D32C0B22FE0073F19A /* OrderModel.swift in Sources */,
-				F3B339D42C0B22FE0073F19A /* UIColor.swift in Sources */,
+				F3B339D42C0B22FE0073F19A /* UIColor+Hex.swift in Sources */,
 				F34BC9B22F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
 				F34BC9B32F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3F203732FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,
@@ -3568,7 +3576,7 @@
 				F3B33A702C0B23450073F19A /* ProductListViewModel.swift in Sources */,
 				F3B33A712C0B23450073F19A /* Types+Extension.swift in Sources */,
 				F3B33A722C0B23450073F19A /* OrderModel.swift in Sources */,
-				F3B33A732C0B23450073F19A /* UIColor.swift in Sources */,
+				F3B33A732C0B23450073F19A /* UIColor+Hex.swift in Sources */,
 				F34BC9B42F62F4B8000476B5 /* OrderSplitContainerViewController.swift in Sources */,
 				F34BC9B52F62F4B8000476B5 /* OrderReceiptPadViewController.swift in Sources */,
 				F3F203752FD521B5007249FB /* OrderPickerCategoryGridCell.swift in Sources */,

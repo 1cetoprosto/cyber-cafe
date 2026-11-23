@@ -1,5 +1,5 @@
 //
-//  UIColor.swift
+//  UIColor+Hex.swift
 //  Cyber-coffe
 //
 //  Created by Леонід Квіт on 27.04.2024.
