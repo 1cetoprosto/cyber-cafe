@@ -94,7 +94,7 @@ class SignInViewController: UIViewController {
     }()
 
     var waitEmailConfirmation = false
-    private let model = AuthModel()
+    private var viewModel: SignInViewModelType?
     private var authLink: String?
     private var resolvedEmailLinkEmail: String?
     private var hasStartedEmailLinkSignIn = false
@@ -123,13 +123,11 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-        model.actionHandler = handleModel(_:)
-
+        bindViewModel()
         setupBio()
 
         if let authLink {
-            resolvedEmailLinkEmail = AuthModel.resolvedPendingEmailLinkEmail(from: authLink)
+            resolvedEmailLinkEmail = viewModel?.resolvedPendingEmailLinkEmail(from: authLink)
             emailField.text = resolvedEmailLinkEmail
             applyEmailLinkMode()
             return
@@ -191,7 +189,7 @@ class SignInViewController: UIViewController {
 
         if let resolvedEmail = resolvedEmailLinkEmail, resolvedEmail.isValid(regex: .email) {
             hasStartedEmailLinkSignIn = true
-            model.signInWithLink(authLink, email: resolvedEmail)
+            viewModel?.signInWithLink(authLink, email: resolvedEmail)
         }
     }
 
@@ -244,7 +242,7 @@ class SignInViewController: UIViewController {
             ) { [weak self] (success, error) in
                 DispatchQueue.main.async {
                     if success {
-                        self?.model.signInWithBio()
+                        self?.viewModel?.signInWithBio()
                     } else {
                         if error?.localizedDescription != "Canceled by user." {
                             self?.showAlert(
@@ -256,7 +254,15 @@ class SignInViewController: UIViewController {
         }
     }
 
-    private func handleModel(_ action: AuthModel.AuthModelAction) {
+    private func bindViewModel() {
+        let viewModel = SignInViewModel()
+        viewModel.actionHandler = { [weak self] action in
+            self?.handleModel(action)
+        }
+        self.viewModel = viewModel
+    }
+
+    private func handleModel(_ action: SignInViewModelType.Action) {
         switch action {
         case .loading(let show):
             SVProgressHUD.show(show)
@@ -392,18 +398,18 @@ class SignInViewController: UIViewController {
                 typedEmail.isValid(regex: String.RegularExpressions.email)
             {
                 resolvedEmailLinkEmail = typedEmail
-                model.signInWithLink(authLink, email: typedEmail)
+                viewModel?.signInWithLink(authLink, email: typedEmail)
                 return
             }
 
-            if let resolvedEmail = AuthModel.resolvedPendingEmailLinkEmail(from: authLink) {
+            if let resolvedEmail = viewModel?.resolvedPendingEmailLinkEmail(from: authLink) {
                 resolvedEmailLinkEmail = resolvedEmail
                 emailField.text = resolvedEmail
-                model.signInWithLink(authLink, email: resolvedEmail)
+                viewModel?.signInWithLink(authLink, email: resolvedEmail)
                 return
             }
 
-            model.signInWithLink(authLink)
+            viewModel?.signInWithLink(authLink)
             return
         }
 
@@ -423,7 +429,7 @@ class SignInViewController: UIViewController {
         #endif
 
         guard validateFields() else { return }
-        model.signIn(
+        viewModel?.signIn(
             email: emailField.text!,
             password: passwordField.text!,
             rememberUser: rememberButton.isCheck)

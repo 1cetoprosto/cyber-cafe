@@ -1029,6 +1029,28 @@ class DomainDatabaseService: DomainDB {
         return success
     }
 
+    // MARK: - Auth persistence
+
+    func getRoles(email: String) async -> [RoleConfig]? {
+        await FirestoreDatabaseService.getRoles(email.trimmed.lowercased())
+    }
+
+    func checkData(_ key: String?) async -> Bool {
+        await FirestoreDatabaseService.shared.checkData(key)
+    }
+
+    func createNewUser(_ roles: [RoleConfig], _ id: String, _ email: String) async throws {
+        try await FirestoreDatabaseService.shared.createNewUser(roles, id, email)
+    }
+
+    func createNewCafe(_ id: String, _ email: String) async throws -> RoleConfig {
+        try await FirestoreDatabaseService.shared.createNewCafe(id, email)
+    }
+
+    func ensureCafeMembership(for role: RoleConfig) async {
+        await FirestoreDatabaseService.shared.ensureCafeMembership(for: role)
+    }
+
     // MARK: - Generic Delete Operation
     func delete(collection: String, documentId: String) async -> Bool {
         do {

@@ -104,6 +104,13 @@ protocol DomainDB {
     // MARK: - Database
     func deleteActiveDatabaseData() async -> Bool
 
+    // MARK: - Auth persistence
+    func getRoles(email: String) async -> [RoleConfig]?
+    func checkData(_ key: String?) async -> Bool
+    func createNewUser(_ roles: [RoleConfig], _ id: String, _ email: String) async throws
+    func createNewCafe(_ id: String, _ email: String) async throws -> RoleConfig
+    func ensureCafeMembership(for role: RoleConfig) async
+
     // MARK: - Test Data
     func seedTestData(forDays days: Int) async
 }

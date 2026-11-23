@@ -96,15 +96,23 @@ class SignUpViewController: UIViewController {
         return button
     }()
 
-    private let model = AuthModel()
+    private var viewModel: SignUpViewModelType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        model.actionHandler = handleModel(_:)
+        bindViewModel()
     }
 
-    private func handleModel(_ action: AuthModel.AuthModelAction) {
+    private func bindViewModel() {
+        let viewModel = SignUpViewModel()
+        viewModel.actionHandler = { [weak self] action in
+            self?.handleModel(action)
+        }
+        self.viewModel = viewModel
+    }
+
+    private func handleModel(_ action: SignUpViewModelType.Action) {
         switch action {
         case .loading(let show):
             SVProgressHUD.show(show)
@@ -193,7 +201,7 @@ class SignUpViewController: UIViewController {
     // MARK: - Actions
     @objc private func signUpAction(_ sender: UIButton) {
         guard validateFields() else { return }
-        model.signUp(email: emailField.text!, password: passwordField.text!)
+        viewModel?.signUp(email: emailField.text!, password: passwordField.text!)
     }
 
     @objc private func backAction(_ sender: UIButton) {

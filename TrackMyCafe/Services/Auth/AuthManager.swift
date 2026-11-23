@@ -1,16 +1,23 @@
 //
 //  AuthManager.swift
-//  DTLab
+//  TrackMyCafe
 //
 //  Created by Alexander Momotiuk on 10.08.2020.
-//  Copyright © 2020 DTLab. All rights reserved.
 //
 
 import FirebaseAuth
 import FirebaseDatabase
 import Foundation
 
-class AuthModel {
+// MARK: - AuthModel
+
+final class AuthModel {
+
+    private let database: DomainDB
+
+    init(database: DomainDB = DomainDatabaseService.shared) {
+        self.database = database
+    }
     private static var sentLinkEmail: String?
     private static let pendingEmailLinkStorageKey = "AuthModel.pendingEmailLinkEmail"
     private static let emailLinkQueryItemName = "email"
@@ -279,7 +286,7 @@ class AuthModel {
     ) {
         Task { [weak self] in
             guard let self else { return }
-            let roles = await FirestoreDatabaseService.getRoles(email)
+            let roles = await self.database.getRoles(email: email)
             if let roles = roles, !roles.isEmpty {
                 self.handleExistingRoles(
                     roles, id: id, email: email, rememberUser: rememberUser,
@@ -336,7 +343,7 @@ class AuthModel {
             guard let self else { return }
             if let roles = roles, !roles.isEmpty {
                 do {
-                    try await FirestoreDatabaseService.shared.createNewUser(roles, id, email)
+                    try await self.database.createNewUser(roles, id, email)
                     self.handleNewUserRoles(
                         roles, id: id, email: email, rememberUser: rememberUser,
                         setPassword: setPassword)
@@ -347,7 +354,7 @@ class AuthModel {
                 }
             } else {
                 do {
-                    let role = try await FirestoreDatabaseService.shared.createNewCafe(id, email)
+                    let role = try await self.database.createNewCafe(id, email)
                     self.send(.loading(false))
                     self.login(id, email, role, rememberUser)
                     self.send(.success(setPassword))
@@ -397,14 +404,14 @@ class AuthModel {
 
     private func checkData(_ key: String?) async -> Bool {
         guard let key = key else { return false }
-        return await FirestoreDatabaseService.shared.checkData(key)
+        return await database.checkData(key)
     }
 
     private func login(_ id: String, _ email: String, _ role: RoleConfig, _ rememberUser: Bool) {
         UserSession.createSession(
             id: id, email: email, roleConfig: role, rememberUser: rememberUser)
         Task {
-            await FirestoreDatabaseService.shared.ensureCafeMembership(for: role)
+            await database.ensureCafeMembership(for: role)
             RequestManager.shared.startListening()
         }
     }

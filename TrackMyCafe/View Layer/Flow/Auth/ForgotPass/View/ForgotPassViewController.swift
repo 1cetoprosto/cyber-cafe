@@ -45,16 +45,23 @@ class ForgotPassViewController: UIViewController {
         return button
     }()
 
-    private let model = AuthModel()
+    private var viewModel: ForgotPassViewModelType?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-
-        model.actionHandler = handleModel(_:)
+        bindViewModel()
     }
 
-    private func handleModel(_ action: AuthModel.AuthModelAction) {
+    private func bindViewModel() {
+        let viewModel = ForgotPassViewModel()
+        viewModel.actionHandler = { [weak self] action in
+            self?.handleModel(action)
+        }
+        self.viewModel = viewModel
+    }
+
+    private func handleModel(_ action: ForgotPassViewModelType.Action) {
         switch action {
         case .loading(let show):
             SVProgressHUD.show(show)
@@ -114,7 +121,7 @@ class ForgotPassViewController: UIViewController {
         sender.isEnabled = false
         view.endEditing(true)
         let email = (emailField.text ?? "").trimmingCharacters(in: .whitespacesAndNewlines)
-        model.sendPasswordReset(email)
+        viewModel?.sendPasswordReset(email)
     }
 
     private func validateFields() -> Bool {
