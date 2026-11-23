@@ -1,9 +1,8 @@
 //
-//  SignInController.swift
-//  DTLab
+//  SignInViewController.swift
+//  Cyber-coffe
 //
 //  Created by Alexander Momotiuk on 24.07.2020.
-//  Copyright © 2020 DTLab. All rights reserved.
 //
 
 import FirebaseAuth
@@ -12,7 +11,7 @@ import SVProgressHUD
 import TinyConstraints
 import UIKit
 
-class SignInController: UIViewController {
+class SignInViewController: UIViewController {
 
     var completionHandler: ((Bool) -> Void)?
 
@@ -296,9 +295,9 @@ class SignInController: UIViewController {
                 let askBio =
                     canUseBio && authError == nil && UserSession.current.rememberUser && askUser
                 navigationController?.pushViewController(
-                    SetPasswordController(askBio ? context : nil), animated: true)
+                    SetPasswordViewController(askBio ? context : nil), animated: true)
             } else if canUseBio && authError == nil && UserSession.current.rememberUser && askUser {
-                navigationController?.pushViewController(BioAuthController(context), animated: true)
+                navigationController?.pushViewController(BioAuthViewController(context), animated: true)
             } else {
                 let controller = MainTabBarController()
                 // AppDelegate.shared.set(root: controller)
@@ -431,12 +430,12 @@ class SignInController: UIViewController {
     }
 
     @objc private func signUpAction(_ sender: UIButton) {
-        let controller = SignUpController()
+        let controller = SignUpViewController()
         navigationController?.pushViewController(controller, animated: true)
     }
 
     @objc private func forgotAction(_ sender: UIButton) {
-        let controller = ForgotPassController()
+        let controller = ForgotPassViewController()
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -520,7 +519,7 @@ class SignInController: UIViewController {
     }
 }
 
-extension SignInController: UITextFieldDelegate {
+extension SignInViewController: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         bioAuthButton.superview?.isHidden = true
@@ -536,7 +535,7 @@ extension SignInController: UITextFieldDelegate {
     }
 }
 
-extension SignInController: UIGestureRecognizerDelegate {
+extension SignInViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch)
         -> Bool
     {

@@ -127,7 +127,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // Always check for online session
         if !isValidSession || Auth.auth().currentUser == nil {
             // Якщо сесія не дійсна або користувач не аутентифікований, переходимо на екран входу
-            let signInController = SignInController()
+            let signInController = SignInViewController()
             let navigationController = UINavigationController(rootViewController: signInController)
             navigationController.setNavigationBarHidden(true, animated: false)
             window?.rootViewController = navigationController
@@ -336,7 +336,7 @@ extension SceneDelegate {
             UserSession.deleteSession()
         }
 
-        let signInController = SignInController(link: link)
+        let signInController = SignInViewController(link: link)
         let navigationController = UINavigationController(rootViewController: signInController)
         navigationController.setNavigationBarHidden(true, animated: false)
 

@@ -196,12 +196,12 @@
 		F33D349D2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
 		F33D349E2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
 		F33D349F2DD0741E001DBA6C /* BaseSettingsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */; };
-		F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
-		F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
-		F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
-		F3410E5D2BDD00C20007157B /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInController.swift */; };
+		F3410E5A2BDD00C20007157B /* BioAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */; };
+		F3410E5B2BDD00C20007157B /* ForgotPassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */; };
+		F3410E5C2BDD00C20007157B /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */; };
+		F3410E5D2BDD00C20007157B /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInViewController.swift */; };
 		F3410E5F2BDD00C20007157B /* RememberMeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E532BDD00C20007157B /* RememberMeButton.swift */; };
-		F3410E602BDD00C20007157B /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpController.swift */; };
+		F3410E602BDD00C20007157B /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpViewController.swift */; };
 		F3410E612BDD00C20007157B /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E582BDD00C20007157B /* AuthManager.swift */; };
 		F3410E642BDD0AAC0007157B /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = F3410E632BDD0AAC0007157B /* SVProgressHUD */; };
 		F3410E6B2BDD23E60007157B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E6A2BDD23E60007157B /* Constants.swift */; };
@@ -477,7 +477,7 @@
 		F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
 		F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */; };
-		F3B339C42C0B22FE0073F19A /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
+		F3B339C42C0B22FE0073F19A /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */; };
 		F3B339C62C0B22FE0073F19A /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
 		F3B339C72C0B22FE0073F19A /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC80275C89910035767E /* UITextField+Extension.swift */; };
 		F3B339C82C0B22FE0073F19A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC7E275C862C0035767E /* UILabel+Extension.swift */; };
@@ -497,7 +497,7 @@
 		F3B339D72C0B22FE0073F19A /* SVProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9D2BDD3A5A0007157B /* SVProgressHUD+Extension.swift */; };
 		F3B339D82C0B22FE0073F19A /* ProductDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFF275266EA004B9AF6 /* ProductDetailsViewController.swift */; };
 		F3B339D92C0B22FE0073F19A /* ProductListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27D827F30EBE00BB2D93 /* ProductListViewModelType.swift */; };
-		F3B339DA2C0B22FE0073F19A /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInController.swift */; };
+		F3B339DA2C0B22FE0073F19A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInViewController.swift */; };
 		F3B339DB2C0B22FE0073F19A /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
 		F3B339DC2C0B22FE0073F19A /* ProductPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFD27526383004B9AF6 /* ProductPriceTableViewCell.swift */; };
 		F3B339DE2C0B22FE0073F19A /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA92BDD3E230007157B /* MainNavigationController.swift */; };
@@ -522,15 +522,15 @@
 		F3B339F12C0B22FE0073F19A /* CostDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADF27EB12E100215976 /* CostDetailsViewModelType.swift */; };
 		F3B339F32C0B22FE0073F19A /* FirestoreDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */; };
 		F3B339F42C0B22FE0073F19A /* CostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264980275B32A900836077 /* CostTableViewCell.swift */; };
-		F3B339F52C0B22FE0073F19A /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
+		F3B339F52C0B22FE0073F19A /* ForgotPassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */; };
 		F3B339F62C0B22FE0073F19A /* CostListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AF027EB310900215976 /* CostListItemViewModel.swift */; };
 		F3B339F72C0B22FE0073F19A /* DomainDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */; };
 		F3B339F82C0B22FE0073F19A /* ProductListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */; };
 		F3B339FA2C0B22FE0073F19A /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA32BDD3C8E0007157B /* UserSession.swift */; };
-		F3B339FB2C0B22FE0073F19A /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpController.swift */; };
+		F3B339FB2C0B22FE0073F19A /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpViewController.swift */; };
 		F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEC27EB19C300215976 /* CostDetailsViewModel.swift */; };
 		F3B339FD2C0B22FE0073F19A /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
-		F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
+		F3B339FE2C0B22FE0073F19A /* BioAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */; };
 		F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F3B33A022C0B22FE0073F19A /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
@@ -577,7 +577,7 @@
 		F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3B7C2562806DCB000DF5C2B /* TypeDetailsViewController.swift */; };
 		F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */; };
 		F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3821C7927EAEA8B006D40FC /* OrderListViewModelType.swift */; };
-		F3B33A632C0B23450073F19A /* SetPasswordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordController.swift */; };
+		F3B33A632C0B23450073F19A /* SetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */; };
 		F3B33A652C0B23450073F19A /* DefaultButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3C67911293929EF00E64D49 /* DefaultButton.swift */; };
 		F3B33A662C0B23450073F19A /* UITextField+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC80275C89910035767E /* UITextField+Extension.swift */; };
 		F3B33A672C0B23450073F19A /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32FDC7E275C862C0035767E /* UILabel+Extension.swift */; };
@@ -597,7 +597,7 @@
 		F3B33A762C0B23450073F19A /* SVProgressHUD+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E9D2BDD3A5A0007157B /* SVProgressHUD+Extension.swift */; };
 		F3B33A772C0B23450073F19A /* ProductDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFF275266EA004B9AF6 /* ProductDetailsViewController.swift */; };
 		F3B33A782C0B23450073F19A /* ProductListViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27D827F30EBE00BB2D93 /* ProductListViewModelType.swift */; };
-		F3B33A792C0B23450073F19A /* SignInController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInController.swift */; };
+		F3B33A792C0B23450073F19A /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E502BDD00C20007157B /* SignInViewController.swift */; };
 		F3B33A7A2C0B23450073F19A /* Bundle+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */; };
 		F3B33A7B2C0B23450073F19A /* ProductPriceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EAACFD27526383004B9AF6 /* ProductPriceTableViewCell.swift */; };
 		F3B33A7D2C0B23450073F19A /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA92BDD3E230007157B /* MainNavigationController.swift */; };
@@ -622,15 +622,15 @@
 		F3B33A902C0B23450073F19A /* CostDetailsViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988ADF27EB12E100215976 /* CostDetailsViewModelType.swift */; };
 		F3B33A922C0B23450073F19A /* FirestoreDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F39B5D3028473465000F7D43 /* FirestoreDatabaseService.swift */; };
 		F3B33A932C0B23450073F19A /* CostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3264980275B32A900836077 /* CostTableViewCell.swift */; };
-		F3B33A942C0B23450073F19A /* ForgotPassController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassController.swift */; };
+		F3B33A942C0B23450073F19A /* ForgotPassViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */; };
 		F3B33A952C0B23450073F19A /* CostListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AF027EB310900215976 /* CostListItemViewModel.swift */; };
 		F3B33A962C0B23450073F19A /* DomainDatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3E357EA2BEFA26F005050CB /* DomainDatabaseService.swift */; };
 		F3B33A972C0B23450073F19A /* ProductListItemViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3EB27DC27F30EF000BB2D93 /* ProductListItemViewModelType.swift */; };
 		F3B33A992C0B23450073F19A /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410EA32BDD3C8E0007157B /* UserSession.swift */; };
-		F3B33A9A2C0B23450073F19A /* SignUpController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpController.swift */; };
+		F3B33A9A2C0B23450073F19A /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E562BDD00C20007157B /* SignUpViewController.swift */; };
 		F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3988AEC27EB19C300215976 /* CostDetailsViewModel.swift */; };
 		F3B33A9C2C0B23450073F19A /* FIRTypeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F31BD82C284E013300B8FD3B /* FIRTypeModel.swift */; };
-		F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthController.swift */; };
+		F3B33A9D2C0B23450073F19A /* BioAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */; };
 		F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2F8273805150083E830 /* SalesTableViewCell.swift */; };
 		F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F316A2FC27380A850083E830 /* UIStackView+Extension.swift */; };
 		F3B33AA12C0B23450073F19A /* UINavigationBar+Custom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F310CFA5274B70360052E481 /* UINavigationBar+Custom.swift */; };
@@ -890,12 +890,12 @@
 		F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionCell.swift; sourceTree = "<group>"; };
 		F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionTextCell.swift; sourceTree = "<group>"; };
 		F33D349C2DD0741E001DBA6C /* BaseSettingsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseSettingsCell.swift; sourceTree = "<group>"; };
-		F3410E4A2BDD00C20007157B /* BioAuthController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioAuthController.swift; sourceTree = "<group>"; };
-		F3410E4C2BDD00C20007157B /* ForgotPassController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPassController.swift; sourceTree = "<group>"; };
-		F3410E4E2BDD00C20007157B /* SetPasswordController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordController.swift; sourceTree = "<group>"; };
-		F3410E502BDD00C20007157B /* SignInController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInController.swift; sourceTree = "<group>"; };
+		F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BioAuthViewController.swift; sourceTree = "<group>"; };
+		F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ForgotPassViewController.swift; sourceTree = "<group>"; };
+		F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SetPasswordViewController.swift; sourceTree = "<group>"; };
+		F3410E502BDD00C20007157B /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		F3410E532BDD00C20007157B /* RememberMeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RememberMeButton.swift; sourceTree = "<group>"; };
-		F3410E562BDD00C20007157B /* SignUpController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpController.swift; sourceTree = "<group>"; };
+		F3410E562BDD00C20007157B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		F3410E582BDD00C20007157B /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F3410E6A2BDD23E60007157B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F3410E6C2BDD24710007157B /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
@@ -1607,10 +1607,42 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		A2984B102BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B112BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B122BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B132BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E562BDD00C20007157B /* SignUpViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		F3410E4B2BDD00C20007157B /* BioAuth */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E4A2BDD00C20007157B /* BioAuthController.swift */,
+				A2984B102BDD00C20007157B /* View */,
 			);
 			path = BioAuth;
 			sourceTree = "<group>";
@@ -1618,7 +1650,7 @@
 		F3410E4D2BDD00C20007157B /* ForgotPass */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E4C2BDD00C20007157B /* ForgotPassController.swift */,
+				A2984B112BDD00C20007157B /* View */,
 			);
 			path = ForgotPass;
 			sourceTree = "<group>";
@@ -1626,22 +1658,15 @@
 		F3410E4F2BDD00C20007157B /* SetPass */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E4E2BDD00C20007157B /* SetPasswordController.swift */,
+				A2984B122BDD00C20007157B /* View */,
 			);
 			path = SetPass;
-			sourceTree = "<group>";
-		};
-		F3410E512BDD00C20007157B /* Controller */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E502BDD00C20007157B /* SignInController.swift */,
-			);
-			path = Controller;
 			sourceTree = "<group>";
 		};
 		F3410E542BDD00C20007157B /* View */ = {
 			isa = PBXGroup;
 			children = (
+				F3410E502BDD00C20007157B /* SignInViewController.swift */,
 				F3410E532BDD00C20007157B /* RememberMeButton.swift */,
 			);
 			path = View;
@@ -1650,7 +1675,6 @@
 		F3410E552BDD00C20007157B /* SignIn */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E512BDD00C20007157B /* Controller */,
 				F3410E542BDD00C20007157B /* View */,
 			);
 			path = SignIn;
@@ -1659,7 +1683,7 @@
 		F3410E572BDD00C20007157B /* SignUp */ = {
 			isa = PBXGroup;
 			children = (
-				F3410E562BDD00C20007157B /* SignUpController.swift */,
+				A2984B132BDD00C20007157B /* View */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -3097,7 +3121,7 @@
 				F385B4132C1D85FC00973CAA /* UITableView+Reusable.swift in Sources */,
 				F385B4252C1D9F0C00973CAA /* Admin.swift in Sources */,
 				F3F6A63B2C327BA3000961C8 /* CreateEditAdminController.swift in Sources */,
-				F3410E5C2BDD00C20007157B /* SetPasswordController.swift in Sources */,
+				F3410E5C2BDD00C20007157B /* SetPasswordViewController.swift in Sources */,
 				F3C67912293929EF00E64D49 /* DefaultButton.swift in Sources */,
 				F32FDC81275C89910035767E /* UITextField+Extension.swift in Sources */,
 				F3A54DA930308325002B0C00 /* PLReportDetailViewController.swift in Sources */,
@@ -3146,7 +3170,7 @@
 				F3EB27D927F30EBE00BB2D93 /* ProductListViewModelType.swift in Sources */,
 				F385B4062C1D784300973CAA /* PersonTableViewCell.swift in Sources */,
 				F3F6A6052C2FEB9A000961C8 /* IAPManager.swift in Sources */,
-				F3410E5D2BDD00C20007157B /* SignInController.swift in Sources */,
+				F3410E5D2BDD00C20007157B /* SignInViewController.swift in Sources */,
 				F3583BA12BE8D75F0079441F /* Bundle+Extension.swift in Sources */,
 				F3EAACFE27526383004B9AF6 /* ProductPriceTableViewCell.swift in Sources */,
 				F385B4272C1DA01B00973CAA /* Log.swift in Sources */,
@@ -3195,7 +3219,7 @@
 				F3988AE027EB12E100215976 /* CostDetailsViewModelType.swift in Sources */,
 				F39B5D3128473465000F7D43 /* FirestoreDatabaseService.swift in Sources */,
 				F3264981275B32AA00836077 /* CostTableViewCell.swift in Sources */,
-				F3410E5B2BDD00C20007157B /* ForgotPassController.swift in Sources */,
+				F3410E5B2BDD00C20007157B /* ForgotPassViewController.swift in Sources */,
 				F3F078AB308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D22F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D32F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
@@ -3205,14 +3229,14 @@
 				F34BC9BD2F62F4D3000476B5 /* ProductGridCell.swift in Sources */,
 				F3EB27DD27F30EF000BB2D93 /* ProductListItemViewModelType.swift in Sources */,
 				F3410EA42BDD3C8E0007157B /* UserSession.swift in Sources */,
-				F3410E602BDD00C20007157B /* SignUpController.swift in Sources */,
+				F3410E602BDD00C20007157B /* SignUpViewController.swift in Sources */,
 				F30BEC72307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
 				F30BEC73307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
 				F30BEC74307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
 				F3988AED27EB19C300215976 /* CostDetailsViewModel.swift in Sources */,
 				F3D8DC112F52C83000898100 /* ProGated.swift in Sources */,
 				F31BD82D284E013300B8FD3B /* FIRTypeModel.swift in Sources */,
-				F3410E5A2BDD00C20007157B /* BioAuthController.swift in Sources */,
+				F3410E5A2BDD00C20007157B /* BioAuthViewController.swift in Sources */,
 				F33D34962DCF9C9A001DBA6C /* SubscriptionCell.swift in Sources */,
 				F33D34972DCF9C9A001DBA6C /* SubscriptionTextCell.swift in Sources */,
 				F33D34982DCF9C9A001DBA6C /* SubscriptionButtonCell.swift in Sources */,
@@ -3335,7 +3359,7 @@
 				F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */,
 				F3A54D4A30307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
-				F3B339C42C0B22FE0073F19A /* SetPasswordController.swift in Sources */,
+				F3B339C42C0B22FE0073F19A /* SetPasswordViewController.swift in Sources */,
 				F3F6A63E2C327C18000961C8 /* ModeratorListController.swift in Sources */,
 				F3B339C62C0B22FE0073F19A /* DefaultButton.swift in Sources */,
 				F3B339C72C0B22FE0073F19A /* UITextField+Extension.swift in Sources */,
@@ -3384,7 +3408,7 @@
 				F3B339D72C0B22FE0073F19A /* SVProgressHUD+Extension.swift in Sources */,
 				F3B339D82C0B22FE0073F19A /* ProductDetailsViewController.swift in Sources */,
 				F3B339D92C0B22FE0073F19A /* ProductListViewModelType.swift in Sources */,
-				F3B339DA2C0B22FE0073F19A /* SignInController.swift in Sources */,
+				F3B339DA2C0B22FE0073F19A /* SignInViewController.swift in Sources */,
 				F363F28C2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */,
 				F3B339DB2C0B22FE0073F19A /* Bundle+Extension.swift in Sources */,
 				F3B339DC2C0B22FE0073F19A /* ProductPriceTableViewCell.swift in Sources */,
@@ -3437,7 +3461,7 @@
 				F3F6A62B2C327A16000961C8 /* PersonDetailsViewController.swift in Sources */,
 				F3B339F42C0B22FE0073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6332C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
-				F3B339F52C0B22FE0073F19A /* ForgotPassController.swift in Sources */,
+				F3B339F52C0B22FE0073F19A /* ForgotPassViewController.swift in Sources */,
 				F3F078A9308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D02F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D12F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
@@ -3451,7 +3475,7 @@
 				F30BEC6F307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
 				F30BEC70307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
 				F30BEC71307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
-				F3B339FB2C0B22FE0073F19A /* SignUpController.swift in Sources */,
+				F3B339FB2C0B22FE0073F19A /* SignUpViewController.swift in Sources */,
 				F3D8DC0F2F52C83000898100 /* ProGated.swift in Sources */,
 				F3B339FC2C0B22FE0073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B339FD2C0B22FE0073F19A /* FIRTypeModel.swift in Sources */,
@@ -3464,7 +3488,7 @@
 				F32B52BF2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217C82EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217C92EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
-				F3B339FE2C0B22FE0073F19A /* BioAuthController.swift in Sources */,
+				F3B339FE2C0B22FE0073F19A /* BioAuthViewController.swift in Sources */,
 				F3B33A002C0B22FE0073F19A /* SalesTableViewCell.swift in Sources */,
 				F3F87130307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33A012C0B22FE0073F19A /* UIStackView+Extension.swift in Sources */,
@@ -3577,7 +3601,7 @@
 				F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */,
 				F3A54D4930307AA8002B0C00 /* FinanceReportingService.swift in Sources */,
-				F3B33A632C0B23450073F19A /* SetPasswordController.swift in Sources */,
+				F3B33A632C0B23450073F19A /* SetPasswordViewController.swift in Sources */,
 				F3F6A63F2C327C19000961C8 /* ModeratorListController.swift in Sources */,
 				F3B33A652C0B23450073F19A /* DefaultButton.swift in Sources */,
 				F3B33A662C0B23450073F19A /* UITextField+Extension.swift in Sources */,
@@ -3626,7 +3650,7 @@
 				F3B33A762C0B23450073F19A /* SVProgressHUD+Extension.swift in Sources */,
 				F3B33A772C0B23450073F19A /* ProductDetailsViewController.swift in Sources */,
 				F3B33A782C0B23450073F19A /* ProductListViewModelType.swift in Sources */,
-				F3B33A792C0B23450073F19A /* SignInController.swift in Sources */,
+				F3B33A792C0B23450073F19A /* SignInViewController.swift in Sources */,
 				F363F28B2FED4E2D00910F20 /* FinanceHistoryBackfillService.swift in Sources */,
 				F3B33A7A2C0B23450073F19A /* Bundle+Extension.swift in Sources */,
 				F3B33A7B2C0B23450073F19A /* ProductPriceTableViewCell.swift in Sources */,
@@ -3679,7 +3703,7 @@
 				F3F6A62C2C327A17000961C8 /* PersonDetailsViewController.swift in Sources */,
 				F3B33A932C0B23450073F19A /* CostTableViewCell.swift in Sources */,
 				F3F6A6342C327A50000961C8 /* UIImageView+Extension.swift in Sources */,
-				F3B33A942C0B23450073F19A /* ForgotPassController.swift in Sources */,
+				F3B33A942C0B23450073F19A /* ForgotPassViewController.swift in Sources */,
 				F3F078AA308490C3002940EF /* StaffCategoriesViewModel.swift in Sources */,
 				F32B52D42F2B6F940005E63D /* FIRRecipeItemModel.swift in Sources */,
 				F32B52D52F2B6F940005E63D /* FIRIngredientModel.swift in Sources */,
@@ -3693,7 +3717,7 @@
 				F30BEC75307E49F00063CF35 /* StaffDetailsViewModel.swift in Sources */,
 				F30BEC76307E49F00063CF35 /* StaffCreateEditViewModel.swift in Sources */,
 				F30BEC77307E49F00063CF35 /* StaffListViewModel.swift in Sources */,
-				F3B33A9A2C0B23450073F19A /* SignUpController.swift in Sources */,
+				F3B33A9A2C0B23450073F19A /* SignUpViewController.swift in Sources */,
 				F3D8DC102F52C83000898100 /* ProGated.swift in Sources */,
 				F3B33A9B2C0B23450073F19A /* CostDetailsViewModel.swift in Sources */,
 				F3B33A9C2C0B23450073F19A /* FIRTypeModel.swift in Sources */,
@@ -3706,7 +3730,7 @@
 				F32B52BD2F2B6F620005E63D /* IngredientModel.swift in Sources */,
 				F36217CA2EC04E2300965886 /* ProductDetailsViewModelType.swift in Sources */,
 				F36217CB2EC04E2300965886 /* ProductDetailsViewModel.swift in Sources */,
-				F3B33A9D2C0B23450073F19A /* BioAuthController.swift in Sources */,
+				F3B33A9D2C0B23450073F19A /* BioAuthViewController.swift in Sources */,
 				F3B33A9F2C0B23450073F19A /* SalesTableViewCell.swift in Sources */,
 				F3F8712E307CF036005D106B /* ActionSheetView.swift in Sources */,
 				F3B33AA02C0B23450073F19A /* UIStackView+Extension.swift in Sources */,

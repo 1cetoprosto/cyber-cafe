@@ -1,6 +1,6 @@
 //
-//  SetPasswordController.swift
-//  DTLab
+//  SetPasswordViewController.swift
+//  Cyber-coffe
 //
 //  Created by Alexander Momotiuk on 13.04.2021.
 //  Copyright © 2021 DTLab. All rights reserved.
@@ -11,7 +11,7 @@ import LocalAuthentication
 import SVProgressHUD
 import UIKit
 
-class SetPasswordController: UIViewController {
+class SetPasswordViewController: UIViewController {
 
     private lazy var passwordField: UITextField = {
         let field = PaddedTextField()
@@ -169,7 +169,7 @@ class SetPasswordController: UIViewController {
                 } else {
                     if let bioContext = self?.context {
                         self?.navigationController?.pushViewController(
-                            BioAuthController(bioContext), animated: true)
+                            BioAuthViewController(bioContext), animated: true)
                     } else {
                         let controller = MainTabBarController()
                         // AppDelegate.shared.set(root: controller)
@@ -180,7 +180,7 @@ class SetPasswordController: UIViewController {
     }
 }
 
-extension SetPasswordController: UITextFieldDelegate {
+extension SetPasswordViewController: UITextFieldDelegate {
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
         saveButton.isEnabled =
