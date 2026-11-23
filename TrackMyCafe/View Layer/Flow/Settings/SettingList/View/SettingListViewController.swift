@@ -489,7 +489,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]
         let ordersSection = Section(
             title: R.string.global.settingsSectionOrders(),
-            footer: R.string.global.typeDescription(),
+            footer: R.string.global.settingsSectionOrdersFooter(),
             option: orderOptions
         )
 
@@ -525,19 +525,16 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     icon: UIImage(systemName: SystemImages.gearshape),
                     iconBackgroundColor: .systemMint
                 ) {
-                    OnboardingManager.shared.resetForCurrentAppVersion()
                     PopupFactory.showPopup(
                         title: R.string.global.onboardingResetTitle(),
                         description: R.string.global.onboardingResetMessage(),
+                        buttonTitle: R.string.global.settings_action_ok(),
                         buttonAction: {
-                            OnboardingManager.shared.startIfNeeded(
-                                for: .settingsPriceList, on: self
+                            OnboardingManager.shared.resetForCurrentAppVersion()
+                            PopupFactory.showPopup(
+                                title: R.string.global.success(),
+                                description: R.string.global.onboardingResetDoneMessage()
                             )
-                            OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
-                            OnboardingManager.shared.startIfNeeded(
-                                for: .settingsTrackIngredients, on: self
-                            )
-                            OnboardingManager.shared.startIfNeeded(for: .staff, on: self)
                         }
                     )
                 }

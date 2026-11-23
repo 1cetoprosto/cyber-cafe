@@ -31,9 +31,11 @@
 4.  **Guided setup після логіну (лише owner / administrator, порожня кав’ярня):**
     *   Авто-засівання демо-даних **вимкнено**.
     *   Wizard проводить мінімальним шляхом: меню (2–3 товари) → перший чек → одна витрата → підсумок «що залишилось» → Home.
-    *   Прапорець `hasCompletedFirstRunSetup` (UserDefaults); якщо в базі вже є products — wizard не показується.
+    *   Стартові налаштування: **класична схема** чеків + **спочатку категорія**; **без** авто-списання інгредієнтів. Пояснення — у Settings (секції Чеки / Склад).
+    *   Створюється категорія «Меню» / «Menu» для товарів wizard і один тип чека «Чек» / «Receipt» (при продажі або skip кроку чека).
+    *   Прапорець `hasCompletedFirstRunSetup` (per-cafe); якщо в базі вже є products — wizard не показується.
     *   Staff / waiter цей гайд **не** бачать.
-    *   Coach marks на окремих екранах лишаються окремим механізмом.
+    *   «Показати підказки знову» в Settings скидає лише coach marks, не first-run wizard.
 
 5.  **Demo seed для скрінів (DEBUG):**
     *   Settings → Seed Test Data / floating «Видалити демо» працюють як раніше після **ручного** seed (App Store screenshots). У Prod/Beta авто-seed немає.

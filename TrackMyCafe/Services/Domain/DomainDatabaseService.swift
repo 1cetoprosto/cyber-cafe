@@ -18,6 +18,7 @@ class DomainDatabaseService: DomainDB {
     private let orderSnapshotRepairService = OrderSnapshotRepairService()
     /// Serializes concurrent `ensureDefaultOrderTypeIfNeeded` callers.
     private var ensureDefaultOrderTypeInFlight: Task<Void, Never>?
+    private var ensureDefaultProductCategoryInFlight: Task<String?, Never>?
 
     // Метод для перевірки, чи включений режим онлайн
     // private func isOnlineModeEnabled() -> Bool {
@@ -668,6 +669,42 @@ class DomainDatabaseService: DomainDB {
         if !success {
             logger.error("Failed to ensure default order type: \(defaultName)")
         }
+    }
+
+    /// Ensures one product category exists so category-first order entry is usable after first-run.
+    @MainActor
+    func ensureDefaultProductCategoryIfNeeded() async -> String? {
+        if let inFlight = ensureDefaultProductCategoryInFlight {
+            return await inFlight.value
+        }
+
+        let task = Task { @MainActor in
+            await self.performEnsureDefaultProductCategory()
+        }
+        ensureDefaultProductCategoryInFlight = task
+        let result = await task.value
+        ensureDefaultProductCategoryInFlight = nil
+        return result
+    }
+
+    @MainActor
+    private func performEnsureDefaultProductCategory() async -> String? {
+        let existing = await fetchProductCategories()
+        if let first = existing.sorted(by: { $0.sortOrder < $1.sortOrder }).first {
+            return first.id
+        }
+
+        let model = ProductCategoryModel(
+            id: UUID().uuidString,
+            name: R.string.global.firstRunDefaultProductCategory(),
+            sortOrder: 0
+        )
+        let success = await saveProductCategory(model: model)
+        if !success {
+            logger.error("Failed to ensure default product category: \(model.name)")
+            return nil
+        }
+        return model.id
     }
 
     func setDefaultType(model: TypeModel, isDefault: Bool) async {

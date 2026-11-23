@@ -155,9 +155,10 @@
 
 // MARK: - Settings
 "theme" = "Тема";
-"restartOnboarding" = "Перезапустити навчання";
-"onboardingResetTitle" = "Перезапустити навчання?";
-"onboardingResetMessage" = "Це скине ваш прогрес навчання. Ви хочете продовжити?";
+"restartOnboarding" = "Показати підказки знову";
+"onboardingResetTitle" = "Показати підказки?";
+"onboardingResetMessage" = "Підказки на екранах (кнопки й поля) з’являться знову, коли відкриєте відповідні розділи. Меню, чеки й «Перші кроки» не скидаються.";
+"onboardingResetDoneMessage" = "Підказки знову з’являться на екранах, де ви їх ще не проходили після скидання.";
 "writeToDeveloper" = "Написати розробнику";
 "general" = "Загальні";
 "priceList" = "Каталог товарів";
@@ -293,9 +294,10 @@
 "productCategories" = "Категорії товарів";
 "orderEntryModeTitle" = "Режим введення чеків";
 "orderModePerOrder" = "Класична схема";
-"orderModeOpenTab" = "Спрощена схема (Donate-кафе)";
-"orderModePerOrderDescription" = "Кожен клієнт — окремий чек. Товари додаються з Каталогу. Рекомендовано для великого асортименту.";
-"orderModeOpenTabDescription" = "Всі продажі в одному чеку за день. Товари вже в списку, змінюйте кількість (+/-). Рекомендовано для малого асортименту.";
+"orderModeOpenTab" = "Спрощена схема";
+"orderModePerOrderDescription" = "Кожен клієнт — окремий чек. Товари додаються з каталогу. Зручно, коли в меню багато позицій.";
+"orderModeOpenTabDescription" = "Один чек на зміну: товари вже в списку, змінюєте кількість (+/−). Зручно, коли позицій мало.";
+"settingsSectionOrdersFooter" = "Класична схема — окремий чек на клієнта й товари з каталогу. «Спочатку категорія» спочатку питає групу меню — так простіше орієнтуватись. Спрощена схема — один чек на зміну зі списком ±, коли товарів небагато. Типи чеків (напр. зал / з собою) можна додати окремо.";
 "priceList" = "Каталог товарів";
 "cash" = "Готівка";
 "card" = "Картка";
@@ -661,6 +663,7 @@
 "plExpensesCountTitle" = "📝 Витрат записано";
 
 // MARK: - First-run guided setup (owner, empty cafe)
+"firstRunDefaultProductCategory" = "Меню";
 "firstRunTitle" = "Перші кроки";
 "firstRunStepProgress" = "Крок %@ з %@";
 "firstRunContinue" = "Далі";

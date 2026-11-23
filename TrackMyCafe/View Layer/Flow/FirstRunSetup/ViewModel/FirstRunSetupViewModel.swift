@@ -40,6 +40,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     ) {
         self.database = database
         self.defaults = defaults
+        SettingsManager.shared.applyFirstRunOperatingDefaults()
     }
 
     // MARK: - FirstRunSetupViewModelType
@@ -69,10 +70,12 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             return false
         }
 
+        let categoryId = await DomainDatabaseService.shared.ensureDefaultProductCategoryIfNeeded()
         let product = ProductsPriceModel(
             id: UUID().uuidString,
             name: trimmed,
-            price: price
+            price: price,
+            categoryId: categoryId
         )
         let success = await database.saveProductsPrice(productPrice: product)
         guard success else {

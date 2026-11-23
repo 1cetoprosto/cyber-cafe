@@ -155,9 +155,10 @@
 
 // MARK: - Settings
 "theme" = "Theme";
-"restartOnboarding" = "Restart Onboarding";
-"onboardingResetTitle" = "Restart Onboarding?";
-"onboardingResetMessage" = "This will reset your onboarding progress. Do you want to continue?";
+"restartOnboarding" = "Show tips again";
+"onboardingResetTitle" = "Show tips again?";
+"onboardingResetMessage" = "Screen tips (buttons and fields) will show again when you open those sections. Your menu, receipts, and Getting started flow stay as they are.";
+"onboardingResetDoneMessage" = "Tips will appear again on screens you reopen after this reset.";
 "writeToDeveloper" = "Write to Developer";
 "general" = "General";
 "priceList" = "Product Catalog";
@@ -292,10 +293,11 @@
 "order" = "Receipt";
 "productCategories" = "Product Categories";
 "orderEntryModeTitle" = "Receipt entry mode";
-"orderModePerOrder" = "Classic Mode";
-"orderModeOpenTab" = "Simplified Mode (Donate-Cafe)";
-"orderModePerOrderDescription" = "Each customer is a separate check. Items added from Catalog. Recommended for large assortment.";
-"orderModeOpenTabDescription" = "All sales in one daily check. Items already listed, adjust quantity (+/-). Recommended for small assortment.";
+"orderModePerOrder" = "Classic mode";
+"orderModeOpenTab" = "Simplified mode";
+"orderModePerOrderDescription" = "One receipt per customer. Add items from the catalog — best when the menu is larger.";
+"orderModeOpenTabDescription" = "One open receipt for the shift: items stay listed, change quantities with +/−. Best when you sell only a few items.";
+"settingsSectionOrdersFooter" = "Classic mode: one receipt per customer and items from the catalog. “Choose category first” asks for a menu group before items — easier to browse. Simplified mode: one shift receipt with +/− quantities when the menu is small. Receipt types (dine-in / takeaway) can be added separately.";
 "priceList" = "Product Catalog";
 "cash" = "Cash";
 "card" = "Card";
@@ -662,6 +664,7 @@
 "plExpensesCountTitle" = "📝 Expense entries";
 
 // MARK: - First-run guided setup (owner, empty cafe)
+"firstRunDefaultProductCategory" = "Menu";
 "firstRunTitle" = "Getting started";
 "firstRunStepProgress" = "Step %@ of %@";
 "firstRunContinue" = "Continue";
