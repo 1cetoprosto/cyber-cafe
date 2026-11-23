@@ -34,6 +34,9 @@
 
 ## 2. Поля App Store Connect
 
+**Що куди:** ASO-хук і позиціонування → Name / Subtitle / Promo / Description / скріни.  
+**What’s New** → реальні зміни версії (не слоган). Деталі — `.cursor/rules/trackmycafe-native-copy.mdc` → «App Store — що куди писати».
+
 ### 2.1 Name
 
 `TrackMyCafe`
@@ -272,8 +275,28 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 
 ### 2.7 What’s New — залито для 1.2.0 (2026-11-12)
 
-**UK:** Оновили акцент на реальний прибуток: дашборд і звіти показують, що залишається після всіх витрат.  
+**Правило (актуально):** What’s New = зміни версії для Updates / довіри; **не** місце для ASO-хука (хук → Promo / Subtitle / скріни). Див. `.cursor/rules/trackmycafe-native-copy.mdc`.
+
+**Live 1.2.0 (історично, positioning-style — наступні версії писати за новим правилом):**
+
+**UK (у `fastlane`; на UA-вітрині 2026-11-23 фактично світився EN):** Оновили акцент на реальний прибуток: дашборд і звіти показують, що залишається після всіх витрат.  
 **EN:** Clearer focus on real profit: dashboard and reports show what’s left after all expenses.
+
+**Орієнтир для наступного submit (benefit-led зміни 1.2.0, не слоган):**
+
+**UK:**
+```
+• Робота з командою: ролі Власник, Менеджер і Офіціант
+• Розділ «Персонал» — запрошуйте співробітників і керуйте доступом
+• Офіціант бачить свої замовлення; гроші й звіти — у власника та менеджера
+```
+
+**EN:**
+```
+• Team roles: Owner, Manager, and Waiter
+• Staff section — invite teammates and control what they can see
+• Waiters see their own orders; money and reports stay with owners and managers
+```
 
 ### 2.8 URLs
 
