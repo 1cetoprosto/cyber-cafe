@@ -6,7 +6,6 @@
 //
 
 import MessageUI
-import SVProgressHUD
 import UIKit
 
 final class TechnicianDetailsController: UIViewController,
@@ -313,20 +312,20 @@ final class TechnicianDetailsController: UIViewController,
             return
         }
 
-        SVProgressHUD.show()
+        AppProgressHUD.show()
         Task { [weak self] in
             guard let self else { return }
             do {
                 try await self.viewModel.resendInvite()
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(
                         R.string.global.success(),
                         body: R.string.global.successSentEmployeeEmail(self.viewModel.email))
                 }
             } catch {
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(
                         R.string.global.error(),
                         body: R.string.global.failedSentEmployeeEmail())

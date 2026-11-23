@@ -8,7 +8,6 @@
 import FirebaseAuth
 import FirebaseCore
 import FirebaseFirestore
-import SVProgressHUD
 import UIKit
 
 @main
@@ -28,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().customNavigationBar()
 
         configureFirebase()
-        configureSVProgressHUD()
+        AppProgressHUD.configure()
         // setupAppearance() moved to SceneDelegate to avoid CoreUI errors
 
         // Complete any pending IAP transactions
@@ -63,12 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let settings = FirestoreSettings()
         settings.cacheSettings = PersistentCacheSettings()
         Firestore.firestore().settings = settings
-    }
-
-    private func configureSVProgressHUD() {
-        SVProgressHUD.setBackgroundColor(UIColor(white: 0, alpha: 0.4))
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.setMinimumDismissTimeInterval(1)
     }
 
     func setupAppearance() {

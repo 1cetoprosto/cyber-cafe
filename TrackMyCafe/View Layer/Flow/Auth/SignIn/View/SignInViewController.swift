@@ -7,7 +7,6 @@
 
 import FirebaseAuth
 import LocalAuthentication
-import SVProgressHUD
 import TinyConstraints
 import UIKit
 
@@ -265,7 +264,7 @@ class SignInViewController: UIViewController {
     private func handleModel(_ action: SignInViewModelType.Action) {
         switch action {
         case .loading(let show):
-            SVProgressHUD.show(show)
+            AppProgressHUD.show(show)
         case .error(let error):
             hasStartedEmailLinkSignIn = false
             revealManualEmailLinkFallbackIfNeeded()

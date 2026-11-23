@@ -6,7 +6,6 @@
 //
 
 import LocalAuthentication
-import SVProgressHUD
 import UIKit
 
 class SignUpViewController: UIViewController {
@@ -115,7 +114,7 @@ class SignUpViewController: UIViewController {
     private func handleModel(_ action: SignUpViewModelType.Action) {
         switch action {
         case .loading(let show):
-            SVProgressHUD.show(show)
+            AppProgressHUD.show(show)
         case .error(let error):
             showAlert(R.string.global.error(), body: error?.localizedDescription)
         case .retry(let error, let cancel, let retry):

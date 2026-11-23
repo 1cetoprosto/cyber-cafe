@@ -7,7 +7,6 @@
 //
 
 import LocalAuthentication
-import SVProgressHUD
 import UIKit
 
 class SetPasswordViewController: UIViewController {
@@ -162,12 +161,12 @@ class SetPasswordViewController: UIViewController {
         sender.isEnabled = false
 
         view.endEditing(true)
-        SVProgressHUD.show()
+        AppProgressHUD.show()
         Task { [weak self] in
             guard let self else { return }
             let error = await viewModel?.updatePassword(password)
             await MainActor.run {
-                SVProgressHUD.dismiss()
+                AppProgressHUD.dismiss()
                 self.saveButton.isEnabled = error != nil
                 if error != nil {
                     self.showAlert(

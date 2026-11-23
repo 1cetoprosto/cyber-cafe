@@ -6,7 +6,6 @@
 //
 
 import PhotosUI
-import SVProgressHUD
 import TinyConstraints
 import UIKit
 
@@ -259,7 +258,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
             return
         }
 
-        SVProgressHUD.show()
+        AppProgressHUD.show()
 
         if let image = newImage {
             let fileName = [viewModel.firstName, viewModel.lastName, Date().interval.string]
@@ -273,7 +272,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
                     self.viewModel.logAvatarUpload(filePath: filePath ?? "")
                     self.performSave()
                 } else {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
                 }
             }
@@ -288,7 +287,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
             let errorMessage = await self.viewModel.save()
             await MainActor.run {
                 if let errorMessage {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(R.string.global.error(), body: errorMessage)
                 } else {
                     self.afterSave()
@@ -299,7 +298,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
 
     private func afterSave() {
         if viewModel.isEditing {
-            SVProgressHUD.dismiss()
+            AppProgressHUD.dismiss()
             navigationController?.popViewController(animated: true)
         } else {
             sendInviteEmail()
@@ -312,7 +311,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
             do {
                 try await self.viewModel.sendInviteEmail()
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(
                         R.string.global.success(),
                         body: R.string.global.successSentEmployeeEmail(self.viewModel.email)
@@ -322,7 +321,7 @@ final class CreateEditTechnicianController: UIViewController, Loggable {
                 }
             } catch {
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(
                         R.string.global.error(), body: R.string.global.failedSentEmployeeEmail()
                     ) {

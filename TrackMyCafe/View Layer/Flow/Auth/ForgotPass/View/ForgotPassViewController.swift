@@ -6,7 +6,6 @@
 //
 
 import LocalAuthentication
-import SVProgressHUD
 import UIKit
 
 class ForgotPassViewController: UIViewController {
@@ -64,7 +63,7 @@ class ForgotPassViewController: UIViewController {
     private func handleModel(_ action: ForgotPassViewModelType.Action) {
         switch action {
         case .loading(let show):
-            SVProgressHUD.show(show)
+            AppProgressHUD.show(show)
         case .alert(let title, let descr, let completion):
             sendButton.isEnabled = true
             showAlert(title, body: descr, action: completion)

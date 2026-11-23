@@ -6,7 +6,6 @@
 //
 
 import MessageUI
-import SVProgressHUD
 import UIKit
 
 final class AdminDetailsController: UIViewController,

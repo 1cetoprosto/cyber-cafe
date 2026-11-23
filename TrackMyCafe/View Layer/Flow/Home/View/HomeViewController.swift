@@ -1,4 +1,3 @@
-import SVProgressHUD
 import TinyConstraints
 import UIKit
 
@@ -226,15 +225,15 @@ final class HomeViewController: UIViewController, ProGated {
             description: R.string.global.deleteDemoDataMessage(),
             buttonTitle: R.string.global.delete(),
             buttonAction: {
-                SVProgressHUD.show(withStatus: R.string.global.deleting())
+                AppProgressHUD.show(withStatus: R.string.global.deleting())
                 DemoDataManager.shared.deleteDemoData { success in
                     DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
+                        AppProgressHUD.dismiss()
                         if success {
-                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                            AppProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
                             self.reloadAfterAction()
                         } else {
-                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                            AppProgressHUD.showError(withStatus: R.string.global.error())
                         }
                     }
                 }

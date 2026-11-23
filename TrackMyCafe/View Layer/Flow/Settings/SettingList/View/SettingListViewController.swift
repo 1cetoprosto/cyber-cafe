@@ -7,7 +7,6 @@
 
 import FirebaseAuth
 import MessageUI
-import SVProgressHUD
 import SafariServices
 import StoreKit
 import UIKit
@@ -650,12 +649,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                         ) { [weak self] values in
                             let daysText = values.first ?? "\(defaultDays)"
                             let days = Int(daysText) ?? defaultDays
-                            SVProgressHUD.show(withStatus: R.string.global.seedingData())
+                            AppProgressHUD.show(withStatus: R.string.global.seedingData())
                             Task {
                                 await DomainDatabaseService.shared.seedTestData(forDays: days)
                                 await MainActor.run {
-                                    SVProgressHUD.dismiss()
-                                    SVProgressHUD.showSuccess(withStatus: "Done")
+                                    AppProgressHUD.dismiss()
+                                    AppProgressHUD.showSuccess(withStatus: "Done")
                                     self?.tableView.reloadData()
                                 }
                             }
@@ -935,18 +934,18 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             description: R.string.global.deleteDemoDataMessage(),
             buttonTitle: R.string.global.delete(),
             buttonAction: {
-                SVProgressHUD.show(
+                AppProgressHUD.show(
                     withStatus: R.string.global.deleting()
                 )
                 DemoDataManager.shared.deleteDemoData { success in
                     DispatchQueue.main.async {
-                        SVProgressHUD.dismiss()
+                        AppProgressHUD.dismiss()
                         if success {
                             self.configure()
                             self.tableView.reloadData()
-                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                            AppProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
                         } else {
-                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                            AppProgressHUD.showError(withStatus: R.string.global.error())
                         }
                     }
                 }
@@ -961,21 +960,21 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             buttonTitle: R.string.global.delete(),
             buttonAction: { [weak self] in
                 guard let self else { return }
-                SVProgressHUD.show(withStatus: R.string.global.deleting())
+                AppProgressHUD.show(withStatus: R.string.global.deleting())
                 Task { [weak self] in
                     guard let self else { return }
                     let success = await DomainDatabaseService.shared.deleteActiveDatabaseData()
                     await MainActor.run {
-                        SVProgressHUD.dismiss()
+                        AppProgressHUD.dismiss()
                         if success {
                             self.configure()
                             self.tableView.reloadData()
-                            SVProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
+                            AppProgressHUD.showSuccess(withStatus: R.string.global.actionDone())
                             NotificationCenter.default.post(
                                 name: NSNotification.Name("DataDidUpdate"), object: nil
                             )
                         } else {
-                            SVProgressHUD.showError(withStatus: R.string.global.error())
+                            AppProgressHUD.showError(withStatus: R.string.global.error())
                         }
                     }
                 }
@@ -1042,16 +1041,16 @@ extension SettingListViewController: SubscriptionBannerViewDelegate {
     }
 
     func didTapPurchase(product: SKProduct) {
-        SVProgressHUD.show(withStatus: R.string.global.loading())
+        AppProgressHUD.show(withStatus: R.string.global.loading())
         IAPManager.shared.purchaseProduct(product) { [weak self] success, error in
             DispatchQueue.main.async {
-                SVProgressHUD.dismiss()
+                AppProgressHUD.dismiss()
                 if success {
                     self?.updateBannerVisibility()
                     self?.tableView.reloadData()
-                    SVProgressHUD.showSuccess(withStatus: R.string.global.success())
+                    AppProgressHUD.showSuccess(withStatus: R.string.global.success())
                 } else if let error = error {
-                    SVProgressHUD.showError(withStatus: error)
+                    AppProgressHUD.showError(withStatus: error)
                 }
             }
         }
