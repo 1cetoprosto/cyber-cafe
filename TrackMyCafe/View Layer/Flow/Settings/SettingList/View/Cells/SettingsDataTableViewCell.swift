@@ -17,43 +17,21 @@ class SettingsDataTableViewCell: BaseSettingsCell {
         return label
     }()
 
-    private lazy var infoButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "info.circle"), for: .normal)
-        button.tintColor = UIColor.Main.secondaryText
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.isHidden = true
-        button.addTarget(self, action: #selector(infoButtonTapped), for: .touchUpInside)
-        return button
-    }()
-
-    private var infoHandler: (() -> Void)?
     private var labelTrailingToData: NSLayoutConstraint?
-    private var labelTrailingToInfo: NSLayoutConstraint?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(dataLabel)
-        contentView.addSubview(infoButton)
 
         labelTrailingConstraint?.isActive = false
-
         labelTrailingToData = label.trailingAnchor.constraint(
-            equalTo: dataLabel.leadingAnchor, constant: -10)
-        labelTrailingToInfo = label.trailingAnchor.constraint(
-            equalTo: infoButton.leadingAnchor, constant: -8)
+            lessThanOrEqualTo: dataLabel.leadingAnchor, constant: -10)
 
         NSLayoutConstraint.activate([
             dataLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             dataLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -35),
             dataLabel.widthAnchor.constraint(lessThanOrEqualToConstant: 150),
-
-            infoButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            infoButton.trailingAnchor.constraint(
-                equalTo: dataLabel.leadingAnchor, constant: -8),
-            infoButton.widthAnchor.constraint(equalToConstant: 24),
-            infoButton.heightAnchor.constraint(equalToConstant: 24),
         ])
         labelTrailingToData?.isActive = true
     }
@@ -68,8 +46,6 @@ class SettingsDataTableViewCell: BaseSettingsCell {
         label.text = nil
         iconContainer.backgroundColor = nil
         dataLabel.text = nil
-        infoHandler = nil
-        infoButton.isHidden = true
     }
 
     func configure(with model: SettingsDataOption) {
@@ -77,15 +53,5 @@ class SettingsDataTableViewCell: BaseSettingsCell {
         iconImageView.image = model.icon
         iconContainer.backgroundColor = model.iconBackgroundColor
         dataLabel.text = model.data
-        infoHandler = model.infoHandler
-
-        let showInfo = model.infoHandler != nil
-        infoButton.isHidden = !showInfo
-        labelTrailingToData?.isActive = !showInfo
-        labelTrailingToInfo?.isActive = showInfo
-    }
-
-    @objc private func infoButtonTapped() {
-        infoHandler?()
     }
 }

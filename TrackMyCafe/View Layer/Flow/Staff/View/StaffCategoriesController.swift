@@ -85,20 +85,13 @@ class StaffCategoriesController: UITableViewController {
             return UITableViewCell()
         }
 
-        var option: SettingsStaticOption
-
+        let option: SettingsStaticOption
         if indexPath.row == 0 {
             option = SettingsStaticOption(
                 title: viewModel.ownerDisplayName,
                 icon: UIImage(systemName: "person.crop.circle.fill"),
                 iconBackgroundColor: .systemIndigo
             ) {}
-            option.infoHandler = { [weak self] in
-                self?.showInfo(
-                    title: R.string.global.staff_infoOwnerTitle(),
-                    message: R.string.global.staff_infoOwnerMessage()
-                )
-            }
         } else {
             let category = Category.allCases[indexPath.row - 1]
             option = SettingsStaticOption(
@@ -106,22 +99,6 @@ class StaffCategoriesController: UITableViewController {
                 icon: category.icon,
                 iconBackgroundColor: category.iconBackgroundColor
             ) {}
-            switch category {
-            case .waiter:
-                option.infoHandler = { [weak self] in
-                    self?.showInfo(
-                        title: R.string.global.staff_infoWaiterTitle(),
-                        message: R.string.global.staff_infoWaiterMessage()
-                    )
-                }
-            case .seniorWaiter:
-                option.infoHandler = { [weak self] in
-                    self?.showInfo(
-                        title: R.string.global.staff_infoSeniorWaiterTitle(),
-                        message: R.string.global.staff_infoSeniorWaiterMessage()
-                    )
-                }
-            }
         }
 
         cell.configure(with: option)
@@ -145,11 +122,5 @@ class StaffCategoriesController: UITableViewController {
             let controller = ModeratorListController()
             navigationController?.pushViewController(controller, animated: true)
         }
-    }
-
-    // MARK: - Info
-
-    private func showInfo(title: String, message: String) {
-        showAlert(title, body: message)
     }
 }

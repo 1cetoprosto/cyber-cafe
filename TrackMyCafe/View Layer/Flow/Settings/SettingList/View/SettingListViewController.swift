@@ -30,7 +30,6 @@ struct SettingsSwitchOption {
     let iconBackgroundColor: UIColor
     let isOn: Bool
     let handler: (Bool) -> Void
-    var infoHandler: (() -> Void)? = nil
 }
 
 struct SettingsStaticOption {
@@ -38,7 +37,6 @@ struct SettingsStaticOption {
     let icon: UIImage?
     let iconBackgroundColor: UIColor
     let handler: () -> Void
-    var infoHandler: (() -> Void)? = nil
 }
 
 struct SettingsDataOption {
@@ -47,7 +45,6 @@ struct SettingsDataOption {
     let iconBackgroundColor: UIColor
     let data: String
     let handler: (_ dataLabel: UILabel) -> Void
-    var infoHandler: (() -> Void)? = nil
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
@@ -262,35 +259,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             isOn: isOn,
             handler: { [weak self] newValue in
                 self?.handleTrackIngredientsToggle(isOn: newValue)
-            },
-            infoHandler: { [weak self] in
-                self?.showTrackIngredientsInfo()
             }
-        )
-    }
-
-    private func showTrackIngredientsInfo() {
-        let body =
-            inventoryTrackingLocked
-            ? R.string.global.settings_trackIngredientsFooterLocked()
-            : R.string.global.settings_trackIngredientsInfoBody()
-        PopupFactory.showPopup(
-            title: R.string.global.settings_trackIngredientsInfoTitle(),
-            description: body
-        )
-    }
-
-    private func showOrderEntryModeInfo() {
-        PopupFactory.showPopup(
-            title: R.string.global.settings_orderEntryModeInfoTitle(),
-            description: R.string.global.settings_orderEntryModeInfoBody()
-        )
-    }
-
-    private func showChooseCategoryFirstInfo() {
-        PopupFactory.showPopup(
-            title: R.string.global.settings_chooseCategoryFirstInfoTitle(),
-            description: R.string.global.settings_chooseCategoryFirstInfoBody()
         )
     }
 
@@ -499,9 +468,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                                 dataLabel.text = R.string.global.orderModeOpenTab()
                             }
                         }
-                    },
-                    infoHandler: { [weak self] in
-                        self?.showOrderEntryModeInfo()
                     }
                 )
             ),
@@ -513,9 +479,6 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     isOn: SettingsManager.shared.loadChooseCategoryFirstProductSelection(),
                     handler: { isOn in
                         SettingsManager.shared.saveChooseCategoryFirstProductSelection(isOn)
-                    },
-                    infoHandler: { [weak self] in
-                        self?.showChooseCategoryFirstInfo()
                     }
                 )
             ),
