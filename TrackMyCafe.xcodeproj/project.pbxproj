@@ -1497,6 +1497,8 @@
 				F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */,
 				F3E357E72BEFA203005050CB /* Domain */,
 				F39B5D2D28472E7A000F7D43 /* FIR */,
+				F3F6A5FE2C2FEAE0000961C8 /* Subscription */,
+				F3410EA32BDD3C8E0007157B /* UserSession.swift */,
 				F3E16E912BF89FC20008BD6A /* SettingsManager.swift */,
 			);
 			path = Services;
@@ -1690,9 +1692,7 @@
 			isa = PBXGroup;
 			children = (
 				F3F2053D2FD83115007249FB /* ImageStoragePaths.swift */,
-				F3F6A5FE2C2FEAE0000961C8 /* Subscription */,
 				F3410E6A2BDD23E60007157B /* Constants.swift */,
-				F3410EA32BDD3C8E0007157B /* UserSession.swift */,
 				F3410EBB2BDD66590007157B /* RequestManager.swift */,
 				F3F6A61C2C2FEFFB000961C8 /* PropertyWrappers.swift */,
 			);
