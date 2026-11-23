@@ -37,6 +37,10 @@ final class ProductPriceTableViewCell: BaseListTableViewCell {
         detailTextLabel?.text = productPrice.price.currency
 
         let placeholder = AppImagePlaceholder.product()
-        imageView?.setImage(pathOrURL: productPrice.imagePath, placeholder: placeholder)
+        imageView?.setImage(
+            pathOrURL: productPrice.imagePath,
+            placeholder: placeholder,
+            maxPixelSize: 132
+        )
     }
 }
