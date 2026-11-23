@@ -62,10 +62,13 @@ final class ProductCategoryDetailsViewModel: ProductCategoryDetailsViewModelType
         case .replace(let data):
             let path = ImageStoragePaths.productCategoryImagePath(categoryId: model.id)
             do {
+                logger.info(
+                    "Uploading product category image \(self.model.id) (\(data.count) bytes)"
+                )
                 try await imageStorage.upload(data: data, toPath: path, contentType: "image/jpeg")
             } catch {
                 logger.error(
-                    "Product category image upload failed for \(self.model.id): \(error.localizedDescription)"
+                    "Product category image upload failed for \(self.model.id) (\(data.count) bytes): \(error.localizedDescription)"
                 )
                 throw NSError(
                     domain: "ProductCategoryImageUpload",

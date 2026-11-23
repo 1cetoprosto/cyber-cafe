@@ -146,6 +146,36 @@
 		F3299A512F34FA9F00EA6532 /* CreateIngredientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */; };
 		F3299A522F34FA9F00EA6532 /* CreateIngredientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */; };
 		F3299A532F34FA9F00EA6532 /* CreateIngredientViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */; };
+		F3299B0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299B0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299B0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299B0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299B0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299B0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299B0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299B0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299B0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299B0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
+		F3299C0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299C0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299C0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299C0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299C0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299C0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299C0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299C0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299C0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299C0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
+		F3299D0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299D0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299D0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299D0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299D0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299D0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299D0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299D0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299D0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299D0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
 		F32B52B72F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
 		F32B52B82F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
 		F32B52B92F2B6F3D0005E63D /* DomainIngredientDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */; };
@@ -318,7 +348,6 @@
 		F385B40A2C1D78BF00973CAA /* PersonListModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4092C1D78BF00973CAA /* PersonListModelProtocol.swift */; };
 		F385B40C2C1D7DDD00973CAA /* UIKitFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B40B2C1D7DDD00973CAA /* UIKitFactory.swift */; };
 		F385B40E2C1D822B00973CAA /* UIImageView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B40D2C1D822B00973CAA /* UIImageView+Extension.swift */; };
-		F385B4112C1D854700973CAA /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F385B4102C1D854700973CAA /* Kingfisher */; };
 		F385B4132C1D85FC00973CAA /* UITableView+Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4122C1D85FC00973CAA /* UITableView+Reusable.swift */; };
 		F385B4152C1D863D00973CAA /* BaseReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4142C1D863D00973CAA /* BaseReusableView.swift */; };
 		F385B4182C1D8FCC00973CAA /* StaffCategoriesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B4172C1D8FCC00973CAA /* StaffCategoriesController.swift */; };
@@ -779,44 +808,12 @@
 		F3F87130307CF036005D106B /* ActionSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F8712D307CF036005D106B /* ActionSheetView.swift */; };
 		F3F87132307CF2BD005D106B /* Instructions in Frameworks */ = {isa = PBXBuildFile; productRef = F3F87131307CF2BD005D106B /* Instructions */; };
 		F3F87134307CF2CE005D106B /* Instructions in Frameworks */ = {isa = PBXBuildFile; productRef = F3F87133307CF2CE005D106B /* Instructions */; };
-		F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FCF72C2EDF570D00B337BE /* Kingfisher */; };
 		F3FED52A2EEF2FBC00C24082 /* SwiftyStoreKit in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */; };
 		F3FED52C2EEF2FEB00C24082 /* TPInAppReceipt in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */; };
 		F3FED52E2EEF2FEB00C24082 /* TPInAppReceipt-Objc in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */; };
-		F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = F3FED52F2EEF300900C24082 /* Kingfisher */; };
 		F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		FB42220CC9DA241188396827 /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
-		F3299B0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
-		F3299C0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
-		F3299D0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
-		F3299B0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
-		F3299C0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
-		F3299D0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
-		F3299B0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
-		F3299C0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
-		F3299D0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
-		F3299B0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
-		F3299C0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
-		F3299D0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
-		F3299B0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
-		F3299C0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
-		F3299D0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
-		F3299B0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
-		F3299C0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
-		F3299D0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
-		F3299B0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
-		F3299C0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
-		F3299D0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
-		F3299B0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
-		F3299C0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
-		F3299D0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
-		F3299B0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
-		F3299C0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
-		F3299D0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
-		F3299B0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
-		F3299C0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
-		F3299D0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -900,6 +897,16 @@
 		F3264984275B33C000836077 /* DeletePurchaseDetailsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeletePurchaseDetailsTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA88274EB4DA00960829 /* SettingsStaticTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStaticTableViewCell.swift; sourceTree = "<group>"; };
 		F328BA8A2750BB2900960829 /* SettingsSwitchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSwitchTableViewCell.swift; sourceTree = "<group>"; };
+		F3299A0112B299100000001 /* SignInViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0212B299100000002 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		F3299A0312B299100000003 /* SignUpViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0412B299100000004 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		F3299A0512B299100000005 /* ForgotPassViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0612B299100000006 /* ForgotPassViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModel.swift; sourceTree = "<group>"; };
+		F3299A0712B299100000007 /* BioAuthViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0812B299100000008 /* BioAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModel.swift; sourceTree = "<group>"; };
+		F3299A0912B299100000009 /* SetPasswordViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0A12B29910000000A /* SetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModel.swift; sourceTree = "<group>"; };
 		F3299A502F34FA9F00EA6532 /* CreateIngredientViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIngredientViewController.swift; sourceTree = "<group>"; };
 		F32B52B62F2B6F3D0005E63D /* DomainIngredientDataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainIngredientDataService.swift; sourceTree = "<group>"; };
 		F32B52BA2F2B6F620005E63D /* IngredientModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IngredientModel.swift; sourceTree = "<group>"; };
@@ -1101,16 +1108,6 @@
 		F3F8712D307CF036005D106B /* ActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetView.swift; sourceTree = "<group>"; };
 		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 		FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewModel.swift; path = "View Layer/Flow/Inventory/Bulk/ViewModel/BulkSessionViewModel.swift"; sourceTree = "<group>"; };
-		F3299A0112B299100000001 /* SignInViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelType.swift; sourceTree = "<group>"; };
-		F3299A0212B299100000002 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
-		F3299A0312B299100000003 /* SignUpViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelType.swift; sourceTree = "<group>"; };
-		F3299A0412B299100000004 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
-		F3299A0512B299100000005 /* ForgotPassViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModelType.swift; sourceTree = "<group>"; };
-		F3299A0612B299100000006 /* ForgotPassViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModel.swift; sourceTree = "<group>"; };
-		F3299A0712B299100000007 /* BioAuthViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModelType.swift; sourceTree = "<group>"; };
-		F3299A0812B299100000008 /* BioAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModel.swift; sourceTree = "<group>"; };
-		F3299A0912B299100000009 /* SetPasswordViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModelType.swift; sourceTree = "<group>"; };
-		F3299A0A12B29910000000A /* SetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1150,7 +1147,6 @@
 				F39B5D222846112F000F7D43 /* FirebaseFirestore in Frameworks */,
 				F3410E9C2BDD34540007157B /* TinyConstraints in Frameworks */,
 				F3F87132307CF2BD005D106B /* Instructions in Frameworks */,
-				F3FCF72D2EDF570D00B337BE /* Kingfisher in Frameworks */,
 				F389784D307D339D00AF86E4 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1172,7 +1168,6 @@
 				F3B33A182C0B22FE0073F19A /* FirebaseFirestore in Frameworks */,
 				F3B33A1B2C0B22FE0073F19A /* TinyConstraints in Frameworks */,
 				F3F87134307CF2CE005D106B /* Instructions in Frameworks */,
-				F3FED5302EEF300900C24082 /* Kingfisher in Frameworks */,
 				F389784B307D339100AF86E4 /* RswiftLibrary in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1182,7 +1177,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F3A640C42C3438A8006BCACD /* SwiftyStoreKit in Frameworks */,
-				F385B4112C1D854700973CAA /* Kingfisher in Frameworks */,
 				F3B33AAE2C0B23450073F19A /* FirebaseAnalytics in Frameworks */,
 				F3B33AAF2C0B23450073F19A /* SVProgressHUD in Frameworks */,
 				F3A640C62C3438D6006BCACD /* TPInAppReceipt in Frameworks */,
@@ -1401,6 +1395,38 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		A2984B102BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B112BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B122BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		A2984B132BDD00C20007157B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E562BDD00C20007157B /* SignUpViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		A40B87C55FC8D85A373C3581 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -1531,14 +1557,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		F3299A0012B299100000000 /* Auth */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E582BDD00C20007157B /* AuthManager.swift */,
-			);
-			path = Auth;
-			sourceTree = "<group>";
-		};
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
@@ -1576,18 +1594,6 @@
 				F316A2F7273804AB0083E830 /* UI */,
 			);
 			path = Extensions;
-			sourceTree = "<group>";
-		};
-		F3EXT295A295000000829501 /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				F3410EA12BDD3AFC0007157B /* String+Extension.swift */,
-				F3410EAF2BDD40410007157B /* Date+Extension.swift */,
-				F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */,
-				F3410E902BDD2EAE0007157B /* NumberFormatter+Extension.swift */,
-				F3410E8E2BDD2E770007157B /* Types+Extension.swift */,
-			);
-			path = Foundation;
 			sourceTree = "<group>";
 		};
 		F316A2F7273804AB0083E830 /* UI */ = {
@@ -1634,58 +1640,12 @@
 			path = Firestore;
 			sourceTree = "<group>";
 		};
-		F33D348E2DCF9C69001DBA6C /* View */ = {
+		F3299A0012B299100000000 /* Auth */ = {
 			isa = PBXGroup;
 			children = (
-				F33D34922DCF9C9A001DBA6C /* Cells */,
-				F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */,
-				F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */,
-				F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */,
-				DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */,
+				F3410E582BDD00C20007157B /* AuthManager.swift */,
 			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F33D34922DCF9C9A001DBA6C /* Cells */ = {
-			isa = PBXGroup;
-			children = (
-				F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */,
-				F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */,
-				F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		A2984B102BDD00C20007157B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E4A2BDD00C20007157B /* BioAuthViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A2984B112BDD00C20007157B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E4C2BDD00C20007157B /* ForgotPassViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A2984B122BDD00C20007157B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E4E2BDD00C20007157B /* SetPasswordViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		A2984B132BDD00C20007157B /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3410E562BDD00C20007157B /* SignUpViewController.swift */,
-			);
-			path = View;
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		F3299A2112B299100000201 /* ViewModel */ = {
@@ -1731,6 +1691,28 @@
 				F3299A0A12B29910000000A /* SetPasswordViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F33D348E2DCF9C69001DBA6C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F33D34922DCF9C9A001DBA6C /* Cells */,
+				F3A640AF2C3408A3006BCACD /* SubscriptionController.swift */,
+				F33D34882DCF9AF1001DBA6C /* SubscriptionLinkButton.swift */,
+				F3A640B72C340D21006BCACD /* SubscriptionReuseView.swift */,
+				DA9C62CD591A2922C549A522 /* SubscriptionBannerView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F33D34922DCF9C9A001DBA6C /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				F33D348F2DCF9C9A001DBA6C /* SubscriptionButtonCell.swift */,
+				F33D34902DCF9C9A001DBA6C /* SubscriptionCell.swift */,
+				F33D34912DCF9C9A001DBA6C /* SubscriptionTextCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		F3410E4B2BDD00C20007157B /* BioAuth */ = {
@@ -1919,6 +1901,15 @@
 			path = List;
 			sourceTree = "<group>";
 		};
+		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
+			isa = PBXGroup;
+			children = (
+				F371BECF2FED426D00D72C3B /* View */,
+				F371BED02FED426D00D72C3B /* ViewModel */,
+			);
+			path = ManualMovements;
+			sourceTree = "<group>";
+		};
 		F371BECF2FED426D00D72C3B /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1935,15 +1926,6 @@
 				F371BECA2FED426D00D72C3A /* ManualMovementListViewModel.swift */,
 			);
 			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		F371BECD2FED426D00D72C3A /* ManualMovements */ = {
-			isa = PBXGroup;
-			children = (
-				F371BECF2FED426D00D72C3B /* View */,
-				F371BED02FED426D00D72C3B /* ViewModel */,
-			);
-			path = ManualMovements;
 			sourceTree = "<group>";
 		};
 		F3821C5927E9FA72006D40FC /* OrderList */ = {
@@ -2585,38 +2567,6 @@
 			path = Trends;
 			sourceTree = "<group>";
 		};
-		F3A54DBC30308325002B0C0A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F3A54DBD30308325002B0C0A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F3A54DBE30308325002B0C0A /* View */ = {
-			isa = PBXGroup;
-			children = (
-				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		F3A54DBB30308325002B0C0A /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		F3A54DA430308325002B0C00 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -2644,6 +2594,38 @@
 				F3A54DBB30308325002B0C0A /* ViewModel */,
 			);
 			path = Reports;
+			sourceTree = "<group>";
+		};
+		F3A54DBB30308325002B0C0A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA730308325002B0C00 /* ReportsHubViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3A54DBC30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9D30308325002B0C00 /* ABCReportDetailViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DBD30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54D9F30308325002B0C00 /* PLReportDetailViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		F3A54DBE30308325002B0C0A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				F3A54DA130308325002B0C00 /* TrendsReportDetailViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		F3A640AE2C340888006BCACD /* Subscription */ = {
@@ -2801,6 +2783,18 @@
 			path = Products;
 			sourceTree = "<group>";
 		};
+		F3EXT295A295000000829501 /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				F3410EA12BDD3AFC0007157B /* String+Extension.swift */,
+				F3410EAF2BDD40410007157B /* Date+Extension.swift */,
+				F3583BA02BE8D75F0079441F /* Bundle+Extension.swift */,
+				F3410E902BDD2EAE0007157B /* NumberFormatter+Extension.swift */,
+				F3410E8E2BDD2E770007157B /* Types+Extension.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
 		F3F6A5FE2C2FEAE0000961C8 /* Subscription */ = {
 			isa = PBXGroup;
 			children = (
@@ -2901,7 +2895,6 @@
 				F3F6A6182C2FED7F000961C8 /* TPInAppReceipt */,
 				F3F6A61A2C2FED7F000961C8 /* TPInAppReceipt-Objc */,
 				F3F6A6212C327849000961C8 /* SwiftyStoreKit */,
-				F3FCF72C2EDF570D00B337BE /* Kingfisher */,
 				F3F87131307CF2BD005D106B /* Instructions */,
 				F389784C307D339D00AF86E4 /* RswiftLibrary */,
 			);
@@ -2947,7 +2940,6 @@
 				F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */,
 				F3FED52B2EEF2FEB00C24082 /* TPInAppReceipt */,
 				F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */,
-				F3FED52F2EEF300900C24082 /* Kingfisher */,
 				F3F87133307CF2CE005D106B /* Instructions */,
 				F389784A307D339100AF86E4 /* RswiftLibrary */,
 			);
@@ -2990,7 +2982,6 @@
 				F3B33A3F2C0B23450073F19A /* TinyConstraints */,
 				F3B33A412C0B23450073F19A /* KeychainAccess */,
 				F3B33A432C0B23450073F19A /* SwiftEntryKit */,
-				F385B4102C1D854700973CAA /* Kingfisher */,
 				F3A640C32C3438A8006BCACD /* SwiftyStoreKit */,
 				F3A640C52C3438D6006BCACD /* TPInAppReceipt */,
 				F3A640C72C3438D6006BCACD /* TPInAppReceipt-Objc */,
@@ -3036,7 +3027,6 @@
 				F3410E9A2BDD34540007157B /* XCRemoteSwiftPackageReference "TinyConstraints" */,
 				F3410EA52BDD3D5E0007157B /* XCRemoteSwiftPackageReference "KeychainAccess" */,
 				F3410EB32BDD434B0007157B /* XCRemoteSwiftPackageReference "SwiftEntryKit" */,
-				F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				F3F6A6172C2FED7F000961C8 /* XCRemoteSwiftPackageReference "TPInAppReceipt" */,
 				F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */,
 				F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */,
@@ -3214,7 +3204,6 @@
 				F3299B0812B299100000008 /* BioAuthViewModel.swift in Sources */,
 				F3299B0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
 				F3299B0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
-
 				F3821C7E27EAEB0F006D40FC /* OrderDetailsViewModel.swift in Sources */,
 				F3F87085307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */,
@@ -3467,7 +3456,6 @@
 				F3299C0812B299100000008 /* BioAuthViewModel.swift in Sources */,
 				F3299C0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
 				F3299C0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
-
 				F3F6A6292C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3F87089307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F8708A307CCE80005D106B /* OrderModePopupView.swift in Sources */,
@@ -3720,7 +3708,6 @@
 				F3299D0812B299100000008 /* BioAuthViewModel.swift in Sources */,
 				F3299D0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
 				F3299D0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
-
 				F3F6A62A2C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3F87087307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F87088307CCE80005D106B /* OrderModePopupView.swift in Sources */,
@@ -4465,14 +4452,6 @@
 				minimumVersion = 2.0.0;
 			};
 		};
-		F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 7.12.0;
-			};
-		};
 		F3897847307D336F00AF86E4 /* XCRemoteSwiftPackageReference "R" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mac-cain13/R.swift";
@@ -4615,11 +4594,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = F3410EB32BDD434B0007157B /* XCRemoteSwiftPackageReference "SwiftEntryKit" */;
 			productName = SwiftEntryKit;
-		};
-		F385B4102C1D854700973CAA /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
 		};
 		F3897848307D336F00AF86E4 /* RswiftLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
@@ -4811,11 +4785,6 @@
 			package = F3B7A8302EE21C4F007BF216 /* XCRemoteSwiftPackageReference "Instructions" */;
 			productName = Instructions;
 		};
-		F3FCF72C2EDF570D00B337BE /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
-		};
 		F3FED5292EEF2FBC00C24082 /* SwiftyStoreKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = F3F6A6202C327849000961C8 /* XCRemoteSwiftPackageReference "SwiftyStoreKit" */;
@@ -4828,11 +4797,6 @@
 		F3FED52D2EEF2FEB00C24082 /* TPInAppReceipt-Objc */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = "TPInAppReceipt-Objc";
-		};
-		F3FED52F2EEF300900C24082 /* Kingfisher */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F385B40F2C1D851800973CAA /* XCRemoteSwiftPackageReference "Kingfisher" */;
-			productName = Kingfisher;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
