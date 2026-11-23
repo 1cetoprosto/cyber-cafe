@@ -137,13 +137,20 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
             await MainActor.run {
                 guard let self else { return }
 
-                if !firstRunDone, products.isEmpty {
+                // Empty cafe: always full wizard (settings → menu → sale → …).
+                // Never show preferences-only here — that felt like “sale first, then settings”
+                // when first-run was marked done without the operating-profile steps.
+                if products.isEmpty {
+                    let needsFullSetup = !firstRunDone || !preferencesDone
+                    guard needsFullSetup else { return }
+                    if firstRunDone {
+                        UserDefaultsKeys.setHasCompletedFirstRunSetup(false, dataRef: dataRef)
+                    }
                     self.presentFirstRunSetup(preferencesOnly: false)
                     return
                 }
 
-                // Menu already exists (or first-run was finished earlier without the
-                // operating-profile step) — still ask stock/receipt choices once.
+                // Menu already exists — only ask missing operating profile once.
                 if !firstRunDone {
                     UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: dataRef)
                 }

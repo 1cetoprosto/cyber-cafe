@@ -394,6 +394,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
     private func renderStep() {
         let step = viewModel.currentStep
         stepLabel.isHidden = false
+        // preferences-only sheet: 1…3. Full empty-cafe wizard: 1…7 (settings then sale).
         if viewModel.isPreferencesOnly, let prefNumber = step.preferencesDisplayNumber {
             stepLabel.text = R.string.global.firstRunStepProgress(
                 String(prefNumber),
