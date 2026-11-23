@@ -163,7 +163,7 @@ Paywall **продає те, що вже показали на екрані 3**,
 | Місце | Що показуємо |
 |---|---|
 | Leftover step | Під підсумком — tip про масштаб (чек vs місячна витрата; порівнюй за той самий період). |
-| Home (owner) | Одна dismissible картка: масштаб → звичка (продажі → витрати → Home) → м’який натяк на Settings. CTA «Зрозуміло» / «Got it». Прапорець `hasDismissedPostSetupInsight` (per-cafe). |
+| Home (owner) | Dismissible картка **під плашкою прибутку**, лише коли прибуток &lt; 0: масштаб → звичка → натяк на Settings. CTA «Зрозуміло» / «Got it». Прапорець `hasDismissedPostSetupInsight` (per-cafe). |
 
 Без другого wizard і без deep-link у Settings з картки.
 

@@ -562,27 +562,34 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func makeAppInfoDevAndAccountSections() -> [Section] {
-        var appInfoOptions: [SettingsOptionType] = [
-            .staticCell(
-                model: SettingsStaticOption(
-                    title: R.string.global.restartOnboarding(),
-                    icon: UIImage(systemName: SystemImages.gearshape),
-                    iconBackgroundColor: .systemMint
-                ) {
-                    PopupFactory.showPopup(
-                        title: R.string.global.onboardingResetTitle(),
-                        description: R.string.global.onboardingResetMessage(),
-                        buttonTitle: R.string.global.settings_action_ok(),
-                        buttonAction: {
-                            OnboardingManager.shared.resetForCurrentAppVersion()
-                            PopupFactory.showPopup(
-                                title: R.string.global.success(),
-                                description: R.string.global.onboardingResetDoneMessage()
-                            )
-                        }
-                    )
-                }
-            ),
+        var appInfoOptions: [SettingsOptionType] = []
+
+        if OnboardingManager.areCoachMarksEnabled {
+            appInfoOptions.append(
+                .staticCell(
+                    model: SettingsStaticOption(
+                        title: R.string.global.restartOnboarding(),
+                        icon: UIImage(systemName: SystemImages.gearshape),
+                        iconBackgroundColor: .systemMint
+                    ) {
+                        PopupFactory.showPopup(
+                            title: R.string.global.onboardingResetTitle(),
+                            description: R.string.global.onboardingResetMessage(),
+                            buttonTitle: R.string.global.settings_action_ok(),
+                            buttonAction: {
+                                OnboardingManager.shared.resetForCurrentAppVersion()
+                                PopupFactory.showPopup(
+                                    title: R.string.global.success(),
+                                    description: R.string.global.onboardingResetDoneMessage()
+                                )
+                            }
+                        )
+                    }
+                )
+            )
+        }
+
+        appInfoOptions.append(contentsOf: [
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.privacyPolicy(),
@@ -621,7 +628,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.showDeleteAccountConfirmation()
                 }
             ),
-        ]
+        ])
 
         if UserSession.current.role == .administrator,
             DemoDataManager.shared.isDemoDataPresent

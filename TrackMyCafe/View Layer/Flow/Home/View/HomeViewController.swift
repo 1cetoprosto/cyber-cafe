@@ -267,11 +267,12 @@ final class HomeViewController: UIViewController, ProGated {
             card: viewModel.cardBalance,
             showDeleteDemoData: UserSession.current.role == .administrator
                 && DemoDataManager.shared.isDemoDataPresent,
-            showPostSetupInsight: shouldShowPostSetupInsight()
+            showPostSetupInsight: shouldShowPostSetupInsight(profit: viewModel.periodProfit)
         )
     }
 
-    private func shouldShowPostSetupInsight() -> Bool {
+    private func shouldShowPostSetupInsight(profit: Double) -> Bool {
+        guard profit < 0 else { return false }
         guard UserSession.current.role == .administrator else { return false }
         let dataRef = UserSession.current.dataRef
         guard UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef) else { return false }

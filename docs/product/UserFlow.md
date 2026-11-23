@@ -35,9 +35,9 @@
     *   Створюється категорія «Меню» / «Menu» для товарів wizard і один тип чека «Чек» / «Receipt» (при продажі або skip кроку чека).
     *   Прапорець `hasCompletedFirstRunSetup` (per-cafe); якщо в базі вже є products — wizard не показується.
     *   На кроці «що залишилось» — tip про масштаб (один чек vs місячна витрата).
-    *   Після wizard на Home — одноразова картка «як користуватись далі» (масштаб + щоденна звичка + натяк на Settings); dismiss → `hasDismissedPostSetupInsight` (per-cafe).
+    *   Після wizard на Home — картка «як користуватись далі» під плашкою прибутку, **лише якщо прибуток &lt; 0** (і поки не dismissed); dismiss → `hasDismissedPostSetupInsight` (per-cafe).
     *   Staff / waiter цей гайд **не** бачать.
-    *   «Показати підказки знову» в Settings скидає лише coach marks, не first-run wizard.
+    *   In-app coach marks (Instructions) **вимкнені** (`OnboardingManager.areCoachMarksEnabled = false`); пункт «Показати підказки знову» в Settings прихований.
 
 5.  **Demo seed для скрінів (DEBUG):**
     *   Settings → Seed Test Data / floating «Видалити демо» працюють як раніше після **ручного** seed (App Store screenshots). У Prod/Beta авто-seed немає.
