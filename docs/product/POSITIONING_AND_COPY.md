@@ -154,7 +154,9 @@ Paywall **продає те, що вже показали на екрані 3**,
 
 ### Після логіну — first-win path (v1.2.1+)
 
-Маркетинговий onboarding показує ідею. Після Sign Up / першого входу **owner** на порожній кав’ярні проходить короткий guided setup на **своїх** даних (меню → чек → витрата → «що залишилось»), без авто-demo. Demo seed лишається лише в DEBUG для скрінів. Деталі флоу: [`UserFlow.md`](UserFlow.md) § Getting Started.
+Маркетинговий onboarding показує ідею. Після Sign Up / першого входу **owner** на порожній кав’ярні проходить guided setup: **профіль закладу** (склад + схема чека) → меню → чек → грошова витрата (copy під режим) → «що залишилось», без авто-demo. Demo seed лишається лише в DEBUG для скрінів. Деталі: [`UserFlow.md`](UserFlow.md) § Getting Started.
+
+Ключі preferences: `firstRunPreferences*`. Expense: `firstRunExpenseSubtitleFinance` / `…Stock`, placeholders Finance/Stock.
 
 ### Post-setup insight (після wizard → Home)
 
