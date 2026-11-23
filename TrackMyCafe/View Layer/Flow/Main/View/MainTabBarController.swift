@@ -6,7 +6,6 @@
 //
 
 import FirebaseAuth
-import SVProgressHUD
 import UIKit
 
 class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
@@ -104,13 +103,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
             description: R.string.global.deleteDemoDataMessage(),
             buttonTitle: R.string.global.delete(),
             buttonAction: {
-                SVProgressHUD.show()
+                AppProgressHUD.show()
                 DemoDataManager.shared.deleteDemoData { success in
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     if success {
-                        SVProgressHUD.showSuccess(withStatus: R.string.global.success())
+                        AppProgressHUD.showSuccess(withStatus: R.string.global.success())
                     } else {
-                        SVProgressHUD.showError(withStatus: R.string.global.error())
+                        AppProgressHUD.showError(withStatus: R.string.global.error())
                     }
                 }
             }

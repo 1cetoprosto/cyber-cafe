@@ -6,7 +6,6 @@
 //
 
 import PhotosUI
-import SVProgressHUD
 import TinyConstraints
 import UIKit
 
@@ -256,7 +255,7 @@ final class CreateEditAdminController: UIViewController, Loggable {
             return
         }
 
-        SVProgressHUD.show()
+        AppProgressHUD.show()
 
         if let image = newImage {
             let fileName = [admin.firstName, admin.lastName, Date().interval.string]
@@ -270,7 +269,7 @@ final class CreateEditAdminController: UIViewController, Loggable {
                     self.admin.avatarThumbnailUrl = thumbnailPath
                     self.performSave()
                 } else {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(R.string.global.error(), body: R.string.global.wentWrong())
                 }
             }
@@ -286,10 +285,10 @@ final class CreateEditAdminController: UIViewController, Loggable {
             await MainActor.run {
                 if success {
                     self.log()
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.navigationController?.popViewController(animated: true)
                 } else {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     self.showAlert(
                         R.string.global.error(),
                         body: R.string.global.wentWrong())

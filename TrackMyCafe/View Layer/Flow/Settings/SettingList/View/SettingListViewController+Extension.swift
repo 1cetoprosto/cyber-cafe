@@ -6,7 +6,6 @@
 //
 
 import FirebaseAuth
-import SVProgressHUD
 import UIKit
 
 extension SettingListViewController {
@@ -22,7 +21,7 @@ extension SettingListViewController {
     }
 
     private func performAccountDeletion() {
-        SVProgressHUD.show(withStatus: R.string.global.deleting())
+        AppProgressHUD.show(withStatus: R.string.global.deleting())
 
         Task { [weak self] in
             guard let self else { return }
@@ -30,13 +29,13 @@ extension SettingListViewController {
                 try await FirestoreDatabaseService.shared.deleteUserAndRoles()
                 try await Auth.auth().currentUser?.delete()
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     UserSession.logOut()
                     self.navigateToLogin()
                 }
             } catch let error as NSError {
                 await MainActor.run {
-                    SVProgressHUD.dismiss()
+                    AppProgressHUD.dismiss()
                     if error.code == AuthErrorCode.requiresRecentLogin.rawValue {
                         self.showReauthAlert()
                     } else {
