@@ -135,6 +135,15 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         return stack
     }()
 
+    private let leftoverScaleTipLabel: UILabel = {
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
+        label.textColor = UIColor.Main.text.withAlphaComponent(0.7)
+        label.numberOfLines = 0
+        label.text = R.string.global.firstRunLeftoverScaleTip()
+        return label
+    }()
+
     private lazy var primaryButton: DefaultButton = {
         let button = DefaultButton()
         button.addTarget(self, action: #selector(primaryTapped), for: .touchUpInside)
@@ -216,6 +225,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
         summaryCard.addSubview(summaryStack)
         leftoverSection.addArrangedSubview(summaryCard)
+        leftoverSection.addArrangedSubview(leftoverScaleTipLabel)
     }
 
     private func configureSectionStacks() {

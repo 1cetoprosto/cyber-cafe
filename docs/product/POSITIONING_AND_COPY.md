@@ -156,6 +156,19 @@ Paywall **продає те, що вже показали на екрані 3**,
 
 Маркетинговий onboarding показує ідею. Після Sign Up / першого входу **owner** на порожній кав’ярні проходить короткий guided setup на **своїх** даних (меню → чек → витрата → «що залишилось»), без авто-demo. Demo seed лишається лише в DEBUG для скрінів. Деталі флоу: [`UserFlow.md`](UserFlow.md) § Getting Started.
 
+### Post-setup insight (після wizard → Home)
+
+Мета: не дати сприйняти мінус після одного чека + періодичної витрати як «зламаний» дашборд, і закріпити щоденну звичку.
+
+| Місце | Що показуємо |
+|---|---|
+| Leftover step | Під підсумком — tip про масштаб (чек vs місячна витрата; порівнюй за той самий період). |
+| Home (owner) | Одна dismissible картка: масштаб → звичка (продажі → витрати → Home) → м’який натяк на Settings. CTA «Зрозуміло» / «Got it». Прапорець `hasDismissedPostSetupInsight` (per-cafe). |
+
+Без другого wizard і без deep-link у Settings з картки.
+
+Ключі: `firstRunLeftoverScaleTip`, `postSetupInsightTitle`, `postSetupInsightScale`, `postSetupInsightHabit`, `postSetupInsightSettings`, `postSetupInsightDismiss`.
+
 ---
 
 ## In-app copy (цільові рядки для `Global.strings`)

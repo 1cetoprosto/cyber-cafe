@@ -165,6 +165,23 @@ struct UserDefaultsKeys {
         // Drop legacy device-wide flag so it cannot block other cafes on this device.
         UserDefaults.standard.removeObject(forKey: hasCompletedFirstRunSetup)
     }
+
+    /// Per-cafe: Home post-setup insight card dismissed.
+    static let hasDismissedPostSetupInsight = "hasDismissedPostSetupInsight"
+
+    static func hasDismissedPostSetupInsightKey(for dataRef: String) -> String {
+        "\(hasDismissedPostSetupInsight).\(dataRef)"
+    }
+
+    static func hasDismissedPostSetupInsight(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return true }
+        return UserDefaults.standard.bool(forKey: hasDismissedPostSetupInsightKey(for: dataRef))
+    }
+
+    static func setHasDismissedPostSetupInsight(_ dismissed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(dismissed, forKey: hasDismissedPostSetupInsightKey(for: dataRef))
+    }
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
     static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"

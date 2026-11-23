@@ -8,9 +8,12 @@ final class HomeHeaderView: UIView {
     var onDeleteDemoData: (() -> Void)?
     var onProfitTap: (() -> Void)?
     var onProfitInfoTap: (() -> Void)?
+    var onPostSetupInsightDismiss: (() -> Void)?
     var onManualOperations: (() -> Void)? {
         didSet { balanceCard.onManualOperations = onManualOperations }
     }
+
+    private let postSetupInsightView = PostSetupInsightView()
 
     private let deleteDemoDataButton: UIButton = {
         let button = UIButton(type: .system)
@@ -76,12 +79,15 @@ final class HomeHeaderView: UIView {
         profitDeltaPercent: Double?,
         cash: Double,
         card: Double,
-        showDeleteDemoData: Bool = false
+        showDeleteDemoData: Bool = false,
+        showPostSetupInsight: Bool = false
     ) {
         // Redundant delete button hidden as per request (replaced by floating button)
         deleteDemoDataButton.isHidden = true  // !showDeleteDemoData
         deleteDemoDataButton.addTarget(
             self, action: #selector(deleteDemoDataTap), for: .touchUpInside)
+
+        postSetupInsightView.isHidden = !showPostSetupInsight
 
         dateLabel.text = DateFormatter.appFullDate.string(from: date)
         periodControl.selectedSegmentIndex = period.rawValue
@@ -151,6 +157,8 @@ final class HomeHeaderView: UIView {
 
         profitCard.onTap = { [weak self] in self?.onProfitTap?() }
         profitCard.onInfoTap = { [weak self] in self?.onProfitInfoTap?() }
+        postSetupInsightView.onDismiss = { [weak self] in self?.onPostSetupInsightDismiss?() }
+        postSetupInsightView.isHidden = true
 
         kpiRow.axis = .horizontal
         kpiRow.spacing = UIConstants.standardPadding
@@ -162,8 +170,8 @@ final class HomeHeaderView: UIView {
 
         let contentStack = UIStackView(
             arrangedSubviews: [
-                deleteDemoDataButton, headerStack, actionsStack, periodControl, profitCard, kpiRow,
-                balanceCard,
+                deleteDemoDataButton, headerStack, postSetupInsightView, actionsStack, periodControl,
+                profitCard, kpiRow, balanceCard,
             ]
         )
         contentStack.axis = NSLayoutConstraint.Axis.vertical

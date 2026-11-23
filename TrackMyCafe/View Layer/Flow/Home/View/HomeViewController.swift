@@ -47,6 +47,9 @@ final class HomeViewController: UIViewController, ProGated {
         headerView.onProfitInfoTap = { [weak self] in
             self?.showProfitInfo()
         }
+        headerView.onPostSetupInsightDismiss = { [weak self] in
+            self?.dismissPostSetupInsight()
+        }
 
         view.addSubview(tableView)
         tableView.edgesToSuperview(
@@ -263,8 +266,23 @@ final class HomeViewController: UIViewController, ProGated {
             cash: viewModel.cashBalance,
             card: viewModel.cardBalance,
             showDeleteDemoData: UserSession.current.role == .administrator
-                && DemoDataManager.shared.isDemoDataPresent
+                && DemoDataManager.shared.isDemoDataPresent,
+            showPostSetupInsight: shouldShowPostSetupInsight()
         )
+    }
+
+    private func shouldShowPostSetupInsight() -> Bool {
+        guard UserSession.current.role == .administrator else { return false }
+        let dataRef = UserSession.current.dataRef
+        guard UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef) else { return false }
+        return !UserDefaultsKeys.hasDismissedPostSetupInsight(dataRef: dataRef)
+    }
+
+    private func dismissPostSetupInsight() {
+        UserDefaultsKeys.setHasDismissedPostSetupInsight(
+            true, dataRef: UserSession.current.dataRef)
+        configureHeader(for: currentPeriod)
+        setTableHeaderSized()
     }
 }
 

@@ -297,7 +297,7 @@
 "orderModeOpenTab" = "Simplified mode";
 "orderModePerOrderDescription" = "One receipt per customer. Add items from the catalog — best when the menu is larger.";
 "orderModeOpenTabDescription" = "One open receipt for the shift: items stay listed, change quantities with +/−. Best when you sell only a few items.";
-"settingsSectionOrdersFooter" = "Classic mode: one receipt per customer and items from the catalog. “Choose category first” asks for a menu group before items — easier to browse. Simplified mode: one shift receipt with +/− quantities when the menu is small. Receipt types (dine-in / takeaway) can be added separately.";
+"settingsSectionOrdersFooter" = "Pick the receipt style that fits your shop. Tap the info icon on a row for details. Receipt types (dine-in / takeaway) are added separately.";
 "priceList" = "Product Catalog";
 "cash" = "Cash";
 "card" = "Card";
@@ -695,3 +695,16 @@
 "firstRunExpenseAmountInvalid" = "Enter a valid amount";
 "firstRunLeftoverTitle" = "Here’s what’s left";
 "firstRunLeftoverSubtitle" = "Sales minus costs on your numbers. A monthly cost against one sale will look negative — that’s expected until more sales land.";
+"firstRunLeftoverScaleTip" = "One sale against monthly rent often looks like a loss — that’s normal. Add sales and costs for the same period (day or month), and the number will make sense.";
+"postSetupInsightTitle" = "How to use it day to day";
+"postSetupInsightScale" = "One sale plus a big monthly cost often shows a loss. Match sales and costs to the same period.";
+"postSetupInsightHabit" = "Each day or end of shift: log sales, then costs if you had any, and check Home for what’s left.";
+"postSetupInsightSettings" = "Once that loop feels natural, open Settings to tune the shop — receipt mode, menu, and stock.";
+"postSetupInsightDismiss" = "Got it";
+"settingsSectionMenuInventoryFooter" = "Price list and categories are what you sell. Ingredients matter only if you track stock.";
+"settings_chooseCategoryFirstInfoTitle" = "Choose category first";
+"settings_chooseCategoryFirstInfoBody" = "Asks for a menu group before the item list. Easier when the catalog is large. Works with classic per-customer receipts.";
+"settings_orderEntryModeInfoTitle" = "Receipt mode";
+"settings_orderEntryModeInfoBody" = "Classic: one receipt per customer from the catalog. Simplified: one shift receipt with +/− quantities when the menu is small.";
+"settings_trackIngredientsInfoTitle" = "Track ingredients";
+"settings_trackIngredientsInfoBody" = "On sale, stock drops by recipe. Turn on only if you really track inventory; otherwise money tracking is enough.";
