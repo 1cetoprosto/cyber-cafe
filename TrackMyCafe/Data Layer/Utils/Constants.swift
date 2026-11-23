@@ -146,6 +146,63 @@ struct UserDefaultsKeys {
     static let trackIngredients = "settings.trackIngredients"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
+    /// Legacy device-wide flag (pre–per-cafe). Do not write; cleared once during migration.
+    static let hasCompletedFirstRunSetup = "hasCompletedFirstRunSetup"
+
+    /// Per-cafe key so Sign Up on the same simulator is not blocked by another account.
+    static func hasCompletedFirstRunSetupKey(for dataRef: String) -> String {
+        "\(hasCompletedFirstRunSetup).\(dataRef)"
+    }
+
+    static func hasCompletedFirstRunSetup(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return false }
+        return UserDefaults.standard.bool(forKey: hasCompletedFirstRunSetupKey(for: dataRef))
+    }
+
+    static func setHasCompletedFirstRunSetup(_ completed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(completed, forKey: hasCompletedFirstRunSetupKey(for: dataRef))
+        // Drop legacy device-wide flag so it cannot block other cafes on this device.
+        UserDefaults.standard.removeObject(forKey: hasCompletedFirstRunSetup)
+    }
+
+    /// Per-cafe: Home post-setup insight card dismissed.
+    static let hasDismissedPostSetupInsight = "hasDismissedPostSetupInsight"
+
+    static func hasDismissedPostSetupInsightKey(for dataRef: String) -> String {
+        "\(hasDismissedPostSetupInsight).\(dataRef)"
+    }
+
+    static func hasDismissedPostSetupInsight(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return true }
+        return UserDefaults.standard.bool(forKey: hasDismissedPostSetupInsightKey(for: dataRef))
+    }
+
+    static func setHasDismissedPostSetupInsight(_ dismissed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(dismissed, forKey: hasDismissedPostSetupInsightKey(for: dataRef))
+    }
+
+    /// Per-cafe: owner confirmed stock/receipt/types profile (3-step wizard).
+    /// Suffix bumped when preference steps change so owners reconfirm once.
+    static let hasCompletedOperatingPreferences = "hasCompletedOperatingPreferences.v2"
+
+    static func hasCompletedOperatingPreferencesKey(for dataRef: String) -> String {
+        "\(hasCompletedOperatingPreferences).\(dataRef)"
+    }
+
+    static func hasCompletedOperatingPreferences(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return false }
+        return UserDefaults.standard.bool(
+            forKey: hasCompletedOperatingPreferencesKey(for: dataRef))
+    }
+
+    static func setHasCompletedOperatingPreferences(_ completed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(
+            completed, forKey: hasCompletedOperatingPreferencesKey(for: dataRef))
+    }
+
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
     static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"
@@ -309,7 +366,8 @@ struct DefaultValues {
     static var currencyName: String { R.string.global.currencyHryvnia() }
     static let currencySymbol = "₴"
     static let defaultLanguage = "English"
-    static let defaultOrderType = "Default"
+    /// Localized receipt type fallback (`defaultOrderType` in Global.strings).
+    static var defaultOrderType: String { R.string.global.defaultOrderType() }
     static let unknownVersion = "Unknown"
     static let unknownUser = "Unknown"
     static let adminFirstName = "Admin"

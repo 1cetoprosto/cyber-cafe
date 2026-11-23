@@ -1,0 +1,371 @@
+//
+//  FirstRunSetupViewModel.swift
+//  TrackMyCafe
+//
+//  Created on 23.11.2026.
+//
+
+import Foundation
+
+// MARK: - FirstRunSetupViewModel
+
+final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
+
+    // MARK: - Properties
+
+    private(set) var currentStep: FirstRunSetupStep = .preferencesStock
+    private(set) var addedProducts: [ProductsPriceModel] = []
+    private(set) var saleLines: [FirstRunSetupSaleLine] = []
+    private(set) var salesTotal: Double = 0
+    private(set) var costsTotal: Double = 0
+    private(set) var leftoverTotal: Double = 0
+
+    private(set) var tracksIngredients = false
+    private(set) var orderEntryMode: OrderEntryMode = .perOrder
+    private(set) var chooseCategoryFirst = true
+    private(set) var wantsMultipleReceiptTypes = false
+    let isPreferencesOnly: Bool
+
+    let minimumProductsToContinue = 2
+
+    var onStepChanged: (() -> Void)?
+    var onProductsChanged: (() -> Void)?
+    var onSaleChanged: (() -> Void)?
+    var onSummaryReady: (() -> Void)?
+    var onCompleted: (() -> Void)?
+    var onError: ((String) -> Void)?
+    var onPreferencesChanged: (() -> Void)?
+
+    private let database: DomainDB
+    private var didCommitPreferences = false
+
+    // MARK: - Init
+
+    init(
+        preferencesOnly: Bool = false,
+        database: DomainDB = DomainDatabaseService.shared
+    ) {
+        self.isPreferencesOnly = preferencesOnly
+        self.database = database
+        self.tracksIngredients = SettingsManager.shared.loadTrackIngredients()
+        self.orderEntryMode = SettingsManager.shared.loadOrderEntryMode()
+        self.chooseCategoryFirst = SettingsManager.shared.loadChooseCategoryFirstProductSelection()
+
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            let types = await self.database.fetchTypes()
+            self.wantsMultipleReceiptTypes = types.count > 1
+            self.onPreferencesChanged?()
+        }
+    }
+
+    // MARK: - FirstRunSetupViewModelType
+
+    func canContinueFromCurrentStep() -> Bool {
+        switch currentStep {
+        case .preferencesStock, .preferencesReceipt, .preferencesTypes:
+            return true
+        case .menu:
+            return addedProducts.count >= minimumProductsToContinue
+        case .firstSale:
+            return saleLines.contains(where: { $0.quantity > 0 })
+        case .expense:
+            return false
+        case .leftover:
+            return true
+        }
+    }
+
+    func setTracksIngredients(_ enabled: Bool) {
+        tracksIngredients = enabled
+        onPreferencesChanged?()
+    }
+
+    func setOrderEntryMode(_ mode: OrderEntryMode) {
+        let wasOpenTab = orderEntryMode == .openTab
+        orderEntryMode = mode
+        if mode == .openTab {
+            chooseCategoryFirst = false
+        } else if wasOpenTab {
+            chooseCategoryFirst = true
+        }
+        onPreferencesChanged?()
+    }
+
+    func setChooseCategoryFirst(_ enabled: Bool) {
+        guard orderEntryMode == .perOrder else { return }
+        chooseCategoryFirst = enabled
+        onPreferencesChanged?()
+    }
+
+    func setWantsMultipleReceiptTypes(_ enabled: Bool) {
+        wantsMultipleReceiptTypes = enabled
+        onPreferencesChanged?()
+    }
+
+    @MainActor
+    func commitOperatingPreferencesAndTypes() async {
+        SettingsManager.shared.applyOperatingPreferences(
+            trackIngredients: tracksIngredients,
+            orderMode: orderEntryMode,
+            chooseCategoryFirst: orderEntryMode == .perOrder ? chooseCategoryFirst : false
+        )
+        if wantsMultipleReceiptTypes {
+            await DomainDatabaseService.shared.ensureCommonReceiptTypesIfNeeded()
+        } else {
+            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+        }
+        didCommitPreferences = true
+    }
+
+    @MainActor
+    func addProduct(name: String, priceText: String) async -> Bool {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            onError?(R.string.global.firstRunProductNameRequired())
+            return false
+        }
+        guard let price = parsedAmount(from: priceText), price >= 0 else {
+            onError?(R.string.global.firstRunProductPriceInvalid())
+            return false
+        }
+
+        let categoryId = await DomainDatabaseService.shared.ensureDefaultProductCategoryIfNeeded()
+        let product = ProductsPriceModel(
+            id: UUID().uuidString,
+            name: trimmed,
+            price: price,
+            categoryId: categoryId
+        )
+        let success = await database.saveProductsPrice(productPrice: product)
+        guard success else {
+            onError?(R.string.global.error())
+            logger.error("Failed to save first-run product")
+            return false
+        }
+
+        addedProducts.append(product)
+        rebuildSaleLinesPreservingQuantities()
+        onProductsChanged?()
+        onSaleChanged?()
+        return true
+    }
+
+    func setSaleQuantity(productId: String, quantity: Int) {
+        guard let index = saleLines.firstIndex(where: { $0.product.id == productId }) else {
+            return
+        }
+        saleLines[index].quantity = max(0, quantity)
+        onSaleChanged?()
+    }
+
+    @MainActor
+    func saveFirstSale() async -> Bool {
+        let selected = saleLines.filter { $0.quantity > 0 }
+        guard !selected.isEmpty else {
+            onError?(R.string.global.firstRunSaleEmpty())
+            return false
+        }
+
+        await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+        let types = await database.fetchTypes()
+        let orderType =
+            types.first(where: { $0.isDefault })?.name
+            ?? types.first?.name
+            ?? DefaultValues.defaultOrderType
+
+        let orderId = UUID().uuidString
+        let date = Date()
+        let sum = selected.reduce(0.0) {
+            $0 + ($1.product.price * Double($1.quantity))
+        }
+
+        let order = OrderModel(
+            id: orderId,
+            date: date,
+            type: orderType,
+            sum: sum,
+            cash: sum,
+            card: 0,
+            totalCost: 0,
+            inventoryTracking: false,
+            note: nil,
+            createdBy: UserSession.current.employeeRef
+        )
+
+        guard let savedOrderId = await database.saveOrder(order: order) else {
+            onError?(R.string.global.error())
+            logger.error("Failed to save first-run order")
+            return false
+        }
+
+        for line in selected {
+            let item = OrderItemModel(
+                id: UUID().uuidString,
+                productId: line.product.id,
+                name: line.product.name,
+                orderId: savedOrderId,
+                date: date,
+                quantity: line.quantity,
+                salePrice: line.product.price,
+                costPrice: 0
+            )
+            let itemId = await database.saveProduct(order: item)
+            if itemId == nil {
+                logger.error("Failed to save first-run order item for \(line.product.name)")
+            }
+        }
+
+        salesTotal = sum
+        return true
+    }
+
+    @MainActor
+    func saveExpense(name: String, amountText: String) async -> Bool {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else {
+            onError?(R.string.global.firstRunExpenseNameRequired())
+            return false
+        }
+        guard let amount = parsedAmount(from: amountText), amount >= 0 else {
+            onError?(R.string.global.firstRunExpenseAmountInvalid())
+            return false
+        }
+
+        let expense = OpexExpenseModel(
+            id: UUID().uuidString,
+            date: Date(),
+            categoryId: "General",
+            amount: amount,
+            paymentAccount: .cash,
+            note: trimmed
+        )
+
+        guard await database.saveOpexExpense(model: expense) != nil else {
+            onError?(R.string.global.error())
+            logger.error("Failed to save first-run expense")
+            return false
+        }
+
+        costsTotal = amount
+        return true
+    }
+
+    func advanceAfterSuccessfulAction() {
+        if currentStep == .preferencesTypes, isPreferencesOnly {
+            finishSetup()
+            return
+        }
+        guard let next = FirstRunSetupStep(rawValue: currentStep.rawValue + 1) else {
+            finishSetup()
+            return
+        }
+        currentStep = next
+        if currentStep == .leftover {
+            refreshSummary()
+        }
+        onStepChanged?()
+    }
+
+    func skipCurrentStep() {
+        switch currentStep {
+        case .preferencesStock:
+            tracksIngredients = false
+            onPreferencesChanged?()
+        case .preferencesReceipt:
+            orderEntryMode = .perOrder
+            chooseCategoryFirst = true
+            onPreferencesChanged?()
+        case .preferencesTypes:
+            wantsMultipleReceiptTypes = false
+            onPreferencesChanged?()
+            Task { @MainActor in
+                await commitOperatingPreferencesAndTypes()
+                if isPreferencesOnly {
+                    finishSetup()
+                } else {
+                    advanceAfterSuccessfulAction()
+                }
+            }
+            return
+        case .firstSale:
+            Task { @MainActor in
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
+        default:
+            break
+        }
+        advanceAfterSuccessfulAction()
+    }
+
+    func skipEntireSetup() {
+        Task { @MainActor in
+            if !didCommitPreferences {
+                applyFinanceOnlyDefaults()
+                await commitOperatingPreferencesAndTypes()
+            }
+            if !isPreferencesOnly {
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
+            markCompleted()
+            onCompleted?()
+        }
+    }
+
+    func finishSetup() {
+        Task { @MainActor in
+            if !didCommitPreferences {
+                applyFinanceOnlyDefaults()
+                await commitOperatingPreferencesAndTypes()
+            }
+            let types = await database.fetchTypes()
+            if types.isEmpty {
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
+            markCompleted()
+            onCompleted?()
+        }
+    }
+
+    func refreshSummary() {
+        leftoverTotal = salesTotal - costsTotal
+        onSummaryReady?()
+    }
+
+    // MARK: - Private
+
+    private func applyFinanceOnlyDefaults() {
+        tracksIngredients = false
+        orderEntryMode = .perOrder
+        chooseCategoryFirst = true
+        wantsMultipleReceiptTypes = false
+    }
+
+    private func rebuildSaleLinesPreservingQuantities() {
+        let previousQuantities = Dictionary(
+            uniqueKeysWithValues: saleLines.map { ($0.product.id, $0.quantity) }
+        )
+        saleLines = addedProducts.map { product in
+            FirstRunSetupSaleLine(
+                product: product,
+                quantity: previousQuantities[product.id] ?? 0
+            )
+        }
+    }
+
+    private func markCompleted() {
+        UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: UserSession.current.dataRef)
+    }
+
+    private func parsedAmount(from text: String) -> Double? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return nil }
+        let formatter = NumberFormatter()
+        formatter.locale = Locale.current
+        formatter.numberStyle = .decimal
+        if let number = formatter.number(from: trimmed)?.doubleValue {
+            return number
+        }
+        return Double(trimmed.replacingOccurrences(of: ",", with: "."))
+    }
+}

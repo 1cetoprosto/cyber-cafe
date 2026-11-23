@@ -489,7 +489,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
         ]
         let ordersSection = Section(
             title: R.string.global.settingsSectionOrders(),
-            footer: R.string.global.typeDescription(),
+            footer: R.string.global.settingsSectionOrdersFooter(),
             option: orderOptions
         )
 
@@ -518,30 +518,34 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func makeAppInfoDevAndAccountSections() -> [Section] {
-        var appInfoOptions: [SettingsOptionType] = [
-            .staticCell(
-                model: SettingsStaticOption(
-                    title: R.string.global.restartOnboarding(),
-                    icon: UIImage(systemName: SystemImages.gearshape),
-                    iconBackgroundColor: .systemMint
-                ) {
-                    OnboardingManager.shared.resetForCurrentAppVersion()
-                    PopupFactory.showPopup(
-                        title: R.string.global.onboardingResetTitle(),
-                        description: R.string.global.onboardingResetMessage(),
-                        buttonAction: {
-                            OnboardingManager.shared.startIfNeeded(
-                                for: .settingsPriceList, on: self
-                            )
-                            OnboardingManager.shared.startIfNeeded(for: .settingsTypes, on: self)
-                            OnboardingManager.shared.startIfNeeded(
-                                for: .settingsTrackIngredients, on: self
-                            )
-                            OnboardingManager.shared.startIfNeeded(for: .staff, on: self)
-                        }
-                    )
-                }
-            ),
+        var appInfoOptions: [SettingsOptionType] = []
+
+        if OnboardingManager.areCoachMarksEnabled {
+            appInfoOptions.append(
+                .staticCell(
+                    model: SettingsStaticOption(
+                        title: R.string.global.restartOnboarding(),
+                        icon: UIImage(systemName: SystemImages.gearshape),
+                        iconBackgroundColor: .systemMint
+                    ) {
+                        PopupFactory.showPopup(
+                            title: R.string.global.onboardingResetTitle(),
+                            description: R.string.global.onboardingResetMessage(),
+                            buttonTitle: R.string.global.settings_action_ok(),
+                            buttonAction: {
+                                OnboardingManager.shared.resetForCurrentAppVersion()
+                                PopupFactory.showPopup(
+                                    title: R.string.global.success(),
+                                    description: R.string.global.onboardingResetDoneMessage()
+                                )
+                            }
+                        )
+                    }
+                )
+            )
+        }
+
+        appInfoOptions.append(contentsOf: [
             .staticCell(
                 model: SettingsStaticOption(
                     title: R.string.global.privacyPolicy(),
@@ -580,7 +584,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     self.showDeleteAccountConfirmation()
                 }
             ),
-        ]
+        ])
 
         if UserSession.current.role == .administrator,
             DemoDataManager.shared.isDemoDataPresent

@@ -73,7 +73,7 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkAndSeedDemoDataIfNeeded()
+        checkAndPresentFirstRunSetupIfNeeded()
         updateDemoDataButtonVisibility()
     }
 
@@ -117,47 +117,72 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         )
     }
 
-    private func checkAndSeedDemoDataIfNeeded() {
+    private func checkAndPresentFirstRunSetupIfNeeded() {
         guard !hasAlreadyCheckedSession else { return }
         hasAlreadyCheckedSession = true
 
         guard Auth.auth().currentUser?.uid != nil else { return }
-        // Demo seed is owner-only — staff must never write demo rows into the cafe DB.
+        // Guided setup is owner-only — staff must never see the cafe bootstrap wizard.
         guard UserSession.current.role == .administrator else { return }
+        guard presentedViewController == nil else { return }
 
-        // If the owner's cafe is empty on launch, seed demo data automatically.
+        let dataRef = UserSession.current.dataRef
 
         Task { [weak self] in
             let products = await DomainDatabaseService.shared.fetchProductsPrice()
-            guard products.isEmpty else { return }
-
-            // Also check ingredients to be sure
-            let ingredients = await DomainDatabaseService.shared.fetchIngredients()
-            guard ingredients.isEmpty else { return }
+            let firstRunDone = UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef)
+            let preferencesDone = UserDefaultsKeys.hasCompletedOperatingPreferences(
+                dataRef: dataRef)
 
             await MainActor.run {
-                self?.seedDemoData()
+                guard let self else { return }
+
+                // Empty cafe: always full wizard (settings → menu → sale → …).
+                // Never show preferences-only here — that felt like “sale first, then settings”
+                // when first-run was marked done without the operating-profile steps.
+                if products.isEmpty {
+                    let needsFullSetup = !firstRunDone || !preferencesDone
+                    guard needsFullSetup else { return }
+                    if firstRunDone {
+                        UserDefaultsKeys.setHasCompletedFirstRunSetup(false, dataRef: dataRef)
+                    }
+                    self.presentFirstRunSetup(preferencesOnly: false)
+                    return
+                }
+
+                // Menu already exists — only ask missing operating profile once.
+                if !firstRunDone {
+                    UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: dataRef)
+                }
+                if !preferencesDone {
+                    self.presentFirstRunSetup(preferencesOnly: true)
+                }
             }
         }
     }
 
-    private func seedDemoData() {
-        SVProgressHUD.show(
-            withStatus: R.string.global.preparingDemoData())
-        Task {
-            await DomainDatabaseService.shared.seedUserDemoData()
-            await MainActor.run {
-                SVProgressHUD.dismiss()
-                SVProgressHUD.showSuccess(withStatus: R.string.global.success())
-                // Notify other controllers to reload data
+    private func presentFirstRunSetup(preferencesOnly: Bool) {
+        let viewModel = FirstRunSetupViewModel(preferencesOnly: preferencesOnly)
+        let setupVC = FirstRunSetupViewController(viewModel: viewModel)
+        setupVC.delegate = self
+        let nav = UINavigationController(rootViewController: setupVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
+        updateDemoDataButtonVisibility()
+    }
+
+    private func handleFirstRunSetupFinished() {
+        dismiss(animated: true) { [weak self] in
+            guard let self else { return }
+            // Land on Home and refresh twice — Firestore may lag right after wizard saves.
+            self.selectedIndex = 0
+            let ping = {
                 NotificationCenter.default.post(
                     name: NSNotification.Name("DataDidUpdate"), object: nil)
-
-                // If the current selected view controller responds to reloading, we might want to trigger it manually
-                // But NotificationCenter should handle it if observers are set up.
-                // Since this happens on first launch, viewControllers might already be loaded.
-                // We can iterate and reload if they have a reload method, but notification is cleaner.
             }
+            ping()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: ping)
+            self.updateDemoDataButtonVisibility()
         }
     }
 
@@ -363,5 +388,13 @@ extension MainTabBarController {
         animated: Bool
     ) {
         updateDemoDataButtonVisibility()
+    }
+}
+
+// MARK: - FirstRunSetupViewControllerDelegate
+
+extension MainTabBarController: FirstRunSetupViewControllerDelegate {
+    func firstRunSetupDidFinish(_ controller: FirstRunSetupViewController) {
+        handleFirstRunSetupFinished()
     }
 }

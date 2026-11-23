@@ -16,6 +16,9 @@ class DomainDatabaseService: DomainDB {
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!, category: "DomainDatabaseService")
     private let orderSnapshotRepairService = OrderSnapshotRepairService()
+    /// Serializes concurrent `ensureDefaultOrderTypeIfNeeded` callers.
+    private var ensureDefaultOrderTypeInFlight: Task<Void, Never>?
+    private var ensureDefaultProductCategoryInFlight: Task<String?, Never>?
 
     // Метод для перевірки, чи включений режим онлайн
     // private func isOnlineModeEnabled() -> Bool {
@@ -615,6 +618,113 @@ class DomainDatabaseService: DomainDB {
                 "Failed to save Types to Firestore with error: \(error.localizedDescription)")
             return false
         }
+    }
+
+    /// Seeds dine-in / takeaway / delivery when the cafe has no types yet (first-run choice).
+    @MainActor
+    func ensureCommonReceiptTypesIfNeeded() async {
+        let existing = await fetchTypes()
+        if !existing.isEmpty { return }
+
+        let starter: [(String, Bool)] = [
+            (R.string.global.typeHall(), true),
+            (R.string.global.typeTakeaway(), false),
+            (R.string.global.typeDelivery(), false),
+        ]
+        for (name, isDefault) in starter {
+            let model = TypeModel(id: UUID().uuidString, name: name, isDefault: isDefault)
+            let success = await saveType(model: model)
+            if !success {
+                logger.error("Failed to seed receipt type: \(name)")
+            }
+        }
+    }
+
+    /// Ensures a single localized default receipt type exists when the cafe has none.
+    /// Does **not** auto-seed Hall / Takeaway / Delivery — those stay for DEBUG demo seed,
+    /// first-run «several types», or manual Settings.
+    @MainActor
+    func ensureDefaultOrderTypeIfNeeded() async {
+        if let inFlight = ensureDefaultOrderTypeInFlight {
+            await inFlight.value
+            return
+        }
+
+        let task = Task { @MainActor in
+            await self.performEnsureDefaultOrderType()
+        }
+        ensureDefaultOrderTypeInFlight = task
+        await task.value
+        ensureDefaultOrderTypeInFlight = nil
+    }
+
+    @MainActor
+    private func performEnsureDefaultOrderType() async {
+        let defaultName = R.string.global.defaultOrderType()
+        var existing = await fetchTypes()
+
+        // Concurrent ensures used to create duplicate names — keep one per name.
+        let grouped = Dictionary(grouping: existing, by: \.name)
+        for group in grouped.values where group.count > 1 {
+            let keeper = group.first(where: \.isDefault) ?? group[0]
+            for duplicate in group where duplicate.id != keeper.id {
+                _ = await deleteType(model: duplicate)
+            }
+        }
+
+        existing = await fetchTypes()
+        if !existing.isEmpty {
+            if existing.contains(where: \.isDefault) { return }
+            if let preferred = existing.first(where: { $0.name == defaultName })
+                ?? existing.first
+            {
+                await setDefaultType(model: preferred, isDefault: true)
+            }
+            return
+        }
+
+        let model = TypeModel(
+            id: UUID().uuidString, name: defaultName, isDefault: true)
+        let success = await saveType(model: model)
+        if !success {
+            logger.error("Failed to ensure default order type: \(defaultName)")
+        }
+    }
+
+    /// Ensures one product category exists so category-first order entry is usable after first-run.
+    @MainActor
+    func ensureDefaultProductCategoryIfNeeded() async -> String? {
+        if let inFlight = ensureDefaultProductCategoryInFlight {
+            return await inFlight.value
+        }
+
+        let task = Task { @MainActor in
+            await self.performEnsureDefaultProductCategory()
+        }
+        ensureDefaultProductCategoryInFlight = task
+        let result = await task.value
+        ensureDefaultProductCategoryInFlight = nil
+        return result
+    }
+
+    @MainActor
+    private func performEnsureDefaultProductCategory() async -> String? {
+        let existing = await fetchProductCategories()
+        if let first = existing.sorted(by: { $0.sortOrder < $1.sortOrder }).first {
+            return first.id
+        }
+
+        let model = ProductCategoryModel(
+            id: UUID().uuidString,
+            name: R.string.global.firstRunDefaultProductCategory(),
+            sortOrder: 0
+        )
+        let success = await saveProductCategory(model: model)
+        if !success {
+            logger.error("Failed to ensure default product category: \(model.name)")
+            return nil
+        }
+        return model.id
     }
 
     func setDefaultType(model: TypeModel, isDefault: Bool) async {

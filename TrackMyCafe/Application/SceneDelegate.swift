@@ -65,11 +65,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // Debug Logging of App State
         logAppState()
 
-        seedDefaultIncomeTypesIfNeeded()
+        // Order types: no device-wide Hall/Takeaway/Delivery seed.
+        // A single localized default is created on first-run sale, sale skip, or empty OrderDetails.
 
         buildDefaultOnboardingRegistry()
+        // Coach marks disabled (OnboardingManager.areCoachMarksEnabled == false).
         #if canImport(Instructions)
-            OnboardingManager.shared.configure(driver: InstructionsDriver())
+            if OnboardingManager.areCoachMarksEnabled {
+                OnboardingManager.shared.configure(driver: InstructionsDriver())
+            }
         #endif
     }
 
@@ -281,34 +285,6 @@ extension SceneDelegate: OnboardingViewControllerDelegate {
                 self?.start()
             }
             self.set(root: paywallVC)
-        }
-    }
-}
-
-extension SceneDelegate {
-    private func seedDefaultIncomeTypesIfNeeded() {
-        let key = UserDefaultsKeys.firstLaunch
-        let seeded = UserDefaults.standard.bool(forKey: key)
-        if seeded { return }
-
-        Task { @MainActor in
-            let types = await DomainDatabaseService.shared.fetchTypes()
-            if !types.isEmpty {
-                UserDefaults.standard.set(true, forKey: key)
-                UserDefaults.standard.synchronize()
-                return
-            }
-            let names = [
-                R.string.global.typeHall(),
-                R.string.global.typeTakeaway(),
-                R.string.global.typeDelivery(),
-            ]
-            for name in names {
-                let model = TypeModel(id: UUID().uuidString, name: name)
-                _ = await DomainDatabaseService.shared.saveType(model: model)
-            }
-            UserDefaults.standard.set(true, forKey: key)
-            UserDefaults.standard.synchronize()
         }
     }
 }

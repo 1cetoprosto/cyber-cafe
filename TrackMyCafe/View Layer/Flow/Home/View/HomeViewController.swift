@@ -5,6 +5,7 @@ import UIKit
 final class HomeViewController: UIViewController, ProGated {
     private let viewModel: HomeViewModelType = HomeViewModel()
     private var lastHeaderWidth: CGFloat = 0
+    private var lastInsightVisible: Bool?
     private var currentPeriod: DashboardPeriod = .month
 
     private let tableView: UITableView = {
@@ -46,6 +47,9 @@ final class HomeViewController: UIViewController, ProGated {
         }
         headerView.onProfitInfoTap = { [weak self] in
             self?.showProfitInfo()
+        }
+        headerView.onPostSetupInsightDismiss = { [weak self] in
+            self?.dismissPostSetupInsight()
         }
 
         view.addSubview(tableView)
@@ -114,6 +118,9 @@ final class HomeViewController: UIViewController, ProGated {
             headerContainer.addSubview(headerView)
             headerView.edgesToSuperview()
         }
+        headerView.setNeedsLayout()
+        headerContainer.setNeedsLayout()
+        headerView.layoutIfNeeded()
         headerContainer.layoutIfNeeded()
 
         let targetSize = CGSize(width: width, height: UIView.layoutFittingCompressedSize.height)
@@ -123,6 +130,8 @@ final class HomeViewController: UIViewController, ProGated {
             verticalFittingPriority: .fittingSizeLevel
         ).height
         headerContainer.frame = CGRect(x: 0, y: 0, width: width, height: height)
+        // Re-assign so UITableView picks up the new header height.
+        tableView.tableHeaderView = nil
         tableView.tableHeaderView = headerContainer
     }
 
@@ -132,6 +141,10 @@ final class HomeViewController: UIViewController, ProGated {
         configureHeader(for: currentPeriod)
         setTableHeaderSized()
         tableView.reloadData()
+        // Second layout pass after insight visibility / async fonts settle.
+        DispatchQueue.main.async { [weak self] in
+            self?.setTableHeaderSized()
+        }
     }
 
     private func openAddIncome() {
@@ -253,6 +266,7 @@ final class HomeViewController: UIViewController, ProGated {
         case .month:
             sales = viewModel.monthSum
         }
+        let showInsight = shouldShowPostSetupInsight(profit: viewModel.periodProfit)
         headerView.configure(
             date: viewModel.dateToday,
             period: period,
@@ -263,8 +277,28 @@ final class HomeViewController: UIViewController, ProGated {
             cash: viewModel.cashBalance,
             card: viewModel.cardBalance,
             showDeleteDemoData: UserSession.current.role == .administrator
-                && DemoDataManager.shared.isDemoDataPresent
+                && DemoDataManager.shared.isDemoDataPresent,
+            showPostSetupInsight: showInsight
         )
+        if lastInsightVisible != showInsight {
+            lastInsightVisible = showInsight
+            lastHeaderWidth = -1
+        }
+    }
+
+    private func shouldShowPostSetupInsight(profit: Double) -> Bool {
+        guard profit < 0 else { return false }
+        guard UserSession.current.role == .administrator else { return false }
+        let dataRef = UserSession.current.dataRef
+        guard UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef) else { return false }
+        return !UserDefaultsKeys.hasDismissedPostSetupInsight(dataRef: dataRef)
+    }
+
+    private func dismissPostSetupInsight() {
+        UserDefaultsKeys.setHasDismissedPostSetupInsight(
+            true, dataRef: UserSession.current.dataRef)
+        configureHeader(for: currentPeriod)
+        setTableHeaderSized()
     }
 }
 

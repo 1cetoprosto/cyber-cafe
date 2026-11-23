@@ -211,11 +211,6 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         updateTotalSumLabel()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -361,37 +356,31 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         typeInputContainer.text = viewModel.type
         updateChangeLabel()
 
-        if (typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
-            Task { [weak self] in
-                let types = await DomainDatabaseService.shared.fetchTypes()
-                if let def = types.first(where: { $0.isDefault }) {
-                    await MainActor.run { self?.typeInputContainer.text = def.name }
-                }
-            }
-        }
-
         Task { [weak self] in
             guard let self else { return }
+            // Safety net if first-run sale was skipped (or cafe otherwise has no types).
+            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
             await viewModel.loadProducts()
+            let isDataAvailable = await viewModel.verifyRequiredData()
+            let types = await DomainDatabaseService.shared.fetchTypes()
+
             await MainActor.run {
+                if (self.typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
+                    if let def = types.first(where: { $0.isDefault }) ?? types.first {
+                        self.typeInputContainer.text = def.name
+                    }
+                }
+
                 self.tableView.reloadData()
                 self.collectionView.reloadData()
                 self.updateTableHeight()
                 self.updateCollectionHeight()
                 self.updateTotalSumLabel()
                 self.updateChangeLabel()
-            }
-        }
 
-        verifyRequiredData()
-    }
-
-    private func verifyRequiredData() {
-        Task { [weak self] in
-            guard let self, let viewModel = self.viewModel else { return }
-            let isDataAvailable = await viewModel.verifyRequiredData()
-            if !isDataAvailable {
-                await MainActor.run {
+                if isDataAvailable {
+                    OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
+                } else {
                     PopupFactory.showPopup(
                         title: R.string.global.error(),
                         description: R.string.global.requiredDataIsMissingInUserSettings()

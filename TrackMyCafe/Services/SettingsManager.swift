@@ -82,6 +82,30 @@ class SettingsManager {
         UserDefaults.standard.object(forKey: trackIngredientsKey) as? Bool ?? false
     }
 
+    /// Applies owner choices from first-run operating preferences.
+    func applyOperatingPreferences(
+        trackIngredients: Bool,
+        orderMode: OrderEntryMode,
+        chooseCategoryFirst: Bool
+    ) {
+        saveTrackIngredients(trackIngredients)
+        saveOrderEntryMode(orderMode)
+        saveChooseCategoryFirstProductSelection(
+            orderMode == .perOrder ? chooseCategoryFirst : false
+        )
+        UserDefaultsKeys.setHasCompletedOperatingPreferences(
+            true, dataRef: UserSession.current.dataRef)
+    }
+
+    /// Finance-only starter profile when preferences are skipped.
+    func applyFirstRunOperatingDefaults() {
+        applyOperatingPreferences(
+            trackIngredients: false,
+            orderMode: .perOrder,
+            chooseCategoryFirst: true
+        )
+    }
+
     // func saveOnline(_ isOn: Bool) {
     //   UserSession.current.saveOnline(isOn)
     // }

@@ -152,6 +152,25 @@ Paywall **продає те, що вже показали на екрані 3**,
 - Соціальних доказів без реальних цифр.
 - Фейкового сценарію «один чек = виручка зміни».
 
+### Після логіну — first-win path (v1.2.1+)
+
+Маркетинговий onboarding показує ідею. Після Sign Up / першого входу **owner** на порожній кав’ярні проходить guided setup: **профіль закладу** (склад + схема чека) → меню → чек → грошова витрата (copy під режим) → «що залишилось», без авто-demo. Demo seed лишається лише в DEBUG для скрінів. Деталі: [`UserFlow.md`](UserFlow.md) § Getting Started.
+
+Ключі preferences: `firstRunPreferences*`. Expense: `firstRunExpenseSubtitleFinance` / `…Stock`, placeholders Finance/Stock.
+
+### Post-setup insight (після wizard → Home)
+
+Мета: не дати сприйняти мінус після одного чека + періодичної витрати як «зламаний» дашборд, і закріпити щоденну звичку.
+
+| Місце | Що показуємо |
+|---|---|
+| Leftover step | Під підсумком — tip про масштаб (чек vs місячна витрата; порівнюй за той самий період). |
+| Home (owner) | Dismissible картка **під плашкою прибутку**, лише коли прибуток &lt; 0: масштаб → звичка → натяк на Settings. CTA «Зрозуміло» / «Got it». Прапорець `hasDismissedPostSetupInsight` (per-cafe). |
+
+Без другого wizard і без deep-link у Settings з картки.
+
+Ключі: `firstRunLeftoverScaleTip`, `postSetupInsightTitle`, `postSetupInsightScale`, `postSetupInsightHabit`, `postSetupInsightSettings`, `postSetupInsightDismiss`.
+
 ---
 
 ## In-app copy (цільові рядки для `Global.strings`)

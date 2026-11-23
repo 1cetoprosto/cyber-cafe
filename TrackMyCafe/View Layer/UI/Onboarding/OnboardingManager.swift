@@ -64,6 +64,9 @@ final class OnboardingStorage {
 final class OnboardingManager {
     static let shared = OnboardingManager()
 
+    /// Coach marks (Instructions) are disabled — they were glitchy across screens.
+    static let areCoachMarksEnabled = false
+
     private var flows: [OnboardingFeature: OnboardingFlow] = [:]
     private var driver: CoachMarksDriver = NoopCoachMarksDriver()
     private func appVersionTag() -> String {
@@ -75,6 +78,10 @@ final class OnboardingManager {
     }
 
     func configure(driver: CoachMarksDriver) {
+        guard Self.areCoachMarksEnabled else {
+            self.driver = NoopCoachMarksDriver()
+            return
+        }
         self.driver = driver
     }
 
@@ -83,6 +90,7 @@ final class OnboardingManager {
     }
 
     func startIfNeeded(for feature: OnboardingFeature, on host: UIViewController) {
+        guard Self.areCoachMarksEnabled else { return }
         guard let flow = flows[feature] else { return }
         if OnboardingStorage.shared.hasCompleted(feature: feature, versionTag: flow.versionTag) {
             return

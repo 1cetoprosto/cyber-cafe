@@ -13,11 +13,25 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         didSet { applyFilter() }
     }
 
-    private var isCompactWidth: Bool {
+    private var usesCompactList: Bool {
         traitCollection.horizontalSizeClass == .compact
     }
 
+    private var tableBottomConstraint: Constraint?
     private var collectionBottomConstraint: Constraint?
+
+    private let tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .insetGrouped)
+        tableView.backgroundColor = UIColor.Main.background
+        tableView.separatorStyle = .none
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 56
+        tableView.register(
+            OrderTableViewCell.self,
+            forCellReuseIdentifier: CellIdentifiers.orderCell
+        )
+        return tableView
+    }()
 
     private let collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -80,15 +94,17 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 
         configureNavigationItems()
         setupCollectionView()
+        setupTableView()
         setupLayout()
         setupObservers()
         setupData()
+        updateChromeForSizeClass()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateReturnToOrderButtonVisibility()
-        collectionView.reloadData()
+        updateChromeForSizeClass()
+        reloadVisibleList()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -102,7 +118,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         configureNavigationItems()
-        updateReturnToOrderButtonVisibility()
+        updateChromeForSizeClass()
     }
 
     private func configureNavigationItems() {
@@ -149,14 +165,20 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         collectionView.delegate = self
     }
 
+    private func setupTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+
     private func setupLayout() {
+        view.addSubview(tableView)
         view.addSubview(collectionView)
         view.addSubview(emptyStateLabel)
         view.addSubview(returnToOrderButton)
 
-        collectionView.topToSuperview(usingSafeArea: true)
-        collectionView.leftToSuperview(usingSafeArea: true)
-        collectionView.rightToSuperview(usingSafeArea: true)
+        tableView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+        collectionView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
+        tableBottomConstraint = tableView.bottomToSuperview(usingSafeArea: true)
         collectionBottomConstraint = collectionView.bottomToSuperview(usingSafeArea: true)
 
         emptyStateLabel.centerInSuperview()
@@ -194,7 +216,7 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
             filteredProducts = products.filter { $0.name.localizedCaseInsensitiveContains(trimmed) }
         }
 
-        collectionView.reloadData()
+        reloadVisibleList()
 
         if filteredProducts.isEmpty {
             emptyStateLabel.isHidden = false
@@ -207,14 +229,29 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
         }
     }
 
-    private func updateReturnToOrderButtonVisibility() {
-        let shouldShow = isCompactWidth
-        returnToOrderButton.isHidden = !shouldShow
-        collectionBottomConstraint?.constant =
-            shouldShow
+    private func updateChromeForSizeClass() {
+        let compact = usesCompactList
+        tableView.isHidden = !compact
+        collectionView.isHidden = compact
+
+        let shouldShowReturn = compact
+        returnToOrderButton.isHidden = !shouldShowReturn
+        let bottomInset: CGFloat =
+            shouldShowReturn
             ? -(UIConstants.buttonHeight + UIConstants.standardPadding * 2)
             : 0
+        tableBottomConstraint?.constant = bottomInset
+        collectionBottomConstraint?.constant = 0
         view.setNeedsLayout()
+        reloadVisibleList()
+    }
+
+    private func reloadVisibleList() {
+        if usesCompactList {
+            tableView.reloadData()
+        } else {
+            collectionView.reloadData()
+        }
     }
 
     private func makeLayout() -> UICollectionViewLayout {
@@ -275,16 +312,114 @@ final class OrderCategoryFirstProductsViewController: UIViewController {
 
     @objc private func productListDidChange(_ note: Notification) {
         guard view.window != nil else { return }
-        DispatchQueue.main.async {
-            self.collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.reloadVisibleList()
         }
+    }
+
+    @objc private func stepperChanged(_ sender: UIStepper) {
+        let quantity = Int(sender.value)
+        guard let productId = sender.accessibilityIdentifier, !productId.isEmpty else { return }
+
+        if let idx = productsViewModel.index(forProductId: productId) {
+            productsViewModel.setQuantity(tag: idx, quantity: quantity)
+            reloadVisibleList()
+            return
+        }
+
+        guard quantity > 0,
+            let product = filteredProducts.first(where: { $0.id == productId })
+        else {
+            reloadVisibleList()
+            return
+        }
+
+        Task { [weak self] in
+            guard let self else { return }
+            await productsViewModel.addProduct(from: product)
+            if let idx = productsViewModel.index(forProductId: productId) {
+                productsViewModel.setQuantity(tag: idx, quantity: quantity)
+            }
+            await MainActor.run {
+                self.reloadVisibleList()
+            }
+        }
+    }
+
+    private func incrementProduct(_ product: ProductsPriceModel) {
+        Task { [weak self] in
+            guard let self else { return }
+            await productsViewModel.addProduct(from: product)
+            await MainActor.run {
+                self.reloadVisibleList()
+            }
+        }
+    }
+
+    private func decrementQuantity(for productId: String) {
+        guard
+            let idx = productsViewModel.index(forProductId: productId),
+            let current = productsViewModel.quantity(forProductId: productId),
+            current > 0
+        else { return }
+
+        let newValue = max(0, current - 1)
+        productsViewModel.setQuantity(tag: idx, quantity: newValue)
+        reloadVisibleList()
     }
 }
 
+// MARK: - UITableView (iPhone compact list)
+
+extension OrderCategoryFirstProductsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        filteredProducts.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath)
+        -> UITableViewCell
+    {
+        guard
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: CellIdentifiers.orderCell, for: indexPath
+            ) as? OrderTableViewCell
+        else { return UITableViewCell() }
+
+        let product = filteredProducts[indexPath.row]
+        let qty = productsViewModel.quantity(forProductId: product.id) ?? 0
+
+        cell.productLabel.text = "\(product.name) · \(product.price.currency)"
+        cell.quantityLabel.text = "\(qty)"
+        cell.productStepper.minimumValue = 0
+        cell.productStepper.maximumValue = 999
+        cell.productStepper.value = Double(qty)
+        cell.productStepper.accessibilityIdentifier = product.id
+        cell.productStepper.removeTarget(nil, action: nil, for: .valueChanged)
+        cell.productStepper.addTarget(
+            self, action: #selector(stepperChanged(_:)), for: .valueChanged)
+
+        cell.applyListStyle(row: indexPath.row, totalRows: filteredProducts.count)
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        incrementProduct(filteredProducts[indexPath.row])
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        52
+    }
+}
+
+// MARK: - UICollectionView (iPad tile grid)
+
 extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
-    UICollectionViewDelegate {
+    UICollectionViewDelegate
+{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int)
-        -> Int {
+        -> Int
+    {
         filteredProducts.count
     }
 
@@ -310,8 +445,7 @@ extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
         )
 
         cell.onMinusTapped = { [weak self] in
-            guard let self else { return }
-            self.decrementQuantity(for: product.id)
+            self?.decrementQuantity(for: product.id)
         }
 
         return cell
@@ -319,26 +453,7 @@ extension OrderCategoryFirstProductsViewController: UICollectionViewDataSource,
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
-        let product = filteredProducts[indexPath.item]
-
-        Task { [weak self] in
-            guard let self else { return }
-            await productsViewModel.addProduct(from: product)
-            await MainActor.run {
-                self.collectionView.reloadItems(at: [indexPath])
-            }
-        }
-    }
-
-    private func decrementQuantity(for productId: String) {
-        guard
-            let idx = productsViewModel.index(forProductId: productId),
-            let current = productsViewModel.quantity(forProductId: productId),
-            current > 0
-        else { return }
-
-        let newValue = max(0, current - 1)
-        productsViewModel.setQuantity(tag: idx, quantity: newValue)
+        incrementProduct(filteredProducts[indexPath.item])
     }
 }
 
