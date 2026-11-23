@@ -1246,6 +1246,7 @@
 			isa = PBXGroup;
 			children = (
 				06769F2D6B7247D6320B51F8 /* DemoDataFloatingButton.swift */,
+				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1724,7 +1725,6 @@
 				F371BECD2FED426D00D72C3A /* ManualMovements */,
 				F362781C2EE5508D00A69CFE /* Home */,
 				F3F6A6352C327B73000961C8 /* Admin */,
-				F39A52F827311FDD00C8F2D3 /* MainTabBarController.swift */,
 				F3410E592BDD00C20007157B /* Auth */,
 				F39C802E2757727E00674CF4 /* Orders */,
 				F39C802F2757729F00674CF4 /* Costs */,
