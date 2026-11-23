@@ -56,8 +56,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.Main.background
         tableView.separatorStyle = .none
-        tableView.preservesSuperviewLayoutMargins = true
+        tableView.preservesSuperviewLayoutMargins = false
         tableView.directionalLayoutMargins = .zero
+        tableView.layoutMargins = .zero
+        tableView.separatorInset = .zero
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.insetsContentViewsToSafeArea = false
         tableView.isScrollEnabled = false  // Disable scroll to avoid conflict with ScrollView
@@ -204,11 +206,10 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
-        collectionView.reloadData()
-        updateTableHeight()
-        updateCollectionHeight()
-        updateTotalSumLabel()
+        // Refresh layout if products already loaded; avoid wiping sum to 0 before async load.
+        let hasProducts = (viewModel?.productsViewModel.numberOfRowInSection(for: 0) ?? 0) > 0
+        guard hasProducts else { return }
+        reloadProductsUI()
     }
 
     override func viewDidLayoutSubviews() {
@@ -355,28 +356,31 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
         dateInputContainer.date = viewModel.date
         typeInputContainer.text = viewModel.type
         updateChangeLabel()
+        bindProductsViewModel()
 
         Task { [weak self] in
             guard let self else { return }
-            // Safety net if first-run sale was skipped (or cafe otherwise has no types).
-            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+
+            // Show line items as soon as they load; do not wait for type/settings checks.
             await viewModel.loadProducts()
-            let isDataAvailable = await viewModel.verifyRequiredData()
-            let types = await DomainDatabaseService.shared.fetchTypes()
+            await MainActor.run {
+                self.reloadProductsUI()
+            }
+
+            // Secondary work: types safety net + required-data gate (does not block product list).
+            async let ensureTypes: Void = DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            async let dataOk = viewModel.verifyRequiredData()
+            async let types = DomainDatabaseService.shared.fetchTypes()
+            await ensureTypes
+            let isDataAvailable = await dataOk
+            let fetchedTypes = await types
 
             await MainActor.run {
                 if (self.typeInputContainer.text?.isEmpty ?? true) && viewModel.isNewModel {
-                    if let def = types.first(where: { $0.isDefault }) ?? types.first {
+                    if let def = fetchedTypes.first(where: { $0.isDefault }) ?? fetchedTypes.first {
                         self.typeInputContainer.text = def.name
                     }
                 }
-
-                self.tableView.reloadData()
-                self.collectionView.reloadData()
-                self.updateTableHeight()
-                self.updateCollectionHeight()
-                self.updateTotalSumLabel()
-                self.updateChangeLabel()
 
                 if isDataAvailable {
                     OnboardingManager.shared.startIfNeeded(for: .orderDetails, on: self)
@@ -388,6 +392,23 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
                 }
             }
         }
+    }
+
+    private func bindProductsViewModel() {
+        viewModel?.productsViewModel.onChange = { [weak self] _ in
+            DispatchQueue.main.async {
+                self?.reloadProductsUI()
+            }
+        }
+    }
+
+    private func reloadProductsUI() {
+        tableView.reloadData()
+        collectionView.reloadData()
+        updateTableHeight()
+        updateCollectionHeight()
+        updateTotalSumLabel()
+        updateChangeLabel()
     }
 
     private func updateTableHeight() {

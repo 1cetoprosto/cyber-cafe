@@ -10,9 +10,6 @@ import UIKit
 
 class OrderTableViewCell: UITableViewCell {
 
-    /// Matches system `insetGrouped` section corner radius.
-    private static let groupedCornerRadius: CGFloat = 10
-
     let backgroundViewCell: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.TableView.cellBackground
@@ -84,8 +81,9 @@ class OrderTableViewCell: UITableViewCell {
         contentView.addSubview(backgroundViewCell)
         backgroundViewCell.topToSuperview()
         backgroundViewCell.bottomToSuperview()
-        backgroundViewCell.leftToSuperview(offset: UIConstants.standardPadding)
-        backgroundViewCell.rightToSuperview(offset: -UIConstants.standardPadding)
+        // Match date/type/cash cards: stack already applies screen inset; no extra cell inset.
+        backgroundViewCell.leftToSuperview()
+        backgroundViewCell.rightToSuperview()
 
         backgroundViewCell.addSubview(productLabel)
         backgroundViewCell.addSubview(quantityLabel)
@@ -113,13 +111,13 @@ class OrderTableViewCell: UITableViewCell {
         productStepper.setContentCompressionResistancePriority(.required, for: .horizontal)
     }
 
-    /// Settings-like insetGrouped section: one white block with rounded ends + hairline separators.
+    /// One cafe card block: rounded ends (`cardCornerRadius`) + hairline separators between rows.
     func applyListStyle(row: Int, totalRows: Int) {
-        let radius = Self.groupedCornerRadius
+        let radius = UIConstants.cardCornerRadius
         backgroundViewCell.layer.masksToBounds = true
+        backgroundViewCell.layer.cornerRadius = radius
 
         if totalRows <= 1 {
-            backgroundViewCell.layer.cornerRadius = radius
             backgroundViewCell.layer.maskedCorners = [
                 .layerMinXMinYCorner, .layerMaxXMinYCorner,
                 .layerMinXMaxYCorner, .layerMaxXMaxYCorner,
@@ -132,11 +130,9 @@ class OrderTableViewCell: UITableViewCell {
         let isLast = row == totalRows - 1
 
         if isFirst {
-            backgroundViewCell.layer.cornerRadius = radius
             backgroundViewCell.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
             separatorView.isHidden = false
         } else if isLast {
-            backgroundViewCell.layer.cornerRadius = radius
             backgroundViewCell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
             separatorView.isHidden = true
         } else {
