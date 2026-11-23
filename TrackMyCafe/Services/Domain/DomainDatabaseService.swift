@@ -16,8 +16,8 @@ class DomainDatabaseService: DomainDB {
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!, category: "DomainDatabaseService")
     private let orderSnapshotRepairService = OrderSnapshotRepairService()
-    /// Serializes concurrent `ensureDefaultOrderTypesIfNeeded` callers (SceneDelegate + MainTabBar + OrderDetails).
-    private var ensureDefaultOrderTypesInFlight: Task<Void, Never>?
+    /// Serializes concurrent `ensureDefaultOrderTypeIfNeeded` callers.
+    private var ensureDefaultOrderTypeInFlight: Task<Void, Never>?
 
     // Метод для перевірки, чи включений режим онлайн
     // private func isOnlineModeEnabled() -> Bool {
@@ -619,35 +619,30 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    /// Seeds Hall / Takeaway / Delivery when missing; dedupes name collisions from concurrent seeds.
-    /// Must not depend on device-wide `kFirstLaunch` — that blocked new Sign Up cafes
-    /// after the first install on the same simulator.
+    /// Ensures a single localized default receipt type exists when the cafe has none.
+    /// Does **not** auto-seed Hall / Takeaway / Delivery — those stay for DEBUG demo seed
+    /// or manual Settings. First-run creates this type on first sale, or on skip of that step.
     @MainActor
-    func ensureDefaultOrderTypesIfNeeded() async {
-        if let inFlight = ensureDefaultOrderTypesInFlight {
+    func ensureDefaultOrderTypeIfNeeded() async {
+        if let inFlight = ensureDefaultOrderTypeInFlight {
             await inFlight.value
             return
         }
 
         let task = Task { @MainActor in
-            await self.performEnsureDefaultOrderTypes()
+            await self.performEnsureDefaultOrderType()
         }
-        ensureDefaultOrderTypesInFlight = task
+        ensureDefaultOrderTypeInFlight = task
         await task.value
-        ensureDefaultOrderTypesInFlight = nil
+        ensureDefaultOrderTypeInFlight = nil
     }
 
     @MainActor
-    private func performEnsureDefaultOrderTypes() async {
-        let catalog: [(name: String, isDefault: Bool)] = [
-            (R.string.global.typeHall(), true),
-            (R.string.global.typeTakeaway(), false),
-            (R.string.global.typeDelivery(), false),
-        ]
-
+    private func performEnsureDefaultOrderType() async {
+        let defaultName = R.string.global.defaultOrderType()
         var existing = await fetchTypes()
 
-        // Concurrent ensure calls used to create duplicate names — keep one per name.
+        // Concurrent ensures used to create duplicate names — keep one per name.
         let grouped = Dictionary(grouping: existing, by: \.name)
         for group in grouped.values where group.count > 1 {
             let keeper = group.first(where: \.isDefault) ?? group[0]
@@ -657,23 +652,21 @@ class DomainDatabaseService: DomainDB {
         }
 
         existing = await fetchTypes()
-        let existingNames = Set(existing.map(\.name))
-
-        for entry in catalog where !existingNames.contains(entry.name) {
-            let model = TypeModel(
-                id: UUID().uuidString, name: entry.name, isDefault: entry.isDefault)
-            let success = await saveType(model: model)
-            if !success {
-                logger.error("Failed to ensure default order type: \(entry.name)")
+        if !existing.isEmpty {
+            if existing.contains(where: \.isDefault) { return }
+            if let preferred = existing.first(where: { $0.name == defaultName })
+                ?? existing.first
+            {
+                await setDefaultType(model: preferred, isDefault: true)
             }
+            return
         }
 
-        existing = await fetchTypes()
-        if existing.contains(where: \.isDefault) { return }
-        if let preferred = existing.first(where: { $0.name == catalog[0].name })
-            ?? existing.first
-        {
-            await setDefaultType(model: preferred, isDefault: true)
+        let model = TypeModel(
+            id: UUID().uuidString, name: defaultName, isDefault: true)
+        let success = await saveType(model: model)
+        if !success {
+            logger.error("Failed to ensure default order type: \(defaultName)")
         }
     }
 

@@ -104,7 +104,8 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             return false
         }
 
-        await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
+        // Creating the first sale also creates the single localized default type if needed.
+        await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
         let types = await database.fetchTypes()
         let orderType =
             types.first(where: { $0.isDefault })?.name
@@ -201,17 +202,34 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     func skipCurrentStep() {
+        let skippedSale = currentStep == .firstSale
+        if skippedSale {
+            Task { @MainActor in
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
+        }
         advanceAfterSuccessfulAction()
     }
 
     func skipEntireSetup() {
-        markCompleted()
-        onCompleted?()
+        Task { @MainActor in
+            // User never created a receipt in the wizard — seed one localized default type
+            // so later «Новий чек» is not blocked by an empty types list.
+            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            markCompleted()
+            onCompleted?()
+        }
     }
 
     func finishSetup() {
-        markCompleted()
-        onCompleted?()
+        Task { @MainActor in
+            let types = await database.fetchTypes()
+            if types.isEmpty {
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
+            markCompleted()
+            onCompleted?()
+        }
     }
 
     func refreshSummary() {

@@ -65,7 +65,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // Debug Logging of App State
         logAppState()
 
-        seedDefaultIncomeTypesIfNeeded()
+        // Order types: no device-wide Hall/Takeaway/Delivery seed.
+        // A single localized default is created on first-run sale, sale skip, or empty OrderDetails.
 
         buildDefaultOnboardingRegistry()
         #if canImport(Instructions)
@@ -281,18 +282,6 @@ extension SceneDelegate: OnboardingViewControllerDelegate {
                 self?.start()
             }
             self.set(root: paywallVC)
-        }
-    }
-}
-
-extension SceneDelegate {
-    private func seedDefaultIncomeTypesIfNeeded() {
-        // Per-cafe: only when signed in. Device-wide `kFirstLaunch` must not gate this —
-        // a second Sign Up on the same simulator would otherwise get an empty types list.
-        Task { @MainActor in
-            guard Auth.auth().currentUser != nil else { return }
-            guard UserSession.current.dataRef != nil else { return }
-            await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
         }
     }
 }

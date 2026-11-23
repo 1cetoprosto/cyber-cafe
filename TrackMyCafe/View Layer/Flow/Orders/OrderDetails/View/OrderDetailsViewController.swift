@@ -358,7 +358,8 @@ class OrderDetailsViewController: UIViewController, UITextFieldDelegate {
 
         Task { [weak self] in
             guard let self else { return }
-            await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
+            // Safety net if first-run sale was skipped (or cafe otherwise has no types).
+            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
             await viewModel.loadProducts()
             let isDataAvailable = await viewModel.verifyRequiredData()
             let types = await DomainDatabaseService.shared.fetchTypes()

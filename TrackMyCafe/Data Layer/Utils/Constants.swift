@@ -328,7 +328,8 @@ struct DefaultValues {
     static var currencyName: String { R.string.global.currencyHryvnia() }
     static let currencySymbol = "₴"
     static let defaultLanguage = "English"
-    static let defaultOrderType = "Default"
+    /// Localized receipt type fallback (`defaultOrderType` in Global.strings).
+    static var defaultOrderType: String { R.string.global.defaultOrderType() }
     static let unknownVersion = "Unknown"
     static let unknownUser = "Unknown"
     static let adminFirstName = "Admin"
