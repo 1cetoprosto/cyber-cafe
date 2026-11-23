@@ -233,8 +233,6 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
         expenseSection.addArrangedSubview(expenseNameField)
         expenseSection.addArrangedSubview(expenseAmountField)
-
-        summaryStack.edgesToSuperview(insets: .uniform(16))
     }
 
     private func setConstraints() {
@@ -243,6 +241,8 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
         contentStack.edgesToSuperview(insets: UIEdgeInsets(top: 16, left: 20, bottom: 24, right: 20))
         contentStack.widthToSuperview(offset: -40)
+
+        summaryStack.edgesToSuperview(insets: .uniform(16))
 
         primaryButton.leftToSuperview(offset: 24)
         primaryButton.rightToSuperview(offset: -24)
