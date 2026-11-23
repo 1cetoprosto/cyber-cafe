@@ -35,6 +35,17 @@ final class FirebaseImageStorageService: ImageStorageServiceProtocol {
     }
 
     func upload(data: Data, toPath path: String, contentType: String) async throws {
+        guard data.count <= ImageUploadEncoder.maxUploadBytes else {
+            throw NSError(
+                domain: "ImageStorageUpload",
+                code: 1,
+                userInfo: [
+                    NSLocalizedDescriptionKey:
+                        "Image exceeds Storage limit (\(data.count) bytes > \(ImageUploadEncoder.maxUploadBytes))"
+                ]
+            )
+        }
+
         let metadata = StorageMetadata()
         metadata.contentType = contentType
 

@@ -137,9 +137,18 @@ final class ProductCategoryDetailsViewController: UIViewController, Loggable {
         let placeholder = AppImagePlaceholder.category()
         if let path = viewModel.imagePath, !path.isEmpty {
             isImagePresent = true
-            imageView.setImage(pathOrURL: path, placeholder: placeholder)
+            setImageLoading(true)
+            imageView.setImage(
+                pathOrURL: path,
+                placeholder: placeholder,
+                maxPixelSize: 900
+            ) { [weak self] in
+                self?.setImageLoading(false)
+            }
         } else {
             isImagePresent = false
+            setImageLoading(false)
+            imageView.cancelImageLoad()
             imageView.image = placeholder
         }
     }
@@ -215,20 +224,6 @@ final class ProductCategoryDetailsViewController: UIViewController, Loggable {
         }
     }
 
-    private func makeJPEGData(from image: UIImage) -> Data? {
-        let maxDimension: CGFloat = 1400
-        let size = image.size
-        let longestSide = max(size.width, size.height)
-        guard longestSide > 0 else { return nil }
-        let scale = min(1, maxDimension / longestSide)
-        let targetSize = CGSize(width: size.width * scale, height: size.height * scale)
-
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        let rendered = renderer.image { _ in
-            image.draw(in: CGRect(origin: .zero, size: targetSize))
-        }
-        return rendered.jpegData(compressionQuality: 0.86)
-    }
 }
 
 extension ProductCategoryDetailsViewController: UITextFieldDelegate {
@@ -257,8 +252,11 @@ extension ProductCategoryDetailsViewController: PHPickerViewControllerDelegate {
             let image = await self.loadImage(from: item)
             guard let image else { return }
 
-            let data = self.makeJPEGData(from: image)
-            guard let data else { return }
+            let data = ImageUploadEncoder.jpegDataForUpload(from: image)
+            guard let data else {
+                self.logger.error("Failed to encode category image for upload")
+                return
+            }
 
             self.viewModel.setSelectedImageData(data)
             _ = await MainActor.run {

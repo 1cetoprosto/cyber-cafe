@@ -65,11 +65,19 @@ extension UIImageView {
         }
     }
 
-    func setImage(pathOrURL: String?, placeholder: UIImage?) {
+    /// - Parameter maxPixelSize: Optional ImageIO downscale before display (list/detail thumbs).
+    /// - Parameter completion: Called on the main actor when load finishes or fails (not on cancel).
+    func setImage(
+        pathOrURL: String?,
+        placeholder: UIImage?,
+        maxPixelSize: Int? = nil,
+        completion: (() -> Void)? = nil
+    ) {
         cancelImageLoad()
 
         guard let pathOrURL, !pathOrURL.isEmpty else {
             image = placeholder
+            completion?()
             return
         }
 
@@ -88,7 +96,10 @@ extension UIImageView {
         let box = ImageLoadTaskBox()
         box.task = Task { [weak self] in
             do {
-                let img = try await ImageLoader.shared.loadImage(forPathOrURL: pathOrURL)
+                let img = try await ImageLoader.shared.loadImage(
+                    forPathOrURL: pathOrURL,
+                    maxPixelSize: maxPixelSize
+                )
                 guard !Task.isCancelled else { return }
                 await MainActor.run {
                     guard let self else { return }
@@ -100,9 +111,13 @@ extension UIImageView {
                     }
                     guard currentToken == token else { return }
                     self.image = img
+                    completion?()
                 }
             } catch {
                 guard !Task.isCancelled else { return }
+                await MainActor.run {
+                    completion?()
+                }
             }
         }
         withUnsafePointer(to: &UIImageViewAssociatedKeys.imageLoadTaskBox) { key in
