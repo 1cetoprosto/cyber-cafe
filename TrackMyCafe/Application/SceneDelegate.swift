@@ -69,8 +69,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate, Loggable {
         // A single localized default is created on first-run sale, sale skip, or empty OrderDetails.
 
         buildDefaultOnboardingRegistry()
+        // Coach marks disabled (OnboardingManager.areCoachMarksEnabled == false).
         #if canImport(Instructions)
-            OnboardingManager.shared.configure(driver: InstructionsDriver())
+            if OnboardingManager.areCoachMarksEnabled {
+                OnboardingManager.shared.configure(driver: InstructionsDriver())
+            }
         #endif
     }
 

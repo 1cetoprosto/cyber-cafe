@@ -170,8 +170,8 @@ final class HomeHeaderView: UIView {
 
         let contentStack = UIStackView(
             arrangedSubviews: [
-                deleteDemoDataButton, headerStack, postSetupInsightView, actionsStack, periodControl,
-                profitCard, kpiRow, balanceCard,
+                deleteDemoDataButton, headerStack, actionsStack, periodControl,
+                profitCard, postSetupInsightView, kpiRow, balanceCard,
             ]
         )
         contentStack.axis = NSLayoutConstraint.Axis.vertical
