@@ -617,6 +617,35 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
+    /// Seeds Hall / Takeaway / Delivery when the current cafe has no order types.
+    /// Must not depend on device-wide `kFirstLaunch` — that blocked new Sign Up cafes
+    /// after the first install on the same simulator.
+    @MainActor
+    func ensureDefaultOrderTypesIfNeeded() async {
+        let existing = await fetchTypes()
+        if !existing.isEmpty {
+            if existing.contains(where: { $0.isDefault }) { return }
+            if let first = existing.first {
+                await setDefaultType(model: first, isDefault: true)
+            }
+            return
+        }
+
+        let catalog: [(name: String, isDefault: Bool)] = [
+            (R.string.global.typeHall(), true),
+            (R.string.global.typeTakeaway(), false),
+            (R.string.global.typeDelivery(), false),
+        ]
+        for entry in catalog {
+            let model = TypeModel(
+                id: UUID().uuidString, name: entry.name, isDefault: entry.isDefault)
+            let success = await saveType(model: model)
+            if !success {
+                logger.error("Failed to ensure default order type: \(entry.name)")
+            }
+        }
+    }
+
     func setDefaultType(model: TypeModel, isDefault: Bool) async {
         do {
             let firTypes = try await FirestoreDatabaseService.shared.read(

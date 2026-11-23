@@ -73,8 +73,13 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        checkAndPresentFirstRunSetupIfNeeded()
-        updateDemoDataButtonVisibility()
+        Task { [weak self] in
+            await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
+            await MainActor.run {
+                self?.checkAndPresentFirstRunSetupIfNeeded()
+                self?.updateDemoDataButtonVisibility()
+            }
+        }
     }
 
     @objc private func updateDemoDataButtonVisibility() {

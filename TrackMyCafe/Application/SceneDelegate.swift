@@ -287,28 +287,12 @@ extension SceneDelegate: OnboardingViewControllerDelegate {
 
 extension SceneDelegate {
     private func seedDefaultIncomeTypesIfNeeded() {
-        let key = UserDefaultsKeys.firstLaunch
-        let seeded = UserDefaults.standard.bool(forKey: key)
-        if seeded { return }
-
+        // Per-cafe: only when signed in. Device-wide `kFirstLaunch` must not gate this —
+        // a second Sign Up on the same simulator would otherwise get an empty types list.
         Task { @MainActor in
-            let types = await DomainDatabaseService.shared.fetchTypes()
-            if !types.isEmpty {
-                UserDefaults.standard.set(true, forKey: key)
-                UserDefaults.standard.synchronize()
-                return
-            }
-            let names = [
-                R.string.global.typeHall(),
-                R.string.global.typeTakeaway(),
-                R.string.global.typeDelivery(),
-            ]
-            for name in names {
-                let model = TypeModel(id: UUID().uuidString, name: name)
-                _ = await DomainDatabaseService.shared.saveType(model: model)
-            }
-            UserDefaults.standard.set(true, forKey: key)
-            UserDefaults.standard.synchronize()
+            guard Auth.auth().currentUser != nil else { return }
+            guard UserSession.current.dataRef != nil else { return }
+            await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
         }
     }
 }

@@ -686,9 +686,9 @@
 "firstRunSaleSubtitle" = "Pick items from your menu and save the sale so sales show up.";
 "firstRunSaleEmpty" = "Add at least one item to the sale";
 "firstRunExpenseTitle" = "One expense";
-"firstRunExpenseSubtitle" = "Log rent, supplies, or another cost so you can see what’s left after sales.";
-"firstRunExpenseNamePlaceholder" = "e.g. Rent";
+"firstRunExpenseSubtitle" = "Log a small amount for today (shop milk, a slice of utilities). Save full monthly rent, payroll, or taxes for later — otherwise one sale will look like a huge loss.";
+"firstRunExpenseNamePlaceholder" = "e.g. Milk for the shop";
 "firstRunExpenseNameRequired" = "Enter an expense name";
 "firstRunExpenseAmountInvalid" = "Enter a valid amount";
 "firstRunLeftoverTitle" = "Here’s what’s left";
-"firstRunLeftoverSubtitle" = "Sales minus costs on your numbers. From here, you’ll see it on the dashboard.";
+"firstRunLeftoverSubtitle" = "Sales minus costs on your numbers. A monthly cost against one sale will look negative — that’s expected until more sales land.";

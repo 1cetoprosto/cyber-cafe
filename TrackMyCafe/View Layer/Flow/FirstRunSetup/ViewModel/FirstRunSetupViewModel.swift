@@ -104,6 +104,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             return false
         }
 
+        await DomainDatabaseService.shared.ensureDefaultOrderTypesIfNeeded()
         let types = await database.fetchTypes()
         let orderType =
             types.first(where: { $0.isDefault })?.name
