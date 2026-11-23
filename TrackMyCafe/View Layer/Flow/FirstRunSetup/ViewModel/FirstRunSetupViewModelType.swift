@@ -10,10 +10,12 @@ import Foundation
 // MARK: - FirstRunSetupStep
 
 enum FirstRunSetupStep: Int, CaseIterable {
-    case menu = 0
-    case firstSale = 1
-    case expense = 2
-    case leftover = 3
+    /// Operating profile: stock + receipt mode (before any sample data).
+    case preferences = 0
+    case menu = 1
+    case firstSale = 2
+    case expense = 3
+    case leftover = 4
 
     var displayNumber: Int { rawValue + 1 }
     static var totalCount: Int { allCases.count }
@@ -37,14 +39,24 @@ protocol FirstRunSetupViewModelType: AnyObject {
     var leftoverTotal: Double { get }
     var minimumProductsToContinue: Int { get }
 
+    /// Draft operating choices (applied when leaving preferences).
+    var tracksIngredients: Bool { get }
+    var orderEntryMode: OrderEntryMode { get }
+    var chooseCategoryFirst: Bool { get }
+
     var onStepChanged: (() -> Void)? { get set }
     var onProductsChanged: (() -> Void)? { get set }
     var onSaleChanged: (() -> Void)? { get set }
     var onSummaryReady: (() -> Void)? { get set }
     var onCompleted: (() -> Void)? { get set }
     var onError: ((String) -> Void)? { get set }
+    var onPreferencesChanged: (() -> Void)? { get set }
 
     func canContinueFromCurrentStep() -> Bool
+    func setTracksIngredients(_ enabled: Bool)
+    func setOrderEntryMode(_ mode: OrderEntryMode)
+    func setChooseCategoryFirst(_ enabled: Bool)
+    func commitOperatingPreferences()
     func addProduct(name: String, priceText: String) async -> Bool
     func setSaleQuantity(productId: String, quantity: Int)
     func saveFirstSale() async -> Bool

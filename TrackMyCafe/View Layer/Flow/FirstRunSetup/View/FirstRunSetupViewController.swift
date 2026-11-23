@@ -109,7 +109,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         InputContainerView(
             labelText: R.string.global.costName(),
             inputType: .text(keyboardType: .default),
-            placeholder: R.string.global.firstRunExpenseNamePlaceholder()
+            placeholder: R.string.global.firstRunExpenseNamePlaceholderFinance()
         )
     }()
 
@@ -168,10 +168,49 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         return button
     }()
 
+    private let preferencesSection = UIStackView()
     private let menuSection = UIStackView()
     private let saleSection = UIStackView()
     private let expenseSection = UIStackView()
     private let leftoverSection = UIStackView()
+
+    private lazy var stockNoCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesStockNoTitle(),
+        body: R.string.global.firstRunPreferencesStockNoBody(),
+        action: #selector(stockNoTapped)
+    )
+    private lazy var stockYesCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesStockYesTitle(),
+        body: R.string.global.firstRunPreferencesStockYesBody(),
+        action: #selector(stockYesTapped)
+    )
+    private lazy var classicCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesClassicTitle(),
+        body: R.string.global.firstRunPreferencesClassicBody(),
+        action: #selector(classicReceiptTapped)
+    )
+    private lazy var simplifiedCard = makePreferenceCard(
+        title: R.string.global.firstRunPreferencesSimplifiedTitle(),
+        body: R.string.global.firstRunPreferencesSimplifiedBody(),
+        action: #selector(simplifiedReceiptTapped)
+    )
+
+    private lazy var categoryFirstSwitch: UISwitch = {
+        let control = UISwitch()
+        control.onTintColor = .systemGreen
+        control.addTarget(self, action: #selector(categoryFirstChanged(_:)), for: .valueChanged)
+        return control
+    }()
+
+    private let categoryFirstRow = UIStackView()
+    private let categoryFirstHintLabel: UILabel = {
+        let label = AppLabel(style: .footnote)
+        label.apply(.footnote)
+        label.textColor = Theme.current.secondaryText
+        label.numberOfLines = 0
+        label.text = R.string.global.firstRunPreferencesCategoryFirstHint()
+        return label
+    }()
 
     // MARK: - Init
 
@@ -192,6 +231,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         setConstraints()
         bindViewModel()
         renderStep()
+        renderPreferencesSelection()
     }
 
     // MARK: - Setup
@@ -218,6 +258,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         contentStack.addArrangedSubview(stepLabel)
         contentStack.addArrangedSubview(titleLabel)
         contentStack.addArrangedSubview(subtitleLabel)
+        contentStack.addArrangedSubview(preferencesSection)
         contentStack.addArrangedSubview(menuSection)
         contentStack.addArrangedSubview(saleSection)
         contentStack.addArrangedSubview(expenseSection)
@@ -229,10 +270,35 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
     }
 
     private func configureSectionStacks() {
-        [menuSection, saleSection, expenseSection, leftoverSection].forEach { stack in
+        [preferencesSection, menuSection, saleSection, expenseSection, leftoverSection].forEach {
+            stack in
             stack.axis = .vertical
             stack.spacing = 12
         }
+
+        let stockHeader = sectionHeader(R.string.global.firstRunPreferencesStockSection())
+        let receiptHeader = sectionHeader(R.string.global.firstRunPreferencesReceiptSection())
+
+        let categoryTitle = AppLabel(style: .body)
+        categoryTitle.apply(.body)
+        categoryTitle.text = R.string.global.firstRunPreferencesCategoryFirst()
+        categoryTitle.numberOfLines = 0
+        categoryTitle.textColor = UIColor.Main.text
+
+        categoryFirstRow.axis = .horizontal
+        categoryFirstRow.alignment = .center
+        categoryFirstRow.spacing = 12
+        categoryFirstRow.addArrangedSubview(categoryTitle)
+        categoryFirstRow.addArrangedSubview(categoryFirstSwitch)
+
+        preferencesSection.addArrangedSubview(stockHeader)
+        preferencesSection.addArrangedSubview(stockNoCard)
+        preferencesSection.addArrangedSubview(stockYesCard)
+        preferencesSection.addArrangedSubview(receiptHeader)
+        preferencesSection.addArrangedSubview(classicCard)
+        preferencesSection.addArrangedSubview(simplifiedCard)
+        preferencesSection.addArrangedSubview(categoryFirstRow)
+        preferencesSection.addArrangedSubview(categoryFirstHintLabel)
 
         menuSection.addArrangedSubview(productNameField)
         menuSection.addArrangedSubview(productPriceField)
@@ -247,23 +313,34 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func setConstraints() {
         scrollView.edgesToSuperview(excluding: .bottom, usingSafeArea: true)
-        scrollView.bottomToTop(of: primaryButton, offset: -16)
+        scrollView.bottomToTop(of: primaryButton, offset: -UIConstants.standardPadding)
 
-        contentStack.edgesToSuperview(insets: UIEdgeInsets(top: 16, left: 20, bottom: 24, right: 20))
-        contentStack.widthToSuperview(offset: -40)
+        contentStack.edgesToSuperview(
+            insets: UIEdgeInsets(
+                top: UIConstants.standardPadding,
+                left: UIConstants.standardPadding,
+                bottom: UIConstants.standardPadding,
+                right: UIConstants.standardPadding
+            )
+        )
+        contentStack.widthToSuperview(
+            offset: -(UIConstants.standardPadding * 2)
+        )
 
-        summaryStack.edgesToSuperview(insets: .uniform(16))
-
-        primaryButton.leftToSuperview(offset: 24)
-        primaryButton.rightToSuperview(offset: -24)
-        primaryButton.height(56)
+        primaryButton.leftToSuperview(offset: UIConstants.standardPadding)
+        primaryButton.rightToSuperview(offset: -UIConstants.standardPadding)
+        primaryButton.height(UIConstants.buttonHeight)
         primaryButton.bottomToTop(of: skipStepButton, offset: -8)
 
         skipStepButton.centerXToSuperview()
         skipStepButton.bottomToTop(of: skipAllButton, offset: -4)
 
         skipAllButton.centerXToSuperview()
-        skipAllButton.bottomToSuperview(offset: -12, usingSafeArea: true)
+        skipAllButton.bottomToSuperview(offset: -UIConstants.standardPadding, usingSafeArea: true)
+
+        summaryStack.edgesToSuperview(
+            insets: UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        )
     }
 
     private func bindViewModel() {
@@ -280,6 +357,9 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         }
         viewModel.onSummaryReady = { [weak self] in
             self?.renderSummary()
+        }
+        viewModel.onPreferencesChanged = { [weak self] in
+            self?.renderPreferencesSelection()
         }
         viewModel.onCompleted = { [weak self] in
             guard let self else { return }
@@ -299,6 +379,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
             String(FirstRunSetupStep.totalCount)
         )
 
+        preferencesSection.isHidden = step != .preferences
         menuSection.isHidden = step != .menu
         saleSection.isHidden = step != .firstSale
         expenseSection.isHidden = step != .expense
@@ -308,9 +389,17 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
         navigationItem.rightBarButtonItem?.isEnabled = step != .leftover
 
         switch step {
+        case .preferences:
+            titleLabel.text = R.string.global.firstRunPreferencesTitle()
+            subtitleLabel.text = R.string.global.firstRunPreferencesSubtitle()
+            primaryButton.setTitle(R.string.global.firstRunContinue(), for: .normal)
+            renderPreferencesSelection()
         case .menu:
             titleLabel.text = R.string.global.firstRunMenuTitle()
-            subtitleLabel.text = R.string.global.firstRunMenuSubtitle()
+            subtitleLabel.text =
+                viewModel.tracksIngredients
+                ? R.string.global.firstRunMenuSubtitleStock()
+                : R.string.global.firstRunMenuSubtitleFinance()
             primaryButton.setTitle(R.string.global.firstRunContinue(), for: .normal)
             renderProductsList()
         case .firstSale:
@@ -320,7 +409,7 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
             renderSaleList()
         case .expense:
             titleLabel.text = R.string.global.firstRunExpenseTitle()
-            subtitleLabel.text = R.string.global.firstRunExpenseSubtitle()
+            applyExpenseCopyForMode()
             primaryButton.setTitle(R.string.global.firstRunSaveExpense(), for: .normal)
         case .leftover:
             titleLabel.text = R.string.global.firstRunLeftoverTitle()
@@ -332,6 +421,32 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
         updatePrimaryEnabled()
         view.endEditing(true)
+    }
+
+    private func applyExpenseCopyForMode() {
+        if viewModel.tracksIngredients {
+            subtitleLabel.text = R.string.global.firstRunExpenseSubtitleStock()
+            expenseNameField.setPlaceholder(
+                R.string.global.firstRunExpenseNamePlaceholderStock()
+            )
+        } else {
+            subtitleLabel.text = R.string.global.firstRunExpenseSubtitleFinance()
+            expenseNameField.setPlaceholder(
+                R.string.global.firstRunExpenseNamePlaceholderFinance()
+            )
+        }
+    }
+
+    private func renderPreferencesSelection() {
+        stylePreferenceCard(stockNoCard, selected: !viewModel.tracksIngredients)
+        stylePreferenceCard(stockYesCard, selected: viewModel.tracksIngredients)
+        stylePreferenceCard(classicCard, selected: viewModel.orderEntryMode == .perOrder)
+        stylePreferenceCard(simplifiedCard, selected: viewModel.orderEntryMode == .openTab)
+
+        let showCategory = viewModel.orderEntryMode == .perOrder
+        categoryFirstRow.isHidden = !showCategory
+        categoryFirstHintLabel.isHidden = !showCategory
+        categoryFirstSwitch.isOn = viewModel.chooseCategoryFirst
     }
 
     private func renderProductsList() {
@@ -380,16 +495,65 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func updatePrimaryEnabled() {
         switch viewModel.currentStep {
-        case .menu:
-            primaryButton.isEnabled = viewModel.canContinueFromCurrentStep()
-            primaryButton.alpha = primaryButton.isEnabled ? 1 : 0.5
-        case .firstSale:
-            primaryButton.isEnabled = viewModel.canContinueFromCurrentStep()
-            primaryButton.alpha = primaryButton.isEnabled ? 1 : 0.5
-        case .expense, .leftover:
+        case .preferences, .expense, .leftover:
             primaryButton.isEnabled = true
             primaryButton.alpha = 1
+        case .menu, .firstSale:
+            primaryButton.isEnabled = viewModel.canContinueFromCurrentStep()
+            primaryButton.alpha = primaryButton.isEnabled ? 1 : 0.5
         }
+    }
+
+    // MARK: - Preference UI helpers
+
+    private func sectionHeader(_ text: String) -> UILabel {
+        let label = AppLabel(style: .bodyDemiBold)
+        label.apply(.bodyDemiBold)
+        label.text = text
+        label.textColor = UIColor.Main.text
+        label.numberOfLines = 0
+        return label
+    }
+
+    private func makePreferenceCard(title: String, body: String, action: Selector) -> UIControl {
+        let control = UIControl()
+        control.backgroundColor = UIColor.TableView.cellBackground
+        control.applyCafeSoftCardStyle()
+        control.addTarget(self, action: action, for: .touchUpInside)
+
+        let titleLabel = AppLabel(style: .bodyDemiBold)
+        titleLabel.apply(.bodyDemiBold)
+        titleLabel.text = title
+        titleLabel.textColor = UIColor.Main.text
+        titleLabel.numberOfLines = 0
+        titleLabel.isUserInteractionEnabled = false
+
+        let bodyLabel = AppLabel(style: .footnote)
+        bodyLabel.apply(.footnote)
+        bodyLabel.text = body
+        bodyLabel.textColor = Theme.current.secondaryText
+        bodyLabel.numberOfLines = 0
+        bodyLabel.isUserInteractionEnabled = false
+
+        let stack = UIStackView(arrangedSubviews: [titleLabel, bodyLabel])
+        stack.axis = .vertical
+        stack.spacing = 6
+        stack.isUserInteractionEnabled = false
+
+        control.addSubview(stack)
+        stack.edgesToSuperview(
+            insets: UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        )
+        return control
+    }
+
+    private func stylePreferenceCard(_ card: UIControl, selected: Bool) {
+        card.layer.borderWidth = selected ? 2 : 1
+        card.layer.borderColor =
+            selected
+            ? UIColor.Button.background.cgColor
+            : UIColor.Main.text.withAlphaComponent(0.12).cgColor
+        card.alpha = selected ? 1 : 0.92
     }
 
     // MARK: - Row builders
@@ -473,6 +637,26 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     // MARK: - Actions
 
+    @objc private func stockNoTapped() {
+        viewModel.setTracksIngredients(false)
+    }
+
+    @objc private func stockYesTapped() {
+        viewModel.setTracksIngredients(true)
+    }
+
+    @objc private func classicReceiptTapped() {
+        viewModel.setOrderEntryMode(.perOrder)
+    }
+
+    @objc private func simplifiedReceiptTapped() {
+        viewModel.setOrderEntryMode(.openTab)
+    }
+
+    @objc private func categoryFirstChanged(_ sender: UISwitch) {
+        viewModel.setChooseCategoryFirst(sender.isOn)
+    }
+
     @objc private func addProductTapped() {
         Task { [weak self] in
             guard let self else { return }
@@ -489,6 +673,9 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     @objc private func primaryTapped() {
         switch viewModel.currentStep {
+        case .preferences:
+            viewModel.commitOperatingPreferences()
+            viewModel.advanceAfterSuccessfulAction()
         case .menu:
             guard viewModel.canContinueFromCurrentStep() else { return }
             viewModel.advanceAfterSuccessfulAction()

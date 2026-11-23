@@ -82,12 +82,26 @@ class SettingsManager {
         UserDefaults.standard.object(forKey: trackIngredientsKey) as? Bool ?? false
     }
 
-    /// Starter profile for first-run guided setup:
-    /// classic per-customer receipts + category-first catalog; no auto stock write-off.
+    /// Applies owner choices from first-run operating preferences.
+    func applyOperatingPreferences(
+        trackIngredients: Bool,
+        orderMode: OrderEntryMode,
+        chooseCategoryFirst: Bool
+    ) {
+        saveTrackIngredients(trackIngredients)
+        saveOrderEntryMode(orderMode)
+        saveChooseCategoryFirstProductSelection(
+            orderMode == .perOrder ? chooseCategoryFirst : false
+        )
+    }
+
+    /// Finance-only starter profile when preferences are skipped.
     func applyFirstRunOperatingDefaults() {
-        saveOrderEntryMode(.perOrder)
-        saveChooseCategoryFirstProductSelection(true)
-        saveTrackIngredients(false)
+        applyOperatingPreferences(
+            trackIngredients: false,
+            orderMode: .perOrder,
+            chooseCategoryFirst: true
+        )
     }
 
     // func saveOnline(_ isOn: Bool) {

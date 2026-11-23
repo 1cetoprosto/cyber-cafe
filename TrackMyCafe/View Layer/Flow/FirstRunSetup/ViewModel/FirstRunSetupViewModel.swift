@@ -13,12 +13,16 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     // MARK: - Properties
 
-    private(set) var currentStep: FirstRunSetupStep = .menu
+    private(set) var currentStep: FirstRunSetupStep = .preferences
     private(set) var addedProducts: [ProductsPriceModel] = []
     private(set) var saleLines: [FirstRunSetupSaleLine] = []
     private(set) var salesTotal: Double = 0
     private(set) var costsTotal: Double = 0
     private(set) var leftoverTotal: Double = 0
+
+    private(set) var tracksIngredients = false
+    private(set) var orderEntryMode: OrderEntryMode = .perOrder
+    private(set) var chooseCategoryFirst = true
 
     let minimumProductsToContinue = 2
 
@@ -28,25 +32,23 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     var onSummaryReady: (() -> Void)?
     var onCompleted: (() -> Void)?
     var onError: ((String) -> Void)?
+    var onPreferencesChanged: (() -> Void)?
 
     private let database: DomainDB
-    private let defaults: UserDefaults
+    private var didCommitPreferences = false
 
     // MARK: - Init
 
-    init(
-        database: DomainDB = DomainDatabaseService.shared,
-        defaults: UserDefaults = .standard
-    ) {
+    init(database: DomainDB = DomainDatabaseService.shared) {
         self.database = database
-        self.defaults = defaults
-        SettingsManager.shared.applyFirstRunOperatingDefaults()
     }
 
     // MARK: - FirstRunSetupViewModelType
 
     func canContinueFromCurrentStep() -> Bool {
         switch currentStep {
+        case .preferences:
+            return true
         case .menu:
             return addedProducts.count >= minimumProductsToContinue
         case .firstSale:
@@ -56,6 +58,37 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
         case .leftover:
             return true
         }
+    }
+
+    func setTracksIngredients(_ enabled: Bool) {
+        tracksIngredients = enabled
+        onPreferencesChanged?()
+    }
+
+    func setOrderEntryMode(_ mode: OrderEntryMode) {
+        let wasOpenTab = orderEntryMode == .openTab
+        orderEntryMode = mode
+        if mode == .openTab {
+            chooseCategoryFirst = false
+        } else if wasOpenTab {
+            chooseCategoryFirst = true
+        }
+        onPreferencesChanged?()
+    }
+
+    func setChooseCategoryFirst(_ enabled: Bool) {
+        guard orderEntryMode == .perOrder else { return }
+        chooseCategoryFirst = enabled
+        onPreferencesChanged?()
+    }
+
+    func commitOperatingPreferences() {
+        SettingsManager.shared.applyOperatingPreferences(
+            trackIngredients: tracksIngredients,
+            orderMode: orderEntryMode,
+            chooseCategoryFirst: orderEntryMode == .perOrder ? chooseCategoryFirst : false
+        )
+        didCommitPreferences = true
     }
 
     @MainActor
@@ -107,7 +140,6 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             return false
         }
 
-        // Creating the first sale also creates the single localized default type if needed.
         await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
         let types = await database.fetchTypes()
         let orderType =
@@ -129,6 +161,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             cash: sum,
             card: 0,
             totalCost: 0,
+            // No recipes yet in the wizard — write-off starts after ingredients are set up.
             inventoryTracking: false,
             note: nil,
             createdBy: UserSession.current.employeeRef
@@ -205,6 +238,9 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     func skipCurrentStep() {
+        if currentStep == .preferences {
+            applyFinanceOnlyDefaultsAndCommit()
+        }
         let skippedSale = currentStep == .firstSale
         if skippedSale {
             Task { @MainActor in
@@ -216,8 +252,9 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     func skipEntireSetup() {
         Task { @MainActor in
-            // User never created a receipt in the wizard — seed one localized default type
-            // so later «Новий чек» is not blocked by an empty types list.
+            if !didCommitPreferences {
+                applyFinanceOnlyDefaultsAndCommit()
+            }
             await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
             markCompleted()
             onCompleted?()
@@ -226,6 +263,9 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     func finishSetup() {
         Task { @MainActor in
+            if !didCommitPreferences {
+                applyFinanceOnlyDefaultsAndCommit()
+            }
             let types = await database.fetchTypes()
             if types.isEmpty {
                 await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
@@ -241,6 +281,13 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     // MARK: - Private
+
+    private func applyFinanceOnlyDefaultsAndCommit() {
+        tracksIngredients = false
+        orderEntryMode = .perOrder
+        chooseCategoryFirst = true
+        commitOperatingPreferences()
+    }
 
     private func rebuildSaleLinesPreservingQuantities() {
         let previousQuantities = Dictionary(
