@@ -273,30 +273,30 @@ Terms of Use (EULA): https://www.apple.com/legal/internet-services/itunes/dev/st
 **EN:**  
 `coffee shop,cafe,bakery,food truck,profit,bookkeeping,expenses,cogs,inventory,kiosk,pos,payroll`
 
-### 2.7 What’s New — залито для 1.2.0 (2026-11-12)
+### 2.7 What’s New — підготовка для 1.2.1
 
 **Правило (актуально):** What’s New = зміни версії для Updates / довіри; **не** місце для ASO-хука (хук → Promo / Subtitle / скріни). Див. `.cursor/rules/trackmycafe-native-copy.mdc`.
 
-**Live 1.2.0 (історично, positioning-style — наступні версії писати за новим правилом):**
-
-**UK (у `fastlane`; на UA-вітрині 2026-11-23 фактично світився EN):** Оновили акцент на реальний прибуток: дашборд і звіти показують, що залишається після всіх витрат.  
-**EN:** Clearer focus on real profit: dashboard and reports show what’s left after all expenses.
-
-**Орієнтир для наступного submit (benefit-led зміни 1.2.0, не слоган):**
+**1.2.1 (у `fastlane/metadata/*/release_notes.txt`, ще не обов’язково залито в ASC):**
 
 **UK:**
 ```
-• Робота з командою: ролі Власник, Менеджер і Офіціант
-• Розділ «Персонал» — запрошуйте співробітників і керуйте доступом
-• Офіціант бачить свої замовлення; гроші й звіти — у власника та менеджера
+• Після реєстрації — короткий старт: своє меню, продаж, витрата й підсумок «що залишилось»
+• У Налаштуваннях підказки «і» для режиму чека та списання інгредієнтів
+• На порожній кав’ярні більше немає чужого демо — одразу ваші цифри
 ```
 
 **EN:**
 ```
-• Team roles: Owner, Manager, and Waiter
-• Staff section — invite teammates and control what they can see
-• Waiters see their own orders; money and reports stay with owners and managers
+• After sign-up, a short setup walks you through your menu, a sale, an expense, and what’s left
+• Settings info tips for receipt mode and ingredient tracking
+• No auto demo on an empty cafe — your own numbers from the start
 ```
+
+**Live 1.2.0 (історично):**
+
+**UK:** Оновили акцент на реальний прибуток: дашборд і звіти показують, що залишається після всіх витрат.  
+**EN:** Clearer focus on real profit: dashboard and reports show what’s left after all expenses.
 
 ### 2.8 URLs
 

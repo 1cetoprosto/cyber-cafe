@@ -165,34 +165,37 @@
   - Staff-модуль відповідає MVVM (ViewModels, без прямого доступу до RequestManager у ViewControllers).
   - Немає обмежень за кількістю персоналу.
 
-### `v1.2.1` — First-run guided setup
+### `v1.2.1` — First-run guided setup + structure cleanup
 
 **Слоган:** новий owner доходить до «що залишилось» на своїх цифрах, без чужого авто-demo.
 
-- Issue `#312` feat: disable auto demo seed; owner guided setup; DEBUG seed для скрінів лишається.
-- First-run: крок **профіль закладу** (склад + схема чека) → меню → чек → opex з copy під режим (не «молоко на склад») → leftover — у PR `#313`.
-- Post-setup: leftover scale tip + dismissible Home insight (habit + Settings mention) — у PR `#313`.
-- Issue `#327` / PR `#328`: Settings footers + `info.circle` для режиму чека / category-first / track ingredients (stacked на `#313`).
-- Milestone: [`v1.2.1`](https://github.com/1cetoprosto/cyber-cafe/milestone/16).
+**Статус:** код на `main` (2026-11-23); marketing `1.2.1` / build `72` — готово до TestFlight / ASC submit.
+
+- Issue `#312` / PR `#313`: disable auto demo seed; owner guided setup; DEBUG seed для скрінів лишається.
+- First-run: **профіль закладу** (склад + схема чека) → меню → чек → opex з copy під режим → leftover.
+- Post-setup: leftover scale tip + dismissible Home insight.
+- Issue `#327` / PR `#330` (onto `main`; stacked `#328` був у feature-гілку): Settings footers + `info.circle`.
+- **Structure cleanup** (ті самі issues, закриті в цьому milestone):
+  - `#293` / `#333` — `MainTabBarController` → `Flow/Main/View`
+  - `#294` / `#331` — feature folders `View/` / `ViewModel/`
+  - `#295` / `#332` — Extensions Foundation vs UI
+  - `#296` / `#335` — IAP/Subscription → `Services/`
+  - `#297` / `#334` — один FIR image storage API
+  - `#298` / `#336` — Auth folder layout + `*ViewController`
+  - `#299` / `#337` — Auth MVVM + `AuthManager` → `Services/`
+- Milestone: [`v1.2.1`](https://github.com/1cetoprosto/cyber-cafe/milestone/16) — усі issues closed.
+- Поза пачкою (окремі issues пізніше): Persons/Staff/Admin naming, `RequestManager` decomposition.
 
 ### `v1.2.x` — Monetization & follow-ups (після shipped v1.2.0)
 
-**Слоган:** утримуємо Pro-підписників у системному cancel flow App Store, без змін у бінарнику; паралельно гасимо structure tech-debt.
+**Слоган:** утримуємо Pro-підписників у системному cancel flow App Store, без змін у бінарнику.
 
 - Issue `#291` feat / medium: App Store Connect Retention Messaging для Pro monthly (текст + зображення + retention offer).
   - Prod: `icsoft.trackmycafe.pro.monthly` (beta product у ASC відсутній).
   - Спека / ASC IDs: `docs/product/app-store/retention-messaging.md`.
   - **Статус:** submitted — message version **WAITING_FOR_REVIEW** (2026-11-12).
   - **Не** потребує нового App Store binary; Real-time Retention Messaging API не використовуємо.
-- **Structure cleanup** (milestone [`v1.2.0`](https://github.com/1cetoprosto/cyber-cafe/milestone/15), tech-debt; без зміни user-facing поведінки):
-  - `#293` chore: `MainTabBarController` → `Flow/Main/View`
-  - `#294` chore: нормалізація feature-папок `View/` / `ViewModel/`
-  - `#295` chore: Extensions — Foundation vs UI
-  - `#296` refactor: IAP/Subscription з `Data Layer/Utils` → `Services/`
-  - `#297` refactor: один FIR image storage API
-  - `#298` refactor: Auth folder layout + `*ViewController` naming
-  - `#299` refactor: Auth MVVM + `AuthManager` → `Services` (**після** `#298`)
-  - Поза цією пачкою (окремі issues пізніше): Persons/Staff/Admin naming, `RequestManager` decomposition.
+- Structure cleanup `#293`–`#299` — **done in v1.2.1** (див. вище).
 - Інші follow-ups за потребою (journal balances, multi-location, CSV export) — див. `DEV_IMPLEMENTATION_GUIDE.md`.
 
 - **DoD (`#291`):**
@@ -220,11 +223,11 @@
 - `#279` (MVVM) — залежить від `#272`, `#273`, `#277` (UI має стабілізуватися).
 - `#280` (доки) — залежить від `#272`, `#274`; робити наприкінці.
 
-### Залежності structure cleanup (post-1.2.0)
+### Залежності structure cleanup (post-1.2.0) — виконано в v1.2.1
 
-- `#293`–`#295`, `#297` — незалежні; можна паралельно / окремими PR.
-- `#296` (IAP → Services) — перед глибшими ProGated/IAP змінами.
-- `#299` залежить від `#298` (спочатку Auth naming/layout, потім MVVM).
+- `#293`–`#295`, `#297` — були незалежні; змерджено окремими PR.
+- `#296` (IAP → Services) — змерджено; перед глибшими ProGated/IAP змінами.
+- `#299` залежав від `#298` — обидва змерджено.
 
 **Рекомендована черга всередині v1.2:**
 1. `#271` (ролі) — перший крок

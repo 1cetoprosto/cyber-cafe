@@ -136,13 +136,13 @@
 - `Employee` (не `Technician`) — поточна модель; колекція Firestore `Technicians` (PascalCase) не перейменовується (історична назва). `techMod` існує в enum лише для сумісності зі старими записами, в UI не показується.
 - `UserSession.current.employeeRef` для адміністратора = `masterUserRef`, для менеджера/офіціанта = `firebaseRef` співробітника.
 
-## Поточний target після shipped v1.2.0
+## Поточний target після v1.2.1 на main
 
 Релізна лінія 1.2.x (див. `ROADMAP.md`):
 
 1. v1.2.0 — Multi-user & Staff Management (ролі, Персонал, RBAC, `createdBy`). ✅ shipped.
-2. v1.2.x monetization — Retention Messaging `#291` (без нового binary).
-3. v1.2.x structure cleanup — `#293`–`#299` (Main/Auth/IAP/Storage/Extensions; milestone `v1.2.0`).
+2. v1.2.1 — First-run guided setup + Settings explainability + structure cleanup `#293`–`#299`. ✅ код на `main` (TF/ASC submit наступний крок).
+3. v1.2.x monetization — Retention Messaging `#291` (без нового binary).
 4. Далі за потребою — journal-based cash/card balances, multi-location, CSV export.
 
 ### Repo hygiene (операційні правила)
