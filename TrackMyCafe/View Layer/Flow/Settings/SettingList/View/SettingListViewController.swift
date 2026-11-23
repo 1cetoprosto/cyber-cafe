@@ -30,6 +30,7 @@ struct SettingsSwitchOption {
     let iconBackgroundColor: UIColor
     let isOn: Bool
     let handler: (Bool) -> Void
+    var infoHandler: (() -> Void)? = nil
 }
 
 struct SettingsStaticOption {
@@ -46,6 +47,7 @@ struct SettingsDataOption {
     let iconBackgroundColor: UIColor
     let data: String
     let handler: (_ dataLabel: UILabel) -> Void
+    var infoHandler: (() -> Void)? = nil
 }
 
 class SettingListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
@@ -121,7 +123,7 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             let footer =
                 isLocked
                 ? R.string.global.settings_trackIngredientsFooterLocked()
-                : R.string.global.settings_trackIngredientsFooter()
+                : R.string.global.settingsSectionMenuInventoryFooter()
             let oldSection = self.models[sectionIndex]
             let trackIngredientsEnabled = SettingsManager.shared.loadTrackIngredients()
             let updatedOptions = oldSection.option.enumerated().map {
@@ -130,14 +132,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 switch opt {
                 case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
                     return SettingsOptionType.switchCell(
-                        model: SettingsSwitchOption(
+                        model: self.makeTrackIngredientsSwitchOption(
+                            isOn: trackIngredientsEnabled,
                             title: model.title,
                             icon: model.icon,
-                            iconBackgroundColor: model.iconBackgroundColor,
-                            isOn: trackIngredientsEnabled
-                        ) { [weak self] isOn in
-                            self?.handleTrackIngredientsToggle(isOn: isOn)
-                        }
+                            iconBackgroundColor: model.iconBackgroundColor
+                        )
                     )
                 default:
                     return opt
@@ -204,14 +204,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             switch opt {
             case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
                 return SettingsOptionType.switchCell(
-                    model: SettingsSwitchOption(
+                    model: self.makeTrackIngredientsSwitchOption(
+                        isOn: true,
                         title: model.title,
                         icon: model.icon,
-                        iconBackgroundColor: model.iconBackgroundColor,
-                        isOn: true
-                    ) { [weak self] isOn in
-                        self?.handleTrackIngredientsToggle(isOn: isOn)
-                    }
+                        iconBackgroundColor: model.iconBackgroundColor
+                    )
                 )
             default:
                 return opt
@@ -232,14 +230,12 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             switch opt {
             case .switchCell(let model) where idx == self.trackIngredientsOptionIndex:
                 return SettingsOptionType.switchCell(
-                    model: SettingsSwitchOption(
+                    model: self.makeTrackIngredientsSwitchOption(
+                        isOn: false,
                         title: model.title,
                         icon: model.icon,
-                        iconBackgroundColor: model.iconBackgroundColor,
-                        isOn: false
-                    ) { [weak self] isOn in
-                        self?.handleTrackIngredientsToggle(isOn: isOn)
-                    }
+                        iconBackgroundColor: model.iconBackgroundColor
+                    )
                 )
             default:
                 return opt
@@ -251,6 +247,51 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
             option: updatedOptions
         )
         self.tableView.reloadSections(IndexSet(integer: sectionIndex), with: .none)
+    }
+
+    private func makeTrackIngredientsSwitchOption(
+        isOn: Bool,
+        title: String? = nil,
+        icon: UIImage? = nil,
+        iconBackgroundColor: UIColor? = nil
+    ) -> SettingsSwitchOption {
+        SettingsSwitchOption(
+            title: title ?? R.string.global.settings_trackIngredients(),
+            icon: icon ?? UIImage(systemName: "shippingbox"),
+            iconBackgroundColor: iconBackgroundColor ?? .systemTeal,
+            isOn: isOn,
+            handler: { [weak self] newValue in
+                self?.handleTrackIngredientsToggle(isOn: newValue)
+            },
+            infoHandler: { [weak self] in
+                self?.showTrackIngredientsInfo()
+            }
+        )
+    }
+
+    private func showTrackIngredientsInfo() {
+        let body =
+            inventoryTrackingLocked
+            ? R.string.global.settings_trackIngredientsFooterLocked()
+            : R.string.global.settings_trackIngredientsInfoBody()
+        PopupFactory.showPopup(
+            title: R.string.global.settings_trackIngredientsInfoTitle(),
+            description: body
+        )
+    }
+
+    private func showOrderEntryModeInfo() {
+        PopupFactory.showPopup(
+            title: R.string.global.settings_orderEntryModeInfoTitle(),
+            description: R.string.global.settings_orderEntryModeInfoBody()
+        )
+    }
+
+    private func showChooseCategoryFirstInfo() {
+        PopupFactory.showPopup(
+            title: R.string.global.settings_chooseCategoryFirstInfoTitle(),
+            description: R.string.global.settings_chooseCategoryFirstInfoBody()
+        )
     }
 
     private func presentOrderModeSelection(
@@ -419,19 +460,14 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                 }
             ),
             .switchCell(
-                model: SettingsSwitchOption(
-                    title: R.string.global.settings_trackIngredients(),
-                    icon: UIImage(systemName: "shippingbox"),
-                    iconBackgroundColor: .systemTeal,
+                model: makeTrackIngredientsSwitchOption(
                     isOn: SettingsManager.shared.loadTrackIngredients()
-                ) { [weak self] isOn in
-                    self?.handleTrackIngredientsToggle(isOn: isOn)
-                }
+                )
             ),
         ]
         return Section(
             title: R.string.global.settingsSectionMenuInventory(),
-            footer: R.string.global.settings_trackIngredientsFooter(),
+            footer: R.string.global.settingsSectionMenuInventoryFooter(),
             option: menuOptions
         )
     }
@@ -452,28 +488,36 @@ class SettingListViewController: UIViewController, UITableViewDelegate, UITableV
                     title: R.string.global.orderEntryModeTitle(),
                     icon: UIImage(systemName: "list.bullet"),
                     iconBackgroundColor: .systemTeal,
-                    data: orderModeTitle
-                ) { dataLabel in
-                    self.presentOrderModeSelection(currentMode: currentMode) { newMode in
-                        SettingsManager.shared.saveOrderEntryMode(newMode)
-                        switch newMode {
-                        case .perOrder:
-                            dataLabel.text = R.string.global.orderModePerOrder()
-                        case .openTab:
-                            dataLabel.text = R.string.global.orderModeOpenTab()
+                    data: orderModeTitle,
+                    handler: { dataLabel in
+                        self.presentOrderModeSelection(currentMode: currentMode) { newMode in
+                            SettingsManager.shared.saveOrderEntryMode(newMode)
+                            switch newMode {
+                            case .perOrder:
+                                dataLabel.text = R.string.global.orderModePerOrder()
+                            case .openTab:
+                                dataLabel.text = R.string.global.orderModeOpenTab()
+                            }
                         }
+                    },
+                    infoHandler: { [weak self] in
+                        self?.showOrderEntryModeInfo()
                     }
-                }
+                )
             ),
             .switchCell(
                 model: SettingsSwitchOption(
                     title: R.string.global.settings_chooseCategoryFirst(),
                     icon: UIImage(systemName: "square.grid.2x2"),
                     iconBackgroundColor: .systemIndigo,
-                    isOn: SettingsManager.shared.loadChooseCategoryFirstProductSelection()
-                ) { isOn in
-                    SettingsManager.shared.saveChooseCategoryFirstProductSelection(isOn)
-                }
+                    isOn: SettingsManager.shared.loadChooseCategoryFirstProductSelection(),
+                    handler: { isOn in
+                        SettingsManager.shared.saveChooseCategoryFirstProductSelection(isOn)
+                    },
+                    infoHandler: { [weak self] in
+                        self?.showChooseCategoryFirstInfo()
+                    }
+                )
             ),
             .staticCell(
                 model: SettingsStaticOption(
