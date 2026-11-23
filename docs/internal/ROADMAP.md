@@ -170,6 +170,8 @@
 **Слоган:** новий owner доходить до «що залишилось» на своїх цифрах, без чужого авто-demo.
 
 - Issue `#312` feat: disable auto demo seed; owner guided setup (menu → sale → opex → leftover); DEBUG seed для скрінів лишається.
+- Post-setup: leftover scale tip + dismissible Home insight (habit + Settings mention) — у PR `#313`.
+- Issue `#327` / PR `#328`: Settings footers + `info.circle` для режиму чека / category-first / track ingredients (stacked на `#313`).
 - Milestone: [`v1.2.1`](https://github.com/1cetoprosto/cyber-cafe/milestone/16).
 
 ### `v1.2.x` — Monetization & follow-ups (після shipped v1.2.0)
