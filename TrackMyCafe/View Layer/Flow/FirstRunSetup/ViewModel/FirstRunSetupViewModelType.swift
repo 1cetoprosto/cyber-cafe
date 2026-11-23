@@ -38,6 +38,8 @@ protocol FirstRunSetupViewModelType: AnyObject {
     var costsTotal: Double { get }
     var leftoverTotal: Double { get }
     var minimumProductsToContinue: Int { get }
+    /// When true, only the operating-profile step is shown, then the flow finishes.
+    var isPreferencesOnly: Bool { get }
 
     /// Draft operating choices (applied when leaving preferences).
     var tracksIngredients: Bool { get }

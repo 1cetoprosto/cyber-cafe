@@ -124,26 +124,39 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
         guard Auth.auth().currentUser?.uid != nil else { return }
         // Guided setup is owner-only — staff must never see the cafe bootstrap wizard.
         guard UserSession.current.role == .administrator else { return }
-        let dataRef = UserSession.current.dataRef
-        guard !UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef) else { return }
         guard presentedViewController == nil else { return }
+
+        let dataRef = UserSession.current.dataRef
 
         Task { [weak self] in
             let products = await DomainDatabaseService.shared.fetchProductsPrice()
-            guard products.isEmpty else {
-                // Cafe already has a menu (returning user / manual seed) — never show wizard.
-                UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: dataRef)
-                return
-            }
+            let firstRunDone = UserDefaultsKeys.hasCompletedFirstRunSetup(dataRef: dataRef)
+            let preferencesDone = UserDefaultsKeys.hasCompletedOperatingPreferences(
+                dataRef: dataRef)
 
             await MainActor.run {
-                self?.presentFirstRunSetup()
+                guard let self else { return }
+
+                if !firstRunDone, products.isEmpty {
+                    self.presentFirstRunSetup(preferencesOnly: false)
+                    return
+                }
+
+                // Menu already exists (or first-run was finished earlier without the
+                // operating-profile step) — still ask stock/receipt choices once.
+                if !firstRunDone {
+                    UserDefaultsKeys.setHasCompletedFirstRunSetup(true, dataRef: dataRef)
+                }
+                if !preferencesDone {
+                    self.presentFirstRunSetup(preferencesOnly: true)
+                }
             }
         }
     }
 
-    private func presentFirstRunSetup() {
-        let setupVC = FirstRunSetupViewController()
+    private func presentFirstRunSetup(preferencesOnly: Bool) {
+        let viewModel = FirstRunSetupViewModel(preferencesOnly: preferencesOnly)
+        let setupVC = FirstRunSetupViewController(viewModel: viewModel)
         setupVC.delegate = self
         let nav = UINavigationController(rootViewController: setupVC)
         nav.modalPresentationStyle = .fullScreen
@@ -153,9 +166,16 @@ class MainTabBarController: UITabBarController, UITabBarControllerDelegate,
 
     private func handleFirstRunSetupFinished() {
         dismiss(animated: true) { [weak self] in
-            NotificationCenter.default.post(
-                name: NSNotification.Name("DataDidUpdate"), object: nil)
-            self?.updateDemoDataButtonVisibility()
+            guard let self else { return }
+            // Land on Home and refresh twice — Firestore may lag right after wizard saves.
+            self.selectedIndex = 0
+            let ping = {
+                NotificationCenter.default.post(
+                    name: NSNotification.Name("DataDidUpdate"), object: nil)
+            }
+            ping()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.6, execute: ping)
+            self.updateDemoDataButtonVisibility()
         }
     }
 

@@ -23,6 +23,7 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     private(set) var tracksIngredients = false
     private(set) var orderEntryMode: OrderEntryMode = .perOrder
     private(set) var chooseCategoryFirst = true
+    let isPreferencesOnly: Bool
 
     let minimumProductsToContinue = 2
 
@@ -39,8 +40,16 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
 
     // MARK: - Init
 
-    init(database: DomainDB = DomainDatabaseService.shared) {
+    init(
+        preferencesOnly: Bool = false,
+        database: DomainDB = DomainDatabaseService.shared
+    ) {
+        self.isPreferencesOnly = preferencesOnly
         self.database = database
+        // Prefill from current Settings so returning owners see their live values.
+        self.tracksIngredients = SettingsManager.shared.loadTrackIngredients()
+        self.orderEntryMode = SettingsManager.shared.loadOrderEntryMode()
+        self.chooseCategoryFirst = SettingsManager.shared.loadChooseCategoryFirstProductSelection()
     }
 
     // MARK: - FirstRunSetupViewModelType
@@ -226,6 +235,10 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     }
 
     func advanceAfterSuccessfulAction() {
+        if currentStep == .preferences, isPreferencesOnly {
+            finishSetup()
+            return
+        }
         guard let next = FirstRunSetupStep(rawValue: currentStep.rawValue + 1) else {
             finishSetup()
             return
@@ -240,6 +253,10 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
     func skipCurrentStep() {
         if currentStep == .preferences {
             applyFinanceOnlyDefaultsAndCommit()
+            if isPreferencesOnly {
+                finishSetup()
+                return
+            }
         }
         let skippedSale = currentStep == .firstSale
         if skippedSale {
@@ -255,7 +272,9 @@ final class FirstRunSetupViewModel: FirstRunSetupViewModelType, Loggable {
             if !didCommitPreferences {
                 applyFinanceOnlyDefaultsAndCommit()
             }
-            await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            if !isPreferencesOnly {
+                await DomainDatabaseService.shared.ensureDefaultOrderTypeIfNeeded()
+            }
             markCompleted()
             onCompleted?()
         }

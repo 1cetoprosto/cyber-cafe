@@ -182,6 +182,26 @@ struct UserDefaultsKeys {
         guard let dataRef, !dataRef.isEmpty else { return }
         UserDefaults.standard.set(dismissed, forKey: hasDismissedPostSetupInsightKey(for: dataRef))
     }
+
+    /// Per-cafe: owner confirmed stock/receipt operating profile (full wizard or preferences-only).
+    static let hasCompletedOperatingPreferences = "hasCompletedOperatingPreferences"
+
+    static func hasCompletedOperatingPreferencesKey(for dataRef: String) -> String {
+        "\(hasCompletedOperatingPreferences).\(dataRef)"
+    }
+
+    static func hasCompletedOperatingPreferences(dataRef: String?) -> Bool {
+        guard let dataRef, !dataRef.isEmpty else { return false }
+        return UserDefaults.standard.bool(
+            forKey: hasCompletedOperatingPreferencesKey(for: dataRef))
+    }
+
+    static func setHasCompletedOperatingPreferences(_ completed: Bool, dataRef: String?) {
+        guard let dataRef, !dataRef.isEmpty else { return }
+        UserDefaults.standard.set(
+            completed, forKey: hasCompletedOperatingPreferencesKey(for: dataRef))
+    }
+
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
     static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"

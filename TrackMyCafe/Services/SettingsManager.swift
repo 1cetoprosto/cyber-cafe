@@ -93,6 +93,8 @@ class SettingsManager {
         saveChooseCategoryFirstProductSelection(
             orderMode == .perOrder ? chooseCategoryFirst : false
         )
+        UserDefaultsKeys.setHasCompletedOperatingPreferences(
+            true, dataRef: UserSession.current.dataRef)
     }
 
     /// Finance-only starter profile when preferences are skipped.

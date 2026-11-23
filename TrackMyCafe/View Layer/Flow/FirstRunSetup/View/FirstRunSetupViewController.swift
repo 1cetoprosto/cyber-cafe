@@ -238,10 +238,15 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func setupUI() {
         view.backgroundColor = UIColor.Main.background
-        title = R.string.global.firstRunTitle()
+        title =
+            viewModel.isPreferencesOnly
+            ? R.string.global.firstRunPreferencesTitle()
+            : R.string.global.firstRunTitle()
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: R.string.global.firstRunSkipAll(),
+            title: viewModel.isPreferencesOnly
+                ? R.string.global.firstRunSkipStep()
+                : R.string.global.firstRunSkipAll(),
             style: .plain,
             target: self,
             action: #selector(skipAllTapped)
@@ -374,19 +379,27 @@ final class FirstRunSetupViewController: UIViewController, Loggable {
 
     private func renderStep() {
         let step = viewModel.currentStep
-        stepLabel.text = R.string.global.firstRunStepProgress(
-            String(step.displayNumber),
-            String(FirstRunSetupStep.totalCount)
-        )
+        if viewModel.isPreferencesOnly {
+            stepLabel.isHidden = true
+        } else {
+            stepLabel.isHidden = false
+            stepLabel.text = R.string.global.firstRunStepProgress(
+                String(step.displayNumber),
+                String(FirstRunSetupStep.totalCount)
+            )
+        }
 
         preferencesSection.isHidden = step != .preferences
         menuSection.isHidden = step != .menu
         saleSection.isHidden = step != .firstSale
         expenseSection.isHidden = step != .expense
         leftoverSection.isHidden = step != .leftover
-        skipStepButton.isHidden = step == .leftover
+        skipStepButton.isHidden = step == .leftover || viewModel.isPreferencesOnly
         skipAllButton.isHidden = step == .leftover
         navigationItem.rightBarButtonItem?.isEnabled = step != .leftover
+        if viewModel.isPreferencesOnly {
+            navigationItem.rightBarButtonItem?.title = R.string.global.firstRunSkipStep()
+        }
 
         switch step {
         case .preferences:
