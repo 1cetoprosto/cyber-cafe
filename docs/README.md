@@ -1,8 +1,8 @@
 # TrackMyCafe (Cyber Cafe)
 
 iOS додаток для обліку доходів та витрат в кафе.
-Поточний релізний baseline: **v1.2.0** (Staff / RBAC shipped; Reports Hub уже з v1.1.0).
-Follow-ups: `v1.2.x` — Retention Messaging `#291`, structure cleanup `#293`–`#299` (див. `internal/ROADMAP.md`).
+Поточний релізний baseline: **v1.2.1** на `main` (first-run setup + structure cleanup; Staff / RBAC з v1.2.0; Reports Hub з v1.1.0).
+Follow-ups: `v1.2.x` — Retention Messaging `#291`; далі journal balances / multi-location / CSV (див. `internal/ROADMAP.md`).
 
 ## Опис
 
