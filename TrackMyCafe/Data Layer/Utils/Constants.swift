@@ -199,11 +199,17 @@ struct FirebaseCollections {
 
     // MARK: PascalCase names under `users/{uid}` (kept for data compatibility)
     static let legacyOrders = "Orders"
-    /// Staff: `users/{uid}/Technicians`.
+    /// Staff: `users/{uid}/Technicians` (PascalCase — not lowercase `technicians`).
     static let legacyTechnicians = "Technicians"
     static let legacyLogs = "Logs"
     /// Settings map field on `users/{uid}` (also former subcollection name).
     static let legacySettings = "Settings"
+
+    // MARK: Security-rules membership index under `users/{cafeId}`
+    /// UID-based membership: `users/{cafeId}/members/{uid}`.
+    static let members = "members"
+    /// Email-based membership (invite-time): `users/{cafeId}/memberEmails/{email}`.
+    static let memberEmails = "memberEmails"
 }
 
 // MARK: - Firebase Document Fields
@@ -228,6 +234,7 @@ struct FirebaseFields {
     static let dataRef = "dataRef"
     static let uid = "uid"
     static let value = "value"
+    static let roleRef = "roleRef"
 }
 
 // MARK: - Cell Identifiers

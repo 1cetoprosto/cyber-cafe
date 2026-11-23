@@ -127,7 +127,7 @@
 
 - **3 ролі:** Власник (`.administrator`), Менеджер (`.moderator`), Офіціант (`.waiter`).
 - `techMod` прибирається з UI (залишається в enum для зворотної сумісності БД).
-- **Часткове перейменування:** `Role.technician` → `Role.waiter`, `Technician` → `Employee`, `techRef` → `employeeRef`. Firestore колекція `technicians` **не міняється** (уникаємо ризикованої міграції).
+- **Часткове перейменування:** `Role.technician` → `Role.waiter`, `Technician` → `Employee`, `techRef` → `employeeRef`. Firestore колекція `Technicians` (PascalCase) **не міняється** (уникаємо ризикованої міграції).
 - **Без обмежень** за кількістю персоналу (прибирається `staffCount`).
 - Замовлення прив'язуються до співробітника через `createdBy` (`employeeRef`). Офіціант бачить тільки свої.
 

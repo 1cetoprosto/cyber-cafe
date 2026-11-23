@@ -115,8 +115,8 @@ final class StaffCreateEditViewModel: Loggable {
     }
 
     private func createEmployee() async -> String? {
-        // Email uniqueness check.
-        let roles = await staffService.getRoles(employee.email)
+        // Email uniqueness within this cafe (security rules scope roles by dataRef).
+        let roles = await staffService.getEmployeeRoles(employee.email)
         if (roles ?? []).isEmpty == false {
             return R.string.global.employeeEmailAlreadyExist()
         }

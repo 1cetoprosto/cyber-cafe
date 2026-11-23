@@ -51,8 +51,10 @@ class StorageService {
     
     static func uploadAvatar(_ image: UIImage, name: String, completion: @escaping (Bool, String?, String?) -> Void) {
         guard let data = image.jpegData(compressionQuality: 0.9) else { return }
-        let ref = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + "." + FileExtensions.jpeg)
-        
+        let avatarObjectPath = ImageStoragePaths.avatarPath(
+            fileName: name + "." + FileExtensions.jpeg)
+        let ref = Storage.storage().reference().child(avatarObjectPath)
+
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
         ref.putData(data, metadata: metadata) { (metadata, error) in
@@ -73,8 +75,10 @@ class StorageService {
                     completion(false, nil, nil)
                     return
                 }
-                
-                let thumbnailRef = Storage.storage().reference().child(Refs.avatars.rawValue).child(name + FileExtensions.thumbnailJpeg)
+
+                let thumbnailObjectPath = ImageStoragePaths.avatarPath(
+                    fileName: name + FileExtensions.thumbnailJpeg)
+                let thumbnailRef = Storage.storage().reference().child(thumbnailObjectPath)
                 
                 let metadata = StorageMetadata()
                 metadata.contentType = "image/jpeg"

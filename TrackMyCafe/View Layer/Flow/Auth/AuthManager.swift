@@ -164,9 +164,11 @@ class AuthModel {
 
     func signIn(email: String, password: String, rememberUser: Bool) {
         send(.loading(true))
-        auth.signIn(withEmail: email, password: password) { [weak self] (authUser, error) in
+        let normalizedEmail = email.trimmed.lowercased()
+        auth.signIn(withEmail: normalizedEmail, password: password) { [weak self] (authUser, error) in
             if let user = authUser {
-                self?.createUserOrLogin(user.user.uid, user.user.email!, rememberUser)
+                let email = (user.user.email ?? normalizedEmail).trimmed.lowercased()
+                self?.createUserOrLogin(user.user.uid, email, rememberUser)
             } else {
                 self?.send(.loading(false))
                 self?.send(.error(error))
@@ -176,9 +178,11 @@ class AuthModel {
 
     func signUp(email: String, password: String) {
         send(.loading(true))
-        auth.createUser(withEmail: email, password: password) { [weak self] (authUser, error) in
+        let normalizedEmail = email.trimmed.lowercased()
+        auth.createUser(withEmail: normalizedEmail, password: password) { [weak self] (authUser, error) in
             if let user = authUser {
-                self?.createUserOrLogin(user.user.uid, user.user.email!)
+                let email = (user.user.email ?? normalizedEmail).trimmed.lowercased()
+                self?.createUserOrLogin(user.user.uid, email)
             } else {
                 self?.send(.loading(false))
                 self?.send(.error(error))
@@ -192,7 +196,8 @@ class AuthModel {
         auth.signIn(withEmail: normalizedEmail, link: link) { [weak self] (authUser, error) in
             if let user = authUser {
                 AuthModel.clearPendingEmailLinkState()
-                self?.createUserOrLogin(user.user.uid, user.user.email!, false, true)
+                let email = (user.user.email ?? normalizedEmail).trimmed.lowercased()
+                self?.createUserOrLogin(user.user.uid, email, false, true)
             } else {
                 self?.send(.loading(false))
                 self?.send(.error(error))
@@ -398,7 +403,10 @@ class AuthModel {
     private func login(_ id: String, _ email: String, _ role: RoleConfig, _ rememberUser: Bool) {
         UserSession.createSession(
             id: id, email: email, roleConfig: role, rememberUser: rememberUser)
-        RequestManager.shared.startListening()
+        Task {
+            await FirestoreDatabaseService.shared.ensureCafeMembership(for: role)
+            RequestManager.shared.startListening()
+        }
     }
 
     private func logOut() {

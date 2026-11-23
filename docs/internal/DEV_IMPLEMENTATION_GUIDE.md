@@ -105,7 +105,7 @@
 ### Персонал (Staff) — v1.2.0
 
 - `Employee` модель (раніше `Technician`) з полем `role` (`administrator` / `moderator` / `waiter`, `techMod` залишено для сумісності БД, не показується в UI).
-- Firestore-колекція `technicians` (історична назва, не міняється) + `roles` для `RoleConfig`.
+- Firestore-колекція `Technicians` (PascalCase під cafe root; історична назва, не міняється) + `roles` для `RoleConfig`.
 - RBAC: фільтрація табів (`MainTabBarController`) та секцій налаштувань за роллю; `requiresRole(_:)` guard для захисту екранів.
 - `OrderModel.createdBy` = `employeeRef` творця; офіціант бачить тільки свої замовлення.
 - Staff-модуль на MVVM: `StaffListViewModel`, `StaffDetailsViewModel`, `StaffCreateEditViewModel` + `StaffServiceProtocol`.
@@ -120,7 +120,7 @@
 - Home dashboard summaries → aggregation services + finance facade (UI не рахує)
 - Reports (P&L/ABC/Trends) → finance/reporting facade (використовує aggregation services як нижній шар)
 - Track Ingredients behavior → global setting + enforcement in service layer, not in VC/VM
-- employees & roles → Firestore collections `technicians` (Employee) + `roles` (RoleConfig); кеш в `RequestManager.shared.employees`
+- employees & roles → Firestore collections `Technicians` (Employee) + `roles` (RoleConfig); кеш в `RequestManager.shared.employees`
 - order ownership → `OrderModel.createdBy` (employeeRef); фільтр за роллю в `DomainDatabaseService.fetchOrders()`
 - Firestore → єдине сховище даних; офлайн через Firebase cache
 
@@ -133,7 +133,7 @@
 - `DailyClose` у майбутньому може існувати лише як derived business snapshot, але не окреме джерело фінансової істини.
 - Якщо метрика вже порахована в сервісі, її не треба перераховувати в ViewModel; UI тільки відображає DTO.
 - Зміни рецепта **не переписують** історичний COGS; історичний COGS = snapshot.
-- `Employee` (не `Technician`) — поточна модель; колекція Firestore `technicians` не перейменовується (історична назва). `techMod` існує в enum лише для сумісності зі старими записами, в UI не показується.
+- `Employee` (не `Technician`) — поточна модель; колекція Firestore `Technicians` (PascalCase) не перейменовується (історична назва). `techMod` існує в enum лише для сумісності зі старими записами, в UI не показується.
 - `UserSession.current.employeeRef` для адміністратора = `masterUserRef`, для менеджера/офіціанта = `firebaseRef` співробітника.
 
 ## Поточний target після shipped v1.2.0

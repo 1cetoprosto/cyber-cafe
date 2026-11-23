@@ -1,0 +1,79 @@
+rules_version = '2';
+
+// TrackMyCafe Storage rules
+// Product images stay publicly readable (download in UI without auth token).
+// Cafe-scoped Avatars/{cafeId}/** require Firestore membership.
+// Legacy Avatars/{file} kept for existing uploads (download URLs still work).
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function authEmail() {
+      return request.auth.token.email;
+    }
+
+    function isWithinUploadLimit() {
+      return request.resource.size < 2 * 1024 * 1024;
+    }
+
+    function isImageUpload() {
+      return request.resource.contentType.matches('image/.*');
+    }
+
+    function isCafeOwner(cafeId) {
+      return isSignedIn() && request.auth.uid == cafeId;
+    }
+
+    function isCafeMember(cafeId) {
+      return isCafeOwner(cafeId)
+        || (isSignedIn()
+            && firestore.exists(
+              /databases/(default)/documents/users/$(cafeId)/members/$(request.auth.uid)
+            ))
+        || (isSignedIn()
+            && authEmail() != null
+            && firestore.exists(
+              /databases/(default)/documents/users/$(cafeId)/memberEmails/$(authEmail())
+            ));
+    }
+
+    // Public catalog images (legacy flat + cafe-scoped)
+    match /productImages/{allPaths=**} {
+      allow read: if true;
+      allow write: if isSignedIn()
+        && isWithinUploadLimit()
+        && isImageUpload();
+    }
+
+    // New avatar uploads: Avatars/{cafeId}/{file}
+    match /Avatars/{cafeId}/{allPaths=**} {
+      allow read: if isCafeMember(cafeId);
+      allow write: if isCafeMember(cafeId)
+        && isWithinUploadLimit()
+        && isImageUpload();
+    }
+
+    // Legacy flat avatar paths (pre-tenant)
+    match /Avatars/{fileName} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn()
+        && isWithinUploadLimit()
+        && isImageUpload();
+    }
+
+    // Legacy comment media
+    match /Comments/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && isWithinUploadLimit();
+    }
+
+    match /{allPaths=**} {
+      allow read: if false;
+      allow write: if false;
+    }
+  }
+}
