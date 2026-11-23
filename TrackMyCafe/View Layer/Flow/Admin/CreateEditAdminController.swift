@@ -261,7 +261,7 @@ final class CreateEditAdminController: UIViewController, Loggable {
         if let image = newImage {
             let fileName = [admin.firstName, admin.lastName, Date().interval.string]
                 .compactMap { $0 }.joined(separator: "_")
-            StorageService.uploadAvatar(image, name: fileName) {
+            FirebaseImageStorageService.shared.uploadAvatar(image, name: fileName) {
                 [weak self] (success, filePath, thumbnailPath) in
                 guard let self = self else { return }
                 if success {

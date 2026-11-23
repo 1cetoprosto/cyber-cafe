@@ -768,9 +768,6 @@
 		F3F6A63F2C327C19000961C8 /* ModeratorListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41C2C1D902A00973CAA /* ModeratorListController.swift */; };
 		F3F6A6402C327C23000961C8 /* TechnicianDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41E2C1D904700973CAA /* TechnicianDetailsController.swift */; };
 		F3F6A6412C327C23000961C8 /* TechnicianDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F385B41E2C1D904700973CAA /* TechnicianDetailsController.swift */; };
-		F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
-		F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
-		F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F6A6432C3280AF000961C8 /* StorageService.swift */; };
 		F3F87085307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
 		F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87084307CCE80005D106B /* OrderModePopupView.swift */; };
 		F3F87087307CCE80005D106B /* InputPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3F87083307CCE80005D106B /* InputPopupView.swift */; };
@@ -1069,7 +1066,6 @@
 		F3F6A61C2C2FEFFB000961C8 /* PropertyWrappers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyWrappers.swift; sourceTree = "<group>"; };
 		F3F6A6362C327B83000961C8 /* AdminDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminDetailsController.swift; sourceTree = "<group>"; };
 		F3F6A63A2C327BA3000961C8 /* CreateEditAdminController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateEditAdminController.swift; sourceTree = "<group>"; };
-		F3F6A6432C3280AF000961C8 /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
 		F3F87083307CCE80005D106B /* InputPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputPopupView.swift; sourceTree = "<group>"; };
 		F3F87084307CCE80005D106B /* OrderModePopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderModePopupView.swift; sourceTree = "<group>"; };
 		F3F8712D307CF036005D106B /* ActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetView.swift; sourceTree = "<group>"; };
@@ -2652,7 +2648,6 @@
 		F3F6A6422C32809B000961C8 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				F3F6A6432C3280AF000961C8 /* StorageService.swift */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3037,7 +3032,6 @@
 				F385B4082C1D785E00973CAA /* PersonDetailsViewController.swift in Sources */,
 				F33D34892DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F3F6A60D2C2FEBDC000961C8 /* IAPReceiptAdapterLocalValidation.swift in Sources */,
-				F3F6A6442C3280AF000961C8 /* StorageService.swift in Sources */,
 				F31FD0DD281D218500353BF7 /* FIRProductModel.swift in Sources */,
 				F3B7C2572806DCB000DF5C2B /* TypeDetailsViewController.swift in Sources */,
 				F3F6A6012C2FEB0A000961C8 /* SubscriptionType.swift in Sources */,
@@ -3281,7 +3275,6 @@
 				F3F6A6062C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348A2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F3B339C02C0B22FE0073F19A /* FIRProductModel.swift in Sources */,
-				F3F6A6452C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B339C12C0B22FE0073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B339C22C0B22FE0073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B339C32C0B22FE0073F19A /* OrderListViewModelType.swift in Sources */,
@@ -3524,7 +3517,6 @@
 				F3F6A6072C2FEB9A000961C8 /* IAPManager.swift in Sources */,
 				F33D348B2DCF9AF1001DBA6C /* SubscriptionLinkButton.swift in Sources */,
 				F3B33A5F2C0B23450073F19A /* FIRProductModel.swift in Sources */,
-				F3F6A6462C3280AF000961C8 /* StorageService.swift in Sources */,
 				F3B33A602C0B23450073F19A /* TypeDetailsViewController.swift in Sources */,
 				F3B33A612C0B23450073F19A /* DeletePurchaseDetailsTableViewCell.swift in Sources */,
 				F3B33A622C0B23450073F19A /* OrderListViewModelType.swift in Sources */,
