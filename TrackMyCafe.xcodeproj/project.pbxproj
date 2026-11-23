@@ -787,6 +787,36 @@
 		F713CE57999390D4242D7E6B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 64CAD59EFB3D9EDE181639AD /* InfoPlist.strings */; };
 		FB42220CC9DA241188396827 /* SettingListViewController+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9413DC32AFFD1886295E5F /* SettingListViewController+Extension.swift */; };
 		FCE96ED35C3D3D05C4F36138 /* CostsTabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7406B8CE84FF5691929D145 /* CostsTabViewController.swift */; };
+		F3299B0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299C0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299D0112B299100000001 /* SignInViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0112B299100000001 /* SignInViewModelType.swift */; };
+		F3299B0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299C0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299D0212B299100000002 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0212B299100000002 /* SignInViewModel.swift */; };
+		F3299B0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299C0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299D0312B299100000003 /* SignUpViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0312B299100000003 /* SignUpViewModelType.swift */; };
+		F3299B0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299C0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299D0412B299100000004 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0412B299100000004 /* SignUpViewModel.swift */; };
+		F3299B0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299C0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299D0512B299100000005 /* ForgotPassViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0512B299100000005 /* ForgotPassViewModelType.swift */; };
+		F3299B0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299C0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299D0612B299100000006 /* ForgotPassViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0612B299100000006 /* ForgotPassViewModel.swift */; };
+		F3299B0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299C0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299D0712B299100000007 /* BioAuthViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0712B299100000007 /* BioAuthViewModelType.swift */; };
+		F3299B0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299C0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299D0812B299100000008 /* BioAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0812B299100000008 /* BioAuthViewModel.swift */; };
+		F3299B0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299C0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299D0912B299100000009 /* SetPasswordViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0912B299100000009 /* SetPasswordViewModelType.swift */; };
+		F3299B0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
+		F3299C0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
+		F3299D0A12B29910000000A /* SetPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3299A0A12B29910000000A /* SetPasswordViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -896,7 +926,7 @@
 		F3410E502BDD00C20007157B /* SignInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
 		F3410E532BDD00C20007157B /* RememberMeButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RememberMeButton.swift; sourceTree = "<group>"; };
 		F3410E562BDD00C20007157B /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
-		F3410E582BDD00C20007157B /* AuthManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		F3410E582BDD00C20007157B /* AuthManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthManager.swift; path = Services/Auth/AuthManager.swift; sourceTree = "<group>"; };
 		F3410E6A2BDD23E60007157B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		F3410E6C2BDD24710007157B /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		F3410E7E2BDD2B540007157B /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Auth.strings; sourceTree = "<group>"; };
@@ -1071,6 +1101,16 @@
 		F3F8712D307CF036005D106B /* ActionSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionSheetView.swift; sourceTree = "<group>"; };
 		F4ABC2CB3296B1FCB2CA8AFB /* PurchaseTableViewCell.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = PurchaseTableViewCell.swift; sourceTree = "<group>"; };
 		FDC7C11D70EBFB5F47ED246F /* BulkSessionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BulkSessionViewModel.swift; path = "View Layer/Flow/Inventory/Bulk/ViewModel/BulkSessionViewModel.swift"; sourceTree = "<group>"; };
+		F3299A0112B299100000001 /* SignInViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0212B299100000002 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		F3299A0312B299100000003 /* SignUpViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0412B299100000004 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		F3299A0512B299100000005 /* ForgotPassViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0612B299100000006 /* ForgotPassViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForgotPassViewModel.swift; sourceTree = "<group>"; };
+		F3299A0712B299100000007 /* BioAuthViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0812B299100000008 /* BioAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BioAuthViewModel.swift; sourceTree = "<group>"; };
+		F3299A0912B299100000009 /* SetPasswordViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModelType.swift; sourceTree = "<group>"; };
+		F3299A0A12B29910000000A /* SetPasswordViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetPasswordViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -1491,9 +1531,18 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		F3299A0012B299100000000 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F3410E582BDD00C20007157B /* AuthManager.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
 		F3158C492763442300136861 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				F3299A0012B299100000000 /* Auth */,
 				F37CB1712D5A8CE0006F1E89 /* AppLogger.swift */,
 				F3E357E72BEFA203005050CB /* Domain */,
 				F39B5D2D28472E7A000F7D43 /* FIR */,
@@ -1639,10 +1688,56 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		F3299A2112B299100000201 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3299A0112B299100000001 /* SignInViewModelType.swift */,
+				F3299A0212B299100000002 /* SignInViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3299A2212B299100000202 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3299A0312B299100000003 /* SignUpViewModelType.swift */,
+				F3299A0412B299100000004 /* SignUpViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3299A2312B299100000203 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3299A0512B299100000005 /* ForgotPassViewModelType.swift */,
+				F3299A0612B299100000006 /* ForgotPassViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3299A2412B299100000204 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3299A0712B299100000007 /* BioAuthViewModelType.swift */,
+				F3299A0812B299100000008 /* BioAuthViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F3299A2512B299100000205 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				F3299A0912B299100000009 /* SetPasswordViewModelType.swift */,
+				F3299A0A12B29910000000A /* SetPasswordViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		F3410E4B2BDD00C20007157B /* BioAuth */ = {
 			isa = PBXGroup;
 			children = (
 				A2984B102BDD00C20007157B /* View */,
+				F3299A2412B299100000204 /* ViewModel */,
 			);
 			path = BioAuth;
 			sourceTree = "<group>";
@@ -1651,6 +1746,7 @@
 			isa = PBXGroup;
 			children = (
 				A2984B112BDD00C20007157B /* View */,
+				F3299A2312B299100000203 /* ViewModel */,
 			);
 			path = ForgotPass;
 			sourceTree = "<group>";
@@ -1659,6 +1755,7 @@
 			isa = PBXGroup;
 			children = (
 				A2984B122BDD00C20007157B /* View */,
+				F3299A2512B299100000205 /* ViewModel */,
 			);
 			path = SetPass;
 			sourceTree = "<group>";
@@ -1676,6 +1773,7 @@
 			isa = PBXGroup;
 			children = (
 				F3410E542BDD00C20007157B /* View */,
+				F3299A2112B299100000201 /* ViewModel */,
 			);
 			path = SignIn;
 			sourceTree = "<group>";
@@ -1684,6 +1782,7 @@
 			isa = PBXGroup;
 			children = (
 				A2984B132BDD00C20007157B /* View */,
+				F3299A2212B299100000202 /* ViewModel */,
 			);
 			path = SignUp;
 			sourceTree = "<group>";
@@ -1697,7 +1796,6 @@
 				F3410E552BDD00C20007157B /* SignIn */,
 				F3410E572BDD00C20007157B /* SignUp */,
 				F319FE8B2F5C459D00F8D0A4 /* View */,
-				F3410E582BDD00C20007157B /* AuthManager.swift */,
 			);
 			path = Auth;
 			sourceTree = "<group>";
@@ -3106,6 +3204,17 @@
 				F3DB41B62EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F3821C8027EAEB80006D40FC /* OrderListItemViewModel.swift in Sources */,
 				F3410E612BDD00C20007157B /* AuthManager.swift in Sources */,
+				F3299B0112B299100000001 /* SignInViewModelType.swift in Sources */,
+				F3299B0212B299100000002 /* SignInViewModel.swift in Sources */,
+				F3299B0312B299100000003 /* SignUpViewModelType.swift in Sources */,
+				F3299B0412B299100000004 /* SignUpViewModel.swift in Sources */,
+				F3299B0512B299100000005 /* ForgotPassViewModelType.swift in Sources */,
+				F3299B0612B299100000006 /* ForgotPassViewModel.swift in Sources */,
+				F3299B0712B299100000007 /* BioAuthViewModelType.swift in Sources */,
+				F3299B0812B299100000008 /* BioAuthViewModel.swift in Sources */,
+				F3299B0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
+				F3299B0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
+
 				F3821C7E27EAEB0F006D40FC /* OrderDetailsViewModel.swift in Sources */,
 				F3F87085307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F87086307CCE80005D106B /* OrderModePopupView.swift in Sources */,
@@ -3348,6 +3457,17 @@
 				F3DB41B72EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F39D78512C2034C80003B556 /* Admin.swift in Sources */,
 				F3B339BD2C0B22FE0073F19A /* AuthManager.swift in Sources */,
+				F3299C0112B299100000001 /* SignInViewModelType.swift in Sources */,
+				F3299C0212B299100000002 /* SignInViewModel.swift in Sources */,
+				F3299C0312B299100000003 /* SignUpViewModelType.swift in Sources */,
+				F3299C0412B299100000004 /* SignUpViewModel.swift in Sources */,
+				F3299C0512B299100000005 /* ForgotPassViewModelType.swift in Sources */,
+				F3299C0612B299100000006 /* ForgotPassViewModel.swift in Sources */,
+				F3299C0712B299100000007 /* BioAuthViewModelType.swift in Sources */,
+				F3299C0812B299100000008 /* BioAuthViewModel.swift in Sources */,
+				F3299C0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
+				F3299C0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
+
 				F3F6A6292C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3F87089307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F8708A307CCE80005D106B /* OrderModePopupView.swift in Sources */,
@@ -3590,6 +3710,17 @@
 				F3DB41B52EBDE2050095FBE1 /* NumericTextInputFilter.swift in Sources */,
 				F39D78522C2034C90003B556 /* Admin.swift in Sources */,
 				F3B33A5C2C0B23450073F19A /* AuthManager.swift in Sources */,
+				F3299D0112B299100000001 /* SignInViewModelType.swift in Sources */,
+				F3299D0212B299100000002 /* SignInViewModel.swift in Sources */,
+				F3299D0312B299100000003 /* SignUpViewModelType.swift in Sources */,
+				F3299D0412B299100000004 /* SignUpViewModel.swift in Sources */,
+				F3299D0512B299100000005 /* ForgotPassViewModelType.swift in Sources */,
+				F3299D0612B299100000006 /* ForgotPassViewModel.swift in Sources */,
+				F3299D0712B299100000007 /* BioAuthViewModelType.swift in Sources */,
+				F3299D0812B299100000008 /* BioAuthViewModel.swift in Sources */,
+				F3299D0912B299100000009 /* SetPasswordViewModelType.swift in Sources */,
+				F3299D0A12B29910000000A /* SetPasswordViewModel.swift in Sources */,
+
 				F3F6A62A2C327A0F000961C8 /* PersonsListViewController.swift in Sources */,
 				F3F87087307CCE80005D106B /* InputPopupView.swift in Sources */,
 				F3F87088307CCE80005D106B /* OrderModePopupView.swift in Sources */,

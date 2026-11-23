@@ -34,7 +34,8 @@ class BioAuthViewController: UIViewController {
     }()
     
     private let context: LAContext
-    
+    private var viewModel: BioAuthViewModelType?
+
     init(_ context: LAContext) {
         self.context = context
         super.init(nibName: nil, bundle: nil)
@@ -47,7 +48,12 @@ class BioAuthViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        bindViewModel()
         setupData()
+    }
+
+    private func bindViewModel() {
+        viewModel = BioAuthViewModel(context: context)
     }
     
     private func setupUI() {
@@ -88,33 +94,21 @@ class BioAuthViewController: UIViewController {
     }
     
     private func setupData() {
-        let typeString: String
-        switch context.biometryType {
-            case .touchID:
-                typeString = "Touch ID"
-                iconView.image = R.image.touchId()!
-            case .faceID:
-                typeString = "Face ID"
-                iconView.image = R.image.faceId()!
-            case .none:
-                typeString = ""
-            case .opticID:
-                typeString = ""
-            @unknown default:
-                typeString = ""
+        guard let viewModel else { return }
+        let typeString = viewModel.biometryDisplayName
+        if viewModel.iconUsesTouchID, let touchImage = R.image.touchId() {
+            iconView.image = touchImage.tint(color: UIColor.Main.text)
+        } else if viewModel.iconUsesFaceID, let faceImage = R.image.faceId() {
+            iconView.image = faceImage.tint(color: UIColor.Main.text)
         }
-        
+
         titleLabel.text = R.string.auth.useBioAuth(typeString)
         enableButton.setTitle(R.string.auth.enableBioAuth(typeString), for: .normal)
     }
     
     // MARK: - Actions
     @objc private func buttonAction(_ sender: UIButton) {
-        if sender == enableButton {
-            UserSession.current.enableBioAuth(true)
-        } else {
-            UserSession.current.enableBioAuth(false)
-        }
+        viewModel?.enableBioAuth(sender == enableButton)
         let controller = MainTabBarController() // MenuController()
         // AppDelegate.shared.set(root: controller)
         SceneDelegate.shared.set(root: controller)

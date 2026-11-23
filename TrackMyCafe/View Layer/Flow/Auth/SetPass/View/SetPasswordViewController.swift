@@ -6,7 +6,6 @@
 //  Copyright © 2021 DTLab. All rights reserved.
 //
 
-import FirebaseAuth
 import LocalAuthentication
 import SVProgressHUD
 import UIKit
@@ -73,6 +72,7 @@ class SetPasswordViewController: UIViewController {
     }()
 
     private let context: LAContext?
+    private var viewModel: SetPasswordViewModelType?
 
     init(_ context: LAContext?) {
         self.context = context
@@ -86,6 +86,11 @@ class SetPasswordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupLayout()
+        bindViewModel()
+    }
+
+    private func bindViewModel() {
+        viewModel = SetPasswordViewModel(bioContext: context)
     }
 
     private func setupLayout() {
@@ -158,25 +163,23 @@ class SetPasswordViewController: UIViewController {
 
         view.endEditing(true)
         SVProgressHUD.show()
-        Auth.auth().currentUser?.updatePassword(
-            to: password,
-            completion: { [weak self] (error) in
+        Task { [weak self] in
+            guard let self else { return }
+            let error = await viewModel?.updatePassword(password)
+            await MainActor.run {
                 SVProgressHUD.dismiss()
-                self?.saveButton.isEnabled = error != nil
+                self.saveButton.isEnabled = error != nil
                 if error != nil {
-                    self?.showAlert(
+                    self.showAlert(
                         R.string.global.error(), body: R.string.global.wentWrongTryAgain())
+                } else if self.viewModel?.shouldOfferBioSetup == true, let bioContext = self.context {
+                    self.navigationController?.pushViewController(
+                        BioAuthViewController(bioContext), animated: true)
                 } else {
-                    if let bioContext = self?.context {
-                        self?.navigationController?.pushViewController(
-                            BioAuthViewController(bioContext), animated: true)
-                    } else {
-                        let controller = MainTabBarController()
-                        // AppDelegate.shared.set(root: controller)
-                        SceneDelegate.shared.set(root: controller)
-                    }
+                    SceneDelegate.shared.set(root: MainTabBarController())
                 }
-            })
+            }
+        }
     }
 }
 
