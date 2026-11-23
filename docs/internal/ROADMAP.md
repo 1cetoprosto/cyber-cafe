@@ -165,6 +165,13 @@
   - Staff-модуль відповідає MVVM (ViewModels, без прямого доступу до RequestManager у ViewControllers).
   - Немає обмежень за кількістю персоналу.
 
+### `v1.2.1` — First-run guided setup
+
+**Слоган:** новий owner доходить до «що залишилось» на своїх цифрах, без чужого авто-demo.
+
+- Issue `#312` feat: disable auto demo seed; owner guided setup (menu → sale → opex → leftover); DEBUG seed для скрінів лишається.
+- Milestone: [`v1.2.1`](https://github.com/1cetoprosto/cyber-cafe/milestone/16).
+
 ### `v1.2.x` — Monetization & follow-ups (після shipped v1.2.0)
 
 **Слоган:** утримуємо Pro-підписників у системному cancel flow App Store, без змін у бінарнику; паралельно гасимо structure tech-debt.

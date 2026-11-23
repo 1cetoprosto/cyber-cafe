@@ -659,3 +659,35 @@
 "plAovTitle" = "📋 Середній чек";
 "plOrdersCountTitle" = "🔢 Чеків";
 "plExpensesCountTitle" = "📝 Витрат записано";
+
+// MARK: - First-run guided setup (owner, empty cafe)
+"firstRunTitle" = "Перші кроки";
+"firstRunStepProgress" = "Крок %@ з %@";
+"firstRunContinue" = "Далі";
+"firstRunAddProduct" = "Додати товар";
+"firstRunSaveSale" = "Зберегти чек";
+"firstRunSaveExpense" = "Зберегти витрату";
+"firstRunGoToDashboard" = "До дашборду";
+"firstRunSkipStep" = "Пропустити цей крок";
+"firstRunSkipAll" = "Пропустити налаштування";
+"firstRunSkipStepTitle" = "Пропустити крок?";
+"firstRunSkipStepMessage" = "Цифри на дашборді з’являться, коли додасте свої дані.";
+"firstRunSkipStepConfirm" = "Пропустити";
+"firstRunSkipAllTitle" = "Пропустити налаштування?";
+"firstRunSkipAllMessage" = "Можете заповнити меню, чек і витрати пізніше. Підказку більше не покажемо.";
+"firstRunSkipAllConfirm" = "Не показувати знову";
+"firstRunMenuTitle" = "Що продаєте?";
+"firstRunMenuSubtitle" = "Додайте 2–3 позиції з ціною. Без складу й рецептів — лише назва і скільки коштує.";
+"firstRunProductNamePlaceholder" = "Наприклад, капучино";
+"firstRunProductNameRequired" = "Вкажіть назву товару";
+"firstRunProductPriceInvalid" = "Вкажіть коректну ціну";
+"firstRunSaleTitle" = "Перший чек";
+"firstRunSaleSubtitle" = "Оберіть товари з меню й збережіть продаж — так з’явиться виручка.";
+"firstRunSaleEmpty" = "Додайте хоча б один товар у чек";
+"firstRunExpenseTitle" = "Одна витрата";
+"firstRunExpenseSubtitle" = "Запишіть оренду, продукти чи іншу витрату — щоб побачити різницю з виручкою.";
+"firstRunExpenseNamePlaceholder" = "Наприклад, оренда";
+"firstRunExpenseNameRequired" = "Вкажіть назву витрати";
+"firstRunExpenseAmountInvalid" = "Вкажіть коректну суму";
+"firstRunLeftoverTitle" = "Ось що лишилось";
+"firstRunLeftoverSubtitle" = "Виручка мінус витрати на ваших цифрах. Далі все це буде на дашборді.";

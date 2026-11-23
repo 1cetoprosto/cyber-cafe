@@ -660,3 +660,35 @@
 "plAovTitle" = "📋 Average receipt";
 "plOrdersCountTitle" = "🔢 Receipts";
 "plExpensesCountTitle" = "📝 Expense entries";
+
+// MARK: - First-run guided setup (owner, empty cafe)
+"firstRunTitle" = "Getting started";
+"firstRunStepProgress" = "Step %@ of %@";
+"firstRunContinue" = "Continue";
+"firstRunAddProduct" = "Add item";
+"firstRunSaveSale" = "Save sale";
+"firstRunSaveExpense" = "Save expense";
+"firstRunGoToDashboard" = "Go to dashboard";
+"firstRunSkipStep" = "Skip this step";
+"firstRunSkipAll" = "Skip setup";
+"firstRunSkipStepTitle" = "Skip this step?";
+"firstRunSkipStepMessage" = "Dashboard numbers show up after you add your own data.";
+"firstRunSkipStepConfirm" = "Skip";
+"firstRunSkipAllTitle" = "Skip setup?";
+"firstRunSkipAllMessage" = "You can add the menu, a sale, and a cost later. We won’t show this again.";
+"firstRunSkipAllConfirm" = "Don’t show again";
+"firstRunMenuTitle" = "What’s on the menu?";
+"firstRunMenuSubtitle" = "Add 2–3 items with prices. No stock or recipes — just the name and what it costs.";
+"firstRunProductNamePlaceholder" = "e.g. Cappuccino";
+"firstRunProductNameRequired" = "Enter an item name";
+"firstRunProductPriceInvalid" = "Enter a valid price";
+"firstRunSaleTitle" = "First sale";
+"firstRunSaleSubtitle" = "Pick items from your menu and save the sale so sales show up.";
+"firstRunSaleEmpty" = "Add at least one item to the sale";
+"firstRunExpenseTitle" = "One expense";
+"firstRunExpenseSubtitle" = "Log rent, supplies, or another cost so you can see what’s left after sales.";
+"firstRunExpenseNamePlaceholder" = "e.g. Rent";
+"firstRunExpenseNameRequired" = "Enter an expense name";
+"firstRunExpenseAmountInvalid" = "Enter a valid amount";
+"firstRunLeftoverTitle" = "Here’s what’s left";
+"firstRunLeftoverSubtitle" = "Sales minus costs on your numbers. From here, you’ll see it on the dashboard.";

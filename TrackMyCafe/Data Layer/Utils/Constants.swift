@@ -146,6 +146,7 @@ struct UserDefaultsKeys {
     static let trackIngredients = "settings.trackIngredients"
     static let hasSeenOnboarding = "hasSeenOnboarding"
     static let hasSeenInitialPaywall = "hasSeenInitialPaywall"
+    static let hasCompletedFirstRunSetup = "hasCompletedFirstRunSetup"
     static let hasRunBefore = "hasRunBefore"
     static let pendingSubscriptionSync = "pendingSubscriptionSync"
     static let financeHistoryBackfillCompleted = "finance.historyBackfillCompleted"
