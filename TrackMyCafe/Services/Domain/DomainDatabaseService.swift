@@ -16,6 +16,8 @@ class DomainDatabaseService: DomainDB {
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!, category: "DomainDatabaseService")
     private let orderSnapshotRepairService = OrderSnapshotRepairService()
+    /// Serializes concurrent `ensureDefaultOrderTypesIfNeeded` callers (SceneDelegate + MainTabBar + OrderDetails).
+    private var ensureDefaultOrderTypesInFlight: Task<Void, Never>?
 
     // Метод для перевірки, чи включений режим онлайн
     // private func isOnlineModeEnabled() -> Bool {
@@ -617,32 +619,61 @@ class DomainDatabaseService: DomainDB {
         }
     }
 
-    /// Seeds Hall / Takeaway / Delivery when the current cafe has no order types.
+    /// Seeds Hall / Takeaway / Delivery when missing; dedupes name collisions from concurrent seeds.
     /// Must not depend on device-wide `kFirstLaunch` — that blocked new Sign Up cafes
     /// after the first install on the same simulator.
     @MainActor
     func ensureDefaultOrderTypesIfNeeded() async {
-        let existing = await fetchTypes()
-        if !existing.isEmpty {
-            if existing.contains(where: { $0.isDefault }) { return }
-            if let first = existing.first {
-                await setDefaultType(model: first, isDefault: true)
-            }
+        if let inFlight = ensureDefaultOrderTypesInFlight {
+            await inFlight.value
             return
         }
 
+        let task = Task { @MainActor in
+            await self.performEnsureDefaultOrderTypes()
+        }
+        ensureDefaultOrderTypesInFlight = task
+        await task.value
+        ensureDefaultOrderTypesInFlight = nil
+    }
+
+    @MainActor
+    private func performEnsureDefaultOrderTypes() async {
         let catalog: [(name: String, isDefault: Bool)] = [
             (R.string.global.typeHall(), true),
             (R.string.global.typeTakeaway(), false),
             (R.string.global.typeDelivery(), false),
         ]
-        for entry in catalog {
+
+        var existing = await fetchTypes()
+
+        // Concurrent ensure calls used to create duplicate names — keep one per name.
+        let grouped = Dictionary(grouping: existing, by: \.name)
+        for group in grouped.values where group.count > 1 {
+            let keeper = group.first(where: \.isDefault) ?? group[0]
+            for duplicate in group where duplicate.id != keeper.id {
+                _ = await deleteType(model: duplicate)
+            }
+        }
+
+        existing = await fetchTypes()
+        let existingNames = Set(existing.map(\.name))
+
+        for entry in catalog where !existingNames.contains(entry.name) {
             let model = TypeModel(
                 id: UUID().uuidString, name: entry.name, isDefault: entry.isDefault)
             let success = await saveType(model: model)
             if !success {
                 logger.error("Failed to ensure default order type: \(entry.name)")
             }
+        }
+
+        existing = await fetchTypes()
+        if existing.contains(where: \.isDefault) { return }
+        if let preferred = existing.first(where: { $0.name == catalog[0].name })
+            ?? existing.first
+        {
+            await setDefaultType(model: preferred, isDefault: true)
         }
     }
 
